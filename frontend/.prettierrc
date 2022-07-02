@@ -1,0 +1,25 @@
+{
+	"importOrder": [
+		"^(@|App)(.*|$)",
+		"^(@|atom)(.*|$)",
+		"^(@|hooks)(.*|$)",
+		"^(@|api)(.*|$)",
+		"^(@|components/common)(.*|$)",
+		"^(@|components/layout)(.*|$)",
+		"^(@|components/pages)(.*|$)",
+		"^(@|components)(.*|$)",
+		"^(@|constants)(.*|$)",
+		"^(@|types)(.*|$)",
+		"^(@|asset)(.*|$)",
+		"^(@|mock)(.*|$)",
+		"^(@|styled-components)(.*|$)",
+		"^(@|style)(.*|$)"
+	],
+	"importOrderSeparation": true,
+	"singleQuote": true,
+	"semi": true,
+	"useTabs": true,
+	"tabWidth": 2,
+	"trailingComma": "all",
+	"printWidth": 100
+}
