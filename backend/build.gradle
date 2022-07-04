@@ -42,7 +42,7 @@ dependencies {
 
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'io.rest-assured:rest-assured:5.1.1'
+	testImplementation 'io.rest-assured:rest-assured:4.4.0'
 }
 
 tasks.named('test') {
