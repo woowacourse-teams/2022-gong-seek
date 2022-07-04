@@ -19,6 +19,12 @@
 	},
 	"plugins": ["react", "@typescript-eslint"],
 	"rules": {
-		"arrow-body-style": "warn"
+		"arrow-body-style": "warn",
+		"@typescript-eslint/no-empty-interface": [
+			"error",
+			{
+				"allowSingleExtends": true
+			}
+		]
 	}
 }
