@@ -19,7 +19,7 @@ export const Container = styled.div`
 
 export const SearchInput = styled.input`
 	border-style: none;
-	padding: 0.625rem;
+	padding: 0.5rem 0;
 	width: 80%;
 	background-color: transparent;
 	&:focus {
