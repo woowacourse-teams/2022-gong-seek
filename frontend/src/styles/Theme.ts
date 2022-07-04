@@ -7,6 +7,7 @@ const colors = {
 	BLUE_400: 'rgba(58, 176, 255, 0.75)',
 	BLACK_500: '#141619',
 	BLACK_400: 'rgba(20, 22, 25, 0.75)',
+	GRAY_500: 'rgba(0, 0, 0, 0.11)',
 };
 
 const breakpoints = {
@@ -20,16 +21,17 @@ const boxShadows = {
 };
 
 const fonts = {
-	SIZE_001: '0.875rem',
-	SIZE_002: '1rem',
-	SIZE_003: '1.125rem',
-	SIZE_004: '1.25rem',
-	SIZE_005: '1.375rem',
-	SIZE_006: '1.5rem',
-	SIZE_007: '1.625rem',
-	SIZE_008: '1.75rem',
-	SIZE_009: '1.875rem',
-	SIZE_010: '2rem',
+	SIZE_001: '0.063rem',
+	SIZE_014: '0.875rem',
+	SIZE_016: '1rem',
+	SIZE_018: '1.125rem',
+	SIZE_020: '1.25rem',
+	SIZE_022: '1.375rem',
+	SIZE_024: '1.5rem',
+	SIZE_026: '1.625rem',
+	SIZE_028: '1.75rem',
+	SIZE_030: '1.875rem',
+	SIZE_032: '2rem',
 };
 
 export const theme = {
@@ -37,4 +39,4 @@ export const theme = {
 	breakpoints,
 	boxShadows,
 	fonts,
-};
+} as const;
