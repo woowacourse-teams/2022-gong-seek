@@ -5,6 +5,7 @@ const colors = {
 	RED_400: ' rgba(248, 116, 116, 0.75)',
 	BLUE_500: '#3AB0FF',
 	BLUE_400: 'rgba(58, 176, 255, 0.75)',
+	BLACK_600: '#363636',
 	BLACK_500: '#141619',
 	BLACK_400: 'rgba(20, 22, 25, 0.75)',
 	GRAY_500: 'rgba(0, 0, 0, 0.11)',
@@ -22,6 +23,7 @@ const boxShadows = {
 
 const fonts = {
 	SIZE_001: '0.063rem',
+	SIZE_010: '0.625rem',
 	SIZE_014: '0.875rem',
 	SIZE_016: '1rem',
 	SIZE_018: '1.125rem',
