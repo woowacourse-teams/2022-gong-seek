@@ -26,7 +26,8 @@ const SelectorBox = styled.div`
 
 const TitleInput = styled.input`
 	width: 100%;
-	padding: 0.6em 0.8em;
+	padding: 0.6rem 0.8rem;
+	font-size: 0.8rem;
 	border-style: none;
 	background-color: transparent;
 	&:focus {
@@ -36,7 +37,8 @@ const TitleInput = styled.input`
 
 const HashTagInput = styled.input`
 	width: 100%;
-	padding: 0.6em 0.8em;
+	padding: 0.6rem 0.8rem;
+	font-size: 0.8rem;
 	border-style: none;
 	background-color: transparent;
 	&:focus {
@@ -54,6 +56,7 @@ const CategorySelectorBox = styled.div`
 const SelectorButton = styled(IoIosArrowDown)`
 	position: absolute;
 	border: none;
+	font-size: 0.8rem;
 	font-size: ${({ theme }) => theme.fonts.SIZE_018};
 	color: ${({ theme }) => theme.colors.PURPLE_500};
 	right: ${({ theme }) => theme.fonts.SIZE_004};
@@ -62,7 +65,8 @@ const SelectorButton = styled(IoIosArrowDown)`
 
 const CategorySelector = styled.select`
 	width: 100%;
-	padding: 0.6em 0.8em;
+	padding: 0.6rem 0.8rem;
+	font-size: 0.8rem;
 	border-color: transparent;
 	border-radius: ${({ theme }) => theme.fonts.SIZE_010};
 	-webkit-appearance: none;
@@ -81,6 +85,7 @@ const SubmitButton = styled.button`
 	color: ${({ theme }) => theme.colors.WHITE};
 	background-color: ${({ theme }) => theme.colors.PURPLE_500};
 	width: 90%;
+	font-size: 0.8rem;
 	padding: ${({ theme }) => theme.fonts.SIZE_004};
 	border-radius: ${({ theme }) => theme.fonts.SIZE_010};
 	border-color: transparent;
@@ -101,8 +106,8 @@ const WritingArticles = () => (
 			</PageLayout>
 			<PageLayout width="100%" height="fit-content">
 				<CategorySelectorBox>
-					<CategorySelector name="writing" required>
-						<option value="" disabled selected>
+					<CategorySelector name="writing" required defaultValue="">
+						<option value="" disabled>
 							카테고리를 선택해주세요
 						</option>
 						<option value="에러">에러</option>
