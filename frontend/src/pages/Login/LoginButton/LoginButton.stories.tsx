@@ -1,9 +1,9 @@
-import LoginButton, { LoginButtonProps } from '@/components/common/LoginButton/LoginButton';
+import LoginButton, { LoginButtonProps } from '@/pages/Login/LoginButton/LoginButton';
 import { Meta, Story } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
 export default {
-	title: 'common/LoginButton',
+	title: 'pages/Login/LoginButton',
 	component: LoginButton,
 	decorators: [
 		(Story) => (
