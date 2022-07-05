@@ -57,7 +57,7 @@ class ArticleControllerTest {
 
         results.andExpect(status().isCreated())
                 .andDo(print())
-                .andDo(document("question-create",
+                .andDo(document("article-create",
                                 requestFields(
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),

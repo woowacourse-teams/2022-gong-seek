@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
 <meta name="author" content="---">
-<title>Question</title>
+<title>Article</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -440,7 +440,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>Question</h1>
+<h1>Article</h1>
 <div class="details">
 <span id="author" class="author">---</span><br>
 <span id="revnumber">version 0.0.1-SNAPSHOT,</span>
@@ -467,13 +467,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/articles HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 105
+Content-Length: 75
 Host: localhost:8080
 
 {
-  "id" : 1,
-  "title" : "제목입니당",
-  "content" : "내용입니당",
+  "title" : "title",
+  "content" : "content",
   "category" : "question"
 }</code></pre>
 </div>
@@ -481,17 +480,37 @@ Host: localhost:8080
 <div class="paragraph">
 <p>성공 응답 HTTP</p>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in question.adoc - include::/Users/hyeong-rae/Desktop/2022-gong-seek/backend/build/generated-snippets/article-create/http-response.adoc[]
-Unresolved directive in question.adoc - include::/Users/hyeong-rae/Desktop/2022-gong-seek/backend/build/generated-snippets/article-create/response-headers.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
+Location: /api/articles/1</code></pre>
 </div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Location</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">생성된 게시물의 url</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-05 16:50:44 +0900
+Last updated 2022-07-05 17:40:20 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
