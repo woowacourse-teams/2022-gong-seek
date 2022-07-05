@@ -39,9 +39,14 @@ const fonts = {
 	SIZE_032: '2rem',
 };
 
+const zIndex = {
+	HEADER: 100,
+};
+
 export const theme = {
 	colors,
 	breakpoints,
 	boxShadows,
 	fonts,
+	zIndex,
 } as const;
