@@ -1,14 +1,21 @@
 package com.woowacourse.gongseek.article.domain;
 
+import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -19,15 +26,20 @@ public class Article {
     private static final int MAX_CONTENT_LENGTH = 1000;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
     private String content;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
     private Category category;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     public Article(String title, String content, Category category) {
         validateTitleLength(title);
