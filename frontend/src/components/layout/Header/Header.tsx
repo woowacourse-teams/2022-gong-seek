@@ -3,10 +3,13 @@ import SearchBar from '@/components/common/SearchBar/SearchBar';
 import { Link } from 'react-router-dom';
 
 const HeaderSection = styled.header`
+	position: fixed;
+	top: 0;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: space-around;
+	padding-top: 1rem;
 	width: 100%;
 `;
 const LogoLink = styled.h1`

@@ -9,7 +9,7 @@ export const mobileTitlePrimary = css({
 
 export const mobileTitleSecondary = css({
 	color: '#000000',
-	fontWeight: 500,
+	fontWeight: 700,
 	fontSize: `${theme.fonts.SIZE_020}`,
 });
 
