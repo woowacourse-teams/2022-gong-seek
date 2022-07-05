@@ -1,6 +1,6 @@
-package com.woowacourse.gongseek.question.domain.repository;
+package com.woowacourse.gongseek.article.domain.repository;
 
-import com.woowacourse.gongseek.question.domain.Question;
+import com.woowacourse.gongseek.article.domain.Article;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -13,8 +13,8 @@ public class QuestionRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public Question save(Question question) {
-        entityManager.persist(question);
-        return question;
+    public Article save(Article article) {
+        entityManager.persist(article);
+        return article;
     }
 }

@@ -1,13 +1,18 @@
-package com.woowacourse.gongseek.question.domain;
+package com.woowacourse.gongseek.article.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Question {
+public class Article {
 
     private static final int MIN_TITLE_LENGTH = 0;
     private static final int MAX_TITLE_LENGTH = 500;
@@ -21,14 +26,15 @@ public class Question {
 
     private String content;
 
-    protected Question() {
-    }
+    @Enumerated(value = EnumType.STRING)
+    private Category category;
 
-    public Question(String title, String content) {
+    public Article(String title, String content, Category category) {
         validateTitleLength(title);
         validateContentLength(content);
         this.title = title;
         this.content = content;
+        this.category = category;
     }
 
     private void validateTitleLength(String title) {

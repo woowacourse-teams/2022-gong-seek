@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
 <meta name="author" content="---">
-<title>Question</title>
+<title>Article</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -440,7 +440,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>Question</h1>
+<h1>Article</h1>
 <div class="details">
 <span id="author" class="author">---</span><br>
 <span id="revnumber">version 0.0.1-SNAPSHOT,</span>
@@ -458,22 +458,22 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_게시물_생성"><a class="link" href="#_게시물_생성">게시물 생성</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><code>POST /api/articles/questions</code></p>
+<p><code>POST /api/articles</code></p>
 </div>
 <div class="paragraph">
 <p>요청 HTTP</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/articles/questions HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/articles HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 78
+Content-Length: 75
 Host: localhost:8080
 
 {
-  "id" : 1,
-  "title" : "제목입니당",
-  "content" : "내용입니당"
+  "title" : "title",
+  "content" : "content",
+  "category" : "question"
 }</code></pre>
 </div>
 </div>
@@ -483,7 +483,7 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
-Location: /api/articles/questions/1</code></pre>
+Location: /api/articles/1</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -510,7 +510,7 @@ Location: /api/articles/questions/1</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-05 14:30:56 +0900
+Last updated 2022-07-05 17:40:20 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
