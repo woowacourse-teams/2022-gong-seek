@@ -31,13 +31,13 @@ public class Question {
         this.content = content;
     }
 
-    public void validateTitleLength(String title) {
+    private void validateTitleLength(String title) {
         if (title.trim().length() <= MIN_TITLE_LENGTH || title.length() > MAX_TITLE_LENGTH) {
             throw new IllegalArgumentException("타이틀의 길이는 0 이상 500 이하여야합니다.");
         }
     }
 
-    public void validateContentLength(String content) {
+    private void validateContentLength(String content) {
         if (content.length() > MAX_CONTENT_LENGTH) {
             throw new IllegalArgumentException("컨텐트의 길이는 1000 이하여야합니다.");
         }
