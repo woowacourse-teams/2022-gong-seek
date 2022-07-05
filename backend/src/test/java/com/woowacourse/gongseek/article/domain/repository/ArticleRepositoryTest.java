@@ -7,13 +7,13 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-@SpringBootTest
+@DataJpaTest
 class ArticleRepositoryTest {
 
     @Autowired
-    private QuestionRepository questionRepository;
+    private ArticleRepository articleRepository;
 
     @Test
     void 질문을_저장한다() {
@@ -21,12 +21,11 @@ class ArticleRepositoryTest {
         String content = "내용입나다....";
 
         Article article = new Article(title, content, Category.QUESTION);
-        Article savedArticle = questionRepository.save(article);
+        Article savedArticle = articleRepository.save(article);
 
         assertAll(
-                () -> assertThat(savedArticle.getTitle()).isEqualTo(article.getTitle()),
-                () -> assertThat(savedArticle.getContent()).isEqualTo(article.getContent()),
-                () -> assertThat(savedArticle.getCategory()).isEqualTo(article.getCategory())
+                () -> assertThat(savedArticle).isEqualTo(article),
+                () -> assertThat(savedArticle).isSameAs(article)
         );
     }
 }
