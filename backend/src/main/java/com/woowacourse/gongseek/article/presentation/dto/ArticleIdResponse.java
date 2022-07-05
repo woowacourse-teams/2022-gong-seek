@@ -4,8 +4,8 @@ import com.woowacourse.gongseek.article.domain.Article;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
 @AllArgsConstructor
+@Getter
 public class ArticleIdResponse {
 
     private final Long id;
