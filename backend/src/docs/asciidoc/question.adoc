@@ -14,9 +14,10 @@ endif::[]
 
 == 게시물 생성
 
-`POST /api/articles/questions`
+`POST /api/articles`
 
 요청 HTTP
+
 include::{snippets}/question-create/http-request.adoc[]
 
 성공 응답 HTTP

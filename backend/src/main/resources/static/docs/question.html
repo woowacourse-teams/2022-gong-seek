@@ -458,59 +458,40 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_게시물_생성"><a class="link" href="#_게시물_생성">게시물 생성</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><code>POST /api/articles/questions</code></p>
+<p><code>POST /api/articles</code></p>
 </div>
 <div class="paragraph">
 <p>요청 HTTP</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/articles/questions HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/articles HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 78
+Content-Length: 105
 Host: localhost:8080
 
 {
   "id" : 1,
   "title" : "제목입니당",
-  "content" : "내용입니당"
+  "content" : "내용입니당",
+  "category" : "question"
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>성공 응답 HTTP</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
-Location: /api/articles/questions/1</code></pre>
+<div class="paragraph">
+<p>Unresolved directive in question.adoc - include::/Users/hyeong-rae/Desktop/2022-gong-seek/backend/build/generated-snippets/article-create/http-response.adoc[]
+Unresolved directive in question.adoc - include::/Users/hyeong-rae/Desktop/2022-gong-seek/backend/build/generated-snippets/article-create/response-headers.adoc[]</p>
 </div>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Location</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">생성된 게시물의 url</p></td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-05 14:30:56 +0900
+Last updated 2022-07-05 16:50:44 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
