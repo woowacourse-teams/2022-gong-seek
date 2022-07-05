@@ -3,6 +3,8 @@ import { FaPencilAlt, FaUser } from 'react-icons/fa';
 import { HiMenu } from 'react-icons/hi';
 
 export const Section = styled.section`
+	position: fixed;
+	bottom: 0;
 	width: 100%;
 	height: fit-content;
 	display: flex;
