@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class ArticleRepositoryTest {
 
     @Autowired
-    private QuestionRepository questionRepository;
+    private ArticleRepository articleRepository;
 
     @Test
     void 질문을_저장한다() {
@@ -21,7 +21,7 @@ class ArticleRepositoryTest {
         String content = "내용입나다....";
 
         Article article = new Article(title, content, Category.QUESTION);
-        Article savedArticle = questionRepository.save(article);
+        Article savedArticle = articleRepository.save(article);
 
         assertAll(
                 () -> assertThat(savedArticle.getTitle()).isEqualTo(article.getTitle()),

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Repository
-public class QuestionRepository {
+public class ArticleRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
