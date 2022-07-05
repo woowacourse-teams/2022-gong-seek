@@ -8,7 +8,6 @@ export const Section = styled.section`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 1rem;
 	box-shadow: 0px -4px 15px ${({ theme }) => theme.boxShadows.secondary};
 	border-radius: ${({ theme }) => theme.fonts.SIZE_010} ${({ theme }) => theme.fonts.SIZE_010} 0 0;
 `;
@@ -17,7 +16,7 @@ export const PostingLink = styled(FaPencilAlt)`
 	font-size: ${({ theme }) => theme.fonts.SIZE_022};
 	color: ${({ theme }) => theme.colors.BLACK_500};
 	cursor: pointer;
-
+	margin: 16px 0 16px 16px;
 	&:hover,
 	&:active {
 		color: ${({ theme }) => theme.colors.PURPLE_500};
@@ -38,6 +37,7 @@ export const MenuLink = styled(HiMenu)`
 	font-size: ${({ theme }) => theme.fonts.SIZE_024};
 	color: ${({ theme }) => theme.colors.BLACK_500};
 	cursor: pointer;
+	margin: 16px 16px 16px 0;
 	&:hover,
 	&:active {
 		color: ${({ theme }) => theme.colors.PURPLE_500};
