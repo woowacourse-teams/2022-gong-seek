@@ -1,0 +1,25 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Question
+---
+= 기본 API
+
+== 게시물 생성
+
+`POST /api/articles/questions`
+
+요청 HTTP
+include::{snippets}/question-create/http-request.adoc[]
+
+성공 응답 HTTP
+
+include::{snippets}/question-create/http-response.adoc[]
+include::{snippets}/question-create/response-headers.adoc[]
