@@ -16,7 +16,7 @@ public class ArticleRequest {
     private String content;
     private String category;
 
-    public Article toEntity(){
+    public Article toEntity() {
         return new Article(title, content, Category.from(category));
     }
 }

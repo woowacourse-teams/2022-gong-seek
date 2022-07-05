@@ -1,8 +1,8 @@
 package com.woowacourse.gongseek.article.presentation;
 
 import com.woowacourse.gongseek.article.application.ArticleService;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

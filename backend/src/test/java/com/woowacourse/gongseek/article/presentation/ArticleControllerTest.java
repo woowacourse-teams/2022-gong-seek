@@ -12,10 +12,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
-import com.woowacourse.gongseek.config.RestDocsConfig;
 import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
+import com.woowacourse.gongseek.config.RestDocsConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
