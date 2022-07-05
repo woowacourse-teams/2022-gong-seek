@@ -41,8 +41,7 @@ class QuestionControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("질문_게시물_생성_API_문서화")
-    void asd() throws Exception {
+    void 질문_게시물_생성_API_문서화() throws Exception {
         QuestionResponse response = new QuestionResponse(1L, "제목입니당", "내용입니당");
         given(questionService.save(any())).willReturn(response);
 
