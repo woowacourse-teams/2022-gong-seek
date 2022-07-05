@@ -1,5 +1,9 @@
 package com.woowacourse.gongseek.question.presentation.dto;
 
+import com.woowacourse.gongseek.question.domain.Question;
+import lombok.Getter;
+
+@Getter
 public class QuestionRequest {
 
     private String title;
@@ -13,11 +17,7 @@ public class QuestionRequest {
         this.content = content;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
+    public Question toEntity(){
+        return new Question(title, content);
     }
 }

@@ -3,7 +3,9 @@ package com.woowacourse.gongseek.question.domain;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import lombok.Getter;
 
+@Getter
 @Entity
 public class Question {
 
@@ -40,5 +42,4 @@ public class Question {
             throw new IllegalArgumentException("컨텐트의 길이는 1000 이하여야합니다.");
         }
     }
-
 }
