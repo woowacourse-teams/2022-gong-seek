@@ -3,7 +3,7 @@ import { FaPencilAlt, FaUser } from 'react-icons/fa';
 import { HiMenu } from 'react-icons/hi';
 
 export const Section = styled.section`
-	position: fixed;
+	position: sticky;
 	bottom: 0;
 	width: 100%;
 	height: fit-content;
@@ -12,6 +12,8 @@ export const Section = styled.section`
 	align-items: center;
 	box-shadow: 0px -4px 15px ${({ theme }) => theme.boxShadows.secondary};
 	border-radius: ${({ theme }) => theme.fonts.SIZE_010} ${({ theme }) => theme.fonts.SIZE_010} 0 0;
+	z-index: ${({ theme }) => theme.zIndex.HEADER};
+	background-color: ${({ theme }) => theme.colors.WHITE};
 `;
 
 export const PostingLink = styled(FaPencilAlt)`

@@ -9,6 +9,7 @@ const colors = {
 	BLACK_500: '#141619',
 	BLACK_400: 'rgba(20, 22, 25, 0.75)',
 	GRAY_500: 'rgba(0, 0, 0, 0.11)',
+	WHITE: '#ffffff',
 };
 
 const breakpoints = {
@@ -38,9 +39,14 @@ const fonts = {
 	SIZE_032: '2rem',
 };
 
+const zIndex = {
+	HEADER: 100,
+};
+
 export const theme = {
 	colors,
 	breakpoints,
 	boxShadows,
 	fonts,
+	zIndex,
 } as const;

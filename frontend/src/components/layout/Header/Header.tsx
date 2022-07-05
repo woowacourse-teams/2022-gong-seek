@@ -3,7 +3,7 @@ import SearchBar from '@/components/common/SearchBar/SearchBar';
 import { Link } from 'react-router-dom';
 
 const HeaderSection = styled.header`
-	position: fixed;
+	position: sticky;
 	top: 0;
 	display: flex;
 	flex-direction: row;
@@ -11,6 +11,9 @@ const HeaderSection = styled.header`
 	justify-content: space-around;
 	padding-top: 1rem;
 	width: 100%;
+	height: 3.5rem;
+	z-index: ${({ theme }) => theme.zIndex.HEADER};
+	background-color: ${({ theme }) => theme.colors.WHITE};
 `;
 const LogoLink = styled.h1`
 	font-weight: 800;
