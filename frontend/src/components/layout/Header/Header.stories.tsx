@@ -15,5 +15,5 @@ export default {
 
 const Template: Story = (args) => <Header {...args} />;
 
-export const DefaultTabBar = Template.bind({});
-DefaultTabBar.args = {};
+export const DefaultHeader = Template.bind({});
+DefaultHeader.args = {};
