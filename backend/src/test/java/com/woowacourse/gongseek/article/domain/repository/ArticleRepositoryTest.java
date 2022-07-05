@@ -7,9 +7,9 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-@SpringBootTest
+@DataJpaTest
 class ArticleRepositoryTest {
 
     @Autowired
@@ -24,9 +24,8 @@ class ArticleRepositoryTest {
         Article savedArticle = articleRepository.save(article);
 
         assertAll(
-                () -> assertThat(savedArticle.getTitle()).isEqualTo(article.getTitle()),
-                () -> assertThat(savedArticle.getContent()).isEqualTo(article.getContent()),
-                () -> assertThat(savedArticle.getCategory()).isEqualTo(article.getCategory())
+                () -> assertThat(savedArticle).isEqualTo(article),
+                () -> assertThat(savedArticle).isSameAs(article)
         );
     }
 }
