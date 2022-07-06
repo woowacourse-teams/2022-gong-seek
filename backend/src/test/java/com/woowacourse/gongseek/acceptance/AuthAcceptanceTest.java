@@ -3,7 +3,7 @@ package com.woowacourse.gongseek.acceptance;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.gongseek.auth.presentation.dto.OAuthUrlResponse;
+import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Disabled;
@@ -18,14 +18,14 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @Test
     void 유저가_깃허브로_로그인을_할_수_있다() {
         // given
-        OAuthUrlResponse urlResponse = RestAssured
+        OAuthLoginUrlResponse urlResponse = RestAssured
                 .given().log().all()
                 .when()
                 .get("/api/auth/github")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract()
-                .as(OAuthUrlResponse.class);
+                .as(OAuthLoginUrlResponse.class);
 
         //when
         TokenResponse tokenResponse = RestAssured

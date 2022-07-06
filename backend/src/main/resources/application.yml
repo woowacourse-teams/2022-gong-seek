@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: jwt
+    include: jwt, oauth
 
   h2.console:
       enabled: true
