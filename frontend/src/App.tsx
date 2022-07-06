@@ -6,6 +6,7 @@ import Login from '@/pages/Login';
 import WritingArticles from '@/pages/WritingArticles';
 import CategorySelector from '@/pages/CategorySelector/CategorySelector';
 import LoginController from './pages/Login/LoginController/LoginController';
+import Home from './pages/Home';
 
 const Layout = styled.div`
 	position: relative;
@@ -25,8 +26,9 @@ const App = () => (
 			<Routes>
 				<Route path="/callback" element={<LoginController />} />
 				<Route path="/category" element={<CategorySelector />} />
-				<Route path="/article" element={<WritingArticles />} />
-				<Route path="/" element={<Login />} />
+				<Route path="/article/:category" element={<WritingArticles />} />
+				<Route path="/login" element={<Login />} />
+				<Route path="/" element={<Home />} />
 			</Routes>
 		</Content>
 		<TabBar />
