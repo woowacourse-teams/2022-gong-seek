@@ -5,7 +5,7 @@ spring:
       path: /h2-console
 
   datasource:
-    url: jdbc:h2:~/test
+    url: jdbc:h2:mem:~/test
     driver-class-name: org.h2.Driver
     username: sa
 

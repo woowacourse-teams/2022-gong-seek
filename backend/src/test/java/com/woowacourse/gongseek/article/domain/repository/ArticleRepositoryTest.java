@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+@SuppressWarnings("NonAsciiCharacters")
 @DataJpaTest
 class ArticleRepositoryTest {
 
@@ -23,9 +24,6 @@ class ArticleRepositoryTest {
         Article article = new Article(title, content, Category.QUESTION);
         Article savedArticle = articleRepository.save(article);
 
-        assertAll(
-                () -> assertThat(savedArticle).isEqualTo(article),
-                () -> assertThat(savedArticle).isSameAs(article)
-        );
+        assertThat(savedArticle).isSameAs(article);
     }
 }
