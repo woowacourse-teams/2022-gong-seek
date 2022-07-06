@@ -4,6 +4,7 @@ import Header from '@/components/layout/Header/Header';
 import TabBar from '@/components/layout/TabBar/TabBar';
 import Login from '@/pages/Login';
 import WritingArticles from '@/pages/WritingArticles';
+import CategorySelector from '@/pages/CategorySelector/CategorySelector';
 
 const Layout = styled.div`
 	position: relative;
@@ -21,6 +22,7 @@ const App = () => (
 		<Header />
 		<Content>
 			<Routes>
+				<Route path="/category" element={<CategorySelector />} />
 				<Route path="/article" element={<WritingArticles />} />
 				<Route path="/" element={<Login />} />
 			</Routes>

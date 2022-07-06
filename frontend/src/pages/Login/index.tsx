@@ -6,7 +6,7 @@ import LoginButton from './LoginButton/LoginButton';
 const Container = styled.div`
 	display: flex;
 	width: 100%;
-	height: 60vh;
+	height: calc(100vh - 15rem);
 	justify-content: center;
 	align-items: center;
 `;

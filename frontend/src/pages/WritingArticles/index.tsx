@@ -69,6 +69,7 @@ const CategorySelector = styled.select`
 	font-size: 0.8rem;
 	border-color: transparent;
 	border-radius: ${({ theme }) => theme.fonts.SIZE_010};
+	background-color: transparent;
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
