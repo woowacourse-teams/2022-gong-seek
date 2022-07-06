@@ -6,9 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Entity
 public class Member {
 
@@ -28,6 +30,10 @@ public class Member {
     public Member(String name, String githubId, String avatarUrl) {
         this.name = name;
         this.githubId = githubId;
+        this.avatarUrl = avatarUrl;
+    }
+
+    public void updateAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
 }
