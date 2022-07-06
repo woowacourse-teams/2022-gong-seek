@@ -6,7 +6,7 @@ export const Section = styled.section`
 	position: sticky;
 	bottom: 0;
 	width: 100%;
-	height: fit-content;
+	height: 3.5rem;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
