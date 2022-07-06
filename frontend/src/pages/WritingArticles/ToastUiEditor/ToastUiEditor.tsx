@@ -1,20 +1,18 @@
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import { useRef } from 'react';
+import { forwardRef, LegacyRef } from 'react';
 
-const ToastUiEditor = () => {
-	const editorRef = useRef(null);
+const ToastUiEditor = forwardRef((_, ref: LegacyRef<Editor>) => (
+	<Editor
+		initialValue=""
+		previewStyle="tab"
+		height="600px"
+		initialEditType="markdown"
+		useCommandShortcut={true}
+		ref={ref}
+	/>
+));
 
-	return (
-		<Editor
-			initialValue=""
-			previewStyle="tab"
-			height="600px"
-			initialEditType="markdown"
-			useCommandShortcut={true}
-			ref={editorRef}
-		/>
-	);
-};
+ToastUiEditor.displayName = 'ToastUiEditor';
 
 export default ToastUiEditor;
