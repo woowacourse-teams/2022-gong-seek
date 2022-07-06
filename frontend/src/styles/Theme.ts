@@ -37,6 +37,8 @@ const fonts = {
 	SIZE_028: '1.75rem',
 	SIZE_030: '1.875rem',
 	SIZE_032: '2rem',
+	SIZE_080: '5rem',
+	SIZE_090: '5.625rem',
 };
 
 const zIndex = {
