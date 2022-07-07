@@ -11,7 +11,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 class ArticleTest {
 
     private static final Member member = new Member("slo", "hanull", "avatar.com");
-    ;
 
     @ParameterizedTest
     @ValueSource(strings = {"", " "})
