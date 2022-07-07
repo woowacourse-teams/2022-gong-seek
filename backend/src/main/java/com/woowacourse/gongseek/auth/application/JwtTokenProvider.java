@@ -18,8 +18,8 @@ public class JwtTokenProvider {
     private final long validityInMilliseconds;
     private final Key secretKey;
 
-    public JwtTokenProvider(final @Value("${security.jwt.token.expire-length}") long validityInMilliseconds,
-                            final @Value("${security.jwt.token.secret-key}") String secretKey) {
+    public JwtTokenProvider(@Value("${security.jwt.token.expire-length}") long validityInMilliseconds,
+                            @Value("${security.jwt.token.secret-key}") String secretKey) {
         this.validityInMilliseconds = validityInMilliseconds;
         this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
@@ -55,7 +55,7 @@ public class JwtTokenProvider {
         }
     }
 
-    private Jws<Claims> getClaimsJws(final String token) {
+    private Jws<Claims> getClaimsJws(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
