@@ -1,18 +1,10 @@
 import { getGithubURL } from '@/api/login';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import { mobileTitleSecondary } from '@/constants/titleType';
-import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import LoginButton from './LoginButton/LoginButton';
-
-const Container = styled.div`
-	display: flex;
-	width: 100%;
-	height: calc(100vh - 15rem);
-	justify-content: center;
-	align-items: center;
-`;
+import * as S from '@/pages/Login/index.style';
 
 const Login = () => {
 	const { data, error, isError, isLoading, isSuccess, refetch } = useQuery(
@@ -45,7 +37,7 @@ const Login = () => {
 	}
 
 	return (
-		<Container>
+		<S.Container>
 			<PageLayout
 				width="80%"
 				height="14rem"
@@ -58,7 +50,7 @@ const Login = () => {
 					github로 로그인하기
 				</LoginButton>
 			</PageLayout>
-		</Container>
+		</S.Container>
 	);
 };
 

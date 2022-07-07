@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import ReactDOM from 'react-dom/client';
-import React from 'react';
 import App from '@/App';
 import { ThemeProvider, Global } from '@emotion/react';
 import { RecoilRoot } from 'recoil';
