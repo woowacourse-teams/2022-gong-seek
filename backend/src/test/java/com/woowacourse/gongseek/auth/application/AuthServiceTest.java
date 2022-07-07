@@ -20,5 +20,4 @@ class AuthServiceTest {
 
         assertThat(oAuthUrl).isNotNull();
     }
-
 }
