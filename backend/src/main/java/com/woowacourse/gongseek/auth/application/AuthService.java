@@ -25,13 +25,20 @@ public class AuthService {
     public TokenResponse generateAccessToken(OAuthCodeRequest OAuthCodeRequest) {
         Member member = githubOAuthClient.getMemberProfile(OAuthCodeRequest.getCode()).toMember();
 
-        memberRepository.findByGithubId(member.getGithubId())
-                .ifPresentOrElse(
-                        it -> it.updateAvatarUrl(member.getAvatarUrl()),
-                        () -> memberRepository.save(member)
-                );
+        return memberRepository.findByGithubId(member.getGithubId())
+                .map(foundMember -> updateMember(foundMember, member))
+                .orElseGet(() -> saveMember(member));
+    }
 
-        String accessToken = jwtTokenProvider.createToken(String.valueOf(member.getId()));
+    private TokenResponse updateMember(Member foundMember, Member newMember) {
+        String accessToken = jwtTokenProvider.createToken(String.valueOf(foundMember.getId()));
+        foundMember.updateAvatarUrl(newMember.getAvatarUrl());
+        return new TokenResponse(accessToken);
+    }
+
+    private TokenResponse saveMember(Member newMember) {
+        memberRepository.save(newMember);
+        String accessToken = jwtTokenProvider.createToken(String.valueOf(newMember.getId()));
         return new TokenResponse(accessToken);
     }
 }
