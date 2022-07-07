@@ -2,6 +2,7 @@ import { getGithubURL } from '@/api/login';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import { mobileTitleSecondary } from '@/constants/titleType';
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import LoginButton from './LoginButton/LoginButton';
 
@@ -21,15 +22,20 @@ const Login = () => {
 			enabled: false,
 		},
 	);
+	const [pageLoading, setPageLoading] = useState(false);
 
 	const handleLoginButtonClick = () => {
 		refetch();
-		if (isSuccess) {
-			window.location.href = data;
-		}
 	};
 
-	if (isLoading) return <div>로딩중...</div>;
+	useEffect(() => {
+		if (isSuccess) {
+			setPageLoading(true);
+			window.location.href = data;
+		}
+	}, [isSuccess]);
+
+	if (isLoading || pageLoading) return <div>로딩중...</div>;
 
 	if (isError) {
 		if (error instanceof Error) {
