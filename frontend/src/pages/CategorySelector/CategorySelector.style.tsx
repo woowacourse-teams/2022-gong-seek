@@ -20,11 +20,11 @@ export const CategoryButton = styled.button<{ categoryType: 'error' | 'discussio
 	box-shadow: 0px 8px 24px ${({ theme }) => theme.boxShadows.secondary};
 	background-color: ${({ categoryType }) => CATEGORY_TYPE[categoryType].color};
 	border-color: transparent;
-	border-radius: ${({ theme }) => theme.fonts.SIZE_010};
+	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	color: white;
-	width: ${({ theme }) => theme.fonts.SIZE_080};
-	height: ${({ theme }) => theme.fonts.SIZE_080};
-	font-size: ${({ theme }) => theme.fonts.SIZE_016};
+	width: ${({ theme }) => theme.size.SIZE_080};
+	height: ${({ theme }) => theme.size.SIZE_080};
+	font-size: ${({ theme }) => theme.size.SIZE_016};
 	cursor: pointer;
 	&:hover,
 	&:active {

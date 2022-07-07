@@ -5,13 +5,13 @@ import { LoginButtonProps } from '@/pages/Login/LoginButton/LoginButton';
 export const Container = styled.button<Pick<LoginButtonProps, 'loginType'>>`
 	width: 100%;
 	height: fit-content;
-	padding: ${({ theme }) => theme.fonts.SIZE_004};
+	padding: ${({ theme }) => theme.size.SIZE_004};
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	gap: 1rem;
 	border: none;
-	border-radius: ${({ theme }) => theme.fonts.SIZE_010};
+	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	background-color: ${({ loginType }) => LOGIN_TYPE[loginType].color};
 	cursor: pointer;
 
@@ -23,11 +23,11 @@ export const Container = styled.button<Pick<LoginButtonProps, 'loginType'>>`
 
 export const IconBox = styled.div`
 	color: white;
-	font-size: ${({ theme }) => theme.fonts.SIZE_022};
-	margin-top: ${({ theme }) => theme.fonts.SIZE_002};
+	font-size: ${({ theme }) => theme.size.SIZE_022};
+	margin-top: ${({ theme }) => theme.size.SIZE_002};
 `;
 
 export const ContentBox = styled.div<Pick<LoginButtonProps, 'loginType'>>`
-	font-size: ${({ theme }) => theme.fonts.SIZE_014};
+	font-size: ${({ theme }) => theme.size.SIZE_014};
 	color: ${({ loginType }) => LOGIN_TYPE[loginType].fontcolor};
 `;

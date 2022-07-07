@@ -11,13 +11,13 @@ export const Section = styled.section`
 	justify-content: space-between;
 	align-items: center;
 	box-shadow: 0px -4px 15px ${({ theme }) => theme.boxShadows.secondary};
-	border-radius: ${({ theme }) => theme.fonts.SIZE_010} ${({ theme }) => theme.fonts.SIZE_010} 0 0;
+	border-radius: ${({ theme }) => theme.size.SIZE_010} ${({ theme }) => theme.size.SIZE_010} 0 0;
 	z-index: ${({ theme }) => theme.zIndex.HEADER};
 	background-color: ${({ theme }) => theme.colors.WHITE};
 `;
 
 export const PostingLink = styled(FaPencilAlt)`
-	font-size: ${({ theme }) => theme.fonts.SIZE_022};
+	font-size: ${({ theme }) => theme.size.SIZE_022};
 	color: ${({ theme }) => theme.colors.BLACK_500};
 	cursor: pointer;
 	margin: 16px 0 16px 16px;
@@ -28,7 +28,7 @@ export const PostingLink = styled(FaPencilAlt)`
 `;
 
 export const UserCircleLink = styled(FaUser)`
-	font-size: ${({ theme }) => theme.fonts.SIZE_022};
+	font-size: ${({ theme }) => theme.size.SIZE_022};
 	color: ${({ theme }) => theme.colors.BLACK_500};
 	cursor: pointer;
 	&:hover,
@@ -38,7 +38,7 @@ export const UserCircleLink = styled(FaUser)`
 `;
 
 export const MenuLink = styled(HiMenu)`
-	font-size: ${({ theme }) => theme.fonts.SIZE_024};
+	font-size: ${({ theme }) => theme.size.SIZE_024};
 	color: ${({ theme }) => theme.colors.BLACK_500};
 	cursor: pointer;
 	margin: 16px 16px 16px 0;

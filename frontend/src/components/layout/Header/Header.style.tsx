@@ -18,7 +18,7 @@ export const HeaderSection = styled.header`
 export const LogoLink = styled.h1`
 	font-weight: 800;
 	color: ${({ theme }) => theme.colors.PURPLE_500};
-	font-size: ${({ theme }) => theme.fonts.SIZE_022};
+	font-size: ${({ theme }) => theme.size.SIZE_022};
 `;
 
 export const SearchBarBox = styled.div`

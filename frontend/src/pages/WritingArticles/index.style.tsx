@@ -12,14 +12,14 @@ export const Container = styled.div`
 
 export const Content = styled.div`
 	width: 100%;
-	margin-top: ${({ theme }) => theme.fonts.SIZE_028};
+	margin-top: ${({ theme }) => theme.size.SIZE_028};
 `;
 
 export const SelectorBox = styled.div`
 	width: 90%;
 	display: flex;
 	flex-direction: column;
-	gap: ${({ theme }) => theme.fonts.SIZE_010};
+	gap: ${({ theme }) => theme.size.SIZE_010};
 `;
 
 export const TitleInput = styled.input`
@@ -55,9 +55,9 @@ export const SelectorButton = styled(IoIosArrowDown)`
 	position: absolute;
 	border: none;
 	font-size: 0.8rem;
-	font-size: ${({ theme }) => theme.fonts.SIZE_018};
+	font-size: ${({ theme }) => theme.size.SIZE_018};
 	color: ${({ theme }) => theme.colors.PURPLE_500};
-	right: ${({ theme }) => theme.fonts.SIZE_004};
+	right: ${({ theme }) => theme.size.SIZE_004};
 	pointer-events: none;
 `;
 
@@ -66,7 +66,7 @@ export const CategorySelector = styled.select`
 	padding: 0.6rem 0.8rem;
 	font-size: 0.8rem;
 	border-color: transparent;
-	border-radius: ${({ theme }) => theme.fonts.SIZE_010};
+	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	background-color: transparent;
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -85,11 +85,11 @@ export const SubmitButton = styled.button`
 	background-color: ${({ theme }) => theme.colors.PURPLE_500};
 	width: 90%;
 	font-size: 0.8rem;
-	padding: ${({ theme }) => theme.fonts.SIZE_004};
-	border-radius: ${({ theme }) => theme.fonts.SIZE_010};
+	padding: ${({ theme }) => theme.size.SIZE_004};
+	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	border-color: transparent;
 	cursor: pointer;
-	margin-top: ${({ theme }) => theme.fonts.SIZE_020};
+	margin-top: ${({ theme }) => theme.size.SIZE_020};
 
 	&:hover,
 	&:active {

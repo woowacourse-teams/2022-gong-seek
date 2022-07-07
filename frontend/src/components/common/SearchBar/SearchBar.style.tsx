@@ -9,10 +9,10 @@ export const Container = styled.div`
 	height: fit-content;
 	background-color: ${({ theme }) => theme.colors.GRAY_500};
 	border-radius: 1rem;
-	border: ${({ theme }) => theme.fonts.SIZE_001} solid transparent;
+	border: ${({ theme }) => theme.size.SIZE_001} solid transparent;
 	&:active,
 	&:hover {
-		border: ${({ theme }) => theme.fonts.SIZE_001} solid ${({ theme }) => theme.colors.PURPLE_500};
+		border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.PURPLE_500};
 	}
 `;
 
@@ -27,7 +27,7 @@ export const SearchInput = styled.input`
 `;
 
 export const SearchButton = styled(BiSearchAlt)`
-	font-size: ${({ theme }) => theme.fonts.SIZE_024};
+	font-size: ${({ theme }) => theme.size.SIZE_024};
 	color: ${({ theme }) => theme.colors.PURPLE_500};
 
 	&:hover {
