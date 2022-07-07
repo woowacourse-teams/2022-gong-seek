@@ -11,11 +11,12 @@ export const getGithubURL = async () => {
 };
 
 export const postLogin = (code: string) =>
-	axios.post<{ accesstoken: string }>('http://192.168.0.155:8080/api/auth/token', {
-		headers: {
-			'Access-Control-Allow-Origin': '*',
+	axios.post<{ accesstoken: string }>(
+		'http://192.168.0.155:8080/api/auth/token',
+		{ code },
+		{
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+			},
 		},
-		body: {
-			code,
-		},
-	});
+	);
