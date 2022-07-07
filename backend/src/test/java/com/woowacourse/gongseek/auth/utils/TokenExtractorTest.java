@@ -8,15 +8,14 @@ import static org.mockito.Mockito.when;
 import com.woowacourse.gongseek.auth.application.JwtTokenProvider;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 
-@SpringBootTest
 class TokenExtractorTest {
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private static final Long EXPIRE_TIME = 86400000L;
+    private static final String SECRET_KEY = "thisIsTestSecretKey-thisIsTestSecretKey-thisIsTestSecretKey";
+
+    private final JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(EXPIRE_TIME, SECRET_KEY);
 
     @Test
     void 토큰이_없는_경우_예외가_발생한다() {
