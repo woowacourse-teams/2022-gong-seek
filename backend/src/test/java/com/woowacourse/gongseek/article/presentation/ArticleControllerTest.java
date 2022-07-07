@@ -8,6 +8,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -64,8 +65,8 @@ class ArticleControllerTest {
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                         fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리")
                                 ),
-                                responseHeaders(
-                                        headerWithName(HttpHeaders.LOCATION).description("생성된 게시물의 url")
+                                responseFields(
+                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("식별자")
                                 )
                         )
                 );

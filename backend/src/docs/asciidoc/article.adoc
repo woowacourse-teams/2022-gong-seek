@@ -23,4 +23,3 @@ include::{snippets}/article-create/http-request.adoc[]
 성공 응답 HTTP
 
 include::{snippets}/article-create/http-response.adoc[]
-include::{snippets}/article-create/response-headers.adoc[]
