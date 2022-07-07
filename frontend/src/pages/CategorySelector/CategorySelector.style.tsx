@@ -29,6 +29,7 @@ export const CategoryButton = styled.button<{ categoryType: 'error' | 'discussio
 	&:hover,
 	&:active {
 		background-color: ${({ categoryType }) => CATEGORY_TYPE[categoryType].hoverColor};
+		transform: scale(1.02);
 	}
 `;
 
