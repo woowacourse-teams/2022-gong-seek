@@ -7,6 +7,8 @@ import WritingArticles from '@/pages/WritingArticles';
 import CategorySelector from '@/pages/CategorySelector/CategorySelector';
 import LoginController from './pages/Login/LoginController/LoginController';
 import Home from './pages/Home';
+import PrivateRouter from './components/router/PrivateRouter';
+import PublicRouter from './components/router/PublicRouter';
 
 const Layout = styled.div`
 	position: relative;
@@ -19,20 +21,28 @@ const Content = styled.main`
 	padding-bottom: 7rem;
 `;
 
-const App = () => (
-	<Layout>
-		<Header />
-		<Content>
-			<Routes>
-				<Route path="/callback" element={<LoginController />} />
-				<Route path="/category" element={<CategorySelector />} />
-				<Route path="/article/:category" element={<WritingArticles />} />
-				<Route path="/login" element={<Login />} />
-				<Route path="/" element={<Home />} />
-			</Routes>
-		</Content>
-		<TabBar />
-	</Layout>
-);
+const App = () => {
+	const isLogin = !!localStorage.getItem('accessToken');
+
+	return (
+		<Layout>
+			<Header />
+			<Content>
+				<Routes>
+					<Route path="/callback" element={<LoginController />} />
+					<Route path="/category" element={<CategorySelector />} />
+					<Route element={<PrivateRouter isAuthenticated={isLogin} />}>
+						<Route path="/article/:category" element={<WritingArticles />} />
+					</Route>
+					<Route element={<PublicRouter isAuthenticated={isLogin} />}>
+						<Route path="/login" element={<Login />} />
+					</Route>
+					<Route path="/" element={<Home />} />
+				</Routes>
+			</Content>
+			<TabBar />
+		</Layout>
+	);
+};
 
 export default App;
