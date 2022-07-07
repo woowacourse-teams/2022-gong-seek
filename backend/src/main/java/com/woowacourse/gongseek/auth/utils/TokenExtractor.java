@@ -18,7 +18,7 @@ public class TokenExtractor {
     }
 
     private static void validateNullToken(String token) {
-        if(Objects.isNull(token)) {
+        if (Objects.isNull(token)) {
             throw new IllegalArgumentException("토큰이 없습니다.");
         }
     }
