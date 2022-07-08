@@ -13,21 +13,25 @@ const LoginController = () => {
 		throw new Error('코드가 존재하지 않습니다.');
 	}
 	const { data, isError, isSuccess, error, mutate } = useMutation<
-		AxiosResponse<{ accesstoken: string }>,
+		AxiosResponse<{ accessToken: string }>,
 		AxiosError,
 		string
 	>(postLogin);
 
 	useEffect(() => {
 		mutate(code);
+	}, []);
+
+	useEffect(() => {
 		if (isSuccess) {
-			localStorage.setItem('accessToken', data.data.accesstoken);
+			localStorage.setItem('accessToken', data.data.accessToken);
+			window.location.href = '/';
 		}
 		if (isError) {
 			console.log(error.message);
+			window.location.href = '/';
 		}
-		navigate('/');
-	}, []);
+	}, [isSuccess, isError]);
 
 	return <div>로그인 중입니다...</div>;
 };
