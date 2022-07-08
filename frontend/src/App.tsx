@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from '@/components/layout/Header/Header';
 import TabBar from '@/components/layout/TabBar/TabBar';
 import Login from '@/pages/Login';

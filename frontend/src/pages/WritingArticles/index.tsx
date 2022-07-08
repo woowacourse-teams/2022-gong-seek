@@ -1,7 +1,7 @@
 import { postWritingArticle } from '@/api/article';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import { AxiosResponse, AxiosError } from 'axios';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import ToastUiEditor from './ToastUiEditor/ToastUiEditor';
@@ -20,8 +20,14 @@ const WritingArticles = () => {
 	const [title, setTitle] = useState('');
 	const [categoryOption, setCategoryOption] = useState(category ? category : '');
 	const content = useRef<Editor | null>(null);
-
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (isSuccess) {
+			navigate(`/article/${category}?id=${data.data.id}`);
+			return;
+		}
+	}, [isSuccess]);
 
 	const handleSubmitButtonClick = () => {
 		if (content.current === null) {
@@ -43,9 +49,6 @@ const WritingArticles = () => {
 		return null;
 	}
 
-	if (isSuccess) {
-		navigate(`/article/${category}?id=${data.data.id}`);
-	}
 	return (
 		<S.Container>
 			<S.SelectorBox>
@@ -68,7 +71,7 @@ const WritingArticles = () => {
 							<option value="" disabled>
 								카테고리를 선택해주세요
 							</option>
-							<option value="error">에러</option>
+							<option value="question">에러</option>
 							<option value="discussion">토론</option>
 						</S.CategorySelector>
 						<S.SelectorButton />
