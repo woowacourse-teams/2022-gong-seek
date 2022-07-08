@@ -22,7 +22,7 @@ const boxShadows = {
 	secondary: 'rgba(0, 0, 0, 0.15)',
 };
 
-const fonts = {
+const size = {
 	SIZE_001: '0.063rem',
 	SIZE_002: '0.125rem',
 	SIZE_004: '0.25rem',
@@ -49,6 +49,6 @@ export const theme = {
 	colors,
 	breakpoints,
 	boxShadows,
-	fonts,
+	size,
 	zIndex,
 } as const;

@@ -1,43 +1,15 @@
-import styled from '@emotion/styled';
 import SearchBar from '@/components/common/SearchBar/SearchBar';
-import { Link } from 'react-router-dom';
-
-const HeaderSection = styled.header`
-	position: sticky;
-	top: 0;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-around;
-	padding-top: 1rem;
-	width: 100%;
-	height: 3.5rem;
-	z-index: ${({ theme }) => theme.zIndex.HEADER};
-	background-color: ${({ theme }) => theme.colors.WHITE};
-`;
-const LogoLink = styled.h1`
-	font-weight: 800;
-	color: ${({ theme }) => theme.colors.PURPLE_500};
-	font-size: ${({ theme }) => theme.fonts.SIZE_022};
-`;
-
-const SearchBarBox = styled.div`
-	width: 60%;
-`;
-
-const StyledLink = styled(Link)`
-	text-decoration: none;
-`;
+import * as S from '@/components/layout/Header/Header.style';
 
 const Header = () => (
-	<HeaderSection>
-		<StyledLink to="/">
-			<LogoLink>공식</LogoLink>
-		</StyledLink>
-		<SearchBarBox>
+	<S.HeaderSection>
+		<S.StyledLink to="/">
+			<S.LogoLink>공식</S.LogoLink>
+		</S.StyledLink>
+		<S.SearchBarBox>
 			<SearchBar />
-		</SearchBarBox>
-	</HeaderSection>
+		</S.SearchBarBox>
+	</S.HeaderSection>
 );
 
 export default Header;

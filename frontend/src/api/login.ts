@@ -11,7 +11,7 @@ export const getGithubURL = async () => {
 };
 
 export const postLogin = (code: string) =>
-	axios.post<{ accesstoken: string }>(
+	axios.post<{ accessToken: string }>(
 		'http://192.168.0.155:8080/api/auth/token',
 		{ code },
 		{

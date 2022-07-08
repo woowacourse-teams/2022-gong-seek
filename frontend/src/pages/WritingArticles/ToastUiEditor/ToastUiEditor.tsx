@@ -6,7 +6,7 @@ const ToastUiEditor = forwardRef((_, ref: LegacyRef<Editor>) => (
 	<Editor
 		initialValue=""
 		previewStyle="tab"
-		height="600px"
+		height="30rem"
 		initialEditType="markdown"
 		useCommandShortcut={true}
 		ref={ref}
