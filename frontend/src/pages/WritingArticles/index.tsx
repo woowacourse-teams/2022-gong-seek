@@ -24,7 +24,8 @@ const WritingArticles = () => {
 
 	useEffect(() => {
 		if (isSuccess) {
-			navigate(`/article/${category}?id=${data.data.id}`);
+			alert('글 등록이 완료되었습니다.');
+			navigate(`/`);
 			return;
 		}
 	}, [isSuccess]);
