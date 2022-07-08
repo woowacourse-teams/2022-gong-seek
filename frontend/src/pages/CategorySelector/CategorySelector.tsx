@@ -7,8 +7,8 @@ const CategorySelector = () => (
 		<PageLayout width="80%" height="16rem" flexDirection="column" justifyContent="space-around">
 			<h2 css={mobileTitleSecondary}>글쓰기 카테고리 선택</h2>
 			<S.CategoryButtonBox>
-				<S.StyledLink to="/article/error">
-					<S.CategoryButton type="button" categoryType="error">
+				<S.StyledLink to="/article/question">
+					<S.CategoryButton type="button" categoryType="question">
 						에러
 					</S.CategoryButton>
 				</S.StyledLink>

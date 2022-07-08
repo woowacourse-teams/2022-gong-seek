@@ -16,7 +16,7 @@ export const CategoryButtonBox = styled.div`
 	gap: 1.5rem;
 `;
 
-export const CategoryButton = styled.button<{ categoryType: 'error' | 'discussion' }>`
+export const CategoryButton = styled.button<{ categoryType: 'question' | 'discussion' }>`
 	box-shadow: 0px 8px 24px ${({ theme }) => theme.boxShadows.secondary};
 	background-color: ${({ categoryType }) => CATEGORY_TYPE[categoryType].color};
 	border-color: transparent;

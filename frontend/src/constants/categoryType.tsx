@@ -1,5 +1,5 @@
 export const CATEGORY_TYPE = {
-	error: {
+	question: {
 		color: '#F87474',
 		hoverColor: ' rgba(248, 116, 116, 0.75)',
 	},
