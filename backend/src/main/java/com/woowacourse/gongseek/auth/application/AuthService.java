@@ -31,14 +31,17 @@ public class AuthService {
     }
 
     private TokenResponse updateMember(Member foundMember, Member newMember) {
-        String accessToken = jwtTokenProvider.createToken(String.valueOf(foundMember.getId()));
         foundMember.updateAvatarUrl(newMember.getAvatarUrl());
-        return new TokenResponse(accessToken);
+        return getTokenResponse(foundMember);
     }
 
     private TokenResponse saveMember(Member newMember) {
         memberRepository.save(newMember);
-        String accessToken = jwtTokenProvider.createToken(String.valueOf(newMember.getId()));
+        return getTokenResponse(newMember);
+    }
+
+    private TokenResponse getTokenResponse(Member foundMember) {
+        String accessToken = jwtTokenProvider.createToken(String.valueOf(foundMember.getId()));
         return new TokenResponse(accessToken);
     }
 }

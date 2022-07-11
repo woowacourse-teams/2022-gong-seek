@@ -35,7 +35,7 @@ public class AuthenticationArgumentResolver implements HandlerMethodArgumentReso
     }
 
     private void validateNullPayload(HttpServletRequest request) {
-        if (Objects.isNull(request.getAttribute("payload"))) {
+        if (Objects.isNull(request.getAttribute(PAYLOAD))) {
             throw new IllegalArgumentException("요청 데이터에 payload가 존재하지 않습니다.");
         }
     }

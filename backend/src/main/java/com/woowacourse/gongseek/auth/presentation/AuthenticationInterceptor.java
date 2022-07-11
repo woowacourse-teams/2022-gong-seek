@@ -24,10 +24,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         }
 
         String token = TokenExtractor.extract(request);
+        validateToken(token);
+        request.setAttribute(PAYLOAD, jwtTokenProvider.getPayload(token));
+        return true;
+    }
+
+    private void validateToken(String token) {
         if (!jwtTokenProvider.validateToken(token)) {
             throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
         }
-        request.setAttribute(PAYLOAD, jwtTokenProvider.getPayload(token));
-        return true;
     }
 }

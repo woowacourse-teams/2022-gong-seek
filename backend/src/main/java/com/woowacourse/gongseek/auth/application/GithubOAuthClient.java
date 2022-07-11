@@ -19,9 +19,11 @@ import org.springframework.web.client.RestTemplate;
 public class GithubOAuthClient {
 
     private static final String BASE_URL = "https://github.com";
-    private static final String LOGIN_URL_SUFFIX = "/login/oauth/authorize?client_id=%s&redirect_uri=%s";
     private static final String REDIRECT_URL = "http://localhost:8080/callback";
+    private static final String PROFILE_URL = "https://api.github.com/user";
+    private static final String LOGIN_URL_SUFFIX = "/login/oauth/authorize?client_id=%s&redirect_uri=%s";
     private static final String GITHUB_ACCESS_URL_SUFFIX = "/login/oauth/access_token";
+    private static final String TOKEN = "token ";
 
     private final String clientId;
     private final String clientSecret;
@@ -75,14 +77,14 @@ public class GithubOAuthClient {
 
     private GithubProfileResponse getGithubProfile(GithubAccessTokenResponse accessTokenResponse) {
         String accessToken = accessTokenResponse.getAccessToken();
-        String token = "token " + accessToken;
+        String token = TOKEN + accessToken;
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaders.AUTHORIZATION, token);
         httpHeaders.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 
         HttpEntity<Void> httpEntity = new HttpEntity<>(httpHeaders);
         GithubProfileResponse profileResponse = restTemplate.exchange(
-                "https://api.github.com/user",
+                PROFILE_URL,
                 HttpMethod.GET,
                 httpEntity,
                 GithubProfileResponse.class,
