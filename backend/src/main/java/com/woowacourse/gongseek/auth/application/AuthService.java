@@ -40,8 +40,8 @@ public class AuthService {
         return getTokenResponse(newMember);
     }
 
-    private TokenResponse getTokenResponse(Member foundMember) {
-        String accessToken = jwtTokenProvider.createToken(String.valueOf(foundMember.getId()));
+    private TokenResponse getTokenResponse(Member member) {
+        String accessToken = jwtTokenProvider.createToken(String.valueOf(member.getId()));
         return new TokenResponse(accessToken);
     }
 }
