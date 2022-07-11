@@ -2,6 +2,7 @@ package com.woowacourse.gongseek.article.presentation.dto;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +17,7 @@ public class ArticleRequest {
     private String content;
     private String category;
 
-    public Article toEntity() {
-        return new Article(title, content, Category.from(category));
+    public Article toEntity(Member member) {
+        return new Article(title, content, Category.from(category), member);
     }
 }

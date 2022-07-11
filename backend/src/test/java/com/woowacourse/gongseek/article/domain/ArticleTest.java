@@ -2,11 +2,15 @@ package com.woowacourse.gongseek.article.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.woowacourse.gongseek.member.domain.Member;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+@SuppressWarnings("NonAsciiCharacters")
 class ArticleTest {
+
+    private static final Member member = new Member("slo", "hanull", "avatar.com");
 
     @ParameterizedTest
     @ValueSource(strings = {"", " "})
@@ -14,7 +18,7 @@ class ArticleTest {
         String content = "content";
         Category question = Category.QUESTION;
 
-        assertThatThrownBy(() -> new Article(title, content, question))
+        assertThatThrownBy(() -> new Article(title, content, question, member))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("타이틀의 길이는 0 이상 500 이하여야합니다.");
     }
@@ -25,7 +29,7 @@ class ArticleTest {
         String content = "content";
         Category question = Category.QUESTION;
 
-        assertThatThrownBy(() -> new Article(title, content, question))
+        assertThatThrownBy(() -> new Article(title, content, question, member))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("타이틀의 길이는 0 이상 500 이하여야합니다.");
     }
@@ -36,7 +40,7 @@ class ArticleTest {
         String content = "c".repeat(1001);
         Category question = Category.QUESTION;
 
-        assertThatThrownBy(() -> new Article(title, content, question))
+        assertThatThrownBy(() -> new Article(title, content, question, member))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("컨텐트의 길이는 1000 이하여야합니다.");
     }

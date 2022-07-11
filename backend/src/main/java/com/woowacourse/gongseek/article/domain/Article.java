@@ -1,14 +1,18 @@
 package com.woowacourse.gongseek.article.domain;
 
+import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,15 +42,20 @@ public class Article {
     @Column(nullable = false)
     private Category category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
-    public Article(String title, String content, Category category) {
+    public Article(String title, String content, Category category, Member member) {
         validateTitleLength(title);
         validateContentLength(content);
         this.title = title;
         this.content = content;
         this.category = category;
+        this.member = member;
     }
 
     private void validateTitleLength(String title) {
