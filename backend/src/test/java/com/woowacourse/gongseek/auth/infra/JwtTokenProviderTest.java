@@ -1,7 +1,8 @@
-package com.woowacourse.gongseek.auth.application;
+package com.woowacourse.gongseek.auth.infra;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -9,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import org.junit.jupiter.api.Test;
 
+@SuppressWarnings("NonAsciiCharacters")
 class JwtTokenProviderTest {
 
     private static final Long EXPIRE_TIME = 86400000L;

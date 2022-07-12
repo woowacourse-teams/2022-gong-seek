@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.auth.application;
+package com.woowacourse.gongseek.auth.infra;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubAccessTokenRequest;

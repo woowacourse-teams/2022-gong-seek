@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.auth.application;
+package com.woowacourse.gongseek.auth.infra;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
