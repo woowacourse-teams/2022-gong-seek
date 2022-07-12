@@ -16,10 +16,10 @@ endif::[]
 
 `POST /api/articles`
 
-요청 HTTP
+=== Request
 
 include::{snippets}/article-create/http-request.adoc[]
 
-성공 응답 HTTP
+=== Response
 
 include::{snippets}/article-create/http-response.adoc[]
