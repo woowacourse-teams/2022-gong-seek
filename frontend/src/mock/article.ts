@@ -1,9 +1,14 @@
 import { rest } from 'msw';
 import { WritingArticles } from '@/api/article';
 import type { PathParams } from 'msw';
+
+interface WritingArticlesWithId extends WritingArticles {
+	id: number;
+}
+
 const data = localStorage.getItem('mock-article');
 
-const mockArticle = data ? (JSON.parse(data) as any[]) : [];
+const mockArticle = data ? (JSON.parse(data) as WritingArticlesWithId[]) : [];
 
 export const ArticleHandler = [
 	rest.post<{ title: string; content: string; category: string }, never, { id: number }>(
@@ -16,19 +21,22 @@ export const ArticleHandler = [
 				JSON.stringify(mockArticle.concat({ id: mockArticle.length, title, content, category })),
 			);
 
-			return res(ctx.status(200), ctx.json({ id: mockArticle.length }));
+			return res(ctx.status(201), ctx.json({ id: mockArticle.length, category }));
 		},
 	),
 
 	rest.get('http://192.168.0.155:8080/api/articles/:id', (req, res, ctx) => {
-		const category = req.url.searchParams.get('category');
 		const { id } = req.params;
 
-		const articles = JSON.parse(
-			localStorage.getItem('mock-article') as string,
-		) as WritingArticles[];
+		if (typeof id !== 'string') {
+			return;
+		}
 
-		const filteredArticles = articles.filter((article) => article);
+		const filteredArticles = mockArticle.find((article) => article.id === Number(id));
+
+		if (filteredArticles === undefined) {
+			return;
+		}
 
 		return res(
 			ctx.status(200),
@@ -37,7 +45,7 @@ export const ArticleHandler = [
 				content: filteredArticles.content,
 				isAuthor: true,
 				views: 1,
-				createdAt: '2022-07-12',
+				createdAt: '2022-07-12,13:04',
 				author: {
 					name: 'sming',
 					avatarUrl:
@@ -48,17 +56,11 @@ export const ArticleHandler = [
 	}),
 
 	rest.get('http://192.168.0.155:8080/api/articles', (req, res, ctx) => {
-		const sort = req.url.searchParams.get('sort');
-		const category = req.url.searchParams.get('category');
 		const page = req.url.searchParams.get('page');
 		const size = req.url.searchParams.get('size');
 
-		const articles = JSON.parse(
-			localStorage.getItem('mock-article') as string,
-		) as WritingArticles[];
-
-		const responseArticles = articles.map((article, idx) => ({
-			id: idx,
+		const responseArticles = mockArticle.map((article) => ({
+			id: article.id,
 			title: article.title,
 			content: article.content,
 			isAuthor: true,
@@ -71,11 +73,7 @@ export const ArticleHandler = [
 			},
 		}));
 
-		if (page === null) {
-			return;
-		}
-
-		if (size === null) {
+		if (page === null || size === null) {
 			return;
 		}
 
@@ -85,7 +83,13 @@ export const ArticleHandler = [
 				responseArticle.id < Number(page) * Number(size + 1),
 		);
 
-		return res(ctx.status(200), ctx.json(articlesPage));
+		return res(
+			ctx.status(200),
+			ctx.json({
+				articles: articlesPage,
+				hasNext: responseArticles.length < Number(page) * Number(size + 1),
+			}),
+		);
 	}),
 
 	rest.put<{ title: string; content: string }, PathParams, { id: string }>(
@@ -98,31 +102,28 @@ export const ArticleHandler = [
 				return;
 			}
 
-			const articles = JSON.parse(
-				localStorage.getItem('mock-article') as string,
-			) as WritingArticles[];
+			const article = mockArticle.find((article) => article.id === Number(id));
 
-			const article = articles.find((article) => article.id === id);
 			if (article === undefined) {
-				return;
+				throw new Error('글을 찾을수 없습니다.');
 			}
 			article.title = title;
 			article.content = content;
 
-			localStorage.setItem('mock-article', JSON.stringify(articles));
+			localStorage.setItem('mock-article', JSON.stringify(mockArticle));
 
-			return res(ctx.status(200), ctx.json({ id }));
+			return res(ctx.status(200), ctx.json({ id, category: article.category }));
 		},
 	),
 
 	rest.delete<never, PathParams>('http://192.168.0.155:8080/api/articles/:id', (req, res, ctx) => {
 		const { id } = req.params;
 
-		const articles = JSON.parse(
-			localStorage.getItem('mock-article') as string,
-		) as WritingArticles[];
+		if (typeof id !== 'string') {
+			return;
+		}
 
-		const filteredArticles = articles.filter((article) => article.id !== id);
+		const filteredArticles = mockArticle.filter((article) => article.id !== Number(id));
 
 		localStorage.setItem('mock-article', JSON.stringify(filteredArticles));
 

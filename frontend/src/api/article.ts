@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export interface WritingArticles {
-	id: string;
 	title: string;
 	content: string;
 	category: string;
