@@ -17,8 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @SuppressWarnings("NonAsciiCharacters")
+@Transactional
 @SpringBootTest
 class AuthServiceTest {
 
@@ -29,7 +29,7 @@ class AuthServiceTest {
     private MemberRepository memberRepository;
 
     @MockBean
-    private GithubOAuthClient githubOAuthClient;
+    private OAuthClient githubOAuthClient;
 
     @Test
     void 리다이렉트_URL_을_반환한다() {

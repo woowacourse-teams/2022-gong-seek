@@ -16,9 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AuthService {
 
-    private final GithubOAuthClient githubOAuthClient;
+    private final OAuthClient githubOAuthClient;
     private final MemberRepository memberRepository;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider jwtTokenProvider;
 
     public OAuthLoginUrlResponse getLoginUrl() {
         return new OAuthLoginUrlResponse(githubOAuthClient.getRedirectUrl());

@@ -2,6 +2,7 @@ package com.woowacourse.gongseek.auth.infra;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.woowacourse.gongseek.auth.application.TokenProvider;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,7 +17,7 @@ class JwtTokenProviderTest {
     private static final Long EXPIRE_TIME = 86400000L;
     private static final String SECRET_KEY = "thisIsTestSecretKey-thisIsTestSecretKey-thisIsTestSecretKey";
 
-    private final JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(EXPIRE_TIME, SECRET_KEY);
+    private final TokenProvider jwtTokenProvider = new JwtTokenProvider(EXPIRE_TIME, SECRET_KEY);
 
     @Test
     void 토큰을_생성한다() {
