@@ -1,6 +1,13 @@
 import { css } from '@emotion/react';
 
 export const reset = css`
+	@font-face {
+		font-family: 'GmarketSansMedium';
+		src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff')
+			format('woff');
+		font-weight: normal;
+		font-style: normal;
+	}
 	html,
 	body,
 	div,
@@ -108,6 +115,13 @@ export const reset = css`
 	}
 	body {
 		line-height: 1;
+		font-family: 'GmarketSansMedium';
+	}
+	button {
+		font: inherit;
+	}
+	input {
+		font: inherit;
 	}
 	ol,
 	ul {
