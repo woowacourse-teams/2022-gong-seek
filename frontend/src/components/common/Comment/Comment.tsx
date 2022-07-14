@@ -1,6 +1,6 @@
 import * as S from '@/components/common/Comment/Comment.style';
 
-export interface CommentPropType {
+export interface CommentProps {
 	id: string;
 	author: {
 		name: string;
@@ -11,7 +11,7 @@ export interface CommentPropType {
 	isAuthor: boolean;
 }
 
-const Comment = ({ id, author, content, createAt, isAuthor }: CommentPropType) => {
+const Comment = ({ id, author, content, createAt, isAuthor }: CommentProps) => {
 	const onUpdateButtonClick = () => {
 		// 댓글 수정 포털 열기
 	};
