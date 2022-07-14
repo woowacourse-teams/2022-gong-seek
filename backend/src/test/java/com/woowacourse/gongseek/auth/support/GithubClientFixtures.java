@@ -1,8 +1,8 @@
-package com.woowacourse.gongseek.auth.presentation;
+package com.woowacourse.gongseek.auth.support;
 
 import java.util.Arrays;
 
-public enum AuthFixture {
+public enum GithubClientFixtures {
 
     주디("1", "주디", "jurlring", "https://avatars.githubusercontent.com/u/78091011?v=4", "accessToken1"),
     슬로("2", "슬로", "hanull", "https://avatars.githubusercontent.com/u/46413629?v=4", "accessToken2");
@@ -13,7 +13,7 @@ public enum AuthFixture {
     private final String avatarUrl;
     private final String accessToken;
 
-    AuthFixture(String code, String name, String githubId, String avatarUrl, String accessToken) {
+    GithubClientFixtures(String code, String name, String githubId, String avatarUrl, String accessToken) {
         this.code = code;
         this.name = name;
         this.githubId = githubId;

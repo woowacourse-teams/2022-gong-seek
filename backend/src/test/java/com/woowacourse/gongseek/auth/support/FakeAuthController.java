@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.auth.presentation;
+package com.woowacourse.gongseek.auth.support;
 
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
@@ -14,7 +14,7 @@ public class FakeAuthController {
 
     @PostMapping("/fake/token")
     public ResponseEntity<TokenResponse> login(@RequestBody OAuthCodeRequest OAuthCodeRequest) {
-        String token = AuthFixture.generateAccessToken(OAuthCodeRequest.getCode());
+        String token = GithubClientFixtures.generateAccessToken(OAuthCodeRequest.getCode());
         return ResponseEntity.ok(new TokenResponse(token));
     }
 }
