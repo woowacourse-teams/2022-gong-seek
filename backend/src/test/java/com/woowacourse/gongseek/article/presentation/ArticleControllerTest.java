@@ -30,7 +30,6 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-@Disabled
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayName("질문 게시판 문서화")
 @AutoConfigureRestDocs
@@ -56,6 +55,7 @@ class ArticleControllerTest {
         ArticleRequest request = new ArticleRequest("title", "content", "question");
 
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.getPayload(any())).willReturn("1");
         given(articleService.save(any(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(post("/api/articles")

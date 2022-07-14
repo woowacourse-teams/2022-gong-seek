@@ -1,5 +1,7 @@
 package com.woowacourse.gongseek.auth.presentation;
 
+import static org.hibernate.validator.internal.metadata.core.ConstraintHelper.PAYLOAD;
+
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
@@ -10,8 +12,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 public class AuthenticationArgumentResolver implements HandlerMethodArgumentResolver {
-
-    private static final String PAYLOAD = "payload";
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {

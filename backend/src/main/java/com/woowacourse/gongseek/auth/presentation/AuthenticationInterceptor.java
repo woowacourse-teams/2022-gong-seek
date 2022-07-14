@@ -1,5 +1,7 @@
 package com.woowacourse.gongseek.auth.presentation;
 
+import static org.hibernate.validator.internal.metadata.core.ConstraintHelper.PAYLOAD;
+
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.utils.TokenExtractor;
 import javax.servlet.http.HttpServletRequest;
@@ -8,8 +10,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 public class AuthenticationInterceptor implements HandlerInterceptor {
-
-    private static final String PAYLOAD = "payload";
 
     private final JwtTokenProvider jwtTokenProvider;
 
