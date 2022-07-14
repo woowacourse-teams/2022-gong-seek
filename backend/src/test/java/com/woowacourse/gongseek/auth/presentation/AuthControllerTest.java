@@ -1,8 +1,9 @@
-package com.woowacourse.gongseek.article.presentation;
+package com.woowacourse.gongseek.auth.presentation;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -11,33 +12,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.gongseek.article.application.ArticleService;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
-import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
+import com.woowacourse.gongseek.auth.application.AuthService;
+import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
+import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
+import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-@SuppressWarnings("NonAsciiCharacters")
-@DisplayName("질문 게시판 문서화")
+@DisplayName("로그인 문서화")
 @AutoConfigureRestDocs
-@WebMvcTest(ArticleController.class)
-class ArticleControllerTest {
+@WebMvcTest(AuthController.class)
+class AuthControllerTest {
 
     @MockBean
-    private ArticleService articleService;
-
-    @MockBean
-    private JwtTokenProvider jwtTokenProvider;
+    private AuthService authService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -46,30 +42,37 @@ class ArticleControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void 질문_게시물_생성_API_문서화() throws Exception {
-        ArticleIdResponse response = new ArticleIdResponse(1L);
-        ArticleRequest request = new ArticleRequest("title", "content", "question");
+    void 로그인_URL_조회_API_문서화() throws Exception {
+        given(authService.getLoginUrl()).willReturn(new OAuthLoginUrlResponse("login url"));
+        mockMvc.perform(get("/api/auth/github"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("login-url",
+                                responseFields(
+                                        fieldWithPath("url").type(JsonFieldType.STRING).description("로그인 요청 URL")
+                                )
+                        )
+                );
+    }
 
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
-        given(articleService.save(any(), any())).willReturn(response);
+    @Test
+    void 로그인_ACCESS_TOKEN_생성_API_문서화() throws Exception {
+        OAuthCodeRequest request = new OAuthCodeRequest("code");
+        given(authService.generateAccessToken(any())).willReturn(new TokenResponse("accessToken"));
 
-        ResultActions results = mockMvc.perform(post("/api/articles")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
+        ResultActions results = mockMvc.perform(post("/api/auth/token")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8"));
 
-        results.andExpect(status().isCreated())
+        results.andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("article-create",
+                .andDo(document("login-token",
                                 requestFields(
-                                        fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                                        fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
-                                        fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리")
+                                        fieldWithPath("code").type(JsonFieldType.STRING).description("사용자 인가코드")
                                 ),
                                 responseFields(
-                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("식별자")
+                                        fieldWithPath("accessToken").type(JsonFieldType.STRING).description("로그인 엑세스 토큰")
                                 )
                         )
                 );
