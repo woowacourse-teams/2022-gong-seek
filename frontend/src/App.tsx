@@ -9,6 +9,7 @@ import LoginController from './pages/Login/LoginController/LoginController';
 import Home from './pages/Home';
 import PrivateRouter from './components/router/PrivateRouter';
 import PublicRouter from './components/router/PublicRouter';
+import ErrorDetail from './pages/ErrorDetail';
 
 const Layout = styled.div`
 	position: relative;
@@ -37,6 +38,7 @@ const App = () => {
 					<Route element={<PublicRouter isAuthenticated={isLogin} />}>
 						<Route path="/login" element={<Login />} />
 					</Route>
+					<Route path="/articles/error/:id" element={<ErrorDetail />} />
 					<Route path="/" element={<Home />} />
 				</Routes>
 			</Content>
