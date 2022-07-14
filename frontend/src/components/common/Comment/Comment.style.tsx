@@ -5,11 +5,11 @@ export const Container = styled.div`
 	flex-direction: column;
 	width: 100%;
 	height: fit-content;
-	padding: ${({ theme }) => theme.size.SIZE_016};
 	justify-content: space-between;
 	gap: ${({ theme }) => theme.size.SIZE_014};
 	border-bottom: ${({ theme }) => theme.size.SIZE_001} solid
-		${({ theme }) => theme.colors.BLACK_600};
+		${({ theme }) => theme.colors.BLACK_200};
+	margin-bottom: ${({ theme }) => theme.size.SIZE_020};
 `;
 
 export const CommentHeader = styled.div`
@@ -17,7 +17,7 @@ export const CommentHeader = styled.div`
 	width: 100%;
 	justify-content: space-between;
 	border-bottom: ${({ theme }) => theme.size.SIZE_001} solid
-		${({ theme }) => theme.colors.BLACK_600};
+		${({ theme }) => theme.colors.BLACK_200};
 `;
 
 export const CommentInfo = styled.div`
@@ -72,7 +72,7 @@ export const Button = styled.button`
 
 export const CommentContent = styled.div`
 	width: 100%;
-	font-size: ${({ theme }) => theme.size.SIZE_016};
-	line-height: ${({ theme }) => theme.size.SIZE_022};
+	font-size: ${({ theme }) => theme.size.SIZE_014};
+	line-height: ${({ theme }) => theme.size.SIZE_030};
 	word-break: keep-all;
 `;
