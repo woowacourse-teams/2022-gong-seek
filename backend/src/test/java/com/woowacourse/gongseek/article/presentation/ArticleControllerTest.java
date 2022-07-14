@@ -15,12 +15,14 @@ import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
+import com.woowacourse.gongseek.config.RestDocsConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -31,6 +33,7 @@ import org.springframework.test.web.servlet.ResultActions;
 @DisplayName("질문 게시판 문서화")
 @AutoConfigureRestDocs
 @WebMvcTest(ArticleController.class)
+@Import(RestDocsConfig.class)
 class ArticleControllerTest {
 
     @MockBean

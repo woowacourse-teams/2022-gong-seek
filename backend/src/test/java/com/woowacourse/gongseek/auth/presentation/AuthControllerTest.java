@@ -13,15 +13,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.gongseek.auth.application.AuthService;
+import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
+import com.woowacourse.gongseek.config.RestDocsConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -30,10 +33,14 @@ import org.springframework.test.web.servlet.ResultActions;
 @DisplayName("로그인 문서화")
 @AutoConfigureRestDocs
 @WebMvcTest(AuthController.class)
+@Import(RestDocsConfig.class)
 class AuthControllerTest {
 
     @MockBean
     private AuthService authService;
+
+    @MockBean
+    private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     private ObjectMapper objectMapper;
