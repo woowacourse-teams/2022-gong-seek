@@ -111,7 +111,7 @@ export const reset = css`
 		display: block;
 	}
 	:root {
-		font-size: 4vw;
+		/* font-size: 4vw; */
 	}
 	body {
 		line-height: 1;
