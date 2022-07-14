@@ -1,6 +1,7 @@
-package com.woowacourse.gongseek.auth.application;
+package com.woowacourse.gongseek.auth.infra;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.gongseek.auth.application.OAuthClient;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubAccessTokenRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubAccessTokenResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
@@ -16,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Getter
 @Component
-public class GithubOAuthClient {
+public class GithubOAuthClient implements OAuthClient {
 
     private static final String BASE_URL = "https://github.com";
     private static final String REDIRECT_URL = "http://localhost:8080/callback";
@@ -42,10 +43,12 @@ public class GithubOAuthClient {
         this.restTemplate = restTemplate;
     }
 
+    @Override
     public String getRedirectUrl() {
         return String.format(BASE_URL + LOGIN_URL_SUFFIX, clientId, REDIRECT_URL);
     }
 
+    @Override
     public GithubProfileResponse getMemberProfile(String code) {
         GithubAccessTokenResponse accessTokenResponse = getGithubAccessToken(code);
         return getGithubProfile(accessTokenResponse);

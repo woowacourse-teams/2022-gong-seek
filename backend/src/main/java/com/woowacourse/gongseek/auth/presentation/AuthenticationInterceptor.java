@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.auth.presentation;
 
-import com.woowacourse.gongseek.auth.application.JwtTokenProvider;
+import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.utils.TokenExtractor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.woowacourse.gongseek.auth.application.JwtTokenProvider;
+import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;

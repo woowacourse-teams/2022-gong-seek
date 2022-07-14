@@ -1,5 +1,6 @@
-package com.woowacourse.gongseek.auth.application;
+package com.woowacourse.gongseek.auth.infra;
 
+import com.woowacourse.gongseek.auth.application.TokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JwtTokenProvider {
+public class JwtTokenProvider implements TokenProvider {
 
     private final long validityInMilliseconds;
     private final Key secretKey;
@@ -24,6 +25,7 @@ public class JwtTokenProvider {
         this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
+    @Override
     public String createToken(String payload) {
         Claims claims = Jwts.claims().setSubject(payload);
         Date now = new Date();
@@ -37,12 +39,14 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    @Override
     public String getPayload(String token) {
         return getClaimsJws(token)
                 .getBody()
                 .getSubject();
     }
 
+    @Override
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = getClaimsJws(token);
