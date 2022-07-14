@@ -17,8 +17,7 @@ public class MemberRepositoryTest {
     @Test
     void 멤버를_저장한다() {
         Member member = new Member("name", "hanull", "https://avatars.githubusercontent.com/u/49219342?v=4");
-        Member savedMember = memberRepository.save(
-                member);
+        Member savedMember = memberRepository.save(member);
 
         assertThat(savedMember).isSameAs(member);
     }
