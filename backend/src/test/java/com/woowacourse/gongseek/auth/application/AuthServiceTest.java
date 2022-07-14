@@ -61,6 +61,5 @@ class AuthServiceTest {
                 () -> assertThat(member.getAvatarUrl()).isEqualTo("example@xxx"),
                 () -> assertThat(response).isNotNull()
         );
-
     }
 }
