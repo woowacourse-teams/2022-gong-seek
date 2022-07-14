@@ -3,6 +3,7 @@ import { AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
 
 export const Container = styled.div`
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	gap: ${({ theme }) => theme.size.SIZE_010};
@@ -18,7 +19,9 @@ export const Header = styled.div`
 `;
 
 export const CategoryTitle = styled.h2`
-	font-size: ${({ theme }) => theme.size.SIZE_018};
+	font-size: ${({ theme }) => theme.size.SIZE_020};
+	font-weight: 800;
+	color: ${({ theme }) => theme.colors.PURPLE_500};
 `;
 
 export const UserProfile = styled.div`
@@ -46,7 +49,7 @@ export const ArticleInfo = styled.div`
 export const ArticleTitle = styled.h3`
 	font-size: ${({ theme }) => theme.size.SIZE_014};
 	color: ${({ theme }) => theme.colors.BLACK_600};
-	line-height: normal;
+	line-height: ${({ theme }) => theme.size.SIZE_026};
 	word-break: keep-all;
 `;
 
