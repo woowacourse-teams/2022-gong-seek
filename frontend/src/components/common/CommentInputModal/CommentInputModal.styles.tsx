@@ -50,7 +50,7 @@ export const CommentContent = styled.textarea`
 	width: 80%;
 	height: 70%;
 	outline: none;
-	border: 1px solid ${({ theme }) => theme.colors.BLACK_600}
+	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.BLACK_600};
 	border-radius: ${({ theme }) => theme.size.SIZE_010};
 `;
 
