@@ -86,6 +86,7 @@ const WritingArticles = () => {
 			<S.Content>
 				<ToastUiEditor ref={content} />
 			</S.Content>
+			{category === 'discussion' && <S.LinkButton to="/votes">투표 만들기</S.LinkButton>}
 			<S.SubmitButton type="button" onClick={handleSubmitButtonClick}>
 				등록하기
 			</S.SubmitButton>
