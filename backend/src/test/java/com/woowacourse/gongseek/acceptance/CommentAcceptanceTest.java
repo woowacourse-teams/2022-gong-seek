@@ -57,18 +57,78 @@ public class CommentAcceptanceTest extends AcceptanceTest {
                 .extract();
 
         //then
-
         assertThat(commentResponse.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
 
     @Test
     void 유저가_로그인을_하지_않고_댓글을_등록할_수_없다() {
+        ExtractableResponse<Response> commentResponse = RestAssured
+                .given().log().all()
+                .pathParam("article_id", 1)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer ")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new CommentRequest("content"))
+                .when()
+                .post("/api/articles/{article_id}/comments")
+                .then().log().all()
+                .extract();
 
+        //then
+        assertThat(commentResponse.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
     void 댓글을_작성한_유저일_경우_댓글을_수정할_수_있다() {
+        //given
+        TokenResponse tokenResponse = RestAssured
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new OAuthCodeRequest(주디.getCode()))
+                .when()
+                .post("/api/auth/fake/token")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(TokenResponse.class);
 
+        ArticleIdResponse articleIdResponse = RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new ArticleRequest("title", "content", "question"))
+                .when()
+                .post("/api/articles")
+                .then().log().all()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(ArticleIdResponse.class);
+
+        ExtractableResponse<Response> commentResponse = RestAssured
+                .given().log().all()
+                .pathParam("article_id", articleIdResponse.getId())
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new CommentRequest("content"))
+                .when()
+                .post("/api/articles/{article_id}/comments")
+                .then().log().all()
+                .extract();
+
+        //when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .pathParam("article_id", articleIdResponse.getId())
+                .pathParam("comments_id", commentResponse)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new CommentRequest("Update Content"))
+                .when()
+                .put("/api/articles/{article_id}/comments/{comments_id}")
+                .then().log().all()
+                .extract();
+
+        //then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
     @Test
