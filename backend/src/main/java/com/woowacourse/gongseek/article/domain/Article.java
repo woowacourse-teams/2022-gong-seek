@@ -67,6 +67,10 @@ public class Article {
         return this.member.equals(member);
     }
 
+    public void addViews() {
+        this.views++;
+    }
+
     private void validateTitleLength(String title) {
         if (title.trim().length() <= MIN_TITLE_LENGTH || title.length() > MAX_TITLE_LENGTH) {
             throw new IllegalArgumentException("타이틀의 길이는 0 이상 500 이하여야합니다.");
