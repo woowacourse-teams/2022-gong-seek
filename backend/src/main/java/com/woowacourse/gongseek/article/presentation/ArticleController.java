@@ -4,7 +4,7 @@ import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.auth.presentation.dto.SearchMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +22,10 @@ public class ArticleController {
 
     @PostMapping
     public ResponseEntity<ArticleIdResponse> create(
-            @AuthenticationPrinciple LoginMember loginMember,
+            @AuthenticationPrinciple SearchMember searchMember,
             @RequestBody ArticleRequest articleRequest
     ) {
-        ArticleIdResponse articleIdResponse = articleService.save(loginMember, articleRequest);
+        ArticleIdResponse articleIdResponse = articleService.save(searchMember, articleRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(articleIdResponse);
     }
 }

@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.auth.presentation.dto.SearchMember;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -32,9 +32,9 @@ public class ArticleServiceTest {
         Member member = new Member("slo", "hanull", "avatar.com");
         memberRepository.save(member);
         ArticleRequest question = new ArticleRequest(title, content, category);
-        LoginMember loginMember = new LoginMember(member.getId());
+        SearchMember searchMember = new SearchMember(member.getId(), false);
 
-        ArticleIdResponse articleIdResponse = articleService.save(loginMember, question);
+        ArticleIdResponse articleIdResponse = articleService.save(searchMember, question);
 
         assertThat(articleIdResponse.getId()).isNotNull();
     }
@@ -46,7 +46,7 @@ public class ArticleServiceTest {
         String category = "question";
         ArticleRequest question = new ArticleRequest(title, content, category);
 
-        assertThatThrownBy(() -> articleService.save(new LoginMember(1L), question))
+        assertThatThrownBy(() -> articleService.save(new SearchMember(1L, true), question))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("회원이 존재하지 않습니다.");
     }

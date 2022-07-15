@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.auth.presentation.dto;
+package com.woowacourse.gongseek.article.presentation.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class LoginMember {
-
-    private Long payload;
+public class ArticleUpdateRequest {
+    private String title;
+    private String content;
 }

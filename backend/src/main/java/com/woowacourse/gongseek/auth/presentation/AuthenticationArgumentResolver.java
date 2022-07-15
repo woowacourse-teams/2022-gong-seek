@@ -2,7 +2,7 @@ package com.woowacourse.gongseek.auth.presentation;
 
 import static org.hibernate.validator.internal.metadata.core.ConstraintHelper.PAYLOAD;
 
-import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.auth.presentation.dto.SearchMember;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
@@ -23,20 +23,20 @@ public class AuthenticationArgumentResolver implements HandlerMethodArgumentReso
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         validateNullRequest(request);
-        validateNullPayload(request);
+        return getSearchMember(request);
+    }
+
+    private SearchMember getSearchMember(HttpServletRequest request) {
+        if (Objects.isNull(request.getAttribute(PAYLOAD))) {
+            new SearchMember(0L, true);
+        }
         Long payload = Long.valueOf(String.valueOf(request.getAttribute(PAYLOAD)));
-        return new LoginMember(payload);
+        return new SearchMember(payload, false);
     }
 
     private void validateNullRequest(HttpServletRequest request) {
         if (Objects.isNull(request)) {
             throw new IllegalArgumentException("요청 데이터가 없습니다.");
-        }
-    }
-
-    private void validateNullPayload(HttpServletRequest request) {
-        if (Objects.isNull(request.getAttribute(PAYLOAD))) {
-            throw new IllegalArgumentException("요청 데이터에 payload가 존재하지 않습니다.");
         }
     }
 }
