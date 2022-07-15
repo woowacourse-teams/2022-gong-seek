@@ -1,7 +1,5 @@
 package com.woowacourse.gongseek.auth.application;
 
-import com.woowacourse.gongseek.auth.infra.GithubOAuthClient;
-import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;

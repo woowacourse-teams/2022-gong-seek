@@ -1,18 +1,18 @@
 package com.woowacourse.gongseek.acceptance;
 
+import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import io.restassured.RestAssured;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 @SuppressWarnings("NonAsciiCharacters")
-@Disabled
 public class AuthAcceptanceTest extends AcceptanceTest {
 
     @Test
@@ -30,10 +30,10 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         //when
         TokenResponse tokenResponse = RestAssured
                 .given().log().all()
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .body("code")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new OAuthCodeRequest(주디.getCode()))
                 .when()
-                .post("/api/auth/token")
+                .post("/api/auth/fake/token")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract()
