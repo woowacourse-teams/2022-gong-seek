@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.comment.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
@@ -52,5 +53,23 @@ class CommentServiceTest {
                 () -> assertThat(savedComments.get(0).getAuthorName()).isEqualTo(member.getName()),
                 () -> assertThat(savedComments.get(0).getContent()).isEqualTo(request.getContent())
         );
+    }
+
+    @Test
+    void 회원이_존재하지_않는_경우_댓글을_생성할_수_없다() {
+        CommentRequest request = new CommentRequest("content");
+
+        assertThatThrownBy(() -> commentService.save(new LoginMember(-1L), article.getId(), request))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("회원이 존재하지 않습니다.");
+    }
+
+    @Test
+    void 게시글이_존재하지_않는_경우_댓글을_생성할_수_없다() {
+        CommentRequest request = new CommentRequest("content");
+
+        assertThatThrownBy(() -> commentService.save(new LoginMember(member.getId()), 2L, request))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("게시글이 존재하지 않습니다.");
     }
 }
