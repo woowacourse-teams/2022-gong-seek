@@ -8,9 +8,11 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
+import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -78,6 +80,58 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    void 댓글을_조회할_수_있다() {
+        //given
+        TokenResponse tokenResponse = RestAssured
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new OAuthCodeRequest(주디.getCode()))
+                .when()
+                .post("/api/auth/fake/token")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(TokenResponse.class);
+
+        ArticleIdResponse articleIdResponse = RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new ArticleRequest("title", "content", "question"))
+                .when()
+                .post("/api/articles")
+                .then().log().all()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(ArticleIdResponse.class);
+
+        RestAssured
+                .given().log().all()
+                .pathParam("article_id", articleIdResponse.getId())
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new CommentRequest("content"))
+                .when()
+                .post("/api/articles/{article_id}/comments")
+                .then().log().all()
+                .extract();
+
+        //when
+        List<CommentResponse> commentResponses = RestAssured
+                .given().log().all()
+                .when()
+                .get("/api/articles/{article_id}/comments")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .body()
+                .jsonPath().getList(".", CommentResponse.class);
+
+        //then
+        assertThat(commentResponses.size()).isEqualTo(1);
+    }
+
+    @Test
     void 댓글을_작성한_유저일_경우_댓글을_수정할_수_있다() {
         //given
         TokenResponse tokenResponse = RestAssured
@@ -103,7 +157,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
                 .extract()
                 .as(ArticleIdResponse.class);
 
-        ExtractableResponse<Response> commentResponse = RestAssured
+        RestAssured
                 .given().log().all()
                 .pathParam("article_id", articleIdResponse.getId())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
@@ -114,16 +168,26 @@ public class CommentAcceptanceTest extends AcceptanceTest {
                 .then().log().all()
                 .extract();
 
+        List<CommentResponse> commentResponses = RestAssured
+                .given().log().all()
+                .when()
+                .get("/api/articles/{article_id}/comments")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .body()
+                .jsonPath().getList(".", CommentResponse.class);
+
         //when
         ExtractableResponse<Response> response = RestAssured
                 .given().log().all()
                 .pathParam("article_id", articleIdResponse.getId())
-                .pathParam("comments_id", commentResponse)
+                .pathParam("comment_id", commentResponses.get(0).getId())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(new CommentRequest("Update Content"))
                 .when()
-                .put("/api/articles/{article_id}/comments/{comments_id}")
+                .put("/api/articles/{article_id}/comments/{comment_id}")
                 .then().log().all()
                 .extract();
 
@@ -133,11 +197,63 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 댓글을_작성한_유저일_경우_댓글을_삭제할_수_있다() {
+        //given
+        TokenResponse tokenResponse = RestAssured
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new OAuthCodeRequest(주디.getCode()))
+                .when()
+                .post("/api/auth/fake/token")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(TokenResponse.class);
 
-    }
+        ArticleIdResponse articleIdResponse = RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new ArticleRequest("title", "content", "question"))
+                .when()
+                .post("/api/articles")
+                .then().log().all()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(ArticleIdResponse.class);
 
-    @Test
-    void 댓글을_조회할_수_있다() {
+        RestAssured
+                .given().log().all()
+                .pathParam("article_id", articleIdResponse.getId())
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new CommentRequest("content"))
+                .when()
+                .post("/api/articles/{article_id}/comments")
+                .then().log().all()
+                .extract();
 
+        List<CommentResponse> commentResponses = RestAssured
+                .given().log().all()
+                .when()
+                .get("/api/articles/{article_id}/comments")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .body()
+                .jsonPath().getList(".", CommentResponse.class);
+
+        //when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .pathParam("article_id", articleIdResponse.getId())
+                .pathParam("comment_id", commentResponses.get(0).getId())
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .when()
+                .delete("/api/articles/{article_id}/comments/{comment_id}")
+                .then().log().all()
+                .extract();
+
+        //then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 }
