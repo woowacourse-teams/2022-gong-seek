@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class SearchMember {
+public abstract class User {
 
     private Long payload;
 
-    private boolean isGuest;
+    public abstract boolean isGuest();
 }
