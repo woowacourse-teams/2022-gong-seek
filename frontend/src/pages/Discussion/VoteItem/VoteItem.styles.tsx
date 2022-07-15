@@ -1,4 +1,4 @@
-import { gradientColors } from '@/styles/Theme';
+import { voteGradientColors } from '@/styles/Theme';
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -45,12 +45,12 @@ export const ProgressiveBar = styled.div`
 
 export const ProgressiveBarContent = styled.div<{
 	percent: number;
-	colorKey: keyof typeof gradientColors;
+	colorKey: keyof typeof voteGradientColors;
 }>`
 	width: ${({ percent }) => `${percent}%`};
 	height: 100%;
 	border-radius: ${({ theme }) => theme.size.SIZE_006};
-	background-image: ${({ theme, colorKey }) => theme.gradientColors[colorKey]};
+	background-image: ${({ theme, colorKey }) => theme.voteGradientColors[colorKey]};
 	animation: ${({ percent }) => ProgressiveBarAnimation(percent)} 1.2s
 		cubic-bezier(0.23, 1, 0.32, 1);
 `;
@@ -59,4 +59,9 @@ export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: ${({ theme }) => theme.size.SIZE_014};
+`;
+
+export const ItemVotes = styled.p`
+	color: ${({ theme }) => theme.colors.PURPLE_400};
+	font-size: ${({ theme }) => theme.size.SIZE_010};
 `;

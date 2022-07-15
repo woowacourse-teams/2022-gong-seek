@@ -15,7 +15,7 @@ const colors = {
 	WHITE: '#ffffff',
 };
 
-export const gradientColors = {
+export const voteGradientColors = {
 	VOTE_001: 'linear-gradient(-45deg,#9055FF, #13E2DA)',
 	VOTE_002: 'linear-gradient(-45deg,#D6FF7F, #00B3CC)',
 	VOTE_003: 'linear-gradient(-45deg,#ED7B84,#9055FF)',
@@ -65,5 +65,5 @@ export const theme = {
 	boxShadows,
 	size,
 	zIndex,
-	gradientColors,
+	voteGradientColors,
 } as const;

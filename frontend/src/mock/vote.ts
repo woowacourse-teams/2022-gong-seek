@@ -51,16 +51,25 @@ export const VoteHandler = [
 	rest.get('http://192.168.0.155:8080/api/articles/:articleId/votes', (req, res, ctx) => {
 		const { articleId } = req.params;
 
-		const vote = mockVotes.find((mockVote) => mockVote.articleId === articleId);
-		if (typeof vote === 'undefined') {
-			return;
-		}
+		// const vote = mockVotes.find((mockVote) => mockVote.articleId === articleId);
+		// if (typeof vote === 'undefined') {
+		// 	return;
+		// }
 
 		return res(
+			// ctx.status(200),
+			// ctx.json({
+			// 	vote,
+			// }),
+
 			ctx.status(200),
-			ctx.json({
-				vote,
-			}),
+			ctx.json([
+				{ option: '1번 항목', count: 10 },
+				{ option: '2번 항목', count: 1 },
+				{ option: '3번 항목', count: 2 },
+				{ option: '4번 항목', count: 0 },
+				{ option: '5번 항목', count: 3 },
+			]),
 		);
 	}),
 
