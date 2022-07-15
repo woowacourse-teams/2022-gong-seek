@@ -2,9 +2,11 @@ package com.woowacourse.gongseek.article.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.SearchMember;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
@@ -31,10 +33,10 @@ public class ArticleServiceTest {
         String category = "question";
         Member member = new Member("slo", "hanull", "avatar.com");
         memberRepository.save(member);
-        ArticleRequest question = new ArticleRequest(title, content, category);
+        ArticleRequest articleRequest = new ArticleRequest(title, content, category);
         SearchMember searchMember = new SearchMember(member.getId(), false);
 
-        ArticleIdResponse articleIdResponse = articleService.save(searchMember, question);
+        ArticleIdResponse articleIdResponse = articleService.save(searchMember, articleRequest);
 
         assertThat(articleIdResponse.getId()).isNotNull();
     }
@@ -44,10 +46,34 @@ public class ArticleServiceTest {
         String title = "질문합니다.";
         String content = "내용입나다....";
         String category = "question";
-        ArticleRequest question = new ArticleRequest(title, content, category);
+        ArticleRequest articleRequest = new ArticleRequest(title, content, category);
 
-        assertThatThrownBy(() -> articleService.save(new SearchMember(1L, true), question))
+        assertThatThrownBy(() -> articleService.save(new SearchMember(1L, true), articleRequest))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("회원이 존재하지 않습니다.");
+    }
+
+    @Test
+    void 회원이_게시물을_조회한다() {
+        String title = "질문합니다.";
+        String content = "내용입나다....";
+        String category = "question";
+        ArticleRequest articleRequest = new ArticleRequest(title, content, category);
+
+        Member member = new Member("slo", "hanull", "avatar.com");
+        memberRepository.save(member);
+
+        ArticleIdResponse savedArticle = articleService.save(new SearchMember(member.getId(), false), articleRequest);
+
+        ArticleResponse articleResponse = articleService.findOne(
+                new SearchMember(member.getId(), false),
+                savedArticle.getId()
+        );
+
+        assertAll(
+                () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
+                () -> assertThat(articleResponse.getCreatedAt()).isNotNull()
+        );
     }
 }
