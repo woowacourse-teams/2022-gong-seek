@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { IoIosArrowDown } from 'react-icons/io';
+import { Link } from 'react-router-dom';
 
 export const Container = styled.div`
 	width: 100%;
@@ -94,5 +95,24 @@ export const SubmitButton = styled.button`
 	&:hover,
 	&:active {
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
+	}
+`;
+
+export const LinkButton = styled(Link)`
+	color: ${({ theme }) => theme.colors.WHITE};
+	background-color: ${({ theme }) => theme.colors.GREEN_500};
+	width: 88%;
+	font-size: 0.8rem;
+	padding: ${({ theme }) => theme.size.SIZE_004};
+	border-radius: ${({ theme }) => theme.size.SIZE_010};
+	border-color: transparent;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	margin-top: ${({ theme }) => theme.size.SIZE_020};
+
+	&:hover,
+	&:active {
+		filter: brightness(1.01);
 	}
 `;

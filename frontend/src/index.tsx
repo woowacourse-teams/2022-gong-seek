@@ -8,13 +8,13 @@ import { reset } from '@/styles/reset';
 import { theme } from '@/styles/Theme';
 import { worker } from './mock/browser';
 
-// if (process.env.NODE_ENV === 'development') {
-// 	worker.start();
-// }
+if (process.env.NODE_ENV === 'development') {
+	worker.start();
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 root.render(
 	<ThemeProvider theme={theme}>
