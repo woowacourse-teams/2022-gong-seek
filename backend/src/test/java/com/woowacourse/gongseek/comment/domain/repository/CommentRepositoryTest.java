@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.comment.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
@@ -9,6 +10,8 @@ import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.config.JpaAuditingConfig;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -17,6 +20,9 @@ import org.springframework.context.annotation.Import;
 @Import(JpaAuditingConfig.class)
 @DataJpaTest
 class CommentRepositoryTest {
+
+    private final Member member = new Member("jurl", "jurlring", "");
+    private final Article article = new Article("title", "content", Category.QUESTION, member);
 
     @Autowired
     private CommentRepository commentRepository;
@@ -27,16 +33,33 @@ class CommentRepositoryTest {
     @Autowired
     private ArticleRepository articleRepository;
 
-    @Test
-    void 댓글을_저장한다() {
-        Member member = new Member("jurl", "jurlring", "");
-        Article article = new Article("title", "content", Category.QUESTION, member);
-        Comment comment = new Comment("content", member, article);
+    @BeforeEach
+    void setUp() {
         memberRepository.save(member);
         articleRepository.save(article);
+    }
+
+    @Test
+    void 댓글을_저장한다() {
+        Comment comment = new Comment("content", member, article);
 
         Comment savedComment = commentRepository.save(comment);
 
         assertThat(savedComment).isSameAs(comment);
+    }
+
+    @Test
+    void 게시물_아이디로_댓글을_조회한다() {
+        Comment comment = new Comment("content", member, article);
+        commentRepository.save(comment);
+
+        List<Comment> comments = commentRepository.findCommentsByArticleId(article.getId());
+
+        assertAll(
+                () -> assertThat(comments).hasSize(1),
+                () -> assertThat(comments.get(0).getMember()).isEqualTo(member),
+                () -> assertThat(comments.get(0).getArticle()).isEqualTo(article),
+                () -> assertThat(comments.get(0).getContent()).isEqualTo(comment.getContent())
+        );
     }
 }
