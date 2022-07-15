@@ -11,7 +11,16 @@ const colors = {
 	BLACK_500: '#141619',
 	BLACK_400: 'rgba(20, 22, 25, 0.75)',
 	GRAY_500: 'rgba(0, 0, 0, 0.11)',
+	GREEN_500: '#C4DFAA',
 	WHITE: '#ffffff',
+};
+
+export const gradientColors = {
+	VOTE_001: 'linear-gradient(-45deg,#9055FF, #13E2DA)',
+	VOTE_002: 'linear-gradient(-45deg,#D6FF7F, #00B3CC)',
+	VOTE_003: 'linear-gradient(-45deg,#ED7B84,#9055FF)',
+	VOTE_004: 'linear-gradient(-45deg,#000066, #6699FF)',
+	VOTE_005: 'linear-gradient(-45deg, #F06966,#FAD6A6)',
 };
 
 const breakpoints = {
@@ -28,6 +37,7 @@ const size = {
 	SIZE_001: '0.063rem',
 	SIZE_002: '0.125rem',
 	SIZE_004: '0.25rem',
+	SIZE_006: '0.375rem',
 	SIZE_010: '0.625rem',
 	SIZE_012: '0.75rem',
 	SIZE_014: '0.875rem',
@@ -55,4 +65,5 @@ export const theme = {
 	boxShadows,
 	size,
 	zIndex,
+	gradientColors,
 } as const;
