@@ -33,7 +33,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 유저가_로그인을_하지_않고_댓글을_등록할_수_없다() {
-        ExtractableResponse<Response> 댓글 = 댓글을_등록한다(new TokenResponse(""), null);
+        ExtractableResponse<Response> 댓글 = 댓글을_등록한다(new TokenResponse(""), new ArticleIdResponse(1L));
 
         assertThat(댓글.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
