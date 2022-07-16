@@ -72,4 +72,18 @@ class CommentServiceTest {
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("게시글이 존재하지 않습니다.");
     }
+
+    @Test
+    void 댓글을_수정한다() {
+        CommentRequest request = new CommentRequest("content");
+        commentService.save(new LoginMember(member.getId()), article.getId(), request);
+        List<CommentResponse> comments = commentService.findByArticleId(article.getId());
+        String updateContent = "update";
+        CommentRequest updateRequest = new CommentRequest(updateContent);
+
+        commentService.update(new LoginMember(member.getId()), updateRequest, comments.get(0).getId());
+        List<CommentResponse> savedComments = commentService.findByArticleId(article.getId());
+
+        assertThat(savedComments.get(0).getContent()).isEqualTo(updateContent);
+    }
 }

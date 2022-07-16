@@ -39,4 +39,16 @@ public class CommentService {
                 .map(CommentResponse::from)
                 .collect(Collectors.toList());
     }
+
+    public void update(LoginMember loginMember, CommentRequest updateRequest, Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalStateException("댓글이 존재하지 않습니다."));
+        Member member = memberRepository.findById(loginMember.getPayload())
+                .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
+
+        if (!comment.isMember(member)) {
+            throw new IllegalArgumentException("댓글을 작성한 회원만 수정할 수 있습니다.");
+        }
+        comment.updateContent(updateRequest.getContent());
+    }
 }

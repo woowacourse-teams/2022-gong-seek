@@ -56,4 +56,12 @@ public class Comment {
             throw new IllegalArgumentException("댓글의 길이는 1~10000이여야 합니다.");
         }
     }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
+
+    public boolean isMember(Member member) {
+        return this.getMember().equals(member);
+    }
 }

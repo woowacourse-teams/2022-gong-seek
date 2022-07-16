@@ -62,4 +62,16 @@ class CommentRepositoryTest {
                 () -> assertThat(comments.get(0).getContent()).isEqualTo(comment.getContent())
         );
     }
+
+    @Test
+    void 댓글을_수정한다() {
+        Comment comment = new Comment("content", member, article);
+        commentRepository.save(comment);
+
+        String updateContent = "Update Content";
+        comment.updateContent(updateContent);
+
+        Comment foundComment = commentRepository.findById(comment.getId()).get();
+        assertThat(foundComment.getContent()).isEqualTo(updateContent);
+    }
 }
