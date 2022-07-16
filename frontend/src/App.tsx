@@ -12,7 +12,7 @@ import PrivateRouter from '@/components/router/PrivateRouter';
 import PublicRouter from '@/components/router/PublicRouter';
 import ErrorDetail from '@/pages/ErrorDetail';
 import VoteGenerator from '@/pages/VoteGenerator';
-import Vote from './pages/Discussion/Vote/Vote';
+import Vote from '@/pㄴages/Discussion/Vote/Vote';
 
 const Layout = styled.div`
 	position: relative;
