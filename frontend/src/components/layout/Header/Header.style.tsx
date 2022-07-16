@@ -11,7 +11,7 @@ export const HeaderSection = styled.header`
 	justify-content: space-around;
 	padding-top: 1rem;
 	width: 100%;
-	height: 3.5rem;
+	height: ${({ theme }) => theme.size.SIZE_056};
 	background-color: ${({ theme }) => theme.colors.WHITE};
 `;
 

@@ -3,10 +3,17 @@ import { useQuery } from 'react-query';
 import VoteItem from '@/pages/Discussion/VoteItem/VoteItem';
 import { MdOutlineHowToVote } from 'react-icons/md';
 import * as S from '@/pages/Discussion/Vote/Vote.styles';
+import { useEffect, useState } from 'react';
 
 const Vote = ({ articleId }: { articleId: string }) => {
-	const { data, isLoading, isError } = useQuery('vote', () => getVoteItems(articleId));
-	const totalCount = data?.reduce((acc, cur) => acc + cur.count, 0);
+	const { data, isLoading, isError, isSuccess } = useQuery('vote', () => getVoteItems(articleId));
+	const [totalCount, setTotalCount] = useState(0);
+
+	useEffect(() => {
+		if (isSuccess) {
+			setTotalCount(data.reduce((acc, cur) => acc + cur.count, 0));
+		}
+	});
 
 	if (isLoading) return <div>로딩중...</div>;
 

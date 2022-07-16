@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 const AddedOption = styled.div`
-	width: ${({ theme }) => theme.size.SIZE_260};
+	width: 70%;
 	height: ${({ theme }) => theme.size.SIZE_040};
 	border-radius: ${({ theme }) => theme.size.SIZE_006};
 	box-shadow: 1px 1px 4px ${({ theme }) => theme.boxShadows.primary};

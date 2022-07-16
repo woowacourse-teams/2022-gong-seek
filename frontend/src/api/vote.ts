@@ -17,7 +17,6 @@ export const getVoteItems = async (articleId: string) => {
 			},
 		},
 	);
-	console.log(data);
 
 	return data;
 };

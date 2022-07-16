@@ -8,15 +8,16 @@ const Input = styled.input<{ width?: string }>`
 	border-color: transparent;
 	box-shadow: 1px 1px 1px ${({ theme }) => theme.boxShadows.primary};
 	font-size: ${({ theme }) => theme.size.SIZE_012};
-	padding: ${({ theme }) => theme.size.SIZE_006} ${({ theme }) => theme.size.SIZE_004};
-	padding-left: ${({ theme }) => theme.size.SIZE_006};
+	padding: ${({ theme }) => theme.size.SIZE_006} 0 ${({ theme }) => theme.size.SIZE_004}
+		${({ theme }) => theme.size.SIZE_006};
 
 	&::placeholder {
 		font-size: ${({ theme }) => theme.size.SIZE_012};
 		opacity: 0.6;
 	}
 
-	&:focus {
+	&:focus,
+	&:active {
 		outline-color: ${({ theme }) => theme.colors.PURPLE_500};
 		outline-width: 1px;
 	}

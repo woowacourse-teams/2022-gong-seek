@@ -52,8 +52,7 @@ export const VoteHandler = [
 		const { articleId } = req.params;
 
 		const vote = mockVotes.find((mockVote) => mockVote.articleId === articleId);
-		console.log(articleId);
-		console.log(mockVotes);
+
 		if (typeof vote === 'undefined') {
 			throw new Error('투표를 찾지 못하였습니다');
 		}

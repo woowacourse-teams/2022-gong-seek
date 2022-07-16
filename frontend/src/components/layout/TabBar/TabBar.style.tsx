@@ -6,7 +6,7 @@ export const Section = styled.section`
 	position: sticky;
 	bottom: 0;
 	width: 100%;
-	height: 3.5rem;
+	height: ${({ theme }) => theme.size.SIZE_056};
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
