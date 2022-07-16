@@ -34,6 +34,7 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
+    @Transactional(readOnly = true)
     public List<CommentResponse> findByArticleId(Long articleId) {
         return commentRepository.findCommentsByArticleId(articleId).stream()
                 .map(CommentResponse::from)
