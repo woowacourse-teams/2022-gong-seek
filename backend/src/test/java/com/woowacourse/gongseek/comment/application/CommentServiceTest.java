@@ -8,6 +8,8 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.comment.domain.Comment;
+import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
 import com.woowacourse.gongseek.member.domain.Member;
@@ -25,6 +27,7 @@ class CommentServiceTest {
 
     private final Member member = new Member("slow", "hanull", "avatarUrl");
     private final Article article = new Article("title", "content", Category.QUESTION, member);
+    private final Comment comment = new Comment("content", member, article);
 
     @Autowired
     private CommentService commentService;
@@ -35,23 +38,27 @@ class CommentServiceTest {
     @Autowired
     private ArticleRepository articleRepository;
 
+    @Autowired
+    private CommentRepository commentRepository;
+
     @BeforeEach
     void setUp() {
         memberRepository.save(member);
         articleRepository.save(article);
+        commentRepository.save(comment);
     }
 
     @Test
     void 댓글을_생성한다() {
-        CommentRequest request = new CommentRequest("content");
+        CommentRequest request = new CommentRequest("content2");
 
         commentService.save(new LoginMember(member.getId()), article.getId(), request);
         List<CommentResponse> savedComments = commentService.findByArticleId(article.getId());
 
         assertAll(
-                () -> assertThat(savedComments).hasSize(1),
-                () -> assertThat(savedComments.get(0).getAuthorName()).isEqualTo(member.getName()),
-                () -> assertThat(savedComments.get(0).getContent()).isEqualTo(request.getContent())
+                () -> assertThat(savedComments).hasSize(2),
+                () -> assertThat(savedComments.get(1).getAuthorName()).isEqualTo(member.getName()),
+                () -> assertThat(savedComments.get(1).getContent()).isEqualTo(request.getContent())
         );
     }
 
@@ -75,8 +82,6 @@ class CommentServiceTest {
 
     @Test
     void 댓글을_수정한다() {
-        CommentRequest request = new CommentRequest("content");
-        commentService.save(new LoginMember(member.getId()), article.getId(), request);
         List<CommentResponse> comments = commentService.findByArticleId(article.getId());
         String updateContent = "update";
         CommentRequest updateRequest = new CommentRequest(updateContent);
@@ -85,5 +90,32 @@ class CommentServiceTest {
         List<CommentResponse> savedComments = commentService.findByArticleId(article.getId());
 
         assertThat(savedComments.get(0).getContent()).isEqualTo(updateContent);
+    }
+
+    @Test
+    void 댓글이_존재하지_않는_경우_수정할_수_없다() {
+        assertThatThrownBy(
+                () -> commentService.update(new LoginMember(member.getId()), new CommentRequest("update content"), 1L))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("댓글이 존재하지 않습니다.");
+    }
+
+    @Test
+    void 회원이_아닌_경우_댓글을_수정할_수_없다() {
+        List<CommentResponse> comments = commentService.findByArticleId(article.getId());
+        assertThatThrownBy(() -> commentService.update(new LoginMember(-1L), new CommentRequest("update content"),
+                comments.get(0).getId()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("회원이 존재하지 않습니다.");
+    }
+
+    @Test
+    void 댓글을_작성한_회원이_아닌_경우_수정할_수_없다() {
+        Member newMember = memberRepository.save(new Member("judy", "judyhithub", "avatarUrl"));
+        assertThatThrownBy(
+                () -> commentService.update(new LoginMember(newMember.getId()), new CommentRequest("update content"),
+                        comment.getId()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("댓글을 작성한 회원만 수정할 수 있습니다.");
     }
 }
