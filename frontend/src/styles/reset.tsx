@@ -113,6 +113,10 @@ export const reset = css`
 	:root {
 		/* font-size: 4vw; */
 	}
+	html,
+	body {
+		height: 100%;
+	}
 	body {
 		line-height: 1;
 		font-family: 'GmarketSansMedium';

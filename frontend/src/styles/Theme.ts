@@ -51,9 +51,11 @@ const size = {
 	SIZE_028: '1.75rem',
 	SIZE_030: '1.875rem',
 	SIZE_032: '2rem',
+	SIZE_040: '2.5rem',
 	SIZE_050: '3.125rem',
 	SIZE_080: '5rem',
 	SIZE_090: '5.625rem',
+	SIZE_260: '16.25rem',
 };
 
 const zIndex = {
