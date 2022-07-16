@@ -11,6 +11,7 @@ import com.woowacourse.gongseek.config.JpaAuditingConfig;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,5 +74,16 @@ class CommentRepositoryTest {
 
         Comment foundComment = commentRepository.findById(comment.getId()).get();
         assertThat(foundComment.getContent()).isEqualTo(updateContent);
+    }
+
+    @Test
+    void 댓글을_삭제한다() {
+        Comment comment = new Comment("content", member, article);
+        commentRepository.save(comment);
+
+        commentRepository.delete(comment);
+        Optional<Comment> deletedComment = commentRepository.findById(comment.getId());
+
+        assertThat(deletedComment).isEmpty();
     }
 }

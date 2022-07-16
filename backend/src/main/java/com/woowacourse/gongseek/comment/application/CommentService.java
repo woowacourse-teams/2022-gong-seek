@@ -51,4 +51,16 @@ public class CommentService {
         }
         comment.updateContent(updateRequest.getContent());
     }
+
+    public void delete(LoginMember loginMember, Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalStateException("댓글이 존재하지 않습니다."));
+        Member member = memberRepository.findById(loginMember.getPayload())
+                .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
+
+        if (!comment.isMember(member)) {
+            throw new IllegalArgumentException("댓글을 작성한 회원만 삭제할 수 있습니다.");
+        }
+        commentRepository.deleteById(commentId);
+    }
 }

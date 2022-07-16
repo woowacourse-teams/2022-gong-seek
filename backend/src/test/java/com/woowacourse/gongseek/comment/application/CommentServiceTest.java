@@ -118,4 +118,15 @@ class CommentServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("댓글을 작성한 회원만 수정할 수 있습니다.");
     }
+
+    @Test
+    void 댓글을_삭제한다() {
+        commentService.delete(new LoginMember(member.getId()), comment.getId());
+        List<CommentResponse> comments = commentService.findByArticleId(article.getId());
+
+        boolean isFind = comments.stream()
+                .anyMatch(comment -> comment.getId().equals(this.comment.getId()));
+
+        assertThat(isFind).isFalse();
+    }
 }
