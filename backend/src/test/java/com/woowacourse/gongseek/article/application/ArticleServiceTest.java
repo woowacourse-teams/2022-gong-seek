@@ -66,7 +66,7 @@ public class ArticleServiceTest {
 
         assertThatThrownBy(() -> articleService.save(new GuestUser(), articleRequest))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("회원이 존재하지 않습니다.");
+                .hasMessage("권한이 없는 사용자입니다.");
     }
 
     @Test
