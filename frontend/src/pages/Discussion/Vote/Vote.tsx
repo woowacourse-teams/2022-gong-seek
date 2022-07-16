@@ -2,23 +2,19 @@ import { getVoteItems } from '@/api/vote';
 import { useQuery } from 'react-query';
 import VoteItem from '@/pages/Discussion/VoteItem/VoteItem';
 import { MdOutlineHowToVote } from 'react-icons/md';
-import { useEffect } from 'react';
 import * as S from '@/pages/Discussion/Vote/Vote.styles';
 
 const Vote = ({ articleId }: { articleId: string }) => {
-	const { data, isLoading, isError, isSuccess } = useQuery('vote', getVoteItems);
-	let totalCount = 0;
-
-	useEffect(() => {
-		if (isSuccess) {
-			totalCount = data.reduce((acc, cur) => acc + cur.count, 0);
-		}
-	}, []);
+	const { data, isLoading, isError } = useQuery('vote', () => getVoteItems(articleId));
+	const totalCount = data?.reduce((acc, cur) => acc + cur.count, 0);
 
 	if (isLoading) return <div>로딩중...</div>;
 
 	if (isError) return <div>에러...</div>;
 
+	if (typeof totalCount === 'undefined') {
+		throw new Error('데이터를 찾지 못하였습니다');
+	}
 	return (
 		<S.Container>
 			<S.VoteTitleBox>
@@ -36,7 +32,7 @@ const Vote = ({ articleId }: { articleId: string }) => {
 							title={datum.option}
 							totalVotes={totalCount}
 							itemVotes={datum.count}
-							name={`vote-${articleId}`}
+							name={articleId}
 							idx={idx}
 						/>
 					))}
