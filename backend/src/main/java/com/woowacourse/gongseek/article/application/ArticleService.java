@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
+import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
@@ -35,7 +36,8 @@ public class ArticleService {
         }
     }
 
-    public ArticleResponse findOne(User user, Long id) {
+    public ArticleResponse findOne(User user, Long id, String category) {
+        Category.from(category);
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
         article.addViews();

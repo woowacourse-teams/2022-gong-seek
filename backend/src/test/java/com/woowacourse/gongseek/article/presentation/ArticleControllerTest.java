@@ -93,7 +93,7 @@ class ArticleControllerTest {
                 0,
                 LocalDateTime.now()
         );
-        given(articleService.findOne(any(), any())).willReturn(response);
+        given(articleService.findOne(any(), any(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(
                 get("/api/articles/{id}", 1L)

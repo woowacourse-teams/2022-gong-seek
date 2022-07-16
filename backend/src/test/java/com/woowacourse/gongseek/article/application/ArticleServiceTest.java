@@ -80,7 +80,8 @@ public class ArticleServiceTest {
         memberRepository.save(member);
 
         ArticleIdResponse savedArticle = articleService.save(new LoginUser(member.getId()), articleRequest);
-        ArticleResponse articleResponse = articleService.findOne(new LoginUser(member.getId()), savedArticle.getId());
+        ArticleResponse articleResponse = articleService.findOne(new LoginUser(member.getId()), savedArticle.getId(),
+                category);
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
@@ -100,7 +101,7 @@ public class ArticleServiceTest {
         memberRepository.save(member);
 
         ArticleIdResponse savedArticle = articleService.save(new LoginUser(member.getId()), articleRequest);
-        ArticleResponse articleResponse = articleService.findOne(new GuestUser(), savedArticle.getId());
+        ArticleResponse articleResponse = articleService.findOne(new GuestUser(), savedArticle.getId(), category);
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
@@ -120,8 +121,8 @@ public class ArticleServiceTest {
         memberRepository.save(member);
 
         ArticleIdResponse savedArticle = articleService.save(new LoginUser(member.getId()), articleRequest);
-        articleService.findOne(new GuestUser(), savedArticle.getId());
-        ArticleResponse articleResponse = articleService.findOne(new GuestUser(), savedArticle.getId());
+        articleService.findOne(new GuestUser(), savedArticle.getId(), category);
+        ArticleResponse articleResponse = articleService.findOne(new GuestUser(), savedArticle.getId(), category);
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
@@ -129,5 +130,21 @@ public class ArticleServiceTest {
                 () -> assertThat(articleResponse.getViews()).isEqualTo(2),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull()
         );
+    }
+
+    @Test
+    void 카테고리가_올바르지_않으면_예외가_발생한다() {
+        String title = "질문합니다.";
+        String content = "내용입나다....";
+        String category = "question";
+        ArticleRequest articleRequest = new ArticleRequest(title, content, category);
+
+        Member member = new Member("rennon", "brorae", "avatar.com");
+        memberRepository.save(member);
+
+        ArticleIdResponse savedArticle = articleService.save(new LoginUser(member.getId()), articleRequest);
+        assertThatThrownBy(() -> articleService.findOne(new GuestUser(), savedArticle.getId(), "question1"))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessage("존재하지 않는 카테고리입니다.");
     }
 }
