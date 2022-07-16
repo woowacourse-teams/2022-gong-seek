@@ -95,16 +95,15 @@ class CommentServiceTest {
     @Test
     void 댓글이_존재하지_않는_경우_수정할_수_없다() {
         assertThatThrownBy(
-                () -> commentService.update(new LoginMember(member.getId()), new CommentRequest("update content"), 1L))
+                () -> commentService.update(new LoginMember(member.getId()), new CommentRequest("update content"), -1L))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("댓글이 존재하지 않습니다.");
     }
 
     @Test
     void 회원이_아닌_경우_댓글을_수정할_수_없다() {
-        List<CommentResponse> comments = commentService.findByArticleId(article.getId());
         assertThatThrownBy(() -> commentService.update(new LoginMember(-1L), new CommentRequest("update content"),
-                comments.get(0).getId()))
+                comment.getId()))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("회원이 존재하지 않습니다.");
     }
@@ -128,5 +127,29 @@ class CommentServiceTest {
                 .anyMatch(comment -> comment.getId().equals(this.comment.getId()));
 
         assertThat(isFind).isFalse();
+    }
+
+    @Test
+    void 댓글이_존재하지_않는_경우_삭제할_수_없다() {
+        assertThatThrownBy(
+                () -> commentService.delete(new LoginMember(member.getId()), -1L))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("댓글이 존재하지 않습니다.");
+    }
+
+    @Test
+    void 회원이_아닌_경우_댓글을_삭제할_수_없다() {
+        assertThatThrownBy(() -> commentService.delete(new LoginMember(-1L), comment.getId()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("회원이 존재하지 않습니다.");
+    }
+
+    @Test
+    void 댓글을_작성한_회원이_아닌_경우_삭제할_수_없다() {
+        Member newMember = memberRepository.save(new Member("judy", "judyhithub", "avatarUrl"));
+        assertThatThrownBy(
+                () -> commentService.delete(new LoginMember(newMember.getId()), comment.getId()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("댓글을 작성한 회원만 삭제할 수 있습니다.");
     }
 }
