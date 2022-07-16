@@ -449,7 +449,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_게시물_생성">게시물 생성</a></li>
+<li><a href="#_게시물_생성">게시물 생성</a>
+<ul class="sectlevel2">
+<li><a href="#_request">Request</a></li>
+<li><a href="#_response">Response</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -460,13 +465,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p><code>POST /api/articles</code></p>
 </div>
-<div class="paragraph">
-<p>요청 HTTP</p>
-</div>
+<div class="sect2">
+<h3 id="_request"><a class="link" href="#_request">Request</a></h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/articles HTTP/1.1
 Content-Type: application/json;charset=UTF-8
+Authorization: Bearer token
 Content-Length: 75
 Host: localhost:8080
 
@@ -477,9 +482,9 @@ Host: localhost:8080
 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>성공 응답 HTTP</p>
 </div>
+<div class="sect2">
+<h3 id="_response"><a class="link" href="#_response">Response</a></h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
@@ -497,10 +502,11 @@ Content-Length: 14
 </div>
 </div>
 </div>
+</div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-07 11:33:43 +0900
+Last updated 2022-07-14 10:05:53 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

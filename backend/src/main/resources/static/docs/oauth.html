@@ -5,7 +5,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>공식의 공식 애플리케이션 API 문서</title>
+<meta name="author" content="---">
+<title>OAuth</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -435,20 +436,106 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="article">
+<body class="book toc2 toc-left">
 <div id="header">
+<h1>OAuth</h1>
+<div class="details">
+<span id="author" class="author">---</span><br>
+<span id="revnumber">version 0.0.1-SNAPSHOT,</span>
+<span id="revdate">= 기본 API</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_로그인_url_조회">로그인 URL 조회</a>
+<ul class="sectlevel2">
+<li><a href="#_request">Request</a></li>
+<li><a href="#_response">Response</a></li>
+</ul>
+</li>
+<li><a href="#_로그인_access_token_생성">로그인 ACCESS TOKEN 생성</a>
+<ul class="sectlevel2">
+<li><a href="#_request_2">Request</a></li>
+<li><a href="#_response_2">Response</a></li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_공식의_공식_애플리케이션_api_문서">공식의 공식 애플리케이션 API 문서</h2>
+<h2 id="_로그인_url_조회"><a class="link" href="#_로그인_url_조회">로그인 URL 조회</a></h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="/docs/article.html">게시물 관련 API</a></p>
-</li>
-</ul>
+<div class="paragraph">
+<p><code>GET /api/auth/github</code></p>
+</div>
+<div class="sect2">
+<h3 id="_request"><a class="link" href="#_request">Request</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/auth/github HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response"><a class="link" href="#_response">Response</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 25
+
+{
+  "url" : "login url"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_로그인_access_token_생성"><a class="link" href="#_로그인_access_token_생성">로그인 ACCESS TOKEN 생성</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>POST /api/auth/token</code></p>
+</div>
+<div class="sect2">
+<h3 id="_request_2"><a class="link" href="#_request_2">Request</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/auth/token HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 21
+Host: localhost:8080
+
+{
+  "code" : "code"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_2"><a class="link" href="#_response_2">Response</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 35
+
+{
+  "accessToken" : "accessToken"
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -456,8 +543,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-06 10:42:02 +0900
+Last updated 2022-07-15 00:25:18 +0900
 </div>
 </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>hljs.initHighlighting()</script>
 </body>
 </html>
