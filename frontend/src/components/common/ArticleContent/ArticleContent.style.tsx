@@ -21,7 +21,7 @@ export const Header = styled.div`
 export const CategoryTitle = styled.h2`
 	font-size: ${({ theme }) => theme.size.SIZE_020};
 	font-weight: 800;
-	color: ${({ theme }) => theme.colors.PURPLE_500};
+	color: ${({ theme }) => theme.colors.RED_500};
 `;
 
 export const UserProfile = styled.div`

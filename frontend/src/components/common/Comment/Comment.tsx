@@ -1,10 +1,10 @@
 import * as S from '@/components/common/Comment/Comment.style';
 
 export interface CommentProps {
-	id: string;
+	id: number;
 	author: {
 		name: string;
-		avatar: string;
+		avatarUrl: string;
 	};
 	content: string;
 	createAt: string;
@@ -22,7 +22,7 @@ const Comment = ({ id, author, content, createAt, isAuthor }: CommentProps) => {
 		<S.Container>
 			<S.CommentHeader>
 				<S.CommentInfo>
-					<S.UserProfile src={author.avatar} />
+					<S.UserProfile src={author.avatarUrl} />
 					<S.CommentInfoSub>
 						<S.UserName>{author.name}</S.UserName>
 						<S.CreateTime>{createAt}</S.CreateTime>
