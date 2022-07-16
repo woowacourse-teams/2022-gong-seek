@@ -2,10 +2,10 @@ import ArticleContent from '@/components/common/ArticleContent/ArticleContent';
 import Comment from '@/components/common/Comment/Comment';
 import CommentInputModal from '@/components/common/CommentInputModal/CommentInputModal';
 
-import * as S from '@/pages/ErrorDetail/index.style';
-import { useState } from 'react';
+import * as S from '@/pages/Detail/index.style';
+import React, { useState } from 'react';
 
-const ErrorDetail = () => {
+const Detail = ({ children }: { children?: React.ReactNode }) => {
 	//mock data
 	const article = {
 		title:
@@ -84,7 +84,14 @@ const ErrorDetail = () => {
 
 	return (
 		<S.Container>
-			<ArticleContent article={article} author={author} isAuthor={true} category="에러" />
+			<ArticleContent
+				article={article}
+				author={author}
+				isAuthor={true}
+				category={children ? '토론' : '에러'}
+			/>
+			{children}
+
 			<S.CommentSection>
 				<S.CommentInputBox>
 					<S.CommentInput
@@ -126,4 +133,4 @@ const ErrorDetail = () => {
 	);
 };
 
-export default ErrorDetail;
+export default Detail;
