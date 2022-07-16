@@ -63,4 +63,10 @@ export const CommentPostButton = styled.button`
 	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	border: none;
 	margin-top: ${({ theme }) => theme.size.SIZE_020};
+	cursor: pointer;
+
+	&:hover,
+	&:active {
+		background-color: ${({ theme }) => theme.colors.PURPLE_400};
+	}
 `;
