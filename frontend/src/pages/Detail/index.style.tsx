@@ -4,6 +4,9 @@ import { BiCommentDetail } from 'react-icons/bi';
 
 export const Container = styled.article`
 	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	align-items: center;
 `;
 

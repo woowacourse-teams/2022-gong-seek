@@ -18,10 +18,11 @@ export const Header = styled.div`
 	align-items: center;
 `;
 
-export const CategoryTitle = styled.h2`
+export const CategoryTitle = styled.h2<{ category: string }>`
 	font-size: ${({ theme }) => theme.size.SIZE_020};
 	font-weight: 800;
-	color: ${({ theme }) => theme.colors.RED_500};
+	color: ${({ theme, category }) =>
+		category === '토론' ? theme.colors.BLUE_500 : theme.colors.RED_500};
 `;
 
 export const UserProfile = styled.div`

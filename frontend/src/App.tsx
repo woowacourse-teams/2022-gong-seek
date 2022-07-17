@@ -10,7 +10,7 @@ import LoginController from '@/pages/Login/LoginController/LoginController';
 import Home from '@/pages/Home';
 import PrivateRouter from '@/components/router/PrivateRouter';
 import PublicRouter from '@/components/router/PublicRouter';
-import ErrorDetail from '@/pages/ErrorDetail';
+import Detail from '@/pages/Detail';
 import VoteGenerator from '@/pages/VoteGenerator';
 import Vote from '@/pages/Discussion/Vote/Vote';
 
@@ -31,7 +31,6 @@ const App = () => {
 		<Layout>
 			<Header />
 			<Content>
-				<Vote articleId="4" />
 				<Routes>
 					<Route path="/callback" element={<LoginController />} />
 					<Route path="/category" element={<CategorySelector />} />
@@ -42,7 +41,15 @@ const App = () => {
 					<Route element={<PublicRouter isAuthenticated={isLogin} />}>
 						<Route path="/login" element={<Login />} />
 					</Route>
-					<Route path="/articles/error/:id" element={<ErrorDetail />} />
+					<Route path="/articles/error/:id" element={<Detail />} />
+					<Route
+						path="/articles/discussion/:id"
+						element={
+							<Detail>
+								<Vote articleId="4" />
+							</Detail>
+						}
+					/>
 					<Route path="/" element={<Home />} />
 				</Routes>
 			</Content>
