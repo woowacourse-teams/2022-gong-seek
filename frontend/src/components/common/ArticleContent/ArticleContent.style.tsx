@@ -22,7 +22,7 @@ export const CategoryTitle = styled.h2<{ category: string }>`
 	font-size: ${({ theme }) => theme.size.SIZE_020};
 	font-weight: 800;
 	color: ${({ theme, category }) =>
-		category === '토론' ? theme.colors.PURPLE_500 : theme.colors.RED_500};
+		category === '토론' ? theme.colors.BLUE_500 : theme.colors.RED_500};
 `;
 
 export const UserProfile = styled.div`
