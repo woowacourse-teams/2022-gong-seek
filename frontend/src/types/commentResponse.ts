@@ -6,5 +6,3 @@ export interface CommentType {
 	createdAt: string;
 	isAuthor: boolean;
 }
-
-export type CommentResponseType = CommentType[];

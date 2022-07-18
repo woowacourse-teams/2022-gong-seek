@@ -7,8 +7,8 @@ export interface WritingArticles {
 	category: string;
 }
 
-type category = 'question' | 'discussion' | 'total';
-type sort = 'latest' | 'views';
+type Category = 'question' | 'discussion' | 'total';
+type Sort = 'latest' | 'views';
 
 export const postWritingArticle = (article: WritingArticles) => {
 	const accessToken = localStorage.getItem('accessToken');
