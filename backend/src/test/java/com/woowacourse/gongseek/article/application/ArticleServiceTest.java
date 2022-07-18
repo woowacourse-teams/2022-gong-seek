@@ -7,9 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
+import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
+import com.woowacourse.gongseek.auth.presentation.dto.LoginAppMember;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ public class ArticleServiceTest {
         Member member = new Member("slo", "hanull", "avatar.com");
         memberRepository.save(member);
         ArticleRequest articleRequest = new ArticleRequest(title, content, category);
-        AppMember appMember = new LoginMember(member.getId());
+        AppMember appMember = new LoginAppMember(member.getId());
 
         ArticleIdResponse articleIdResponse = articleService.save(appMember, articleRequest);
 
@@ -78,8 +78,9 @@ public class ArticleServiceTest {
         Member member = new Member("slo", "hanull", "avatar.com");
         memberRepository.save(member);
 
-        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
-        ArticleResponse articleResponse = articleService.findOne(new LoginMember(member.getId()), savedArticle.getId(),
+        ArticleIdResponse savedArticle = articleService.save(new LoginAppMember(member.getId()), articleRequest);
+        ArticleResponse articleResponse = articleService.findOne(new LoginAppMember(member.getId()),
+                savedArticle.getId(),
                 category);
 
         assertAll(
@@ -99,7 +100,7 @@ public class ArticleServiceTest {
         Member member = new Member("slo", "hanull", "avatar.com");
         memberRepository.save(member);
 
-        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleIdResponse savedArticle = articleService.save(new LoginAppMember(member.getId()), articleRequest);
         ArticleResponse articleResponse = articleService.findOne(new GuestMember(), savedArticle.getId(), category);
 
         assertAll(
@@ -119,7 +120,7 @@ public class ArticleServiceTest {
         Member member = new Member("slo", "hanull", "avatar.com");
         memberRepository.save(member);
 
-        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleIdResponse savedArticle = articleService.save(new LoginAppMember(member.getId()), articleRequest);
         articleService.findOne(new GuestMember(), savedArticle.getId(), category);
         ArticleResponse articleResponse = articleService.findOne(new GuestMember(), savedArticle.getId(), category);
 
@@ -141,7 +142,7 @@ public class ArticleServiceTest {
         Member member = new Member("rennon", "brorae", "avatar.com");
         memberRepository.save(member);
 
-        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleIdResponse savedArticle = articleService.save(new LoginAppMember(member.getId()), articleRequest);
         assertThatThrownBy(() -> articleService.findOne(new GuestMember(), savedArticle.getId(), "question1"))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("존재하지 않는 카테고리입니다.");

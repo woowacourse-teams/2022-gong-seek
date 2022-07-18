@@ -1,4 +1,4 @@
-import * as S from '@/components/layout/TabBar/TabBat.style';
+import * as S from '@/components/layout/TabBar/TabBar.style';
 
 const TabBar = () => (
 	<S.Section>

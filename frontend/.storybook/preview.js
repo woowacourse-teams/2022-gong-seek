@@ -1,6 +1,7 @@
 import { ThemeProvider, Global } from '@emotion/react';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { initialize, mswDecorator } from 'msw-storybook-addon';
 
 import { BrowserRouter } from 'react-router-dom';
 import { theme } from '@/styles/Theme';
@@ -18,6 +19,7 @@ export const parameters = {
 };
 
 export const decorators = [
+	mswDecorator,
 	(Story) => (
 		<ThemeProvider theme={theme}>
 			<Global styles={reset} />
@@ -31,3 +33,4 @@ export const decorators = [
 		</ThemeProvider>
 	),
 ];
+initialize();

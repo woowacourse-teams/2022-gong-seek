@@ -24,9 +24,11 @@ const WritingArticles = () => {
 
 	useEffect(() => {
 		if (isSuccess) {
-			alert('글 등록이 완료되었습니다.');
+			if (confirm('글 등록이 완료되었습니다. 투표를 등록하시겠습니까?')) {
+				navigate(`/votes/${data.data.id}`);
+				return;
+			}
 			navigate(`/`);
-			return;
 		}
 	}, [isSuccess]);
 

@@ -11,13 +11,13 @@ export interface ArticleContentProps {
 		title: string;
 		content: string;
 		createAt: string;
-		views: string;
-		likeCount: string;
+		views: number;
+		likeCount: number;
 	};
 
 	author: {
 		name: string;
-		avatar: string;
+		avatarUrl: string;
 	};
 	isAuthor: boolean;
 }
@@ -31,9 +31,9 @@ const ArticleContent = ({ category, article, author, isAuthor }: ArticleContentP
 	return (
 		<S.Container>
 			<S.Header>
-				<S.CategoryTitle>{category}</S.CategoryTitle>
+				<S.CategoryTitle category={category}>{category}</S.CategoryTitle>
 				<S.UserProfile>
-					<S.UserProfileImg src={author.avatar} />
+					<S.UserProfileImg src={author.avatarUrl} />
 					<div>{author.name}</div>
 				</S.UserProfile>
 			</S.Header>
