@@ -9,7 +9,7 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginAppMember;
+import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ public class ArticleServiceTest {
         Member member = new Member("slo", "hanull", "avatar.com");
         memberRepository.save(member);
         ArticleRequest articleRequest = new ArticleRequest(title, content, category);
-        AppMember appMember = new LoginAppMember(member.getId());
+        AppMember appMember = new LoginMember(member.getId());
 
         ArticleIdResponse articleIdResponse = articleService.save(appMember, articleRequest);
 
@@ -78,10 +78,9 @@ public class ArticleServiceTest {
         Member member = new Member("slo", "hanull", "avatar.com");
         memberRepository.save(member);
 
-        ArticleIdResponse savedArticle = articleService.save(new LoginAppMember(member.getId()), articleRequest);
-        ArticleResponse articleResponse = articleService.findOne(new LoginAppMember(member.getId()),
-                savedArticle.getId(),
-                category);
+        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleResponse articleResponse = articleService.findOne(
+                new LoginMember(member.getId()), savedArticle.getId());
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
@@ -100,8 +99,8 @@ public class ArticleServiceTest {
         Member member = new Member("slo", "hanull", "avatar.com");
         memberRepository.save(member);
 
-        ArticleIdResponse savedArticle = articleService.save(new LoginAppMember(member.getId()), articleRequest);
-        ArticleResponse articleResponse = articleService.findOne(new GuestMember(), savedArticle.getId(), category);
+        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleResponse articleResponse = articleService.findOne(new GuestMember(), savedArticle.getId());
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
@@ -120,9 +119,9 @@ public class ArticleServiceTest {
         Member member = new Member("slo", "hanull", "avatar.com");
         memberRepository.save(member);
 
-        ArticleIdResponse savedArticle = articleService.save(new LoginAppMember(member.getId()), articleRequest);
-        articleService.findOne(new GuestMember(), savedArticle.getId(), category);
-        ArticleResponse articleResponse = articleService.findOne(new GuestMember(), savedArticle.getId(), category);
+        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        articleService.findOne(new GuestMember(), savedArticle.getId());
+        ArticleResponse articleResponse = articleService.findOne(new GuestMember(), savedArticle.getId());
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
@@ -130,21 +129,5 @@ public class ArticleServiceTest {
                 () -> assertThat(articleResponse.getViews()).isEqualTo(2),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull()
         );
-    }
-
-    @Test
-    void 카테고리가_올바르지_않으면_예외가_발생한다() {
-        String title = "질문합니다.";
-        String content = "내용입나다....";
-        String category = "question";
-        ArticleRequest articleRequest = new ArticleRequest(title, content, category);
-
-        Member member = new Member("rennon", "brorae", "avatar.com");
-        memberRepository.save(member);
-
-        ArticleIdResponse savedArticle = articleService.save(new LoginAppMember(member.getId()), articleRequest);
-        assertThatThrownBy(() -> articleService.findOne(new GuestMember(), savedArticle.getId(), "question1"))
-                .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않는 카테고리입니다.");
     }
 }

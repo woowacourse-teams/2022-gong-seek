@@ -64,7 +64,7 @@ public class Article {
     }
 
     public boolean isAuthor(Member member) {
-        return this.member.equals(member);
+        return member.equals(this.getMember());
     }
 
     public void addViews() {
@@ -80,12 +80,6 @@ public class Article {
     private void validateContentLength(String content) {
         if (content.length() > MAX_CONTENT_LENGTH) {
             throw new IllegalArgumentException("컨텐트의 길이는 1000 이하여야합니다.");
-        }
-    }
-
-    public void validateCategory(Category category) {
-        if (this.category != category) {
-            throw new IllegalArgumentException("카테고리가 올바르지 않습니다.");
         }
     }
 }

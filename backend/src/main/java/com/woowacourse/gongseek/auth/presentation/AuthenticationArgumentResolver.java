@@ -4,7 +4,7 @@ import static org.hibernate.validator.internal.metadata.core.ConstraintHelper.PA
 
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginAppMember;
+import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
@@ -25,15 +25,15 @@ public class AuthenticationArgumentResolver implements HandlerMethodArgumentReso
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         validateNullRequest(request);
-        return getSearchMember(request);
+        return getAppMember(request);
     }
 
-    private AppMember getSearchMember(HttpServletRequest request) {
+    private AppMember getAppMember(HttpServletRequest request) {
         if (Objects.isNull(request.getAttribute(PAYLOAD))) {
             return new GuestMember();
         }
         Long payload = Long.valueOf(String.valueOf(request.getAttribute(PAYLOAD)));
-        return new LoginAppMember(payload);
+        return new LoginMember(payload);
     }
 
     private void validateNullRequest(HttpServletRequest request) {

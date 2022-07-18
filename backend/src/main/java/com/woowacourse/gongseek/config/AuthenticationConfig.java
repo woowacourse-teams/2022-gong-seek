@@ -27,7 +27,8 @@ public class AuthenticationConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/api/auth/**");
 
         registry.addInterceptor(new AuthorizationInterceptor(jwtTokenProvider))
-                .addPathPatterns("/**");
+                .addPathPatterns("/**")
+                .excludePathPatterns("/api/auth/**");
     }
 
     @Override

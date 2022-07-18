@@ -1,8 +1,8 @@
 package com.woowacourse.gongseek.auth.presentation.dto;
 
-public class LoginAppMember extends AppMember {
+public class LoginMember extends AppMember {
 
-    public LoginAppMember(Long payload) {
+    public LoginMember(Long payload) {
         super(payload);
     }
 

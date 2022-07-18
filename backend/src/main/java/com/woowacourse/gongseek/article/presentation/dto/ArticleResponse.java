@@ -21,16 +21,16 @@ public class ArticleResponse {
     private String content;
 
     @JsonProperty(value = "isAuthor")
-    private boolean writer;
+    private boolean isAuthor;
 
     private int views;
 
     private LocalDateTime createdAt;
 
-    public ArticleResponse(Article article, boolean writer) {
+    public ArticleResponse(Article article, boolean isAuthor) {
         this.title = article.getTitle();
         this.content = article.getContent();
-        this.writer = writer;
+        this.isAuthor = isAuthor;
         this.author = new MemberDto(article.getMember());
         this.views = article.getViews();
         this.createdAt = article.getCreatedAt();
