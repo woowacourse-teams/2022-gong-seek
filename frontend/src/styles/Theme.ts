@@ -23,6 +23,19 @@ export const voteGradientColors = {
 	VOTE_005: 'linear-gradient(-45deg, #F06966,#FAD6A6)',
 };
 
+export const articleColors = {
+	ARTICLE_001: '#9055FF',
+	ARTICLE_002: '#13E2DA',
+	ARTICLE_003: '#D6FF7F',
+	ARTICLE_004: '#00B3CC',
+	ARTICLE_005: '#ED7B84',
+	ARTICLE_006: '#FAD6A6',
+	ARTICLE_007: '#6699FF',
+	ARTICLE_008: '#FBB454',
+	ARTICLE_009: '#FFCAC9',
+	ARTICLE_010: '#B2FFDA',
+};
+
 const breakpoints = {
 	MOBIL: 320,
 	DESKTOP: 1280,
@@ -51,6 +64,7 @@ const size = {
 	SIZE_028: '1.75rem',
 	SIZE_030: '1.875rem',
 	SIZE_032: '2rem',
+	SIZE_040: '2.5rem',
 	SIZE_050: '3.125rem',
 	SIZE_080: '5rem',
 	SIZE_090: '5.625rem',
@@ -58,6 +72,9 @@ const size = {
 
 const zIndex = {
 	HEADER: 100,
+	ARTICLE_POPULAR_CONTENT: 103,
+	ARTICLE_BACKGROUND_CONTENT: 101,
+	ARTICLE_ARROW_BUTTON: 110,
 };
 
 export const theme = {
@@ -67,4 +84,5 @@ export const theme = {
 	size,
 	zIndex,
 	voteGradientColors,
+	articleColors,
 } as const;
