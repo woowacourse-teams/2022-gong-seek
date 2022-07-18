@@ -1,14 +1,13 @@
 package com.woowacourse.gongseek.auth.presentation.dto;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+public class LoginMember extends AppMember {
 
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Getter
-public class LoginMember {
+    public LoginMember(Long payload) {
+        super(payload);
+    }
 
-    private Long payload;
+    @Override
+    public boolean isGuest() {
+        return false;
+    }
 }
