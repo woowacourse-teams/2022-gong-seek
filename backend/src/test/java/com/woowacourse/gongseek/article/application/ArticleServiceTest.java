@@ -4,13 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.GuestUser;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginUser;
-import com.woowacourse.gongseek.auth.presentation.dto.User;
+import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
+import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -37,9 +36,9 @@ public class ArticleServiceTest {
         Member member = new Member("slo", "hanull", "avatar.com");
         memberRepository.save(member);
         ArticleRequest articleRequest = new ArticleRequest(title, content, category);
-        User user = new LoginUser(member.getId());
+        AppMember appMember = new LoginMember(member.getId());
 
-        ArticleIdResponse articleIdResponse = articleService.save(user, articleRequest);
+        ArticleIdResponse articleIdResponse = articleService.save(appMember, articleRequest);
 
         assertThat(articleIdResponse.getId()).isNotNull();
     }
@@ -50,9 +49,9 @@ public class ArticleServiceTest {
         String content = "난 비회원인데....";
         String category = "question";
         ArticleRequest articleRequest = new ArticleRequest(title, content, category);
-        User user = new GuestUser();
+        AppMember appMember = new GuestMember();
 
-        assertThatThrownBy(() -> articleService.save(user, articleRequest))
+        assertThatThrownBy(() -> articleService.save(appMember, articleRequest))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("권한이 없는 사용자입니다.");
     }
@@ -64,7 +63,7 @@ public class ArticleServiceTest {
         String category = "question";
         ArticleRequest articleRequest = new ArticleRequest(title, content, category);
 
-        assertThatThrownBy(() -> articleService.save(new GuestUser(), articleRequest))
+        assertThatThrownBy(() -> articleService.save(new GuestMember(), articleRequest))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("권한이 없는 사용자입니다.");
     }
@@ -79,8 +78,8 @@ public class ArticleServiceTest {
         Member member = new Member("slo", "hanull", "avatar.com");
         memberRepository.save(member);
 
-        ArticleIdResponse savedArticle = articleService.save(new LoginUser(member.getId()), articleRequest);
-        ArticleResponse articleResponse = articleService.findOne(new LoginUser(member.getId()), savedArticle.getId(),
+        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleResponse articleResponse = articleService.findOne(new LoginMember(member.getId()), savedArticle.getId(),
                 category);
 
         assertAll(
@@ -100,8 +99,8 @@ public class ArticleServiceTest {
         Member member = new Member("slo", "hanull", "avatar.com");
         memberRepository.save(member);
 
-        ArticleIdResponse savedArticle = articleService.save(new LoginUser(member.getId()), articleRequest);
-        ArticleResponse articleResponse = articleService.findOne(new GuestUser(), savedArticle.getId(), category);
+        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleResponse articleResponse = articleService.findOne(new GuestMember(), savedArticle.getId(), category);
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
@@ -120,9 +119,9 @@ public class ArticleServiceTest {
         Member member = new Member("slo", "hanull", "avatar.com");
         memberRepository.save(member);
 
-        ArticleIdResponse savedArticle = articleService.save(new LoginUser(member.getId()), articleRequest);
-        articleService.findOne(new GuestUser(), savedArticle.getId(), category);
-        ArticleResponse articleResponse = articleService.findOne(new GuestUser(), savedArticle.getId(), category);
+        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        articleService.findOne(new GuestMember(), savedArticle.getId(), category);
+        ArticleResponse articleResponse = articleService.findOne(new GuestMember(), savedArticle.getId(), category);
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
@@ -142,8 +141,8 @@ public class ArticleServiceTest {
         Member member = new Member("rennon", "brorae", "avatar.com");
         memberRepository.save(member);
 
-        ArticleIdResponse savedArticle = articleService.save(new LoginUser(member.getId()), articleRequest);
-        assertThatThrownBy(() -> articleService.findOne(new GuestUser(), savedArticle.getId(), "question1"))
+        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        assertThatThrownBy(() -> articleService.findOne(new GuestMember(), savedArticle.getId(), "question1"))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("존재하지 않는 카테고리입니다.");
     }

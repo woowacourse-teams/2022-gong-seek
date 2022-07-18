@@ -82,4 +82,10 @@ public class Article {
             throw new IllegalArgumentException("컨텐트의 길이는 1000 이하여야합니다.");
         }
     }
+
+    public void validateCategory(Category category) {
+        if (this.category != category) {
+            throw new IllegalArgumentException("카테고리가 올바르지 않습니다.");
+        }
+    }
 }

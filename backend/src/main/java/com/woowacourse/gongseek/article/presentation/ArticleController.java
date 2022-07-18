@@ -5,7 +5,7 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
-import com.woowacourse.gongseek.auth.presentation.dto.User;
+import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,19 +26,19 @@ public class ArticleController {
 
     @PostMapping
     public ResponseEntity<ArticleIdResponse> create(
-            @AuthenticationPrinciple User user,
+            @AuthenticationPrinciple AppMember appMember,
             @RequestBody ArticleRequest articleRequest
     ) {
-        ArticleIdResponse articleIdResponse = articleService.save(user, articleRequest);
+        ArticleIdResponse articleIdResponse = articleService.save(appMember, articleRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(articleIdResponse);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ArticleResponse> findOne(
-            @AuthenticationPrinciple User user,
+            @AuthenticationPrinciple AppMember appMember,
             @PathVariable Long id,
             @RequestParam String category
     ) {
-        return ResponseEntity.ok(articleService.findOne(user, id, category));
+        return ResponseEntity.ok(articleService.findOne(appMember, id, category));
     }
 }

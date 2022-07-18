@@ -91,6 +91,24 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         );
     }
 
+    //    @Test
+//    void 게시글_작성자는_게시물을_수정할_수_있다() {
+//        // given
+//        TokenResponse tokenResponse = 로그인을_한다();
+//        ArticleIdResponse articleIdResponse = 토론을_등록한다(tokenResponse).as(ArticleIdResponse.class);
+//
+//        // when
+//        ExtractableResponse<Response> response = 게시물을_수정한다(tokenResponse, articleIdResponse);
+//        ArticleUpdateResponse articleUpdateResponse = response.as(ArticleUpdateResponse.class);
+//
+//        // then
+//        assertAll(
+//                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+//                () -> assertThat(articleUpdateResponse.getId()).isEqualTo(articleIdResponse.getId()),
+//                () -> assertThat(articleUpdateResponse.getCategory()).isEqualTo(Category.DISCUSSION)
+//        );
+//    }
+
     private TokenResponse 로그인을_한다() {
         return RestAssured
                 .given().log().all()

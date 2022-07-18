@@ -2,9 +2,9 @@ package com.woowacourse.gongseek.auth.presentation;
 
 import static org.hibernate.validator.internal.metadata.core.ConstraintHelper.PAYLOAD;
 
-import com.woowacourse.gongseek.auth.presentation.dto.GuestUser;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginUser;
-import com.woowacourse.gongseek.auth.presentation.dto.User;
+import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
+import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
@@ -28,12 +28,12 @@ public class AuthenticationArgumentResolver implements HandlerMethodArgumentReso
         return getSearchMember(request);
     }
 
-    private User getSearchMember(HttpServletRequest request) {
+    private AppMember getSearchMember(HttpServletRequest request) {
         if (Objects.isNull(request.getAttribute(PAYLOAD))) {
-            return new GuestUser();
+            return new GuestMember();
         }
         Long payload = Long.valueOf(String.valueOf(request.getAttribute(PAYLOAD)));
-        return new LoginUser(payload);
+        return new LoginMember(payload);
     }
 
     private void validateNullRequest(HttpServletRequest request) {
