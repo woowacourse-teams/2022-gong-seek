@@ -31,7 +31,7 @@ const ArticleContent = ({ category, article, author, isAuthor }: ArticleContentP
 	return (
 		<S.Container>
 			<S.Header>
-				<S.CategoryTitle>{category}</S.CategoryTitle>
+				<S.CategoryTitle category={category}>{category}</S.CategoryTitle>
 				<S.UserProfile>
 					<S.UserProfileImg src={author.avatarUrl} />
 					<div>{author.name}</div>

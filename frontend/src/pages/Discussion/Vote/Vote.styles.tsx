@@ -8,13 +8,14 @@ export const VoteBox = styled.div`
 `;
 
 export const Container = styled.div`
-	width: 60%;
+	width: 90%;
 	display: flex;
 	flex-direction: column;
-	padding: ${({ theme }) => theme.size.SIZE_014};
-	box-shadow: 0px 8px 24px ${({ theme }) => theme.boxShadows.primary};
+	box-shadow: 0 8px 24px ${({ theme }) => theme.boxShadows.secondary};
+	padding: ${({ theme }) => theme.size.SIZE_010};
 	gap: ${({ theme }) => theme.size.SIZE_024};
 	border-radius: ${({ theme }) => theme.size.SIZE_010};
+	margin-top: ${({ theme }) => theme.size.SIZE_026};
 `;
 
 export const VoteTitleBox = styled.div`

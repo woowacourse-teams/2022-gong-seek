@@ -6,13 +6,12 @@ export const Section = styled.section`
 	position: sticky;
 	bottom: 0;
 	width: 100%;
-	height: 3.5rem;
+	height: ${({ theme }) => theme.size.SIZE_056};
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	box-shadow: 0px -4px 15px ${({ theme }) => theme.boxShadows.secondary};
 	border-radius: ${({ theme }) => theme.size.SIZE_010} ${({ theme }) => theme.size.SIZE_010} 0 0;
-	z-index: ${({ theme }) => theme.zIndex.HEADER};
 	background-color: ${({ theme }) => theme.colors.WHITE};
 `;
 

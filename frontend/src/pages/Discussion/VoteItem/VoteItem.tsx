@@ -4,6 +4,7 @@ import { AxiosError } from 'axios';
 import { useMutation } from 'react-query';
 import { checkVoteItems } from '@/api/vote';
 import { queryClient } from '@/index';
+import { useEffect } from 'react';
 
 export interface VoteItemProps {
 	title: string;
@@ -15,15 +16,24 @@ export interface VoteItemProps {
 
 const VoteItem = ({ title, itemVotes, totalVotes, idx, name }: VoteItemProps) => {
 	const progressivePercent = Math.floor((itemVotes / totalVotes) * 100);
-	const { isLoading, isError, mutate } = useMutation<unknown, AxiosError, string>(checkVoteItems);
+	const { isLoading, isError, mutate, isSuccess } = useMutation<
+		unknown,
+		AxiosError,
+		{ articleId: string; voteId: string }
+	>(checkVoteItems);
+
+	useEffect(() => {
+		if (isSuccess) {
+			queryClient.refetchQueries('vote');
+		}
+	}, [isSuccess]);
 
 	if (isLoading) return <div>로딩중...</div>;
 
 	if (isError) return <div>에러..!</div>;
 
-	const onChangeRadio = (e) => {
-		mutate(String(idx));
-		queryClient.refetchQueries('vote');
+	const onChangeRadio = () => {
+		mutate({ articleId: name, voteId: String(idx) });
 	};
 
 	return (
@@ -38,8 +48,8 @@ const VoteItem = ({ title, itemVotes, totalVotes, idx, name }: VoteItemProps) =>
 
 			<S.ProgressiveBar>
 				<S.ProgressiveBarContent
-					percent={progressivePercent}
-					colorKey={convertIdxToVoteColorKey(idx)}
+					percent={progressivePercent || 0}
+					colorKey={convertIdxToColorKey(idx)}
 				/>
 			</S.ProgressiveBar>
 		</S.Container>
