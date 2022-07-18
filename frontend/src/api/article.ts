@@ -1,3 +1,4 @@
+import { ArticleType } from '@/types/articleResponse';
 import axios from 'axios';
 
 export interface WritingArticles {
@@ -5,6 +6,9 @@ export interface WritingArticles {
 	content: string;
 	category: string;
 }
+
+type category = 'question' | 'discussion' | 'total';
+type sort = 'latest' | 'views';
 
 export const postWritingArticle = (article: WritingArticles) => {
 	const accessToken = localStorage.getItem('accessToken');
@@ -14,4 +18,16 @@ export const postWritingArticle = (article: WritingArticles) => {
 			Authorization: `Bearer ${accessToken}`,
 		},
 	});
+};
+
+interface PopularArticles {
+	articles: ArticleType[];
+	hastNext: boolean;
+}
+
+export const getPopularArticles = async () => {
+	const result = await axios.get<PopularArticles>(
+		`http://192.168.0.155:8080/api/articles?category=total&sort=views&page=1&size=10`,
+	);
+	return result.data;
 };
