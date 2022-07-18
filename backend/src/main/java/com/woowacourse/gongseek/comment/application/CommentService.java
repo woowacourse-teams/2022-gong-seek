@@ -33,17 +33,17 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<CommentResponse> findByArticleId(Long articleId) {
+    public List<CommentResponse> findByArticleId(LoginMember loginMember, Long articleId) {
         return commentRepository.findCommentsByArticleId(articleId).stream()
-                .map(CommentResponse::from)
+                .map(comment -> CommentResponse.of(comment, comment.isAuthor(findMember(loginMember))))
                 .collect(Collectors.toList());
     }
 
-    public void update(LoginMember loginMember, CommentRequest updateRequest, Long commentId) {
+    public void update(LoginMember loginMember, Long commentId, CommentRequest updateRequest) {
         Comment comment = findComment(commentId);
         Member member = findMember(loginMember);
 
-        if (!comment.isMember(member)) {
+        if (!comment.isAuthor(member)) {
             throw new IllegalArgumentException("댓글을 작성한 회원만 수정할 수 있습니다.");
         }
         comment.updateContent(updateRequest.getContent());
@@ -53,7 +53,7 @@ public class CommentService {
         Comment comment = findComment(commentId);
         Member member = findMember(loginMember);
 
-        if (!comment.isMember(member)) {
+        if (!comment.isAuthor(member)) {
             throw new IllegalArgumentException("댓글을 작성한 회원만 삭제할 수 있습니다.");
         }
         commentRepository.deleteById(commentId);

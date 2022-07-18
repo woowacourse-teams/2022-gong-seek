@@ -38,6 +38,10 @@ public class Member {
         this.avatarUrl = avatarUrl;
     }
 
+    public boolean isSame(Member member) {
+        return this.equals(member);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

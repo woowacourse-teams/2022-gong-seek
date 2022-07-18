@@ -4,6 +4,7 @@ package com.woowacourse.gongseek.comment.domain;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -41,6 +42,7 @@ public class Comment {
     private Article article;
 
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     public Comment(String content, Member member, Article article) {
@@ -53,8 +55,8 @@ public class Comment {
         this.content = new Content(content);
     }
 
-    public boolean isMember(Member member) {
-        return this.getMember().equals(member);
+    public boolean isAuthor(Member member) {
+        return this.member.isSame(member);
     }
 
     public String getContent() {

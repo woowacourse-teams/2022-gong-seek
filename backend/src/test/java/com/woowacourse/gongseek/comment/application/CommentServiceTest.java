@@ -51,13 +51,14 @@ class CommentServiceTest {
     @Test
     void 댓글을_생성한다() {
         CommentRequest request = new CommentRequest("content2");
+        LoginMember member = new LoginMember(this.member.getId());
 
-        commentService.save(new LoginMember(member.getId()), article.getId(), request);
-        List<CommentResponse> savedComments = commentService.findByArticleId(article.getId());
+        commentService.save(member, article.getId(), request);
+        List<CommentResponse> savedComments = commentService.findByArticleId(member, article.getId());
 
         assertAll(
                 () -> assertThat(savedComments).hasSize(2),
-                () -> assertThat(savedComments.get(1).getAuthorName()).isEqualTo(member.getName()),
+                () -> assertThat(savedComments.get(1).getAuthorName()).isEqualTo(this.member.getName()),
                 () -> assertThat(savedComments.get(1).getContent()).isEqualTo(request.getContent())
         );
     }
@@ -82,12 +83,13 @@ class CommentServiceTest {
 
     @Test
     void 댓글을_수정한다() {
-        List<CommentResponse> comments = commentService.findByArticleId(article.getId());
+        LoginMember member = new LoginMember(this.member.getId());
+        List<CommentResponse> comments = commentService.findByArticleId(member, article.getId());
         String updateContent = "update";
         CommentRequest updateRequest = new CommentRequest(updateContent);
 
-        commentService.update(new LoginMember(member.getId()), updateRequest, comments.get(0).getId());
-        List<CommentResponse> savedComments = commentService.findByArticleId(article.getId());
+        commentService.update(member, comments.get(0).getId(), updateRequest);
+        List<CommentResponse> savedComments = commentService.findByArticleId(member, article.getId());
 
         assertThat(savedComments.get(0).getContent()).isEqualTo(updateContent);
     }
@@ -95,15 +97,15 @@ class CommentServiceTest {
     @Test
     void 댓글이_존재하지_않는_경우_수정할_수_없다() {
         assertThatThrownBy(
-                () -> commentService.update(new LoginMember(member.getId()), new CommentRequest("update content"), -1L))
+                () -> commentService.update(new LoginMember(member.getId()), -1L, new CommentRequest("update content")))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("댓글이 존재하지 않습니다.");
     }
 
     @Test
     void 회원이_아닌_경우_댓글을_수정할_수_없다() {
-        assertThatThrownBy(() -> commentService.update(new LoginMember(-1L), new CommentRequest("update content"),
-                comment.getId()))
+        assertThatThrownBy(() -> commentService.update(new LoginMember(-1L), comment.getId(),
+                new CommentRequest("update content")))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("회원이 존재하지 않습니다.");
     }
@@ -112,16 +114,17 @@ class CommentServiceTest {
     void 댓글을_작성한_회원이_아닌_경우_수정할_수_없다() {
         Member newMember = memberRepository.save(new Member("judy", "judyhithub", "avatarUrl"));
         assertThatThrownBy(
-                () -> commentService.update(new LoginMember(newMember.getId()), new CommentRequest("update content"),
-                        comment.getId()))
+                () -> commentService.update(new LoginMember(newMember.getId()), comment.getId(),
+                        new CommentRequest("update content")))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("댓글을 작성한 회원만 수정할 수 있습니다.");
     }
 
     @Test
     void 댓글을_삭제한다() {
-        commentService.delete(new LoginMember(member.getId()), comment.getId());
-        List<CommentResponse> comments = commentService.findByArticleId(article.getId());
+        LoginMember member = new LoginMember(this.member.getId());
+        commentService.delete(member, comment.getId());
+        List<CommentResponse> comments = commentService.findByArticleId(member, article.getId());
 
         boolean isFind = comments.stream()
                 .anyMatch(comment -> comment.getId().equals(this.comment.getId()));
