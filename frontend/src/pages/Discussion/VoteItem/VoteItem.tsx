@@ -1,4 +1,4 @@
-import { convertIdxToColorKey } from '@/utils/converter';
+import { convertIdxToVoteColorKey } from '@/utils/converter';
 import * as S from './VoteItem.styles';
 import { AxiosError } from 'axios';
 import { useMutation } from 'react-query';
@@ -39,7 +39,7 @@ const VoteItem = ({ title, itemVotes, totalVotes, idx, name }: VoteItemProps) =>
 			<S.ProgressiveBar>
 				<S.ProgressiveBarContent
 					percent={progressivePercent}
-					colorKey={convertIdxToColorKey(idx)}
+					colorKey={convertIdxToVoteColorKey(idx)}
 				/>
 			</S.ProgressiveBar>
 		</S.Container>
