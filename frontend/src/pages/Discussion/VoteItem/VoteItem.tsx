@@ -1,4 +1,4 @@
-import { convertIdxToColorKey } from '@/utils/converter';
+import { convertIdxToVoteColorKey } from '@/utils/converter';
 import * as S from './VoteItem.styles';
 import { AxiosError } from 'axios';
 import { useMutation } from 'react-query';
