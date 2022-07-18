@@ -13,7 +13,6 @@ import PublicRouter from '@/components/router/PublicRouter';
 import ErrorDetail from '@/pages/ErrorDetail';
 import Vote from '@/pages/Discussion/Vote/Vote';
 
-
 const Layout = styled.div`
 	position: relative;
 	height: 100vh;
@@ -33,7 +32,7 @@ const App = () => {
 			<Header />
 
 			<Content>
-				<Vote articleId="1" />
+				{/* <Vote articleId="1" /> */}
 
 				<Routes>
 					<Route path="/callback" element={<LoginController />} />
@@ -44,7 +43,7 @@ const App = () => {
 					<Route element={<PublicRouter isAuthenticated={isLogin} />}>
 						<Route path="/login" element={<Login />} />
 					</Route>
-					<Route path="/articles/error/:id" element={<ErrorDetail />} />
+					<Route path="/articles/question/:id" element={<ErrorDetail />} />
 					<Route path="/" element={<Home />} />
 				</Routes>
 			</Content>
