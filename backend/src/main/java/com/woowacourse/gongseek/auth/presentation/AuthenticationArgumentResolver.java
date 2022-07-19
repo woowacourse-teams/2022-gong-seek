@@ -28,17 +28,17 @@ public class AuthenticationArgumentResolver implements HandlerMethodArgumentReso
         return getAppMember(request);
     }
 
+    private void validateNullRequest(HttpServletRequest request) {
+        if (Objects.isNull(request)) {
+            throw new IllegalArgumentException("요청 데이터가 없습니다.");
+        }
+    }
+
     private AppMember getAppMember(HttpServletRequest request) {
         if (Objects.isNull(request.getAttribute(PAYLOAD))) {
             return new GuestMember();
         }
         Long payload = Long.valueOf(String.valueOf(request.getAttribute(PAYLOAD)));
         return new LoginMember(payload);
-    }
-
-    private void validateNullRequest(HttpServletRequest request) {
-        if (Objects.isNull(request)) {
-            throw new IllegalArgumentException("요청 데이터가 없습니다.");
-        }
     }
 }

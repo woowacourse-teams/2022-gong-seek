@@ -3,9 +3,12 @@ package com.woowacourse.gongseek.acceptance;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import io.restassured.RestAssured;
@@ -20,26 +23,13 @@ import org.springframework.http.MediaType;
 @SuppressWarnings("NonAsciiCharacters")
 public class ArticleAcceptanceTest extends AcceptanceTest {
 
-//    @Test
-//    void 유저가_깃허브로_로그인을_하고_게시글을_등록할_수_있다() {
-//        // given
-//        TokenResponse tokenResponse = RestAssured
-//                .given().log().all()
-//                .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                .body(new OAuthCodeRequest(주디.getCode()))
-//                .when()
-//                .post("/api/auth/fake/token")
-//                .then().log().all()
-//                .statusCode(HttpStatus.OK.value())
-//                .extract()
-
     @Test
     void 유저가_깃허브로_로그인을_하고_게시글을_등록할_수_있다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다();
 
         // when
-        ExtractableResponse<Response> response = 게시글을_등록한다(tokenResponse);
+        ExtractableResponse<Response> response = 게시물을_등록한다(tokenResponse);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
@@ -65,7 +55,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     void 로그인_없이_게시물을_단건_조회할_수_있다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다();
-        ArticleIdResponse articleIdResponse = 게시글을_등록한다(tokenResponse).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when
         ExtractableResponse<Response> response = 토큰_없이_게시물을_조회한다(articleIdResponse);
@@ -94,10 +84,10 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     void 로그인을_하고_게시물을_단건_조회할_수_있다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다();
-        ArticleIdResponse articleIdResponse = 게시글을_등록한다(tokenResponse).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when
-        ExtractableResponse<Response> response = 게시물을_조회한다(tokenResponse, articleIdResponse);
+        ExtractableResponse<Response> response = 로그인_후_게시물을_조회한다(tokenResponse, articleIdResponse);
         ArticleResponse articleResponse = response.as(ArticleResponse.class);
 
         // then
@@ -119,7 +109,51 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    private ExtractableResponse<Response> 게시글을_등록한다(TokenResponse tokenResponse) {
+    @Test
+    void 로그인_하지_않으면_게시물을_수정할_수_없다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다();
+        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
+
+        // when
+        ExtractableResponse<Response> response = 토큰_없이_게시물을_수정한다(articleIdResponse);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void 게시물_작성자가_아니면_게시물을_수정할_수_없다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다();
+        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
+
+        // when
+        ExtractableResponse<Response> response = 로그인_후_게시물을_수정한다(new TokenResponse("abc"), articleIdResponse);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void 게시물_작성자는_게시물을_수정할_수_있다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다();
+        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
+
+        // when
+        ExtractableResponse<Response> response = 로그인_후_게시물을_수정한다(tokenResponse, articleIdResponse);
+        ArticleUpdateResponse articleUpdateResponse = response.as(ArticleUpdateResponse.class);
+
+        // then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(articleUpdateResponse.getId()).isEqualTo(articleIdResponse.getId()),
+                () -> assertThat(articleUpdateResponse.getCategory()).isEqualTo(Category.QUESTION)
+        );
+    }
+
+    private ExtractableResponse<Response> 게시물을_등록한다(TokenResponse tokenResponse) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
@@ -140,12 +174,37 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 .extract();
     }
 
-    private ExtractableResponse<Response> 게시물을_조회한다(TokenResponse tokenResponse, ArticleIdResponse articleIdResponse) {
+    private ExtractableResponse<Response> 로그인_후_게시물을_조회한다(TokenResponse tokenResponse,
+                                                          ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
                 .when()
                 .get("/api/articles/{articleId}", articleIdResponse.getId())
+                .then().log().all()
+                .extract();
+    }
+
+    private ExtractableResponse<Response> 토큰_없이_게시물을_수정한다(ArticleIdResponse articleIdResponse) {
+        return RestAssured
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new ArticleUpdateRequest("title2", "content2"))
+                .when()
+                .put("/api/articles/{articleId}", articleIdResponse.getId())
+                .then().log().all()
+                .extract();
+    }
+
+    private ExtractableResponse<Response> 로그인_후_게시물을_수정한다(TokenResponse tokenResponse,
+                                                          ArticleIdResponse articleIdResponse) {
+        return RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new ArticleUpdateRequest("title2", "content2"))
+                .when()
+                .put("/api/articles/{articleId}", articleIdResponse.getId())
                 .then().log().all()
                 .extract();
     }
