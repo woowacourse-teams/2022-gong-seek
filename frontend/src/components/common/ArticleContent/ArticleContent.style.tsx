@@ -42,9 +42,11 @@ export const UserProfileImg = styled.img`
 export const UserName = styled.span``;
 
 export const ArticleInfo = styled.div`
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	gap: ${({ theme }) => theme.size.SIZE_010};
+	justify-content: flex-start;
 `;
 
 export const ArticleTitle = styled.h3`
@@ -65,6 +67,11 @@ export const DetailBox = styled.span`
 	color: ${({ theme }) => theme.colors.BLACK_600};
 	opacity: 0.5;
 	font-size: ${({ theme }) => theme.size.SIZE_012};
+`;
+
+export const TextViewerBox = styled.div`
+	width: 100%;
+	margin: ${({ theme }) => theme.size.SIZE_012}, 0;
 `;
 
 export const Footer = styled.div`

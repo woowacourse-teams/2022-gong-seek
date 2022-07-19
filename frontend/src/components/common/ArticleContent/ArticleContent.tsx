@@ -36,9 +36,9 @@ const ArticleContent = ({ category, article, author }: ArticleContentProps) => {
 						<S.DetailBox>조회수 {article.views}</S.DetailBox>
 					</S.ArticleDetailInfo>
 				</S.ArticleInfo>
-				<div>
+				<S.TextViewerBox>
 					<ToastUiViewer initContent={article.content} />
-				</div>
+				</S.TextViewerBox>
 				<S.Footer>
 					<S.WritingOrderBox>
 						{article.isAuthor && (
