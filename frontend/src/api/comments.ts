@@ -1,12 +1,5 @@
+import { CommentType } from '@/types/commentResponse';
 import axios from 'axios';
-
-export interface CommentsResponse {
-	id: number;
-	content: string;
-	authorName: string;
-	authorAvartarUrl: string;
-	createdAt: string;
-}
 
 export const postComments = ({ content }: { content: string }) => {
 	const accessToken = localStorage.getItem('accessToken');
@@ -25,7 +18,7 @@ export const postComments = ({ content }: { content: string }) => {
 export const getComments = async () => {
 	const accessToken = localStorage.getItem('accessToken');
 
-	const response = await axios.get<{ comments: CommentsResponse[] }>(
+	const response = await axios.get<{ comments: CommentType[] }>(
 		'http://192.168.0.155:8080/api/articles/:articleId/comments',
 		{
 			headers: {

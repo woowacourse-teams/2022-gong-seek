@@ -7,7 +7,9 @@ export interface ArticleType {
 	title: string;
 	author: Author;
 	content: string;
-	category: Category;
 	commentCount: number;
 	createdAt: string;
+	isAuthor: boolean;
+	views: number;
+	likeCount: number;
 }

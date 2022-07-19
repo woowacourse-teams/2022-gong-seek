@@ -31,3 +31,8 @@ export const getPopularArticles = async () => {
 	);
 	return result.data;
 };
+
+export const getDetailArticle = async (id: string) => {
+	const { data } = await axios.get<ArticleType>(`http://192.168.0.155:8080/api/articles?id=${id}`);
+	return data;
+};
