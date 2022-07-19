@@ -2,9 +2,13 @@ package com.woowacourse.gongseek.article.presentation;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
@@ -28,6 +32,7 @@ import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -76,19 +81,18 @@ class ArticleControllerTest {
         results.andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document("article-create",
-                                requestHeaders(
-                                        headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
-                                ),
-                                requestFields(
-                                        fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                                        fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
-                                        fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리")
-                                ),
-                                responseFields(
-                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("식별자")
-                                )
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                                fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("식별자")
                         )
-                );
+                ));
     }
 
     @Test
@@ -110,20 +114,19 @@ class ArticleControllerTest {
         results.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("article-find-one-login",
-                                requestHeaders(
-                                        headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
-                                ),
-                                responseFields(
-                                        fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                                        fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
-                                        fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
-                                        fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
-                                        fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
-                                        fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
-                                        fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
-                                )
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
+                        responseFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                                fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
+                                fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
                         )
-                );
+                ));
     }
 
     @Test
@@ -144,17 +147,16 @@ class ArticleControllerTest {
         results.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("article-find-one-not-login",
-                                responseFields(
-                                        fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                                        fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
-                                        fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
-                                        fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
-                                        fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
-                                        fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
-                                        fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
-                                )
+                        responseFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                                fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
+                                fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
                         )
-                );
+                ));
     }
 
     @Test
@@ -174,19 +176,37 @@ class ArticleControllerTest {
         results.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("article-update",
-                                requestHeaders(
-                                        headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
-                                ),
-                                requestFields(
-                                        fieldWithPath("title").type(JsonFieldType.STRING).description("수정할 게시물 제목"),
-                                        fieldWithPath("content").type(JsonFieldType.STRING).description("수정할 게시물 내용")
-                                ),
-                                responseFields(
-                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시물 식별자"),
-                                        fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리")
-                                )
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("수정할 게시물 제목"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("수정할 게시물 내용")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시물 식별자"),
+                                fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리")
                         )
-                );
+                ));
+    }
 
+    @Test
+    void 게시물_삭제_API_문서화() throws Exception {
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        doNothing().when(articleService).delete(any(), any());
+
+        ResultActions results = mockMvc.perform(delete("/api/articles/{id}", 1L)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .characterEncoding("UTF-8"));
+
+        results.andExpect(status().isNoContent())
+                .andDo(print())
+                .andDo(document("article-delete",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        )
+                ));
     }
 }

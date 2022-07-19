@@ -18,13 +18,14 @@ endif::[]
 
 === Request
 
+include::{snippets}/article-create/http-request.adoc[]
+
 ==== Header
 
 include::{snippets}/article-create/request-headers.adoc[]
 
 ==== Body
 
-include::{snippets}/article-create/http-request.adoc[]
 include::{snippets}/article-create/request-fields.adoc[]
 
 === Response
@@ -57,6 +58,8 @@ include::{snippets}/article-find-one-login/response-fields.adoc[]
 
 === Request
 
+include::{snippets}/article-update/http-request.adoc[]
+
 ==== Header
 
 include::{snippets}/article-update/request-headers.adoc[]
@@ -70,3 +73,19 @@ include::{snippets}/article-update/request-fields.adoc[]
 
 include::{snippets}/article-create/http-response.adoc[]
 include::{snippets}/article-create/response-fields.adoc[]
+
+== 게시물 삭제
+
+`DELETE /api/articles/1`
+
+=== Request
+
+include::{snippets}/article-delete/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/article-delete/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/article-delete/http-response.adoc[]
