@@ -23,3 +23,15 @@ include::{snippets}/article-create/http-request.adoc[]
 === Response
 
 include::{snippets}/article-create/http-response.adoc[]
+
+== 게시물 단건 조회
+
+`GET /api/articles/1`
+
+== Request
+
+include::{snippets}/article-find-one/http-request.adoc[]
+
+== Response
+
+include::{snippets}/article-find-one/http-response.adoc[]

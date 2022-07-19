@@ -1,31 +1,64 @@
+import { CommentsResponse, deleteComments } from '@/api/comments';
 import * as S from '@/components/common/Comment/Comment.style';
+import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
+import { useMutation } from 'react-query';
+import CommentInputModal from '../CommentInputModal/CommentInputModal';
+import { queryClient } from '@/index';
+export const DimmerContainer = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: ${({ theme }) => theme.colors.GRAY_500};
+	z-index: 110;
+`;
 
-export interface CommentProps {
-	id: string;
-	author: {
-		name: string;
-		avatar: string;
-	};
-	content: string;
-	createAt: string;
-	isAuthor: boolean;
+interface CommentProps extends CommentsResponse {
+	articleId: string;
 }
 
-const Comment = ({ id, author, content, createAt, isAuthor }: CommentProps) => {
+const Comment = ({
+	id,
+	authorName,
+	authorAvartarUrl,
+	content,
+	createdAt,
+	isAuthor,
+	articleId,
+}: CommentProps) => {
+	const [isEditCommentOpen, setIsEditCommentOpen] = useState(false);
+	const { isLoading, isError, isSuccess, mutate } = useMutation(deleteComments);
+
 	const onUpdateButtonClick = () => {
-		// 댓글 수정 포털 열기
+		setIsEditCommentOpen(true);
 	};
+
 	const onDeleteButtonClick = () => {
-		// 댓글 삭제 비동기 요청 보내기
+		if (confirm('정말로 삭제하시겠습니까?')) {
+			mutate({ commentId: String(id), articleId });
+		}
 	};
+
+	useEffect(() => {
+		if (isSuccess) {
+			queryClient.refetchQueries('comments');
+		}
+	}, [isSuccess]);
+
+	if (isLoading) return <div>로딩중...</div>;
+
+	if (isError) return <div>에러...!</div>;
+
 	return (
 		<S.Container>
 			<S.CommentHeader>
 				<S.CommentInfo>
-					<S.UserProfile src={author.avatar} />
+					<S.UserProfile src={authorAvartarUrl} />
 					<S.CommentInfoSub>
-						<S.UserName>{author.name}</S.UserName>
-						<S.CreateTime>{createAt}</S.CreateTime>
+						<S.UserName>{authorName}</S.UserName>
+						<S.CreateTime>{createdAt}</S.CreateTime>
 					</S.CommentInfoSub>
 				</S.CommentInfo>
 				{isAuthor && (
@@ -36,6 +69,18 @@ const Comment = ({ id, author, content, createAt, isAuthor }: CommentProps) => {
 				)}
 			</S.CommentHeader>
 			<S.CommentContent>{content}</S.CommentContent>
+
+			{isEditCommentOpen && (
+				<>
+					<DimmerContainer onClick={() => setIsEditCommentOpen(false)} />
+					<CommentInputModal
+						closeModal={() => setIsEditCommentOpen(false)}
+						articleId={String(articleId)}
+						modalType="edit"
+						commentId={String(id)}
+					/>
+				</>
+			)}
 		</S.Container>
 	);
 };

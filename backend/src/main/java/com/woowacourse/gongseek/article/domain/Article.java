@@ -25,6 +25,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 public class Article {
 
+    private static final int INITIAL_VIEWS = 0;
     private static final int MIN_TITLE_LENGTH = 0;
     private static final int MAX_TITLE_LENGTH = 500;
     private static final int MAX_CONTENT_LENGTH = 1000;
@@ -47,7 +48,10 @@ public class Article {
     private Member member;
 
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    private int views;
 
     public Article(String title, String content, Category category, Member member) {
         validateTitleLength(title);
@@ -56,6 +60,15 @@ public class Article {
         this.content = content;
         this.category = category;
         this.member = member;
+        this.views = INITIAL_VIEWS;
+    }
+
+    public boolean isAuthor(Member member) {
+        return member.equals(this.getMember());
+    }
+
+    public void addViews() {
+        this.views++;
     }
 
     private void validateTitleLength(String title) {

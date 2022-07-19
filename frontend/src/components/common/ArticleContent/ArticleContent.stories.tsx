@@ -27,12 +27,12 @@ DefaultComment.args = {
 		content:
 			'글 상세페이지에서 글의 내용이 들어가는 곳, 이곳에서는 TextEditorViews가 보여지는 곳입니다',
 		createAt: '5분전',
-		views: '10',
-		likeCount: '10',
+		views: 10,
+		likeCount: 10,
 	},
 	author: {
 		name: '자스민',
-		avatar: 'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg',
+		avatarUrl: 'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg',
 	},
 	isAuthor: true,
 };

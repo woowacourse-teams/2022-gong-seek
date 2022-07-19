@@ -23,9 +23,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        if (HttpMethod.GET.matches(request.getMethod())) {
+            return true;
+        }
+
         String token = TokenExtractor.extract(request);
         validateToken(token);
-        request.setAttribute(PAYLOAD, jwtTokenProvider.getPayload(token));
+        String payload = jwtTokenProvider.getPayload(token);
+        request.setAttribute(PAYLOAD, payload);
         return true;
     }
 
