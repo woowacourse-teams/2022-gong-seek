@@ -153,6 +153,45 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         );
     }
 
+    @Test
+    void 게시물_작성자는_게시물을_삭제할_수_있다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다();
+        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
+
+        // when
+        ExtractableResponse<Response> response = 로그인_후_게시물을_삭제한다(tokenResponse, articleIdResponse);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    void 게시물_작성자가_아니면_게시물을_삭제할_수_없다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다();
+        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
+
+        // when
+        ExtractableResponse<Response> response = 로그인_후_게시물을_삭제한다(new TokenResponse("abc"), articleIdResponse);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    private ExtractableResponse<Response> 로그인_후_게시물을_삭제한다(TokenResponse tokenResponse,
+                                                          ArticleIdResponse articleIdResponse) {
+        return RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .delete("/api/articles/{id}", articleIdResponse.getId())
+                .then().log().all()
+                .extract();
+    }
+
+
     private ExtractableResponse<Response> 게시물을_등록한다(TokenResponse tokenResponse) {
         return RestAssured
                 .given().log().all()
