@@ -4,39 +4,31 @@ import static org.hibernate.validator.internal.metadata.core.ConstraintHelper.PA
 
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.utils.TokenExtractor;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-public class AuthenticationInterceptor implements HandlerInterceptor {
+public class AuthorizationInterceptor implements HandlerInterceptor {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthenticationInterceptor(JwtTokenProvider jwtTokenProvider) {
+    public AuthorizationInterceptor(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+        if (Objects.isNull(request.getHeader(HttpHeaders.AUTHORIZATION))) {
             return true;
         }
 
-        if (HttpMethod.GET.matches(request.getMethod())) {
+        String token = TokenExtractor.extract(request.getHeader(HttpHeaders.AUTHORIZATION));
+        if (jwtTokenProvider.validateToken(token)) {
+            request.setAttribute(PAYLOAD, jwtTokenProvider.getPayload(token));
             return true;
         }
-
-        String token = TokenExtractor.extract(request);
-        validateToken(token);
-        String payload = jwtTokenProvider.getPayload(token);
-        request.setAttribute(PAYLOAD, payload);
         return true;
-    }
-
-    private void validateToken(String token) {
-        if (!jwtTokenProvider.validateToken(token)) {
-            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
-        }
     }
 }

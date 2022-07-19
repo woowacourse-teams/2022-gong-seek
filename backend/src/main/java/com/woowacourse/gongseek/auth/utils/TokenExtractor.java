@@ -17,6 +17,10 @@ public class TokenExtractor {
         return token.substring(TOKEN_TYPE.length());
     }
 
+    public static String extract(String token) {
+        return token.substring(TOKEN_TYPE.length());
+    }
+
     private static void validateNullToken(String token) {
         if (Objects.isNull(token)) {
             throw new IllegalArgumentException("토큰이 없습니다.");

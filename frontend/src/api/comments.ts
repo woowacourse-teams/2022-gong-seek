@@ -4,7 +4,7 @@ import axios from 'axios';
 export const postComments = ({ content }: { content: string }) => {
 	const accessToken = localStorage.getItem('accessToken');
 	return axios.post(
-		'http://192.168.0.155:8080/api/articles/:articleId/comments',
+		`http://192.168.0.155:8080/api/articles/${articleId}/comments`,
 		{ content },
 		{
 			headers: {
@@ -15,7 +15,7 @@ export const postComments = ({ content }: { content: string }) => {
 	);
 };
 
-export const getComments = async () => {
+export const getComments = async ({ articleId }: { articleId: string }) => {
 	const accessToken = localStorage.getItem('accessToken');
 
 	const response = await axios.get<{ comments: CommentType[] }>(
@@ -28,14 +28,24 @@ export const getComments = async () => {
 		},
 	);
 
+	console.log(response);
+
 	return response.data.comments;
 };
 
-export const putComments = ({ content }: { content: string }) => {
+export const putComments = ({
+	content,
+	articleId,
+	commentId,
+}: {
+	content: string;
+	articleId: string;
+	commentId: string;
+}) => {
 	const accessToken = localStorage.getItem('accessToken');
 
 	return axios.put(
-		'http://192.168.0.155:8080/api/articles/:articleId/comments/:commentId',
+		`http://192.168.0.155:8080/api/articles/${articleId}/comments/${commentId}`,
 		{ content },
 		{
 			headers: {
@@ -46,10 +56,16 @@ export const putComments = ({ content }: { content: string }) => {
 	);
 };
 
-export const deleteComments = () => {
+export const deleteComments = ({
+	articleId,
+	commentId,
+}: {
+	articleId: string;
+	commentId: string;
+}) => {
 	const accessToken = localStorage.getItem('accessToken');
 
-	return axios.delete('http://192.168.0.155:8080/api/articles/:articleId/comments/:commentId', {
+	return axios.delete(`http://192.168.0.155:8080/api/articles/${articleId}/comments/${commentId}`, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			Authorization: `Bearer ${accessToken}`,

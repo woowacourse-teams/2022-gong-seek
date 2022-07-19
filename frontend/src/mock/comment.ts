@@ -16,19 +16,19 @@ export const CommentHandler = [
 				return;
 			}
 
-			localStorage.setItem(
-				'mock-comments',
-				JSON.stringify(
-					mockComments[Number(articleId)].concat({
-						id: mockComments.length,
-						content,
-						authorName: '스밍',
-						authorAvartarUrl:
-							'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg',
-						createdAt: '2022-07-28',
-					}),
-				),
-			);
+			mockComments[Number(articleId)] = !mockComments[Number(articleId)]
+				? []
+				: mockComments[Number(articleId)];
+			mockComments[Number(articleId)].push({
+				id: mockComments[Number(articleId)].length,
+				content,
+				authorName: '스밍',
+				authorAvartarUrl:
+					'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg',
+				createdAt: '2022-07-28',
+				isAuthor: true,
+			});
+			localStorage.setItem('mock-comments', JSON.stringify(mockComments));
 
 			return res(ctx.status(201));
 		},
@@ -37,7 +37,7 @@ export const CommentHandler = [
 	rest.get('http://192.168.0.155:8080/api/articles/:articleId/comments', (req, res, ctx) => {
 		const { articleId } = req.params;
 
-		return res(ctx.status(200), ctx.json(mockComments[Number(articleId)]));
+		return res(ctx.status(200), ctx.json({ comments: mockComments[Number(articleId)] }));
 	}),
 
 	rest.put<{ content: string }>(
@@ -69,8 +69,9 @@ export const CommentHandler = [
 			const filteredComments = mockComments[Number(articleId)].filter(
 				(mockComment) => mockComment.id !== Number(commentId),
 			);
+			mockComments[Number(articleId)] = filteredComments;
 
-			localStorage.setItem('mock-comments', JSON.stringify(filteredComments));
+			localStorage.setItem('mock-comments', JSON.stringify(mockComments));
 			return res(ctx.status(204));
 		},
 	),

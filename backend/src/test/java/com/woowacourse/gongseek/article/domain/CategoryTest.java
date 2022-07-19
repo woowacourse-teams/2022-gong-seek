@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.article.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,4 +17,10 @@ class CategoryTest {
                 .hasMessage("존재하지 않는 카테고리입니다.");
     }
 
+    @Test
+    void 카테고리가_일치한다() {
+        String category = "question";
+
+        assertDoesNotThrow(() -> Category.from(category));
+    }
 }
