@@ -17,7 +17,7 @@ import com.woowacourse.gongseek.comment.application.CommentService;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
 import com.woowacourse.gongseek.config.RestDocsConfig;
-import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
+import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -78,7 +78,7 @@ class CommentControllerTest {
     void 댓글_조회_API_문서화() throws Exception {
         CommentResponse commentResponse = new CommentResponse(
                 1L, "content",
-                new MemberDto("authorName", "authorAvatarUrl"),
+                new AuthorDto("authorName", "authorAvatarUrl"),
                 true, LocalDateTime.now()
         );
         given(commentService.findByArticleId(any(), any())).willReturn(List.of(commentResponse));
