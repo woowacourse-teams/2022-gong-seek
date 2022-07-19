@@ -52,19 +52,30 @@ public class ArticleService {
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
-        Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
-        Member member = memberRepository.findById(appMember.getPayload())
-                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
-        validateAuthor(article, member);
+        Article article = checkAuthorization(appMember, id);
         article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent());
 
         return new ArticleUpdateResponse(article);
     }
 
+    public void delete(AppMember appMember, Long id) {
+        Article article = checkAuthorization(appMember, id);
+        articleRepository.delete(article);
+    }
+
     private void validateAuthor(Article article, Member member) {
         if (!article.isAuthor(member)) {
-            throw new IllegalStateException("작성자만 수정할 수 있습니다.");
+            throw new IllegalStateException("작성자만 권한이 있습니다.");
         }
+    }
+
+    private Article checkAuthorization(AppMember appMember, Long id) {
+        validateGuest(appMember);
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+        Member member = memberRepository.findById(appMember.getPayload())
+                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+        validateAuthor(article, member);
+        return article;
     }
 }

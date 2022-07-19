@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
@@ -13,6 +14,7 @@ import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,40 +31,25 @@ public class ArticleServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    private Member member;
+    private ArticleRequest articleRequest;
+
+    @BeforeEach
+    void setUp() {
+        member = memberRepository.save(new Member("slo", "hanull", "avatar.com"));
+        articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue());
+    }
+
     @Test
     void 회원은_게시물을_저장한다() {
-        String title = "질문합니다.";
-        String content = "내용입나다....";
-        String category = "question";
-        Member member = new Member("slo", "hanull", "avatar.com");
-        memberRepository.save(member);
-        ArticleRequest articleRequest = new ArticleRequest(title, content, category);
-        AppMember appMember = new LoginMember(member.getId());
 
-        ArticleIdResponse articleIdResponse = articleService.save(appMember, articleRequest);
+        ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         assertThat(articleIdResponse.getId()).isNotNull();
     }
 
     @Test
     void 비회원은_게시물을_저장할_수_없다() {
-        String title = "질문합니다!.";
-        String content = "난 비회원인데....";
-        String category = "question";
-        ArticleRequest articleRequest = new ArticleRequest(title, content, category);
-        AppMember appMember = new GuestMember();
-
-        assertThatThrownBy(() -> articleService.save(appMember, articleRequest))
-                .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("권한이 없는 사용자입니다.");
-    }
-
-    @Test
-    void 존재하지_않는_회원이_질문을_저장하면_예외가_발생한다() {
-        String title = "질문합니다.";
-        String content = "내용입나다....";
-        String category = "question";
-        ArticleRequest articleRequest = new ArticleRequest(title, content, category);
 
         assertThatThrownBy(() -> articleService.save(new GuestMember(), articleRequest))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
@@ -70,18 +57,11 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 회원이_게시물을_조회한다() {
-        String title = "질문합니다.";
-        String content = "내용입나다....";
-        String category = "question";
-        ArticleRequest articleRequest = new ArticleRequest(title, content, category);
-
-        Member member = new Member("slo", "hanull", "avatar.com");
-        memberRepository.save(member);
+    void 로그인을한_사용자가_게시물을_조회한다() {
 
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
-        ArticleResponse articleResponse = articleService.findOne(
-                new LoginMember(member.getId()), savedArticle.getId());
+
+        ArticleResponse articleResponse = articleService.findOne(new LoginMember(member.getId()), savedArticle.getId());
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
@@ -91,16 +71,10 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 비회원이_게시물을_조회한다() {
-        String title = "질문합니다.";
-        String content = "내용입나다....";
-        String category = "question";
-        ArticleRequest articleRequest = new ArticleRequest(title, content, category);
-
-        Member member = new Member("slo", "hanull", "avatar.com");
-        memberRepository.save(member);
+    void 로그인을_안한_사용자가_게시물을_조회한다() {
 
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+
         ArticleResponse articleResponse = articleService.findOne(new GuestMember(), savedArticle.getId());
 
         assertAll(
@@ -112,15 +86,9 @@ public class ArticleServiceTest {
 
     @Test
     void 게시물을_조회하면_조회수가_올라간다() {
-        String title = "질문합니다.";
-        String content = "내용입나다....";
-        String category = "question";
-        ArticleRequest articleRequest = new ArticleRequest(title, content, category);
-
-        Member member = new Member("slo", "hanull", "avatar.com");
-        memberRepository.save(member);
 
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+
         articleService.findOne(new GuestMember(), savedArticle.getId());
         ArticleResponse articleResponse = articleService.findOne(new GuestMember(), savedArticle.getId());
 
@@ -133,25 +101,88 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 게시물을_수정한다() {
-        String title = "질문합니다.";
-        String content = "내용입나다....";
-        String category = "question";
-        ArticleRequest articleRequest = new ArticleRequest(title, content, category);
+    void 작성자가_게시물을_수정한다() {
 
-        Member member = new Member("slo", "hanull", "avatar.com");
-        memberRepository.save(member);
-        LoginMember loginMember = new LoginMember(member.getId());
+        AppMember loginMember = new LoginMember(member.getId());
         ArticleIdResponse savedArticle = articleService.save(loginMember, articleRequest);
 
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.");
-        articleService.update(loginMember, request, savedArticle.getId());
+        articleService.update(loginMember,
+                request,
+                savedArticle.getId());
 
         ArticleResponse response = articleService.findOne(loginMember, savedArticle.getId());
 
         assertAll(
-                () -> assertThat(response.getTitle()).isEqualTo("제목 수정"),
-                () -> assertThat(response.getContent()).isEqualTo("내용 수정합니다.")
+                () -> assertThat(response.getTitle()).isEqualTo(request.getTitle()),
+                () -> assertThat(response.getContent()).isEqualTo(request.getContent())
         );
+    }
+
+    @Test
+    void 작성자가_아닌_사용자가_게시물을_수정하면_예외가_발생한다() {
+
+        Member noAuthor = memberRepository.save(
+                new Member("작성자아닌사람이름", "giithub", "www.avatar.cax"));
+        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        AppMember noAuthorMember = new LoginMember(noAuthor.getId());
+        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.");
+
+        assertThatThrownBy(() -> articleService.update(noAuthorMember, request, savedArticle.getId()))
+                .isExactlyInstanceOf(IllegalStateException.class)
+                .hasMessage("작성자만 권한이 있습니다.");
+    }
+
+    @Test
+    void 로그인을_안한_사용자가_게시물을_수정하면_예외가_발생한다() {
+
+        AppMember guestMember = new GuestMember();
+        ArticleIdResponse savedArticle = articleService.save(
+                new LoginMember(member.getId()),
+                articleRequest);
+        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.");
+
+        assertThatThrownBy(() -> articleService.update(guestMember, request, savedArticle.getId()))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessage("권한이 없는 사용자입니다.");
+    }
+
+    @Test
+    void 작성자가_게시물을_삭제한다() {
+
+        AppMember loginMember = new LoginMember(member.getId());
+        ArticleIdResponse savedArticle = articleService.save(loginMember, articleRequest);
+
+        articleService.delete(loginMember, savedArticle.getId());
+
+        assertThatThrownBy(() -> articleService.findOne(loginMember, savedArticle.getId()))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessage("게시글이 존재하지 않습니다.");
+    }
+
+    @Test
+    void 작성자가_아닌_사용자가_게시물을_삭제하면_예외가_발생한다() {
+
+        Member noAuthor = memberRepository.save(new Member("작성자아닌사람이름", "giithub", "www.avatar.cax"));
+        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()),
+                articleRequest);
+        AppMember noAuthorMember = new LoginMember(noAuthor.getId());
+
+        assertThatThrownBy(() -> articleService.delete(noAuthorMember, savedArticle.getId()))
+                .isExactlyInstanceOf(IllegalStateException.class)
+                .hasMessage("작성자만 권한이 있습니다.");
+    }
+
+    @Test
+    void 로그인을_안한_사용자가_게시물을_삭제하면_예외가_발생한다() {
+
+        AppMember guestMember = new GuestMember();
+        ArticleIdResponse savedArticle = articleService.save(
+                new LoginMember(member.getId()),
+                articleRequest);
+
+        assertThatThrownBy(() -> articleService.delete(guestMember, savedArticle.getId()))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessage("권한이 없는 사용자입니다.");
     }
 }

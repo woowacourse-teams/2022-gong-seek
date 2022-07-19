@@ -11,6 +11,7 @@ import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,10 +37,8 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArticleResponse> findOne(
-            @AuthenticationPrinciple AppMember appMember,
-            @PathVariable Long id
-    ) {
+    public ResponseEntity<ArticleResponse> findOne(@AuthenticationPrinciple AppMember appMember,
+                                                   @PathVariable Long id) {
         return ResponseEntity.ok(articleService.findOne(appMember, id));
     }
 
@@ -51,4 +50,12 @@ public class ArticleController {
     ) {
         return ResponseEntity.ok(articleService.update(appMember, articleUpdateRequest, id));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@AuthenticationPrinciple AppMember appMember, @PathVariable Long id) {
+        articleService.delete(appMember, id);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }
