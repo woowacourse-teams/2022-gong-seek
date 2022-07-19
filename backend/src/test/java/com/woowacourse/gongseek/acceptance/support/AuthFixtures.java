@@ -24,7 +24,7 @@ public class AuthFixtures {
                 .as(TokenResponse.class);
     }
 
-    OAuthLoginUrlResponse 로그인_URL을_얻는다() {
+    public static OAuthLoginUrlResponse 로그인_URL을_얻는다() {
         return RestAssured
                 .given().log().all()
                 .when()
