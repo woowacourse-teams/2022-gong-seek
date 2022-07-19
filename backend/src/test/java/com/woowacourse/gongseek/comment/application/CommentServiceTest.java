@@ -60,7 +60,7 @@ class CommentServiceTest {
 
         assertAll(
                 () -> assertThat(savedComments).hasSize(2),
-                () -> assertThat(savedComments.get(1).getAuthorName()).isEqualTo(this.member.getName()),
+                () -> assertThat(savedComments.get(1).getAuthor().getName()).isEqualTo(this.member.getName()),
                 () -> assertThat(savedComments.get(1).getContent()).isEqualTo(request.getContent())
         );
     }

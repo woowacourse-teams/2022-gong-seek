@@ -1,0 +1,37 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Comment
+---
+= 기본 API
+
+== 댓글 생성
+
+`POST /api/articles/{articleId}/comments`
+
+=== Request
+
+include::{snippets}/comment-create/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/comment-create/http-response.adoc[]
+
+== 댓글 조회
+
+`GET /api/articles/{articleId}/comments`
+
+=== Request
+
+include::{snippets}/comment-find-all-by-article-id/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/comment-find-all-by-article-id/http-response.adoc[]
