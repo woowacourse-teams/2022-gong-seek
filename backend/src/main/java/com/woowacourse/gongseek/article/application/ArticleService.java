@@ -18,15 +18,14 @@ public class ArticleService {
     private final MemberRepository memberRepository;
 
     public ArticleIdResponse save(LoginMember loginMember, ArticleRequest articleRequest) {
-        Member member = memberRepository.findById(loginMember.getPayload())
-                .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
+        Member member = findMember(loginMember);
 
         Article article = articleRepository.save(articleRequest.toEntity(member));
         return new ArticleIdResponse(article);
     }
 
-    public Article find(Long articleId) {
-        return articleRepository.findById(articleId)
-                .orElseThrow(() -> new IllegalStateException("게시글이 존재하지 않습니다."));
+    private Member findMember(LoginMember loginMember) {
+        return memberRepository.findById(loginMember.getPayload())
+                .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
     }
 }
