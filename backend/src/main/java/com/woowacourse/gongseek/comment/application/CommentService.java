@@ -15,8 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class CommentService {
 
@@ -74,3 +74,4 @@ public class CommentService {
                 .orElseThrow(() -> new IllegalStateException("댓글이 존재하지 않습니다."));
     }
 }
+
