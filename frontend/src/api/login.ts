@@ -1,7 +1,9 @@
+import { HOME_URL } from '@/constants/url';
 import axios from 'axios';
 
 export const getGithubURL = async () => {
-	const response = await axios.get<{ url: string }>('http://192.168.0.155:8080/api/auth/github', {
+	console.log(HOME_URL);
+	const response = await axios.get<{ url: string }>(`${HOME_URL}/api/auth/github`, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 		},
@@ -12,7 +14,7 @@ export const getGithubURL = async () => {
 
 export const postLogin = (code: string) =>
 	axios.post<{ accessToken: string }>(
-		'http://192.168.0.155:8080/api/auth/token',
+		`${HOME_URL}/api/auth/token`,
 		{ code },
 		{
 			headers: {
