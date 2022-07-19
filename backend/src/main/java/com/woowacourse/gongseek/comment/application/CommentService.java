@@ -56,7 +56,7 @@ public class CommentService {
         if (!comment.isAuthor(member)) {
             throw new IllegalArgumentException("댓글을 작성한 회원만 삭제할 수 있습니다.");
         }
-        commentRepository.deleteById(commentId);
+        commentRepository.delete(comment);
     }
 
     private Member findMember(LoginMember loginMember) {
