@@ -24,4 +24,9 @@ public class ArticleService {
         Article article = articleRepository.save(articleRequest.toEntity(member));
         return new ArticleIdResponse(article);
     }
+
+    public Article find(Long articleId) {
+        return articleRepository.findById(articleId)
+                .orElseThrow(() -> new IllegalStateException("게시글이 존재하지 않습니다."));
+    }
 }
