@@ -13,15 +13,15 @@ public class Content {
 
     private static final int MAX_CONTENT_LENGTH = 10000;
 
-    private String content;
+    private String value;
 
-    public Content(String content) {
-        validateContentLength(content);
-        this.content = content;
+    public Content(String value) {
+        validateContentLength(value);
+        this.value = value;
     }
 
-    private void validateContentLength(String content) {
-        if (Objects.isNull(content) || content.isBlank() || content.length() > MAX_CONTENT_LENGTH) {
+    private void validateContentLength(String value) {
+        if (Objects.isNull(value) || value.isBlank() || value.length() > MAX_CONTENT_LENGTH) {
             throw new IllegalArgumentException("댓글의 길이는 1~10000이여야 합니다.");
         }
     }

@@ -60,6 +60,6 @@ public class Comment {
     }
 
     public String getContent() {
-        return content.getContent();
+        return content.getValue();
     }
 }
