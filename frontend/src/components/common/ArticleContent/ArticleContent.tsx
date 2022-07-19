@@ -6,19 +6,50 @@ import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import * as S from '@/components/common/ArticleContent/ArticleContent.style';
 import { ArticleType } from '@/types/articleResponse';
 import { Author } from '@/types/author';
+import { useMutation } from 'react-query';
+
+import { deleteArticle } from '@/api/article';
+import { useNavigate } from 'react-router-dom';
 
 export interface ArticleContentProps {
 	category: string;
 	article: ArticleType;
 	author: Author;
+	articleId: string;
 }
 
-const ArticleContent = ({ category, article, author }: ArticleContentProps) => {
+const ArticleContent = ({ category, article, author, articleId }: ArticleContentProps) => {
 	const [isHeartClick, setIsHeartClick] = useState(false);
+	const { data, isSuccess, isError, isLoading, error, mutate } = useMutation(deleteArticle);
+
+	console.log(article.isAuthor);
+	const navigate = useNavigate();
+
 	const onLikeButtonClick = () => {
 		setIsHeartClick(!isHeartClick);
-		//비동기 통신
+		// 좋아요 비동기 통신
 	};
+
+	const postUpdateArticle = () => {
+		console.log(article);
+		const categoryName = category === '에러' ? 'error' : 'discussion';
+		navigate(`/articles/modify/${categoryName}/${articleId}`);
+	};
+
+	const handleDeleteArticle = () => {
+		if (window.confirm('게시글을 삭제하시겠습니까?')) {
+			mutate(articleId);
+		}
+	};
+	if (isLoading) {
+		return <div>삭제중입니다...</div>;
+	}
+
+	if (isSuccess) {
+		console.log('게시글 삭제 성공');
+		navigate('/');
+	}
+
 	return (
 		<S.Container>
 			<S.Header>
@@ -43,8 +74,8 @@ const ArticleContent = ({ category, article, author }: ArticleContentProps) => {
 					<S.WritingOrderBox>
 						{article.isAuthor && (
 							<S.ButtonWrapper>
-								<S.Button>수정</S.Button>
-								<S.Button>삭제</S.Button>
+								<S.Button onClick={postUpdateArticle}>수정</S.Button>
+								<S.Button onClick={handleDeleteArticle}>삭제</S.Button>
 							</S.ButtonWrapper>
 						)}
 					</S.WritingOrderBox>
