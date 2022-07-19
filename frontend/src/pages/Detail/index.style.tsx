@@ -15,6 +15,7 @@ export const CommentSection = styled.section`
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	width: 70%;
 	margin-top: ${({ theme }) => theme.size.SIZE_050};
 	padding: 0 ${({ theme }) => theme.size.SIZE_020};
 `;
