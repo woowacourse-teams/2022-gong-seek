@@ -32,11 +32,12 @@ export const UserProfile = styled.div`
 `;
 
 export const UserProfileImg = styled.img`
-	width: ${({ theme }) => theme.size.SIZE_050};
-	height: ${({ theme }) => theme.size.SIZE_050};
+	width: ${({ theme }) => theme.size.SIZE_032};
+	height: ${({ theme }) => theme.size.SIZE_032};
 	object-fit: cover;
 	object-position: center;
 	border-radius: 50%;
+	margin-right: ${({ theme }) => theme.size.SIZE_014};
 `;
 
 export const UserName = styled.span``;
