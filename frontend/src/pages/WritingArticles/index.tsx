@@ -86,7 +86,7 @@ const WritingArticles = () => {
 			</S.SelectorBox>
 
 			<S.Content>
-				<ToastUiEditor ref={content} />
+				<ToastUiEditor initContent={''} ref={content} />
 			</S.Content>
 			<S.SubmitButton type="button" onClick={handleSubmitButtonClick}>
 				등록하기
