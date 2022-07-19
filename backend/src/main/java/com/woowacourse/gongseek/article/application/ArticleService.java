@@ -15,14 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 @Service
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
 
-    @Transactional
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
 
@@ -42,6 +41,7 @@ public class ArticleService {
                 .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
     }
 
+    @Transactional(readOnly = true)
     public ArticleResponse findOne(AppMember appMember, Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
