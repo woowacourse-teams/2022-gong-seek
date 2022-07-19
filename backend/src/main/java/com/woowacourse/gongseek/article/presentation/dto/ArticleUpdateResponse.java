@@ -1,5 +1,6 @@
 package com.woowacourse.gongseek.article.presentation.dto;
 
+import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -13,4 +14,9 @@ public class ArticleUpdateResponse {
 
     private Long id;
     private Category category;
+
+    public ArticleUpdateResponse(Article article) {
+        this.id = article.getId();
+        this.category = article.getCategory();
+    }
 }

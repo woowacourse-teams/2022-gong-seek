@@ -5,6 +5,8 @@ import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
@@ -47,5 +49,22 @@ public class ArticleService {
                 .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
 
         return new ArticleResponse(article, article.isAuthor(member));
+    }
+
+    public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+        Member member = memberRepository.findById(appMember.getPayload())
+                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+        validateAuthor(article, member);
+        article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent());
+
+        return new ArticleUpdateResponse(article);
+    }
+
+    private void validateAuthor(Article article, Member member) {
+        if (!article.isAuthor(member)) {
+            throw new IllegalStateException("작성자만 수정할 수 있습니다.");
+        }
     }
 }

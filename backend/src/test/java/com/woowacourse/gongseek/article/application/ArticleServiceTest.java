@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
@@ -128,6 +129,29 @@ public class ArticleServiceTest {
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getViews()).isEqualTo(2),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull()
+        );
+    }
+
+    @Test
+    void 게시물을_수정한다() {
+        String title = "질문합니다.";
+        String content = "내용입나다....";
+        String category = "question";
+        ArticleRequest articleRequest = new ArticleRequest(title, content, category);
+
+        Member member = new Member("slo", "hanull", "avatar.com");
+        memberRepository.save(member);
+        LoginMember loginMember = new LoginMember(member.getId());
+        ArticleIdResponse savedArticle = articleService.save(loginMember, articleRequest);
+
+        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.");
+        articleService.update(loginMember, request, savedArticle.getId());
+
+        ArticleResponse response = articleService.findOne(loginMember, savedArticle.getId());
+
+        assertAll(
+                () -> assertThat(response.getTitle()).isEqualTo("제목 수정"),
+                () -> assertThat(response.getContent()).isEqualTo("내용 수정합니다.")
         );
     }
 }
