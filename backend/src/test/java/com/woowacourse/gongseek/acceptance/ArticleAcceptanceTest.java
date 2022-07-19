@@ -1,5 +1,7 @@
 package com.woowacourse.gongseek.acceptance;
 
+import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
+import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -26,7 +28,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 유저가_깃허브로_로그인을_하고_게시글을_등록할_수_있다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다();
+        TokenResponse tokenResponse = 로그인을_한다(주디);
 
         // when
         ExtractableResponse<Response> response = 게시물을_등록한다(tokenResponse);
@@ -38,14 +40,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 유저가_깃허브로_로그인을_하지_않고_게시글을_등록할_수_없다() {
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ArticleRequest("title", "content", "question"))
-                .when()
-                .post("/api/articles")
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = 게시물을_등록한다(new TokenResponse(""));
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -54,11 +49,11 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 로그인_없이_게시물을_단건_조회할_수_있다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다();
+        TokenResponse tokenResponse = 로그인을_한다(주디);
         ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when
-        ExtractableResponse<Response> response = 토큰_없이_게시물을_조회한다(articleIdResponse);
+        ExtractableResponse<Response> response = 로그인_안한_유저가_게시물을_조회한다(articleIdResponse);
         ArticleResponse articleResponse = response.as(ArticleResponse.class);
 
         // then
@@ -83,7 +78,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 로그인을_하고_게시물을_단건_조회할_수_있다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다();
+        TokenResponse tokenResponse = 로그인을_한다(주디);
         ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when
@@ -112,11 +107,11 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 로그인_하지_않으면_게시물을_수정할_수_없다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다();
+        TokenResponse tokenResponse = 로그인을_한다(주디);
         ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when
-        ExtractableResponse<Response> response = 토큰_없이_게시물을_수정한다(articleIdResponse);
+        ExtractableResponse<Response> response = 로그인_안한_유저가_게시물을_수정한다(articleIdResponse);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -125,7 +120,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 게시물_작성자가_아니면_게시물을_수정할_수_없다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다();
+        TokenResponse tokenResponse = 로그인을_한다(주디);
         ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when
@@ -138,7 +133,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 게시물_작성자는_게시물을_수정할_수_있다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다();
+        TokenResponse tokenResponse = 로그인을_한다(주디);
         ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when
@@ -156,7 +151,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 게시물_작성자는_게시물을_삭제할_수_있다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다();
+        TokenResponse tokenResponse = 로그인을_한다(주디);
         ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when
@@ -169,7 +164,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 게시물_작성자가_아니면_게시물을_삭제할_수_없다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다();
+        TokenResponse tokenResponse = 로그인을_한다(주디);
         ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when
@@ -177,6 +172,18 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    private ExtractableResponse<Response> 게시물을_등록한다(TokenResponse tokenResponse) {
+        return RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new ArticleRequest("title", "content", "question"))
+                .when()
+                .post("/api/articles")
+                .then().log().all()
+                .extract();
     }
 
     private ExtractableResponse<Response> 로그인_후_게시물을_삭제한다(TokenResponse tokenResponse,
@@ -192,19 +199,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
 
-    private ExtractableResponse<Response> 게시물을_등록한다(TokenResponse tokenResponse) {
-        return RestAssured
-                .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ArticleRequest("title", "content", "question"))
-                .when()
-                .post("/api/articles")
-                .then().log().all()
-                .extract();
-    }
-
-    private ExtractableResponse<Response> 토큰_없이_게시물을_조회한다(ArticleIdResponse articleIdResponse) {
+    private ExtractableResponse<Response> 로그인_안한_유저가_게시물을_조회한다(ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .when()
@@ -224,7 +219,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 .extract();
     }
 
-    private ExtractableResponse<Response> 토큰_없이_게시물을_수정한다(ArticleIdResponse articleIdResponse) {
+    private ExtractableResponse<Response> 로그인_안한_유저가_게시물을_수정한다(ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

@@ -25,9 +25,8 @@ public class ArticleService {
     @Transactional
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
-        Member member = findMember(appMember);
 
-        Article article = articleRepository.save(articleRequest.toEntity(member));
+        Article article = articleRepository.save(articleRequest.toEntity(findMember(appMember)));
 
         return new ArticleIdResponse(article);
     }
@@ -50,9 +49,7 @@ public class ArticleService {
         if (appMember.isGuest()) {
             return new ArticleResponse(article, false);
         }
-        Member member = findMember(appMember);
-
-        return new ArticleResponse(article, article.isAuthor(member));
+        return new ArticleResponse(article, article.isAuthor(findMember(appMember)));
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
@@ -67,12 +64,6 @@ public class ArticleService {
         articleRepository.delete(article);
     }
 
-    private void validateAuthor(Article article, Member member) {
-        if (!article.isAuthor(member)) {
-            throw new IllegalStateException("작성자만 권한이 있습니다.");
-        }
-    }
-
     private Article checkAuthorization(AppMember appMember, Long id) {
         validateGuest(appMember);
         Article article = articleRepository.findById(id)
@@ -81,5 +72,11 @@ public class ArticleService {
                 .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
         validateAuthor(article, member);
         return article;
+    }
+
+    private void validateAuthor(Article article, Member member) {
+        if (!article.isAuthor(member)) {
+            throw new IllegalStateException("작성자만 권한이 있습니다.");
+        }
     }
 }
