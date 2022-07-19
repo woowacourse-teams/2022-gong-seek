@@ -23,8 +23,8 @@ public class ArticleService {
     @Transactional
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
-        Member member = memberRepository.findById(appMember.getPayload())
-                .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
+        Member member = findMember(loginMember);
+
         Article article = articleRepository.save(articleRequest.toEntity(member));
 
         return new ArticleIdResponse(article);
@@ -35,6 +35,11 @@ public class ArticleService {
             throw new IllegalArgumentException("권한이 없는 사용자입니다.");
         }
     }
+    
+    private Member findMember(LoginMember loginMember) {
+        return memberRepository.findById(loginMember.getPayload())
+                .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
+    }
 
     public ArticleResponse findOne(AppMember appMember, Long id) {
         Article article = articleRepository.findById(id)
@@ -43,8 +48,7 @@ public class ArticleService {
         if (appMember.isGuest()) {
             return new ArticleResponse(article, false);
         }
-        Member member = memberRepository.findById(appMember.getPayload())
-                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+        Member member = findMember(loginMember);
 
         return new ArticleResponse(article, article.isAuthor(member));
     }
