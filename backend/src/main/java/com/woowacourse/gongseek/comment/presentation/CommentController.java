@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.comment.presentation;
 
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.application.CommentService;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
@@ -27,36 +27,36 @@ public class CommentController {
 
     @PostMapping("/{articleId}/comments")
     public ResponseEntity<Void> create(
-            @AuthenticationPrinciple LoginMember loginMember,
+            @AuthenticationPrinciple AppMember appMember,
             @PathVariable Long articleId,
             @RequestBody CommentRequest commentRequest) {
-        commentService.save(loginMember, articleId, commentRequest);
+        commentService.save(appMember, articleId, commentRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{articleId}/comments")
     public ResponseEntity<List<CommentResponse>> findByArticleId(
-            @AuthenticationPrinciple LoginMember loginMember,
+            @AuthenticationPrinciple AppMember appMember,
             @PathVariable Long articleId
     ) {
-        return ResponseEntity.ok(commentService.findByArticleId(loginMember, articleId));
+        return ResponseEntity.ok(commentService.findByArticleId(appMember, articleId));
     }
 
     @PutMapping("/comments/{commentId}")
     public ResponseEntity<Void> update(
-            @AuthenticationPrinciple LoginMember loginMember,
+            @AuthenticationPrinciple AppMember appMember,
             @PathVariable Long commentId,
             @RequestBody CommentRequest commentRequest) {
-        commentService.update(loginMember, commentId, commentRequest);
+        commentService.update(appMember, commentId, commentRequest);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/comments/{commentId}")
     public ResponseEntity<Void> delete(
-            @AuthenticationPrinciple LoginMember loginMember,
+            @AuthenticationPrinciple AppMember appMember,
             @PathVariable Long commentId
     ) {
-        commentService.delete(loginMember, commentId);
+        commentService.delete(appMember, commentId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -2,7 +2,7 @@ package com.woowacourse.gongseek.comment.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
@@ -24,8 +24,9 @@ public class CommentService {
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
 
-    public void save(LoginMember loginMember, Long articleId, CommentRequest commentRequest) {
-        Member member = findMember(loginMember);
+    public void save(AppMember appMember, Long articleId, CommentRequest commentRequest) {
+        validateGuest(appMember);
+        Member member = findMember(appMember);
         Article article = findArticle(articleId);
         Comment comment = new Comment(commentRequest.getContent(), member, article);
 
@@ -33,15 +34,23 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<CommentResponse> findByArticleId(LoginMember loginMember, Long articleId) {
-        Member member = findMember(loginMember);
+    public List<CommentResponse> findByArticleId(AppMember appMember, Long articleId) {
         return commentRepository.findAllByArticleId(articleId).stream()
-                .map(comment -> CommentResponse.of(comment, comment.isAuthor(member)))
+                .map(comment -> CommentResponse.of(comment, isAuthor(appMember, comment)))
                 .collect(Collectors.toList());
     }
 
-    public void update(LoginMember loginMember, Long commentId, CommentRequest updateRequest) {
-        Member member = findMember(loginMember);
+    private boolean isAuthor(AppMember appMember, Comment comment) {
+        if (appMember.isGuest()) {
+            return false;
+        }
+        Member member = findMember(appMember);
+        return comment.isAuthor(member);
+    }
+
+    public void update(AppMember appMember, Long commentId, CommentRequest updateRequest) {
+        validateGuest(appMember);
+        Member member = findMember(appMember);
         Comment comment = findComment(commentId);
 
         if (!comment.isAuthor(member)) {
@@ -50,8 +59,9 @@ public class CommentService {
         comment.updateContent(updateRequest.getContent());
     }
 
-    public void delete(LoginMember loginMember, Long commentId) {
-        Member member = findMember(loginMember);
+    public void delete(AppMember appMember, Long commentId) {
+        validateGuest(appMember);
+        Member member = findMember(appMember);
         Comment comment = findComment(commentId);
 
         if (!comment.isAuthor(member)) {
@@ -60,8 +70,14 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    private Member findMember(LoginMember loginMember) {
-        return memberRepository.findById(loginMember.getPayload())
+    private void validateGuest(AppMember appMember) {
+        if (appMember.isGuest()) {
+            throw new IllegalArgumentException("권한이 없는 사용자입니다.");
+        }
+    }
+
+    private Member findMember(AppMember appMember) {
+        return memberRepository.findById(appMember.getPayload())
                 .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
     }
 

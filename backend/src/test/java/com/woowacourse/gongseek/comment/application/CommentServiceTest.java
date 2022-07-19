@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
@@ -15,6 +16,7 @@ import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +66,15 @@ class CommentServiceTest {
     }
 
     @Test
+    void 비회원인_경우_댓글을_생성할_수_없다() {
+        CommentRequest request = new CommentRequest("content");
+
+        assertThatThrownBy(() -> commentService.save(new GuestMember(), article.getId(), request))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("권한이 없는 사용자입니다.");
+    }
+
+    @Test
     void 회원이_존재하지_않는_경우_댓글을_생성할_수_없다() {
         CommentRequest request = new CommentRequest("content");
 
@@ -82,6 +93,44 @@ class CommentServiceTest {
     }
 
     @Test
+    void 회원이_자신이_쓴_댓글을_조회한다() {
+        List<CommentResponse> savedComments = commentService.findByArticleId(new LoginMember(member.getId()),
+                article.getId());
+        List<CommentResponse> comments = savedComments.stream()
+                .filter(commentResponse -> commentResponse.getIsAuthor().equals(Boolean.TRUE))
+                .collect(Collectors.toList());
+
+        assertAll(
+                () -> assertThat(comments.size()).isEqualTo(1),
+                () -> assertThat(comments.get(0).getIsAuthor()).isTrue()
+        );
+    }
+
+    @Test
+    void 회원이_자신이_쓰지않은_댓글을_조회한다() {
+        Member newMember = new Member("jurl", "jurlring", "avatarUrl");
+        memberRepository.save(newMember);
+        List<CommentResponse> savedComments = commentService.findByArticleId(new LoginMember(newMember.getId()),
+                article.getId());
+        List<CommentResponse> comments = savedComments.stream()
+                .filter(commentResponse -> commentResponse.getIsAuthor().equals(Boolean.TRUE))
+                .collect(Collectors.toList());
+
+        assertThat(comments.size()).isEqualTo(0);
+    }
+
+    @Test
+    void 비회원이_댓글을_조회한다() {
+        List<CommentResponse> savedComments = commentService.findByArticleId(new GuestMember(),
+                article.getId());
+        List<CommentResponse> comments = savedComments.stream()
+                .filter(commentResponse -> commentResponse.getIsAuthor().equals(Boolean.TRUE))
+                .collect(Collectors.toList());
+
+        assertThat(comments.size()).isEqualTo(0);
+    }
+
+    @Test
     void 댓글을_수정한다() {
         LoginMember member = new LoginMember(this.member.getId());
         List<CommentResponse> comments = commentService.findByArticleId(member, article.getId());
@@ -92,6 +141,15 @@ class CommentServiceTest {
         List<CommentResponse> savedComments = commentService.findByArticleId(member, article.getId());
 
         assertThat(savedComments.get(0).getContent()).isEqualTo(updateContent);
+    }
+
+    @Test
+    void 비회원인_경우_댓글을_수정할_수_없다() {
+        CommentRequest request = new CommentRequest("content");
+
+        assertThatThrownBy(() -> commentService.update(new GuestMember(), article.getId(), request))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("권한이 없는 사용자입니다.");
     }
 
     @Test
@@ -130,6 +188,13 @@ class CommentServiceTest {
                 .anyMatch(comment -> comment.getId().equals(this.comment.getId()));
 
         assertThat(isFind).isFalse();
+    }
+
+    @Test
+    void 비회원인_경우_댓글을_삭제할_수_없다() {
+        assertThatThrownBy(() -> commentService.delete(new GuestMember(), article.getId()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("권한이 없는 사용자입니다.");
     }
 
     @Test
