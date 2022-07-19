@@ -1,6 +1,8 @@
 package com.woowacourse.gongseek.article.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.member.domain.Member;
 import org.junit.jupiter.api.Test;
@@ -43,5 +45,20 @@ class ArticleTest {
         assertThatThrownBy(() -> new Article(title, content, question, member))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("컨텐트의 길이는 1000 이하여야합니다.");
+    }
+
+    @Test
+    void 게시물의_제목과_내용을_수정한다() {
+        Member member = new Member("기론", "gyuchool", "www.asdcxz.com");
+        Article article = new Article("제목", "내용", Category.QUESTION, member);
+        String updatedTitle = "updatedTitle";
+        String updatedContent = "수정된 내용입니다~~";
+
+        article.update(updatedTitle, updatedContent);
+
+        assertAll(
+                () -> assertThat(article.getTitle()).isEqualTo(updatedTitle),
+                () -> assertThat(article.getContent()).isEqualTo(updatedContent)
+        );
     }
 }

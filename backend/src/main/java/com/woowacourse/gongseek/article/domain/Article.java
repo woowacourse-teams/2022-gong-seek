@@ -82,4 +82,9 @@ public class Article {
             throw new IllegalArgumentException("컨텐트의 길이는 1000 이하여야합니다.");
         }
     }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

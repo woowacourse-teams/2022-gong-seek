@@ -20,9 +20,18 @@ endif::[]
 
 include::{snippets}/article-create/http-request.adoc[]
 
+==== Header
+
+include::{snippets}/article-create/request-headers.adoc[]
+
+==== Body
+
+include::{snippets}/article-create/request-fields.adoc[]
+
 === Response
 
 include::{snippets}/article-create/http-response.adoc[]
+include::{snippets}/article-create/response-fields.adoc[]
 
 == 게시물 단건 조회
 
@@ -30,8 +39,53 @@ include::{snippets}/article-create/http-response.adoc[]
 
 == Request
 
+=== 로그인 사용자
+
 include::{snippets}/article-find-one/http-request.adoc[]
+
+=== 비로그인 사용자
+
+include::{snippets}/article-find-one-not-login/http-request.adoc[]
 
 == Response
 
-include::{snippets}/article-find-one/http-response.adoc[]
+include::{snippets}/article-find-one-login/http-response.adoc[]
+include::{snippets}/article-find-one-login/response-fields.adoc[]
+
+== 게시물 수정
+
+`PUT /api/articles/1`
+
+=== Request
+
+include::{snippets}/article-update/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/article-update/request-headers.adoc[]
+
+==== Body
+
+include::{snippets}/article-update/http-request.adoc[]
+include::{snippets}/article-update/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/article-create/http-response.adoc[]
+include::{snippets}/article-create/response-fields.adoc[]
+
+== 게시물 삭제
+
+`DELETE /api/articles/1`
+
+=== Request
+
+include::{snippets}/article-delete/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/article-delete/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/article-delete/http-response.adoc[]
