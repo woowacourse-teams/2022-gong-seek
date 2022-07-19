@@ -1,5 +1,8 @@
 package com.woowacourse.gongseek.acceptance;
 
+import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인_URL을_얻는다;
+import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
+import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -16,7 +19,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         OAuthLoginUrlResponse urlResponse = 로그인_URL을_얻는다();
 
         //when
-        TokenResponse tokenResponse = 로그인을_한다();
+        TokenResponse tokenResponse = 로그인을_한다(주디);
 
         //then
         assertAll(

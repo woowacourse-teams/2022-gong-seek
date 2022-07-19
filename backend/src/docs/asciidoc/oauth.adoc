@@ -23,6 +23,7 @@ include::{snippets}/login-url/http-request.adoc[]
 === Response
 
 include::{snippets}/login-url/http-response.adoc[]
+include::{snippets}/login-url/response-fields.adoc[]
 
 == 로그인 ACCESS TOKEN 생성
 
@@ -31,7 +32,9 @@ include::{snippets}/login-url/http-response.adoc[]
 === Request
 
 include::{snippets}/login-token/http-request.adoc[]
+include::{snippets}/login-token/request-fields.adoc[]
 
 === Response
 
 include::{snippets}/login-token/http-response.adoc[]
+include::{snippets}/login-token/response-fields.adoc[]

@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+@SuppressWarnings("NonAsciiCharacters")
 public class CommentFixtures {
 
     public static ExtractableResponse<Response> 댓글을_등록한다(TokenResponse tokenResponse,

@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+@SuppressWarnings("NonAsciiCharacters")
 public class ArticleFixtures {
 
     public static ArticleIdResponse 게시물을_등록한다(TokenResponse tokenResponse) {
