@@ -23,6 +23,7 @@ include::{snippets}/article-create/http-request.adoc[]
 === Response
 
 include::{snippets}/article-create/http-response.adoc[]
+include::{snippets}/article-create/response-fields.adoc[]
 
 == 게시물 단건 조회
 
@@ -30,8 +31,15 @@ include::{snippets}/article-create/http-response.adoc[]
 
 == Request
 
+=== 로그인 사용자
+
 include::{snippets}/article-find-one/http-request.adoc[]
+
+=== 비로그인 사용자
+
+include::{snippets}/article-find-one-not-login/http-request.adoc[]
 
 == Response
 
-include::{snippets}/article-find-one/http-response.adoc[]
+include::{snippets}/article-find-one-login/http-response.adoc[]
+include::{snippets}/article-find-one-login/response-fields.adoc[]

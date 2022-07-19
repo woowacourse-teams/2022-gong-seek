@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -14,8 +15,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.config.RestDocsConfig;
+import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +77,73 @@ class ArticleControllerTest {
                                 ),
                                 responseFields(
                                         fieldWithPath("id").type(JsonFieldType.NUMBER).description("식별자")
+                                )
+                        )
+                );
+    }
+
+    @Test
+    void 로그인한_사용자일때_게시물_단건_조회_API_문서화() throws Exception {
+        ArticleResponse response = new ArticleResponse(
+                "title",
+                new AuthorDto("rennon", "avatar.com"),
+                "content",
+                false,
+                1,
+                LocalDateTime.now()
+        );
+        given(articleService.findOne(any(), any())).willReturn(response);
+
+        ResultActions results = mockMvc.perform(get("/api/articles/{id}", 1L)
+                        .param("category", "question")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer token")
+                        .characterEncoding("UTF-8"));
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("article-find-one-login",
+                                responseFields(
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                        fieldWithPath("author").type(JsonFieldType.OBJECT).description("작성자"),
+                                        fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
+                                        fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                                        fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
+                                        fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자"),
+                                        fieldWithPath("createdAt").type(JsonFieldType.VARIES).description("카테고리")
+                                )
+                        )
+                );
+    }
+
+    @Test
+    void 로그인_안한_사용자일때_게시물_단건_조회_API_문서화() throws Exception {
+        ArticleResponse response = new ArticleResponse(
+                "title",
+                new AuthorDto("rennon", "avatar.com"),
+                "content",
+                false,
+                1,
+                LocalDateTime.now()
+        );
+        given(articleService.findOne(any(), any())).willReturn(response);
+
+        ResultActions results = mockMvc.perform(get("/api/articles/{id}", 1L)
+                .param("category", "question")
+                .characterEncoding("UTF-8"));
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("article-find-one-not-login",
+                                responseFields(
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                        fieldWithPath("author").type(JsonFieldType.OBJECT).description("작성자"),
+                                        fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
+                                        fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                                        fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
+                                        fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자"),
+                                        fieldWithPath("createdAt").type(JsonFieldType.VARIES).description("카테고리")
                                 )
                         )
                 );
