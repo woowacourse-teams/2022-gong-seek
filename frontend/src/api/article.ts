@@ -7,8 +7,8 @@ export interface WritingArticles {
 	category: string;
 }
 
-type category = 'question' | 'discussion' | 'total';
-type sort = 'latest' | 'views';
+type Category = 'question' | 'discussion' | 'total';
+type Sort = 'latest' | 'views';
 
 export const postWritingArticle = (article: WritingArticles) => {
 	const accessToken = localStorage.getItem('accessToken');
@@ -30,4 +30,9 @@ export const getPopularArticles = async () => {
 		`http://192.168.0.155:8080/api/articles?category=total&sort=views&page=1&size=10`,
 	);
 	return result.data;
+};
+
+export const getDetailArticle = async (id = '1') => {
+	const { data } = await axios.get<ArticleType>(`http://192.168.0.155:8080/api/articles?id=${id}`);
+	return data;
 };

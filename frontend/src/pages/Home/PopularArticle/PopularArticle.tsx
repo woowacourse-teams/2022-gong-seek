@@ -6,8 +6,9 @@ import { convertIdxToArticleColorKey } from '@/utils/converter';
 
 const PopularArticle = () => {
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const mainArticleContent = useRef<HTMLDivElement>(null);
 	const [mainContent, setMainContent] = useState(null);
+
+	const mainArticleContent = useRef<HTMLDivElement>(null);
 
 	const { data, isSuccess, isError, isLoading } = useQuery('popular-articles', getPopularArticles);
 	let articleList = [];
@@ -20,7 +21,7 @@ const PopularArticle = () => {
 			setCurrentIndex(0);
 			console.log(articleList);
 		}
-	}, []);
+	}, [isSuccess]);
 
 	// useEffect(() => {
 	// 	console.log('sss');

@@ -1,10 +1,9 @@
+import { Author } from '@/types/author';
+
 export interface CommentType {
 	id: number;
-	authorName: string;
-	authorAvatarUrl: string;
+	author: Author;
 	content: string;
 	createdAt: string;
 	isAuthor: boolean;
 }
-
-export type CommentResponseType = CommentType[];

@@ -10,9 +10,8 @@ import LoginController from '@/pages/Login/LoginController/LoginController';
 import Home from '@/pages/Home';
 import PrivateRouter from '@/components/router/PrivateRouter';
 import PublicRouter from '@/components/router/PublicRouter';
-import Detail from '@/pages/Detail';
 import VoteGenerator from '@/pages/VoteGenerator';
-import Vote from '@/pages/Discussion/Vote/Vote';
+import ErrorDetail from '@/pages/ErrorDetail/index';
 
 const Layout = styled.div`
 	position: relative;
@@ -41,15 +40,15 @@ const App = () => {
 					<Route element={<PublicRouter isAuthenticated={isLogin} />}>
 						<Route path="/login" element={<Login />} />
 					</Route>
-					<Route path="/articles/error/:id" element={<Detail />} />
-					<Route
+					<Route path="/articles/error/:id" element={<ErrorDetail />} />
+					{/* <Route
 						path="/articles/discussion/:id"
 						element={
-							<Detail>
-								<Vote articleId="4" />
-							</Detail>
+							// <Detail>
+							// 	<Vote articleId="4" />
+							// </Detail>
 						}
-					/>
+					/> */}
 					<Route path="/" element={<Home />} />
 				</Routes>
 			</Content>

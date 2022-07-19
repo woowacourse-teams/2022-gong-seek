@@ -4,25 +4,16 @@ import ToastUiViewer from '@/components/common/ArticleContent/ToastUiViewer/Toas
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 
 import * as S from '@/components/common/ArticleContent/ArticleContent.style';
+import { ArticleType } from '@/types/articleResponse';
+import { Author } from '@/types/author';
 
 export interface ArticleContentProps {
 	category: string;
-	article: {
-		title: string;
-		content: string;
-		createAt: string;
-		views: number;
-		likeCount: number;
-	};
-
-	author: {
-		name: string;
-		avatarUrl: string;
-	};
-	isAuthor: boolean;
+	article: ArticleType;
+	author: Author;
 }
 
-const ArticleContent = ({ category, article, author, isAuthor }: ArticleContentProps) => {
+const ArticleContent = ({ category, article, author }: ArticleContentProps) => {
 	const [isHeartClick, setIsHeartClick] = useState(false);
 	const onLikeButtonClick = () => {
 		setIsHeartClick(!isHeartClick);
@@ -41,7 +32,7 @@ const ArticleContent = ({ category, article, author, isAuthor }: ArticleContentP
 				<S.ArticleInfo>
 					<S.ArticleTitle>{article.title}</S.ArticleTitle>
 					<S.ArticleDetailInfo>
-						<S.DetailBox>{article.createAt}</S.DetailBox>
+						<S.DetailBox>{article.createdAt}</S.DetailBox>
 						<S.DetailBox>조회수 {article.views}</S.DetailBox>
 					</S.ArticleDetailInfo>
 				</S.ArticleInfo>
@@ -50,7 +41,7 @@ const ArticleContent = ({ category, article, author, isAuthor }: ArticleContentP
 				</div>
 				<S.Footer>
 					<S.WritingOrderBox>
-						{isAuthor && (
+						{article.isAuthor && (
 							<S.ButtonWrapper>
 								<S.Button>수정</S.Button>
 								<S.Button>삭제</S.Button>
