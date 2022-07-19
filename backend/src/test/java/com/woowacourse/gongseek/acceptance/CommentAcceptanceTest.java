@@ -44,7 +44,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
         댓글을_등록한다(엑세스토큰, 게시글번호);
 
-        List<CommentResponse> 댓글리스트 = 댓글을_조회한다();
+        List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호);
 
         assertThat(댓글리스트.size()).isEqualTo(1);
     }
@@ -54,9 +54,9 @@ public class CommentAcceptanceTest extends AcceptanceTest {
         TokenResponse 엑세스토큰 = 로그인한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
         댓글을_등록한다(엑세스토큰, 게시글번호);
-        List<CommentResponse> 댓글리스트 = 댓글을_조회한다();
+        List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호);
 
-        ExtractableResponse<Response> 수정된댓글 = 댓글을_수정한다(엑세스토큰, 게시글번호, 댓글리스트);
+        ExtractableResponse<Response> 수정된댓글 = 댓글을_수정한다(엑세스토큰, 댓글리스트);
 
         assertThat(수정된댓글.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
@@ -64,11 +64,11 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     @Test
     void 댓글을_작성한_유저일_경우_댓글을_삭제할_수_있다() {
         TokenResponse 엑세스토큰 = 로그인한다(주디);
-        ArticleIdResponse 게시물번호 = 게시물을_등록한다(엑세스토큰);
-        댓글을_등록한다(엑세스토큰, 게시물번호);
-        List<CommentResponse> 댓글리스트 = 댓글을_조회한다();
+        ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
+        댓글을_등록한다(엑세스토큰, 게시글번호);
+        List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호);
 
-        ExtractableResponse<Response> 삭제된댓글 = 댓글을_삭제한다(엑세스토큰, 게시물번호, 댓글리스트);
+        ExtractableResponse<Response> 삭제된댓글 = 댓글을_삭제한다(엑세스토큰, 댓글리스트);
 
         assertThat(삭제된댓글.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }

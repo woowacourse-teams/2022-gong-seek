@@ -76,7 +76,7 @@ class CommentServiceTest {
     void 게시글이_존재하지_않는_경우_댓글을_생성할_수_없다() {
         CommentRequest request = new CommentRequest("content");
 
-        assertThatThrownBy(() -> commentService.save(new LoginMember(member.getId()), 2L, request))
+        assertThatThrownBy(() -> commentService.save(new LoginMember(member.getId()), -1L, request))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("게시글이 존재하지 않습니다.");
     }

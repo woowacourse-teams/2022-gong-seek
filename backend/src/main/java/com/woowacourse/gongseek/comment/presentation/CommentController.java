@@ -57,6 +57,6 @@ public class CommentController {
             @PathVariable Long commentId
     ) {
         commentService.delete(loginMember, commentId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
