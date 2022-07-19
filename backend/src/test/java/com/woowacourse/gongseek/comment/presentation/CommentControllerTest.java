@@ -2,9 +2,13 @@ package com.woowacourse.gongseek.comment.presentation;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -67,6 +71,9 @@ class CommentControllerTest {
         results.andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document("comment-create",
+                                requestHeaders(
+                                        headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                                ),
                                 requestFields(
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
                                 )
@@ -104,12 +111,42 @@ class CommentControllerTest {
 
     @Test
     void 댓글_수정_API_문서화() throws Exception {
+        CommentRequest request = new CommentRequest("content");
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.getPayload(any())).willReturn("1");
 
+        ResultActions results = mockMvc.perform(put("/api/articles/comments/{commentId}", 1)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8"));
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("comment-update",
+                                requestHeaders(
+                                        headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                                ),
+                                requestFields(
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
+                                )
+                        )
+                );
     }
 
     @Test
     void 댓글_삭제_API_문서화() throws Exception {
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.getPayload(any())).willReturn("1");
 
+        mockMvc.perform(delete("/api/articles/comments/{commentId}", 1)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer token"))
+                .andExpect(status().isNoContent())
+                .andDo(print())
+                .andDo(document("comment-delete",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        )));
     }
 
 }
