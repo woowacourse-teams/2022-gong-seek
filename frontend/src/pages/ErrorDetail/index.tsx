@@ -7,6 +7,10 @@ import Detail from '../Detail';
 const ErrorDetail = () => {
 	const { id } = useParams<string>();
 
+	if (id === undefined) {
+		throw new Error('id 값을 받아오지 못했습니다');
+	}
+
 	// 게시글 조회
 	const {
 		data: articleData,
@@ -23,7 +27,7 @@ const ErrorDetail = () => {
 		isSuccess: isCommentSuccess,
 		isLoading: isCommentLoading,
 		error: commentError,
-	} = useQuery('comments', getComments);
+	} = useQuery('comments', () => getComments(id));
 
 	if (isArticleLoading || isCommentLoading) {
 		return <div>로딩중...</div>;
@@ -38,10 +42,15 @@ const ErrorDetail = () => {
 		);
 	}
 
+	if (isArticleSuccess) {
+		localStorage.setItem('title', articleData.title);
+		localStorage.setItem('content', articleData.content);
+	}
+
 	return (
 		<div>
 			{isArticleSuccess && isCommentSuccess && (
-				<Detail article={articleData} commentList={commentData} />
+				<Detail article={articleData} commentList={commentData} articleId={id} />
 			)}
 		</div>
 	);

@@ -2,7 +2,8 @@ import { Author } from '@/types/author';
 
 export interface CommentType {
 	id: number;
-	author: Author;
+	authorName: string;
+	authorAvatarUrl: string;
 	content: string;
 	createdAt: string;
 	isAuthor: boolean;

@@ -1,10 +1,11 @@
-import { CommentsResponse, deleteComments } from '@/api/comments';
+import { deleteComments } from '@/api/comments';
 import * as S from '@/components/common/Comment/Comment.style';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import CommentInputModal from '../CommentInputModal/CommentInputModal';
 import { queryClient } from '@/index';
+import { CommentType } from '@/types/commentResponse';
 export const DimmerContainer = styled.div`
 	position: fixed;
 	top: 0;
@@ -15,29 +16,31 @@ export const DimmerContainer = styled.div`
 	z-index: 110;
 `;
 
-interface CommentProps extends CommentsResponse {
+interface CommentProps extends CommentType {
 	articleId: string;
 }
 
 const Comment = ({
 	id,
 	authorName,
-	authorAvartarUrl,
+	authorAvatarUrl,
 	content,
 	createdAt,
 	isAuthor,
 	articleId,
 }: CommentProps) => {
 	const [isEditCommentOpen, setIsEditCommentOpen] = useState(false);
+	const [commentPlaceholder, setCommentPlaceHolder] = useState('');
 	const { isLoading, isError, isSuccess, mutate } = useMutation(deleteComments);
 
 	const onUpdateButtonClick = () => {
+		setCommentPlaceHolder(content);
 		setIsEditCommentOpen(true);
 	};
 
 	const onDeleteButtonClick = () => {
 		if (confirm('정말로 삭제하시겠습니까?')) {
-			mutate({ commentId: String(id), articleId });
+			mutate({ commentId: String(id) });
 		}
 	};
 
@@ -55,7 +58,7 @@ const Comment = ({
 		<S.Container>
 			<S.CommentHeader>
 				<S.CommentInfo>
-					<S.UserProfile src={authorAvartarUrl} />
+					<S.UserProfile src={authorAvatarUrl} />
 					<S.CommentInfoSub>
 						<S.UserName>{authorName}</S.UserName>
 						<S.CreateTime>{createdAt}</S.CreateTime>
@@ -78,6 +81,7 @@ const Comment = ({
 						articleId={String(articleId)}
 						modalType="edit"
 						commentId={String(id)}
+						placeholder={commentPlaceholder}
 					/>
 				</>
 			)}
