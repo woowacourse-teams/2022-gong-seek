@@ -34,6 +34,16 @@ const ErrorDetail = () => {
 		error: commentError,
 	} = useQuery('comments', () => getComments(id));
 
+	useEffect(() => {
+		remove();
+	}, []);
+
+	useEffect(() => {
+		if (isArticleSuccess) {
+			setTempArticle({ title: articleData.title, content: articleData.content });
+		}
+	}, [isArticleSuccess]);
+
 	if (isArticleLoading || isCommentLoading) {
 		return <div>로딩중...</div>;
 	}
@@ -46,16 +56,6 @@ const ErrorDetail = () => {
 			</div>
 		);
 	}
-
-	useEffect(() => {
-		remove();
-	}, []);
-
-	useEffect(() => {
-		if (isArticleSuccess) {
-			setTempArticle({ title: articleData.title, content: articleData.content });
-		}
-	}, [isArticleSuccess]);
 
 	return (
 		<div>

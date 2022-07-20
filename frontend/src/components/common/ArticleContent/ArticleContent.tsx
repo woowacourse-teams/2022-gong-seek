@@ -24,6 +24,13 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 
 	const navigate = useNavigate();
 
+	useEffect(() => {
+		if (isSuccess) {
+			console.log('게시글이 삭제 되었습니다');
+			navigate('/');
+		}
+	}, [isSuccess, isError, isLoading]);
+
 	const onLikeButtonClick = () => {
 		setIsHeartClick(!isHeartClick);
 		// 좋아요 비동기 통신
@@ -47,13 +54,6 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 	if (isError) {
 		return <div>{`${error}가 발생하였습니다`}</div>;
 	}
-
-	useEffect(() => {
-		if (isSuccess) {
-			console.log('게시글이 삭제 되었습니다');
-			navigate('/');
-		}
-	}, [isSuccess, isError, isLoading]);
 
 	return (
 		<S.Container>

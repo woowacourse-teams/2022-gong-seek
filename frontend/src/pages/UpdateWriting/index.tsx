@@ -26,6 +26,13 @@ const UpdateWriting = () => {
 	const content = useRef<Editor | null>(null);
 	const [title, setTitle] = useState(tempArticle.title);
 
+	useEffect(() => {
+		if (isSuccess) {
+			console.log('수정에 성공하였습니다');
+			navigate(`/articles/${data.data.category}/${data.data.id}`);
+		}
+	}, [isSuccess]);
+
 	if (id === undefined || category === undefined) {
 		throw new Error('id와  category 값을 가지고 오지 못하였습니다');
 	}
@@ -44,13 +51,6 @@ const UpdateWriting = () => {
 		}
 		mutate({ title, content: content.current.getInstance().getMarkdown(), id });
 	};
-
-	useEffect(() => {
-		if (isSuccess) {
-			console.log('수정에 성공하였습니다');
-			navigate(`/articles/${data.data.category}/${data.data.id}`);
-		}
-	}, [isSuccess]);
 
 	return (
 		<S.Container>

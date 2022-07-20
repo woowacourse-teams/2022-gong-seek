@@ -47,7 +47,7 @@ const Detail = ({ children, article, commentList, articleId }: DetailProps) => {
 					<S.CommentTitle>댓글</S.CommentTitle>
 					<S.CommentTotal>
 						<S.CommentIcon />
-						<div>{0}개</div>
+						<div>{commentList.length || 0}개</div>
 					</S.CommentTotal>
 				</S.CommentHeader>
 
