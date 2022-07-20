@@ -29,7 +29,7 @@ const WritingArticles = () => {
 				navigate(`/votes/${data.data.id}`);
 				return;
 			}
-			navigate(`/`);
+			navigate(`/articles/${category}/${data.data.id}`);
 		}
 		if (isSuccess && category === CATEGORY.question) {
 			navigate(`/articles/${category}/${data.data.id}`);

@@ -21,7 +21,6 @@ const Detail = ({ children, article, commentList, articleId }: DetailProps) => {
 	if (typeof id === 'undefined') {
 		throw new Error('글을 찾지 못하였습니다.');
 	}
-	console.log(commentList);
 	return (
 		<S.Container>
 			<ArticleContent
