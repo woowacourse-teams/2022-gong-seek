@@ -8,3 +8,8 @@ export const CATEGORY_TYPE = {
 		hoverColor: 'rgba(58, 176, 255, 0.75)',
 	},
 };
+
+export const CATEGORY = {
+	question: 'question',
+	discussion: 'discussion',
+};

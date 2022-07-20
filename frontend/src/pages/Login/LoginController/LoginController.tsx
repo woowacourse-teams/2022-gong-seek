@@ -28,7 +28,6 @@ const LoginController = () => {
 			window.location.href = '/';
 		}
 		if (isError) {
-			console.log(error.message);
 			window.location.href = '/';
 		}
 	}, [isSuccess, isError]);

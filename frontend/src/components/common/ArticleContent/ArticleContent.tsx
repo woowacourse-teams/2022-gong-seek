@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import ToastUiViewer from '@/components/common/ArticleContent/ToastUiViewer/ToastUiViewer';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
@@ -6,19 +6,54 @@ import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import * as S from '@/components/common/ArticleContent/ArticleContent.style';
 import { ArticleType } from '@/types/articleResponse';
 import { Author } from '@/types/author';
+import { useMutation } from 'react-query';
+
+import { deleteArticle } from '@/api/article';
+import { useNavigate } from 'react-router-dom';
 
 export interface ArticleContentProps {
 	category: string;
 	article: ArticleType;
 	author: Author;
+	articleId: string;
 }
 
-const ArticleContent = ({ category, article, author }: ArticleContentProps) => {
+const ArticleContent = ({ category, article, author, articleId }: ArticleContentProps) => {
 	const [isHeartClick, setIsHeartClick] = useState(false);
+	const { isSuccess, isError, isLoading, error, mutate } = useMutation(deleteArticle);
+
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (isSuccess) {
+			alert('게시글이 삭제 되었습니다');
+			navigate('/');
+		}
+	}, [isSuccess]);
+
 	const onLikeButtonClick = () => {
 		setIsHeartClick(!isHeartClick);
-		//비동기 통신
+		// 좋아요 비동기 통신
 	};
+
+	const postUpdateArticle = () => {
+		const categoryName = category === '에러' ? 'question' : 'discussion';
+		navigate(`/articles/modify/${categoryName}/${articleId}`);
+	};
+
+	const handleDeleteArticle = () => {
+		if (window.confirm('게시글을 삭제하시겠습니까?')) {
+			mutate(articleId);
+		}
+	};
+
+	if (isLoading) {
+		return <div>삭제중입니다...</div>;
+	}
+	if (isError) {
+		return <div>{`${error}가 발생하였습니다`}</div>;
+	}
+
 	return (
 		<S.Container>
 			<S.Header>
@@ -36,15 +71,15 @@ const ArticleContent = ({ category, article, author }: ArticleContentProps) => {
 						<S.DetailBox>조회수 {article.views}</S.DetailBox>
 					</S.ArticleDetailInfo>
 				</S.ArticleInfo>
-				<div>
+				<S.TextViewerBox>
 					<ToastUiViewer initContent={article.content} />
-				</div>
+				</S.TextViewerBox>
 				<S.Footer>
 					<S.WritingOrderBox>
 						{article.isAuthor && (
 							<S.ButtonWrapper>
-								<S.Button>수정</S.Button>
-								<S.Button>삭제</S.Button>
+								<S.Button onClick={postUpdateArticle}>수정</S.Button>
+								<S.Button onClick={handleDeleteArticle}>삭제</S.Button>
 							</S.ButtonWrapper>
 						)}
 					</S.WritingOrderBox>
