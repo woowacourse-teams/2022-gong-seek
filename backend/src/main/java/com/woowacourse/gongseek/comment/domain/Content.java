@@ -3,6 +3,7 @@ package com.woowacourse.gongseek.comment.domain;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Lob;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ public class Content {
 
     private static final int MAX_CONTENT_LENGTH = 10000;
 
+    @Lob
     @Column(name = "content")
     private String value;
 
