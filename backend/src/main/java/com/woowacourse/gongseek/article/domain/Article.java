@@ -88,6 +88,8 @@ public class Article {
     }
 
     public void update(String title, String content) {
+        validateTitleLength(title);
+        validateContentLength(content);
         this.title = title;
         this.content = content;
     }
