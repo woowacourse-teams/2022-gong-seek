@@ -64,17 +64,18 @@ const Detail = ({ children, article, commentList }: DetailProps) => {
 						</S.CommentTotal>
 					</S.CommentHeader>
 
-				{commentList.map((item) => (
-					<Comment
-						key={item.id}
-						id={item.id}
-						author={item.author}
-						content={item.content}
-						createAt={item.createdAt}
-						isAuthor={item.isAuthor}
-					/>
-				))}
-			</S.CommentSection>
+					{commentList.map((item) => (
+						<Comment
+							key={item.id}
+							id={item.id}
+							author={item.author}
+							content={item.content}
+							createAt={item.createdAt}
+							isAuthor={item.isAuthor}
+						/>
+					))}
+				</S.CommentSection>
+			)}
 			{isCommentOpen && (
 				<>
 					<S.DimmerContainer onClick={() => setIsCommentOpen(false)} />

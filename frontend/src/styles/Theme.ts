@@ -69,6 +69,8 @@ const size = {
 	SIZE_056: '3.5rem',
 	SIZE_080: '5rem',
 	SIZE_090: '5.625rem',
+	SIZE_126: '7.875rem',
+	SIZE_160: '10rem',
 	SIZE_260: '16.25rem',
 };
 
