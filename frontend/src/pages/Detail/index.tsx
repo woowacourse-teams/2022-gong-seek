@@ -49,7 +49,6 @@ const Detail = ({ children, article, commentList, articleId }: DetailProps) => {
 						<div>{commentList.length || 0}개</div>
 					</S.CommentTotal>
 				</S.CommentHeader>
-
 				{commentList &&
 					commentList.length > 0 &&
 					commentList.map((item) => (

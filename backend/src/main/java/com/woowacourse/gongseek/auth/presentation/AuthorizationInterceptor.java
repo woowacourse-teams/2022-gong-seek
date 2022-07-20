@@ -8,6 +8,7 @@ import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 public class AuthorizationInterceptor implements HandlerInterceptor {
@@ -20,7 +21,8 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (Objects.isNull(request.getHeader(HttpHeaders.AUTHORIZATION))) {
+        if (!HttpMethod.GET.matches(request.getMethod()) || Objects.isNull(
+                request.getHeader(HttpHeaders.AUTHORIZATION))) {
             return true;
         }
 

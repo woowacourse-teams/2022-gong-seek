@@ -1,4 +1,6 @@
 == 공식의 공식 애플리케이션 API 문서
 
 - link:/docs/article.html[게시물 관련 API]
+- link:/docs/oauth.html[깃헙 로그인 관련 API]
+- link:/docs/comment.html[댓글 관련 API]
 

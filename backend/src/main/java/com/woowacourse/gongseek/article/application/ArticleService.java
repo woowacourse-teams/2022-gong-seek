@@ -5,6 +5,8 @@ import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
@@ -13,19 +15,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 @Service
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
 
-    @Transactional
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
-        Member member = memberRepository.findById(appMember.getPayload())
-                .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
-        Article article = articleRepository.save(articleRequest.toEntity(member));
+
+        Article article = articleRepository.save(articleRequest.toEntity(findMember(appMember)));
 
         return new ArticleIdResponse(article);
     }
@@ -36,6 +36,12 @@ public class ArticleService {
         }
     }
 
+    private Member findMember(AppMember appMember) {
+        return memberRepository.findById(appMember.getPayload())
+                .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
+    }
+
+    @Transactional(readOnly = true)
     public ArticleResponse findOne(AppMember appMember, Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
@@ -43,9 +49,34 @@ public class ArticleService {
         if (appMember.isGuest()) {
             return new ArticleResponse(article, false);
         }
+        return new ArticleResponse(article, article.isAuthor(findMember(appMember)));
+    }
+
+    public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
+        Article article = checkAuthorization(appMember, id);
+        article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent());
+
+        return new ArticleUpdateResponse(article);
+    }
+
+    public void delete(AppMember appMember, Long id) {
+        Article article = checkAuthorization(appMember, id);
+        articleRepository.delete(article);
+    }
+
+    private Article checkAuthorization(AppMember appMember, Long id) {
+        validateGuest(appMember);
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
         Member member = memberRepository.findById(appMember.getPayload())
                 .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+        validateAuthor(article, member);
+        return article;
+    }
 
-        return new ArticleResponse(article, article.isAuthor(member));
+    private void validateAuthor(Article article, Member member) {
+        if (!article.isAuthor(member)) {
+            throw new IllegalStateException("작성자만 권한이 있습니다.");
+        }
     }
 }
