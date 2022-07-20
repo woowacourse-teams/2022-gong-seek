@@ -20,15 +20,7 @@ interface CommentProps extends CommentType {
 	articleId: string;
 }
 
-const Comment = ({
-	id,
-	authorName,
-	authorAvatarUrl,
-	content,
-	createdAt,
-	isAuthor,
-	articleId,
-}: CommentProps) => {
+const Comment = ({ id, author, content, createdAt, isAuthor, articleId }: CommentProps) => {
 	const [isEditCommentOpen, setIsEditCommentOpen] = useState(false);
 	const [commentPlaceholder, setCommentPlaceHolder] = useState('');
 	const { isLoading, isError, isSuccess, mutate } = useMutation(deleteComments);
@@ -58,9 +50,9 @@ const Comment = ({
 		<S.Container>
 			<S.CommentHeader>
 				<S.CommentInfo>
-					<S.UserProfile src={authorAvatarUrl} />
+					<S.UserProfile alt="유저 프로필이 보여지는 곳입니다" src={author.avatarUrl} />
 					<S.CommentInfoSub>
-						<S.UserName>{authorName}</S.UserName>
+						<S.UserName>{author.name}</S.UserName>
 						<S.CreateTime>{createdAt}</S.CreateTime>
 					</S.CommentInfoSub>
 				</S.CommentInfo>

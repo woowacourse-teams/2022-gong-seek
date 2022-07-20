@@ -58,8 +58,7 @@ const Detail = ({ children, article, commentList, articleId }: DetailProps) => {
 							key={item.id}
 							id={item.id}
 							articleId={id}
-							authorName={item.authorName}
-							authorAvatarUrl={item.authorAvatarUrl}
+							author={item.author}
 							content={item.content}
 							createdAt={item.createdAt}
 							isAuthor={item.isAuthor}

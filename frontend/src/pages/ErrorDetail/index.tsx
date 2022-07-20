@@ -50,7 +50,7 @@ const ErrorDetail = () => {
 	return (
 		<div>
 			{isArticleSuccess && isCommentSuccess && (
-				<Detail article={articleData} commentList={commentData} articleId={id} />
+				<Detail article={articleData} commentList={commentData.comments} articleId={id} />
 			)}
 		</div>
 	);
