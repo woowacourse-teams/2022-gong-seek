@@ -2,7 +2,6 @@ package com.woowacourse.gongseek.article.domain;
 
 import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
