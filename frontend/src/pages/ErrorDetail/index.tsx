@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import Detail from '@/pages/Detail/index';
 import { useSetRecoilState } from 'recoil';
 import { articleState } from '@/store/articleState';
+import { useEffect } from 'react';
 
 const ErrorDetail = () => {
 	const { id } = useParams<string>();
@@ -21,6 +22,7 @@ const ErrorDetail = () => {
 		isSuccess: isArticleSuccess,
 		isLoading: isArticleLoading,
 		error: articleError,
+		remove,
 	} = useQuery('detail-article', () => getDetailArticle(id));
 
 	// 댓글 조회
@@ -45,9 +47,15 @@ const ErrorDetail = () => {
 		);
 	}
 
-	if (isArticleSuccess) {
-		setTempArticle({ title: articleData.title, content: articleData.content });
-	}
+	useEffect(() => {
+		remove();
+	}, []);
+
+	useEffect(() => {
+		if (isArticleSuccess) {
+			setTempArticle({ title: articleData.title, content: articleData.content });
+		}
+	}, [isArticleSuccess]);
 
 	return (
 		<div>

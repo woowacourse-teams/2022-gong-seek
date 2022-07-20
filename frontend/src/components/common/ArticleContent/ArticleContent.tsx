@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import ToastUiViewer from '@/components/common/ArticleContent/ToastUiViewer/ToastUiViewer';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
@@ -20,9 +20,8 @@ export interface ArticleContentProps {
 
 const ArticleContent = ({ category, article, author, articleId }: ArticleContentProps) => {
 	const [isHeartClick, setIsHeartClick] = useState(false);
-	const { data, isSuccess, isError, isLoading, error, mutate } = useMutation(deleteArticle);
+	const { isSuccess, isError, isLoading, error, mutate } = useMutation(deleteArticle);
 
-	console.log(article.isAuthor);
 	const navigate = useNavigate();
 
 	const onLikeButtonClick = () => {
@@ -41,14 +40,20 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 			mutate(articleId);
 		}
 	};
+
 	if (isLoading) {
 		return <div>삭제중입니다...</div>;
 	}
-
-	if (isSuccess) {
-		console.log('게시글 삭제 성공');
-		navigate('/');
+	if (isError) {
+		return <div>{`${error}가 발생하였습니다`}</div>;
 	}
+
+	useEffect(() => {
+		if (isSuccess) {
+			console.log('게시글이 삭제 되었습니다');
+			navigate('/');
+		}
+	}, [isSuccess, isError, isLoading]);
 
 	return (
 		<S.Container>
