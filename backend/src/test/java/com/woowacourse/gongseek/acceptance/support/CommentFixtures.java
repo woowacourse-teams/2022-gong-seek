@@ -4,6 +4,7 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
+import com.woowacourse.gongseek.comment.presentation.dto.CommentsResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -29,8 +30,8 @@ public class CommentFixtures {
                 .extract();
     }
 
-    public static List<CommentResponse> 댓글을_조회한다(TokenResponse tokenResponse,
-                                                 ArticleIdResponse articleIdResponse) {
+    public static CommentsResponse 댓글을_조회한다(TokenResponse tokenResponse,
+                                            ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .pathParam("article_id", articleIdResponse.getId())
@@ -40,8 +41,7 @@ public class CommentFixtures {
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract()
-                .body()
-                .jsonPath().getList(".", CommentResponse.class);
+                .as(CommentsResponse.class);
     }
 
     public static ExtractableResponse<Response> 댓글을_수정한다(TokenResponse tokenResponse,

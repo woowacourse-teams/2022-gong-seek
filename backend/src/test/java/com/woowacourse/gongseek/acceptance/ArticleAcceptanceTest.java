@@ -144,7 +144,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(articleUpdateResponse.getId()).isEqualTo(articleIdResponse.getId()),
-                () -> assertThat(articleUpdateResponse.getCategory()).isEqualTo(Category.QUESTION)
+                () -> assertThat(articleUpdateResponse.getCategory()).isEqualTo(Category.QUESTION.getValue())
         );
     }
 

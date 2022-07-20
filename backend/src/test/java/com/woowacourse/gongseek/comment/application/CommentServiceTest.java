@@ -56,11 +56,11 @@ class CommentServiceTest {
         LoginMember member = new LoginMember(this.member.getId());
 
         commentService.save(member, article.getId(), request);
-        List<CommentResponse> savedComments = commentService.findByArticleId(member, article.getId());
+        List<CommentResponse> savedComments = commentService.findByArticleId(member, article.getId()).getComments();
 
         assertAll(
                 () -> assertThat(savedComments).hasSize(2),
-                () -> assertThat(savedComments.get(1).getAuthorName()).isEqualTo(this.member.getName()),
+                () -> assertThat(savedComments.get(1).getAuthor().getName()).isEqualTo(this.member.getName()),
                 () -> assertThat(savedComments.get(1).getContent()).isEqualTo(request.getContent())
         );
     }
@@ -95,7 +95,7 @@ class CommentServiceTest {
     @Test
     void 회원이_자신이_쓴_댓글을_조회한다() {
         List<CommentResponse> savedComments = commentService.findByArticleId(new LoginMember(member.getId()),
-                article.getId());
+                article.getId()).getComments();
         List<CommentResponse> comments = savedComments.stream()
                 .filter(commentResponse -> commentResponse.getIsAuthor().equals(Boolean.TRUE))
                 .collect(Collectors.toList());
@@ -111,7 +111,7 @@ class CommentServiceTest {
         Member newMember = new Member("jurl", "jurlring", "avatarUrl");
         memberRepository.save(newMember);
         List<CommentResponse> savedComments = commentService.findByArticleId(new LoginMember(newMember.getId()),
-                article.getId());
+                article.getId()).getComments();
         List<CommentResponse> comments = savedComments.stream()
                 .filter(commentResponse -> commentResponse.getIsAuthor().equals(Boolean.TRUE))
                 .collect(Collectors.toList());
@@ -122,7 +122,7 @@ class CommentServiceTest {
     @Test
     void 비회원이_댓글을_조회한다() {
         List<CommentResponse> savedComments = commentService.findByArticleId(new GuestMember(),
-                article.getId());
+                article.getId()).getComments();
         List<CommentResponse> comments = savedComments.stream()
                 .filter(commentResponse -> commentResponse.getIsAuthor().equals(Boolean.TRUE))
                 .collect(Collectors.toList());
@@ -133,12 +133,12 @@ class CommentServiceTest {
     @Test
     void 댓글을_수정한다() {
         LoginMember member = new LoginMember(this.member.getId());
-        List<CommentResponse> comments = commentService.findByArticleId(member, article.getId());
+        List<CommentResponse> comments = commentService.findByArticleId(member, article.getId()).getComments();
         String updateContent = "update";
         CommentRequest updateRequest = new CommentRequest(updateContent);
 
         commentService.update(member, comments.get(0).getId(), updateRequest);
-        List<CommentResponse> savedComments = commentService.findByArticleId(member, article.getId());
+        List<CommentResponse> savedComments = commentService.findByArticleId(member, article.getId()).getComments();
 
         assertThat(savedComments.get(0).getContent()).isEqualTo(updateContent);
     }
@@ -182,7 +182,7 @@ class CommentServiceTest {
     void 댓글을_삭제한다() {
         LoginMember member = new LoginMember(this.member.getId());
         commentService.delete(member, comment.getId());
-        List<CommentResponse> comments = commentService.findByArticleId(member, article.getId());
+        List<CommentResponse> comments = commentService.findByArticleId(member, article.getId()).getComments();
 
         boolean isFind = comments.stream()
                 .anyMatch(comment -> comment.getId().equals(this.comment.getId()));

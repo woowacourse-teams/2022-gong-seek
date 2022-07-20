@@ -41,7 +41,7 @@ include::{snippets}/article-create/response-fields.adoc[]
 
 === 로그인 사용자
 
-include::{snippets}/article-find-one/http-request.adoc[]
+include::{snippets}/article-find-one-login/http-request.adoc[]
 
 === 비로그인 사용자
 
