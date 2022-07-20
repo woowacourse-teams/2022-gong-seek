@@ -20,6 +20,7 @@ import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.comment.application.CommentService;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
+import com.woowacourse.gongseek.comment.presentation.dto.CommentsResponse;
 import com.woowacourse.gongseek.config.RestDocsConfig;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.time.LocalDateTime;
@@ -83,14 +84,23 @@ class CommentControllerTest {
 
     @Test
     void 댓글_조회_API_문서화() throws Exception {
-        CommentResponse commentResponse = new CommentResponse(
+        CommentResponse authorComment = new CommentResponse(
                 1L,
-                "content",
-                new AuthorDto("authorName", "authorAvatarUrl"),
+                "content1",
+                new AuthorDto("authorName", "authorAvatarUrl1"),
                 true,
                 LocalDateTime.now()
         );
-        given(commentService.findByArticleId(any(), any())).willReturn(List.of(commentResponse));
+        CommentResponse nonAuthorComment = new CommentResponse(
+                2L,
+                "content2",
+                new AuthorDto("nonAuthorName", "authorAvatarUrl2"),
+                false,
+                LocalDateTime.now()
+        );
+
+        given(commentService.findByArticleId(any(), any())).willReturn(
+                new CommentsResponse(List.of(authorComment, nonAuthorComment)));
 
         mockMvc.perform(get("/api/articles/{articleId}/comments", 1)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer token"))
@@ -98,14 +108,14 @@ class CommentControllerTest {
                 .andDo(print())
                 .andDo(document("comment-find-all-by-article-id",
                                 responseFields(
-                                        fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("댓글 아이디"),
-                                        fieldWithPath("[].content").type(JsonFieldType.STRING).description("댓글 내용"),
-                                        fieldWithPath("[].author.name").type(JsonFieldType.STRING)
+                                        fieldWithPath("comments[].id").type(JsonFieldType.NUMBER).description("댓글 아이디"),
+                                        fieldWithPath("comments[].content").type(JsonFieldType.STRING).description("댓글 내용"),
+                                        fieldWithPath("comments[].author.name").type(JsonFieldType.STRING)
                                                 .description("작성자 이름"),
-                                        fieldWithPath("[].author.avatarUrl").type(JsonFieldType.STRING)
+                                        fieldWithPath("comments[].author.avatarUrl").type(JsonFieldType.STRING)
                                                 .description("작성자 이미지"),
-                                        fieldWithPath("[].isAuthor").type(JsonFieldType.BOOLEAN).description("작성자 여부"),
-                                        fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("생성 날짜")
+                                        fieldWithPath("comments[].isAuthor").type(JsonFieldType.BOOLEAN).description("작성자 여부"),
+                                        fieldWithPath("comments[].createdAt").type(JsonFieldType.STRING).description("생성 날짜")
                                 )
                         )
                 );

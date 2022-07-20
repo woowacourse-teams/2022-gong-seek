@@ -2201,9 +2201,51 @@ Host: localhost:8080
                 </div>
                 <div class="sect3">
                     <h4 id="_header"><a class="link" href="#_header">Header</a></h4>
-                    <div class="paragraph">
-                        <p>include::C:\Users\dbswn\2022-gong-seek\backend\build\generated-snippets/comment-create/</p>
-                    </div>
+                    <table class="tableblock frame-all grid-all stretch">
+                        <colgroup>
+                            <col style="width: 50%;">
+                            <col style="width: 50%;">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="tableblock halign-left valign-top">Name</th>
+                            <th class="tableblock halign-left valign-top">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">
+                                <code>Authorization</code></p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">Bearer + 토큰</p></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="sect3">
+                    <h4 id="_body"><a class="link" href="#_body">Body</a></h4>
+                    <table class="tableblock frame-all grid-all stretch">
+                        <colgroup>
+                            <col style="width: 33.3333%;">
+                            <col style="width: 33.3333%;">
+                            <col style="width: 33.3334%;">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="tableblock halign-left valign-top">Path</th>
+                            <th class="tableblock halign-left valign-top">Type</th>
+                            <th class="tableblock halign-left valign-top">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">내용</p></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="sect2">
@@ -2244,18 +2286,29 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 202
+Content-Length: 469
 
-[ {
-  "id" : 1,
-  "content" : "content",
-  "author" : {
-    "name" : "authorName",
-    "avatarUrl" : "authorAvatarUrl"
-  },
-  "createdAt" : "2022-07-19T22:48:24.640352",
-  "isAuthor" : true
-} ]</code></pre>
+{
+  "comments" : [ {
+    "id" : 1,
+    "content" : "content1",
+    "author" : {
+      "name" : "authorName",
+      "avatarUrl" : "authorAvatarUrl1"
+    },
+    "createdAt" : "2022-07-20T13:30:56.7485505",
+    "isAuthor" : true
+  }, {
+    "id" : 2,
+    "content" : "content2",
+    "author" : {
+      "name" : "nonAuthorName",
+      "avatarUrl" : "authorAvatarUrl2"
+    },
+    "createdAt" : "2022-07-20T13:30:56.7485505",
+    "isAuthor" : false
+  } ]
+}</code></pre>
                     </div>
                 </div>
             </div>
@@ -2281,6 +2334,54 @@ Host: localhost:8080
   "content" : "content"
 }</code></pre>
                     </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_header_2"><a class="link" href="#_header_2">Header</a></h4>
+                    <table class="tableblock frame-all grid-all stretch">
+                        <colgroup>
+                            <col style="width: 50%;">
+                            <col style="width: 50%;">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="tableblock halign-left valign-top">Name</th>
+                            <th class="tableblock halign-left valign-top">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">
+                                <code>Authorization</code></p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">Bearer + 토큰</p></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="sect3">
+                    <h4 id="_body_2"><a class="link" href="#_body_2">Body</a></h4>
+                    <table class="tableblock frame-all grid-all stretch">
+                        <colgroup>
+                            <col style="width: 33.3333%;">
+                            <col style="width: 33.3333%;">
+                            <col style="width: 33.3334%;">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="tableblock halign-left valign-top">Path</th>
+                            <th class="tableblock halign-left valign-top">Type</th>
+                            <th class="tableblock halign-left valign-top">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">내용</p></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="sect2">
@@ -2311,6 +2412,28 @@ Authorization: Bearer token
 Host: localhost:8080</code></pre>
                     </div>
                 </div>
+                <div class="sect3">
+                    <h4 id="_header_3"><a class="link" href="#_header_3">Header</a></h4>
+                    <table class="tableblock frame-all grid-all stretch">
+                        <colgroup>
+                            <col style="width: 50%;">
+                            <col style="width: 50%;">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="tableblock halign-left valign-top">Name</th>
+                            <th class="tableblock halign-left valign-top">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">
+                                <code>Authorization</code></p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">Bearer + 토큰</p></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="sect2">
                 <h3 id="_response_4"><a class="link" href="#_response_4">Response</a></h3>
@@ -2329,7 +2452,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div id="footer">
     <div id="footer-text">
         Version 0.0.1-SNAPSHOT<br>
-        Last updated 2022-07-19 22:47:08 +0900
+        Last updated 2022-07-19 22:51:17 +0900
     </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

@@ -4,8 +4,7 @@ import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.application.CommentService;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
-import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
-import java.util.List;
+import com.woowacourse.gongseek.comment.presentation.dto.CommentsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +34,7 @@ public class CommentController {
     }
 
     @GetMapping("/{articleId}/comments")
-    public ResponseEntity<List<CommentResponse>> findByArticleId(
+    public ResponseEntity<CommentsResponse> findByArticleId(
             @AuthenticationPrinciple AppMember appMember,
             @PathVariable Long articleId
     ) {
