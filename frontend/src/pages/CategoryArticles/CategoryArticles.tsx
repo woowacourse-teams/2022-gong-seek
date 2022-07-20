@@ -1,7 +1,6 @@
-import { getPopularArticles } from '@/api/article';
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
-import { useQuery } from 'react-query';
-import { useNavigate, useParams } from 'react-router-dom';
+import {} from 'react-query';
+import { useParams } from 'react-router-dom';
 import * as S from '@/pages/CategoryArticles/CategoryArticles.styles';
 import SortDropdown from './SortDropdown/SortDropDown';
 
