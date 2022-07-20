@@ -87,7 +87,7 @@ export const ArticleHandler = [
 		return res(
 			ctx.status(200),
 			ctx.json({
-				articles: articlesPage,
+				articles: responseArticles,
 				hasNext: responseArticles.length < Number(page) * Number(size + 1),
 			}),
 		);

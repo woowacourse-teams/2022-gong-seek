@@ -1,15 +1,34 @@
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
 
+const scaleAnimation = keyframes`
+	0%{
+
+	}
+
+	100% {
+		transform: scale(1.01);
+	}
+`;
+
 export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
-	width: 100%;
+	width: 80%;
 	height: ${({ theme }) => theme.size.SIZE_160};
 	box-shadow: 0 8px 24px ${({ theme }) => theme.boxShadows.secondary};
 	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	padding: ${({ theme }) => theme.size.SIZE_016};
+
+	&:hover,
+	&:active {
+		animation: ${scaleAnimation} 0.3s ease-in;
+		animation-fill-mode: forwards;
+
+		cursor: pointer;
+	}
 `;
 
 export const ArticleItemTitle = styled.h2`
@@ -17,6 +36,11 @@ export const ArticleItemTitle = styled.h2`
 	font-weight: 600;
 	display: flex;
 	gap: ${({ theme }) => theme.size.SIZE_010};
+
+	&:hover,
+	&:active {
+		text-decoration: underline;
+	}
 `;
 
 export const Views = styled.div`
@@ -38,6 +62,11 @@ export const Content = styled.div`
 	overflow: hidden;
 
 	line-height: ${({ theme }) => theme.size.SIZE_016};
+
+	&:hover,
+	&:active {
+		text-decoration: underline;
+	}
 `;
 
 export const UserProfile = styled.img`
