@@ -30,7 +30,6 @@ export const getPopularArticles = async () => {
 	const result = await axios.get<PopularArticles>(
 		`${HOME_URL}/api/articles?category=total&sort=views&page=1&size=10`,
 	);
-	console.log('article', result);
 	return result.data;
 };
 
@@ -42,7 +41,6 @@ export const getDetailArticle = async (id: string) => {
 			Authorization: `Bearer ${accessToken}`,
 		},
 	});
-	console.log('article', data);
 	return data;
 };
 
@@ -77,7 +75,7 @@ export const putArticle = (article: { id: string; title: string; content: string
 
 export const deleteArticle = (id: string) => {
 	const accessToken = localStorage.getItem('accessToken');
-	return axios.delete<unknown, unknown, unknown>(`${HOME_URL}/api/articles/${id}`, {
+	return axios.delete<never, unknown, unknown>(`${HOME_URL}/api/articles/${id}`, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			Authorization: `Bearer ${accessToken}`,

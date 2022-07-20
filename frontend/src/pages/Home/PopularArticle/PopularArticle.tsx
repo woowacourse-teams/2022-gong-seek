@@ -19,13 +19,8 @@ const PopularArticle = () => {
 			articleList = data.articles;
 			indexLimit = data.articles.length;
 			setCurrentIndex(0);
-			console.log(articleList);
 		}
 	}, [isSuccess]);
-
-	// useEffect(() => {
-	// 	console.log('sss');
-	// }, [currentIndex]);
 
 	const handleLeftSlideEvent = () => {
 		if (currentIndex === 0) {

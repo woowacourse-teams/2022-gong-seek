@@ -28,7 +28,6 @@ const UpdateWriting = () => {
 
 	useEffect(() => {
 		if (isSuccess) {
-			console.log('수정에 성공하였습니다');
 			navigate(`/articles/${data.data.category}/${data.data.id}`);
 		}
 	}, [isSuccess]);

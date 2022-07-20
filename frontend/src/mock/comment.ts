@@ -38,7 +38,6 @@ export const CommentHandler = [
 
 	rest.get('http://192.168.0.155:8080/api/articles/:articleId/comments', (req, res, ctx) => {
 		const { articleId } = req.params;
-		console.log('mock', mockData.comments);
 		return res(ctx.status(200), ctx.json({ comments: mockData.comments }));
 	}),
 

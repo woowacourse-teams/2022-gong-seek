@@ -8,10 +8,10 @@ import { articleState } from '@/store/articleState';
 import { useEffect } from 'react';
 
 const ErrorDetail = () => {
-	const { id } = useParams<string>();
+	const { id } = useParams();
 	const setTempArticle = useSetRecoilState(articleState);
 
-	if (id === undefined) {
+	if (typeof id === 'undefined') {
 		throw new Error('id 값을 받아오지 못했습니다');
 	}
 

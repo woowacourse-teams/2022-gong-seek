@@ -28,7 +28,6 @@ export const getComments = async (id: string) => {
 			},
 		},
 	);
-	console.log(data);
 	return data;
 };
 

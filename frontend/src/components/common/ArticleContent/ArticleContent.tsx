@@ -29,7 +29,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 			alert('게시글이 삭제 되었습니다');
 			navigate('/');
 		}
-	}, [isSuccess, isError, isLoading]);
+	}, [isSuccess]);
 
 	const onLikeButtonClick = () => {
 		setIsHeartClick(!isHeartClick);
@@ -37,8 +37,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 	};
 
 	const postUpdateArticle = () => {
-		console.log(article);
-		const categoryName = category === '에러' ? 'error' : 'discussion';
+		const categoryName = category === '에러' ? 'question' : 'discussion';
 		navigate(`/articles/modify/${categoryName}/${articleId}`);
 	};
 
