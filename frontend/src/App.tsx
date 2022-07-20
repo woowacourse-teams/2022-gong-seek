@@ -12,8 +12,8 @@ import PrivateRouter from '@/components/router/PrivateRouter';
 import PublicRouter from '@/components/router/PublicRouter';
 import VoteGenerator from '@/pages/VoteGenerator';
 import ErrorDetail from '@/pages/ErrorDetail/index';
-import UpdateWriting from './pages/UpdateWriting';
-import CategoryArticles from './pages/CategoryArticles/CategoryArticles';
+import CategoryArticles from '@/pages/CategoryArticles/CategoryArticles';
+import UpdateWriting from '@/pages/UpdateWriting';
 
 const Layout = styled.div`
 	position: relative;
@@ -43,8 +43,8 @@ const App = () => {
 						<Route path="/login" element={<Login />} />
 					</Route>
 					<Route path="/articles/question/:id" element={<ErrorDetail />} />
-					<Route path="/articles/modify/:category/:id" element={<UpdateWriting />} />
 					<Route path="articles/:category" element={<CategoryArticles />} />
+					<Route path="/articles/modify/:category/:id" element={<UpdateWriting />} />
 					{/* <Route
 						path="/articles/discussion/:id"
 						element={
