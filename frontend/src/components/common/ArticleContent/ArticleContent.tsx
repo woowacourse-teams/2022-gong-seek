@@ -26,7 +26,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 
 	useEffect(() => {
 		if (isSuccess) {
-			console.log('게시글이 삭제 되었습니다');
+			alert('게시글이 삭제 되었습니다');
 			navigate('/');
 		}
 	}, [isSuccess, isError, isLoading]);
