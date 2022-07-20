@@ -84,9 +84,11 @@ class CommentControllerTest {
     @Test
     void 댓글_조회_API_문서화() throws Exception {
         CommentResponse commentResponse = new CommentResponse(
-                1L, "content",
+                1L,
+                "content",
                 new AuthorDto("authorName", "authorAvatarUrl"),
-                true, LocalDateTime.now()
+                true,
+                LocalDateTime.now()
         );
         given(commentService.findByArticleId(any(), any())).willReturn(List.of(commentResponse));
 
@@ -148,5 +150,4 @@ class CommentControllerTest {
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
                         )));
     }
-
 }
