@@ -2,10 +2,13 @@ import { getDetailArticle } from '@/api/article';
 import { getComments } from '@/api/comments';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
-import Detail from '../Detail';
+import Detail from '@/pages/Detail/index';
+import { useSetRecoilState } from 'recoil';
+import { articleState } from '@/store/articleState';
 
 const ErrorDetail = () => {
 	const { id } = useParams<string>();
+	const setTempArticle = useSetRecoilState(articleState);
 
 	if (id === undefined) {
 		throw new Error('id 값을 받아오지 못했습니다');
@@ -43,8 +46,7 @@ const ErrorDetail = () => {
 	}
 
 	if (isArticleSuccess) {
-		localStorage.setItem('title', articleData.title);
-		localStorage.setItem('content', articleData.content);
+		setTempArticle({ title: articleData.title, content: articleData.content });
 	}
 
 	return (
