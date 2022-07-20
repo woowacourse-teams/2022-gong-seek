@@ -41,7 +41,7 @@ const App = () => {
 					<Route element={<PublicRouter isAuthenticated={isLogin} />}>
 						<Route path="/login" element={<Login />} />
 					</Route>
-					<Route path="/articles/error/:id" element={<ErrorDetail />} />
+					<Route path="/articles/question/:id" element={<ErrorDetail />} />
 					<Route path="/articles/modify/:category/:id" element={<UpdateWriting />} />
 					{/* <Route
 						path="/articles/discussion/:id"

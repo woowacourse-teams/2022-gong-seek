@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ToastUiEditor from './ToastUiEditor/ToastUiEditor';
 import { Editor } from '@toast-ui/react-editor';
 import * as S from '@/pages/WritingArticles/index.style';
+import { CATEGORY } from '@/constants/categoryType';
 
 const WritingArticles = () => {
 	const { category } = useParams();
@@ -23,12 +24,15 @@ const WritingArticles = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (isSuccess) {
+		if (isSuccess && category === CATEGORY.discussion) {
 			if (confirm('글 등록이 완료되었습니다. 투표를 등록하시겠습니까?')) {
 				navigate(`/votes/${data.data.id}`);
 				return;
 			}
 			navigate(`/`);
+		}
+		if (isSuccess && category === CATEGORY.question) {
+			navigate(`/articles/${category}/${data.data.id}`);
 		}
 	}, [isSuccess]);
 
