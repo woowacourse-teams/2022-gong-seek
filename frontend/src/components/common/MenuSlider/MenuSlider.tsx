@@ -63,15 +63,15 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 					</S.LinkItem>
 					<S.LinkItem
 						onClick={() => {
-							navigate('/');
+							navigate('/articles/question');
 							closeSlider();
 						}}
 					>
-						오류 카테고리
+						에러 카테고리
 					</S.LinkItem>
 					<S.LinkItem
 						onClick={() => {
-							navigate('/');
+							navigate('/articles/discussion');
 							closeSlider();
 						}}
 					>

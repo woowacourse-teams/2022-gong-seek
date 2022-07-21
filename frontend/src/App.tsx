@@ -43,9 +43,8 @@ const App = () => {
 						<Route path="/login" element={<Login />} />
 					</Route>
 					<Route path="/articles/question/:id" element={<ErrorDetail />} />
-					<Route path="articles/:category" element={<CategoryArticles />} />
+					<Route path="/articles/:category" element={<CategoryArticles />} />
 					<Route path="/articles/modify/:category/:id" element={<UpdateWriting />} />
-					<Route path="articles/:category" element={<CategoryArticles />} />
 					{/* <Route
 						path="/articles/discussion/:id"
 						element={

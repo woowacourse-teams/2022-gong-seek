@@ -18,7 +18,7 @@ export const Container = styled.section`
 	bottom: 0;
 	left: 0;
 	background-color: ${({ theme }) => theme.colors.GRAY_500};
-	z-index: ${({ theme }) => theme.zIndex.ARTICLE_BACKGROUND_CONTENT};
+	z-index: ${({ theme }) => theme.zIndex.MENU_SLIDER_BACKGROUND};
 `;
 
 export const MenuBox = styled.div`
@@ -34,7 +34,7 @@ export const MenuBox = styled.div`
 	width: 70%;
 	height: 100vh;
 	background-color: ${({ theme }) => theme.colors.WHITE};
-	z-index: ${({ theme }) => theme.zIndex.ARTICLE_POPULAR_CONTENT};
+	z-index: ${({ theme }) => theme.zIndex.MENU_SLIDER_CONTENT};
 	padding-top: ${({ theme }) => theme.size.SIZE_030};
 	border-radius: ${({ theme }) => theme.size.SIZE_010};
 

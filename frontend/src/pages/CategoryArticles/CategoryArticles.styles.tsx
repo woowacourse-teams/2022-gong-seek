@@ -5,11 +5,11 @@ export const Container = styled.div`
 	flex-direction: column;
 	gap: ${({ theme }) => theme.size.SIZE_024};
 	width: 85%;
-	margin: 0 auto;
+	margin: ${({ theme }) => theme.size.SIZE_020} auto;
 `;
 
 export const CategoryArticlesTitle = styled.h2<{ category: string }>`
-	font-size: ${({ theme }) => theme.size.SIZE_024};
+	font-size: ${({ theme }) => theme.size.SIZE_018};
 	font-weight: 600;
 
 	color: ${({ theme, category }) =>

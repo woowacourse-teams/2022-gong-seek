@@ -1,15 +1,68 @@
 import PopularArticle from '@/pages/Home//PopularArticle/PopularArticle';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
 import SortDropdown from '@/pages/CategoryArticles/SortDropdown/SortDropDown';
 import * as S from '@/pages/Home/index.styles';
+import { useInfiniteQuery, useQuery } from 'react-query';
+import { getAllArticle } from '@/api/article';
+import { CommonArticleType } from '@/types/articleResponse';
+import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+interface AllArticleResponse {
+	articles: CommonArticleType[];
+	hasNext: boolean;
+	pageParam: number;
+}
 
 const Home = () => {
 	const [currentCategory, setCurrentCategory] = useState('question');
+	const [sortIndex, setSortIndex] = useState('최신순');
+	const endFlag = useRef<HTMLDivElement>(null);
+
+	const navigate = useNavigate();
+
+	const { data, isError, isLoading, isSuccess, error, refetch } = useQuery('all-articles', () =>
+		getAllArticle(currentCategory, sortIndex),
+	);
+	// const { data, isError, isLoading, isSuccess, error, refetch } = useInfiniteQuery<
+	// 	AllArticleResponse,
+	// 	Error
+	// >(
+	// 	['all-articles', currentCategory],
+	// 	({ pageParam = 0 }) => getAllArticle(currentCategory, sortIndex, pageParam),
+	// 	{
+	// 		getNextPageParam: (lastPage) => {
+	// 			if (lastPage.articles.length === 5) return { page: lastPage.hasNext };
+	// 			return;
+	// 		},
+	// 	},
+	// );
+
+	useEffect(() => {
+		console.log(data);
+	}, [isSuccess]);
+
+	useEffect(() => {
+		refetch();
+	}, [currentCategory, sortIndex]);
+
+	if (isSuccess) {
+		if (data.articles.length === 0) {
+			return <div>게시글이 존재하지 않습니다</div>;
+		}
+	}
+
+	if (isLoading) {
+		return <div>로딩 중입니다</div>;
+	}
+	if (isError) {
+		return <div>에러</div>;
+	}
 
 	return (
-		<S.Container>
+		<S.Container ref={endFlag}>
 			<S.PopularArticleTitle>오늘의 인기글</S.PopularArticleTitle>
 			<PopularArticle />
 			<S.CategoryTitleContainer>
@@ -27,14 +80,18 @@ const Home = () => {
 						토론
 					</S.CategoryTitle>
 				</S.CategoryTitleBox>
-				<SortDropdown />
+				<SortDropdown sortIndex={sortIndex} setSortIndex={setSortIndex} />
 			</S.CategoryTitleContainer>
 			<S.ArticleItemList>
-				<ArticleItem />
-				<ArticleItem />
-				<ArticleItem />
-				<ArticleItem />
-				<ArticleItem />
+				{data?.articles.map((item) => (
+					<ArticleItem
+						key={item.id}
+						article={item}
+						onClick={() => {
+							navigate(`/articles/${currentCategory}/${item.id}`);
+						}}
+					/>
+				))}
 			</S.ArticleItemList>
 		</S.Container>
 	);

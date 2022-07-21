@@ -92,8 +92,6 @@ export const ArticleContent = styled.div<{ colorKey: keyof typeof articleColors 
 	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	padding: ${({ theme }) => theme.size.SIZE_010};
 	z-index: ${({ theme }) => theme.zIndex.ARTICLE_POPULAR_CONTENT};
-
-	// animation: ${showPopularSlider} 0.3s ease-in-out;
 `;
 
 export const Title = styled.h2`

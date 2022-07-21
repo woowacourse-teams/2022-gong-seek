@@ -13,3 +13,8 @@ export const CATEGORY = {
 	question: 'question',
 	discussion: 'discussion',
 };
+
+export const CATEGORY_SORT_TYPE = {
+	latest: '최신순',
+	views: '조회순',
+};
