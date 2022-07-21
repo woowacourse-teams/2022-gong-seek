@@ -17,12 +17,15 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
 
 @SuppressWarnings("NonAsciiCharacters")
+@Sql("classpath:dummy.sql")
 public class ArticleAcceptanceTest extends AcceptanceTest {
 
     @Test
@@ -172,6 +175,37 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    @Disabled
+    void 전체_게시물을_최신순으로_조회한다() {
+
+    }
+
+    @Test
+    void 전체_게시물을_조회순으로_조회한다() {
+
+    }
+
+    @Test
+    void 질문_게시물을_최신순으로_조회한다() {
+
+    }
+
+    @Test
+    void 질문_게시물을_조회순으로_조회한다() {
+
+    }
+
+    @Test
+    void 토론_게시물을_최신순으로_조회한다() {
+
+    }
+
+    @Test
+    void 토론_게시물을_조회순으로_조회한다() {
+
     }
 
     private ExtractableResponse<Response> 게시물을_등록한다(TokenResponse tokenResponse) {
