@@ -1,5 +1,5 @@
 import { HOME_URL } from '@/constants/url';
-import { ArticleType } from '@/types/articleResponse';
+import { ArticleType, CommonArticleType } from '@/types/articleResponse';
 import axios from 'axios';
 
 export interface WritingArticles {
@@ -28,7 +28,7 @@ interface PopularArticles {
 
 export const getPopularArticles = async () => {
 	const result = await axios.get<PopularArticles>(
-		`${HOME_URL}/api/articles?category=total&sort=views&page=1&size=10`,
+		`${HOME_URL}/api/articles?category=total&sort=views`,
 	);
 	return result.data;
 };
@@ -41,6 +41,30 @@ export const getDetailArticle = async (id: string) => {
 			Authorization: `Bearer ${accessToken}`,
 		},
 	});
+	return data;
+};
+
+interface ArticlesType {
+	articles: CommonArticleType[];
+}
+
+// export const getAllArticle = async (category: string, sort: string, pageParam = 0) => {
+// 	const { data } = await axios.get<ArticlesType>(
+// 		`${HOME_URL}/api/articles?category=${category}&sort=${sort}&page=${pageParam}&size=5`,
+// 	);
+// 	console.log(data);
+
+// 	return { articles: data.articles, hasNext: data.hasNext, pageParam: pageParam + 1 };
+// };
+
+export const getAllArticle = async (category: string, sort: string) => {
+	let tempSort = 'latest';
+	if (sort === '조회순') {
+		tempSort = 'views';
+	}
+	const { data } = await axios.get<ArticlesType>(
+		`${HOME_URL}/api/articles?category=${category}&sort=${tempSort}`,
+	);
 	return data;
 };
 
