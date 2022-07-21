@@ -37,6 +37,7 @@ export const DropdownItem = styled.li<{ idx: number }>`
 	color: ${({ theme }) => theme.colors.BLACK_600};
 	padding: ${({ theme }) => theme.size.SIZE_008} ${({ theme }) => theme.size.SIZE_012}
 		${({ theme }) => theme.size.SIZE_008} 0;
+	background-color: ${({ theme }) => theme.colors.WHITE};
 	opacity: 0;
 	cursor: pointer;
 	text-align: center;
