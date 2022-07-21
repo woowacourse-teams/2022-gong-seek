@@ -1,9 +1,10 @@
-import { CommentsResponse } from '@/api/comments';
 import { rest } from 'msw';
+import { CommentType } from '@/types/commentResponse';
+import mockData from '@/mock/data/comment.json';
 
 const data = localStorage.getItem('mock-comments');
 
-const mockComments = data ? (JSON.parse(data) as CommentsResponse[][]) : [];
+const mockComments = data ? (JSON.parse(data) as CommentType[][]) : [];
 
 export const CommentHandler = [
 	rest.post<{ content: string }>(
@@ -22,9 +23,10 @@ export const CommentHandler = [
 			mockComments[Number(articleId)].push({
 				id: mockComments[Number(articleId)].length,
 				content,
-				authorName: '스밍',
-				authorAvartarUrl:
-					'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg',
+				author: {
+					name: 'sally',
+					avatarUrl: 'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg',
+				},
 				createdAt: '2022-07-28',
 				isAuthor: true,
 			});
@@ -36,8 +38,7 @@ export const CommentHandler = [
 
 	rest.get('http://192.168.0.155:8080/api/articles/:articleId/comments', (req, res, ctx) => {
 		const { articleId } = req.params;
-
-		return res(ctx.status(200), ctx.json({ comments: mockComments[Number(articleId)] }));
+		return res(ctx.status(200), ctx.json({ comments: mockData.comments }));
 	}),
 
 	rest.put<{ content: string }>(

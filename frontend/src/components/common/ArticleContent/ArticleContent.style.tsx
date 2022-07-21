@@ -32,19 +32,22 @@ export const UserProfile = styled.div`
 `;
 
 export const UserProfileImg = styled.img`
-	width: ${({ theme }) => theme.size.SIZE_050};
-	height: ${({ theme }) => theme.size.SIZE_050};
+	width: ${({ theme }) => theme.size.SIZE_032};
+	height: ${({ theme }) => theme.size.SIZE_032};
 	object-fit: cover;
 	object-position: center;
 	border-radius: 50%;
+	margin-right: ${({ theme }) => theme.size.SIZE_014};
 `;
 
 export const UserName = styled.span``;
 
 export const ArticleInfo = styled.div`
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	gap: ${({ theme }) => theme.size.SIZE_010};
+	justify-content: flex-start;
 `;
 
 export const ArticleTitle = styled.h3`
@@ -65,6 +68,11 @@ export const DetailBox = styled.span`
 	color: ${({ theme }) => theme.colors.BLACK_600};
 	opacity: 0.5;
 	font-size: ${({ theme }) => theme.size.SIZE_012};
+`;
+
+export const TextViewerBox = styled.div`
+	width: 100%;
+	margin: ${({ theme }) => theme.size.SIZE_012}, 0;
 `;
 
 export const Footer = styled.div`

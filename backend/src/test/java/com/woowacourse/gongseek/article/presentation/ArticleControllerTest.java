@@ -159,7 +159,7 @@ class ArticleControllerTest {
     @Test
     void 게시물_수정_API_문서화() throws Exception {
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 바꿀께요", "내용 수정합니다~~~");
-        ArticleUpdateResponse articleUpdateResponse = new ArticleUpdateResponse(1L, Category.QUESTION);
+        ArticleUpdateResponse articleUpdateResponse = new ArticleUpdateResponse(1L, Category.QUESTION.getValue());
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
         given(articleService.update(any(), any(), any())).willReturn(articleUpdateResponse);

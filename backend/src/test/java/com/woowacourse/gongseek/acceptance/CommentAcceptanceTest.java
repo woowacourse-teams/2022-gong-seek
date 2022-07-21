@@ -46,7 +46,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
         댓글을_등록한다(엑세스토큰, 게시글번호);
 
-        List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호);
+        List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호).getComments();
 
         assertThat(댓글리스트.size()).isEqualTo(1);
     }
@@ -56,7 +56,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
         TokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
         댓글을_등록한다(엑세스토큰, 게시글번호);
-        List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호);
+        List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호).getComments();
 
         ExtractableResponse<Response> 수정된댓글 = 댓글을_수정한다(엑세스토큰, 댓글리스트);
 
@@ -68,7 +68,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
         TokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
         댓글을_등록한다(엑세스토큰, 게시글번호);
-        List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호);
+        List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호).getComments();
 
         ExtractableResponse<Response> 삭제된댓글 = 댓글을_삭제한다(엑세스토큰, 댓글리스트);
 

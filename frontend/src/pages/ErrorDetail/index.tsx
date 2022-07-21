@@ -2,10 +2,18 @@ import { getDetailArticle } from '@/api/article';
 import { getComments } from '@/api/comments';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
-import Detail from '../Detail';
+import Detail from '@/pages/Detail/index';
+import { useSetRecoilState } from 'recoil';
+import { articleState } from '@/store/articleState';
+import { useEffect } from 'react';
 
 const ErrorDetail = () => {
-	const { id } = useParams<string>();
+	const { id } = useParams();
+	const setTempArticle = useSetRecoilState(articleState);
+
+	if (typeof id === 'undefined') {
+		throw new Error('id 값을 받아오지 못했습니다');
+	}
 
 	// 게시글 조회
 	const {
@@ -14,6 +22,7 @@ const ErrorDetail = () => {
 		isSuccess: isArticleSuccess,
 		isLoading: isArticleLoading,
 		error: articleError,
+		remove,
 	} = useQuery('detail-article', () => getDetailArticle(id));
 
 	// 댓글 조회
@@ -23,7 +32,17 @@ const ErrorDetail = () => {
 		isSuccess: isCommentSuccess,
 		isLoading: isCommentLoading,
 		error: commentError,
-	} = useQuery('comments', getComments);
+	} = useQuery('comments', () => getComments(id));
+
+	useEffect(() => {
+		remove();
+	}, []);
+
+	useEffect(() => {
+		if (isArticleSuccess) {
+			setTempArticle({ title: articleData.title, content: articleData.content });
+		}
+	}, [isArticleSuccess]);
 
 	if (isArticleLoading || isCommentLoading) {
 		return <div>로딩중...</div>;
@@ -41,7 +60,7 @@ const ErrorDetail = () => {
 	return (
 		<div>
 			{isArticleSuccess && isCommentSuccess && (
-				<Detail article={articleData} commentList={commentData} />
+				<Detail article={articleData} commentList={commentData.comments} articleId={id} />
 			)}
 		</div>
 	);

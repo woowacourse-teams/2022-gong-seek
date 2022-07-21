@@ -1,6 +1,7 @@
 import { rest } from 'msw';
 import { WritingArticles } from '@/api/article';
 import type { PathParams } from 'msw';
+import mockData from '@/mock/data/detailArticle.json';
 
 interface WritingArticlesWithId extends WritingArticles {
 	id: number;
@@ -32,12 +33,12 @@ export const ArticleHandler = [
 			return;
 		}
 
-		const filteredArticles = mockArticle.find((article) => article.id === Number(id));
+		// const filteredArticles = mockArticle.find((article) => article.id === Number(id));
 
-		if (filteredArticles === undefined) {
-			return;
-		}
-
+		// if (filteredArticles === undefined) {
+		// 	return;
+		// }
+		const filteredArticles = mockData.detailArticle;
 		return res(
 			ctx.status(200),
 			ctx.json({
@@ -86,7 +87,7 @@ export const ArticleHandler = [
 		return res(
 			ctx.status(200),
 			ctx.json({
-				articles: articlesPage,
+				articles: responseArticles,
 				hasNext: responseArticles.length < Number(page) * Number(size + 1),
 			}),
 		);
