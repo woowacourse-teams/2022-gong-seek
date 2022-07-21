@@ -40,7 +40,7 @@ public class Article {
     @Column(nullable = false)
     private String title;
 
-    @Lob
+    @Column(length = 1_000)
     private String content;
 
     @Enumerated(value = EnumType.STRING)
