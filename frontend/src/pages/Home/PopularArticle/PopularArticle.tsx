@@ -6,21 +6,26 @@ import { convertIdxToArticleColorKey } from '@/utils/converter';
 
 const PopularArticle = () => {
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const [mainContent, setMainContent] = useState(null);
+	const [indexLimit, setIndexLimit] = useState(0);
 
 	const mainArticleContent = useRef<HTMLDivElement>(null);
 
 	const { data, isSuccess, isError, isLoading } = useQuery('popular-articles', getPopularArticles);
-	let articleList = [];
-	let indexLimit = 0;
 
 	useEffect(() => {
 		if (isSuccess) {
-			articleList = data.articles;
-			indexLimit = data.articles.length;
+			setIndexLimit(data.articles.length);
 			setCurrentIndex(0);
 		}
 	}, [isSuccess]);
+
+	if (isLoading) {
+		return <div>로딩중입니다</div>;
+	}
+
+	if (isError) {
+		return <div>에러가 발생하였습니다</div>;
+	}
 
 	const handleLeftSlideEvent = () => {
 		if (currentIndex === 0) {
@@ -55,19 +60,19 @@ const PopularArticle = () => {
 			<S.LeftArrowButton onClick={handleLeftSlideEvent} />
 			<S.LeftBackgroundArticle colorKey={getColorKey(currentIndex - 1)} />
 			<S.ArticleContent colorKey={getColorKey(currentIndex)} ref={mainArticleContent}>
-				<S.Title>
-					Component를 어떻게 나누나요? 2줄 이상일때에 어떻게 할지 처리하기 위한
-					곳djfkldsajfldsjflsdkjfljsdlfjskl
-				</S.Title>
+				<S.Title>{data?.articles[currentIndex].title}</S.Title>
 				<S.ArticleInfo>
 					<S.ProfileBox>
 						<S.UserImg
-							src={'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg'}
+							alt="유저의 프로필 이미지가 보여지는 곳 입니다 "
+							src={data?.articles[currentIndex].author.avatarUrl}
 						/>
-						<S.UserName>자스민</S.UserName>
+						<S.UserName>{data?.articles[currentIndex].author.name}</S.UserName>
 					</S.ProfileBox>
 					<S.CommentBox>
-						<S.CommentCount>12</S.CommentCount>
+						<S.CommentCount aria-label="댓글의 개수가 표시되는 곳입니다">
+							{data?.articles[currentIndex].content}
+						</S.CommentCount>
 						<S.CommentIcon />
 					</S.CommentBox>
 				</S.ArticleInfo>
