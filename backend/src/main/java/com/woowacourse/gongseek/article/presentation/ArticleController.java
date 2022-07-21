@@ -4,6 +4,7 @@ import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleResponses;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -56,5 +58,12 @@ public class ArticleController {
         articleService.delete(appMember, id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<ArticleResponses> findAll(@AuthenticationPrinciple AppMember appMember,
+                                                    @RequestParam String category,
+                                                    @RequestParam String sort) {
+        return ResponseEntity.ok(articleService.findAll(appMember, category, sort));
     }
 }
