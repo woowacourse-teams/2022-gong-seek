@@ -37,17 +37,17 @@ include::{snippets}/article-create/response-fields.adoc[]
 
 `GET /api/articles/1`
 
-== Request
+=== Request
 
-=== 로그인 사용자
+==== 로그인 사용자
 
 include::{snippets}/article-find-one-login/http-request.adoc[]
 
-=== 비로그인 사용자
+==== 비로그인 사용자
 
 include::{snippets}/article-find-one-not-login/http-request.adoc[]
 
-== Response
+=== Response
 
 include::{snippets}/article-find-one-login/http-response.adoc[]
 include::{snippets}/article-find-one-login/response-fields.adoc[]
