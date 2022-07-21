@@ -1,0 +1,4 @@
+security:
+  oauth2:
+    client-id: ${OAUTH_CLIENT_ID}
+    client-secret: ${OUAUTH_CLIENT_SECRET}
