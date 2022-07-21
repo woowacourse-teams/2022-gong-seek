@@ -33,6 +33,8 @@ export const CategoryTitle = styled.div<{ isActive: boolean }>`
 export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	padding: ${({ theme }) => theme.size.SIZE_010};
 `;
 
 export const PopularArticleTitle = styled.h2`
