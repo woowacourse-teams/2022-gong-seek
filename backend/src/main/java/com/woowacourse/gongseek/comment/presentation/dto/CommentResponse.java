@@ -1,5 +1,7 @@
 package com.woowacourse.gongseek.comment.presentation.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
@@ -23,6 +25,7 @@ public class CommentResponse {
     @JsonProperty("isAuthor")
     private Boolean isAuthor;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
     public static CommentResponse of(Comment comment, Boolean isAuthor) {
