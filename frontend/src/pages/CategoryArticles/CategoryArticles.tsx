@@ -1,17 +1,29 @@
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
-import {} from 'react-query';
-import { useParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as S from '@/pages/CategoryArticles/CategoryArticles.styles';
 import SortDropdown from './SortDropdown/SortDropDown';
+import { getAllArticle } from '@/api/article';
+import { useState } from 'react';
 
 const CategoryArticles = () => {
-	// const navigate = useNavigate();
+	const navigate = useNavigate();
 	const { category } = useParams();
-	// const { data, isLoading, isError } = useQuery('articles', getPopularArticles);
-
-	// console.log(data);
+	const [sortIndex, setSortIndex] = useState('최신순');
 	if (typeof category === 'undefined') {
-		throw new Error('카테고리를 찾을수 없습니다.');
+		navigate('/');
+		throw new Error('카테고리를 찾을 수 없습니다');
+	}
+	const { data, isLoading, isError } = useQuery('articles', () =>
+		getAllArticle(category, sortIndex),
+	);
+
+	if (isLoading) {
+		return <div>로딩 중 입니다...</div>;
+	}
+
+	if (isError) {
+		return <div> 에러 발생!</div>;
 	}
 
 	return (
@@ -20,13 +32,18 @@ const CategoryArticles = () => {
 				<S.CategoryArticlesTitle category={category}>
 					{category === 'discussion' ? '토론' : '에러'}
 				</S.CategoryArticlesTitle>
-				<SortDropdown />
+				<SortDropdown sortIndex={sortIndex} setSortIndex={setSortIndex} />
 			</S.TitleBox>
 			<S.ArticleItemList>
-				<ArticleItem />
-				<ArticleItem />
-				<ArticleItem />
-				<ArticleItem />
+				{data?.articles.map((item) => (
+					<ArticleItem
+						key={item.id}
+						article={item}
+						onClick={() => {
+							navigate(`/articles/${category}/${item.id}`);
+						}}
+					/>
+				))}
 			</S.ArticleItemList>
 		</S.Container>
 	);
