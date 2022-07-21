@@ -1,7 +1,22 @@
 import { useState } from 'react';
 import * as S from '@/components/common/ArticleItem/ArticleItem.styles';
+import { Category, CommonArticleType } from '@/types/articleResponse';
+import { Author } from '@/types/author';
 
-const ArticleItem = () => {
+interface ArticleItemProps {
+	article: {
+		id: number;
+		title: string;
+		author: Author;
+		content: string;
+		category: Category;
+		commentCount: number;
+		createdAt: string;
+	};
+	onClick: () => void;
+}
+
+const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 	const [isHeartClick, setIsHeartClick] = useState(false);
 
 	const onLikeButtonClick = () => {
@@ -9,22 +24,19 @@ const ArticleItem = () => {
 	};
 
 	return (
-		<S.Container>
+		<S.Container onClick={onClick}>
 			<S.ArticleItemTitle>
-				<div>토론 글 제목이 들어가는 곳</div>
+				<div>{article.title}</div>
 			</S.ArticleItemTitle>
 			<S.ArticleInfoBox>
-				<S.ArticleTimeStamp>5일전</S.ArticleTimeStamp>
-				<S.Views>조회수 10</S.Views>
+				<S.ArticleTimeStamp>{article.createdAt}</S.ArticleTimeStamp>
+				<S.Views>댓글 수 {article.commentCount}</S.Views>
 			</S.ArticleInfoBox>
-			<S.Content>
-				안녕하세요. 스밍입니다. 오늘 아침밥을 먹지 않아 배고프네요.
-				fwfwfasfgennsnsnnnkdnvndvoeofjefjemoneonvnekofalccmlcoefnofwfnonwovojodwjodokfplcwplnveineinvie
-			</S.Content>
+			<S.Content>{article.content}</S.Content>
 			<S.FooterBox>
 				<S.ProfileBox>
-					<S.UserProfile src="https://avatars.githubusercontent.com/u/85891751?s=400&u=1d8557f04298a05f8a8bbceb9817b8a0089d63f8&v=4" />
-					<div>스밍</div>
+					<S.UserProfile src={article.author.avatarUrl} />
+					<div>{article.author.name}</div>
 				</S.ProfileBox>
 				<S.RightFooterBox>
 					<S.HeartBox>
