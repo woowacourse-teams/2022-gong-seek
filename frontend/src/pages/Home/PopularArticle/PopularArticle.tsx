@@ -3,8 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 import { getPopularArticles } from '@/api/article';
 import { convertIdxToArticleColorKey } from '@/utils/converter';
+import { useNavigate } from 'react-router-dom';
 
 const PopularArticle = () => {
+	const navigate = useNavigate();
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [indexLimit, setIndexLimit] = useState(0);
 
@@ -18,6 +20,12 @@ const PopularArticle = () => {
 			setCurrentIndex(0);
 		}
 	}, [isSuccess]);
+
+	const navigateDetailPage = () => {
+		navigate(
+			`/articles/${data?.articles[currentIndex].category}/${data?.articles[currentIndex].id}`,
+		);
+	};
 
 	if (isLoading) {
 		return <div>로딩중입니다</div>;
@@ -60,7 +68,7 @@ const PopularArticle = () => {
 			<S.LeftArrowButton onClick={handleLeftSlideEvent} />
 			<S.LeftBackgroundArticle colorKey={getColorKey(currentIndex - 1)} />
 			<S.ArticleContent colorKey={getColorKey(currentIndex)} ref={mainArticleContent}>
-				<S.Title>{data?.articles[currentIndex].title}</S.Title>
+				<S.Title onClick={navigateDetailPage}>{data?.articles[currentIndex].title}</S.Title>
 				<S.ArticleInfo>
 					<S.ProfileBox>
 						<S.UserImg
