@@ -18,6 +18,10 @@ const CategoryArticles = () => {
 		getAllArticle(category, sortIndex),
 	);
 
+	useEffect(() => {
+		refetch();
+	}, [sortIndex]);
+
 	if (isLoading) {
 		return <div>로딩 중 입니다...</div>;
 	}
@@ -25,10 +29,6 @@ const CategoryArticles = () => {
 	if (isError) {
 		return <div> 에러 발생!</div>;
 	}
-
-	useEffect(() => {
-		refetch();
-	}, [sortIndex]);
 
 	return (
 		<S.Container>
