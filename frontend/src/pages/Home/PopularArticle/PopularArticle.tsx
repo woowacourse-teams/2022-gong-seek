@@ -71,7 +71,7 @@ const PopularArticle = () => {
 					</S.ProfileBox>
 					<S.CommentBox>
 						<S.CommentCount aria-label="댓글의 개수가 표시되는 곳입니다">
-							{data?.articles[currentIndex].content}
+							{data?.articles[currentIndex].commentCount}
 						</S.CommentCount>
 						<S.CommentIcon />
 					</S.CommentBox>
