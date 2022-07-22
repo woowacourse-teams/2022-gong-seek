@@ -8,7 +8,6 @@ import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleResponses;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
@@ -185,15 +184,5 @@ public class ArticleServiceTest {
         assertThatThrownBy(() -> articleService.delete(guestMember, savedArticle.getId()))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("권한이 없는 사용자입니다.");
-    }
-
-    @Test
-    void 전체_조회_테스트() {
-
-        for (int i = 0; i < 20; i++) {
-            articleService.save(new LoginMember(member.getId()), articleRequest);
-        }
-        ArticleResponses articleResponses = articleService.findAll(new GuestMember(), Category.DISCUSSION.getValue(), "latest");
-        assertThat(articleResponses.getArticles().size()).isEqualTo(20);
     }
 }
