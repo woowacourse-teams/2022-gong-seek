@@ -1,1 +1,1 @@
-export const HOME_URL = 'http://13.125.205.73:8080';
+export const HOME_URL = 'http://192.168.0.130:8080';
