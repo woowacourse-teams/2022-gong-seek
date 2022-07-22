@@ -30,6 +30,8 @@ public class ArticleAllResponse {
 
     private int commentCount;
 
+    private String category;
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
@@ -41,6 +43,7 @@ public class ArticleAllResponse {
         this.author = new AuthorDto(article.getMember());
         this.views = article.getViews();
         this.commentCount = commentCount;
+        this.category = article.getCategory().getValue();
         this.createdAt = article.getCreatedAt();
     }
 }
