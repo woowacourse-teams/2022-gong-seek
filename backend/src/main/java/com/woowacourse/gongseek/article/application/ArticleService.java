@@ -1,16 +1,24 @@
 package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
+import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleAllResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleResponses;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
+import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +29,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
+    private final CommentRepository commentRepository;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
@@ -62,6 +71,92 @@ public class ArticleService {
     public void delete(AppMember appMember, Long id) {
         Article article = checkAuthorization(appMember, id);
         articleRepository.delete(article);
+    }
+
+    public ArticleResponses findAll(AppMember appMember, String category, String sort) {
+
+
+        if (appMember.isGuest()) {
+            if (sort.equals("latest")) {
+                if (category.equals("total")) {
+                    List<Article> articles = articleRepository.findAll(Sort.by(Direction.DESC, "id"));
+                    return new ArticleResponses(articles.stream()
+                            .map(article -> {
+                                int size = commentRepository.findAllByArticleId(article.getId()).size();
+                                return new ArticleAllResponse(article, false, size);
+                            })
+                            .collect(Collectors.toList()));
+                }
+                List<Article> articles = articleRepository.findAllByCategory(Category.from(category),
+                        Sort.by(Direction.DESC, "id"));
+                return new ArticleResponses(articles.stream()
+                        .map(article -> {
+                            int size = commentRepository.findAllByArticleId(article.getId()).size();
+                            return new ArticleAllResponse(article, false, size);
+                        })
+                        .collect(Collectors.toList()));
+
+            } else if (sort.equals("views")) {
+                if (category.equals("total")) {
+                    List<Article> articles = articleRepository.findAll(Sort.by(Direction.DESC, "id"));
+                    return new ArticleResponses(articles.stream()
+                            .map(article -> {
+                                int size = commentRepository.findAllByArticleId(article.getId()).size();
+                                return new ArticleAllResponse(article, false, size);
+                            })
+                            .collect(Collectors.toList()));
+                }
+                List<Article> articles = articleRepository.findAllByCategory(Category.from(category),
+                        Sort.by(Direction.DESC, "views"));
+                return new ArticleResponses(articles.stream()
+                        .map(article -> {
+                            int size = commentRepository.findAllByArticleId(article.getId()).size();
+                            return new ArticleAllResponse(article, false, size);
+                        })
+                        .collect(Collectors.toList()));
+            }
+        }
+        Member loginMember = findMember(appMember);
+        if (sort.equals("latest")) {
+            if (category.equals("total")) {
+                List<Article> articles = articleRepository.findAll(Sort.by(Direction.DESC, "id"));
+                return new ArticleResponses(articles.stream()
+                        .map(article -> {
+                            int size = commentRepository.findAllByArticleId(article.getId()).size();
+                            return new ArticleAllResponse(article, false, size);
+                        })
+                        .collect(Collectors.toList()));
+            }
+            List<Article> articles = articleRepository.findAllByCategory(Category.from(category),
+                    Sort.by(Direction.DESC, "id"));
+            return new ArticleResponses(articles.stream()
+                    .map(article -> {
+                        int size = commentRepository.findAllByArticleId(article.getId()).size();
+                        return new ArticleAllResponse(article, false, size);
+                    })
+                    .collect(Collectors.toList()));
+
+        } else if (sort.equals("views")) {
+            if (category.equals("total")) {
+                List<Article> articles = articleRepository.findAll(Sort.by(Direction.DESC, "id"));
+                return new ArticleResponses(articles.stream()
+                        .map(article -> {
+                            int size = commentRepository.findAllByArticleId(article.getId()).size();
+                            return new ArticleAllResponse(article, false, size);
+                        })
+                        .collect(Collectors.toList()));
+            }
+            List<Article> articles = articleRepository.findAllByCategory(Category.from(category),
+                    Sort.by(Direction.DESC, "views"));
+            return new ArticleResponses(articles.stream()
+                    .map(article -> {
+                        int size = commentRepository.findAllByArticleId(article.getId()).size();
+                        return new ArticleAllResponse(article, false, size);
+                    })
+                    .collect(Collectors.toList()));
+        }
+
+        throw new IllegalArgumentException("정렬 기준이 잘못 들어왔습니다.");
     }
 
     private Article checkAuthorization(AppMember appMember, Long id) {
