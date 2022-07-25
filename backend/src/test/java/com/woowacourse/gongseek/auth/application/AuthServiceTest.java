@@ -14,7 +14,6 @@ import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
-import java.net.URI;
 import java.net.URISyntaxException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,8 @@ class AuthServiceTest {
 
     private MockRestServiceServer mockServer;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     void 리다이렉트_URL_을_반환한다() {
@@ -85,7 +85,7 @@ class AuthServiceTest {
                         objectMapper.writeValueAsString(new TokenResponse("accessToken")),
                         MediaType.APPLICATION_JSON));
 
-        mockServer.expect(requestTo(new URI("https://api.github.com/user")))
+        mockServer.expect(requestTo("https://api.github.com/user"))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(
                         objectMapper.writeValueAsString(new GithubProfileResponse(githubId, name, avatarUrl)),
