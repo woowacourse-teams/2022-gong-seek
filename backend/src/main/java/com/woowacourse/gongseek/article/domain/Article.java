@@ -3,6 +3,7 @@ package com.woowacourse.gongseek.article.domain;
 import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
@@ -39,8 +40,8 @@ public class Article {
     @Column(nullable = false)
     private String title;
 
-    @Column(length = 1_000)
-    private String content;
+    @Embedded
+    private Content content;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
@@ -61,7 +62,7 @@ public class Article {
         validateTitleLength(title);
         validateContentLength(content);
         this.title = title;
-        this.content = content;
+        this.content = new Content(content);
         this.category = category;
         this.member = member;
         this.views = INITIAL_VIEWS;
@@ -91,6 +92,10 @@ public class Article {
         validateTitleLength(title);
         validateContentLength(content);
         this.title = title;
-        this.content = content;
+        this.content = new Content(content);
+    }
+
+    public String getContent() {
+        return content.getValue();
     }
 }
