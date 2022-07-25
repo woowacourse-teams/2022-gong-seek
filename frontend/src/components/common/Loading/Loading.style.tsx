@@ -28,16 +28,16 @@ export const Container = styled.section`
 `;
 
 export const FirstSpinner = styled.div`
-	width: 40px;
-	height: 40px;
+	width: ${({ theme }) => theme.size.SIZE_040};
+	height: ${({ theme }) => theme.size.SIZE_040};
 	border-radius: 50%;
 	background-color: ${({ theme }) => theme.colors.PURPLE_400};
 	animation: ${oneSpinAnimation} 2s infinite linear;
 `;
 
 export const SecondSpinner = styled.div`
-	width: 20px;
-	height: 20px;
+	width: ${({ theme }) => theme.size.SIZE_020};
+	height: ${({ theme }) => theme.size.SIZE_020};
 	border-radius: 50%;
 	background-color: ${({ theme }) => theme.colors.ORANGE_500};
 	animation: ${twoSpinAnimation} 2s infinite linear;
