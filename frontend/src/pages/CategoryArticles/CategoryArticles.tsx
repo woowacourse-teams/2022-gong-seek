@@ -5,6 +5,7 @@ import * as S from '@/pages/CategoryArticles/CategoryArticles.styles';
 import SortDropdown from './SortDropdown/SortDropDown';
 import { getAllArticle } from '@/api/article';
 import { useEffect, useState } from 'react';
+import Loading from '@/components/common/Loading/Loading';
 
 const CategoryArticles = () => {
 	const navigate = useNavigate();
@@ -23,7 +24,7 @@ const CategoryArticles = () => {
 	}, [sortIndex]);
 
 	if (isLoading) {
-		return <div>로딩 중 입니다...</div>;
+		return <Loading />;
 	}
 
 	if (isError) {

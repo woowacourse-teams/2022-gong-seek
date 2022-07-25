@@ -5,6 +5,7 @@ import { useMutation } from 'react-query';
 import { checkVoteItems } from '@/api/vote';
 import { queryClient } from '@/index';
 import { useEffect } from 'react';
+import Loading from '@/components/common/Loading/Loading';
 
 export interface VoteItemProps {
 	title: string;
@@ -28,7 +29,7 @@ const VoteItem = ({ title, itemVotes, totalVotes, idx, name }: VoteItemProps) =>
 		}
 	}, [isSuccess]);
 
-	if (isLoading) return <div>로딩중...</div>;
+	if (isLoading) return <Loading />;
 
 	if (isError) return <div>에러..!</div>;
 

@@ -14,6 +14,7 @@ import VoteGenerator from '@/pages/VoteGenerator';
 import ErrorDetail from '@/pages/ErrorDetail/index';
 import UpdateWriting from '@/pages/UpdateWriting';
 import CategoryArticles from '@/pages/CategoryArticles/CategoryArticles';
+import NotFound from '@/pages/NotFound';
 
 const Layout = styled.div`
 	position: relative;
@@ -54,6 +55,7 @@ const App = () => {
 						}
 					/> */}
 					<Route path="/" element={<Home />} />
+					<Route path="/*" element={<NotFound />} />
 				</Routes>
 			</Content>
 			<TabBar />

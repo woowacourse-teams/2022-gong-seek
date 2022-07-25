@@ -9,6 +9,7 @@ import { getAllArticle } from '@/api/article';
 import { CommonArticleType } from '@/types/articleResponse';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Loading from '@/components/common/Loading/Loading';
 
 interface AllArticleResponse {
 	articles: CommonArticleType[];
@@ -55,7 +56,7 @@ const Home = () => {
 	}
 
 	if (isLoading) {
-		return <div>로딩 중입니다</div>;
+		return <Loading />;
 	}
 	if (isError) {
 		return <div>에러</div>;

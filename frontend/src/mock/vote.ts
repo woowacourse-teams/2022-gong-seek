@@ -1,4 +1,5 @@
 import { VoteItems } from '@/api/vote';
+import { HOME_URL } from '@/constants/url';
 import { rest } from 'msw';
 
 interface VoteItemsWithId extends VoteItems {
@@ -15,40 +16,37 @@ const data = localStorage.getItem('mock-votes');
 const mockVotes = data ? (JSON.parse(data) as VoteData[]) : [];
 
 export const VoteHandler = [
-	rest.post<{ options: string[] }>(
-		'http://192.168.0.155:8080/api/articles/:articleId/votes',
-		(req, res, ctx) => {
-			const { articleId } = req.params;
-			const { options } = req.body;
+	rest.post<{ options: string[] }>(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
+		const { articleId } = req.params;
+		const { options } = req.body;
 
-			if (typeof articleId !== 'string') {
-				return;
-			}
+		if (typeof articleId !== 'string') {
+			return;
+		}
 
-			localStorage.setItem(
-				'mock-votes',
-				JSON.stringify(
-					mockVotes.concat({
-						articleId,
-						options: options.map((option, idx) => ({
-							voteId: String(idx),
-							option,
-							count: 0,
-						})),
-					}),
-				),
-			);
-
-			return res(
-				ctx.status(201),
-				ctx.json({
+		localStorage.setItem(
+			'mock-votes',
+			JSON.stringify(
+				mockVotes.concat({
 					articleId,
+					options: options.map((option, idx) => ({
+						voteId: String(idx),
+						option,
+						count: 0,
+					})),
 				}),
-			);
-		},
-	),
+			),
+		);
 
-	rest.get('http://192.168.0.155:8080/api/articles/:articleId/votes', (req, res, ctx) => {
+		return res(
+			ctx.status(201),
+			ctx.json({
+				articleId,
+			}),
+		);
+	}),
+
+	rest.get(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
 		const { articleId } = req.params;
 
 		const vote = mockVotes.find((mockVote) => mockVote.articleId === articleId);
@@ -60,7 +58,7 @@ export const VoteHandler = [
 		return res(ctx.status(200), ctx.json([...vote.options]));
 	}),
 
-	rest.post('http://192.168.0.155:8080/api/articles/:articleId/votes/:voteId', (req, res, ctx) => {
+	rest.post(`${HOME_URL}/api/articles/:articleId/votes/:voteId`, (req, res, ctx) => {
 		const { voteId, articleId } = req.params;
 
 		const vote = mockVotes.find((mockVote) => mockVote.articleId === articleId);
