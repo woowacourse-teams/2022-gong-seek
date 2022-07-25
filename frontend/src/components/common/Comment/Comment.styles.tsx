@@ -76,3 +76,13 @@ export const CommentContent = styled.div`
 	line-height: ${({ theme }) => theme.size.SIZE_030};
 	word-break: keep-all;
 `;
+
+export const DimmerContainer = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: ${({ theme }) => theme.colors.GRAY_500};
+	z-index: 110;
+`;

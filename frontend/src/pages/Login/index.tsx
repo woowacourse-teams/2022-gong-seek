@@ -4,7 +4,7 @@ import { mobileTitleSecondary } from '@/constants/titleType';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import LoginButton from './LoginButton/LoginButton';
-import * as S from '@/pages/Login/index.style';
+import * as S from '@/pages/Login/index.styles';
 import Loading from '@/components/common/Loading/Loading';
 
 const Login = () => {

@@ -1,4 +1,4 @@
-import * as S from '@/pages/Home/PopularArticle/PopularArticle.style';
+import * as S from '@/pages/Home/PopularArticle/PopularArticle.styles';
 import { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 import { getPopularArticles } from '@/api/article';

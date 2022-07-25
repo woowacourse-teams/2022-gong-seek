@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import ToastUiViewer from '@/components/common/ArticleContent/ToastUiViewer/ToastUiViewer';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 
-import * as S from '@/components/common/ArticleContent/ArticleContent.style';
+import * as S from '@/components/common/ArticleContent/ArticleContent.styles';
 import { ArticleType } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 import { useMutation } from 'react-query';

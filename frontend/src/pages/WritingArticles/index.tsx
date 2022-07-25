@@ -6,7 +6,7 @@ import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import ToastUiEditor from './ToastUiEditor/ToastUiEditor';
 import { Editor } from '@toast-ui/react-editor';
-import * as S from '@/pages/WritingArticles/index.style';
+import * as S from '@/pages/WritingArticles/index.styles';
 import { CATEGORY } from '@/constants/categoryType';
 import Loading from '@/components/common/Loading/Loading';
 

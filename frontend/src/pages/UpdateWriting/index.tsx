@@ -1,6 +1,6 @@
 import { putArticle } from '@/api/article';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
-import * as S from '@/pages/WritingArticles/index.style';
+import * as S from '@/pages/WritingArticles/index.styles';
 import { useEffect, useRef } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import { AxiosError, AxiosResponse } from 'axios';
