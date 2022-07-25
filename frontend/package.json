@@ -41,7 +41,7 @@
 	},
 	"scripts": {
 		"start": "webpack serve --open --config webpack/webpack.common.js",
-		"build": "webpack --mode production",
+		"build": "webpack --mode production --config webpack/webpack.common.js",
 		"storybook": "start-storybook -p 6006",
 		"build-storybook": "build-storybook",
 		"test": "jest"
