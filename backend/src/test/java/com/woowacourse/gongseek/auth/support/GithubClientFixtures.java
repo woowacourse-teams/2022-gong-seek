@@ -31,4 +31,16 @@ public enum GithubClientFixtures {
     public String getCode() {
         return code;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getGithubId() {
+        return githubId;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
 }
