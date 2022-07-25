@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import * as S from '@/pages/CategoryArticles/CategoryArticles.styles';
 import SortDropdown from './SortDropdown/SortDropDown';
 import { getAllArticle } from '@/api/article';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const CategoryArticles = () => {
 	const navigate = useNavigate();
@@ -14,9 +14,13 @@ const CategoryArticles = () => {
 		navigate('/');
 		throw new Error('카테고리를 찾을 수 없습니다');
 	}
-	const { data, isLoading, isError } = useQuery('articles', () =>
+	const { data, isLoading, isError, refetch } = useQuery('articles', () =>
 		getAllArticle(category, sortIndex),
 	);
+
+	useEffect(() => {
+		refetch();
+	}, [sortIndex]);
 
 	if (isLoading) {
 		return <div>로딩 중 입니다...</div>;
