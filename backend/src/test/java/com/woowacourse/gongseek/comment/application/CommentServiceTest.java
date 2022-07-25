@@ -175,7 +175,7 @@ class CommentServiceTest {
                 () -> commentService.update(new LoginMember(newMember.getId()), comment.getId(),
                         new CommentRequest("update content")))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("댓글을 작성한 회원만 수정할 수 있습니다.");
+                .hasMessage("댓글 작성자만 권한이 있습니다.");
     }
 
     @Test
@@ -218,6 +218,6 @@ class CommentServiceTest {
         assertThatThrownBy(
                 () -> commentService.delete(new LoginMember(newMember.getId()), comment.getId()))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("댓글을 작성한 회원만 삭제할 수 있습니다.");
+                .hasMessage("댓글 작성자만 권한이 있습니다.");
     }
 }

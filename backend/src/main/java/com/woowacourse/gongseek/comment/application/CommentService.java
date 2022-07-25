@@ -27,8 +27,8 @@ public class CommentService {
 
     public void save(AppMember appMember, Long articleId, CommentRequest commentRequest) {
         validateGuest(appMember);
-        Member member = findMember(appMember);
-        Article article = findArticle(articleId);
+        Member member = getMember(appMember);
+        Article article = getArticle(articleId);
         Comment comment = new Comment(commentRequest.getContent(), member, article);
 
         commentRepository.save(comment);
@@ -46,29 +46,21 @@ public class CommentService {
         if (appMember.isGuest()) {
             return false;
         }
-        Member member = findMember(appMember);
+        Member member = getMember(appMember);
         return comment.isAuthor(member);
     }
 
     public void update(AppMember appMember, Long commentId, CommentRequest updateRequest) {
-        validateGuest(appMember);
-        Member member = findMember(appMember);
-        Comment comment = findComment(commentId);
-
-        if (!comment.isAuthor(member)) {
-            throw new IllegalArgumentException("댓글을 작성한 회원만 수정할 수 있습니다.");
-        }
+        Comment comment = checkAuthorization(appMember, commentId);
         comment.updateContent(updateRequest.getContent());
     }
 
     public void delete(AppMember appMember, Long commentId) {
         validateGuest(appMember);
-        Member member = findMember(appMember);
-        Comment comment = findComment(commentId);
+        Member member = getMember(appMember);
+        Comment comment = getComment(commentId);
 
-        if (!comment.isAuthor(member)) {
-            throw new IllegalArgumentException("댓글을 작성한 회원만 삭제할 수 있습니다.");
-        }
+        validateAuthor(member, comment);
         commentRepository.delete(comment);
     }
 
@@ -78,19 +70,33 @@ public class CommentService {
         }
     }
 
-    private Member findMember(AppMember appMember) {
+    private Member getMember(AppMember appMember) {
         return memberRepository.findById(appMember.getPayload())
                 .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
     }
 
-    private Article findArticle(Long articleId) {
+    private Article getArticle(Long articleId) {
         return articleRepository.findById(articleId)
                 .orElseThrow(() -> new IllegalStateException("게시글이 존재하지 않습니다."));
     }
 
-    private Comment findComment(Long commentId) {
+    private Comment getComment(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalStateException("댓글이 존재하지 않습니다."));
+    }
+
+    private Comment checkAuthorization(AppMember appMember, Long commentId) {
+        validateGuest(appMember);
+        Comment comment = getComment(commentId);
+        Member member = getMember(appMember);
+        validateAuthor(member, comment);
+        return comment;
+    }
+
+    private void validateAuthor(Member member, Comment comment) {
+        if (!comment.isAuthor(member)) {
+            throw new IllegalArgumentException("댓글 작성자만 권한이 있습니다.");
+        }
     }
 }
 

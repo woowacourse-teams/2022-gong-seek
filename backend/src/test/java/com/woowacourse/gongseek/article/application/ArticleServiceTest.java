@@ -61,7 +61,7 @@ public class ArticleServiceTest {
 
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
-        ArticleResponse articleResponse = articleService.findOne(new LoginMember(member.getId()), savedArticle.getId());
+        ArticleResponse articleResponse = articleService.getOne(new LoginMember(member.getId()), savedArticle.getId());
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
@@ -75,7 +75,7 @@ public class ArticleServiceTest {
 
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
-        ArticleResponse articleResponse = articleService.findOne(new GuestMember(), savedArticle.getId());
+        ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
@@ -89,8 +89,8 @@ public class ArticleServiceTest {
 
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
-        articleService.findOne(new GuestMember(), savedArticle.getId());
-        ArticleResponse articleResponse = articleService.findOne(new GuestMember(), savedArticle.getId());
+        articleService.getOne(new GuestMember(), savedArticle.getId());
+        ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
@@ -111,7 +111,7 @@ public class ArticleServiceTest {
                 request,
                 savedArticle.getId());
 
-        ArticleResponse response = articleService.findOne(loginMember, savedArticle.getId());
+        ArticleResponse response = articleService.getOne(loginMember, savedArticle.getId());
 
         assertAll(
                 () -> assertThat(response.getTitle()).isEqualTo(request.getTitle()),
@@ -155,7 +155,7 @@ public class ArticleServiceTest {
 
         articleService.delete(loginMember, savedArticle.getId());
 
-        assertThatThrownBy(() -> articleService.findOne(loginMember, savedArticle.getId()))
+        assertThatThrownBy(() -> articleService.getOne(loginMember, savedArticle.getId()))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("게시글이 존재하지 않습니다.");
     }

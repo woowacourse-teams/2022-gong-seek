@@ -38,9 +38,9 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArticleResponse> findOne(@AuthenticationPrinciple AppMember appMember,
-                                                   @PathVariable Long id) {
-        return ResponseEntity.ok(articleService.findOne(appMember, id));
+    public ResponseEntity<ArticleResponse> getOne(@AuthenticationPrinciple AppMember appMember,
+                                                  @PathVariable Long id) {
+        return ResponseEntity.ok(articleService.getOne(appMember, id));
     }
 
     @PutMapping("/{id}")
