@@ -1,6 +1,7 @@
 import { rest } from 'msw';
 import { CommentType } from '@/types/commentResponse';
 import mockData from '@/mock/data/comment.json';
+import { HOME_URL } from '@/constants/url';
 
 const data = localStorage.getItem('mock-comments');
 
@@ -8,7 +9,7 @@ const mockComments = data ? (JSON.parse(data) as CommentType[][]) : [];
 
 export const CommentHandler = [
 	rest.post<{ content: string }>(
-		'http://192.168.0.155:8080/api/articles/:articleId/comments',
+		`${HOME_URL}/api/articles/:articleId/comments`,
 		(req, res, ctx) => {
 			const { articleId } = req.params;
 			const { content } = req.body;
@@ -36,13 +37,13 @@ export const CommentHandler = [
 		},
 	),
 
-	rest.get('http://192.168.0.155:8080/api/articles/:articleId/comments', (req, res, ctx) => {
+	rest.get(`${HOME_URL}/api/articles/:articleId/comments`, (req, res, ctx) => {
 		const { articleId } = req.params;
 		return res(ctx.status(200), ctx.json({ comments: mockData.comments }));
 	}),
 
 	rest.put<{ content: string }>(
-		'http://192.168.0.155:8080/api/articles/:articleId/comments/:commentId',
+		`${HOME_URL}/api/articles/:articleId/comments/:commentId`,
 		(req, res, ctx) => {
 			const { articleId, commentId } = req.params;
 			const { content } = req.body;
@@ -62,18 +63,15 @@ export const CommentHandler = [
 		},
 	),
 
-	rest.delete(
-		'http://192.168.0.155:8080/api/articles/:articleId/comments/:commentId',
-		(req, res, ctx) => {
-			const { articleId, commentId } = req.params;
+	rest.delete(`${HOME_URL}/api/articles/:articleId/comments/:commentId`, (req, res, ctx) => {
+		const { articleId, commentId } = req.params;
 
-			const filteredComments = mockComments[Number(articleId)].filter(
-				(mockComment) => mockComment.id !== Number(commentId),
-			);
-			mockComments[Number(articleId)] = filteredComments;
+		const filteredComments = mockComments[Number(articleId)].filter(
+			(mockComment) => mockComment.id !== Number(commentId),
+		);
+		mockComments[Number(articleId)] = filteredComments;
 
-			localStorage.setItem('mock-comments', JSON.stringify(mockComments));
-			return res(ctx.status(204));
-		},
-	),
+		localStorage.setItem('mock-comments', JSON.stringify(mockComments));
+		return res(ctx.status(204));
+	}),
 ];
