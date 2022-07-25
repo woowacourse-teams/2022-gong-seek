@@ -10,6 +10,7 @@ import { useMutation } from 'react-query';
 
 import { deleteArticle } from '@/api/article';
 import { useNavigate } from 'react-router-dom';
+import Loading from '@/components/common/Loading/Loading';
 
 export interface ArticleContentProps {
 	category: string;
@@ -48,7 +49,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 	};
 
 	if (isLoading) {
-		return <div>삭제중입니다...</div>;
+		return <Loading />;
 	}
 	if (isError) {
 		return <div>{`${error}가 발생하였습니다`}</div>;

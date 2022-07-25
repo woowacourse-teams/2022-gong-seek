@@ -6,6 +6,7 @@ import { useMutation } from 'react-query';
 import CommentInputModal from '../CommentInputModal/CommentInputModal';
 import { queryClient } from '@/index';
 import { CommentType } from '@/types/commentResponse';
+import Loading from '@/components/common/Loading/Loading';
 export const DimmerContainer = styled.div`
 	position: fixed;
 	top: 0;
@@ -42,7 +43,7 @@ const Comment = ({ id, author, content, createdAt, isAuthor, articleId }: Commen
 		}
 	}, [isSuccess]);
 
-	if (isLoading) return <div>로딩중...</div>;
+	if (isLoading) return <Loading />;
 
 	if (isError) return <div>에러...!</div>;
 

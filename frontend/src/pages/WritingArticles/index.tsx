@@ -8,6 +8,7 @@ import ToastUiEditor from './ToastUiEditor/ToastUiEditor';
 import { Editor } from '@toast-ui/react-editor';
 import * as S from '@/pages/WritingArticles/index.style';
 import { CATEGORY } from '@/constants/categoryType';
+import Loading from '@/components/common/Loading/Loading';
 
 const WritingArticles = () => {
 	const { category } = useParams();
@@ -47,7 +48,7 @@ const WritingArticles = () => {
 		});
 	};
 
-	if (isLoading) return <div>글 전송중 </div>;
+	if (isLoading) return <Loading />;
 
 	if (isError) {
 		if (error instanceof Error) {

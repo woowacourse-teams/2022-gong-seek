@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import { getPopularArticles } from '@/api/article';
 import { convertIdxToArticleColorKey } from '@/utils/converter';
 import { useNavigate } from 'react-router-dom';
+import Loading from '@/components/common/Loading/Loading';
 
 const PopularArticle = () => {
 	const navigate = useNavigate();
@@ -25,7 +26,7 @@ const PopularArticle = () => {
 	}, [isSuccess]);
 
 	if (isLoading || isIdle) {
-		return <div>로딩중입니다</div>;
+		return <Loading />;
 	}
 
 	if (isError) {
