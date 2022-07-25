@@ -17,7 +17,6 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -99,6 +98,36 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         "content",
                                         true,
                                         1,
+                                        LocalDateTime.now()
+                                )
+                        )
+        );
+    }
+
+    @Test
+    void 게시물을_단건_조회를_계속_하면_조회수가_계속_증가한다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다(주디);
+        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
+
+        // when
+        로그인_후_게시물을_조회한다(tokenResponse, articleIdResponse);
+        ExtractableResponse<Response> response = 로그인_후_게시물을_조회한다(tokenResponse, articleIdResponse);
+        ArticleResponse articleResponse = response.as(ArticleResponse.class);
+
+        // then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(articleResponse)
+                        .usingRecursiveComparison()
+                        .ignoringFields("createdAt")
+                        .isEqualTo(
+                                new ArticleResponse(
+                                        "title",
+                                        new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
+                                        "content",
+                                        true,
+                                        2,
                                         LocalDateTime.now()
                                 )
                         )

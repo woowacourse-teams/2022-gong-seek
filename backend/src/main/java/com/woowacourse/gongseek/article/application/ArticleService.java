@@ -41,7 +41,6 @@ public class ArticleService {
                 .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
     }
 
-    @Transactional(readOnly = true)
     public ArticleResponse findOne(AppMember appMember, Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
