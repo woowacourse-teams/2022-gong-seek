@@ -6,6 +6,7 @@ import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
 import AddedOption from '@/pages/VoteGenerator/AddedOption/AddedOption';
 import * as S from '@/pages/VoteGenerator/index.styles';
+import Loading from '@/components/common/Loading/Loading';
 
 const VoteGenerator = () => {
 	const [options, setOptions] = useState<string[]>([]);
@@ -35,7 +36,7 @@ const VoteGenerator = () => {
 		}
 	};
 
-	if (isLoading) return <div>로딩중...</div>;
+	if (isLoading) return <Loading />;
 
 	if (isError) return <div>에러..!</div>;
 

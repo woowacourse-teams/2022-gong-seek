@@ -10,6 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ToastUiEditor from '../WritingArticles/ToastUiEditor/ToastUiEditor';
 import { useRecoilValue } from 'recoil';
 import { articleState } from '@/store/articleState';
+import Loading from '@/components/common/Loading/Loading';
 
 const UpdateWriting = () => {
 	const { id } = useParams();
@@ -37,7 +38,7 @@ const UpdateWriting = () => {
 	}
 
 	if (isLoading) {
-		return <div>로딩 중입니다</div>;
+		return <Loading />;
 	}
 
 	if (isError) {

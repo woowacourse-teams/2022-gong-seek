@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import LoginButton from './LoginButton/LoginButton';
 import * as S from '@/pages/Login/index.style';
+import Loading from '@/components/common/Loading/Loading';
 
 const Login = () => {
 	const { data, error, isError, isLoading, isSuccess, refetch } = useQuery(
@@ -27,7 +28,7 @@ const Login = () => {
 		}
 	}, [isSuccess]);
 
-	if (isLoading || pageLoading) return <div>로딩중...</div>;
+	if (isLoading || pageLoading) return <Loading />;
 
 	if (isError) {
 		if (error instanceof Error) {
