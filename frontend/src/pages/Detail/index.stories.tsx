@@ -1,6 +1,7 @@
-import { Meta, Story } from '@storybook/react';
-import Detail from '@/pages/Detail/index';
 import Vote from '../Discussion/Vote/Vote';
+
+import Detail from '@/pages/Detail/index';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'pages/Detail',

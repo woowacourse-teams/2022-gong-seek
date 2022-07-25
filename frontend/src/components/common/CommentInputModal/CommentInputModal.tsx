@@ -1,8 +1,9 @@
-import reactDom from 'react-dom';
-import * as S from '@/components/common/CommentInputModal/CommentInputModal.styles';
 import { useEffect, useState } from 'react';
+import reactDom from 'react-dom';
 import { useMutation } from 'react-query';
+
 import { postComments, putComments } from '@/api/comments';
+import * as S from '@/components/common/CommentInputModal/CommentInputModal.styles';
 
 export interface CommentInputModalProps {
 	closeModal: () => void;

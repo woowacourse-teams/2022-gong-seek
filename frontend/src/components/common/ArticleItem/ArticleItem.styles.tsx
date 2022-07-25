@@ -1,7 +1,8 @@
-import { keyframes } from '@emotion/react';
-import styled from '@emotion/styled';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
+
+import { keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
 
 const scaleAnimation = keyframes`
 	0%{

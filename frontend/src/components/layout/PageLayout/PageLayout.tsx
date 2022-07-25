@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
 import { Size } from '@emotion/react';
+import styled from '@emotion/styled';
 
 const PageLayout = styled.section<Size>`
 	display: ${({ display }) => display || 'flex'};

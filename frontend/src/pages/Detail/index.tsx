@@ -1,12 +1,12 @@
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+
 import ArticleContent from '@/components/common/ArticleContent/ArticleContent';
 import Comment from '@/components/common/Comment/Comment';
 import CommentInputModal from '@/components/common/CommentInputModal/CommentInputModal';
-
 import * as S from '@/pages/Detail/index.styles';
 import { ArticleType } from '@/types/articleResponse';
 import { CommentType } from '@/types/commentResponse';
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
 
 interface DetailProps {
 	children?: React.ReactNode;

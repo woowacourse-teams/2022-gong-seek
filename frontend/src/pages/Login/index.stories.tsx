@@ -1,5 +1,5 @@
-import { Meta, Story } from '@storybook/react';
 import Login from '@/pages/Login';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'pages/Login',

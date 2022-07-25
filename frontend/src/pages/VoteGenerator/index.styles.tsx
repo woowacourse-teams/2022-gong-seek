@@ -1,5 +1,6 @@
-import styled from '@emotion/styled';
 import { AiFillPlusCircle } from 'react-icons/ai';
+
+import styled from '@emotion/styled';
 
 export const Form = styled.form`
 	width: 100%;

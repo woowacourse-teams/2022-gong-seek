@@ -24,7 +24,8 @@
 		"build": "webpack --mode production --config webpack/webpack.common.js",
 		"storybook": "start-storybook -p 6006",
 		"build-storybook": "build-storybook",
-		"test": "jest"
+		"test": "jest",
+		"pretty": "prettier --write \"src/**/*.{ts,tsx,json}\""
 	},
 	"devDependencies": {
 		"@babel/core": "^7.18.6",
@@ -43,6 +44,7 @@
 		"@storybook/testing-library": "^0.0.13",
 		"@testing-library/jest-dom": "^5.16.4",
 		"@testing-library/react": "^13.3.0",
+		"@trivago/prettier-plugin-sort-imports": "^3.3.0",
 		"@typescript-eslint/eslint-plugin": "^5.30.0",
 		"@typescript-eslint/parser": "^5.30.0",
 		"babel-loader": "^8.2.5",

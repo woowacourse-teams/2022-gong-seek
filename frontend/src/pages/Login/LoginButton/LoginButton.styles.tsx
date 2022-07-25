@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
 import { LOGIN_TYPE } from '@/constants/loginType';
 import { LoginButtonProps } from '@/pages/Login/LoginButton/LoginButton';
+import styled from '@emotion/styled';
 
 export const Container = styled.button<Pick<LoginButtonProps, 'loginType'>>`
 	width: 100%;

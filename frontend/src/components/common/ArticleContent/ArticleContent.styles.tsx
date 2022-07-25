@@ -1,6 +1,7 @@
-import styled from '@emotion/styled';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
+
+import styled from '@emotion/styled';
 
 export const Container = styled.div`
 	width: 100%;

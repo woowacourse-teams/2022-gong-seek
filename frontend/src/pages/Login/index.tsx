@@ -1,11 +1,12 @@
-import { getGithubURL } from '@/api/login';
-import PageLayout from '@/components/layout/PageLayout/PageLayout';
-import { mobileTitleSecondary } from '@/constants/titleType';
+import LoginButton from './LoginButton/LoginButton';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import LoginButton from './LoginButton/LoginButton';
-import * as S from '@/pages/Login/index.styles';
+
+import { getGithubURL } from '@/api/login';
 import Loading from '@/components/common/Loading/Loading';
+import PageLayout from '@/components/layout/PageLayout/PageLayout';
+import { mobileTitleSecondary } from '@/constants/titleType';
+import * as S from '@/pages/Login/index.styles';
 
 const Login = () => {
 	const { data, error, isError, isLoading, isSuccess, refetch } = useQuery(

@@ -1,11 +1,12 @@
-import { deleteComments } from '@/api/comments';
-import * as S from '@/components/common/Comment/Comment.styles';
+import CommentInputModal from '../CommentInputModal/CommentInputModal';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
-import CommentInputModal from '../CommentInputModal/CommentInputModal';
+
+import { deleteComments } from '@/api/comments';
+import * as S from '@/components/common/Comment/Comment.styles';
+import Loading from '@/components/common/Loading/Loading';
 import { queryClient } from '@/index';
 import { CommentType } from '@/types/commentResponse';
-import Loading from '@/components/common/Loading/Loading';
 
 interface CommentProps extends CommentType {
 	articleId: string;

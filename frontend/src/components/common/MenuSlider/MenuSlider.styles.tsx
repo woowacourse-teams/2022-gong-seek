@@ -1,6 +1,7 @@
+import { IoIosArrowBack } from 'react-icons/io';
+
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { IoIosArrowBack } from 'react-icons/io';
 
 const showSlider = keyframes`
 	0%{

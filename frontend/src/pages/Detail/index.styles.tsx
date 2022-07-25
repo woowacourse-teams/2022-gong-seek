@@ -1,6 +1,7 @@
-import styled from '@emotion/styled';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
+
+import styled from '@emotion/styled';
 
 export const Container = styled.article`
 	width: 100%;

@@ -1,11 +1,12 @@
-import { getDetailArticle } from '@/api/article';
-import { getComments } from '@/api/comments';
+import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
-import Detail from '@/pages/Detail/index';
 import { useSetRecoilState } from 'recoil';
+
+import { getDetailArticle } from '@/api/article';
+import { getComments } from '@/api/comments';
+import Detail from '@/pages/Detail/index';
 import { articleState } from '@/store/articleState';
-import { useEffect } from 'react';
 
 const ErrorDetail = () => {
 	const { id } = useParams();

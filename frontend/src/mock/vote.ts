@@ -1,6 +1,7 @@
+import { rest } from 'msw';
+
 import { VoteItems } from '@/api/vote';
 import { HOME_URL } from '@/constants/url';
-import { rest } from 'msw';
 
 interface VoteItemsWithId extends VoteItems {
 	voteId: string;

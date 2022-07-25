@@ -1,16 +1,17 @@
-import { putArticle } from '@/api/article';
-import PageLayout from '@/components/layout/PageLayout/PageLayout';
-import * as S from '@/pages/WritingArticles/index.styles';
-import { useEffect, useRef } from 'react';
-import { Editor } from '@toast-ui/react-editor';
+import ToastUiEditor from '../WritingArticles/ToastUiEditor/ToastUiEditor';
 import { AxiosError, AxiosResponse } from 'axios';
+import { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import ToastUiEditor from '../WritingArticles/ToastUiEditor/ToastUiEditor';
 import { useRecoilValue } from 'recoil';
-import { articleState } from '@/store/articleState';
+
+import { putArticle } from '@/api/article';
 import Loading from '@/components/common/Loading/Loading';
+import PageLayout from '@/components/layout/PageLayout/PageLayout';
+import * as S from '@/pages/WritingArticles/index.styles';
+import { articleState } from '@/store/articleState';
+import { Editor } from '@toast-ui/react-editor';
 
 const UpdateWriting = () => {
 	const { id } = useParams();

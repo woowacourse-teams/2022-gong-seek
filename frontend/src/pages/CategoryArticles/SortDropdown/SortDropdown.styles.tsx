@@ -1,6 +1,7 @@
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
+
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 
 export const slideDown = keyframes`
 0% { 

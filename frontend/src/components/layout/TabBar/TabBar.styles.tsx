@@ -1,6 +1,7 @@
-import styled from '@emotion/styled';
 import { FaPencilAlt, FaUser } from 'react-icons/fa';
 import { HiMenu } from 'react-icons/hi';
+
+import styled from '@emotion/styled';
 
 export const Section = styled.section`
 	position: sticky;

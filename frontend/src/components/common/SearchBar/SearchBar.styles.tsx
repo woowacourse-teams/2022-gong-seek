@@ -1,5 +1,6 @@
-import styled from '@emotion/styled';
 import { BiSearchAlt } from 'react-icons/bi';
+
+import styled from '@emotion/styled';
 
 export const Container = styled.div`
 	display: flex;

@@ -1,7 +1,8 @@
+import { FaRegCommentDots } from 'react-icons/fa';
+import { MdArrowBackIosNew } from 'react-icons/md';
+
 import { articleColors } from '@/styles/Theme';
 import styled from '@emotion/styled';
-import { MdArrowBackIosNew } from 'react-icons/md';
-import { FaRegCommentDots } from 'react-icons/fa';
 
 export const showPopularSlider = [
 	{

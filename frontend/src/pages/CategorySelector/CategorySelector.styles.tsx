@@ -1,6 +1,7 @@
-import styled from '@emotion/styled';
-import { CATEGORY_TYPE } from '@/constants/categoryType';
 import { Link } from 'react-router-dom';
+
+import { CATEGORY_TYPE } from '@/constants/categoryType';
+import styled from '@emotion/styled';
 
 export const Container = styled.div`
 	display: flex;

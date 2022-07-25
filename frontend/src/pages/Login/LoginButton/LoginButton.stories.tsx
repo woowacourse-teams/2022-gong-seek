@@ -1,6 +1,6 @@
 import LoginButton, { LoginButtonProps } from '@/pages/Login/LoginButton/LoginButton';
-import { Meta, Story } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'pages/Login/LoginButton',

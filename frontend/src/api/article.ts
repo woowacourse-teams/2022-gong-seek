@@ -1,6 +1,7 @@
+import axios from 'axios';
+
 import { HOME_URL } from '@/constants/url';
 import { ArticleType, CommonArticleType } from '@/types/articleResponse';
-import axios from 'axios';
 
 export interface WritingArticles {
 	title: string;
