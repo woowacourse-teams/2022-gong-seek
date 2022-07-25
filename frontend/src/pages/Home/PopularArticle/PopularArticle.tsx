@@ -12,7 +12,10 @@ const PopularArticle = () => {
 
 	const mainArticleContent = useRef<HTMLDivElement>(null);
 
-	const { data, isSuccess, isError, isLoading } = useQuery('popular-articles', getPopularArticles);
+	const { data, isSuccess, isError, isLoading, isIdle } = useQuery(
+		'popular-articles',
+		getPopularArticles,
+	);
 
 	useEffect(() => {
 		if (isSuccess) {
@@ -21,19 +24,17 @@ const PopularArticle = () => {
 		}
 	}, [isSuccess]);
 
-	const navigateDetailPage = () => {
-		navigate(
-			`/articles/${data?.articles[currentIndex].category}/${data?.articles[currentIndex].id}`,
-		);
-	};
-
-	if (isLoading) {
+	if (isLoading || isIdle) {
 		return <div>로딩중입니다</div>;
 	}
 
 	if (isError) {
 		return <div>에러가 발생하였습니다</div>;
 	}
+
+	const navigateDetailPage = () => {
+		navigate(`/articles/${data.articles[currentIndex].category}/${data.articles[currentIndex].id}`);
+	};
 
 	const handleLeftSlideEvent = () => {
 		if (currentIndex === 0) {
