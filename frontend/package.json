@@ -19,8 +19,7 @@
 		"react-icons": "^4.4.0",
 		"react-query": "^3.39.1",
 		"react-router-dom": "^6.3.0",
-		"recoil": "^0.7.4",
-		"ts-jest": "^28.0.5"
+		"recoil": "^0.7.4"
 	},
 	"scripts": {
 		"start": "webpack serve --open --config webpack/webpack.common.js",
