@@ -21,8 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
-@SpringBootTest
 @Transactional
+@SpringBootTest
 public class ArticleServiceTest {
 
     @Autowired
