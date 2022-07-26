@@ -31,7 +31,7 @@ public class Article {
     private static final int INITIAL_VIEWS = 0;
     private static final int MIN_TITLE_LENGTH = 0;
     private static final int MAX_TITLE_LENGTH = 500;
-    private static final int MAX_CONTENT_LENGTH = 1000;
+    private static final int MAX_CONTENT_LENGTH = 10_000;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,7 +84,7 @@ public class Article {
 
     private void validateContentLength(String content) {
         if (content.length() > MAX_CONTENT_LENGTH) {
-            throw new IllegalArgumentException("컨텐트의 길이는 1000 이하여야합니다.");
+            throw new IllegalArgumentException("컨텐트의 길이는 10000 이하여야합니다.");
         }
     }
 

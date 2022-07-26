@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Content {
 
-    private static final int MAX_CONTENT_LENGTH = 1000;
+    private static final int MAX_CONTENT_LENGTH = 10_000;
 
     @Lob
     @Column(name = "content")
@@ -26,7 +26,7 @@ public class Content {
 
     private void validateContentLength(String value) {
         if (Objects.isNull(value) || value.isBlank() || value.length() > MAX_CONTENT_LENGTH) {
-            throw new IllegalArgumentException("내용의 길이는 1~1000이여야 합니다.");
+            throw new IllegalArgumentException("내용의 길이는 1~10000이여야 합니다.");
         }
     }
 }

@@ -18,7 +18,7 @@ public class ArticleRequest {
     @Length(max = 500)
     private String title;
 
-    @Length(max = 1000)
+    @Length(max = 10_000)
     private String content;
 
     @NotBlank

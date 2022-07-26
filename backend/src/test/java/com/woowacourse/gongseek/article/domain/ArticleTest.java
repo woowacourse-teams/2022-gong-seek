@@ -37,14 +37,14 @@ class ArticleTest {
     }
 
     @Test
-    void 컨텐트가_1000자를_초과한_경우_예외를_발생한다() {
+    void 컨텐트가_10000자를_초과한_경우_예외를_발생한다() {
         String title = "title";
-        String content = "c".repeat(1001);
+        String content = "c".repeat(10001);
         Category question = Category.QUESTION;
 
         assertThatThrownBy(() -> new Article(title, content, question, member))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("컨텐트의 길이는 1000 이하여야합니다.");
+                .hasMessage("컨텐트의 길이는 10000 이하여야합니다.");
     }
 
     @Test
