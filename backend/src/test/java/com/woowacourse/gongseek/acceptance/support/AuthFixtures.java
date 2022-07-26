@@ -50,17 +50,11 @@ public class AuthFixtures {
 
     private static void mockGithubServer(GithubClientFixtures client, RestTemplate restTemplate) {
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
+        getGithubAccessToken(mockServer);
+        getGithubProfile(client, mockServer);
+    }
 
-        try {
-            mockServer.expect(requestTo("https://github.com/login/oauth/access_token"))
-                    .andRespond(withSuccess(
-                            objectMapper.writeValueAsString(new TokenResponse("accessToken")),
-                            MediaType.APPLICATION_JSON));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("로그인이 실패했습니다.");
-        }
-
+    private static void getGithubProfile(GithubClientFixtures client, MockRestServiceServer mockServer) {
         try {
             mockServer.expect(requestTo("https://api.github.com/user"))
                     .andExpect(method(HttpMethod.GET))
@@ -68,6 +62,18 @@ public class AuthFixtures {
                             objectMapper.writeValueAsString(
                                     new GithubProfileResponse(
                                             client.getGithubId(), client.getName(), client.getAvatarUrl())),
+                            MediaType.APPLICATION_JSON));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("로그인이 실패했습니다.");
+        }
+    }
+
+    private static void getGithubAccessToken(MockRestServiceServer mockServer) {
+        try {
+            mockServer.expect(requestTo("https://github.com/login/oauth/access_token"))
+                    .andRespond(withSuccess(
+                            objectMapper.writeValueAsString(new TokenResponse("accessToken")),
                             MediaType.APPLICATION_JSON));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
