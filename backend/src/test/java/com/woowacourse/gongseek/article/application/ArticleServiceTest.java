@@ -4,16 +4,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleAllResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlesResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.commons.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +36,20 @@ public class ArticleServiceTest {
     private ArticleService articleService;
 
     @Autowired
+    private ArticleRepository articleRepository;
+
+    @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
     private Member member;
     private ArticleRequest articleRequest;
 
     @BeforeEach
     void setUp() {
+        databaseCleaner.tableClear();
         member = memberRepository.save(new Member("slo", "hanull", "avatar.com"));
         articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue());
     }
@@ -185,4 +199,60 @@ public class ArticleServiceTest {
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("권한이 없는 사용자입니다.");
     }
+
+    @Test
+    void 페이지가_10개씩_조회된다() {
+
+        List<Article> articles = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            articles.add(new Article(articleRequest.getTitle() + i, articleRequest.getContent(), Category.QUESTION, member));
+        }
+        articleRepository.saveAll(articles);
+
+        ArticlesResponse response = articleService.getArticles(null, Category.QUESTION.getValue(), "latest", 10);
+        List<ArticleAllResponse> responses = response.getArticles();
+
+        assertAll(
+                () -> assertThat(responses).hasSize(10),
+                () -> assertThat(response.isHasNext()).isEqualTo(true)
+        );
+    }
+
+    @Test
+    void 요청으로_들어온_페이지ID_다음부터_반환해준다() {
+
+        List<Article> articles = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            articles.add(new Article(articleRequest.getTitle() + i, articleRequest.getContent(), Category.QUESTION, member));
+        }
+        articleRepository.saveAll(articles);
+
+        ArticlesResponse response = articleService.getArticles(10L, Category.QUESTION.getValue(), "latest", 10);
+        List<ArticleAllResponse> responses = response.getArticles();
+
+        assertAll(
+                () -> assertThat(responses).hasSize(9),
+                () -> assertThat(responses.get(0).getId()).isEqualTo(9L),
+                () -> assertThat(response.isHasNext()).isEqualTo(false)
+        );
+    }
+
+    @Test
+    void 페이지가_10개씩_조회된_후_더이상_조회할_페이지가_없으면_hasNext는_false가_된다() {
+
+        List<Article> articles = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            articles.add(new Article(articleRequest.getTitle(), articleRequest.getContent(), Category.QUESTION, member));
+        }
+        articleRepository.saveAll(articles);
+
+        ArticlesResponse response = articleService.getArticles(null, Category.QUESTION.getValue(), "latest", 10);
+        List<ArticleAllResponse> responses = response.getArticles();
+
+        assertAll(
+                () -> assertThat(responses).hasSize(10),
+                () -> assertThat(response.isHasNext()).isEqualTo(false)
+        );
+    }
+
 }
