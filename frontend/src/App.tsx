@@ -6,7 +6,7 @@ import PrivateRouter from '@/components/router/PrivateRouter';
 import PublicRouter from '@/components/router/PublicRouter';
 import CategoryArticles from '@/pages/CategoryArticles/CategoryArticles';
 import CategorySelector from '@/pages/CategorySelector/CategorySelector';
-import ErrorDetail from '@/pages/ErrorDetail/index';
+import ErrorDetail from '@/pages/ErrorDetail';
 import Home from '@/pages/Home';
 import Login from '@/pages/Login';
 import LoginController from '@/pages/Login/LoginController/LoginController';
