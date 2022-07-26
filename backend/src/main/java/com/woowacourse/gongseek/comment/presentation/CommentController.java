@@ -39,7 +39,7 @@ public class CommentController {
             @AuthenticationPrinciple AppMember appMember,
             @PathVariable Long articleId
     ) {
-        return ResponseEntity.ok(commentService.getAll(appMember, articleId));
+        return ResponseEntity.ok(commentService.getAllByArticleId(appMember, articleId));
     }
 
     @PutMapping("/comments/{commentId}")

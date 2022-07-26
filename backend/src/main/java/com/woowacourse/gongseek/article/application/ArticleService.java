@@ -29,6 +29,12 @@ public class ArticleService {
         return new ArticleIdResponse(article);
     }
 
+    private void validateGuest(AppMember appMember) {
+        if (appMember.isGuest()) {
+            throw new IllegalArgumentException("권한이 없는 사용자입니다.");
+        }
+    }
+
     public ArticleResponse getOne(AppMember appMember, Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
@@ -51,22 +57,6 @@ public class ArticleService {
         articleRepository.delete(article);
     }
 
-    private void validateGuest(AppMember appMember) {
-        if (appMember.isGuest()) {
-            throw new IllegalArgumentException("권한이 없는 사용자입니다.");
-        }
-    }
-
-    private Member getMember(AppMember appMember) {
-        return memberRepository.findById(appMember.getPayload())
-                .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
-    }
-
-    private Article getArticle(Long id) {
-        return articleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
-    }
-
     private Article checkAuthorization(AppMember appMember, Long id) {
         validateGuest(appMember);
         Article article = getArticle(id);
@@ -79,5 +69,15 @@ public class ArticleService {
         if (!article.isAuthor(member)) {
             throw new IllegalStateException("작성자만 권한이 있습니다.");
         }
+    }
+
+    private Member getMember(AppMember appMember) {
+        return memberRepository.findById(appMember.getPayload())
+                .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
+    }
+
+    private Article getArticle(Long id) {
+        return articleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
     }
 }
