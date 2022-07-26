@@ -8,6 +8,7 @@ import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.config.JpaAuditingConfig;
+import com.woowacourse.gongseek.config.QuerydslConfig;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import java.util.List;
@@ -18,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
-@Import(JpaAuditingConfig.class)
+@Import({JpaAuditingConfig.class, QuerydslConfig.class})
 @DataJpaTest
 class CommentRepositoryTest {
 
