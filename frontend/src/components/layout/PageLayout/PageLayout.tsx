@@ -10,6 +10,7 @@ const PageLayout = styled.section<Size>`
 	gap: ${({ gap }) => gap};
 
 	width: ${({ width }) => width || 'fit-content'};
+	max-width: ${({ maxWidth }) => maxWidth};
 	height: ${({ height }) => height || 'fit-content'};
 
 	border-radius: ${({ theme }) => theme.size.SIZE_010};
