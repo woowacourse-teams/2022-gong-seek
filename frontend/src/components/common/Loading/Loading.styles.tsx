@@ -26,7 +26,7 @@ export const Container = styled.section`
 	gap: ${({ theme }) => theme.size.SIZE_010};
 
 	width: 100%;
-	height: 100vh;
+	height: 70vh;
 `;
 
 export const FirstSpinner = styled.div`
