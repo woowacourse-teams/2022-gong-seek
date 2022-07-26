@@ -2,7 +2,6 @@ package com.woowacourse.gongseek.auth.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.gongseek.auth.infra.GithubOAuthClient;
@@ -45,7 +44,7 @@ class AuthServiceTest {
         GithubClientFixtures 주디 = GithubClientFixtures.주디;
         GithubProfileResponse profileResponse = new GithubProfileResponse(
                 주디.getGithubId(), 주디.getName(), 주디.getAvatarUrl());
-        given(githubOAuthClient.getMemberProfile(any())).willReturn(profileResponse);
+        given(githubOAuthClient.getMemberProfile(주디.getCode())).willReturn(profileResponse);
 
         TokenResponse response = authService.generateAccessToken(new OAuthCodeRequest(주디.getCode()));
 
@@ -57,7 +56,7 @@ class AuthServiceTest {
         GithubClientFixtures 주디 = GithubClientFixtures.주디;
         GithubProfileResponse profileResponse = new GithubProfileResponse(
                 주디.getGithubId(), 주디.getName(), 주디.getAvatarUrl());
-        given(githubOAuthClient.getMemberProfile(any())).willReturn(profileResponse);
+        given(githubOAuthClient.getMemberProfile(주디.getCode())).willReturn(profileResponse);
         Member member = new Member(주디.getGithubId(), 주디.getName(), "previous avatar url");
         memberRepository.save(member);
 
