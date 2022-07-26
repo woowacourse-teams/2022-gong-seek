@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.comment.presentation.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;

@@ -1,5 +1,6 @@
 package com.woowacourse.gongseek.auth.presentation.dto;
 
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,5 +11,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class OAuthCodeRequest {
 
+    @NotNull
     private String code;
 }

@@ -4,6 +4,7 @@ import com.woowacourse.gongseek.auth.application.AuthService;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class AuthController {
     }
 
     @PostMapping("/token")
-    public ResponseEntity<TokenResponse> login(@RequestBody OAuthCodeRequest OAuthCodeRequest) {
+    public ResponseEntity<TokenResponse> login(@Valid @RequestBody OAuthCodeRequest OAuthCodeRequest) {
         return ResponseEntity.ok(authService.generateAccessToken(OAuthCodeRequest));
     }
 }

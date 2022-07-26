@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.comment.domain;
+package com.woowacourse.gongseek.article.domain;
 
 import java.util.Objects;
 import javax.persistence.Column;
@@ -9,8 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
 @Embeddable
+@Getter
 public class Content {
 
     private static final int MAX_CONTENT_LENGTH = 10_000;
@@ -26,7 +26,7 @@ public class Content {
 
     private void validateContentLength(String value) {
         if (Objects.isNull(value) || value.isBlank() || value.length() > MAX_CONTENT_LENGTH) {
-            throw new IllegalArgumentException("댓글의 길이는 1~10000이여야 합니다.");
+            throw new IllegalArgumentException("내용의 길이는 1~10000이여야 합니다.");
         }
     }
 }

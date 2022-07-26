@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
@@ -40,8 +39,8 @@ class ArticleRepositoryTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 999, 1_000})
-    void 질문의_길이가_1000자까지_가능하다(int count) {
+    @ValueSource(ints = {1, 9999, 10_000})
+    void 질문_내용의_길이가_10000자까지_가능하다(int count) {
         String title = "질문합니다.";
         String content = "a".repeat(count);
         Member member = new Member("slo", "hanull", "avatar.com");

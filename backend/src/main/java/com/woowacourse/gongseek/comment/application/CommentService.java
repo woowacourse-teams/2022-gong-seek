@@ -27,15 +27,45 @@ public class CommentService {
 
     public void save(AppMember appMember, Long articleId, CommentRequest commentRequest) {
         validateGuest(appMember);
-        Member member = findMember(appMember);
-        Article article = findArticle(articleId);
+        Member member = getMember(appMember);
+        Article article = getArticle(articleId);
         Comment comment = new Comment(commentRequest.getContent(), member, article);
 
         commentRepository.save(comment);
     }
 
+    private void validateGuest(AppMember appMember) {
+        if (appMember.isGuest()) {
+            throw new IllegalArgumentException("권한이 없는 사용자입니다.");
+        }
+    }
+
+    public void update(AppMember appMember, Long commentId, CommentRequest updateRequest) {
+        Comment comment = checkAuthorization(appMember, commentId);
+        comment.updateContent(updateRequest.getContent());
+    }
+
+    public void delete(AppMember appMember, Long commentId) {
+        Comment comment = checkAuthorization(appMember, commentId);
+        commentRepository.delete(comment);
+    }
+
+    private Comment checkAuthorization(AppMember appMember, Long commentId) {
+        validateGuest(appMember);
+        Comment comment = getComment(commentId);
+        Member member = getMember(appMember);
+        validateAuthor(member, comment);
+        return comment;
+    }
+
+    private void validateAuthor(Member member, Comment comment) {
+        if (!comment.isAuthor(member)) {
+            throw new IllegalArgumentException("댓글 작성자만 권한이 있습니다.");
+        }
+    }
+
     @Transactional(readOnly = true)
-    public CommentsResponse findByArticleId(AppMember appMember, Long articleId) {
+    public CommentsResponse getAllByArticleId(AppMember appMember, Long articleId) {
         List<CommentResponse> responses = commentRepository.findAllByArticleId(articleId).stream()
                 .map(comment -> CommentResponse.of(comment, isAuthor(appMember, comment)))
                 .collect(Collectors.toList());
@@ -46,49 +76,21 @@ public class CommentService {
         if (appMember.isGuest()) {
             return false;
         }
-        Member member = findMember(appMember);
+        Member member = getMember(appMember);
         return comment.isAuthor(member);
     }
 
-    public void update(AppMember appMember, Long commentId, CommentRequest updateRequest) {
-        validateGuest(appMember);
-        Member member = findMember(appMember);
-        Comment comment = findComment(commentId);
-
-        if (!comment.isAuthor(member)) {
-            throw new IllegalArgumentException("댓글을 작성한 회원만 수정할 수 있습니다.");
-        }
-        comment.updateContent(updateRequest.getContent());
-    }
-
-    public void delete(AppMember appMember, Long commentId) {
-        validateGuest(appMember);
-        Member member = findMember(appMember);
-        Comment comment = findComment(commentId);
-
-        if (!comment.isAuthor(member)) {
-            throw new IllegalArgumentException("댓글을 작성한 회원만 삭제할 수 있습니다.");
-        }
-        commentRepository.delete(comment);
-    }
-
-    private void validateGuest(AppMember appMember) {
-        if (appMember.isGuest()) {
-            throw new IllegalArgumentException("권한이 없는 사용자입니다.");
-        }
-    }
-
-    private Member findMember(AppMember appMember) {
+    private Member getMember(AppMember appMember) {
         return memberRepository.findById(appMember.getPayload())
                 .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
     }
 
-    private Article findArticle(Long articleId) {
+    private Article getArticle(Long articleId) {
         return articleRepository.findById(articleId)
                 .orElseThrow(() -> new IllegalStateException("게시글이 존재하지 않습니다."));
     }
 
-    private Comment findComment(Long commentId) {
+    private Comment getComment(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalStateException("댓글이 존재하지 않습니다."));
     }

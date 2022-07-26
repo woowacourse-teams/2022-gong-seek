@@ -3,6 +3,7 @@ package com.woowacourse.gongseek.article.domain;
 import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
@@ -12,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,7 +31,7 @@ public class Article {
     private static final int INITIAL_VIEWS = 0;
     private static final int MIN_TITLE_LENGTH = 0;
     private static final int MAX_TITLE_LENGTH = 500;
-    private static final int MAX_CONTENT_LENGTH = 1000;
+    private static final int MAX_CONTENT_LENGTH = 10_000;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,8 +40,8 @@ public class Article {
     @Column(nullable = false)
     private String title;
 
-    @Column(length = 1_000)
-    private String content;
+    @Embedded
+    private Content content;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
@@ -62,7 +62,7 @@ public class Article {
         validateTitleLength(title);
         validateContentLength(content);
         this.title = title;
-        this.content = content;
+        this.content = new Content(content);
         this.category = category;
         this.member = member;
         this.views = INITIAL_VIEWS;
@@ -84,7 +84,7 @@ public class Article {
 
     private void validateContentLength(String content) {
         if (content.length() > MAX_CONTENT_LENGTH) {
-            throw new IllegalArgumentException("컨텐트의 길이는 1000 이하여야합니다.");
+            throw new IllegalArgumentException("컨텐트의 길이는 10000 이하여야합니다.");
         }
     }
 
@@ -92,6 +92,10 @@ public class Article {
         validateTitleLength(title);
         validateContentLength(content);
         this.title = title;
-        this.content = content;
+        this.content = new Content(content);
+    }
+
+    public String getContent() {
+        return content.getValue();
     }
 }
