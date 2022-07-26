@@ -42,7 +42,6 @@ public class ArticleServiceTest {
 
     @Test
     void 회원은_게시물을_저장한다() {
-
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         assertThat(articleIdResponse.getId()).isNotNull();
@@ -50,7 +49,6 @@ public class ArticleServiceTest {
 
     @Test
     void 비회원은_게시물을_저장할_수_없다() {
-
         assertThatThrownBy(() -> articleService.save(new GuestMember(), articleRequest))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("권한이 없는 사용자입니다.");
@@ -58,7 +56,6 @@ public class ArticleServiceTest {
 
     @Test
     void 로그인을한_사용자가_게시물을_조회한다() {
-
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         ArticleResponse articleResponse = articleService.getOne(new LoginMember(member.getId()), savedArticle.getId());
@@ -72,7 +69,6 @@ public class ArticleServiceTest {
 
     @Test
     void 로그인을_안한_사용자가_게시물을_조회한다() {
-
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
@@ -86,7 +82,6 @@ public class ArticleServiceTest {
 
     @Test
     void 게시물을_조회하면_조회수가_올라간다() {
-
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         articleService.getOne(new GuestMember(), savedArticle.getId());
@@ -102,7 +97,6 @@ public class ArticleServiceTest {
 
     @Test
     void 작성자가_게시물을_수정한다() {
-
         AppMember loginMember = new LoginMember(member.getId());
         ArticleIdResponse savedArticle = articleService.save(loginMember, articleRequest);
 
@@ -121,7 +115,6 @@ public class ArticleServiceTest {
 
     @Test
     void 작성자가_아닌_사용자가_게시물을_수정하면_예외가_발생한다() {
-
         Member noAuthor = memberRepository.save(
                 new Member("작성자아닌사람이름", "giithub", "www.avatar.cax"));
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
@@ -135,7 +128,6 @@ public class ArticleServiceTest {
 
     @Test
     void 로그인을_안한_사용자가_게시물을_수정하면_예외가_발생한다() {
-
         AppMember guestMember = new GuestMember();
         ArticleIdResponse savedArticle = articleService.save(
                 new LoginMember(member.getId()),
@@ -149,7 +141,6 @@ public class ArticleServiceTest {
 
     @Test
     void 작성자가_게시물을_삭제한다() {
-
         AppMember loginMember = new LoginMember(member.getId());
         ArticleIdResponse savedArticle = articleService.save(loginMember, articleRequest);
 
@@ -162,7 +153,6 @@ public class ArticleServiceTest {
 
     @Test
     void 작성자가_아닌_사용자가_게시물을_삭제하면_예외가_발생한다() {
-
         Member noAuthor = memberRepository.save(new Member("작성자아닌사람이름", "giithub", "www.avatar.cax"));
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()),
                 articleRequest);
@@ -175,7 +165,6 @@ public class ArticleServiceTest {
 
     @Test
     void 로그인을_안한_사용자가_게시물을_삭제하면_예외가_발생한다() {
-
         AppMember guestMember = new GuestMember();
         ArticleIdResponse savedArticle = articleService.save(
                 new LoginMember(member.getId()),
