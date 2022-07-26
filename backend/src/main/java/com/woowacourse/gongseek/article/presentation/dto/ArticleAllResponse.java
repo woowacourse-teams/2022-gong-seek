@@ -21,14 +21,8 @@ public class ArticleAllResponse {
     private Integer commentCount;
     private LocalDateTime createdAt;
 
-    public static ArticleAllResponse of(Article article, Integer commentCount) {
-        return new ArticleAllResponse(
-                article.getId(),
-                article.getTitle(),
-                new AuthorDto(article.getMember()),
-                article.getContent(),
-                article.getCategory().getValue(),
-                commentCount,
-                article.getCreatedAt());
+    public ArticleAllResponse(Article article, int commentCount) {
+        this(article.getId(), article.getTitle(), new AuthorDto(article.getMember()), article.getContent(),
+                article.getCategory().getValue(), commentCount, article.getCreatedAt());
     }
 }

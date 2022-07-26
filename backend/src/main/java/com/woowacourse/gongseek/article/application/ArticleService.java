@@ -16,7 +16,6 @@ import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +41,7 @@ public class ArticleService {
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public ArticleResponse findOne(AppMember appMember, Long id) {
         Article article = findArticle(id);
         article.addViews();
@@ -53,17 +52,19 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticlesResponse findAll(String category, String sortType, Pageable pageable) {
-        List<ArticleAllResponse> responses = articleRepository.findAll(category, sortType, pageable)
-                .stream()
-                .map(article -> ArticleAllResponse.of(article, findCommentCount(article)))
+    public ArticlesResponse getArticles(Long cursorId, String category, String sortType, int size) {
+        List<ArticleAllResponse> articles = articleRepository.findAllByPage(cursorId, category, sortType, size).stream()
+                .map(article -> new ArticleAllResponse(article, getCommentCount(article)))
                 .collect(Collectors.toList());
 
-        return new ArticlesResponse(responses);
+        if(articles.size() == size + 1){
+            return new ArticlesResponse(articles.subList(0, size), true);
+        }
+        return new ArticlesResponse(articles, false);
     }
 
-    private int findCommentCount(Article article) {
-        return commentRepository.findAllByArticleId(article.getId()).size();
+    private int getCommentCount(Article article) {
+        return commentRepository.countByArticleId(article.getId());
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {

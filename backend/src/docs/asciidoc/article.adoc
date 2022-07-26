@@ -89,3 +89,20 @@ include::{snippets}/article-delete/request-headers.adoc[]
 === Response
 
 include::{snippets}/article-delete/http-response.adoc[]
+
+== 게시물 전체 조회
+
+`GET /api/articles`
+
+=== Request
+
+include::{snippets}/article-get-all/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/article-get-all/request-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/article-get-all/http-response.adoc[]
+include::{snippets}/article-get-all/response-fields.adoc[]

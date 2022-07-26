@@ -12,4 +12,6 @@ import lombok.NoArgsConstructor;
 public class ArticlesResponse {
 
     private List<ArticleAllResponse> articles;
+    private boolean hasNext;
+
 }

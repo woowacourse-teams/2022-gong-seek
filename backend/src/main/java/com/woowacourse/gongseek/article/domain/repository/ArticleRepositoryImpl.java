@@ -1,36 +1,45 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
 import static com.woowacourse.gongseek.article.domain.QArticle.article;
-import static org.springframework.util.StringUtils.hasText;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 
 @RequiredArgsConstructor
 public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
-    private final JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Article> findAll(String category, String sortType, Pageable pageable) {
-        return jpaQueryFactory
+    public List<Article> findAllByPage(Long cursorId, String category, String sortType, int pageSize) {
+        JPAQuery<Article> query = queryFactory
                 .selectFrom(article)
-                .where(categoryEq(category))
+                .where(
+                        ltArticleId(cursorId),
+                        categoryEq(category))
+                .limit(pageSize + 1);
+        if (query.fetch().isEmpty()) {
+            return query.fetch();
+        }
+
+        return query
                 .orderBy(sort(sortType))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
                 .fetch();
     }
 
+    private BooleanExpression ltArticleId(Long cursorId) {
+        return cursorId == null ? null : article.id.lt(cursorId);
+    }
+
     private BooleanExpression categoryEq(String category) {
-        return hasText(category) ? article.category.eq(Category.from(category)) : null;
+        return "all".equals(category) ? null : article.category.eq(Category.from(category));
     }
 
     private OrderSpecifier<?> sort(String sortType) {

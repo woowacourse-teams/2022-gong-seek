@@ -16,7 +16,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.PageRequest;
 
 @SuppressWarnings("NonAsciiCharacters")
 @Import({JpaAuditingConfig.class, QuerydslConfig.class})
@@ -49,21 +48,19 @@ class ArticleRepositoryTest {
 
     @Test
     void 게시물이_없으면_빈_값을_반환한다() {
-        List<Article> articles = articleRepository.findAll("question", "views", PageRequest.of(0, 1));
-
+        List<Article> articles = articleRepository.findAllByPage(null, Category.QUESTION.getValue(), "", 5);
         assertThat(articles).hasSize(0);
     }
 
-    @ParameterizedTest
-    @CsvSource({"5, 5", "6, 5"})
-    void 게시물을_5개씩_조회한다(int savingCount, int offset) {
-        for (int i = 0; i < savingCount; i++) {
+    @Test
+    void 게시물을_5개씩_조회한다() {
+        for (int i = 0; i < 5; i++) {
             articleRepository.save(new Article("title", "content", Category.QUESTION, member));
         }
 
-        List<Article> articles = articleRepository.findAll("question", "views", PageRequest.of(0, offset));
+        List<Article> articles = articleRepository.findAllByPage(null, Category.QUESTION.getValue(), "views", 5);
 
-        assertThat(articles).hasSize(offset);
+        assertThat(articles).hasSize(5);
     }
 
     @ParameterizedTest
@@ -72,7 +69,7 @@ class ArticleRepositoryTest {
         articleRepository.save(new Article("title", "content", Category.QUESTION, member));
         articleRepository.save(new Article("title", "content", Category.DISCUSSION, member));
 
-        List<Article> articles = articleRepository.findAll(category, "views", PageRequest.of(0, 5));
+        List<Article> articles = articleRepository.findAllByPage(null, category, "views", 5);
 
         assertThat(articles).hasSize(expectedSize);
     }
@@ -86,7 +83,7 @@ class ArticleRepositoryTest {
         firstArticle.addViews();
         secondArticle.addViews();
 
-        List<Article> articles = articleRepository.findAll("question", "views", PageRequest.of(0, 3));
+        List<Article> articles = articleRepository.findAllByPage(null, Category.QUESTION.getValue(), "views", 10);
 
         assertThat(articles).isEqualTo(List.of(firstArticle, secondArticle, thirdArticle));
     }
@@ -96,12 +93,10 @@ class ArticleRepositoryTest {
         Article thirdArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member));
         Article secondArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member));
         Article firstArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member));
-        firstArticle.addViews();
-        firstArticle.addViews();
-        secondArticle.addViews();
 
-        List<Article> articles = articleRepository.findAll("question", "latest", PageRequest.of(0, 3));
+        List<Article> articles = articleRepository.findAllByPage(null, Category.QUESTION.getValue(), "latest", 3);
 
         assertThat(articles).isEqualTo(List.of(firstArticle, secondArticle, thirdArticle));
     }
+
 }
