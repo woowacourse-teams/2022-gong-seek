@@ -21,6 +21,9 @@ import org.springframework.web.client.RestTemplate;
 @SuppressWarnings("NonAsciiCharacters")
 public class AuthFixtures {
 
+    private static final String GITHUB_OAUTH_ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token";
+    private static final String GITHUB_PROFILE_URL = "https://api.github.com/user";
+
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static TokenResponse 로그인을_한다(GithubClientFixtures client, RestTemplate restTemplate) {
@@ -54,14 +57,11 @@ public class AuthFixtures {
         getGithubProfile(client, mockServer);
     }
 
-    private static void getGithubProfile(GithubClientFixtures client, MockRestServiceServer mockServer) {
+    private static void getGithubAccessToken(MockRestServiceServer mockServer) {
         try {
-            mockServer.expect(requestTo("https://api.github.com/user"))
-                    .andExpect(method(HttpMethod.GET))
+            mockServer.expect(requestTo(GITHUB_OAUTH_ACCESS_TOKEN_URL))
                     .andRespond(withSuccess(
-                            objectMapper.writeValueAsString(
-                                    new GithubProfileResponse(
-                                            client.getGithubId(), client.getName(), client.getAvatarUrl())),
+                            objectMapper.writeValueAsString(new TokenResponse("accessToken")),
                             MediaType.APPLICATION_JSON));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -69,11 +69,14 @@ public class AuthFixtures {
         }
     }
 
-    private static void getGithubAccessToken(MockRestServiceServer mockServer) {
+    private static void getGithubProfile(GithubClientFixtures client, MockRestServiceServer mockServer) {
         try {
-            mockServer.expect(requestTo("https://github.com/login/oauth/access_token"))
+            mockServer.expect(requestTo(GITHUB_PROFILE_URL))
+                    .andExpect(method(HttpMethod.GET))
                     .andRespond(withSuccess(
-                            objectMapper.writeValueAsString(new TokenResponse("accessToken")),
+                            objectMapper.writeValueAsString(
+                                    new GithubProfileResponse(
+                                            client.getGithubId(), client.getName(), client.getAvatarUrl())),
                             MediaType.APPLICATION_JSON));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
