@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class ArticleUpdateRequest {
+
     private String title;
     private String content;
 }

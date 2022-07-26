@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.woowacourse.gongseek.auth.exception.EmptyTokenException;
+import com.woowacourse.gongseek.auth.exception.InvalidTokenTypeException;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
@@ -25,8 +27,8 @@ class TokenExtractorTest {
                 .thenReturn(null);
 
         assertThatThrownBy(() -> TokenExtractor.extract(request))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("토큰이 없습니다.");
+                .isInstanceOf(EmptyTokenException.class)
+                .hasMessage("토큰이 존재하지 않습니다.");
     }
 
     @Test
@@ -38,8 +40,8 @@ class TokenExtractorTest {
                 .thenReturn(token);
 
         assertThatThrownBy(() -> TokenExtractor.extract(request))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("토큰 타입이 잘못되었습니다.");
+                .isInstanceOf(InvalidTokenTypeException.class)
+                .hasMessage("토큰 타입이 올바르지 않습니다.");
     }
 
     @Test

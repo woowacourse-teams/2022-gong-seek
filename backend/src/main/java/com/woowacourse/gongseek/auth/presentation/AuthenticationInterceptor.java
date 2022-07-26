@@ -2,6 +2,7 @@ package com.woowacourse.gongseek.auth.presentation;
 
 import static org.hibernate.validator.internal.metadata.core.ConstraintHelper.PAYLOAD;
 
+import com.woowacourse.gongseek.auth.exception.InvalidTokenException;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.utils.TokenExtractor;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +37,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     private void validateToken(String token) {
         if (!jwtTokenProvider.validateToken(token)) {
-            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
+            throw new InvalidTokenException();
         }
     }
 }

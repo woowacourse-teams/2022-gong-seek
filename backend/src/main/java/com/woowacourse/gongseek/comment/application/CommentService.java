@@ -2,14 +2,18 @@ package com.woowacourse.gongseek.comment.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
+import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
+import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentsResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +60,7 @@ public class CommentService {
         Comment comment = findComment(commentId);
 
         if (!comment.isAuthor(member)) {
-            throw new IllegalArgumentException("댓글을 작성한 회원만 수정할 수 있습니다.");
+            throw new NoAuthorizationException();
         }
         comment.updateContent(updateRequest.getContent());
     }
@@ -67,30 +71,30 @@ public class CommentService {
         Comment comment = findComment(commentId);
 
         if (!comment.isAuthor(member)) {
-            throw new IllegalArgumentException("댓글을 작성한 회원만 삭제할 수 있습니다.");
+            throw new NoAuthorizationException();
         }
         commentRepository.delete(comment);
     }
 
     private void validateGuest(AppMember appMember) {
         if (appMember.isGuest()) {
-            throw new IllegalArgumentException("권한이 없는 사용자입니다.");
+            throw new NoAuthorizationException();
         }
     }
 
     private Member findMember(AppMember appMember) {
         return memberRepository.findById(appMember.getPayload())
-                .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
+                .orElseThrow(MemberNotFoundException::new);
     }
 
     private Article findArticle(Long articleId) {
         return articleRepository.findById(articleId)
-                .orElseThrow(() -> new IllegalStateException("게시글이 존재하지 않습니다."));
+                .orElseThrow(ArticleNotFoundException::new);
     }
 
     private Comment findComment(Long commentId) {
         return commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalStateException("댓글이 존재하지 않습니다."));
+                .orElseThrow(CommentNotFoundException::new);
     }
 }
 

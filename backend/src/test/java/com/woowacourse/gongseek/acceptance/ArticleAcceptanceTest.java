@@ -17,7 +17,6 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -188,7 +187,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     private ExtractableResponse<Response> 로그인_후_게시물을_삭제한다(TokenResponse tokenResponse,
-                                                          ArticleIdResponse articleIdResponse) {
+            ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
@@ -210,7 +209,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     private ExtractableResponse<Response> 로그인_후_게시물을_조회한다(TokenResponse tokenResponse,
-                                                          ArticleIdResponse articleIdResponse) {
+            ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
@@ -232,7 +231,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     private ExtractableResponse<Response> 로그인_후_게시물을_수정한다(TokenResponse tokenResponse,
-                                                          ArticleIdResponse articleIdResponse) {
+            ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())

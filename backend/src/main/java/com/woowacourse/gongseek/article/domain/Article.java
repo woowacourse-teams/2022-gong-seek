@@ -1,5 +1,8 @@
 package com.woowacourse.gongseek.article.domain;
 
+import com.woowacourse.gongseek.article.exception.ArticleContentLengthException;
+import com.woowacourse.gongseek.article.exception.ArticleTitleEmptyException;
+import com.woowacourse.gongseek.article.exception.ArticleTitleTooLongException;
 import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -12,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -77,14 +79,17 @@ public class Article {
     }
 
     private void validateTitleLength(String title) {
-        if (title.trim().length() <= MIN_TITLE_LENGTH || title.length() > MAX_TITLE_LENGTH) {
-            throw new IllegalArgumentException("타이틀의 길이는 0 이상 500 이하여야합니다.");
+        if (title.trim().length() <= MIN_TITLE_LENGTH) {
+            throw new ArticleTitleEmptyException();
+        }
+        if (title.length() > MAX_TITLE_LENGTH) {
+            throw new ArticleTitleTooLongException();
         }
     }
 
     private void validateContentLength(String content) {
         if (content.length() > MAX_CONTENT_LENGTH) {
-            throw new IllegalArgumentException("컨텐트의 길이는 1000 이하여야합니다.");
+            throw new ArticleContentLengthException();
         }
     }
 

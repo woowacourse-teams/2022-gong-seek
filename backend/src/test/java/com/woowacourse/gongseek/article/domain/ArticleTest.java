@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.exception.ArticleContentLengthException;
+import com.woowacourse.gongseek.article.exception.ArticleTitleEmptyException;
+import com.woowacourse.gongseek.article.exception.ArticleTitleTooLongException;
 import com.woowacourse.gongseek.member.domain.Member;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,8 +24,8 @@ class ArticleTest {
         Category question = Category.QUESTION;
 
         assertThatThrownBy(() -> new Article(title, content, question, member))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("타이틀의 길이는 0 이상 500 이하여야합니다.");
+                .isInstanceOf(ArticleTitleEmptyException.class)
+                .hasMessage("게시글 제목은 비어있을 수 없습니다.");
     }
 
     @Test
@@ -32,8 +35,8 @@ class ArticleTest {
         Category question = Category.QUESTION;
 
         assertThatThrownBy(() -> new Article(title, content, question, member))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("타이틀의 길이는 0 이상 500 이하여야합니다.");
+                .isInstanceOf(ArticleTitleTooLongException.class)
+                .hasMessage("게시글 제목은 500자를 초과할 수 없습니다.");
     }
 
     @Test
@@ -43,8 +46,8 @@ class ArticleTest {
         Category question = Category.QUESTION;
 
         assertThatThrownBy(() -> new Article(title, content, question, member))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("컨텐트의 길이는 1000 이하여야합니다.");
+                .isInstanceOf(ArticleContentLengthException.class)
+                .hasMessage("게시글 내용은 10000자를 초과할 수 없습니다.");
     }
 
     @Test
