@@ -38,8 +38,8 @@ export const articleColors = {
 };
 
 const breakpoints = {
-	MOBIL: 320,
-	DESKTOP: 1280,
+	MOBIL: '320px',
+	DESKTOP: '1280px',
 };
 
 const boxShadows = {
@@ -73,6 +73,7 @@ const size = {
 	SIZE_126: '7.875rem',
 	SIZE_160: '10rem',
 	SIZE_260: '16.25rem',
+	SIZE_700: '43.75rem',
 };
 
 const zIndex = {
