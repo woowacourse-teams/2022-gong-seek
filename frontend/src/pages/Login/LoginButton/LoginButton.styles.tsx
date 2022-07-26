@@ -10,6 +10,7 @@ export const Container = styled.button<Pick<LoginButtonProps, 'loginType'>>`
 	gap: 1rem;
 
 	width: 100%;
+	max-width: ${({ theme }) => theme.size.SIZE_260};
 	height: fit-content;
 
 	border: none;

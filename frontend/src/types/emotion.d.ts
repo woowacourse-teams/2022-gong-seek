@@ -13,5 +13,6 @@ declare module '@emotion/react' {
 		alignItems?: string;
 		gap?: string;
 		justifyContent?: string;
+		maxWidth?: string;
 	}
 }
