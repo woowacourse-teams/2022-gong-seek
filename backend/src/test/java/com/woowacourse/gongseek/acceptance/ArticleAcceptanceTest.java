@@ -18,22 +18,17 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.client.RestTemplate;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class ArticleAcceptanceTest extends AcceptanceTest {
 
-    @Autowired
-    private RestTemplate restTemplate;
-
     @Test
     void 유저가_깃허브로_로그인을_하고_게시글을_등록할_수_있다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(주디, restTemplate);
+        TokenResponse tokenResponse = 로그인을_한다(주디);
 
         // when
         ExtractableResponse<Response> response = 게시물을_등록한다(tokenResponse);
@@ -54,7 +49,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 로그인_없이_게시물을_단건_조회할_수_있다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(주디, restTemplate);
+        TokenResponse tokenResponse = 로그인을_한다(주디);
         ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when
@@ -83,7 +78,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 로그인을_하고_게시물을_단건_조회할_수_있다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(주디, restTemplate);
+        TokenResponse tokenResponse = 로그인을_한다(주디);
         ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when
@@ -112,7 +107,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 로그인_하지_않으면_게시물을_수정할_수_없다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(주디, restTemplate);
+        TokenResponse tokenResponse = 로그인을_한다(주디);
         ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when
@@ -125,7 +120,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 게시물_작성자가_아니면_게시물을_수정할_수_없다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(주디, restTemplate);
+        TokenResponse tokenResponse = 로그인을_한다(주디);
         ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when
@@ -138,7 +133,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 게시물_작성자는_게시물을_수정할_수_있다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(주디, restTemplate);
+        TokenResponse tokenResponse = 로그인을_한다(주디);
         ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when
@@ -156,7 +151,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 게시물_작성자는_게시물을_삭제할_수_있다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(주디, restTemplate);
+        TokenResponse tokenResponse = 로그인을_한다(주디);
         ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when
@@ -169,7 +164,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 게시물_작성자가_아니면_게시물을_삭제할_수_없다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(주디, restTemplate);
+        TokenResponse tokenResponse = 로그인을_한다(주디);
         ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
 
         // when

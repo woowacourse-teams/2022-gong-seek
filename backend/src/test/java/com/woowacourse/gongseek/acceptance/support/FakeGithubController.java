@@ -1,8 +1,9 @@
-package com.woowacourse.gongseek.auth.support;
+package com.woowacourse.gongseek.acceptance.support;
 
 import com.woowacourse.gongseek.auth.presentation.dto.GithubAccessTokenRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubAccessTokenResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
+import com.woowacourse.gongseek.auth.support.GithubClientFixtures;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
