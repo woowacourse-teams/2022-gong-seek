@@ -62,9 +62,9 @@ public class ArticleController {
 
     @GetMapping
     public ResponseEntity<ArticlesResponse> getArticles(@RequestParam String category,
-                                                    @RequestParam String sort,
-                                                    @RequestParam(required = false) Long cursorId,
-                                                    @RequestParam Integer size) {
+                                                        @RequestParam String sort,
+                                                        @RequestParam(required = false) Long cursorId,
+                                                        @RequestParam Integer size) {
         ArticlesResponse response = articleService.getArticles(cursorId, category, sort, size);
 
         return ResponseEntity.ok(response);

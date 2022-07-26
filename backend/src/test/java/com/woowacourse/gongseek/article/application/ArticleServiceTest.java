@@ -205,7 +205,8 @@ public class ArticleServiceTest {
 
         List<Article> articles = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            articles.add(new Article(articleRequest.getTitle() + i, articleRequest.getContent(), Category.QUESTION, member));
+            articles.add(
+                    new Article(articleRequest.getTitle() + i, articleRequest.getContent(), Category.QUESTION, member));
         }
         articleRepository.saveAll(articles);
 
@@ -223,7 +224,8 @@ public class ArticleServiceTest {
 
         List<Article> articles = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            articles.add(new Article(articleRequest.getTitle() + i, articleRequest.getContent(), Category.QUESTION, member));
+            articles.add(
+                    new Article(articleRequest.getTitle() + i, articleRequest.getContent(), Category.QUESTION, member));
         }
         articleRepository.saveAll(articles);
 
@@ -242,7 +244,8 @@ public class ArticleServiceTest {
 
         List<Article> articles = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            articles.add(new Article(articleRequest.getTitle(), articleRequest.getContent(), Category.QUESTION, member));
+            articles.add(
+                    new Article(articleRequest.getTitle(), articleRequest.getContent(), Category.QUESTION, member));
         }
         articleRepository.saveAll(articles);
 

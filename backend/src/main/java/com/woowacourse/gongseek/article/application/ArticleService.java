@@ -57,7 +57,7 @@ public class ArticleService {
                 .map(article -> new ArticleAllResponse(article, getCommentCount(article)))
                 .collect(Collectors.toList());
 
-        if(articles.size() == size + 1){
+        if (articles.size() == size + 1) {
             return new ArticlesResponse(articles.subList(0, size), true);
         }
         return new ArticlesResponse(articles, false);

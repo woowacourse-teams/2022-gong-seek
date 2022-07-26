@@ -1,8 +1,6 @@
 package com.woowacourse.gongseek.commons;
 
-import java.text.Format;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
