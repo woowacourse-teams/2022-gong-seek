@@ -1,8 +1,9 @@
 import reactDom from 'react-dom';
-import * as S from '@/components/common/MenuSlider/MenuSlider.styles';
-import { useRecoilValue } from 'recoil';
-import { getUserIsLogin } from '@/store/userState';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+
+import * as S from '@/components/common/MenuSlider/MenuSlider.styles';
+import { getUserIsLogin } from '@/store/userState';
 
 export interface MenuSliderProps {
 	closeSlider: () => void;

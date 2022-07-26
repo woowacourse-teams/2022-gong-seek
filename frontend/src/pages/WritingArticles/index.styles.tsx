@@ -1,34 +1,45 @@
-import styled from '@emotion/styled';
 import { IoIosArrowDown } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 
+import styled from '@emotion/styled';
+
 export const Container = styled.div`
-	width: 100%;
-	height: 100%;
 	display: flex;
+
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	flex-direction: column;
+
+	width: 100%;
+	height: 100%;
 `;
 
 export const Content = styled.div`
 	width: 100%;
+
 	margin-top: ${({ theme }) => theme.size.SIZE_028};
 `;
 
 export const SelectorBox = styled.div`
-	width: 90%;
 	display: flex;
+
 	flex-direction: column;
 	gap: ${({ theme }) => theme.size.SIZE_010};
+
+	width: 90%;
 `;
 
 export const TitleInput = styled.input`
 	width: 100%;
-	padding: 0.6rem 0.8rem;
-	font-size: 0.8rem;
+
 	border-style: none;
+
+	font-size: 0.8rem;
+
 	background-color: transparent;
+
+	padding: 0.6rem 0.8rem;
+
 	&:focus {
 		outline: none;
 	}
@@ -36,42 +47,59 @@ export const TitleInput = styled.input`
 
 export const HashTagInput = styled.input`
 	width: 100%;
-	padding: 0.6rem 0.8rem;
-	font-size: 0.8rem;
+
 	border-style: none;
+
+	font-size: 0.8rem;
+
 	background-color: transparent;
+
+	padding: 0.6rem 0.8rem;
+
 	&:focus {
 		outline: none;
 	}
 `;
 
 export const CategorySelectorBox = styled.div`
-	position: relative;
 	display: flex;
+	position: relative;
+
 	align-items: center;
+
 	width: 100%;
 `;
 
 export const SelectorButton = styled(IoIosArrowDown)`
 	position: absolute;
-	border: none;
-	font-size: 0.8rem;
-	font-size: ${({ theme }) => theme.size.SIZE_018};
-	color: ${({ theme }) => theme.colors.PURPLE_500};
+
 	right: ${({ theme }) => theme.size.SIZE_004};
+
+	border: none;
+
+	font-size: ${({ theme }) => theme.size.SIZE_018};
+
+	color: ${({ theme }) => theme.colors.PURPLE_500};
+
 	pointer-events: none;
 `;
 
 export const CategorySelector = styled.select`
 	width: 100%;
-	padding: 0.6rem 0.8rem;
-	font-size: 0.8rem;
+
 	border-color: transparent;
 	border-radius: ${({ theme }) => theme.size.SIZE_010};
+
+	font-size: 0.8rem;
+
 	background-color: transparent;
+
+	padding: 0.6rem 0.8rem;
+
+	appearance: none;
 	-webkit-appearance: none;
 	-moz-appearance: none;
-	appearance: none;
+
 	&:focus {
 		outline: none;
 	}
@@ -82,15 +110,20 @@ export const CategorySelector = styled.select`
 `;
 
 export const SubmitButton = styled.button`
-	color: ${({ theme }) => theme.colors.WHITE};
-	background-color: ${({ theme }) => theme.colors.PURPLE_500};
 	width: 90%;
-	font-size: 0.8rem;
-	padding: ${({ theme }) => theme.size.SIZE_004};
+
 	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	border-color: transparent;
-	cursor: pointer;
+
+	font-size: 0.8rem;
+
+	color: ${({ theme }) => theme.colors.WHITE};
+	background-color: ${({ theme }) => theme.colors.PURPLE_500};
+
+	padding: ${({ theme }) => theme.size.SIZE_004};
 	margin-top: ${({ theme }) => theme.size.SIZE_020};
+
+	cursor: pointer;
 
 	&:hover,
 	&:active {
@@ -99,17 +132,22 @@ export const SubmitButton = styled.button`
 `;
 
 export const LinkButton = styled(Link)`
-	color: ${({ theme }) => theme.colors.WHITE};
-	background-color: ${({ theme }) => theme.colors.GREEN_500};
 	width: 88%;
-	font-size: 0.8rem;
-	padding: ${({ theme }) => theme.size.SIZE_004};
+
 	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	border-color: transparent;
-	cursor: pointer;
+
+	font-size: 0.8rem;
 	text-align: center;
 	text-decoration: none;
+
+	color: ${({ theme }) => theme.colors.WHITE};
+	background-color: ${({ theme }) => theme.colors.GREEN_500};
+
+	padding: ${({ theme }) => theme.size.SIZE_004};
 	margin-top: ${({ theme }) => theme.size.SIZE_020};
+
+	cursor: pointer;
 
 	&:hover,
 	&:active {

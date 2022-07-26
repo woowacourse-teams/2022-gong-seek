@@ -29,9 +29,9 @@ public class ArticleService {
         return new ArticleIdResponse(article);
     }
 
-    @Transactional(readOnly = true)
-    public ArticleResponse getOne(AppMember appMember, Long id) {
-        Article article = getArticle(id);
+    public ArticleResponse findOne(AppMember appMember, Long id) {
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
         article.addViews();
         if (appMember.isGuest()) {
             return new ArticleResponse(article, false);

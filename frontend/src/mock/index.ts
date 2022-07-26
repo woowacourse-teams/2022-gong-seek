@@ -1,5 +1,6 @@
-import { LoginHandler } from './login';
-import { ArticleHandler } from './article';
-import { VoteHandler } from './vote';
-import { CommentHandler } from './comment';
+import { ArticleHandler } from '@/mock/article';
+import { CommentHandler } from '@/mock/comment';
+import { LoginHandler } from '@/mock/login';
+import { VoteHandler } from '@/mock/vote';
+
 export { LoginHandler, ArticleHandler, VoteHandler, CommentHandler };

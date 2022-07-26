@@ -1,7 +1,7 @@
-import { Meta, Story } from '@storybook/react';
 import CommentInputModal, {
 	CommentInputModalProps,
 } from '@/components/common/CommentInputModal/CommentInputModal';
+import { Meta, Story } from '@storybook/react';
 
 const modalRoot = document.createElement('div');
 modalRoot.setAttribute('id', 'comment-portal');

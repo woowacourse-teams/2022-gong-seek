@@ -1,5 +1,5 @@
-import { Meta, Story } from '@storybook/react';
 import Comment, { CommentProps } from '@/components/common/Comment/Comment';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'common/Comment',

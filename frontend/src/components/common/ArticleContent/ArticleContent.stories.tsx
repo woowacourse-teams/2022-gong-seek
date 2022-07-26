@@ -1,7 +1,7 @@
-import { Meta, Story } from '@storybook/react';
 import ArticleContent, {
 	ArticleContentProps,
 } from '@/components/common/ArticleContent/ArticleContent';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'common/ArticleContent',

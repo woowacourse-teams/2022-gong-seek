@@ -1,5 +1,6 @@
-import { HOME_URL } from '@/constants/url';
 import axios from 'axios';
+
+import { HOME_URL } from '@/constants/url';
 
 export const getGithubURL = async () => {
 	const response = await axios.get<{ url: string }>(`${HOME_URL}/api/auth/github`, {

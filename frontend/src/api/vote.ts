@@ -1,5 +1,6 @@
-import { HOME_URL } from '@/constants/url';
 import axios from 'axios';
+
+import { HOME_URL } from '@/constants/url';
 
 export interface VoteItems {
 	option: string;

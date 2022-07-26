@@ -1,11 +1,12 @@
-import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import * as S from '@/pages/CategoryArticles/CategoryArticles.styles';
-import SortDropdown from './SortDropdown/SortDropDown';
+
 import { getAllArticle } from '@/api/article';
-import { useEffect, useState } from 'react';
+import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
 import Loading from '@/components/common/Loading/Loading';
+import * as S from '@/pages/CategoryArticles/CategoryArticles.styles';
+import SortDropdown from '@/pages/CategoryArticles/SortDropdown/SortDropDown';
 
 const CategoryArticles = () => {
 	const navigate = useNavigate();

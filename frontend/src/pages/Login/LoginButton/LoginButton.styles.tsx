@@ -1,18 +1,24 @@
-import styled from '@emotion/styled';
 import { LOGIN_TYPE } from '@/constants/loginType';
 import { LoginButtonProps } from '@/pages/Login/LoginButton/LoginButton';
+import styled from '@emotion/styled';
 
 export const Container = styled.button<Pick<LoginButtonProps, 'loginType'>>`
-	width: 100%;
-	height: fit-content;
-	padding: ${({ theme }) => theme.size.SIZE_004};
 	display: flex;
+
 	justify-content: center;
 	align-items: center;
 	gap: 1rem;
+
+	width: 100%;
+	height: fit-content;
+
 	border: none;
 	border-radius: ${({ theme }) => theme.size.SIZE_010};
+
 	background-color: ${({ loginType }) => LOGIN_TYPE[loginType].color};
+
+	padding: ${({ theme }) => theme.size.SIZE_004};
+
 	cursor: pointer;
 
 	&:hover,
@@ -22,12 +28,15 @@ export const Container = styled.button<Pick<LoginButtonProps, 'loginType'>>`
 `;
 
 export const IconBox = styled.div`
-	color: white;
 	font-size: ${({ theme }) => theme.size.SIZE_022};
+
+	color: white;
+
 	margin-top: ${({ theme }) => theme.size.SIZE_002};
 `;
 
 export const ContentBox = styled.div<Pick<LoginButtonProps, 'loginType'>>`
 	font-size: ${({ theme }) => theme.size.SIZE_014};
+
 	color: ${({ loginType }) => LOGIN_TYPE[loginType].fontcolor};
 `;

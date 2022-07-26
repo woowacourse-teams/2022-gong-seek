@@ -1,21 +1,25 @@
-import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 
+import styled from '@emotion/styled';
+
 export const Container = styled.div`
-	width: 100%;
 	display: flex;
+
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+
+	width: 100%;
 	height: 68vh;
 `;
 
 export const ErrorContent = styled.p`
 	font-size: ${({ theme }) => theme.size.SIZE_020};
-	line-height: ${({ theme }) => theme.size.SIZE_040};
-	margin-top: ${({ theme }) => theme.size.SIZE_056};
 	font-weight: 400;
+	line-height: ${({ theme }) => theme.size.SIZE_040};
 	text-align: center;
+
+	margin-top: ${({ theme }) => theme.size.SIZE_056};
 `;
 
 export const LogoImage = styled.img`
@@ -24,11 +28,13 @@ export const LogoImage = styled.img`
 `;
 
 export const NavigateLink = styled(Link)`
-	text-decoration: none;
-	margin-top: ${({ theme }) => theme.size.SIZE_030};
 	border: 3px solid ${({ theme }) => theme.colors.PURPLE_500};
-	padding: ${({ theme }) => theme.size.SIZE_010} ${({ theme }) => theme.size.SIZE_024};
+
+	text-decoration: none;
 	font-weight: 600;
+
+	padding: ${({ theme }) => theme.size.SIZE_010} ${({ theme }) => theme.size.SIZE_024};
+	margin-top: ${({ theme }) => theme.size.SIZE_030};
 
 	&:hover,
 	&:active {
