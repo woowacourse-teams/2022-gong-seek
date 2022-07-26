@@ -12,12 +12,17 @@ export const Container = styled.div`
 
 	width: 100%;
 	height: 100%;
+
+	margin-bottom: ${({ theme }) => theme.size.SIZE_040};
 `;
 
 export const Content = styled.div`
 	width: 100%;
-
 	margin-top: ${({ theme }) => theme.size.SIZE_028};
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: 100%;
+	}
 `;
 
 export const SelectorBox = styled.div`
@@ -27,6 +32,10 @@ export const SelectorBox = styled.div`
 	gap: ${({ theme }) => theme.size.SIZE_010};
 
 	width: 90%;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: 100%;
+	}
 `;
 
 export const TitleInput = styled.input`
@@ -39,6 +48,11 @@ export const TitleInput = styled.input`
 	background-color: transparent;
 
 	padding: 0.6rem 0.8rem;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		font-size: ${({ theme }) => theme.size.SIZE_020};
+		padding: 1.3rem 0.8rem;
+	}
 
 	&:focus {
 		outline: none;
@@ -61,9 +75,19 @@ export const HashTagInput = styled.input`
 	}
 `;
 
+export const OptionBox = styled.div`
+	display: flex;
+
+	flex-direction: column;
+	gap: ${({ theme }) => theme.size.SIZE_010};
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		flex-direction: row-reverse;
+	}
+`;
+
 export const CategorySelectorBox = styled.div`
 	display: flex;
-	position: relative;
 
 	align-items: center;
 
@@ -71,7 +95,7 @@ export const CategorySelectorBox = styled.div`
 `;
 
 export const SelectorButton = styled(IoIosArrowDown)`
-	position: absolute;
+	position: relative;
 
 	right: ${({ theme }) => theme.size.SIZE_004};
 
@@ -82,6 +106,8 @@ export const SelectorButton = styled(IoIosArrowDown)`
 	color: ${({ theme }) => theme.colors.PURPLE_500};
 
 	pointer-events: none;
+
+	z-index: -100;
 `;
 
 export const CategorySelector = styled.select`
@@ -111,6 +137,7 @@ export const CategorySelector = styled.select`
 
 export const SubmitButton = styled.button`
 	width: 90%;
+	height: fit-content;
 
 	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	border-color: transparent;
@@ -121,13 +148,22 @@ export const SubmitButton = styled.button`
 	background-color: ${({ theme }) => theme.colors.PURPLE_500};
 
 	padding: ${({ theme }) => theme.size.SIZE_004};
-	margin-top: ${({ theme }) => theme.size.SIZE_020};
+	margin-top: ${({ theme }) => theme.size.SIZE_050};
 
 	cursor: pointer;
 
 	&:hover,
 	&:active {
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
+	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: ${({ theme }) => theme.size.SIZE_100};
+		height: ${({ theme }) => theme.size.SIZE_040};
+
+		font-size: ${({ theme }) => theme.size.SIZE_016};
+
+		margin-left: auto;
 	}
 `;
 
