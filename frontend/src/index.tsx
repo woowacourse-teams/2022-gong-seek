@@ -1,10 +1,10 @@
-import { worker } from './mock/browser';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import App from '@/App';
+import { worker } from '@/mock/browser';
 import { theme } from '@/styles/Theme';
 import { reset } from '@/styles/reset';
 import { ThemeProvider, Global } from '@emotion/react';

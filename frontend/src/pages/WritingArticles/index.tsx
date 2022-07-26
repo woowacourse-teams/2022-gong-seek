@@ -1,4 +1,3 @@
-import ToastUiEditor from './ToastUiEditor/ToastUiEditor';
 import { AxiosResponse, AxiosError } from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
@@ -8,6 +7,7 @@ import { postWritingArticle } from '@/api/article';
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import { CATEGORY } from '@/constants/categoryType';
+import ToastUiEditor from '@/pages/WritingArticles/ToastUiEditor/ToastUiEditor';
 import * as S from '@/pages/WritingArticles/index.styles';
 import { Editor } from '@toast-ui/react-editor';
 

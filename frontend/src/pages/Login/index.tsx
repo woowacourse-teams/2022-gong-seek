@@ -1,4 +1,3 @@
-import LoginButton from './LoginButton/LoginButton';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
@@ -6,6 +5,7 @@ import { getGithubURL } from '@/api/login';
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import { mobileTitleSecondary } from '@/constants/titleType';
+import LoginButton from '@/pages/Login/LoginButton/LoginButton';
 import * as S from '@/pages/Login/index.styles';
 
 const Login = () => {
