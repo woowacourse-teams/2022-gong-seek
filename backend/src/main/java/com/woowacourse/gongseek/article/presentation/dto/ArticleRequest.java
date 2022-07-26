@@ -4,8 +4,6 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.member.domain.Member;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.NotNull.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

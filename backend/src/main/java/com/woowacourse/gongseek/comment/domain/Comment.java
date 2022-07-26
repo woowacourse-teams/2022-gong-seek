@@ -4,7 +4,6 @@ package com.woowacourse.gongseek.comment.domain;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
