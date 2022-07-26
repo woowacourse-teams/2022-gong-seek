@@ -1,22 +1,54 @@
-import styled from '@emotion/styled';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
 
+import { keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
+
+const scaleAnimation = keyframes`
+	0%{
+
+	}
+
+	100% {
+		transform: scale(1.01);
+	}
+`;
+
 export const Container = styled.div`
 	display: flex;
+
 	flex-direction: column;
-	width: 100%;
+
+	width: 80%;
 	height: ${({ theme }) => theme.size.SIZE_160};
-	box-shadow: 0 8px 24px ${({ theme }) => theme.boxShadows.secondary};
+
 	border-radius: ${({ theme }) => theme.size.SIZE_010};
+
+	box-shadow: 0 8px 24px ${({ theme }) => theme.boxShadows.secondary};
+
 	padding: ${({ theme }) => theme.size.SIZE_016};
+
+	&:hover,
+	&:active {
+		animation: ${scaleAnimation} 0.3s ease-in;
+		animation-fill-mode: forwards;
+
+		cursor: pointer;
+	}
 `;
 
 export const ArticleItemTitle = styled.h2`
+	display: flex;
+
+	gap: ${({ theme }) => theme.size.SIZE_010};
+
 	font-size: ${({ theme }) => theme.size.SIZE_016};
 	font-weight: 600;
-	display: flex;
-	gap: ${({ theme }) => theme.size.SIZE_010};
+
+	&:hover,
+	&:active {
+		text-decoration: underline;
+	}
 `;
 
 export const Views = styled.div`
@@ -27,36 +59,46 @@ export const Views = styled.div`
 export const ArticleInfoBox = styled.div`
 	display: flex;
 	justify-content: space-between;
+
 	margin-top: ${({ theme }) => theme.size.SIZE_008};
 `;
 
 export const Content = styled.div`
-	margin-top: ${({ theme }) => theme.size.SIZE_016};
 	font-size: ${({ theme }) => theme.size.SIZE_012};
-
+	line-height: ${({ theme }) => theme.size.SIZE_016};
 	text-overflow: ellipsis;
 	overflow: hidden;
 
-	line-height: ${({ theme }) => theme.size.SIZE_016};
+	margin-top: ${({ theme }) => theme.size.SIZE_016};
+
+	&:hover,
+	&:active {
+		text-decoration: underline;
+	}
 `;
 
 export const UserProfile = styled.img`
 	width: ${({ theme }) => theme.size.SIZE_032};
 	height: ${({ theme }) => theme.size.SIZE_032};
+
+	border-radius: 50%;
+
 	object-fit: cover;
 	object-position: center;
-	border-radius: 50%;
 `;
 
 export const ProfileBox = styled.div`
 	display: flex;
+
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_012};
 `;
 
 export const FooterBox = styled.div`
 	display: flex;
+
 	align-items: center;
+
 	margin-top: auto;
 `;
 
@@ -66,11 +108,13 @@ export const EmptyHeart = styled(AiOutlineHeart)`
 
 export const FillHeart = styled(AiFillHeart)`
 	font-size: ${({ theme }) => theme.size.SIZE_024};
+
 	color: ${({ theme }) => theme.colors.RED_600};
 `;
 
 export const HeartBox = styled.div`
 	display: flex;
+
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_010};
 `;
@@ -81,7 +125,9 @@ export const ArticleTimeStamp = styled.div`
 
 export const RightFooterBox = styled.div`
 	display: flex;
-	margin-left: auto;
-	gap: ${({ theme }) => theme.size.SIZE_012};
+
 	align-items: center;
+	gap: ${({ theme }) => theme.size.SIZE_012};
+
+	margin-left: auto;
 `;

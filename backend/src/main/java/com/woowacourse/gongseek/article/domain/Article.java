@@ -12,10 +12,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -37,12 +40,14 @@ public class Article {
     @Column(nullable = false)
     private String title;
 
+    @Column(length = 1_000)
     private String content;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private Category category;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
@@ -84,6 +89,8 @@ public class Article {
     }
 
     public void update(String title, String content) {
+        validateTitleLength(title);
+        validateContentLength(content);
         this.title = title;
         this.content = content;
     }

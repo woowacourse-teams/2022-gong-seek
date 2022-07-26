@@ -1,9 +1,11 @@
-import { getVoteItems } from '@/api/vote';
-import { useQuery } from 'react-query';
-import VoteItem from '@/pages/Discussion/VoteItem/VoteItem';
-import { MdOutlineHowToVote } from 'react-icons/md';
-import * as S from '@/pages/Discussion/Vote/Vote.styles';
 import { useEffect, useState } from 'react';
+import { MdOutlineHowToVote } from 'react-icons/md';
+import { useQuery } from 'react-query';
+
+import { getVoteItems } from '@/api/vote';
+import Loading from '@/components/common/Loading/Loading';
+import * as S from '@/pages/Discussion/Vote/Vote.styles';
+import VoteItem from '@/pages/Discussion/VoteItem/VoteItem';
 
 const Vote = ({ articleId }: { articleId: string }) => {
 	const { data, isLoading, isError, isSuccess } = useQuery('vote', () => getVoteItems(articleId));
@@ -15,7 +17,7 @@ const Vote = ({ articleId }: { articleId: string }) => {
 		}
 	});
 
-	if (isLoading) return <div>로딩중...</div>;
+	if (isLoading) return <Loading />;
 
 	if (isError) return <div>에러...</div>;
 

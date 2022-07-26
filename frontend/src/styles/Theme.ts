@@ -12,6 +12,7 @@ const colors = {
 	BLACK_400: 'rgba(20, 22, 25, 0.75)',
 	GRAY_500: 'rgba(0, 0, 0, 0.11)',
 	GREEN_500: '#C4DFAA',
+	ORANGE_500: '#FFB562',
 	WHITE: '#ffffff',
 };
 
@@ -37,8 +38,8 @@ export const articleColors = {
 };
 
 const breakpoints = {
-	MOBIL: 320,
-	DESKTOP: 1280,
+	MOBIL: '320px',
+	DESKTOP: '1280px',
 };
 
 const boxShadows = {
@@ -72,13 +73,16 @@ const size = {
 	SIZE_126: '7.875rem',
 	SIZE_160: '10rem',
 	SIZE_260: '16.25rem',
+	SIZE_700: '43.75rem',
 };
 
 const zIndex = {
 	HEADER: 100,
-	ARTICLE_POPULAR_CONTENT: 103,
+	ARTICLE_POPULAR_CONTENT: 102,
 	ARTICLE_BACKGROUND_CONTENT: 101,
-	ARTICLE_ARROW_BUTTON: 110,
+	ARTICLE_ARROW_BUTTON: 103,
+	MENU_SLIDER_BACKGROUND: 104,
+	MENU_SLIDER_CONTENT: 105,
 };
 
 export const theme = {

@@ -1,12 +1,15 @@
-import { postWritingArticle } from '@/api/article';
-import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import { AxiosResponse, AxiosError } from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import ToastUiEditor from './ToastUiEditor/ToastUiEditor';
+
+import { postWritingArticle } from '@/api/article';
+import Loading from '@/components/common/Loading/Loading';
+import PageLayout from '@/components/layout/PageLayout/PageLayout';
+import { CATEGORY } from '@/constants/categoryType';
+import ToastUiEditor from '@/pages/WritingArticles/ToastUiEditor/ToastUiEditor';
+import * as S from '@/pages/WritingArticles/index.styles';
 import { Editor } from '@toast-ui/react-editor';
-import * as S from '@/pages/WritingArticles/index.style';
 
 const WritingArticles = () => {
 	const { category } = useParams();
@@ -23,12 +26,15 @@ const WritingArticles = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (isSuccess) {
+		if (isSuccess && category === CATEGORY.discussion) {
 			if (confirm('글 등록이 완료되었습니다. 투표를 등록하시겠습니까?')) {
 				navigate(`/votes/${data.data.id}`);
 				return;
 			}
-			navigate(`/`);
+			navigate(`/articles/${category}/${data.data.id}`);
+		}
+		if (isSuccess && category === CATEGORY.question) {
+			navigate(`/articles/${category}/${data.data.id}`);
 		}
 	}, [isSuccess]);
 
@@ -43,7 +49,7 @@ const WritingArticles = () => {
 		});
 	};
 
-	if (isLoading) return <div>글 전송중 </div>;
+	if (isLoading) return <Loading />;
 
 	if (isError) {
 		if (error instanceof Error) {
@@ -86,7 +92,7 @@ const WritingArticles = () => {
 			</S.SelectorBox>
 
 			<S.Content>
-				<ToastUiEditor ref={content} />
+				<ToastUiEditor initContent={''} ref={content} />
 			</S.Content>
 			<S.SubmitButton type="button" onClick={handleSubmitButtonClick}>
 				등록하기

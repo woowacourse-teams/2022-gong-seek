@@ -1,8 +1,9 @@
-import { postLogin } from '@/api/login';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+
+import { postLogin } from '@/api/login';
 
 const LoginController = () => {
 	const navigate = useNavigate();
@@ -28,7 +29,6 @@ const LoginController = () => {
 			window.location.href = '/';
 		}
 		if (isError) {
-			console.log(error.message);
 			window.location.href = '/';
 		}
 	}, [isSuccess, isError]);

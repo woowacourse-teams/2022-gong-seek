@@ -8,3 +8,13 @@ export const CATEGORY_TYPE = {
 		hoverColor: 'rgba(58, 176, 255, 0.75)',
 	},
 };
+
+export const CATEGORY = {
+	question: 'question',
+	discussion: 'discussion',
+};
+
+export const CATEGORY_SORT_TYPE = {
+	latest: '최신순',
+	views: '조회순',
+};

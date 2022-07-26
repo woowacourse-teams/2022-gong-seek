@@ -1,14 +1,16 @@
-import reactDom from 'react-dom';
-import * as S from '@/components/common/CommentInputModal/CommentInputModal.styles';
 import { useEffect, useState } from 'react';
+import reactDom from 'react-dom';
 import { useMutation } from 'react-query';
+
 import { postComments, putComments } from '@/api/comments';
+import * as S from '@/components/common/CommentInputModal/CommentInputModal.styles';
 
 export interface CommentInputModalProps {
 	closeModal: () => void;
 	articleId: string;
 	modalType: 'edit' | 'register';
 	commentId?: string;
+	placeholder: string;
 }
 
 const modalStatus = {
@@ -27,6 +29,7 @@ const CommentInputModal = ({
 	articleId,
 	modalType,
 	commentId,
+	placeholder,
 }: CommentInputModalProps) => {
 	const commentModal = document.getElementById('comment-portal');
 	const [comment, setComment] = useState('');
@@ -50,14 +53,14 @@ const CommentInputModal = ({
 
 	const onClickCommentPostButton = () => {
 		if (modalType === 'register') {
-			postMutate({ content: comment, articleId });
+			postMutate({ content: comment, id: articleId });
 			return;
 		}
 		if (typeof commentId === 'undefined') {
 			throw new Error('댓글을 찾지 못하였습니다.');
 		}
 
-		putMutate({ content: comment, articleId, commentId });
+		putMutate({ content: comment, commentId });
 	};
 
 	useEffect(() => {
@@ -84,6 +87,7 @@ const CommentInputModal = ({
 				aria-label="댓글을 입력해주세요"
 				value={comment}
 				onChange={(e) => setComment(e.target.value)}
+				placeholder={placeholder}
 			></S.CommentContent>
 			<S.CommentPostButton onClick={onClickCommentPostButton}>
 				{modalStatus[modalType].buttonText}

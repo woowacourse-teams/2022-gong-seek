@@ -1,0 +1,4 @@
+security:
+  oauth2:
+    client-id: clientId
+    client-secret: clientSecret

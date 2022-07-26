@@ -7,14 +7,17 @@ export const RadioButton = styled.input`
 `;
 
 export const Title = styled.h2`
-	font-size: ${({ theme }) => theme.size.SIZE_014};
 	display: flex;
+
 	gap: ${({ theme }) => theme.size.SIZE_004};
 	align-items: center;
+
+	font-size: ${({ theme }) => theme.size.SIZE_014};
 `;
 
 export const TitleBox = styled.div`
 	display: flex;
+
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_014};
 `;
@@ -38,8 +41,11 @@ export const ProgressiveBarAnimation = (percent: number) => keyframes`
 export const ProgressiveBar = styled.div`
 	width: 10.625rem;
 	height: ${({ theme }) => theme.size.SIZE_010};
-	background-color: ${({ theme }) => theme.colors.GRAY_500};
+
 	border-radius: ${({ theme }) => theme.size.SIZE_006};
+
+	background-color: ${({ theme }) => theme.colors.GRAY_500};
+
 	margin-left: ${({ theme }) => theme.size.SIZE_024};
 `;
 
@@ -49,19 +55,24 @@ export const ProgressiveBarContent = styled.div<{
 }>`
 	width: ${({ percent }) => `${percent}%`};
 	height: 100%;
+
 	border-radius: ${({ theme }) => theme.size.SIZE_006};
+
 	background-image: ${({ theme, colorKey }) => theme.voteGradientColors[colorKey]};
+
 	animation: ${({ percent }) => ProgressiveBarAnimation(percent)} 1.2s
 		cubic-bezier(0.23, 1, 0.32, 1);
 `;
 
 export const Container = styled.div`
 	display: flex;
+
 	flex-direction: column;
 	gap: ${({ theme }) => theme.size.SIZE_014};
 `;
 
 export const ItemVotes = styled.p`
-	color: ${({ theme }) => theme.colors.PURPLE_400};
 	font-size: ${({ theme }) => theme.size.SIZE_010};
+
+	color: ${({ theme }) => theme.colors.PURPLE_400};
 `;

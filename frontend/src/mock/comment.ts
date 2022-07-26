@@ -1,13 +1,16 @@
-import { CommentsResponse } from '@/api/comments';
 import { rest } from 'msw';
+
+import { HOME_URL } from '@/constants/url';
+import mockData from '@/mock/data/comment.json';
+import { CommentType } from '@/types/commentResponse';
 
 const data = localStorage.getItem('mock-comments');
 
-const mockComments = data ? (JSON.parse(data) as CommentsResponse[][]) : [];
+const mockComments = data ? (JSON.parse(data) as CommentType[][]) : [];
 
 export const CommentHandler = [
 	rest.post<{ content: string }>(
-		'http://192.168.0.155:8080/api/articles/:articleId/comments',
+		`${HOME_URL}/api/articles/:articleId/comments`,
 		(req, res, ctx) => {
 			const { articleId } = req.params;
 			const { content } = req.body;
@@ -22,9 +25,10 @@ export const CommentHandler = [
 			mockComments[Number(articleId)].push({
 				id: mockComments[Number(articleId)].length,
 				content,
-				authorName: '스밍',
-				authorAvartarUrl:
-					'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg',
+				author: {
+					name: 'sally',
+					avatarUrl: 'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg',
+				},
 				createdAt: '2022-07-28',
 				isAuthor: true,
 			});
@@ -34,14 +38,13 @@ export const CommentHandler = [
 		},
 	),
 
-	rest.get('http://192.168.0.155:8080/api/articles/:articleId/comments', (req, res, ctx) => {
+	rest.get(`${HOME_URL}/api/articles/:articleId/comments`, (req, res, ctx) => {
 		const { articleId } = req.params;
-
-		return res(ctx.status(200), ctx.json({ comments: mockComments[Number(articleId)] }));
+		return res(ctx.status(200), ctx.json({ comments: mockData.comments }));
 	}),
 
 	rest.put<{ content: string }>(
-		'http://192.168.0.155:8080/api/articles/:articleId/comments/:commentId',
+		`${HOME_URL}/api/articles/:articleId/comments/:commentId`,
 		(req, res, ctx) => {
 			const { articleId, commentId } = req.params;
 			const { content } = req.body;
@@ -61,18 +64,15 @@ export const CommentHandler = [
 		},
 	),
 
-	rest.delete(
-		'http://192.168.0.155:8080/api/articles/:articleId/comments/:commentId',
-		(req, res, ctx) => {
-			const { articleId, commentId } = req.params;
+	rest.delete(`${HOME_URL}/api/articles/:articleId/comments/:commentId`, (req, res, ctx) => {
+		const { articleId, commentId } = req.params;
 
-			const filteredComments = mockComments[Number(articleId)].filter(
-				(mockComment) => mockComment.id !== Number(commentId),
-			);
-			mockComments[Number(articleId)] = filteredComments;
+		const filteredComments = mockComments[Number(articleId)].filter(
+			(mockComment) => mockComment.id !== Number(commentId),
+		);
+		mockComments[Number(articleId)] = filteredComments;
 
-			localStorage.setItem('mock-comments', JSON.stringify(mockComments));
-			return res(ctx.status(204));
-		},
-	),
+		localStorage.setItem('mock-comments', JSON.stringify(mockComments));
+		return res(ctx.status(204));
+	}),
 ];

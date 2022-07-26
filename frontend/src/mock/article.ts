@@ -1,6 +1,9 @@
 import { rest } from 'msw';
-import { WritingArticles } from '@/api/article';
 import type { PathParams } from 'msw';
+
+import { WritingArticles } from '@/api/article';
+import { HOME_URL } from '@/constants/url';
+import mockData from '@/mock/data/detailArticle.json';
 
 interface WritingArticlesWithId extends WritingArticles {
 	id: number;
@@ -12,7 +15,7 @@ const mockArticle = data ? (JSON.parse(data) as WritingArticlesWithId[]) : [];
 
 export const ArticleHandler = [
 	rest.post<{ title: string; content: string; category: string }, never, { id: number }>(
-		'http://192.168.0.155:8080/api/articles',
+		`${HOME_URL}/api/articles`,
 		(req, res, ctx) => {
 			const { title, content, category } = req.body;
 
@@ -25,19 +28,19 @@ export const ArticleHandler = [
 		},
 	),
 
-	rest.get('http://192.168.0.155:8080/api/articles/:id', (req, res, ctx) => {
+	rest.get(`${HOME_URL}/api/articles/:id`, (req, res, ctx) => {
 		const { id } = req.params;
 
 		if (typeof id !== 'string') {
 			return;
 		}
 
-		const filteredArticles = mockArticle.find((article) => article.id === Number(id));
+		// const filteredArticles = mockArticle.find((article) => article.id === Number(id));
 
-		if (filteredArticles === undefined) {
-			return;
-		}
-
+		// if (filteredArticles === undefined) {
+		// 	return;
+		// }
+		const filteredArticles = mockData.detailArticle;
 		return res(
 			ctx.status(200),
 			ctx.json({
@@ -55,7 +58,7 @@ export const ArticleHandler = [
 		);
 	}),
 
-	rest.get('http://192.168.0.155:8080/api/articles', (req, res, ctx) => {
+	rest.get(`${HOME_URL}/api/articles`, (req, res, ctx) => {
 		const page = req.url.searchParams.get('page');
 		const size = req.url.searchParams.get('size');
 
@@ -74,7 +77,7 @@ export const ArticleHandler = [
 		}));
 
 		if (page === null || size === null) {
-			return;
+			return res(ctx.status(200), ctx.json({ articles: responseArticles }));
 		}
 
 		const articlesPage = responseArticles.filter(
@@ -86,14 +89,14 @@ export const ArticleHandler = [
 		return res(
 			ctx.status(200),
 			ctx.json({
-				articles: articlesPage,
+				articles: responseArticles,
 				hasNext: responseArticles.length < Number(page) * Number(size + 1),
 			}),
 		);
 	}),
 
 	rest.put<{ title: string; content: string }, PathParams, { id: string }>(
-		'http://192.168.0.155:8080/api/articles/:id',
+		`${HOME_URL}/api/articles/:id`,
 		(req, res, ctx) => {
 			const { title, content } = req.body;
 			const { id } = req.params;
@@ -116,7 +119,7 @@ export const ArticleHandler = [
 		},
 	),
 
-	rest.delete<never, PathParams>('http://192.168.0.155:8080/api/articles/:id', (req, res, ctx) => {
+	rest.delete<never, PathParams>(`${HOME_URL}/api/articles/:id`, (req, res, ctx) => {
 		const { id } = req.params;
 
 		if (typeof id !== 'string') {

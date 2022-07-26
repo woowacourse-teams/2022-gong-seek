@@ -1,10 +1,12 @@
-import { getGithubURL } from '@/api/login';
-import PageLayout from '@/components/layout/PageLayout/PageLayout';
-import { mobileTitleSecondary } from '@/constants/titleType';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import LoginButton from './LoginButton/LoginButton';
-import * as S from '@/pages/Login/index.style';
+
+import { getGithubURL } from '@/api/login';
+import Loading from '@/components/common/Loading/Loading';
+import PageLayout from '@/components/layout/PageLayout/PageLayout';
+import { mobileTitleSecondary } from '@/constants/titleType';
+import LoginButton from '@/pages/Login/LoginButton/LoginButton';
+import * as S from '@/pages/Login/index.styles';
 
 const Login = () => {
 	const { data, error, isError, isLoading, isSuccess, refetch } = useQuery(
@@ -27,7 +29,7 @@ const Login = () => {
 		}
 	}, [isSuccess]);
 
-	if (isLoading || pageLoading) return <div>로딩중...</div>;
+	if (isLoading || pageLoading) return <Loading />;
 
 	if (isError) {
 		if (error instanceof Error) {
@@ -40,6 +42,7 @@ const Login = () => {
 		<S.Container>
 			<PageLayout
 				width="80%"
+				maxWidth="25rem"
 				height="14rem"
 				flexDirection="column"
 				justifyContent="space-around"
