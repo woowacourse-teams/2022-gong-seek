@@ -13,7 +13,10 @@ export const Container = styled.div`
 	width: 100%;
 	height: fit-content;
 
+	z-index: ${({ theme }) => theme.zIndex.HEADER};
+
 	border-bottom: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
+	margin-bottom: ${({ theme }) => theme.size.SIZE_030};
 `;
 
 export const HeaderSection = styled.header`
@@ -61,6 +64,8 @@ export const NavBar = styled.nav`
 	visibility: hidden;
 
 	padding-left: ${({ theme }) => theme.size.SIZE_160};
+
+	background-color: ${({ theme }) => theme.colors.WHITE};
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
 		display: flex;

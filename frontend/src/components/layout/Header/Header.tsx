@@ -17,13 +17,14 @@ const Header = () => {
 				</S.SearchBarBox>
 			</S.HeaderSection>
 			<S.NavBar>
-				{isLogin && (
+				{isLogin ? (
 					<>
 						<S.NavBarItem to="">마이페이지</S.NavBarItem>
 						<S.LogOutItem>로그아웃</S.LogOutItem>
 					</>
+				) : (
+					<S.NavBarItem to="/login">로그인</S.NavBarItem>
 				)}
-				<S.NavBarItem to="/login">로그인</S.NavBarItem>
 
 				<S.NavBarItem to="/category">글 쓰러 가기</S.NavBarItem>
 				<S.NavBarItem to="/articles/question">에러 카테고리</S.NavBarItem>
