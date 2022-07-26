@@ -1,12 +1,13 @@
-import { registerVoteItems } from '@/api/vote';
-import Input from '@/components/common/Input/Input';
 import { AxiosError, AxiosResponse } from 'axios';
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
+
+import { registerVoteItems } from '@/api/vote';
+import Input from '@/components/common/Input/Input';
+import Loading from '@/components/common/Loading/Loading';
 import AddedOption from '@/pages/VoteGenerator/AddedOption/AddedOption';
 import * as S from '@/pages/VoteGenerator/index.styles';
-import Loading from '@/components/common/Loading/Loading';
 
 const VoteGenerator = () => {
 	const [options, setOptions] = useState<string[]>([]);

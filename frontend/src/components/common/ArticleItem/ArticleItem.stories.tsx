@@ -1,5 +1,5 @@
-import { Meta, Story } from '@storybook/react';
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'common/ArticleItem',

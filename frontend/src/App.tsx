@@ -1,20 +1,20 @@
-import styled from '@emotion/styled';
 import { Routes, Route } from 'react-router-dom';
+
 import Header from '@/components/layout/Header/Header';
 import TabBar from '@/components/layout/TabBar/TabBar';
-import Login from '@/pages/Login';
-import WritingArticles from '@/pages/WritingArticles';
-import CategorySelector from '@/pages/CategorySelector/CategorySelector';
-
-import LoginController from '@/pages/Login/LoginController/LoginController';
-import Home from '@/pages/Home';
 import PrivateRouter from '@/components/router/PrivateRouter';
 import PublicRouter from '@/components/router/PublicRouter';
-import VoteGenerator from '@/pages/VoteGenerator';
-import ErrorDetail from '@/pages/ErrorDetail/index';
-import UpdateWriting from '@/pages/UpdateWriting';
 import CategoryArticles from '@/pages/CategoryArticles/CategoryArticles';
+import CategorySelector from '@/pages/CategorySelector/CategorySelector';
+import ErrorDetail from '@/pages/ErrorDetail';
+import Home from '@/pages/Home';
+import Login from '@/pages/Login';
+import LoginController from '@/pages/Login/LoginController/LoginController';
 import NotFound from '@/pages/NotFound';
+import UpdateWriting from '@/pages/UpdateWriting';
+import VoteGenerator from '@/pages/VoteGenerator';
+import WritingArticles from '@/pages/WritingArticles';
+import styled from '@emotion/styled';
 
 const Layout = styled.div`
 	position: relative;

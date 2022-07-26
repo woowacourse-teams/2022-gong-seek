@@ -3,11 +3,15 @@ import styled from '@emotion/styled';
 const Input = styled.input<{ width?: string }>`
 	width: ${({ width }) => width};
 	height: ${({ theme }) => theme.size.SIZE_024};
+
 	border-radius: ${({ theme }) => theme.size.SIZE_006};
 	border-width: 1px;
 	border-color: transparent;
-	box-shadow: 1px 1px 1px ${({ theme }) => theme.boxShadows.primary};
+
 	font-size: ${({ theme }) => theme.size.SIZE_012};
+
+	box-shadow: 1px 1px 1px ${({ theme }) => theme.boxShadows.primary};
+
 	padding: ${({ theme }) => theme.size.SIZE_006} 0 ${({ theme }) => theme.size.SIZE_004}
 		${({ theme }) => theme.size.SIZE_006};
 

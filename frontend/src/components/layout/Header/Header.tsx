@@ -1,5 +1,5 @@
 import SearchBar from '@/components/common/SearchBar/SearchBar';
-import * as S from '@/components/layout/Header/Header.style';
+import * as S from '@/components/layout/Header/Header.styles';
 
 const Header = () => (
 	<S.HeaderSection>

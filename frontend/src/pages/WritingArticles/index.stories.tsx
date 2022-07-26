@@ -1,5 +1,5 @@
-import { Meta, Story } from '@storybook/react';
 import WritingArticles from '@/pages/WritingArticles/index';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'pages/WritingArticles',

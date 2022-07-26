@@ -1,5 +1,5 @@
-import { Meta, Story } from '@storybook/react';
 import AddedOption from '@/pages/VoteGenerator/AddedOption/AddedOption';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'common/AddedOption',

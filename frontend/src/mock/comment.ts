@@ -1,7 +1,8 @@
 import { rest } from 'msw';
-import { CommentType } from '@/types/commentResponse';
-import mockData from '@/mock/data/comment.json';
+
 import { HOME_URL } from '@/constants/url';
+import mockData from '@/mock/data/comment.json';
+import { CommentType } from '@/types/commentResponse';
 
 const data = localStorage.getItem('mock-comments');
 

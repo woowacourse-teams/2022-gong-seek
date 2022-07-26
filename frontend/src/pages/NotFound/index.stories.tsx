@@ -1,5 +1,5 @@
-import { Meta, Story } from '@storybook/react';
 import NotFound from '@/pages/NotFound';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'pages/NotFound',
