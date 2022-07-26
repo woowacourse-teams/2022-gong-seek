@@ -19,6 +19,11 @@ export const Section = styled.section`
 
 	box-shadow: 0px -4px 15px ${({ theme }) => theme.boxShadows.secondary};
 	background-color: ${({ theme }) => theme.colors.WHITE};
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		display: none;
+		visibility: hidden;
+	}
 `;
 
 export const PostingLink = styled(FaPencilAlt)`
