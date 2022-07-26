@@ -117,7 +117,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     void 게시물을_단건_조회를_계속_하면_조회수가_계속_증가한다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse, Category.QUESTION.getValue()).as(ArticleIdResponse.class);
 
         // when
         로그인_후_게시물을_조회한다(tokenResponse, articleIdResponse);
