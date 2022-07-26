@@ -1,20 +1,12 @@
-import { deleteComments } from '@/api/comments';
-import * as S from '@/components/common/Comment/Comment.style';
-import styled from '@emotion/styled';
+import CommentInputModal from '../CommentInputModal/CommentInputModal';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
-import CommentInputModal from '../CommentInputModal/CommentInputModal';
+
+import { deleteComments } from '@/api/comments';
+import * as S from '@/components/common/Comment/Comment.styles';
+import Loading from '@/components/common/Loading/Loading';
 import { queryClient } from '@/index';
 import { CommentType } from '@/types/commentResponse';
-export const DimmerContainer = styled.div`
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: ${({ theme }) => theme.colors.GRAY_500};
-	z-index: 110;
-`;
 
 interface CommentProps extends CommentType {
 	articleId: string;
@@ -42,7 +34,7 @@ const Comment = ({ id, author, content, createdAt, isAuthor, articleId }: Commen
 		}
 	}, [isSuccess]);
 
-	if (isLoading) return <div>로딩중...</div>;
+	if (isLoading) return <Loading />;
 
 	if (isError) return <div>에러...!</div>;
 
@@ -67,7 +59,7 @@ const Comment = ({ id, author, content, createdAt, isAuthor, articleId }: Commen
 
 			{isEditCommentOpen && (
 				<>
-					<DimmerContainer onClick={() => setIsEditCommentOpen(false)} />
+					<S.DimmerContainer onClick={() => setIsEditCommentOpen(false)} />
 					<CommentInputModal
 						closeModal={() => setIsEditCommentOpen(false)}
 						articleId={String(articleId)}

@@ -12,6 +12,7 @@ const colors = {
 	BLACK_400: 'rgba(20, 22, 25, 0.75)',
 	GRAY_500: 'rgba(0, 0, 0, 0.11)',
 	GREEN_500: '#C4DFAA',
+	ORANGE_500: '#FFB562',
 	WHITE: '#ffffff',
 };
 

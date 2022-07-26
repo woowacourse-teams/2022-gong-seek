@@ -1,5 +1,5 @@
-import { Meta, Story } from '@storybook/react';
 import VoteGenerator from '@/pages/VoteGenerator';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'pages/VoteGenerator',

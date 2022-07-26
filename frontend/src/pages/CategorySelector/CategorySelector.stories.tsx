@@ -1,5 +1,5 @@
-import { Meta, Story } from '@storybook/react';
 import CategorySelector from '@/pages/CategorySelector/CategorySelector';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'pages/CategorySelector',

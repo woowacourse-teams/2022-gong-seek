@@ -1,5 +1,5 @@
-import { Meta, Story } from '@storybook/react';
 import SortDropdown from '@/pages/CategoryArticles/SortDropdown/SortDropDown';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'components/SortDropdown',

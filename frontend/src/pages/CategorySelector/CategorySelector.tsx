@@ -1,6 +1,6 @@
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import { mobileTitleSecondary } from '@/constants/titleType';
-import * as S from '@/pages/CategorySelector/CategorySelector.style';
+import * as S from '@/pages/CategorySelector/CategorySelector.styles';
 
 const CategorySelector = () => (
 	<S.Container>

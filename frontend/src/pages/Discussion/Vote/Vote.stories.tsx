@@ -1,6 +1,6 @@
-import { Meta, Story } from '@storybook/react';
-import Vote from '@/pages/Discussion/Vote/Vote';
 import { VoteHandler } from '@/mock/vote';
+import Vote from '@/pages/Discussion/Vote/Vote';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'components/Vote',

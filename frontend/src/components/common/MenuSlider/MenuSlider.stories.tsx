@@ -1,5 +1,5 @@
-import { Meta, Story } from '@storybook/react';
 import MenuSlider, { MenuSliderProps } from '@/components/common/MenuSlider/MenuSlider';
+import { Meta, Story } from '@storybook/react';
 
 const modalRoot = document.createElement('div');
 modalRoot.setAttribute('id', 'menu-slider');

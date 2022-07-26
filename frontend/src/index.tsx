@@ -1,16 +1,17 @@
-import { QueryClient, QueryClientProvider } from 'react-query';
 import ReactDOM from 'react-dom/client';
-import App from '@/App';
-import { ThemeProvider, Global } from '@emotion/react';
-import { RecoilRoot } from 'recoil';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
-import { reset } from '@/styles/reset';
-import { theme } from '@/styles/Theme';
-import { worker } from './mock/browser';
+import { RecoilRoot } from 'recoil';
 
-// if (process.env.NODE_ENV === 'development') {
-// 	worker.start();
-// }
+import App from '@/App';
+import { worker } from '@/mock/browser';
+import { theme } from '@/styles/Theme';
+import { reset } from '@/styles/reset';
+import { ThemeProvider, Global } from '@emotion/react';
+
+if (process.env.NODE_ENV === 'development') {
+	worker.start();
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 

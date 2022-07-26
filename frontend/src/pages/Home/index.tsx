@@ -1,14 +1,15 @@
-import PopularArticle from '@/pages/Home//PopularArticle/PopularArticle';
 import { useEffect, useState } from 'react';
-
-import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
-import SortDropdown from '@/pages/CategoryArticles/SortDropdown/SortDropDown';
-import * as S from '@/pages/Home/index.styles';
-import { useInfiniteQuery, useQuery } from 'react-query';
-import { getAllArticle } from '@/api/article';
-import { CommonArticleType } from '@/types/articleResponse';
 import { useRef } from 'react';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+
+import { getAllArticle } from '@/api/article';
+import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
+import Loading from '@/components/common/Loading/Loading';
+import SortDropdown from '@/pages/CategoryArticles/SortDropdown/SortDropDown';
+import PopularArticle from '@/pages/Home//PopularArticle/PopularArticle';
+import * as S from '@/pages/Home/index.styles';
+import { CommonArticleType } from '@/types/articleResponse';
 
 interface AllArticleResponse {
 	articles: CommonArticleType[];
@@ -55,7 +56,7 @@ const Home = () => {
 	}
 
 	if (isLoading) {
-		return <div>로딩 중입니다</div>;
+		return <Loading />;
 	}
 	if (isError) {
 		return <div>에러</div>;

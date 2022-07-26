@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
-
-import ToastUiViewer from '@/components/common/ArticleContent/ToastUiViewer/ToastUiViewer';
-import PageLayout from '@/components/layout/PageLayout/PageLayout';
-
-import * as S from '@/components/common/ArticleContent/ArticleContent.style';
-import { ArticleType } from '@/types/articleResponse';
-import { Author } from '@/types/author';
 import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 
 import { deleteArticle } from '@/api/article';
-import { useNavigate } from 'react-router-dom';
+import * as S from '@/components/common/ArticleContent/ArticleContent.styles';
+import ToastUiViewer from '@/components/common/ArticleContent/ToastUiViewer/ToastUiViewer';
+import Loading from '@/components/common/Loading/Loading';
+import PageLayout from '@/components/layout/PageLayout/PageLayout';
+import { ArticleType } from '@/types/articleResponse';
+import { Author } from '@/types/author';
 
 export interface ArticleContentProps {
 	category: string;
@@ -48,7 +47,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 	};
 
 	if (isLoading) {
-		return <div>삭제중입니다...</div>;
+		return <Loading />;
 	}
 	if (isError) {
 		return <div>{`${error}가 발생하였습니다`}</div>;
