@@ -16,14 +16,19 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.client.RestTemplate;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class CommentAcceptanceTest extends AcceptanceTest {
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     @Test
     void 유저가_깃허브로_로그인을_하고_댓글을_등록할_수_있다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        TokenResponse 엑세스토큰 = 로그인을_한다(주디, restTemplate);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
 
         ExtractableResponse<Response> 댓글 = 댓글을_등록한다(엑세스토큰, 게시글번호);
@@ -41,7 +46,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 댓글을_조회할_수_있다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        TokenResponse 엑세스토큰 = 로그인을_한다(주디, restTemplate);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
 
         댓글을_등록한다(엑세스토큰, 게시글번호);
@@ -53,7 +58,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 댓글을_작성한_유저일_경우_댓글을_수정할_수_있다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        TokenResponse 엑세스토큰 = 로그인을_한다(주디, restTemplate);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
         댓글을_등록한다(엑세스토큰, 게시글번호);
         List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호).getComments();
@@ -65,7 +70,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 댓글을_작성한_유저일_경우_댓글을_삭제할_수_있다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        TokenResponse 엑세스토큰 = 로그인을_한다(주디, restTemplate);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
         댓글을_등록한다(엑세스토큰, 게시글번호);
         List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호).getComments();

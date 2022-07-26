@@ -9,9 +9,14 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.RestTemplate;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class AuthAcceptanceTest extends AcceptanceTest {
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Test
     void 유저가_깃허브로_로그인을_할_수_있다() {
@@ -19,7 +24,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         OAuthLoginUrlResponse urlResponse = 로그인_URL을_얻는다();
 
         //when
-        TokenResponse tokenResponse = 로그인을_한다(주디);
+        TokenResponse tokenResponse = 로그인을_한다(주디, restTemplate);
 
         //then
         assertAll(

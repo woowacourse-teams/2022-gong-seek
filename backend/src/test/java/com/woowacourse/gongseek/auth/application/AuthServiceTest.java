@@ -38,10 +38,10 @@ class AuthServiceTest {
     @Autowired
     private RestTemplate restTemplate;
 
-    private MockRestServiceServer mockServer;
-
     @Autowired
     private ObjectMapper objectMapper;
+
+    private MockRestServiceServer mockServer;
 
     @Test
     void 리다이렉트_URL_을_반환한다() {
