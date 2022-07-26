@@ -19,13 +19,13 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class GithubOAuthClient implements OAuthClient {
 
-    private static final String BASE_URL = "https://github.com";
     private static final String REDIRECT_URL = "http://localhost:8080/callback";
-    private static final String PROFILE_URL = "https://api.github.com/user";
     private static final String LOGIN_URL_SUFFIX = "/login/oauth/authorize?client_id=%s&redirect_uri=%s";
     private static final String GITHUB_ACCESS_URL_SUFFIX = "/login/oauth/access_token";
     private static final String TOKEN = "token ";
 
+    private final String accessTokenBaseUrl;
+    private final String profileUrl;
     private final String clientId;
     private final String clientSecret;
     private final ObjectMapper objectMapper;
@@ -34,18 +34,22 @@ public class GithubOAuthClient implements OAuthClient {
     public GithubOAuthClient(
             @Value("${security.oauth2.client-id}") String clientId,
             @Value("${security.oauth2.client-secret}") String clientSecret,
+            @Value("${github.url.base}") String accessTokenBaseUrl,
+            @Value("${github.url.profile}") String profileUrl,
             ObjectMapper objectMapper,
             RestTemplate restTemplate
     ) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+        this.accessTokenBaseUrl = accessTokenBaseUrl;
+        this.profileUrl = profileUrl;
         this.objectMapper = objectMapper;
         this.restTemplate = restTemplate;
     }
 
     @Override
     public String getRedirectUrl() {
-        return String.format(BASE_URL + LOGIN_URL_SUFFIX, clientId, REDIRECT_URL);
+        return String.format(accessTokenBaseUrl + LOGIN_URL_SUFFIX, clientId, REDIRECT_URL);
     }
 
     @Override
@@ -62,7 +66,7 @@ public class GithubOAuthClient implements OAuthClient {
 
         HttpEntity<GithubAccessTokenRequest> entity = new HttpEntity<>(accessTokenRequest, headers);
         GithubAccessTokenResponse accessTokenResponse = restTemplate.exchange(
-                BASE_URL + GITHUB_ACCESS_URL_SUFFIX,
+                accessTokenBaseUrl + GITHUB_ACCESS_URL_SUFFIX,
                 HttpMethod.POST,
                 entity,
                 GithubAccessTokenResponse.class
@@ -87,7 +91,7 @@ public class GithubOAuthClient implements OAuthClient {
 
         HttpEntity<Void> httpEntity = new HttpEntity<>(httpHeaders);
         GithubProfileResponse profileResponse = restTemplate.exchange(
-                PROFILE_URL,
+                profileUrl,
                 HttpMethod.GET,
                 httpEntity,
                 GithubProfileResponse.class,

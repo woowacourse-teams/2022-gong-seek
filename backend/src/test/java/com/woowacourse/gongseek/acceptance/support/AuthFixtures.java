@@ -27,7 +27,7 @@ public class AuthFixtures {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static TokenResponse 로그인을_한다(GithubClientFixtures client, RestTemplate restTemplate) {
-        mockGithubServer(client, restTemplate);
+        //mockGithubServer(client, restTemplate);
         return RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

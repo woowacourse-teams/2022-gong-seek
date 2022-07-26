@@ -2,3 +2,8 @@ security:
   oauth2:
     client-id: ${OAUTH_CLIENT_ID}
     client-secret: ${OAUTH_CLIENT_SECRET}
+
+github:
+  url:
+    base: https://github.com
+    profile: https://api.github.com/user
