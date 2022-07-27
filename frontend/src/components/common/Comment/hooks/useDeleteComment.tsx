@@ -22,7 +22,7 @@ const useDeleteComment = () => {
 		if (isError) {
 			throw new Error(error as string);
 		}
-	});
+	}, [isError]);
 
 	return { isLoading, onDeleteButtonClick };
 };

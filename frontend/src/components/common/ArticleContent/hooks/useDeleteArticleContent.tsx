@@ -18,7 +18,7 @@ const useDeleteArticleContent = () => {
 		if (isError) {
 			throw new Error(error as string);
 		}
-	});
+	}, [isError]);
 
 	const handleDeleteArticle = (articleId: string) => {
 		if (window.confirm('게시글을 삭제하시겠습니까?')) {
