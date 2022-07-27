@@ -1,7 +1,7 @@
 import { getDetailArticle } from '@/api/article';
 import { articleState } from '@/store/articleState';
 import { ArticleType } from '@/types/articleResponse';
-import { useEffect } from '@storybook/addons';
+import { useEffect } from 'react';
 import { AxiosError } from 'axios';
 import { useQuery } from 'react-query';
 import { useSetRecoilState } from 'recoil';
