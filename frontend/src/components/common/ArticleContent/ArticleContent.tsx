@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { deleteArticle } from '@/api/article';
-import * as S from '@/components/common/ArticleContent/ArticleContent.styles';
 import ToastUiViewer from '@/components/common/ArticleContent/ToastUiViewer/ToastUiViewer';
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
+import useDeleteArticleContent from '@/components/common/ArticleContent/hooks/useDeleteArticleContent';
 import { ArticleType } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 
+import * as S from '@/components/common/ArticleContent/ArticleContent.styles';
 export interface ArticleContentProps {
 	category: string;
 	article: ArticleType;
@@ -19,38 +18,21 @@ export interface ArticleContentProps {
 
 const ArticleContent = ({ category, article, author, articleId }: ArticleContentProps) => {
 	const [isHeartClick, setIsHeartClick] = useState(false);
-	const { isSuccess, isError, isLoading, error, mutate } = useMutation(deleteArticle);
-
+	const { isLoading, handleDeleteArticle } = useDeleteArticleContent();
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		if (isSuccess) {
-			alert('게시글이 삭제 되었습니다');
-			navigate('/');
-		}
-	}, [isSuccess]);
 
 	const onLikeButtonClick = () => {
 		setIsHeartClick(!isHeartClick);
 		// 좋아요 비동기 통신
 	};
 
-	const postUpdateArticle = () => {
+	const navigateUpdateArticle = () => {
 		const categoryName = category === '에러' ? 'question' : 'discussion';
 		navigate(`/articles/modify/${categoryName}/${articleId}`);
 	};
 
-	const handleDeleteArticle = () => {
-		if (window.confirm('게시글을 삭제하시겠습니까?')) {
-			mutate(articleId);
-		}
-	};
-
 	if (isLoading) {
 		return <Loading />;
-	}
-	if (isError) {
-		return <div>{`${error}가 발생하였습니다`}</div>;
 	}
 
 	return (
@@ -77,8 +59,14 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 					<S.WritingOrderBox>
 						{article.isAuthor && (
 							<S.ButtonWrapper>
-								<S.Button onClick={postUpdateArticle}>수정</S.Button>
-								<S.Button onClick={handleDeleteArticle}>삭제</S.Button>
+								<S.Button onClick={navigateUpdateArticle}>수정</S.Button>
+								<S.Button
+									onClick={() => {
+										handleDeleteArticle(articleId);
+									}}
+								>
+									삭제
+								</S.Button>
 							</S.ButtonWrapper>
 						)}
 					</S.WritingOrderBox>
