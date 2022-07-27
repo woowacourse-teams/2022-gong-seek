@@ -26,10 +26,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.jdbc.Sql;
 
 @SuppressWarnings("NonAsciiCharacters")
-@Sql("classpath:dummy.sql")
 public class ArticleAcceptanceTest extends AcceptanceTest {
 
     @Test
@@ -117,7 +115,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     void 게시물을_단건_조회를_계속_하면_조회수가_계속_증가한다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse, Category.QUESTION.getValue()).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse, Category.QUESTION.getValue()).as(
+                ArticleIdResponse.class);
 
         // when
         로그인_후_게시물을_조회한다(tokenResponse, articleIdResponse);
@@ -324,8 +323,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     void 질문_게시물을_조회순으로_조회한다() {
         //given
         TokenResponse tokenResponse = 로그인을_한다(주디);
-        조회수가_있는_게시물_5개를_생성한다(tokenResponse, 2);
         조회수가_있는_게시물_5개를_생성한다(tokenResponse, 1);
+        조회수가_있는_게시물_5개를_생성한다(tokenResponse, 2);
         조회수가_있는_게시물_5개를_생성한다(tokenResponse, 0);
 
         //when
@@ -341,7 +340,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(articlesResponse.isHasNext()).isTrue(),
-                () -> assertThat(ids.containsAll(List.of(1L, 2L, 3L, 4L, 5L))).isTrue()
+                () -> assertThat(ids.containsAll(List.of(6L, 7L, 8L, 9L, 10L))).isTrue()
         );
     }
 

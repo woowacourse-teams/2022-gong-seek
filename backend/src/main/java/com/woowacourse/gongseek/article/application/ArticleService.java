@@ -52,8 +52,8 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticlesResponse getArticles(Long cursorId, String category, String sortType, int size) {
-        List<ArticleAllResponse> articles = articleRepository.findAllByPage(cursorId, category, sortType, size).stream()
+    public ArticlesResponse getArticles(Long cursorId, Integer cursorViews, String category, String sortType, int size) {
+        List<ArticleAllResponse> articles = articleRepository.findAllByPage(cursorId, cursorViews, category, sortType, size).stream()
                 .map(article -> new ArticleAllResponse(article, getCommentCount(article)))
                 .collect(Collectors.toList());
 

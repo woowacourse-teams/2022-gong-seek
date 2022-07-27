@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
@@ -10,6 +9,9 @@ import com.woowacourse.gongseek.config.QuerydslConfig;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -50,7 +52,8 @@ class ArticleRepositoryTest {
 
     @Test
     void 게시물이_없으면_빈_값을_반환한다() {
-        List<Article> articles = articleRepository.findAllByPage(null, Category.QUESTION.getValue(), "", 5);
+        List<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "", 5);
+
         assertThat(articles).hasSize(0);
     }
 
@@ -59,8 +62,7 @@ class ArticleRepositoryTest {
         for (int i = 0; i < 5; i++) {
             articleRepository.save(new Article("title", "content", Category.QUESTION, member));
         }
-
-        List<Article> articles = articleRepository.findAllByPage(null, Category.QUESTION.getValue(), "views", 5);
+        List<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "views", 5);
 
         assertThat(articles).hasSize(5);
     }
@@ -71,7 +73,7 @@ class ArticleRepositoryTest {
         articleRepository.save(new Article("title", "content", Category.QUESTION, member));
         articleRepository.save(new Article("title", "content", Category.DISCUSSION, member));
 
-        List<Article> articles = articleRepository.findAllByPage(null, category, "views", 5);
+        List<Article> articles = articleRepository.findAllByPage(null, 0, category, "views", 5);
 
         assertThat(articles).hasSize(expectedSize);
     }
@@ -85,7 +87,7 @@ class ArticleRepositoryTest {
         firstArticle.addViews();
         secondArticle.addViews();
 
-        List<Article> articles = articleRepository.findAllByPage(null, Category.QUESTION.getValue(), "views", 10);
+        List<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "views", 10);
 
         assertThat(articles).isEqualTo(List.of(firstArticle, secondArticle, thirdArticle));
     }
@@ -96,7 +98,7 @@ class ArticleRepositoryTest {
         Article secondArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member));
         Article firstArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member));
 
-        List<Article> articles = articleRepository.findAllByPage(null, Category.QUESTION.getValue(), "latest", 3);
+        List<Article> articles = articleRepository.findAllByPage(null, null, Category.QUESTION.getValue(), "latest", 3);
 
         assertThat(articles).isEqualTo(List.of(firstArticle, secondArticle, thirdArticle));
     }

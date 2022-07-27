@@ -64,8 +64,9 @@ public class ArticleController {
     public ResponseEntity<ArticlesResponse> getArticles(@RequestParam String category,
                                                         @RequestParam String sort,
                                                         @RequestParam(required = false) Long cursorId,
+                                                        @RequestParam(required = false) Integer cursorViews,
                                                         @RequestParam Integer size) {
-        ArticlesResponse response = articleService.getArticles(cursorId, category, sort, size);
+        ArticlesResponse response = articleService.getArticles(cursorId, cursorViews, category, sort, size);
 
         return ResponseEntity.ok(response);
     }

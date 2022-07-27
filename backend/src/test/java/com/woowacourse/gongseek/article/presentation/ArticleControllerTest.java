@@ -227,12 +227,13 @@ class ArticleControllerTest {
         ArticlesResponse response = new ArticlesResponse(List.of(articleAllResponse1, articleAllResponse2), false);
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
-        given(articleService.getArticles(anyLong(), any(), any(), anyInt())).willReturn(response);
+        given(articleService.getArticles(anyLong(), anyInt(), any(), any(), anyInt())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles")
                 .param("category", Category.DISCUSSION.getValue())
                 .param("sort", "latest")
                 .param("cursorId", "1")
+                .param("cursorViews", "0")
                 .param("size", "10")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .characterEncoding("UTF-8"));
@@ -243,7 +244,8 @@ class ArticleControllerTest {
                         requestParameters(
                                 parameterWithName("category").description("조회할 카테고리(all, discussion, question"),
                                 parameterWithName("sort").description("정렬 기준(latest-최신순, views-조회순)"),
-                                parameterWithName("cursorId").description("시작은 null, 마지막으로 조회한 게시물 식별자"),
+                                parameterWithName("cursorId").description("시작은 null, 마지막으로 조회한 게시물 식별자").optional(),
+                                parameterWithName("cursorViews").description("마지막으로 조회한 게시물 조회수").optional(),
                                 parameterWithName("size").description("가져올 게시글 개수")
                         ),
                         responseFields(
