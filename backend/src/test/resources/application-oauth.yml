@@ -5,5 +5,5 @@ security:
 
 github:
   url:
-    base: http://localhost:8888
-    profile: http://localhost:8888/user
+    base: http://localhost:8888/api/auth
+    profile: http://localhost:8888/api/auth/user
