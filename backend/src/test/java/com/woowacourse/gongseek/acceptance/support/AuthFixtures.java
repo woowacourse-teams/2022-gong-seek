@@ -17,7 +17,7 @@ public class AuthFixtures {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(new OAuthCodeRequest(client.getCode()))
                 .when()
-                .post("/api/auth/fake/token")
+                .post("/api/auth/token")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract()
