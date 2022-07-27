@@ -23,20 +23,12 @@ public enum GithubClientFixtures {
         this.avatarUrl = avatarUrl;
     }
 
-    public static GithubProfileResponse getGithubProfile(String code) {
-        GithubClientFixtures client = Arrays.stream(values())
-                .filter(value -> value.code.equals(code))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("로그인이 실패했습니다."));
-        return new GithubProfileResponse(client.githubId, client.name, client.avatarUrl);
-    }
-
     public static GithubAccessTokenResponse getAccessToken(String code) {
         GithubClientFixtures client = Arrays.stream(values())
                 .filter(value -> value.code.equals(code))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("로그인이 실패했습니다."));
-        return new GithubAccessTokenResponse(client.token, null, null);
+        return new GithubAccessTokenResponse(client.token);
     }
 
     public static GithubProfileResponse getGithubProfileByToken(String token) {
