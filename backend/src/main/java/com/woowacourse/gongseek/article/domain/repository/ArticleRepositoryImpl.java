@@ -23,7 +23,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .selectFrom(article)
                 .where(
                         cursorIdAndCursorViews(cursorId, cursorViews, sortType),
-                        categoryEq(category))
+                        categoryEquals(category))
                 .limit(pageSize + 1);
 
         if (sortType.equals("views")) {
@@ -43,14 +43,14 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                     .or(article.views.lt(cursorViews));
         }
 
-        return ltArticleId(cursorId);
+        return articleIdStatus(cursorId);
     }
 
-    private BooleanExpression ltArticleId(Long cursorId) {
+    private BooleanExpression articleIdStatus(Long cursorId) {
         return cursorId == null ? null : article.id.lt(cursorId);
     }
 
-    private BooleanExpression categoryEq(String category) {
+    private BooleanExpression categoryEquals(String category) {
         return "all".equals(category) ? null : article.category.eq(Category.from(category));
     }
 }
