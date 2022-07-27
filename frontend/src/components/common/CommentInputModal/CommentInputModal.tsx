@@ -10,7 +10,7 @@ export interface CommentInputModalProps {
 	closeModal: () => void;
 	articleId: string;
 	modalType: 'edit' | 'register';
-	commentId: string;
+	commentId?: string;
 	placeholder: string;
 }
 
@@ -46,7 +46,9 @@ const CommentInputModal = ({
 			postMutate({ content: comment, id: articleId });
 			return;
 		}
-
+		if (typeof commentId === 'undefined') {
+			throw new Error('댓글을 찾지 못하였습니다');
+		}
 		putMutate({ content: comment, commentId });
 	};
 
