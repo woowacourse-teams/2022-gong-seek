@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
 
-import com.woowacourse.gongseek.auth.infra.GithubOAuthClient;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
@@ -30,7 +29,7 @@ class AuthServiceTest {
     private MemberRepository memberRepository;
 
     @MockBean
-    private GithubOAuthClient githubOAuthClient;
+    private OAuthClient githubOAuthClient;
 
     @Test
     void 리다이렉트_URL_을_반환한다() {
