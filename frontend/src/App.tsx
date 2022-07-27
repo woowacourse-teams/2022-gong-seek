@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import Header from '@/components/layout/Header/Header';
 import TabBar from '@/components/layout/TabBar/TabBar';
@@ -14,6 +15,8 @@ import NotFound from '@/pages/NotFound';
 import UpdateWriting from '@/pages/UpdateWriting';
 import VoteGenerator from '@/pages/VoteGenerator';
 import WritingArticles from '@/pages/WritingArticles';
+import { getUserIsLogin } from '@/store/userState';
+
 import styled from '@emotion/styled';
 
 const Layout = styled.div`
@@ -34,7 +37,7 @@ const Content = styled.main`
 `;
 
 const App = () => {
-	const isLogin = !!localStorage.getItem('accessToken');
+	const isLogin = useRecoilValue(getUserIsLogin);
 	return (
 		<Layout>
 			<Header />
