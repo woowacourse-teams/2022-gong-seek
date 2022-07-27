@@ -23,13 +23,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleAllResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlesResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.config.RestDocsConfig;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
@@ -216,15 +216,15 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_전체_조회_문서화() throws Exception {
-        ArticleAllResponse articleAllResponse1 = new ArticleAllResponse(1L, "제목",
+        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목",
                 new AuthorDto("기론", "프로필 이미지 url"),
-                "내용입니다", Category.QUESTION.getValue(), 3, LocalDateTime.now());
+                "내용입니다", Category.QUESTION.getValue(), 3, 2, LocalDateTime.now());
 
-        ArticleAllResponse articleAllResponse2 = new ArticleAllResponse(2L, "제목2",
+        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목2",
                 new AuthorDto("기론2", "프로필2 이미지 url"),
-                "내용입니다22", Category.DISCUSSION.getValue(), 10, LocalDateTime.now());
+                "내용입니다22", Category.DISCUSSION.getValue(), 10, 5, LocalDateTime.now());
 
-        ArticlesResponse response = new ArticlesResponse(List.of(articleAllResponse1, articleAllResponse2), false);
+        ArticlePageResponse response = new ArticlePageResponse(List.of(articlePreviewResponse1, articlePreviewResponse2), false);
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
         given(articleService.getArticles(anyLong(), anyInt(), any(), any(), anyInt())).willReturn(response);
@@ -261,6 +261,7 @@ class ArticleControllerTest {
                                         .description("게시글 댓글 개수"),
                                 fieldWithPath("articles[].createdAt").type(JsonFieldType.STRING)
                                         .description("게시글 생성 날짜"),
+                                fieldWithPath("articles[].views").type(JsonFieldType.NUMBER).description("게시글 조회 수"),
                                 fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN)
                                         .description("다음에 조회 할 게시글이 있으면 true")
                         )

@@ -7,12 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleAllResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlesResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
@@ -213,8 +213,8 @@ public class ArticleServiceTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlesResponse response = articleService.getArticles(null, 0, Category.QUESTION.getValue(), "latest", 10);
-        List<ArticleAllResponse> responses = response.getArticles();
+        ArticlePageResponse response = articleService.getArticles(null, 0, Category.QUESTION.getValue(), "latest", 10);
+        List<ArticlePreviewResponse> responses = response.getArticles();
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
@@ -232,8 +232,8 @@ public class ArticleServiceTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlesResponse response = articleService.getArticles(10L, 0, Category.QUESTION.getValue(), "latest", 10);
-        List<ArticleAllResponse> responses = response.getArticles();
+        ArticlePageResponse response = articleService.getArticles(10L, 0, Category.QUESTION.getValue(), "latest", 10);
+        List<ArticlePreviewResponse> responses = response.getArticles();
 
         assertAll(
                 () -> assertThat(responses).hasSize(9),
@@ -254,8 +254,8 @@ public class ArticleServiceTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlesResponse response = articleService.getArticles(null, cursorViews, Category.QUESTION.getValue(), "latest", 10);
-        List<ArticleAllResponse> responses = response.getArticles();
+        ArticlePageResponse response = articleService.getArticles(null, cursorViews, Category.QUESTION.getValue(), "latest", 10);
+        List<ArticlePreviewResponse> responses = response.getArticles();
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),

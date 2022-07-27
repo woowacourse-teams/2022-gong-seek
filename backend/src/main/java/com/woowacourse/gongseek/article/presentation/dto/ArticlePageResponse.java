@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class ArticlesResponse {
+public class ArticlePageResponse {
 
-    private List<ArticleAllResponse> articles;
+    private List<ArticlePreviewResponse> articles;
     private boolean hasNext;
-
 }

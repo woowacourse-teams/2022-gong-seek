@@ -2,9 +2,8 @@ package com.woowacourse.gongseek.article.domain.repository;
 
 import static com.woowacourse.gongseek.article.domain.QArticle.article;
 
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
@@ -20,21 +19,17 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     public List<Article> findAllByPage(Long cursorId, Integer cursorViews, String category,
                                        String sortType, int pageSize) {
 
-        return queryFactory
+        JPAQuery<Article> query = queryFactory
                 .selectFrom(article)
                 .where(
                         cursorIdAndCursorViews(cursorId, cursorViews, sortType),
                         categoryEq(category))
-                .limit(pageSize + 1)
-                .orderBy(sort(sortType))
-                .fetch();
-    }
+                .limit(pageSize + 1);
 
-    private OrderSpecifier<?> sort(String sortType) {
         if (sortType.equals("views")) {
-            return new OrderSpecifier<>(Order.DESC, article.views);
+            return query.orderBy(article.views.desc(), article.id.desc()).fetch();
         }
-        return new OrderSpecifier<>(Order.DESC, article.id);
+        return query.orderBy(article.id.desc()).fetch();
     }
 
     private BooleanExpression cursorIdAndCursorViews(Long cursorId, Integer cursorViews, String sortType) {

@@ -2,11 +2,11 @@ package com.woowacourse.gongseek.article.presentation;
 
 import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlesResponse;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import lombok.RequiredArgsConstructor;
@@ -61,12 +61,12 @@ public class ArticleController {
     }
 
     @GetMapping
-    public ResponseEntity<ArticlesResponse> getArticles(@RequestParam String category,
-                                                        @RequestParam String sort,
-                                                        @RequestParam(required = false) Long cursorId,
-                                                        @RequestParam(required = false) Integer cursorViews,
-                                                        @RequestParam Integer size) {
-        ArticlesResponse response = articleService.getArticles(cursorId, cursorViews, category, sort, size);
+    public ResponseEntity<ArticlePageResponse> getArticles(@RequestParam String category,
+                                                           @RequestParam String sort,
+                                                           @RequestParam(required = false) Long cursorId,
+                                                           @RequestParam(required = false) Integer cursorViews,
+                                                           @RequestParam Integer size) {
+        ArticlePageResponse response = articleService.getArticles(cursorId, cursorViews, category, sort, size);
 
         return ResponseEntity.ok(response);
     }

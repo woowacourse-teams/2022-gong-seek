@@ -2,13 +2,13 @@ package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleAllResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlesResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.member.domain.Member;
@@ -52,15 +52,17 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticlesResponse getArticles(Long cursorId, Integer cursorViews, String category, String sortType, int size) {
-        List<ArticleAllResponse> articles = articleRepository.findAllByPage(cursorId, cursorViews, category, sortType, size).stream()
-                .map(article -> new ArticleAllResponse(article, getCommentCount(article)))
+    public ArticlePageResponse getArticles(Long cursorId, Integer cursorViews, String category, String sortType,
+                                           int size) {
+        List<ArticlePreviewResponse> articles = articleRepository.findAllByPage(cursorId, cursorViews, category,
+                        sortType, size).stream()
+                .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))
                 .collect(Collectors.toList());
 
         if (articles.size() == size + 1) {
-            return new ArticlesResponse(articles.subList(0, size), true);
+            return new ArticlePageResponse(articles.subList(0, size), true);
         }
-        return new ArticlesResponse(articles, false);
+        return new ArticlePageResponse(articles, false);
     }
 
     private int getCommentCount(Article article) {
