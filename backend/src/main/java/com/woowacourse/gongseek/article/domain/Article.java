@@ -28,8 +28,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 public class Article {
 
-    private static final int INITIAL_VIEWS = 0;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -62,7 +60,7 @@ public class Article {
         this.content = new Content(content);
         this.category = category;
         this.member = member;
-        this.views = new Views(INITIAL_VIEWS);
+        this.views = new Views();
     }
 
     public boolean isAuthor(Member member) {
