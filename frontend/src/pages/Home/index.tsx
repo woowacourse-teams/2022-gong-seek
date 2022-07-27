@@ -1,65 +1,29 @@
-import { useEffect, useState } from 'react';
 import { useRef } from 'react';
-import { useInfiniteQuery, useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
-import { getAllArticle } from '@/api/article';
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
 import Loading from '@/components/common/Loading/Loading';
 import SortDropdown from '@/pages/CategoryArticles/SortDropdown/SortDropDown';
 import PopularArticle from '@/pages/Home//PopularArticle/PopularArticle';
-import * as S from '@/pages/Home/index.styles';
-import { CommonArticleType } from '@/types/articleResponse';
+import useGetAllArticles from '@/pages/Home/hooks/useGetAllArticles';
 
-interface AllArticleResponse {
-	articles: CommonArticleType[];
-	hasNext: boolean;
-	pageParam: number;
-}
+import * as S from '@/pages/Home/index.styles';
 
 const Home = () => {
-	const [currentCategory, setCurrentCategory] = useState('question');
-	const [sortIndex, setSortIndex] = useState('최신순');
 	const endFlag = useRef<HTMLDivElement>(null);
-
 	const navigate = useNavigate();
 
-	const { data, isError, isLoading, isSuccess, error, refetch } = useQuery('all-articles', () =>
-		getAllArticle(currentCategory, sortIndex),
-	);
-	// const { data, isError, isLoading, isSuccess, error, refetch } = useInfiniteQuery<
-	// 	AllArticleResponse,
-	// 	Error
-	// >(
-	// 	['all-articles', currentCategory],
-	// 	({ pageParam = 0 }) => getAllArticle(currentCategory, sortIndex, pageParam),
-	// 	{
-	// 		getNextPageParam: (lastPage) => {
-	// 			if (lastPage.articles.length === 5) return { page: lastPage.hasNext };
-	// 			return;
-	// 		},
-	// 	},
-	// );
+	const { data, isLoading, currentCategory, setCurrentCategory, sortIndex, setSortIndex } =
+		useGetAllArticles();
 
-	useEffect(() => {
-		console.log(data);
-	}, [isSuccess]);
-
-	useEffect(() => {
-		refetch();
-	}, [currentCategory, sortIndex]);
-
-	if (isSuccess) {
-		if (data.articles.length === 0) {
+	if (typeof data !== 'undefined') {
+		if (data.pages.length === 0) {
 			return <div>게시글이 존재하지 않습니다</div>;
 		}
 	}
 
 	if (isLoading) {
 		return <Loading />;
-	}
-	if (isError) {
-		return <div>에러</div>;
 	}
 
 	return (
@@ -84,15 +48,17 @@ const Home = () => {
 				<SortDropdown sortIndex={sortIndex} setSortIndex={setSortIndex} />
 			</S.CategoryTitleContainer>
 			<S.ArticleItemList>
-				{data?.articles.map((item) => (
-					<ArticleItem
-						key={item.id}
-						article={item}
-						onClick={() => {
-							navigate(`/articles/${currentCategory}/${item.id}`);
-						}}
-					/>
-				))}
+				{data?.pages.map(({ articles }) =>
+					articles.map((item) => (
+						<ArticleItem
+							key={item.id}
+							article={item}
+							onClick={() => {
+								navigate(`/articles/${currentCategory}/${item.id}`);
+							}}
+						/>
+					)),
+				)}
 			</S.ArticleItemList>
 		</S.Container>
 	);
