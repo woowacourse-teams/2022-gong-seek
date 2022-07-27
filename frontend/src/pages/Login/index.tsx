@@ -42,6 +42,7 @@ const Login = () => {
 		<S.Container>
 			<PageLayout
 				width="80%"
+				maxWidth="25rem"
 				height="14rem"
 				flexDirection="column"
 				justifyContent="space-around"
