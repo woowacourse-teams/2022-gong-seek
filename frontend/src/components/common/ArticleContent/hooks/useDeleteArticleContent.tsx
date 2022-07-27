@@ -2,9 +2,12 @@ import { deleteArticle } from '@/api/article';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
 
 const useDeleteArticleContent = () => {
-	const { isSuccess, isError, isLoading, error, mutate } = useMutation(deleteArticle);
+	const { isSuccess, isError, isLoading, error, mutate } = useMutation<unknown, AxiosError, string>(
+		deleteArticle,
+	);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -16,7 +19,7 @@ const useDeleteArticleContent = () => {
 
 	useEffect(() => {
 		if (isError) {
-			throw new Error(error as string);
+			throw new Error(error.message);
 		}
 	}, [isError]);
 

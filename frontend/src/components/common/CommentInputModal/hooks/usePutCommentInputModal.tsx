@@ -2,13 +2,18 @@ import { putComments } from '@/api/comments';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { CommentInputModalProps } from '@/components/common/CommentInputModal/CommentInputModal';
+import { AxiosError } from 'axios';
 
 const usePutCommentInputModal = (closeModal: CommentInputModalProps['closeModal']) => {
-	const { isLoading, isError, isSuccess, mutate, error } = useMutation(putComments);
+	const { isLoading, isError, isSuccess, mutate, error } = useMutation<
+		unknown,
+		AxiosError,
+		{ content: string; commentId: string }
+	>(putComments);
 
 	useEffect(() => {
 		if (isError) {
-			throw new Error(error as string);
+			throw new Error(error.message);
 		}
 	}, [isError]);
 
