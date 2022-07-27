@@ -1,12 +1,9 @@
 import * as S from './VoteItem.styles';
-import { AxiosError } from 'axios';
-import { useEffect } from 'react';
-import { useMutation } from 'react-query';
 
-import { checkVoteItems } from '@/api/vote';
 import Loading from '@/components/common/Loading/Loading';
-import { queryClient } from '@/index';
+
 import { convertIdxToVoteColorKey } from '@/utils/converter';
+import usePostVoteItem from '@/pages/Discussion/hooks/usePostVoteItem';
 
 export interface VoteItemProps {
 	title: string;
@@ -18,30 +15,20 @@ export interface VoteItemProps {
 
 const VoteItem = ({ title, itemVotes, totalVotes, idx, name }: VoteItemProps) => {
 	const progressivePercent = Math.floor((itemVotes / totalVotes) * 100);
-	const { isLoading, isError, mutate, isSuccess } = useMutation<
-		unknown,
-		AxiosError,
-		{ articleId: string; voteId: string }
-	>(checkVoteItems);
-
-	useEffect(() => {
-		if (isSuccess) {
-			queryClient.refetchQueries('vote');
-		}
-	}, [isSuccess]);
+	const { onChangeRadio, isLoading } = usePostVoteItem();
 
 	if (isLoading) return <Loading />;
-
-	if (isError) return <div>에러..!</div>;
-
-	const onChangeRadio = () => {
-		mutate({ articleId: name, voteId: String(idx) });
-	};
 
 	return (
 		<S.Container>
 			<S.TitleBox>
-				<S.RadioButton type="radio" name={name} onChange={onChangeRadio} />
+				<S.RadioButton
+					type="radio"
+					name={name}
+					onChange={() => {
+						onChangeRadio(name, idx);
+					}}
+				/>
 				<S.Title>
 					<p>{title}</p>
 					<S.ItemVotes>{`(${itemVotes}표)`}</S.ItemVotes>
@@ -51,7 +38,7 @@ const VoteItem = ({ title, itemVotes, totalVotes, idx, name }: VoteItemProps) =>
 			<S.ProgressiveBar>
 				<S.ProgressiveBarContent
 					percent={progressivePercent || 0}
-					colorKey={convertIdxToColorKey(idx)}
+					colorKey={convertIdxToVoteColorKey(idx)}
 				/>
 			</S.ProgressiveBar>
 		</S.Container>
