@@ -22,7 +22,7 @@ export const postWritingArticle = (article: WritingArticles) => {
 	});
 };
 
-interface PopularArticles {
+export interface PopularArticles {
 	articles: ArticleType[];
 	hastNext: boolean;
 }
