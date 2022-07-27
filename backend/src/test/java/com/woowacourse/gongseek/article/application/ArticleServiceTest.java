@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -239,8 +242,10 @@ public class ArticleServiceTest {
         );
     }
 
-    @Test
-    void 페이지가_10개씩_조회된_후_더이상_조회할_페이지가_없으면_hasNext는_false가_된다() {
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(ints = {0})
+    void 페이지가_10개씩_조회된_후_더이상_조회할_페이지가_없으면_hasNext는_false가_된다(Integer cursorViews) {
 
         List<Article> articles = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -249,7 +254,7 @@ public class ArticleServiceTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlesResponse response = articleService.getArticles(null, 0, Category.QUESTION.getValue(), "latest", 10);
+        ArticlesResponse response = articleService.getArticles(null, cursorViews, Category.QUESTION.getValue(), "latest", 10);
         List<ArticleAllResponse> responses = response.getArticles();
 
         assertAll(
@@ -257,5 +262,4 @@ public class ArticleServiceTest {
                 () -> assertThat(response.isHasNext()).isEqualTo(false)
         );
     }
-
 }
