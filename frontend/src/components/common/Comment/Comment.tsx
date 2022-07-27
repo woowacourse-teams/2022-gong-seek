@@ -1,4 +1,4 @@
-import CommentInputModal from '../CommentInputModal/CommentInputModal';
+import CommentInputModal from '@/components/common/CommentInputModal/CommentInputModal';
 import { useState } from 'react';
 
 import * as S from '@/components/common/Comment/Comment.styles';
