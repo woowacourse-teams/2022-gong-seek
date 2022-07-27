@@ -2,6 +2,7 @@ package com.woowacourse.gongseek.article.presentation;
 
 import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -56,5 +58,16 @@ public class ArticleController {
         articleService.delete(appMember, id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<ArticlePageResponse> getArticles(@RequestParam String category,
+                                                           @RequestParam String sort,
+                                                           @RequestParam(required = false) Long cursorId,
+                                                           @RequestParam(required = false) Integer cursorViews,
+                                                           @RequestParam Integer size) {
+        ArticlePageResponse response = articleService.getArticles(cursorId, cursorViews, category, sort, size);
+
+        return ResponseEntity.ok(response);
     }
 }

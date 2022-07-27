@@ -1,9 +1,17 @@
+buildscript {
+    ext {
+        queryDslVersion = "5.0.0"
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.7.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     // rest-docs
     id 'org.asciidoctor.jvm.convert' version "3.3.2"
+    // querydsl
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.woowacourse'
@@ -29,6 +37,10 @@ dependencies {
 
     // jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    //querydsl
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
     // spring-boot
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -87,4 +99,27 @@ task copyDocument(type: Copy) {
 
 build {
     dependsOn copyDocument
+}
+
+// ============= querydsl =============
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
 }
