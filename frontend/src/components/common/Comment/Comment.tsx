@@ -1,11 +1,10 @@
 import CommentInputModal from '../CommentInputModal/CommentInputModal';
-import { useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useState } from 'react';
 
-import { deleteComments } from '@/api/comments';
 import * as S from '@/components/common/Comment/Comment.styles';
 import Loading from '@/components/common/Loading/Loading';
-import { queryClient } from '@/index';
+import useDeleteComment from '@/components/common/Comment/hooks/useDeleteComment';
+
 import { CommentType } from '@/types/commentResponse';
 
 interface CommentProps extends CommentType {
@@ -15,28 +14,14 @@ interface CommentProps extends CommentType {
 const Comment = ({ id, author, content, createdAt, isAuthor, articleId }: CommentProps) => {
 	const [isEditCommentOpen, setIsEditCommentOpen] = useState(false);
 	const [commentPlaceholder, setCommentPlaceHolder] = useState('');
-	const { isLoading, isError, isSuccess, mutate } = useMutation(deleteComments);
+	const { isLoading, onDeleteButtonClick } = useDeleteComment();
 
 	const onUpdateButtonClick = () => {
 		setCommentPlaceHolder(content);
 		setIsEditCommentOpen(true);
 	};
 
-	const onDeleteButtonClick = () => {
-		if (confirm('정말로 삭제하시겠습니까?')) {
-			mutate({ commentId: String(id) });
-		}
-	};
-
-	useEffect(() => {
-		if (isSuccess) {
-			queryClient.refetchQueries('comments');
-		}
-	}, [isSuccess]);
-
 	if (isLoading) return <Loading />;
-
-	if (isError) return <div>에러...!</div>;
 
 	return (
 		<S.Container>
@@ -51,7 +36,13 @@ const Comment = ({ id, author, content, createdAt, isAuthor, articleId }: Commen
 				{isAuthor && (
 					<S.CommentAuthBox>
 						<S.Button onClick={onUpdateButtonClick}>수정</S.Button>
-						<S.Button onClick={onDeleteButtonClick}>삭제</S.Button>
+						<S.Button
+							onClick={() => {
+								onDeleteButtonClick(id);
+							}}
+						>
+							삭제
+						</S.Button>
 					</S.CommentAuthBox>
 				)}
 			</S.CommentHeader>
