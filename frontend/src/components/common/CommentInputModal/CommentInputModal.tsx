@@ -1,15 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import reactDom from 'react-dom';
-import { useMutation } from 'react-query';
 
-import { postComments, putComments } from '@/api/comments';
+import usePutCommentInputModal from './hooks/usePutCommentInputModal';
+import usePostCommentInputModal from './hooks/usePostCommentInputModal';
+
 import * as S from '@/components/common/CommentInputModal/CommentInputModal.styles';
 
 export interface CommentInputModalProps {
 	closeModal: () => void;
 	articleId: string;
 	modalType: 'edit' | 'register';
-	commentId?: string;
+	commentId: string;
 	placeholder: string;
 }
 
@@ -33,19 +34,8 @@ const CommentInputModal = ({
 }: CommentInputModalProps) => {
 	const commentModal = document.getElementById('comment-portal');
 	const [comment, setComment] = useState('');
-	const {
-		isLoading: postIsLoading,
-		isError: postIsError,
-		isSuccess: postIsSuccess,
-		mutate: postMutate,
-	} = useMutation(postComments);
-
-	const {
-		isLoading: putIsLoading,
-		isError: putIsError,
-		isSuccess: putIsSuccess,
-		mutate: putMutate,
-	} = useMutation(putComments);
+	const { isLoading: postIsLoading, mutate: postMutate } = usePostCommentInputModal(closeModal);
+	const { isLoading: putIsLoading, mutate: putMutate } = usePutCommentInputModal(closeModal);
 
 	if (commentModal === null) {
 		throw new Error('모달을 찾지 못하였습니다.');
@@ -56,29 +46,11 @@ const CommentInputModal = ({
 			postMutate({ content: comment, id: articleId });
 			return;
 		}
-		if (typeof commentId === 'undefined') {
-			throw new Error('댓글을 찾지 못하였습니다.');
-		}
 
 		putMutate({ content: comment, commentId });
 	};
 
-	useEffect(() => {
-		if (postIsSuccess) {
-			alert('댓글이 등록되었습니다.');
-			closeModal();
-			return;
-		}
-
-		if (putIsSuccess) {
-			alert('댓글이 수정되었습니다.');
-			closeModal();
-		}
-	});
-
 	if (putIsLoading || postIsLoading) return <div>로딩중...</div>;
-
-	if (postIsError || putIsError) return <div>에러...!</div>;
 
 	return reactDom.createPortal(
 		<S.CommentContainer>
