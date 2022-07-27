@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { HOME_URL } from '@/constants/url';
-import { ArticleType, CommonArticleType } from '@/types/articleResponse';
+import { AllArticleResponse, ArticleType, CommonArticleType } from '@/types/articleResponse';
 
 export interface WritingArticles {
 	title: string;
@@ -29,7 +29,7 @@ export interface PopularArticles {
 
 export const getPopularArticles = async () => {
 	const result = await axios.get<PopularArticles>(
-		`${HOME_URL}/api/articles?category=total&sort=views`,
+		`${HOME_URL}/api/articles?category=all&sort=views&size=10`,
 	);
 	return result.data;
 };
@@ -45,28 +45,28 @@ export const getDetailArticle = async (id: string) => {
 	return data;
 };
 
-interface ArticlesType {
-	articles: CommonArticleType[];
-}
-
-// export const getAllArticle = async (category: string, sort: string, pageParam = 0) => {
-// 	const { data } = await axios.get<ArticlesType>(
-// 		`${HOME_URL}/api/articles?category=${category}&sort=${sort}&page=${pageParam}&size=5`,
-// 	);
-// 	console.log(data);
-
-// 	return { articles: data.articles, hasNext: data.hasNext, pageParam: pageParam + 1 };
-// };
-
-export const getAllArticle = async (category: string, sort: string) => {
-	let tempSort = 'latest';
-	if (sort === '조회순') {
-		tempSort = 'views';
-	}
-	const { data } = await axios.get<ArticlesType>(
-		`${HOME_URL}/api/articles?category=${category}&sort=${tempSort}`,
+export const getAllArticle = async ({
+	category,
+	sort,
+	cursorId = '',
+	cursorViews = '',
+}: {
+	category: string;
+	sort: string;
+	cursorId?: string;
+	cursorViews?: string;
+}) => {
+	const currentSort = sort === '최신순' ? 'latest' : 'views';
+	const { data } = await axios.get<AllArticleResponse>(
+		`${HOME_URL}/api/articles?category=${category}&sort=${currentSort}&cursorId=${cursorId}&cursorViews=${cursorViews}&size=5`,
 	);
-	return data;
+
+	return {
+		articles: data.articles,
+		hasNext: data.hasNext,
+		cursorId: data.articles[data.articles.length - 1].id,
+		cursorViews: data.articles[data.articles.length - 1].views,
+	};
 };
 
 export const postArticle = (article: { id: string; title: string; content: string }) => {
