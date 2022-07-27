@@ -1,57 +1,26 @@
-import { AxiosError, AxiosResponse } from 'axios';
-import { useEffect, useRef } from 'react';
-import { useState } from 'react';
-import { useMutation } from 'react-query';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useParams } from 'react-router-dom';
 
-import { putArticle } from '@/api/article';
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import ToastUiEditor from '@/pages/WritingArticles/ToastUiEditor/ToastUiEditor';
+import usePostWritingArticle from '@/pages/UpdateWriting/hooks/usePostUpdateWritingArticle';
+
 import * as S from '@/pages/WritingArticles/index.styles';
-import { articleState } from '@/store/articleState';
-import { Editor } from '@toast-ui/react-editor';
 
 const UpdateWriting = () => {
 	const { id } = useParams();
 	const { category } = useParams();
-	const navigate = useNavigate();
-	const tempArticle = useRecoilValue(articleState);
-
-	const { data, isError, isSuccess, isLoading, error, mutate } = useMutation<
-		AxiosResponse<{ id: number; category: string }>,
-		AxiosError,
-		{ title: string; content: string; id: string }
-	>(putArticle);
-
-	const content = useRef<Editor | null>(null);
-	const [title, setTitle] = useState(tempArticle.title);
-
-	useEffect(() => {
-		if (isSuccess) {
-			navigate(`/articles/${data.data.category}/${data.data.id}`);
-		}
-	}, [isSuccess]);
 
 	if (id === undefined || category === undefined) {
 		throw new Error('id와  category 값을 가지고 오지 못하였습니다');
 	}
 
+	const { isLoading, title, setTitle, tempArticle, content, handleUpdateButtonClick } =
+		usePostWritingArticle();
+
 	if (isLoading) {
 		return <Loading />;
 	}
-
-	if (isError) {
-		return <div>${`${error} 발생`}</div>;
-	}
-
-	const handleUpdateButtonClick = () => {
-		if (content.current === null) {
-			return;
-		}
-		mutate({ title, content: content.current.getInstance().getMarkdown(), id });
-	};
 
 	return (
 		<S.Container>
@@ -84,7 +53,12 @@ const UpdateWriting = () => {
 			<S.Content>
 				<ToastUiEditor initContent={tempArticle.content} ref={content} />
 			</S.Content>
-			<S.SubmitButton type="button" onClick={handleUpdateButtonClick}>
+			<S.SubmitButton
+				type="button"
+				onClick={() => {
+					handleUpdateButtonClick(id);
+				}}
+			>
 				수정하기
 			</S.SubmitButton>
 		</S.Container>
