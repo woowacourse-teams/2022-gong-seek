@@ -24,7 +24,7 @@ public class GithubOAuthClient implements OAuthClient {
     private static final String GITHUB_ACCESS_URL_SUFFIX = "/login/oauth/access_token";
     private static final String TOKEN = "token ";
 
-    private final String accessTokenBaseUrl;
+    private final String baseUrl;
     private final String profileUrl;
     private final String clientId;
     private final String clientSecret;
@@ -34,14 +34,14 @@ public class GithubOAuthClient implements OAuthClient {
     public GithubOAuthClient(
             @Value("${security.oauth2.client-id}") String clientId,
             @Value("${security.oauth2.client-secret}") String clientSecret,
-            @Value("${github.url.base}") String accessTokenBaseUrl,
+            @Value("${github.url.base}") String baseUrl,
             @Value("${github.url.profile}") String profileUrl,
             ObjectMapper objectMapper,
             RestTemplate restTemplate
     ) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
-        this.accessTokenBaseUrl = accessTokenBaseUrl;
+        this.baseUrl = baseUrl;
         this.profileUrl = profileUrl;
         this.objectMapper = objectMapper;
         this.restTemplate = restTemplate;
@@ -49,7 +49,7 @@ public class GithubOAuthClient implements OAuthClient {
 
     @Override
     public String getRedirectUrl() {
-        return String.format(accessTokenBaseUrl + LOGIN_URL_SUFFIX, clientId, REDIRECT_URL);
+        return String.format(baseUrl + LOGIN_URL_SUFFIX, clientId, REDIRECT_URL);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class GithubOAuthClient implements OAuthClient {
 
         HttpEntity<GithubAccessTokenRequest> entity = new HttpEntity<>(accessTokenRequest, headers);
         GithubAccessTokenResponse accessTokenResponse = restTemplate.exchange(
-                accessTokenBaseUrl + GITHUB_ACCESS_URL_SUFFIX,
+                baseUrl + GITHUB_ACCESS_URL_SUFFIX,
                 HttpMethod.POST,
                 entity,
                 GithubAccessTokenResponse.class
