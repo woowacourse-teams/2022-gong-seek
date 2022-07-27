@@ -25,6 +25,12 @@ const Layout = styled.div`
 const Content = styled.main`
 	width: 100%;
 	padding-bottom: 7rem;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: calc(100% - ${({ theme }) => theme.size.SIZE_160} * 2);
+		padding: 1rem ${({ theme }) => theme.size.SIZE_160};
+		justify-content: space-between;
+	}
 `;
 
 const App = () => {

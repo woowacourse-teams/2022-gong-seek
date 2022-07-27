@@ -4,7 +4,13 @@ import * as S from '@/pages/CategorySelector/CategorySelector.styles';
 
 const CategorySelector = () => (
 	<S.Container>
-		<PageLayout width="80%" height="16rem" flexDirection="column" justifyContent="space-around">
+		<PageLayout
+			width="80%"
+			maxWidth="25rem"
+			height="16rem"
+			flexDirection="column"
+			justifyContent="space-around"
+		>
 			<h2 css={mobileTitleSecondary}>글쓰기 카테고리 선택</h2>
 			<S.CategoryButtonBox>
 				<S.StyledLink to="/article/question">
