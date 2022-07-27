@@ -10,6 +10,7 @@
             <pattern>${LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${BACKUP_LOCATION}/${DEBUG_LOCATION}/info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
             <maxHistory>${MAX_HISTORY}</maxHistory>
         </rollingPolicy>
