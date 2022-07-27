@@ -13,7 +13,8 @@
 		"^(@|asset)(.*|$)",
 		"^(@|mock)(.*|$)",
 		"^(@|styled-components)(.*|$)",
-		"^(@|style)(.*|$)"
+		"^(@|style)(.*|$)",
+		"^(@|*)(.styles|$)"
 	],
 	"importOrderSeparation": true,
 	"singleQuote": true,
