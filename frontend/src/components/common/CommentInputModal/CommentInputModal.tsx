@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import reactDom from 'react-dom';
 
-import usePutCommentInputModal from './hooks/usePutCommentInputModal';
-import usePostCommentInputModal from './hooks/usePostCommentInputModal';
+import usePutCommentInputModal from '@/components/common/CommentInputModal/hooks/usePutCommentInputModal';
+import usePostCommentInputModal from '@/components/common/CommentInputModal/hooks/usePostCommentInputModal';
 
 import * as S from '@/components/common/CommentInputModal/CommentInputModal.styles';
 
