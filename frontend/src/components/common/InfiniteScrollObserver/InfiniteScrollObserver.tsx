@@ -1,9 +1,12 @@
+import { infiniteArticleResponse } from '@/types/articleResponse';
 import { useEffect, useRef } from 'react';
+import { InfiniteQueryObserverResult } from 'react-query';
 
 interface infiniteScrollObserverProps {
 	children: React.ReactNode;
 	hasNext: boolean;
-	fetchNextPage: () => void;
+	fetchNextPage: () => Promise<InfiniteQueryObserverResult<infiniteArticleResponse, Error>>;
+
 }
 
 const InfiniteScrollObserver = ({
@@ -20,12 +23,17 @@ const InfiniteScrollObserver = ({
 	});
 
 	useEffect(() => {
-		if (endFlag.current && hasNext) {
+		if (!endFlag.current) return;
+		if (hasNext) {
 			intersectionObserver.observe(endFlag.current);
+			return;
 		}
-		if (endFlag.current && !hasNext) {
+		intersectionObserver.unobserve(endFlag.current);
+
+		return () => {
+			if (!endFlag.current) return;
 			intersectionObserver.unobserve(endFlag.current);
-		}
+		};
 	}, [hasNext, endFlag.current]);
 
 	return (
