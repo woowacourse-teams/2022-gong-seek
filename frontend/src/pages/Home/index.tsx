@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
 import Loading from '@/components/common/Loading/Loading';
+import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 import SortDropdown from '@/pages/CategoryArticles/SortDropdown/SortDropDown';
 import PopularArticle from '@/pages/Home//PopularArticle/PopularArticle';
 import useGetAllArticles from '@/pages/Home/hooks/useGetAllArticles';
 
 import * as S from '@/pages/Home/index.styles';
-import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 
 const Home = () => {
 	const endFlag = useRef<HTMLDivElement>(null);
@@ -56,9 +56,9 @@ const Home = () => {
 				<SortDropdown sortIndex={sortIndex} setSortIndex={setSortIndex} />
 			</S.CategoryTitleContainer>
 			{data ? (
-				<InfiniteScrollObserver hasNext={data?.pages[-1].hasNext} fetchNextPage={fetchNextPage}>
+				<InfiniteScrollObserver hasNext={data.pages[-1].hasNext} fetchNextPage={fetchNextPage}>
 					<S.ArticleItemList>
-						{data?.pages.map(({ articles }) =>
+						{data.pages.map(({ articles }) =>
 							articles.map((item) => (
 								<ArticleItem
 									key={item.id}
