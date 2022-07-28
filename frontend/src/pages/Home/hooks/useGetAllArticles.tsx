@@ -11,7 +11,7 @@ interface infiniteArticleResponse extends AllArticleResponse {
 const useGetAllArticles = () => {
 	const [currentCategory, setCurrentCategory] = useState('question');
 	const [sortIndex, setSortIndex] = useState('최신순');
-	const { data, isError, isLoading, isSuccess, error, refetch } = useInfiniteQuery<
+	const { data, isError, isLoading, isSuccess, error, refetch, fetchNextPage } = useInfiniteQuery<
 		infiniteArticleResponse,
 		Error
 	>(
@@ -51,6 +51,7 @@ const useGetAllArticles = () => {
 		setCurrentCategory,
 		sortIndex,
 		setSortIndex,
+		fetchNextPage,
 	};
 };
 
