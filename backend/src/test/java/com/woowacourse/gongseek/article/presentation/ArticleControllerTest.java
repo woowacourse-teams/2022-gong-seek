@@ -109,7 +109,7 @@ class ArticleControllerTest {
                 1,
                 LocalDateTime.now()
         );
-        given(articleService.findOne(any(), any())).willReturn(response);
+        given(articleService.getOne(any(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/{id}", 1L)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer token")
@@ -143,7 +143,7 @@ class ArticleControllerTest {
                 1,
                 LocalDateTime.now()
         );
-        given(articleService.findOne(any(), any())).willReturn(response);
+        given(articleService.getOne(any(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/{id}", 1L)
                 .characterEncoding("UTF-8"));

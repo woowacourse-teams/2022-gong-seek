@@ -5,6 +5,7 @@ import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.application.CommentService;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentsResponse;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,8 @@ public class CommentController {
     public ResponseEntity<Void> create(
             @AuthenticationPrinciple AppMember appMember,
             @PathVariable Long articleId,
-            @RequestBody CommentRequest commentRequest) {
+            @Valid @RequestBody CommentRequest commentRequest
+    ) {
         commentService.save(appMember, articleId, commentRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -38,7 +40,7 @@ public class CommentController {
             @AuthenticationPrinciple AppMember appMember,
             @PathVariable Long articleId
     ) {
-        return ResponseEntity.ok(commentService.getComments(appMember, articleId));
+        return ResponseEntity.ok(commentService.getAllByArticleId(appMember, articleId));
     }
 
     @PutMapping("/comments/{commentId}")

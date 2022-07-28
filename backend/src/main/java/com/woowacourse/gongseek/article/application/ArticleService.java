@@ -30,7 +30,7 @@ public class ArticleService {
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
-        Article article = articleRepository.save(articleRequest.toEntity(findMember(appMember)));
+        Article article = articleRepository.save(articleRequest.toEntity(getMember(appMember)));
 
         return new ArticleIdResponse(article);
     }
@@ -41,19 +41,19 @@ public class ArticleService {
         }
     }
 
-    @Transactional
-    public ArticleResponse findOne(AppMember appMember, Long id) {
-        Article article = findArticle(id);
+    public ArticleResponse getOne(AppMember appMember, Long id) {
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
         article.addViews();
         if (appMember.isGuest()) {
             return new ArticleResponse(article, false);
         }
-        return new ArticleResponse(article, article.isAuthor(findMember(appMember)));
+        return new ArticleResponse(article, article.isAuthor(getMember(appMember)));
     }
 
     @Transactional(readOnly = true)
     public ArticlePageResponse getArticles(Long cursorId, Integer cursorViews, String category, String sortType,
-                                           int size) {
+            int size) {
         List<ArticlePreviewResponse> articles = articleRepository.findAllByPage(cursorId, cursorViews, category,
                         sortType, size).stream()
                 .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))
@@ -83,25 +83,25 @@ public class ArticleService {
 
     private Article checkAuthorization(AppMember appMember, Long id) {
         validateGuest(appMember);
-        Article article = findArticle(id);
-        Member member = findMember(appMember);
+        Article article = getArticle(id);
+        Member member = getMember(appMember);
         validateAuthor(article, member);
         return article;
-    }
-
-    private Article findArticle(Long id) {
-        return articleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
-    }
-
-    private Member findMember(AppMember appMember) {
-        return memberRepository.findById(appMember.getPayload())
-                .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
     }
 
     private void validateAuthor(Article article, Member member) {
         if (!article.isAuthor(member)) {
             throw new IllegalStateException("작성자만 권한이 있습니다.");
         }
+    }
+
+    private Member getMember(AppMember appMember) {
+        return memberRepository.findById(appMember.getPayload())
+                .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
+    }
+
+    private Article getArticle(Long id) {
+        return articleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
     }
 }

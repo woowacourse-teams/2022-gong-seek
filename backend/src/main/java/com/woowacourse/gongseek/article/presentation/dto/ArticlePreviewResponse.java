@@ -25,7 +25,7 @@ public class ArticlePreviewResponse {
     private LocalDateTime createdAt;
 
     public static ArticlePreviewResponse of(Article article, int commentCount) {
-        
+
         return new ArticlePreviewResponseBuilder()
                 .id(article.getId())
                 .title(article.getTitle())
