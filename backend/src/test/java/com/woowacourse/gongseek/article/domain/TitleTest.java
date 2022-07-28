@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class TitleTest {
 
     @Test
-    void 타이틀의_길이는_0부터_500이여야_한다() {
+    void 타이틀을_생성한다() {
         String value = "a".repeat(500);
         Title title = new Title(value);
 
