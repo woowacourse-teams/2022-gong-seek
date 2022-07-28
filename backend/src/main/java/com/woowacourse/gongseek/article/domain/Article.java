@@ -31,7 +31,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Article {
 
     private static final int INITIAL_VIEWS = 0;
-    private static final int MIN_TITLE_LENGTH = 0;
+    private static final int MIN_TITLE_LENGTH = 1;
     private static final int MAX_TITLE_LENGTH = 500;
     private static final int MAX_CONTENT_LENGTH = 1000;
 
@@ -61,7 +61,7 @@ public class Article {
     private int views;
 
     public Article(String title, String content, Category category, Member member) {
-        validateTitleLength(title);
+        validateTitleLength(title.trim());
         validateContentLength(content);
         this.title = title;
         this.content = content;
@@ -79,7 +79,7 @@ public class Article {
     }
 
     private void validateTitleLength(String title) {
-        if (title.trim().length() <= MIN_TITLE_LENGTH) {
+        if (title.length() < MIN_TITLE_LENGTH) {
             throw new ArticleTitleEmptyException();
         }
         if (title.length() > MAX_TITLE_LENGTH) {
