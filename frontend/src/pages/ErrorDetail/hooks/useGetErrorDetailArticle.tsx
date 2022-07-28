@@ -7,10 +7,10 @@ import { useQuery } from 'react-query';
 import { useSetRecoilState } from 'recoil';
 
 const useGetErrorDetailArticle = (id: string) => {
-	const { data, isError, isSuccess, isLoading, error, isIdle, remove } = useQuery<
-		ArticleType,
-		AxiosError
-	>('detail-article', () => getDetailArticle(id));
+	const { data, isError, isSuccess, isLoading, error, isIdle } = useQuery<ArticleType, AxiosError>(
+		['detail-article', `article${id}`],
+		() => getDetailArticle(id),
+	);
 	const setTempArticle = useSetRecoilState(articleState);
 
 	useEffect(() => {
@@ -25,7 +25,7 @@ const useGetErrorDetailArticle = (id: string) => {
 		}
 	}, [isSuccess]);
 
-	return { remove, isSuccess, isLoading, data, isIdle };
+	return { isSuccess, isLoading, data, isIdle };
 };
 
 export default useGetErrorDetailArticle;
