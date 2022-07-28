@@ -8,13 +8,21 @@ import PopularArticle from '@/pages/Home//PopularArticle/PopularArticle';
 import useGetAllArticles from '@/pages/Home/hooks/useGetAllArticles';
 
 import * as S from '@/pages/Home/index.styles';
+import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 
 const Home = () => {
 	const endFlag = useRef<HTMLDivElement>(null);
 	const navigate = useNavigate();
 
-	const { data, isLoading, currentCategory, setCurrentCategory, sortIndex, setSortIndex } =
-		useGetAllArticles();
+	const {
+		data,
+		isLoading,
+		currentCategory,
+		setCurrentCategory,
+		sortIndex,
+		setSortIndex,
+		fetchNextPage,
+	} = useGetAllArticles();
 
 	if (typeof data !== 'undefined') {
 		if (data.pages.length === 0) {
@@ -47,19 +55,25 @@ const Home = () => {
 				</S.CategoryTitleBox>
 				<SortDropdown sortIndex={sortIndex} setSortIndex={setSortIndex} />
 			</S.CategoryTitleContainer>
-			<S.ArticleItemList>
-				{data?.pages.map(({ articles }) =>
-					articles.map((item) => (
-						<ArticleItem
-							key={item.id}
-							article={item}
-							onClick={() => {
-								navigate(`/articles/${currentCategory}/${item.id}`);
-							}}
-						/>
-					)),
-				)}
-			</S.ArticleItemList>
+			{data ? (
+				<InfiniteScrollObserver hasNext={data?.pages[-1].hasNext} fetchNextPage={fetchNextPage}>
+					<S.ArticleItemList>
+						{data?.pages.map(({ articles }) =>
+							articles.map((item) => (
+								<ArticleItem
+									key={item.id}
+									article={item}
+									onClick={() => {
+										navigate(`/articles/${currentCategory}/${item.id}`);
+									}}
+								/>
+							)),
+						)}
+					</S.ArticleItemList>
+				</InfiniteScrollObserver>
+			) : (
+				<div>데이터가 존재하지 않습니다</div>
+			)}
 		</S.Container>
 	);
 };
