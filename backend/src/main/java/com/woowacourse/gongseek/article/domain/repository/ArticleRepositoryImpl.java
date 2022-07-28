@@ -16,9 +16,8 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Article> findAllByPage(Long cursorId, Integer cursorViews, String category,
-                                       String sortType, int pageSize) {
-
+    public List<Article> findAllByPage(Long cursorId, Integer cursorViews, String category, String sortType,
+            int pageSize) {
         JPAQuery<Article> query = queryFactory
                 .selectFrom(article)
                 .where(
@@ -27,7 +26,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .limit(pageSize + 1);
 
         if (sortType.equals("views")) {
-            return query.orderBy(article.views.desc(), article.id.desc()).fetch();
+            return query.orderBy(article.views.value.desc(), article.id.desc()).fetch();
         }
         return query.orderBy(article.id.desc()).fetch();
     }
@@ -38,9 +37,9 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 return null;
             }
 
-            return article.views.eq(cursorViews)
+            return article.views.value.eq(cursorViews)
                     .and(article.id.lt(cursorId))
-                    .or(article.views.lt(cursorViews));
+                    .or(article.views.value.lt(cursorViews));
         }
 
         return articleIdStatus(cursorId);

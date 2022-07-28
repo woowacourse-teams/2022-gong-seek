@@ -3,6 +3,7 @@ package com.woowacourse.gongseek.article.domain;
 import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
@@ -27,20 +28,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 public class Article {
 
-    private static final int INITIAL_VIEWS = 0;
-    private static final int MIN_TITLE_LENGTH = 0;
-    private static final int MAX_TITLE_LENGTH = 500;
-    private static final int MAX_CONTENT_LENGTH = 1000;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String title;
+    @Embedded
+    private Title title;
 
-    @Column(length = 1_000)
-    private String content;
+    @Embedded
+    private Content content;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
@@ -51,20 +47,20 @@ public class Article {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @Embedded
+    private Views views;
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    private int views;
 
     public Article(String title, String content, Category category, Member member) {
-        validateTitleLength(title);
-        validateContentLength(content);
-        this.title = title;
-        this.content = content;
+        this.title = new Title(title);
+        this.content = new Content(content);
         this.category = category;
         this.member = member;
-        this.views = INITIAL_VIEWS;
+        this.views = new Views();
     }
 
     public boolean isAuthor(Member member) {
@@ -72,25 +68,23 @@ public class Article {
     }
 
     public void addViews() {
-        this.views++;
-    }
-
-    private void validateTitleLength(String title) {
-        if (title.trim().length() <= MIN_TITLE_LENGTH || title.length() > MAX_TITLE_LENGTH) {
-            throw new IllegalArgumentException("타이틀의 길이는 0 이상 500 이하여야합니다.");
-        }
-    }
-
-    private void validateContentLength(String content) {
-        if (content.length() > MAX_CONTENT_LENGTH) {
-            throw new IllegalArgumentException("컨텐트의 길이는 1000 이하여야합니다.");
-        }
+        views.addValue();
     }
 
     public void update(String title, String content) {
-        validateTitleLength(title);
-        validateContentLength(content);
-        this.title = title;
-        this.content = content;
+        this.title = new Title(title);
+        this.content = new Content(content);
+    }
+
+    public String getTitle() {
+        return title.getValue();
+    }
+
+    public String getContent() {
+        return content.getValue();
+    }
+
+    public int getViews() {
+        return views.getValue();
     }
 }

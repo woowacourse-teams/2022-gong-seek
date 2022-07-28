@@ -99,7 +99,7 @@ class CommentControllerTest {
                 LocalDateTime.now()
         );
 
-        given(commentService.getComments(any(), any())).willReturn(
+        given(commentService.getAllByArticleId(any(), any())).willReturn(
                 new CommentsResponse(List.of(authorComment, nonAuthorComment)));
 
         mockMvc.perform(get("/api/articles/{articleId}/comments", 1)

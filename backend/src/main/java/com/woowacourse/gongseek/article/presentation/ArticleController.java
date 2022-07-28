@@ -9,6 +9,7 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,22 +33,21 @@ public class ArticleController {
     @PostMapping
     public ResponseEntity<ArticleIdResponse> create(
             @AuthenticationPrinciple AppMember appMember,
-            @RequestBody ArticleRequest articleRequest
+            @Valid @RequestBody ArticleRequest articleRequest
     ) {
         ArticleIdResponse articleIdResponse = articleService.save(appMember, articleRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(articleIdResponse);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArticleResponse> findOne(@AuthenticationPrinciple AppMember appMember,
-                                                   @PathVariable Long id) {
-        return ResponseEntity.ok(articleService.findOne(appMember, id));
+    public ResponseEntity<ArticleResponse> getOne(@AuthenticationPrinciple AppMember appMember, @PathVariable Long id) {
+        return ResponseEntity.ok(articleService.getOne(appMember, id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ArticleUpdateResponse> update(
             @AuthenticationPrinciple AppMember appMember,
-            @RequestBody ArticleUpdateRequest articleUpdateRequest,
+            @Valid @RequestBody ArticleUpdateRequest articleUpdateRequest,
             @PathVariable Long id
     ) {
         return ResponseEntity.ok(articleService.update(appMember, articleUpdateRequest, id));
@@ -56,16 +56,17 @@ public class ArticleController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@AuthenticationPrinciple AppMember appMember, @PathVariable Long id) {
         articleService.delete(appMember, id);
-
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    public ResponseEntity<ArticlePageResponse> getArticles(@RequestParam String category,
-                                                           @RequestParam String sort,
-                                                           @RequestParam(required = false) Long cursorId,
-                                                           @RequestParam(required = false) Integer cursorViews,
-                                                           @RequestParam Integer size) {
+    public ResponseEntity<ArticlePageResponse> getArticles(
+            @RequestParam String category,
+            @RequestParam String sort,
+            @RequestParam(required = false) Long cursorId,
+            @RequestParam(required = false) Integer cursorViews,
+            @RequestParam Integer size
+    ) {
         ArticlePageResponse response = articleService.getArticles(cursorId, cursorViews, category, sort, size);
 
         return ResponseEntity.ok(response);
