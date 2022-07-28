@@ -1,12 +1,7 @@
-import { AllArticleResponse } from '@/types/articleResponse';
+import { infiniteArticleResponse } from '@/types/articleResponse';
 import { useInfiniteQuery } from 'react-query';
 import { getAllArticle } from '@/api/article';
 import { useEffect, useState } from 'react';
-
-interface infiniteArticleResponse extends AllArticleResponse {
-	cursorId: number;
-	cursorViews: number;
-}
 
 const useGetAllArticles = () => {
 	const [currentCategory, setCurrentCategory] = useState('question');

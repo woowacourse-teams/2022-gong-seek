@@ -23,3 +23,8 @@ export interface AllArticleResponse {
 	articles: CommonArticleType[];
 	hasNext: boolean;
 }
+
+export interface infiniteArticleResponse extends AllArticleResponse {
+	cursorId: number;
+	cursorViews: number;
+}
