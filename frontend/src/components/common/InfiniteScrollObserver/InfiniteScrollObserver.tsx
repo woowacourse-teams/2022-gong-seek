@@ -22,12 +22,17 @@ const InfiniteScrollObserver = ({
 	});
 
 	useEffect(() => {
-		if (endFlag.current && hasNext) {
+		if (!endFlag.current) return;
+		if (hasNext) {
 			intersectionObserver.observe(endFlag.current);
+			return;
 		}
-		if (endFlag.current && !hasNext) {
+		intersectionObserver.unobserve(endFlag.current);
+
+		return () => {
+			if (!endFlag.current) return;
 			intersectionObserver.unobserve(endFlag.current);
-		}
+		};
 	}, [hasNext, endFlag.current]);
 
 	return (
