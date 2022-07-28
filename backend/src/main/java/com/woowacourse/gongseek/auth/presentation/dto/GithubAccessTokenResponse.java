@@ -17,4 +17,8 @@ public class GithubAccessTokenResponse {
 
     @JsonProperty("token_type")
     private String tokenType;
+
+    public GithubAccessTokenResponse(String token) {
+        this(token, null, null);
+    }
 }

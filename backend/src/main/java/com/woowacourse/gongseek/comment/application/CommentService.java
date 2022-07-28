@@ -31,15 +31,45 @@ public class CommentService {
 
     public void save(AppMember appMember, Long articleId, CommentRequest commentRequest) {
         validateGuest(appMember);
-        Member member = findMember(appMember);
-        Article article = findArticle(articleId);
+        Member member = getMember(appMember);
+        Article article = getArticle(articleId);
         Comment comment = new Comment(commentRequest.getContent(), member, article);
 
         commentRepository.save(comment);
     }
 
+    private void validateGuest(AppMember appMember) {
+        if (appMember.isGuest()) {
+            throw new NoAuthorizationException();
+        }
+    }
+
+    public void update(AppMember appMember, Long commentId, CommentRequest updateRequest) {
+        Comment comment = checkAuthorization(appMember, commentId);
+        comment.updateContent(updateRequest.getContent());
+    }
+
+    public void delete(AppMember appMember, Long commentId) {
+        Comment comment = checkAuthorization(appMember, commentId);
+        commentRepository.delete(comment);
+    }
+
+    private Comment checkAuthorization(AppMember appMember, Long commentId) {
+        validateGuest(appMember);
+        Comment comment = getComment(commentId);
+        Member member = getMember(appMember);
+        validateAuthor(member, comment);
+        return comment;
+    }
+
+    private void validateAuthor(Member member, Comment comment) {
+        if (!comment.isAuthor(member)) {
+            throw new NoAuthorizationException();
+        }
+    }
+
     @Transactional(readOnly = true)
-    public CommentsResponse findByArticleId(AppMember appMember, Long articleId) {
+    public CommentsResponse getAllByArticleId(AppMember appMember, Long articleId) {
         List<CommentResponse> responses = commentRepository.findAllByArticleId(articleId).stream()
                 .map(comment -> CommentResponse.of(comment, isAuthor(appMember, comment)))
                 .collect(Collectors.toList());
@@ -50,49 +80,21 @@ public class CommentService {
         if (appMember.isGuest()) {
             return false;
         }
-        Member member = findMember(appMember);
+        Member member = getMember(appMember);
         return comment.isAuthor(member);
     }
 
-    public void update(AppMember appMember, Long commentId, CommentRequest updateRequest) {
-        validateGuest(appMember);
-        Member member = findMember(appMember);
-        Comment comment = findComment(commentId);
-
-        if (!comment.isAuthor(member)) {
-            throw new NoAuthorizationException();
-        }
-        comment.updateContent(updateRequest.getContent());
-    }
-
-    public void delete(AppMember appMember, Long commentId) {
-        validateGuest(appMember);
-        Member member = findMember(appMember);
-        Comment comment = findComment(commentId);
-
-        if (!comment.isAuthor(member)) {
-            throw new NoAuthorizationException();
-        }
-        commentRepository.delete(comment);
-    }
-
-    private void validateGuest(AppMember appMember) {
-        if (appMember.isGuest()) {
-            throw new NoAuthorizationException();
-        }
-    }
-
-    private Member findMember(AppMember appMember) {
+    private Member getMember(AppMember appMember) {
         return memberRepository.findById(appMember.getPayload())
                 .orElseThrow(MemberNotFoundException::new);
     }
 
-    private Article findArticle(Long articleId) {
+    private Article getArticle(Long articleId) {
         return articleRepository.findById(articleId)
                 .orElseThrow(ArticleNotFoundException::new);
     }
 
-    private Comment findComment(Long commentId) {
+    private Comment getComment(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
     }

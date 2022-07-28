@@ -1,9 +1,10 @@
 package com.woowacourse.gongseek.common.exception;
 
 import com.woowacourse.gongseek.article.exception.ArticleCategoryNotFoundException;
-import com.woowacourse.gongseek.article.exception.ArticleContentLengthException;
+import com.woowacourse.gongseek.article.exception.ArticleContentNullOrEmptyException;
+import com.woowacourse.gongseek.article.exception.ArticleContentTooLongException;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
-import com.woowacourse.gongseek.article.exception.ArticleTitleEmptyException;
+import com.woowacourse.gongseek.article.exception.ArticleTitleNullOrEmptyException;
 import com.woowacourse.gongseek.article.exception.ArticleTitleTooLongException;
 import com.woowacourse.gongseek.auth.exception.EmptyTokenException;
 import com.woowacourse.gongseek.auth.exception.GithubAccessTokenLoadFailException;
@@ -12,9 +13,9 @@ import com.woowacourse.gongseek.auth.exception.InvalidTokenException;
 import com.woowacourse.gongseek.auth.exception.InvalidTokenTypeException;
 import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
 import com.woowacourse.gongseek.auth.exception.NoSuchAuthenticationDataException;
-import com.woowacourse.gongseek.comment.exception.CommentEmptyException;
-import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
 import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
+import com.woowacourse.gongseek.comment.exception.CommentNullOrEmptyException;
+import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import java.util.Arrays;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,8 @@ public enum ExceptionType {
 
     NOT_FOUND_EXCEPTION_TYPE("0000", "해당 에러 타입을 찾을 수 없습니다.", UnSupportedExceptionType.class),
 
-    GITHUB_ACCESS_TOKEN_LOAD_FAIL_EXCEPTION("1001", "Github API에서 Accesstoken을 받는것에 실패했습니다.", GithubAccessTokenLoadFailException.class),
+    GITHUB_ACCESS_TOKEN_LOAD_FAIL_EXCEPTION("1001", "Github API에서 Accesstoken을 받는것에 실패했습니다.",
+            GithubAccessTokenLoadFailException.class),
     GITHUB_USER_PROFILE_LOAD_FAIL_EXCEPTION("1002", "Github에서 사용자 정보을 받는것에 실패했습니다.",
             GithubUserProfileLoadFailException.class),
     EMPTY_TOKEN_EXCEPTION("1003", "토큰이 존재하지 않습니다.", EmptyTokenException.class),
@@ -39,13 +41,14 @@ public enum ExceptionType {
 
     ARTICLE_NOT_FOUND_EXCEPTION("3001", "게시글이 존재하지 않습니다.", ArticleNotFoundException.class),
     ARTICLE_TITLE_LENGTH_EXCEPTION("3002", "게시글 제목은 500자를 초과할 수 없습니다.", ArticleTitleTooLongException.class),
-    ARTICLE_TITLE_EMPTY_EXCEPTION("3003", "게시글 제목은 비어있을 수 없습니다.", ArticleTitleEmptyException.class),
-    ARTICLE_CONTENT_LENGTH_EXCEPTION("3004", "게시글 내용은 10000자를 초과할 수 없습니다.", ArticleContentLengthException.class),
+    ARTICLE_TITLE_NULL_OR_EMPTY_EXCEPTION("3003", "게시글 제목은 비어있을 수 없습니다.", ArticleTitleNullOrEmptyException.class),
+    ARTICLE_CONTENT_TOO_LONG_EXCEPTION("3004", "게시글 내용은 10000자를 초과할 수 없습니다.", ArticleContentTooLongException.class),
+    ARTICLE_CONTENT_NULL_OR_EMPTY_EXCEPTION("3003", "게시글 내용은 비어있을 수 없습니다.", ArticleContentNullOrEmptyException.class),
     ARTICLE_CATEGORY_NOT_FOUND_EXCEPTION("3005", "게시글의 카테고리가 존재하지 않습니다.", ArticleCategoryNotFoundException.class),
 
     COMMENT_NOT_FOUND_EXCEPTION("4001", "댓글이 존재하지 않습니다.", CommentNotFoundException.class),
-    COMMENT_EMPTY_EXCEPTION("4002", "댓글은 비어있을 수 없습니다.", CommentEmptyException.class),
-    COMMENT_LENGTH_EXCEPTION("4003", "댓글은 10000자를 초과할 수 없습니다.", CommentTooLongException.class),
+    COMMENT_NULL_OR_EMPTY_EXCEPTION("4002", "댓글은 비어있을 수 없습니다.", CommentNullOrEmptyException.class),
+    COMMENT_TOO_LONG_EXCEPTION("4003", "댓글은 10000자를 초과할 수 없습니다.", CommentTooLongException.class),
     ;
 
     private String errorCode;

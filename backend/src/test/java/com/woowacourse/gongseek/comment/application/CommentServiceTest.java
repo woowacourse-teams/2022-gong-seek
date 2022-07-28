@@ -60,7 +60,7 @@ class CommentServiceTest {
         LoginMember member = new LoginMember(this.member.getId());
 
         commentService.save(member, article.getId(), request);
-        List<CommentResponse> savedComments = commentService.findByArticleId(member, article.getId()).getComments();
+        List<CommentResponse> savedComments = commentService.getAllByArticleId(member, article.getId()).getComments();
 
         assertAll(
                 () -> assertThat(savedComments).hasSize(2),
@@ -98,7 +98,7 @@ class CommentServiceTest {
 
     @Test
     void 회원이_자신이_쓴_댓글을_조회한다() {
-        List<CommentResponse> savedComments = commentService.findByArticleId(new LoginMember(member.getId()),
+        List<CommentResponse> savedComments = commentService.getAllByArticleId(new LoginMember(member.getId()),
                 article.getId()).getComments();
         List<CommentResponse> comments = savedComments.stream()
                 .filter(commentResponse -> commentResponse.getIsAuthor().equals(Boolean.TRUE))
@@ -114,7 +114,7 @@ class CommentServiceTest {
     void 회원이_자신이_쓰지않은_댓글을_조회한다() {
         Member newMember = new Member("jurl", "jurlring", "avatarUrl");
         memberRepository.save(newMember);
-        List<CommentResponse> savedComments = commentService.findByArticleId(new LoginMember(newMember.getId()),
+        List<CommentResponse> savedComments = commentService.getAllByArticleId(new LoginMember(newMember.getId()),
                 article.getId()).getComments();
         List<CommentResponse> comments = savedComments.stream()
                 .filter(commentResponse -> commentResponse.getIsAuthor().equals(Boolean.TRUE))
@@ -125,7 +125,7 @@ class CommentServiceTest {
 
     @Test
     void 비회원이_댓글을_조회한다() {
-        List<CommentResponse> savedComments = commentService.findByArticleId(new GuestMember(),
+        List<CommentResponse> savedComments = commentService.getAllByArticleId(new GuestMember(),
                 article.getId()).getComments();
         List<CommentResponse> comments = savedComments.stream()
                 .filter(commentResponse -> commentResponse.getIsAuthor().equals(Boolean.TRUE))
@@ -137,12 +137,12 @@ class CommentServiceTest {
     @Test
     void 댓글을_수정한다() {
         LoginMember member = new LoginMember(this.member.getId());
-        List<CommentResponse> comments = commentService.findByArticleId(member, article.getId()).getComments();
+        List<CommentResponse> comments = commentService.getAllByArticleId(member, article.getId()).getComments();
         String updateContent = "update";
         CommentRequest updateRequest = new CommentRequest(updateContent);
 
         commentService.update(member, comments.get(0).getId(), updateRequest);
-        List<CommentResponse> savedComments = commentService.findByArticleId(member, article.getId()).getComments();
+        List<CommentResponse> savedComments = commentService.getAllByArticleId(member, article.getId()).getComments();
 
         assertThat(savedComments.get(0).getContent()).isEqualTo(updateContent);
     }
@@ -175,9 +175,8 @@ class CommentServiceTest {
     @Test
     void 댓글을_작성한_회원이_아닌_경우_수정할_수_없다() {
         Member newMember = memberRepository.save(new Member("judy", "judyhithub", "avatarUrl"));
-        assertThatThrownBy(
-                () -> commentService.update(new LoginMember(newMember.getId()), comment.getId(),
-                        new CommentRequest("update content")))
+        assertThatThrownBy(() -> commentService.update(new LoginMember(newMember.getId()), comment.getId(),
+                new CommentRequest("update content")))
                 .isInstanceOf(NoAuthorizationException.class)
                 .hasMessage("권한이 없습니다.");
     }
@@ -186,7 +185,7 @@ class CommentServiceTest {
     void 댓글을_삭제한다() {
         LoginMember member = new LoginMember(this.member.getId());
         commentService.delete(member, comment.getId());
-        List<CommentResponse> comments = commentService.findByArticleId(member, article.getId()).getComments();
+        List<CommentResponse> comments = commentService.getAllByArticleId(member, article.getId()).getComments();
 
         boolean isFind = comments.stream()
                 .anyMatch(comment -> comment.getId().equals(this.comment.getId()));
@@ -203,8 +202,7 @@ class CommentServiceTest {
 
     @Test
     void 댓글이_존재하지_않는_경우_삭제할_수_없다() {
-        assertThatThrownBy(
-                () -> commentService.delete(new LoginMember(member.getId()), -1L))
+        assertThatThrownBy(() -> commentService.delete(new LoginMember(member.getId()), -1L))
                 .isInstanceOf(CommentNotFoundException.class)
                 .hasMessage("댓글이 존재하지 않습니다.");
     }
@@ -219,8 +217,7 @@ class CommentServiceTest {
     @Test
     void 댓글을_작성한_회원이_아닌_경우_삭제할_수_없다() {
         Member newMember = memberRepository.save(new Member("judy", "judyhithub", "avatarUrl"));
-        assertThatThrownBy(
-                () -> commentService.delete(new LoginMember(newMember.getId()), comment.getId()))
+        assertThatThrownBy(() -> commentService.delete(new LoginMember(newMember.getId()), comment.getId()))
                 .isInstanceOf(NoAuthorizationException.class)
                 .hasMessage("권한이 없습니다.");
     }

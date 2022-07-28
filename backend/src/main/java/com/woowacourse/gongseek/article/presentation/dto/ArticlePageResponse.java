@@ -1,16 +1,16 @@
-package com.woowacourse.gongseek.comment.presentation.dto;
+package com.woowacourse.gongseek.article.presentation.dto;
 
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class CommentRequest {
+public class ArticlePageResponse {
 
-    @Length(max = 10_000)
-    private String content;
+    private List<ArticlePreviewResponse> articles;
+    private boolean hasNext;
 }

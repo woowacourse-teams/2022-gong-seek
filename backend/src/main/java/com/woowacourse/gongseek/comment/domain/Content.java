@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.comment.domain;
 
-import com.woowacourse.gongseek.comment.exception.CommentEmptyException;
+import com.woowacourse.gongseek.comment.exception.CommentNullOrEmptyException;
 import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Content {
 
-    private static final int MAX_CONTENT_LENGTH = 10000;
+    private static final int MAX_CONTENT_LENGTH = 10_000;
 
     @Lob
     @Column(name = "content")
@@ -28,7 +28,7 @@ public class Content {
 
     private void validateContentLength(String value) {
         if (Objects.isNull(value) || value.isBlank()) {
-            throw new CommentEmptyException();
+            throw new CommentNullOrEmptyException();
         }
         if (value.length() > MAX_CONTENT_LENGTH) {
             throw new CommentTooLongException();

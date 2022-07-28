@@ -2,13 +2,13 @@ package com.woowacourse.gongseek.auth.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
+import com.woowacourse.gongseek.auth.support.GithubClientFixtures;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -40,25 +40,30 @@ class AuthServiceTest {
 
     @Test
     void 엑세스토큰을_발급한다() {
-        given(githubOAuthClient.getMemberProfile(any()))
-                .willReturn(new GithubProfileResponse("1", "giron", "example@xxx"));
+        GithubClientFixtures 주디 = GithubClientFixtures.주디;
+        GithubProfileResponse profileResponse = new GithubProfileResponse(
+                주디.getGithubId(), 주디.getName(), 주디.getAvatarUrl());
+        given(githubOAuthClient.getMemberProfile(주디.getCode())).willReturn(profileResponse);
 
-        TokenResponse response = authService.generateAccessToken(new OAuthCodeRequest("code"));
+        TokenResponse response = authService.generateAccessToken(new OAuthCodeRequest(주디.getCode()));
 
         assertThat(response).isNotNull();
     }
 
     @Test
     void 기존_유저의_정보가_바뀌면_로그인을_했을때_업데이트되고_엑세스토큰을_발급한다() {
-        Member member = new Member("giron", "gyuchool", "qwesad@qwe");
+        GithubClientFixtures 주디 = GithubClientFixtures.주디;
+        GithubProfileResponse profileResponse = new GithubProfileResponse(
+                주디.getGithubId(), 주디.getName(), 주디.getAvatarUrl());
+        given(githubOAuthClient.getMemberProfile(주디.getCode())).willReturn(profileResponse);
+        Member member = new Member(주디.getGithubId(), 주디.getName(), "previous avatar url");
         memberRepository.save(member);
-        given(githubOAuthClient.getMemberProfile(any()))
-                .willReturn(new GithubProfileResponse("gyuchool", "giron", "example@xxx"));
 
-        TokenResponse response = authService.generateAccessToken(new OAuthCodeRequest("code"));
+        TokenResponse response = authService.generateAccessToken(new OAuthCodeRequest(주디.getCode()));
 
+        Member actual = memberRepository.findByGithubId(주디.getGithubId()).get();
         assertAll(
-                () -> assertThat(member.getAvatarUrl()).isEqualTo("example@xxx"),
+                () -> assertThat(actual.getAvatarUrl()).isEqualTo(주디.getAvatarUrl()),
                 () -> assertThat(response).isNotNull()
         );
     }
