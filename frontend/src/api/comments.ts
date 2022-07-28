@@ -1,6 +1,7 @@
+import axios from 'axios';
+
 import { HOME_URL } from '@/constants/url';
 import { CommentType } from '@/types/commentResponse';
-import axios from 'axios';
 
 export const postComments = ({ content, id }: { content: string; id: string }) => {
 	const accessToken = localStorage.getItem('accessToken');

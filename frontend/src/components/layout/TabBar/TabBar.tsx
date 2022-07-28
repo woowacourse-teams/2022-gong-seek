@@ -1,7 +1,8 @@
-import MenuSlider from '@/components/common/MenuSlider/MenuSlider';
-import * as S from '@/components/layout/TabBar/TabBar.style';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import MenuSlider from '@/components/common/MenuSlider/MenuSlider';
+import * as S from '@/components/layout/TabBar/TabBar.styles';
 
 const TabBar = () => {
 	const navigate = useNavigate();

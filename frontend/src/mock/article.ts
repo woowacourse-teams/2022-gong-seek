@@ -1,8 +1,9 @@
 import { rest } from 'msw';
-import { WritingArticles } from '@/api/article';
 import type { PathParams } from 'msw';
-import mockData from '@/mock/data/detailArticle.json';
+
+import { WritingArticles } from '@/api/article';
 import { HOME_URL } from '@/constants/url';
+import mockData from '@/mock/data/detailArticle.json';
 
 interface WritingArticlesWithId extends WritingArticles {
 	id: number;

@@ -1,5 +1,5 @@
-import { Meta, Story } from '@storybook/react';
 import Loading from '@/components/common/Loading/Loading';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'common/Loading',

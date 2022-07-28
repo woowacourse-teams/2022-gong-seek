@@ -1,5 +1,5 @@
-import { Meta, Story } from '@storybook/react';
 import CategoryArticles from '@/pages/CategoryArticles/CategoryArticles';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'pages/CategoryArticles',

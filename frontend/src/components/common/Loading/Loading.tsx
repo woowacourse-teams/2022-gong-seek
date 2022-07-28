@@ -1,4 +1,4 @@
-import * as S from '@/components/common/Loading/Loading.style';
+import * as S from '@/components/common/Loading/Loading.styles';
 
 const Loading = () => (
 	<S.Container aria-label="현재 로딩 중 화면입니다">

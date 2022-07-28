@@ -11,6 +11,7 @@ module.exports = {
 	},
 	devServer: {
 		historyApiFallback: true,
+		port: 3000,
 	},
 	mode: 'development',
 	resolve: {

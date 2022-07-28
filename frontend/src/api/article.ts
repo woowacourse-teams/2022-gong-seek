@@ -1,6 +1,7 @@
+import axios from 'axios';
+
 import { HOME_URL } from '@/constants/url';
 import { ArticleType, CommonArticleType } from '@/types/articleResponse';
-import axios from 'axios';
 
 export interface WritingArticles {
 	title: string;
@@ -21,7 +22,7 @@ export const postWritingArticle = (article: WritingArticles) => {
 	});
 };
 
-interface PopularArticles {
+export interface PopularArticles {
 	articles: ArticleType[];
 	hastNext: boolean;
 }

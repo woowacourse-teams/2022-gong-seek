@@ -1,5 +1,5 @@
-import { Meta, Story } from '@storybook/react';
 import VoteItem, { VoteItemProps } from '@/pages/Discussion/VoteItem/VoteItem';
+import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'components/VoteItem',

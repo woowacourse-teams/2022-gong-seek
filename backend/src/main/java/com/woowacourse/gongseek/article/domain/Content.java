@@ -36,6 +36,5 @@ public class Content {
     private void validateLength(String value) {
         if (value.length() > MAX_CONTENT_LENGTH) {
             throw new ArticleContentTooLongException();
-        }
     }
 }

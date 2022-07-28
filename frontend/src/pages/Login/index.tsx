@@ -1,46 +1,21 @@
-import { getGithubURL } from '@/api/login';
+import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import { mobileTitleSecondary } from '@/constants/titleType';
-import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
-import LoginButton from './LoginButton/LoginButton';
-import * as S from '@/pages/Login/index.style';
-import Loading from '@/components/common/Loading/Loading';
+import LoginButton from '@/pages/Login/LoginButton/LoginButton';
+import useGetLoginURL from '@/pages/Login/hooks/useGetLoginURL';
+
+import * as S from '@/pages/Login/index.styles';
 
 const Login = () => {
-	const { data, error, isError, isLoading, isSuccess, refetch } = useQuery(
-		'github-url',
-		getGithubURL,
-		{
-			enabled: false,
-		},
-	);
-	const [pageLoading, setPageLoading] = useState(false);
+	const { isLoading, handleLoginButtonClick } = useGetLoginURL();
 
-	const handleLoginButtonClick = () => {
-		refetch();
-	};
-
-	useEffect(() => {
-		if (isSuccess) {
-			setPageLoading(true);
-			window.location.href = data;
-		}
-	}, [isSuccess]);
-
-	if (isLoading || pageLoading) return <Loading />;
-
-	if (isError) {
-		if (error instanceof Error) {
-			return <div>{error.message}</div>;
-		}
-		return null;
-	}
+	if (isLoading) return <Loading />;
 
 	return (
 		<S.Container>
 			<PageLayout
 				width="80%"
+				maxWidth="25rem"
 				height="14rem"
 				flexDirection="column"
 				justifyContent="space-around"

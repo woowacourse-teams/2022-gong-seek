@@ -1,28 +1,17 @@
-import { getVoteItems } from '@/api/vote';
-import { useQuery } from 'react-query';
-import VoteItem from '@/pages/Discussion/VoteItem/VoteItem';
 import { MdOutlineHowToVote } from 'react-icons/md';
-import * as S from '@/pages/Discussion/Vote/Vote.styles';
-import { useEffect, useState } from 'react';
+
 import Loading from '@/components/common/Loading/Loading';
+import VoteItem from '@/pages/Discussion/VoteItem/VoteItem';
+
+import useGetVote from '@/pages/Discussion/hooks/useGetVote';
+
+import * as S from '@/pages/Discussion/Vote/Vote.styles';
 
 const Vote = ({ articleId }: { articleId: string }) => {
-	const { data, isLoading, isError, isSuccess } = useQuery('vote', () => getVoteItems(articleId));
-	const [totalCount, setTotalCount] = useState(0);
-
-	useEffect(() => {
-		if (isSuccess) {
-			setTotalCount(data.reduce((acc, cur) => acc + cur.count, 0));
-		}
-	});
+	const { data, isLoading, totalCount } = useGetVote(articleId);
 
 	if (isLoading) return <Loading />;
 
-	if (isError) return <div>에러...</div>;
-
-	if (typeof totalCount === 'undefined') {
-		throw new Error('데이터를 찾지 못하였습니다');
-	}
 	return (
 		<S.Container>
 			<S.VoteTitleBox>
