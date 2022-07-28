@@ -1,1 +1,1 @@
-export const HOME_URL = 'http://15.164.164.143:8080';
+export const HOME_URL = 'https://back.gongseek.site';
