@@ -1,9 +1,11 @@
+import { infiniteArticleResponse } from '@/types/articleResponse';
 import { useEffect, useRef } from 'react';
+import { InfiniteQueryObserverResult } from 'react-query';
 
 interface infiniteScrollObserverProps {
 	children: React.ReactNode;
 	hasNext: boolean;
-	fetchNextPage: () => void;
+	fetchNextPage: () => Promise<InfiniteQueryObserverResult<infiniteArticleResponse, Error>>;
 }
 
 const InfiniteScrollObserver = ({
