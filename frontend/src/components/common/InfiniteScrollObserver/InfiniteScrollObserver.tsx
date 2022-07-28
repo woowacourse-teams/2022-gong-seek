@@ -6,7 +6,7 @@ interface infiniteScrollObserverProps {
 	fetchNextPage: () => void;
 }
 
-const infiniteScrollObserver = ({
+const InfiniteScrollObserver = ({
 	children,
 	hasNext,
 	fetchNextPage,
@@ -36,4 +36,4 @@ const infiniteScrollObserver = ({
 	);
 };
 
-export default infiniteScrollObserver;
+export default InfiniteScrollObserver;
