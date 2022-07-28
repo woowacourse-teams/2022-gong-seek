@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class GithubOAuthClient implements OAuthClient {
 
-    private static final String REDIRECT_URL = "http://gongseek.site/callback";
+    private static final String REDIRECT_URL = "https://gongseek.site/callback";
     private static final String LOGIN_URL_SUFFIX = "/login/oauth/authorize?client_id=%s&redirect_uri=%s";
     private static final String GITHUB_ACCESS_URL_SUFFIX = "/login/oauth/access_token";
     private static final String TOKEN = "token ";

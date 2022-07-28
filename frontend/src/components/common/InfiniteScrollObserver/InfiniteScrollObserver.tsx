@@ -6,6 +6,7 @@ interface infiniteScrollObserverProps {
 	children: React.ReactNode;
 	hasNext: boolean;
 	fetchNextPage: () => Promise<InfiniteQueryObserverResult<infiniteArticleResponse, Error>>;
+
 }
 
 const InfiniteScrollObserver = ({
