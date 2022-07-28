@@ -11,11 +11,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class ContentTest {
 
     @Test
-    void 내용의_길이는_1부터_10000이여야_한다() {
+    void 내용을_생성한다() {
         String value = "a".repeat(10000);
-        var content = new Content(value);
+        Content content = new Content(value);
 
-        assertThat(content).isInstanceOf(Content.class);
+        assertThat(content.getValue()).isEqualTo(value);
     }
 
     @Test

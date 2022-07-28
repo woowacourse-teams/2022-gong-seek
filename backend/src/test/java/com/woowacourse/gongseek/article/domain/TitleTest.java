@@ -13,9 +13,9 @@ public class TitleTest {
     @Test
     void 타이틀의_길이는_0부터_500이여야_한다() {
         String value = "a".repeat(500);
-        var title = new Title(value);
+        Title title = new Title(value);
 
-        assertThat(title).isInstanceOf(Title.class);
+        assertThat(title.getValue()).isEqualTo(value);
     }
 
     @Test

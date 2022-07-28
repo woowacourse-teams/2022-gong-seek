@@ -13,9 +13,13 @@ class ArticleTest {
 
     @Test
     void 게시물을_생성한다() {
-        var article = new Article("title", "contetn", Category.QUESTION, member);
+        Article article = new Article("title", "content", Category.QUESTION, member);
 
-        assertThat(article).isInstanceOf(Article.class);
+        assertAll(
+                () -> assertThat(article.getTitle()).isEqualTo("title"),
+                () -> assertThat(article.getContent()).isEqualTo("content"),
+                () -> assertThat(article.getCategory()).isEqualTo(Category.QUESTION)
+        );
     }
 
     @Test
