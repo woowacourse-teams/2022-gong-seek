@@ -6,7 +6,7 @@ import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.ArticleTitleEmptyException;
 import com.woowacourse.gongseek.article.exception.ArticleTitleTooLongException;
 import com.woowacourse.gongseek.auth.exception.EmptyTokenException;
-import com.woowacourse.gongseek.auth.exception.GithubApiFailException;
+import com.woowacourse.gongseek.auth.exception.GithubAccessTokenLoadFailException;
 import com.woowacourse.gongseek.auth.exception.GithubUserProfileLoadFailException;
 import com.woowacourse.gongseek.auth.exception.InvalidTokenException;
 import com.woowacourse.gongseek.auth.exception.InvalidTokenTypeException;
@@ -26,7 +26,7 @@ public enum ExceptionType {
 
     NOT_FOUND_EXCEPTION_TYPE("0000", "해당 에러 타입을 찾을 수 없습니다.", UnSupportedExceptionType.class),
 
-    GITHUB_API_FAIL_EXCEPTION("1001", "Github API에서 Accesstoken을 받는것에 실패했습니다.", GithubApiFailException.class),
+    GITHUB_ACCESS_TOKEN_LOAD_FAIL_EXCEPTION("1001", "Github API에서 Accesstoken을 받는것에 실패했습니다.", GithubAccessTokenLoadFailException.class),
     GITHUB_USER_PROFILE_LOAD_FAIL_EXCEPTION("1002", "Github에서 사용자 정보을 받는것에 실패했습니다.",
             GithubUserProfileLoadFailException.class),
     EMPTY_TOKEN_EXCEPTION("1003", "토큰이 존재하지 않습니다.", EmptyTokenException.class),

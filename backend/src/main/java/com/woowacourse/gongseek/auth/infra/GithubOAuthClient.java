@@ -2,7 +2,7 @@ package com.woowacourse.gongseek.auth.infra;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.gongseek.auth.application.OAuthClient;
-import com.woowacourse.gongseek.auth.exception.GithubApiFailException;
+import com.woowacourse.gongseek.auth.exception.GithubAccessTokenLoadFailException;
 import com.woowacourse.gongseek.auth.exception.GithubUserProfileLoadFailException;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubAccessTokenRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubAccessTokenResponse;
@@ -76,7 +76,7 @@ public class GithubOAuthClient implements OAuthClient {
 
     private void validateToken(GithubAccessTokenResponse accessTokenResponse) {
         if (Objects.isNull(accessTokenResponse)) {
-            throw new GithubApiFailException();
+            throw new GithubAccessTokenLoadFailException();
         }
     }
 
