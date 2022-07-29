@@ -29,6 +29,7 @@ export const ArticleHandler = [
 		return res(
 			ctx.status(200),
 			ctx.json({
+				id: id,
 				title: filteredArticles.title,
 				content: filteredArticles.content,
 				isAuthor: true,
