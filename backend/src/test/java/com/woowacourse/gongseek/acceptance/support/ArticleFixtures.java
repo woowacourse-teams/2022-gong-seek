@@ -11,12 +11,12 @@ import org.springframework.http.MediaType;
 @SuppressWarnings("NonAsciiCharacters")
 public class ArticleFixtures {
 
-    public static ArticleIdResponse 게시물을_등록한다(TokenResponse tokenResponse) {
+    public static ArticleIdResponse 게시글을_등록한다(TokenResponse tokenResponse, String category) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ArticleRequest("title", "content", "question"))
+                .body(new ArticleRequest("title", "content", category))
                 .when()
                 .post("/api/articles")
                 .then().log().all()

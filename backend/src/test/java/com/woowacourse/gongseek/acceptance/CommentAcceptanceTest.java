@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시글을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.댓글을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.댓글을_삭제한다;
@@ -24,7 +24,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     @Test
     void 유저가_깃허브로_로그인을_하고_댓글을_등록할_수_있다() {
         TokenResponse 엑세스토큰 = 로그인을_한다(주디);
-        ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
+        ArticleIdResponse 게시글번호 = 게시글을_등록한다(엑세스토큰, "question");
 
         ExtractableResponse<Response> 댓글 = 댓글을_등록한다(엑세스토큰, 게시글번호);
 
@@ -42,7 +42,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     @Test
     void 댓글을_조회할_수_있다() {
         TokenResponse 엑세스토큰 = 로그인을_한다(주디);
-        ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
+        ArticleIdResponse 게시글번호 = 게시글을_등록한다(엑세스토큰, "question");
 
         댓글을_등록한다(엑세스토큰, 게시글번호);
 
@@ -54,7 +54,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     @Test
     void 댓글을_작성한_유저일_경우_댓글을_수정할_수_있다() {
         TokenResponse 엑세스토큰 = 로그인을_한다(주디);
-        ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
+        ArticleIdResponse 게시글번호 = 게시글을_등록한다(엑세스토큰, "question");
         댓글을_등록한다(엑세스토큰, 게시글번호);
         List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호).getComments();
 
@@ -66,7 +66,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     @Test
     void 댓글을_작성한_유저일_경우_댓글을_삭제할_수_있다() {
         TokenResponse 엑세스토큰 = 로그인을_한다(주디);
-        ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
+        ArticleIdResponse 게시글번호 = 게시글을_등록한다(엑세스토큰, "question");
         댓글을_등록한다(엑세스토큰, 게시글번호);
         List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호).getComments();
 
