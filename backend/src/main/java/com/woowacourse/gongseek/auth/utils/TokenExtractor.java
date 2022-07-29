@@ -18,6 +18,8 @@ public class TokenExtractor {
     }
 
     public static String extract(String token) {
+        validateNullToken(token);
+        validateTokenType(token);
         return token.substring(TOKEN_TYPE.length());
     }
 
