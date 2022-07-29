@@ -12,12 +12,8 @@ const ErrorDetail = () => {
 		throw new Error('id 값을 받아오지 못했습니다');
 	}
 
-	const { data: articleData, isLoading: isArticleLoading, remove } = useGetErrorDetailArticle(id);
+	const { data: articleData, isLoading: isArticleLoading } = useGetErrorDetailArticle(id);
 	const { data: commentData, isLoading: isCommentLoading } = useGetErrorDetailComment(id);
-
-	useEffect(() => {
-		remove();
-	}, []);
 
 	if (isCommentLoading || isArticleLoading) {
 		return <div>로딩중...</div>;
