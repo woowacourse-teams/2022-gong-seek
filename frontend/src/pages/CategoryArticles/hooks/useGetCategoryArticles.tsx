@@ -6,7 +6,7 @@ import { useInfiniteQuery } from 'react-query';
 const useGetCategoryArticles = (category: string) => {
 	const [sortIndex, setSortIndex] = useState('최신순');
 
-	const { data, isLoading, isError, error, refetch, fetchNextPage } = useInfiniteQuery<
+	const { data, isLoading, isError, isSuccess, error, refetch, fetchNextPage } = useInfiniteQuery<
 		infiniteArticleResponse,
 		Error
 	>(['articles', category], () => getAllArticle({ category, sort: sortIndex }), {
@@ -34,7 +34,7 @@ const useGetCategoryArticles = (category: string) => {
 		}
 	}, [isError]);
 
-	return { data, fetchNextPage, sortIndex, setSortIndex, isLoading };
+	return { data, fetchNextPage, sortIndex, setSortIndex, isLoading , isSuccess};
 };
 
 export default useGetCategoryArticles;
