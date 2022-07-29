@@ -6,4 +6,6 @@ import java.util.List;
 public interface ArticleRepositoryCustom {
 
     List<Article> findAllByPage(Long cursorId, Integer views, String category, String sortType, int pageSize);
+
+    List<Article> searchByTitleOrContentLike(Long cursorId, String searchText, int pageSize);
 }
