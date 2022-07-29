@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class ViewsTest {
 
     @Test
-    void 조회수를_생성한다(){
+    void 조회수를_생성한다() {
         Views views = new Views();
 
         assertThat(views.getValue()).isEqualTo(0);

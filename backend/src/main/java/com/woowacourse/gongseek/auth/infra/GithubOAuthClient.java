@@ -2,6 +2,8 @@ package com.woowacourse.gongseek.auth.infra;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.gongseek.auth.application.OAuthClient;
+import com.woowacourse.gongseek.auth.exception.GithubAccessTokenLoadFailException;
+import com.woowacourse.gongseek.auth.exception.GithubUserProfileLoadFailException;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubAccessTokenRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubAccessTokenResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
@@ -78,7 +80,7 @@ public class GithubOAuthClient implements OAuthClient {
 
     private void validateToken(GithubAccessTokenResponse accessTokenResponse) {
         if (Objects.isNull(accessTokenResponse)) {
-            throw new IllegalStateException("로그인이 실패했습니다.");
+            throw new GithubAccessTokenLoadFailException();
         }
     }
 
@@ -104,7 +106,7 @@ public class GithubOAuthClient implements OAuthClient {
 
     private void validateProfile(GithubProfileResponse profileResponse) {
         if (Objects.isNull(profileResponse)) {
-            throw new IllegalStateException("로그인이 실패했습니다.");
+            throw new GithubUserProfileLoadFailException();
         }
     }
 }

@@ -3,6 +3,8 @@ package com.woowacourse.gongseek.article.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.woowacourse.gongseek.article.exception.ArticleTitleNullOrEmptyException;
+import com.woowacourse.gongseek.article.exception.ArticleTitleTooLongException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -21,16 +23,16 @@ public class TitleTest {
     @Test
     void 타이틀이_null_이면_예외를_발생한다() {
         assertThatThrownBy(() -> new Title(null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("타이틀의 길이는 0 이상 500 이하여야합니다.");
+                .isInstanceOf(ArticleTitleNullOrEmptyException.class)
+                .hasMessage("게시글 제목은 비어있을 수 없습니다.");
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"", " "})
     void 타이틀이_빈_경우_예외를_발생한다(String value) {
         assertThatThrownBy(() -> new Title(value))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("타이틀의 길이는 0 이상 500 이하여야합니다.");
+                .isInstanceOf(ArticleTitleNullOrEmptyException.class)
+                .hasMessage("게시글 제목은 비어있을 수 없습니다.");
     }
 
     @Test
@@ -38,7 +40,7 @@ public class TitleTest {
         String title = "t".repeat(501);
 
         assertThatThrownBy(() -> new Title(title))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("타이틀의 길이는 0 이상 500 이하여야합니다.");
+                .isInstanceOf(ArticleTitleTooLongException.class)
+                .hasMessage("게시글 제목은 500자를 초과할 수 없습니다.");
     }
 }

@@ -1,5 +1,7 @@
 package com.woowacourse.gongseek.comment.domain;
 
+import com.woowacourse.gongseek.comment.exception.CommentNullOrEmptyException;
+import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -25,8 +27,11 @@ public class Content {
     }
 
     private void validateContentLength(String value) {
-        if (Objects.isNull(value) || value.isBlank() || value.length() > MAX_CONTENT_LENGTH) {
-            throw new IllegalArgumentException("댓글의 길이는 1~10000이여야 합니다.");
+        if (Objects.isNull(value) || value.isBlank()) {
+            throw new CommentNullOrEmptyException();
+        }
+        if (value.length() > MAX_CONTENT_LENGTH) {
+            throw new CommentTooLongException();
         }
     }
 }

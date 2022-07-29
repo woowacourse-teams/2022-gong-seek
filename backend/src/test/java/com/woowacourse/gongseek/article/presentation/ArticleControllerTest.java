@@ -25,6 +25,8 @@ import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
@@ -224,7 +226,8 @@ class ArticleControllerTest {
                 new AuthorDto("기론2", "프로필2 이미지 url"),
                 "내용입니다22", Category.DISCUSSION.getValue(), 10, 5, LocalDateTime.now());
 
-        ArticlePageResponse response = new ArticlePageResponse(List.of(articlePreviewResponse1, articlePreviewResponse2), false);
+        ArticlePageResponse response = new ArticlePageResponse(
+                List.of(articlePreviewResponse1, articlePreviewResponse2), false);
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
         given(articleService.getArticles(anyLong(), anyInt(), any(), any(), anyInt())).willReturn(response);

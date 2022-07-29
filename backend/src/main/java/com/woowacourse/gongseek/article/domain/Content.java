@@ -1,5 +1,7 @@
 package com.woowacourse.gongseek.article.domain;
 
+import com.woowacourse.gongseek.article.exception.ArticleContentNullOrEmptyException;
+import com.woowacourse.gongseek.article.exception.ArticleContentTooLongException;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -20,13 +22,19 @@ public class Content {
     private String value;
 
     public Content(String value) {
+        validateNullOrEmpty(value);
         validateLength(value);
         this.value = value;
     }
 
-    private void validateLength(String value) {
-        if (Objects.isNull(value) || value.isBlank() || value.length() > MAX_CONTENT_LENGTH) {
-            throw new IllegalArgumentException("내용의 길이는 1~10000이여야 합니다.");
+    private void validateNullOrEmpty(String value) {
+        if (Objects.isNull(value) || value.trim().isBlank()) {
+            throw new ArticleContentNullOrEmptyException();
         }
+    }
+
+    private void validateLength(String value) {
+        if (value.length() > MAX_CONTENT_LENGTH) {
+            throw new ArticleContentTooLongException();
     }
 }

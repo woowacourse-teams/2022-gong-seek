@@ -7,14 +7,18 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
+import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
+import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,8 +74,8 @@ class CommentServiceTest {
         CommentRequest request = new CommentRequest("content");
 
         assertThatThrownBy(() -> commentService.save(new GuestMember(), article.getId(), request))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("권한이 없는 사용자입니다.");
+                .isInstanceOf(NoAuthorizationException.class)
+                .hasMessage("권한이 없습니다.");
     }
 
     @Test
@@ -79,7 +83,7 @@ class CommentServiceTest {
         CommentRequest request = new CommentRequest("content");
 
         assertThatThrownBy(() -> commentService.save(new LoginMember(-1L), article.getId(), request))
-                .isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(MemberNotFoundException.class)
                 .hasMessage("회원이 존재하지 않습니다.");
     }
 
@@ -88,7 +92,7 @@ class CommentServiceTest {
         CommentRequest request = new CommentRequest("content");
 
         assertThatThrownBy(() -> commentService.save(new LoginMember(member.getId()), -1L, request))
-                .isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(ArticleNotFoundException.class)
                 .hasMessage("게시글이 존재하지 않습니다.");
     }
 
@@ -148,15 +152,15 @@ class CommentServiceTest {
         CommentRequest request = new CommentRequest("content");
 
         assertThatThrownBy(() -> commentService.update(new GuestMember(), article.getId(), request))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("권한이 없는 사용자입니다.");
+                .isInstanceOf(NoAuthorizationException.class)
+                .hasMessage("권한이 없습니다.");
     }
 
     @Test
     void 댓글이_존재하지_않는_경우_수정할_수_없다() {
         assertThatThrownBy(
                 () -> commentService.update(new LoginMember(member.getId()), -1L, new CommentRequest("update content")))
-                .isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(CommentNotFoundException.class)
                 .hasMessage("댓글이 존재하지 않습니다.");
     }
 
@@ -164,18 +168,17 @@ class CommentServiceTest {
     void 회원이_아닌_경우_댓글을_수정할_수_없다() {
         assertThatThrownBy(() -> commentService.update(new LoginMember(-1L), comment.getId(),
                 new CommentRequest("update content")))
-                .isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(MemberNotFoundException.class)
                 .hasMessage("회원이 존재하지 않습니다.");
     }
 
     @Test
     void 댓글을_작성한_회원이_아닌_경우_수정할_수_없다() {
         Member newMember = memberRepository.save(new Member("judy", "judyhithub", "avatarUrl"));
-        assertThatThrownBy(
-                () -> commentService.update(new LoginMember(newMember.getId()), comment.getId(),
-                        new CommentRequest("update content")))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("댓글 작성자만 권한이 있습니다.");
+        assertThatThrownBy(() -> commentService.update(new LoginMember(newMember.getId()), comment.getId(),
+                new CommentRequest("update content")))
+                .isInstanceOf(NoAuthorizationException.class)
+                .hasMessage("권한이 없습니다.");
     }
 
     @Test
@@ -193,31 +196,29 @@ class CommentServiceTest {
     @Test
     void 비회원인_경우_댓글을_삭제할_수_없다() {
         assertThatThrownBy(() -> commentService.delete(new GuestMember(), article.getId()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("권한이 없는 사용자입니다.");
+                .isInstanceOf(NoAuthorizationException.class)
+                .hasMessage("권한이 없습니다.");
     }
 
     @Test
     void 댓글이_존재하지_않는_경우_삭제할_수_없다() {
-        assertThatThrownBy(
-                () -> commentService.delete(new LoginMember(member.getId()), -1L))
-                .isInstanceOf(IllegalStateException.class)
+        assertThatThrownBy(() -> commentService.delete(new LoginMember(member.getId()), -1L))
+                .isInstanceOf(CommentNotFoundException.class)
                 .hasMessage("댓글이 존재하지 않습니다.");
     }
 
     @Test
     void 회원이_아닌_경우_댓글을_삭제할_수_없다() {
         assertThatThrownBy(() -> commentService.delete(new LoginMember(-1L), comment.getId()))
-                .isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(MemberNotFoundException.class)
                 .hasMessage("회원이 존재하지 않습니다.");
     }
 
     @Test
     void 댓글을_작성한_회원이_아닌_경우_삭제할_수_없다() {
         Member newMember = memberRepository.save(new Member("judy", "judyhithub", "avatarUrl"));
-        assertThatThrownBy(
-                () -> commentService.delete(new LoginMember(newMember.getId()), comment.getId()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("댓글 작성자만 권한이 있습니다.");
+        assertThatThrownBy(() -> commentService.delete(new LoginMember(newMember.getId()), comment.getId()))
+                .isInstanceOf(NoAuthorizationException.class)
+                .hasMessage("권한이 없습니다.");
     }
 }

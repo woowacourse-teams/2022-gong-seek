@@ -2,6 +2,7 @@ package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
@@ -9,10 +10,12 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
+import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -37,13 +40,13 @@ public class ArticleService {
 
     private void validateGuest(AppMember appMember) {
         if (appMember.isGuest()) {
-            throw new IllegalArgumentException("권한이 없는 사용자입니다.");
+            throw new NoAuthorizationException();
         }
     }
 
     public ArticleResponse getOne(AppMember appMember, Long id) {
         Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+                .orElseThrow(ArticleNotFoundException::new);
         article.addViews();
         if (appMember.isGuest()) {
             return new ArticleResponse(article, false);
@@ -91,17 +94,17 @@ public class ArticleService {
 
     private void validateAuthor(Article article, Member member) {
         if (!article.isAuthor(member)) {
-            throw new IllegalStateException("작성자만 권한이 있습니다.");
+            throw new NoAuthorizationException();
         }
     }
 
     private Member getMember(AppMember appMember) {
         return memberRepository.findById(appMember.getPayload())
-                .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
+                .orElseThrow(MemberNotFoundException::new);
     }
 
     private Article getArticle(Long id) {
         return articleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+                .orElseThrow(ArticleNotFoundException::new);
     }
 }

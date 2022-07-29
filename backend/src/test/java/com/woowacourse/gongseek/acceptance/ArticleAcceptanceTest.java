@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
@@ -221,10 +223,10 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     void 전체_게시물을_최신순으로_조회한다() {
         //given
         TokenResponse tokenResponse = 로그인을_한다(주디);
-        조회수가_있는_게시물_5개를_생성한다(tokenResponse,0, Category.DISCUSSION);
-        조회수가_있는_게시물_5개를_생성한다(tokenResponse,2, Category.DISCUSSION);
-        조회수가_있는_게시물_5개를_생성한다(tokenResponse,3, Category.QUESTION);
-        조회수가_있는_게시물_5개를_생성한다(tokenResponse,1, Category.QUESTION);
+        조회수가_있는_게시물_5개를_생성한다(tokenResponse, 0, Category.DISCUSSION);
+        조회수가_있는_게시물_5개를_생성한다(tokenResponse, 2, Category.DISCUSSION);
+        조회수가_있는_게시물_5개를_생성한다(tokenResponse, 3, Category.QUESTION);
+        조회수가_있는_게시물_5개를_생성한다(tokenResponse, 1, Category.QUESTION);
 
         //when
         ExtractableResponse<Response> response = 게시물_전체를_조회한다("all", "latest", null, null);
@@ -447,7 +449,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         }
     }
 
-    private ExtractableResponse<Response> 게시물_전체를_조회한다(String category, String sort, Long cursorId, Integer cursorViews) {
+    private ExtractableResponse<Response> 게시물_전체를_조회한다(String category, String sort, Long cursorId,
+            Integer cursorViews) {
         return RestAssured
                 .given().log().all()
                 .when()
@@ -474,7 +477,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     private ExtractableResponse<Response> 로그인_후_게시물을_삭제한다(TokenResponse tokenResponse,
-                                                          ArticleIdResponse articleIdResponse) {
+            ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
@@ -496,7 +499,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     private ExtractableResponse<Response> 로그인_후_게시물을_조회한다(TokenResponse tokenResponse,
-                                                          ArticleIdResponse articleIdResponse) {
+            ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
@@ -518,7 +521,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     private ExtractableResponse<Response> 로그인_후_게시물을_수정한다(TokenResponse tokenResponse,
-                                                          ArticleIdResponse articleIdResponse) {
+            ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
