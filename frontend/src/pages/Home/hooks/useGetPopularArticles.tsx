@@ -59,6 +59,7 @@ const useGetPopularArticles = () => {
 		data,
 		isLoading,
 		isIdle,
+		isSuccess,
 		currentIndex,
 		handleLeftSlideEvent,
 		handleRightSlideEvent,
