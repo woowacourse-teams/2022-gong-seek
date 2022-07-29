@@ -4,10 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.config.JpaAuditingConfig;
 import com.woowacourse.gongseek.config.QuerydslConfig;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -112,5 +115,15 @@ class ArticleRepositoryTest {
         Article savedArticle = articleRepository.save(article);
 
         assertThat(savedArticle).isSameAs(article);
+    }
+
+    @Test
+    void 회원이_작성한_게시글들을_조회할_수_있다() {
+        Article firstArticle = articleRepository.save(new Article("title1", "content1", Category.QUESTION, member));
+        Article secondArticle = articleRepository.save(new Article("title2", "content2", Category.DISCUSSION, member));
+
+        List<Article> articles = articleRepository.findByMemberId(member.getId());
+
+        assertThat(articles).containsExactly(firstArticle, secondArticle);
     }
 }

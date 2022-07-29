@@ -1,11 +1,14 @@
 package com.woowacourse.gongseek.acceptance;
 
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
+import com.woowacourse.gongseek.member.presentation.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -18,7 +21,7 @@ import org.springframework.http.HttpStatus;
 public class MemberAcceptanceTest extends AcceptanceTest{
 
     @Test
-    void 내_정보를_조회할_수_있다() {
+    void 내_정보를_조회한다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(레넌);
 
@@ -37,6 +40,29 @@ public class MemberAcceptanceTest extends AcceptanceTest{
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(memberDto.getName()).isEqualTo(레넌.getName()),
                 () -> assertThat(memberDto.getAvatarUrl()).isEqualTo(레넌.getAvatarUrl())
+        );
+    }
+
+    @Test
+    void 내가_작성한_게시글들을_조회한다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다(레넌);
+        게시물을_등록한다(tokenResponse);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .when()
+                .get("/api/members/me/articles")
+                .then().log().all()
+                .extract();
+        MyPageArticlesResponse myPageArticlesResponse = response.as(MyPageArticlesResponse.class);
+
+        // then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(myPageArticlesResponse.getArticles()).size().isEqualTo(1)
         );
     }
 }

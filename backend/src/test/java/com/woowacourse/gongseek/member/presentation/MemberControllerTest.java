@@ -12,11 +12,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.gongseek.article.domain.Article;
+import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.config.RestDocsConfig;
 import com.woowacourse.gongseek.member.application.MemberService;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +53,7 @@ public class MemberControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void 로그인한_사용자일때_게시물_단건_조회_API_문서화() throws Exception {
+    void 로그인한_사용자일때_회원_조회_API_문서화() throws Exception {
         MemberDto memberDto = new MemberDto("레넌", "https://avatars.githubusercontent.com/u/70756680?v=4");
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
@@ -68,6 +72,40 @@ public class MemberControllerTest {
                         responseFields(
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("avatarUrl").type(JsonFieldType.STRING).description("프로필 이미지")
+                        )
+                ));
+    }
+
+    @Test
+    void 로그인한_사용자일때_회원_게시글_조회_API_문서화() throws Exception {
+        MemberDto memberDto = new MemberDto("레넌", "https://avatars.githubusercontent.com/u/70756680?v=4");
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        MyPageArticlesResponse myPageArticlesResponse = new MyPageArticlesResponse(
+                List.of(
+                        new MyPageArticleResponse(1L, "title1", "question1", 10, LocalDateTime.now(), LocalDateTime.now(), 100),
+                        new MyPageArticleResponse(1L, "title2", "question2", 20, LocalDateTime.now(), LocalDateTime.now(), 200))
+                );
+        given(memberService.getArticles(new LoginMember(any()))).willReturn(myPageArticlesResponse);
+
+        ResultActions results = mockMvc.perform(get("/api/members/me/articles")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
+                .characterEncoding("UTF-8"));
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("member-get-articles",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
+                        responseFields(
+                                fieldWithPath("articles[].id").type(JsonFieldType.NUMBER).description("게시글 아이디"),
+                                fieldWithPath("articles[].title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("articles[].category").type(JsonFieldType.STRING).description("카테고리"),
+                                fieldWithPath("articles[].commentCount").type(JsonFieldType.NUMBER).description("댓글 수"),
+                                fieldWithPath("articles[].createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
+                                fieldWithPath("articles[].updatedAt").type(JsonFieldType.STRING).description("수정 날짜"),
+                                fieldWithPath("articles[].views").type(JsonFieldType.NUMBER).description("조회 수")
                         )
                 ));
     }
