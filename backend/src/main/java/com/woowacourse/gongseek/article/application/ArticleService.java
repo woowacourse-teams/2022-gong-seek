@@ -16,6 +16,7 @@ import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -56,20 +57,24 @@ public class ArticleService {
 
     @Transactional(readOnly = true)
     public ArticlePageResponse getArticles(Long cursorId, Integer cursorViews, String category, String sortType,
-            int size) {
+                                           int size) {
         List<ArticlePreviewResponse> articles = articleRepository.findAllByPage(cursorId, cursorViews, category,
                         sortType, size).stream()
                 .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))
                 .collect(Collectors.toList());
 
-        if (articles.size() == size + 1) {
-            return new ArticlePageResponse(articles.subList(0, size), true);
-        }
-        return new ArticlePageResponse(articles, false);
+        return getArticlePageResponse(articles, size);
     }
 
     private int getCommentCount(Article article) {
         return commentRepository.countByArticleId(article.getId());
+    }
+
+    private ArticlePageResponse getArticlePageResponse(List<ArticlePreviewResponse> articles, int size) {
+        if (articles.size() == size + 1) {
+            return new ArticlePageResponse(articles.subList(0, size), true);
+        }
+        return new ArticlePageResponse(articles, false);
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
@@ -82,6 +87,17 @@ public class ArticleService {
     public void delete(AppMember appMember, Long id) {
         Article article = checkAuthorization(appMember, id);
         articleRepository.delete(article);
+    }
+
+    @Transactional(readOnly = true)
+    public ArticlePageResponse searchByText(Long cursorId, String searchText, int size) {
+        if (searchText.isBlank()) {
+            return new ArticlePageResponse(new ArrayList<>(), false);
+        }
+        List<ArticlePreviewResponse> articles = articleRepository.searchByTextLike(cursorId, searchText, size).stream()
+                .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))
+                .collect(Collectors.toList());
+        return getArticlePageResponse(articles, size);
     }
 
     private Article checkAuthorization(AppMember appMember, Long id) {

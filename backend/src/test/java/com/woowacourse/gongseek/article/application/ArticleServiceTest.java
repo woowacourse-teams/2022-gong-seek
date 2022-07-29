@@ -251,4 +251,48 @@ public class ArticleServiceTest {
                 () -> assertThat(response.isHasNext()).isEqualTo(false)
         );
     }
+
+    @Test
+    void 공백으로_게시물을_검색한_경우_빈_값이_나온다() {
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, " ", 1);
+
+        assertAll(
+                () -> assertThat(articlePageResponse.getArticles()).hasSize(0),
+                () -> assertThat(articlePageResponse.isHasNext()).isFalse()
+        );
+    }
+
+    @Test
+    void 페이지가_10개씩_검색된_후_더이상_조회할_페이지가_없으면_hasNext가_false가_된다() {
+        for (int i = 0; i < 10; i++) {
+            articleRepository.save(
+                    new Article(articleRequest.getTitle(), articleRequest.getContent(), Category.QUESTION, member));
+        }
+
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, "질문", 10);
+
+        assertAll(
+                () -> assertThat(articlePageResponse.getArticles()).hasSize(10),
+                () -> assertThat(articlePageResponse.isHasNext()).isFalse()
+        );
+    }
+
+    @Test
+    void 검색할_때_무한_스크롤이_가능하다() {
+        for (int i = 0; i < 20; i++) {
+            articleRepository.save(
+                    new Article(articleRequest.getTitle(), articleRequest.getContent(), Category.QUESTION, member));
+        }
+
+        ArticlePageResponse firstPageResponse = articleService.searchByText(null, "질문", 10);
+        ArticlePageResponse secondPageResponse = articleService.searchByText(
+                firstPageResponse.getArticles().get(9).getId(), "질문", 10);
+
+        assertAll(
+                () -> assertThat(firstPageResponse.getArticles()).hasSize(10),
+                () -> assertThat(firstPageResponse.isHasNext()).isTrue(),
+                () -> assertThat(secondPageResponse.getArticles()).hasSize(10),
+                () -> assertThat(secondPageResponse.isHasNext()).isFalse()
+        );
+    }
 }
