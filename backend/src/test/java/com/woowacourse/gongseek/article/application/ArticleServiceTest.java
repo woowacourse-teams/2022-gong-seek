@@ -8,7 +8,6 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
@@ -16,7 +15,6 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
@@ -246,63 +244,6 @@ public class ArticleServiceTest {
 
         ArticlePageResponse response = articleService.getArticles(null, cursorViews, Category.QUESTION.getValue(),
                 "latest", 10);
-        List<ArticlePreviewResponse> responses = response.getArticles();
-
-        assertAll(
-                () -> assertThat(responses).hasSize(10),
-                () -> assertThat(response.isHasNext()).isEqualTo(false)
-        );
-    }
-
-    @Test
-    void 페이지가_10개씩_조회된다() {
-        List<Article> articles = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            articles.add(
-                    new Article(articleRequest.getTitle() + i, articleRequest.getContent(), Category.QUESTION, member));
-        }
-        articleRepository.saveAll(articles);
-
-        ArticlePageResponse response = articleService.getArticles(null, 0, Category.QUESTION.getValue(), "latest", 10);
-        List<ArticlePreviewResponse> responses = response.getArticles();
-
-        assertAll(
-                () -> assertThat(responses).hasSize(10),
-                () -> assertThat(response.isHasNext()).isEqualTo(true)
-        );
-    }
-
-    @Test
-    void 요청으로_들어온_페이지ID_다음부터_반환해준다() {
-        List<Article> articles = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            articles.add(
-                    new Article(articleRequest.getTitle() + i, articleRequest.getContent(), Category.QUESTION, member));
-        }
-        articleRepository.saveAll(articles);
-
-        ArticlePageResponse response = articleService.getArticles(10L, 0, Category.QUESTION.getValue(), "latest", 10);
-        List<ArticlePreviewResponse> responses = response.getArticles();
-
-        assertAll(
-                () -> assertThat(responses).hasSize(9),
-                () -> assertThat(responses.get(0).getId()).isEqualTo(9L),
-                () -> assertThat(response.isHasNext()).isEqualTo(false)
-        );
-    }
-
-    @ParameterizedTest
-    @NullSource
-    @ValueSource(ints = {0})
-    void 페이지가_10개씩_조회된_후_더이상_조회할_페이지가_없으면_hasNext는_false가_된다(Integer cursorViews) {
-        List<Article> articles = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            articles.add(
-                    new Article(articleRequest.getTitle(), articleRequest.getContent(), Category.QUESTION, member));
-        }
-        articleRepository.saveAll(articles);
-
-        ArticlePageResponse response = articleService.getArticles(null, cursorViews, Category.QUESTION.getValue(), "latest", 10);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
         assertAll(
