@@ -23,6 +23,7 @@ import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,10 +31,8 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
-@Transactional
 @SpringBootTest
 public class ArticleServiceTest {
 
@@ -54,9 +53,13 @@ public class ArticleServiceTest {
 
     @BeforeEach
     void setUp() {
-        databaseCleaner.tableClear();
         member = memberRepository.save(new Member("slo", "hanull", "avatar.com"));
         articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue());
+    }
+
+    @AfterEach
+    void tearDown(){
+        databaseCleaner.tableClear();
     }
 
     @Test
