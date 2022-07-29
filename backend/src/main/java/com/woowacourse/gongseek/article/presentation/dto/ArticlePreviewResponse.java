@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.article.presentation.dto;
 
 import com.woowacourse.gongseek.article.domain.Article;
-import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
+import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ public class ArticlePreviewResponse {
 
     private Long id;
     private String title;
-    private AuthorDto author;
+    private MemberDto author;
     private String content;
     private String category;
     private Integer commentCount;
@@ -29,7 +29,7 @@ public class ArticlePreviewResponse {
         return new ArticlePreviewResponseBuilder()
                 .id(article.getId())
                 .title(article.getTitle())
-                .author(new AuthorDto(article.getMember()))
+                .author(new MemberDto(article.getMember()))
                 .content(article.getContent())
                 .category(article.getCategory().getValue())
                 .commentCount(commentCount)

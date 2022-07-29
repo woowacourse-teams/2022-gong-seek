@@ -26,15 +26,13 @@ import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.config.RestDocsConfig;
-import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
+import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -105,7 +103,7 @@ class ArticleControllerTest {
     void 로그인한_사용자일때_게시물_단건_조회_API_문서화() throws Exception {
         ArticleResponse response = new ArticleResponse(
                 "title",
-                new AuthorDto("rennon", "avatar.com"),
+                new MemberDto("rennon", "avatar.com"),
                 "content",
                 false,
                 1,
@@ -139,7 +137,7 @@ class ArticleControllerTest {
     void 로그인_안한_사용자일때_게시물_단건_조회_API_문서화() throws Exception {
         ArticleResponse response = new ArticleResponse(
                 "title",
-                new AuthorDto("rennon", "avatar.com"),
+                new MemberDto("rennon", "avatar.com"),
                 "content",
                 false,
                 1,
@@ -219,11 +217,11 @@ class ArticleControllerTest {
     @Test
     void 게시물_전체_조회_문서화() throws Exception {
         ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목",
-                new AuthorDto("기론", "프로필 이미지 url"),
+                new MemberDto("기론", "프로필 이미지 url"),
                 "내용입니다", Category.QUESTION.getValue(), 3, 2, LocalDateTime.now());
 
         ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목2",
-                new AuthorDto("기론2", "프로필2 이미지 url"),
+                new MemberDto("기론2", "프로필2 이미지 url"),
                 "내용입니다22", Category.DISCUSSION.getValue(), 10, 5, LocalDateTime.now());
 
         ArticlePageResponse response = new ArticlePageResponse(

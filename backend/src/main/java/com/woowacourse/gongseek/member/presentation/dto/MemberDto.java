@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class AuthorDto {
+public class MemberDto {
 
     private String name;
     private String avatarUrl;
 
-    public AuthorDto(Member member) {
+    public MemberDto(Member member) {
         this.name = member.getName();
         this.avatarUrl = member.getAvatarUrl();
     }

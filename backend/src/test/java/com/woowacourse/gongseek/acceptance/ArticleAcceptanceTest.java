@@ -10,14 +10,12 @@ import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
-import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
+import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -73,7 +71,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
-                                        new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
+                                        new MemberDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         false,
                                         1,
@@ -103,7 +101,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
-                                        new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
+                                        new MemberDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         true,
                                         1,
@@ -134,7 +132,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
-                                        new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
+                                        new MemberDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         true,
                                         2,
@@ -248,7 +246,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                 new ArticlePreviewResponse(
                                         10L,
                                         "title",
-                                        new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
+                                        new MemberDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         "discussion",
                                         0,
@@ -290,7 +288,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                 new ArticlePreviewResponse(
                                         16L,
                                         "title",
-                                        new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
+                                        new MemberDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         "question",
                                         0,
@@ -332,7 +330,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                 new ArticlePreviewResponse(
                                         1L,
                                         "title",
-                                        new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
+                                        new MemberDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         "discussion",
                                         1,

@@ -3,7 +3,7 @@ package com.woowacourse.gongseek.article.presentation.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.article.domain.Article;
-import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
+import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,11 +17,11 @@ public class ArticleResponse {
 
     private String title;
 
-    private AuthorDto author;
+    private MemberDto author;
 
     private String content;
 
-    @JsonProperty(value = "isAuthor")
+    @JsonProperty("isAuthor")
     private boolean isAuthor;
 
     private int views;
@@ -33,7 +33,7 @@ public class ArticleResponse {
         this.title = article.getTitle();
         this.content = article.getContent();
         this.isAuthor = isAuthor;
-        this.author = new AuthorDto(article.getMember());
+        this.author = new MemberDto(article.getMember());
         this.views = article.getViews();
         this.createdAt = article.getCreatedAt();
     }

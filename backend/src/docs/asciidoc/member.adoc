@@ -1,0 +1,26 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Member
+---
+= 기본 API
+
+== 회원 조회
+
+`GET /api/members/me`
+
+=== Request
+
+include::{snippets}/member-get-one/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/member-get-one/http-response.adoc[]
+include::{snippets}/member-get-one/response-fields.adoc[]

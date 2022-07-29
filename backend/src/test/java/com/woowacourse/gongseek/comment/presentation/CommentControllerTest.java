@@ -22,7 +22,7 @@ import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentsResponse;
 import com.woowacourse.gongseek.config.RestDocsConfig;
-import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
+import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -87,14 +87,14 @@ class CommentControllerTest {
         CommentResponse authorComment = new CommentResponse(
                 1L,
                 "content1",
-                new AuthorDto("authorName", "authorAvatarUrl1"),
+                new MemberDto("authorName", "authorAvatarUrl1"),
                 true,
                 LocalDateTime.now()
         );
         CommentResponse nonAuthorComment = new CommentResponse(
                 2L,
                 "content2",
-                new AuthorDto("nonAuthorName", "authorAvatarUrl2"),
+                new MemberDto("nonAuthorName", "authorAvatarUrl2"),
                 false,
                 LocalDateTime.now()
         );
