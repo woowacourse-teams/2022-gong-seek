@@ -45,10 +45,10 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                     .or(article.views.value.lt(cursorViews));
         }
 
-        return articleIdStatus(cursorId);
+        return isOverArticleId(cursorId);
     }
 
-    private BooleanExpression articleIdStatus(Long cursorId) {
+    private BooleanExpression isOverArticleId(Long cursorId) {
         return cursorId == null ? null : article.id.lt(cursorId);
     }
 
@@ -57,17 +57,17 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public List<Article> searchByTitleOrContentLike(Long cursorId, String searchText, int pageSize) {
+    public List<Article> searchByTextLike(Long cursorId, String searchText, int pageSize) {
         return queryFactory
                 .selectFrom(article)
                 .where(
-                        likeOrNullByTitleOrContent(searchText),
-                        articleIdStatus(cursorId)
+                        containsTitleOrContent(searchText),
+                        isOverArticleId(cursorId)
                 )
                 .limit(pageSize + 1).fetch();
     }
 
-    private BooleanExpression likeOrNullByTitleOrContent(String searchText) {
+    private BooleanExpression containsTitleOrContent(String searchText) {
         String text = searchText.toLowerCase().replace(" ", "");
         StringExpression title = Expressions.stringTemplate("replace({0},' ','')", article.title.value).lower();
         StringExpression content = Expressions.stringTemplate("replace({0},' ','')", article.content.value).lower();
