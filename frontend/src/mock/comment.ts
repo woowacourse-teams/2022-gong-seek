@@ -40,7 +40,7 @@ export const CommentHandler = [
 
 	rest.get(`${HOME_URL}/api/articles/:articleId/comments`, (req, res, ctx) => {
 		const { articleId } = req.params;
-		return res(ctx.status(200), ctx.json({ comments: mockData.comments }));
+		return res(ctx.status(200), ctx.json(mockData.comments));
 	}),
 
 	rest.put<{ content: string }>(
