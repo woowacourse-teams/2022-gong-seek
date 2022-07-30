@@ -27,13 +27,17 @@ public class CommentResponse {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
+    private LocalDateTime updatedAt;
+
     public static CommentResponse of(Comment comment, Boolean isAuthor) {
         return new CommentResponse(
                 comment.getId(),
                 comment.getContent(),
                 new MemberDto(comment.getMember().getName(), comment.getMember().getAvatarUrl()),
                 isAuthor,
-                comment.getCreatedAt()
+                comment.getCreatedAt(),
+                comment.getUpdatedAt()
         );
     }
 }
