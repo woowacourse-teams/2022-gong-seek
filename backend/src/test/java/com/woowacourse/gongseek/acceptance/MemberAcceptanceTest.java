@@ -20,7 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class MemberAcceptanceTest extends AcceptanceTest{
+public class MemberAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 내_정보를_조회한다() {

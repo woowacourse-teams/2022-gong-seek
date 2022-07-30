@@ -2,7 +2,6 @@ package com.woowacourse.gongseek.member.presentation;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowacourse.gongseek.article.domain.Article;
-import com.woowacourse.gongseek.article.domain.Category;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

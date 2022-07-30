@@ -12,8 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.gongseek.article.domain.Article;
-import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.config.RestDocsConfig;
@@ -80,8 +78,10 @@ public class MemberControllerTest {
     void 로그인한_사용자일때_회원_게시글_조회_API_문서화() throws Exception {
         MyPageArticlesResponse myPageArticlesResponse = new MyPageArticlesResponse(
                 List.of(
-                        new MyPageArticleResponse(1L, "title1", "question1", 10, LocalDateTime.now(), LocalDateTime.now(), 100),
-                        new MyPageArticleResponse(1L, "title2", "question2", 20, LocalDateTime.now(), LocalDateTime.now(), 200))
+                        new MyPageArticleResponse(1L, "title1", "question1", 10, LocalDateTime.now(),
+                                LocalDateTime.now(), 100),
+                        new MyPageArticleResponse(1L, "title2", "question2", 20, LocalDateTime.now(),
+                                LocalDateTime.now(), 200))
         );
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");

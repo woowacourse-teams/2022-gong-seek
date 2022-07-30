@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
 import com.woowacourse.gongseek.article.domain.Article;
-import com.woowacourse.gongseek.member.domain.Member;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 

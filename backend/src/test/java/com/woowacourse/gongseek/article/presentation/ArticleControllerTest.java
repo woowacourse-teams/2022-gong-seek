@@ -23,9 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
@@ -107,6 +107,7 @@ class ArticleControllerTest {
                 "content",
                 false,
                 1,
+                LocalDateTime.now(),
                 LocalDateTime.now()
         );
         given(articleService.getOne(any(), any())).willReturn(response);
@@ -128,7 +129,8 @@ class ArticleControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
                         )
                 ));
     }
@@ -141,6 +143,7 @@ class ArticleControllerTest {
                 "content",
                 false,
                 1,
+                LocalDateTime.now(),
                 LocalDateTime.now()
         );
         given(articleService.getOne(any(), any())).willReturn(response);
@@ -158,7 +161,8 @@ class ArticleControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
                         )
                 ));
     }

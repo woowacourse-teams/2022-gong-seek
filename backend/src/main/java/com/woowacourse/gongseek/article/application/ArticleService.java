@@ -56,7 +56,7 @@ public class ArticleService {
 
     @Transactional(readOnly = true)
     public ArticlePageResponse getArticles(Long cursorId, Integer cursorViews, String category, String sortType,
-            int size) {
+                                           int size) {
         List<ArticlePreviewResponse> articles = articleRepository.findAllByPage(cursorId, cursorViews, category,
                         sortType, size).stream()
                 .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))

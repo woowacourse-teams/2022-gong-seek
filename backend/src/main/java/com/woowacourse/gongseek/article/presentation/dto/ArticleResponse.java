@@ -29,12 +29,18 @@ public class ArticleResponse {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
+    private LocalDateTime updatedAt;
+
     public ArticleResponse(Article article, boolean isAuthor) {
-        this.title = article.getTitle();
-        this.content = article.getContent();
-        this.isAuthor = isAuthor;
-        this.author = new MemberDto(article.getMember());
-        this.views = article.getViews();
-        this.createdAt = article.getCreatedAt();
+        this(
+                article.getTitle(),
+                new MemberDto(article.getMember()),
+                article.getContent(),
+                isAuthor,
+                article.getViews(),
+                article.getCreatedAt(),
+                article.getUpdatedAt()
+        );
     }
 }

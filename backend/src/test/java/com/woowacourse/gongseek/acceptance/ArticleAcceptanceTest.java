@@ -7,9 +7,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
@@ -68,6 +68,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(articleResponse)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
+                        .ignoringFields("updatedAt")
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
@@ -75,6 +76,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         "content",
                                         false,
                                         1,
+                                        LocalDateTime.now(),
                                         LocalDateTime.now()
                                 )
                         )
@@ -98,6 +100,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(articleResponse)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
+                        .ignoringFields("updatedAt")
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
@@ -105,6 +108,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         "content",
                                         true,
                                         1,
+                                        LocalDateTime.now(),
                                         LocalDateTime.now()
                                 )
                         )
@@ -129,6 +133,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(articleResponse)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
+                        .ignoringFields("updatedAt")
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
@@ -136,6 +141,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         "content",
                                         true,
                                         2,
+                                        LocalDateTime.now(),
                                         LocalDateTime.now()
                                 )
                         )
@@ -448,7 +454,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     private ExtractableResponse<Response> 게시물_전체를_조회한다(String category, String sort, Long cursorId,
-            Integer cursorViews) {
+                                                       Integer cursorViews) {
         return RestAssured
                 .given().log().all()
                 .when()
@@ -475,7 +481,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     private ExtractableResponse<Response> 로그인_후_게시물을_삭제한다(TokenResponse tokenResponse,
-            ArticleIdResponse articleIdResponse) {
+                                                          ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
@@ -497,7 +503,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     private ExtractableResponse<Response> 로그인_후_게시물을_조회한다(TokenResponse tokenResponse,
-            ArticleIdResponse articleIdResponse) {
+                                                          ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
@@ -519,7 +525,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     private ExtractableResponse<Response> 로그인_후_게시물을_수정한다(TokenResponse tokenResponse,
-            ArticleIdResponse articleIdResponse) {
+                                                          ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
