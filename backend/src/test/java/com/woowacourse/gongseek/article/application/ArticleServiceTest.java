@@ -254,7 +254,7 @@ public class ArticleServiceTest {
 
     @Test
     void 공백으로_게시물을_검색한_경우_빈_값이_나온다() {
-        ArticlePageResponse articlePageResponse = articleService.searchByText(null, " ", 1);
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, 1, " ");
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(0),
@@ -269,7 +269,7 @@ public class ArticleServiceTest {
                     new Article(articleRequest.getTitle(), articleRequest.getContent(), Category.QUESTION, member));
         }
 
-        ArticlePageResponse articlePageResponse = articleService.searchByText(null, "질문", 10);
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, 10, "질문");
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(10),
@@ -284,9 +284,9 @@ public class ArticleServiceTest {
                     new Article(articleRequest.getTitle(), articleRequest.getContent(), Category.QUESTION, member));
         }
 
-        ArticlePageResponse firstPageResponse = articleService.searchByText(null, "질문", 10);
+        ArticlePageResponse firstPageResponse = articleService.searchByText(null, 10, "질문");
         ArticlePageResponse secondPageResponse = articleService.searchByText(
-                firstPageResponse.getArticles().get(9).getId(), "질문", 10);
+                firstPageResponse.getArticles().get(9).getId(), 10, "질문");
 
         assertAll(
                 () -> assertThat(firstPageResponse.getArticles()).hasSize(10),

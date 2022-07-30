@@ -57,24 +57,13 @@ public class ArticleService {
 
     @Transactional(readOnly = true)
     public ArticlePageResponse getArticles(Long cursorId, Integer cursorViews, String category, String sortType,
-                                           int size) {
+                                           int pageSize) {
         List<ArticlePreviewResponse> articles = articleRepository.findAllByPage(cursorId, cursorViews, category,
-                        sortType, size).stream()
+                        sortType, pageSize).stream()
                 .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))
                 .collect(Collectors.toList());
 
-        return getArticlePageResponse(articles, size);
-    }
-
-    private int getCommentCount(Article article) {
-        return commentRepository.countByArticleId(article.getId());
-    }
-
-    private ArticlePageResponse getArticlePageResponse(List<ArticlePreviewResponse> articles, int size) {
-        if (articles.size() == size + 1) {
-            return new ArticlePageResponse(articles.subList(0, size), true);
-        }
-        return new ArticlePageResponse(articles, false);
+        return getArticlePageResponse(articles, pageSize);
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
@@ -90,14 +79,26 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticlePageResponse searchByText(Long cursorId, String searchText, int size) {
+    public ArticlePageResponse searchByText(Long cursorId, int pageSize, String searchText) {
         if (searchText.isBlank()) {
             return new ArticlePageResponse(new ArrayList<>(), false);
         }
-        List<ArticlePreviewResponse> articles = articleRepository.searchByTextLike(cursorId, searchText, size).stream()
+        List<ArticlePreviewResponse> articles = articleRepository.searchByTextLike(cursorId, pageSize, searchText)
+                .stream()
                 .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))
                 .collect(Collectors.toList());
-        return getArticlePageResponse(articles, size);
+        return getArticlePageResponse(articles, pageSize);
+    }
+
+    private int getCommentCount(Article article) {
+        return commentRepository.countByArticleId(article.getId());
+    }
+
+    private ArticlePageResponse getArticlePageResponse(List<ArticlePreviewResponse> articles, int size) {
+        if (articles.size() == size + 1) {
+            return new ArticlePageResponse(articles.subList(0, size), true);
+        }
+        return new ArticlePageResponse(articles, false);
     }
 
     private Article checkAuthorization(AppMember appMember, Long id) {

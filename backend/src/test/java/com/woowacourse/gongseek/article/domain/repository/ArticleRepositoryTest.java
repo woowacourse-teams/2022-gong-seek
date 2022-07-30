@@ -119,7 +119,7 @@ class ArticleRepositoryTest {
         Article article = articleRepository.save(new Article("this is wooteco", "wow", Category.QUESTION, member));
         articleRepository.save(new Article("i am judy", "hello", Category.QUESTION, member));
 
-        List<Article> articles = articleRepository.searchByTextLike(null, searchText, 2);
+        List<Article> articles = articleRepository.searchByTextLike(null, 2, searchText);
 
         assertThat(articles).containsExactly(article);
     }
@@ -130,7 +130,7 @@ class ArticleRepositoryTest {
         Article article = articleRepository.save(new Article("this is wooteco", "wow", Category.QUESTION, member));
         articleRepository.save(new Article("i am 주디", "hello", Category.QUESTION, member));
 
-        List<Article> articles = articleRepository.searchByTextLike(null, searchText, 2);
+        List<Article> articles = articleRepository.searchByTextLike(null, 2, searchText);
 
         assertThat(articles).containsExactly(article);
     }
@@ -140,14 +140,14 @@ class ArticleRepositoryTest {
         for (int i = 0; i < 5; i++) {
             articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member));
         }
-        List<Article> articles = articleRepository.searchByTextLike(null, "title", 5);
+        List<Article> articles = articleRepository.searchByTextLike(null, 5, "title");
 
         assertThat(articles).hasSize(5);
     }
 
     @Test
     void 게시물이_없을_때_검색하면_빈_값을_반환한다() {
-        List<Article> articles = articleRepository.searchByTextLike(null, "empty", 5);
+        List<Article> articles = articleRepository.searchByTextLike(null, 5, "empty");
 
         assertThat(articles).hasSize(0);
     }
