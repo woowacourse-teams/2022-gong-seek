@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.member.presentation;
+package com.woowacourse.gongseek.member.presentation.dto;
 
 import java.util.List;
 import lombok.AccessLevel;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class MyPageCommentsResponse {
+public class MyPageArticlesResponse {
 
-    private List<MyPageCommentResponse> comments;
+    private List<MyPageArticleResponse> articles;
 }
