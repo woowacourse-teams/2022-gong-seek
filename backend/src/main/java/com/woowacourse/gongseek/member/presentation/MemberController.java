@@ -18,12 +18,17 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    private ResponseEntity<MemberDto> getOne(@AuthenticationPrinciple AppMember appMember) {
+    public ResponseEntity<MemberDto> getOne(@AuthenticationPrinciple AppMember appMember) {
         return ResponseEntity.ok(memberService.getOne(appMember));
     }
 
     @GetMapping("/articles")
-    private ResponseEntity<MyPageArticlesResponse> getArticles(@AuthenticationPrinciple AppMember appMember) {
+    public ResponseEntity<MyPageArticlesResponse> getArticles(@AuthenticationPrinciple AppMember appMember) {
         return ResponseEntity.ok(memberService.getArticles(appMember));
+    }
+
+    @GetMapping("/comments")
+    public ResponseEntity<MyPageCommentsResponse> getComments(@AuthenticationPrinciple AppMember appMember) {
+        return ResponseEntity.ok(memberService.getComments(appMember));
     }
 }

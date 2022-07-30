@@ -16,6 +16,7 @@ import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.member.presentation.MyPageArticlesResponse;
+import com.woowacourse.gongseek.member.presentation.MyPageCommentsResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,9 +72,9 @@ class MemberServiceTest {
         articleRepository.save(new Article("title1", "content1", Category.QUESTION, member));
         articleRepository.save(new Article("title2", "content2", Category.QUESTION, member));
 
-        MyPageArticlesResponse myPageArticlesResponse = memberService.getArticles(new LoginMember(member.getId()));
+        MyPageArticlesResponse response = memberService.getArticles(new LoginMember(member.getId()));
 
-        assertThat(myPageArticlesResponse.getArticles()).size().isEqualTo(2);
+        assertThat(response.getArticles()).size().isEqualTo(2);
     }
 
     @Test
@@ -92,5 +93,23 @@ class MemberServiceTest {
         MyPageArticlesResponse myPageArticlesResponse = memberService.getArticles(new LoginMember(member.getId()));
 
         assertThat(myPageArticlesResponse.getArticles().get(0).getCommentCount()).isEqualTo(2);
+    }
+
+    @Test
+    void 회원이_작성한_댓글들을_조회할_수_있다() {
+        Article article = articleRepository.save(new Article("title1", "content1", Category.QUESTION, member));
+        commentRepository.save(new Comment("댓글1", member, article));
+        commentRepository.save(new Comment("댓글2", member, article));
+
+        MyPageCommentsResponse response = memberService.getComments(new LoginMember(member.getId()));
+
+        assertThat(response.getComments()).size().isEqualTo(2);
+    }
+
+    @Test
+    void 비회원은_작성한_댓글들을_조회할_수_없다() {
+        assertThatThrownBy(() -> memberService.getComments(new GuestMember()))
+                .isInstanceOf(MemberNotFoundException.class)
+                .hasMessage("회원이 존재하지 않습니다.");
     }
 }

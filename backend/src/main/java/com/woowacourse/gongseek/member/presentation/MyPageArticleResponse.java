@@ -31,12 +31,14 @@ public class MyPageArticleResponse {
     private int views;
 
     public MyPageArticleResponse(Article article, int commentCount) {
-        this.id = article.getId();
-        this.title = article.getTitle();
-        this.category = article.getCategory().getValue();
-        this.commentCount = commentCount;
-        this.createdAt = article.getCreatedAt();
-        this.updatedAt = article.getUpdatedAt();
-        this.views = article.getViews();
+        this(
+                article.getId(),
+                article.getTitle(),
+                article.getCategory().getValue(),
+                commentCount,
+                article.getCreatedAt(),
+                article.getUpdatedAt(),
+                article.getViews()
+        );
     }
 }

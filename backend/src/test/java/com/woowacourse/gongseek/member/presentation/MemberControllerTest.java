@@ -78,14 +78,13 @@ public class MemberControllerTest {
 
     @Test
     void 로그인한_사용자일때_회원_게시글_조회_API_문서화() throws Exception {
-        MemberDto memberDto = new MemberDto("레넌", "https://avatars.githubusercontent.com/u/70756680?v=4");
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
         MyPageArticlesResponse myPageArticlesResponse = new MyPageArticlesResponse(
                 List.of(
                         new MyPageArticleResponse(1L, "title1", "question1", 10, LocalDateTime.now(), LocalDateTime.now(), 100),
                         new MyPageArticleResponse(1L, "title2", "question2", 20, LocalDateTime.now(), LocalDateTime.now(), 200))
-                );
+        );
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.getPayload(any())).willReturn("1");
         given(memberService.getArticles(new LoginMember(any()))).willReturn(myPageArticlesResponse);
 
         ResultActions results = mockMvc.perform(get("/api/members/me/articles")
@@ -106,6 +105,36 @@ public class MemberControllerTest {
                                 fieldWithPath("articles[].createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                 fieldWithPath("articles[].updatedAt").type(JsonFieldType.STRING).description("수정 날짜"),
                                 fieldWithPath("articles[].views").type(JsonFieldType.NUMBER).description("조회 수")
+                        )
+                ));
+    }
+
+    @Test
+    void 로그인한_사용자일때_회원_댓글_조회_API_문서화() throws Exception {
+        MyPageCommentsResponse myPageCommentsResponse = new MyPageCommentsResponse(
+                List.of(
+                        new MyPageCommentResponse(1L, "댓글1", LocalDateTime.now(), LocalDateTime.now()),
+                        new MyPageCommentResponse(1L, "댓글2", LocalDateTime.now(), LocalDateTime.now()))
+        );
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(memberService.getComments(new LoginMember(any()))).willReturn(myPageCommentsResponse);
+
+        ResultActions results = mockMvc.perform(get("/api/members/me/comments")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
+                .characterEncoding("UTF-8"));
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("member-get-comments",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
+                        responseFields(
+                                fieldWithPath("comments[].id").type(JsonFieldType.NUMBER).description("댓글 아이디"),
+                                fieldWithPath("comments[].content").type(JsonFieldType.STRING).description("내용"),
+                                fieldWithPath("comments[].createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
+                                fieldWithPath("comments[].updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
                         )
                 ));
     }

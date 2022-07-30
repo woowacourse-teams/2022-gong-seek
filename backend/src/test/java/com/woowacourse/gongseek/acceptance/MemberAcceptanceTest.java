@@ -2,6 +2,7 @@ package com.woowacourse.gongseek.acceptance;
 
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
+import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.댓글을_등록한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -9,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.presentation.MyPageArticlesResponse;
+import com.woowacourse.gongseek.member.presentation.MyPageCommentsResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -63,6 +65,30 @@ public class MemberAcceptanceTest extends AcceptanceTest{
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(myPageArticlesResponse.getArticles()).size().isEqualTo(1)
+        );
+    }
+
+    @Test
+    void 내가_작성한_댓글들을_조회한다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다(레넌);
+        ArticleIdResponse 게시글번호 = 게시물을_등록한다(tokenResponse);
+        댓글을_등록한다(tokenResponse, 게시글번호);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .when()
+                .get("/api/members/me/comments")
+                .then().log().all()
+                .extract();
+        MyPageCommentsResponse myPageCommentsResponse = response.as(MyPageCommentsResponse.class);
+
+        // then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(myPageCommentsResponse.getComments()).size().isEqualTo(1)
         );
     }
 }
