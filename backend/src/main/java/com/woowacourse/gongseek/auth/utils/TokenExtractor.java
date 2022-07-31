@@ -12,9 +12,7 @@ public class TokenExtractor {
 
     public static String extract(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        validateNullToken(token);
-        validateTokenType(token);
-        return token.substring(TOKEN_TYPE.length());
+        return extract(token);
     }
 
     public static String extract(String token) {
