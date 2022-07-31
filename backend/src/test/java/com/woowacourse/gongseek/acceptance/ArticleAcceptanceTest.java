@@ -448,14 +448,6 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticlePageResponse firstPage = 게시물을_처음_검색한다(pageSize, searchText);
         ArticlePageResponse secondPage = 게시물을_검색한다(firstPage.getArticles().get(pageSize - 1).getId(), pageSize,
                 searchText);
-        long 첫번째_페이지에서_title이_제목인_게시물의_수 = firstPage.getArticles()
-                .stream()
-                .filter(articlePreviewResponse -> articlePreviewResponse.getTitle().equals("제목"))
-                .count();
-        long 두번째_페이지에서_content가_내용인_게시물의_수 = secondPage.getArticles()
-                .stream()
-                .filter(articlePreviewResponse -> articlePreviewResponse.getContent().equals("내용"))
-                .count();
 
         //then
         assertAll(
@@ -463,8 +455,10 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(firstPage.getArticles()).hasSize(4),
                 () -> assertThat(secondPage.isHasNext()).isFalse(),
                 () -> assertThat(secondPage.getArticles()).hasSize(4),
-                () -> assertThat(첫번째_페이지에서_title이_제목인_게시물의_수).isEqualTo(4),
-                () -> assertThat(두번째_페이지에서_content가_내용인_게시물의_수).isEqualTo(4)
+                () -> firstPage.getArticles()
+                        .forEach(article -> assertThat(article.getTitle()).isEqualTo("제목")),
+                () -> secondPage.getArticles()
+                        .forEach(article -> assertThat(article.getContent()).isEqualTo("내용"))
         );
     }
 
