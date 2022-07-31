@@ -64,7 +64,9 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                         containsTitleOrContent(searchText),
                         isOverArticleId(cursorId)
                 )
-                .limit(pageSize + 1).orderBy(article.id.desc()).fetch();
+                .limit(pageSize + 1)
+                .orderBy(article.id.desc())
+                .fetch();
     }
 
     private BooleanExpression containsTitleOrContent(String searchText) {
