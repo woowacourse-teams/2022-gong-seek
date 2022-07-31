@@ -73,12 +73,12 @@ public class ArticleController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ArticlePageResponse> searchByText(
+    public ResponseEntity<ArticlePageResponse> search(
             @RequestParam(required = false) Long cursorId,
             @RequestParam Integer pageSize,
             @RequestParam String searchText
     ) {
-        ArticlePageResponse response = articleService.searchByText(cursorId, pageSize, searchText);
+        ArticlePageResponse response = articleService.search(cursorId, pageSize, searchText);
         return ResponseEntity.ok(response);
     }
 }

@@ -79,7 +79,7 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticlePageResponse searchByText(Long cursorId, int pageSize, String searchText) {
+    public ArticlePageResponse search(Long cursorId, int pageSize, String searchText) {
         if (searchText.isBlank()) {
             return new ArticlePageResponse(new ArrayList<>(), false);
         }

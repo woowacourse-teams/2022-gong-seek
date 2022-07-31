@@ -283,7 +283,7 @@ class ArticleControllerTest {
 
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
-        given(articleService.searchByText(anyLong(), anyInt(), anyString())).willReturn(response);
+        given(articleService.search(anyLong(), anyInt(), anyString())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/search")
                 .param("cursorId", "1")
