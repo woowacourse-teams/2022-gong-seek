@@ -73,6 +73,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         String text = searchText.toLowerCase().replace(" ", "");
         StringExpression title = Expressions.stringTemplate("replace({0},' ','')", article.title.value).lower();
         StringExpression content = Expressions.stringTemplate("replace({0},' ','')", article.content.value).lower();
-        return title.contains(text).or(content.contains(text));
+        return title.contains(text)
+                .or(content.contains(text));
     }
 }

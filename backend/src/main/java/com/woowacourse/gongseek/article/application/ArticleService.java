@@ -35,7 +35,6 @@ public class ArticleService {
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
         Article article = articleRepository.save(articleRequest.toEntity(getMember(appMember)));
-
         return new ArticleIdResponse(article);
     }
 
