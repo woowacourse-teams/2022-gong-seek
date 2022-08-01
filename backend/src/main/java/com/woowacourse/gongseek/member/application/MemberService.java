@@ -35,6 +35,11 @@ public class MemberService {
         return new MemberDto(member);
     }
 
+    private Member getMember(AppMember appMember) {
+        return memberRepository.findById(appMember.getPayload())
+                .orElseThrow(MemberNotFoundException::new);
+    }
+
     public MyPageArticlesResponse getArticles(AppMember appMember) {
         Member member = getMember(appMember);
         List<Article> articles = articleRepository.findAllByMemberId(member.getId());
@@ -42,22 +47,17 @@ public class MemberService {
         return new MyPageArticlesResponse(myPageArticleResponses);
     }
 
+    private List<MyPageArticleResponse> getMyPageArticleResponses(List<Article> articles) {
+        return articles.stream()
+                .map(it -> new MyPageArticleResponse(it, commentRepository.countByArticleId(it.getId())))
+                .collect(Collectors.toList());
+    }
+
     public MyPageCommentsResponse getComments(AppMember appMember) {
         Member member = getMember(appMember);
         List<Comment> comments = commentRepository.findAllByMemberId(member.getId());
         List<MyPageCommentResponse> myPageCommentResponses = getMyPageCommentResponses(comments);
         return new MyPageCommentsResponse(myPageCommentResponses);
-    }
-
-    private Member getMember(AppMember appMember) {
-        return memberRepository.findById(appMember.getPayload())
-                .orElseThrow(MemberNotFoundException::new);
-    }
-
-    private List<MyPageArticleResponse> getMyPageArticleResponses(List<Article> articles) {
-        return articles.stream()
-                .map(it -> new MyPageArticleResponse(it, commentRepository.countByArticleId(it.getId())))
-                .collect(Collectors.toList());
     }
 
     private List<MyPageCommentResponse> getMyPageCommentResponses(List<Comment> comments) {

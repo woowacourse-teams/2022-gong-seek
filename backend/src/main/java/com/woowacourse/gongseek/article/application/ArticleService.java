@@ -56,14 +56,14 @@ public class ArticleService {
 
     @Transactional(readOnly = true)
     public ArticlePageResponse getArticles(Long cursorId, Integer cursorViews, String category, String sortType,
-                                           int size) {
+                                           int pageSize) {
         List<ArticlePreviewResponse> articles = articleRepository.findAllByPage(cursorId, cursorViews, category,
-                        sortType, size).stream()
+                        sortType, pageSize).stream()
                 .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))
                 .collect(Collectors.toList());
 
-        if (articles.size() == size + 1) {
-            return new ArticlePageResponse(articles.subList(0, size), true);
+        if (articles.size() == pageSize + 1) {
+            return new ArticlePageResponse(articles.subList(0, pageSize), true);
         }
         return new ArticlePageResponse(articles, false);
     }

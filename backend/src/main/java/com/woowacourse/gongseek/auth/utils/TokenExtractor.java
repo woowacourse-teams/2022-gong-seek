@@ -10,11 +10,6 @@ public class TokenExtractor {
 
     private static final String TOKEN_TYPE = "Bearer ";
 
-    public static String extract(HttpServletRequest request) {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        return extract(token);
-    }
-
     public static String extract(String token) {
         validateNullToken(token);
         validateTokenType(token);

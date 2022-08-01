@@ -3,7 +3,7 @@ package com.woowacourse.gongseek.comment.presentation.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.comment.domain.Comment;
-import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
+import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ public class CommentResponse {
 
     private String content;
 
-    private MemberDto author;
+    private AuthorDto author;
 
     @JsonProperty("isAuthor")
     private Boolean isAuthor;
@@ -34,7 +34,7 @@ public class CommentResponse {
         return new CommentResponse(
                 comment.getId(),
                 comment.getContent(),
-                new MemberDto(comment.getMember().getName(), comment.getMember().getAvatarUrl()),
+                new AuthorDto(comment.getMember().getName(), comment.getMember().getAvatarUrl()),
                 isAuthor,
                 comment.getCreatedAt(),
                 comment.getUpdatedAt()

@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
-import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
+import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
 import io.restassured.RestAssured;
@@ -35,13 +35,13 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 .get("/api/members/me")
                 .then().log().all()
                 .extract();
-        MemberDto memberDto = response.as(MemberDto.class);
+        AuthorDto authorDto = response.as(AuthorDto.class);
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(memberDto.getName()).isEqualTo(레넌.getName()),
-                () -> assertThat(memberDto.getAvatarUrl()).isEqualTo(레넌.getAvatarUrl())
+                () -> assertThat(authorDto.getName()).isEqualTo(레넌.getName()),
+                () -> assertThat(authorDto.getAvatarUrl()).isEqualTo(레넌.getAvatarUrl())
         );
     }
 

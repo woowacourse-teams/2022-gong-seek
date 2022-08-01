@@ -3,7 +3,7 @@ package com.woowacourse.gongseek.article.presentation.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.article.domain.Article;
-import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
+import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ public class ArticleResponse {
 
     private String title;
 
-    private MemberDto author;
+    private AuthorDto author;
 
     private String content;
 
@@ -35,7 +35,7 @@ public class ArticleResponse {
     public ArticleResponse(Article article, boolean isAuthor) {
         this(
                 article.getTitle(),
-                new MemberDto(article.getMember()),
+                new AuthorDto(article.getMember()),
                 article.getContent(),
                 isAuthor,
                 article.getViews(),
