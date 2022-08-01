@@ -20,6 +20,11 @@ endif::[]
 
 include::{snippets}/member-get-one/http-request.adoc[]
 
+=== Header
+
+include::{snippets}/member-get-one/request-headers.adoc[]
+
+
 === Response
 
 include::{snippets}/member-get-one/http-response.adoc[]
@@ -33,6 +38,11 @@ include::{snippets}/member-get-one/response-fields.adoc[]
 
 include::{snippets}/member-get-articles/http-request.adoc[]
 
+=== Header
+
+include::{snippets}/member-get-articles/request-headers.adoc[]
+
+
 === Response
 
 include::{snippets}/member-get-articles/http-response.adoc[]
@@ -45,6 +55,10 @@ include::{snippets}/member-get-articles/response-fields.adoc[]
 === Request
 
 include::{snippets}/member-get-comments/http-request.adoc[]
+
+=== Header
+
+include::{snippets}/member-get-comments/request-headers.adoc[]
 
 == Response
 
