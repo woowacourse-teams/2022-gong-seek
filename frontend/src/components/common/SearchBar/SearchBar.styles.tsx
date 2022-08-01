@@ -36,6 +36,11 @@ export const SearchInput = styled.input`
 	}
 `;
 
+export const SearchButtonBox = styled.button`
+	border-style: none;
+	background-color: transparent;
+`
+
 export const SearchButton = styled(BiSearchAlt)`
 	font-size: ${({ theme }) => theme.size.SIZE_024};
 
