@@ -8,7 +8,7 @@ const useSnackBar = () => {
         setSnackBar({isOpen: true, message: message});
         setTimeout(() => {
             setSnackBar({isOpen: false, message: message});
-        },3000);
+        },1500);
     }
 
     return {showSnackBar};
