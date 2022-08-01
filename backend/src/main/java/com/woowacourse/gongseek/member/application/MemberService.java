@@ -37,7 +37,7 @@ public class MemberService {
 
     public MyPageArticlesResponse getArticles(AppMember appMember) {
         Member member = getMember(appMember);
-        List<Article> articles = articleRepository.findByMemberId(member.getId());
+        List<Article> articles = articleRepository.findAllByMemberId(member.getId());
         List<MyPageArticleResponse> myPageArticleResponses = getMyPageArticleResponses(articles);
         return new MyPageArticlesResponse(myPageArticleResponses);
     }

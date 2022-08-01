@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleRepository extends JpaRepository<Article, Long>, ArticleRepositoryCustom {
 
-    List<Article> findByMemberId(Long memberId);
+    List<Article> findAllByMemberId(Long memberId);
 }
