@@ -1,11 +1,26 @@
 import SearchBar from '@/components/common/SearchBar/SearchBar';
 import * as S from '@/components/layout/Header/Header.styles';
+import { searchState } from '@/store/searchState';
 import { getUserIsLogin } from '@/store/userState';
+import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 const Header = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
-
+	const {isSearchOpen} = useRecoilValue(searchState);
+	if(isSearchOpen){
+		return (
+			<S.Container>
+				<S.HeaderOpenSection>
+					<S.SearchOpenBox>
+						<Link to="/search-result ">
+							<SearchBar isValid={true} />
+						</Link>
+					</S.SearchOpenBox>
+				</S.HeaderOpenSection>
+			</S.Container>
+		)
+	}
 	return (
 		<S.Container>
 			<S.HeaderSection>
@@ -13,7 +28,9 @@ const Header = () => {
 					<S.LogoLink>공식</S.LogoLink>
 				</S.StyledLink>
 				<S.SearchBarBox>
-					<SearchBar />
+					<Link to="/search-result ">
+						<SearchBar isValid={true} />
+					</Link>
 				</S.SearchBarBox>
 			</S.HeaderSection>
 			<S.NavBar>
