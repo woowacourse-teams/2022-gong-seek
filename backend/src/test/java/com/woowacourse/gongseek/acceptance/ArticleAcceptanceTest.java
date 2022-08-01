@@ -31,6 +31,11 @@ import org.springframework.http.MediaType;
 @SuppressWarnings("NonAsciiCharacters")
 public class ArticleAcceptanceTest extends AcceptanceTest {
 
+    private static final AuthorDto anonymousAuthor = new AuthorDto(
+            "익명",
+            "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"
+    );
+
     @Test
     void 유저가_깃허브로_로그인을_하고_기명으로_게시글을_등록할_수_있다() {
         // given
@@ -44,7 +49,6 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @Disabled
     void 유저가_깃허브로_로그인을_하고_익명으로_게시글을_등록할_수_있다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
@@ -66,7 +70,6 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @Disabled
     void 유저가_깃허브로_로그인을_하지_않고_익명으로_게시글을_등록할_수_없다() {
         // when
         ExtractableResponse<Response> response = 익명으로_게시물을_등록한다(new TokenResponse(""), Category.QUESTION.getValue());
@@ -108,7 +111,6 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @Disabled
     void 로그인_없이_익명_게시물을_단건_조회할_수_있다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
@@ -129,7 +131,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
-                                        new AuthorDto("익명", "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"),
+                                        anonymousAuthor,
                                         "content",
                                         false,
                                         1,
@@ -173,7 +175,6 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @Disabled
     void 작성자가_로그인을_하고_익명_게시물을_단건_조회할_수_있다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
@@ -194,7 +195,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
-                                        new AuthorDto("익명", "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"),
+                                        anonymousAuthor,
                                         "content",
                                         true,
                                         1,
@@ -253,7 +254,6 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @Disabled
     void 로그인_하지_않으면_익명_게시물을_수정할_수_없다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
@@ -282,7 +282,6 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @Disabled
     void 게시물_작성자가_아니면_익명_게시물을_수정할_수_없다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
@@ -316,7 +315,6 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @Disabled
     void 게시물_작성자는_익명_게시물을_수정할_수_있다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
@@ -350,7 +348,6 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @Disabled
     void 게시물_작성자는_익명_게시물을_삭제할_수_있다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
@@ -379,7 +376,6 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @Disabled
     void 게시물_작성자가_아니면_익명_게시물을_삭제할_수_없다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);

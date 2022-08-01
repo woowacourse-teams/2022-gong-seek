@@ -496,13 +496,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/articles HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer token
-Content-Length: 75
+Content-Length: 100
 Host: localhost:8080
 
 {
   "title" : "title",
   "content" : "content",
-  "category" : "question"
+  "category" : "question",
+  "isAnonymous" : false
 }</code></pre>
 </div>
 </div>
@@ -557,6 +558,11 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>category</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">카테고리</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isAnonymous</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">익명 여부</p></td>
 </tr>
 </tbody>
 </table>
@@ -632,6 +638,8 @@ Host: localhost:8080</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_response_2"><a class="link" href="#_response_2">Response</a></h3>
+<div class="sect3">
+<h4 id="_기명_게시물_조회"><a class="link" href="#_기명_게시물_조회">기명 게시물 조회</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -639,7 +647,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 195
+Content-Length: 231
 
 {
   "title" : "title",
@@ -649,7 +657,34 @@ Content-Length: 195
   },
   "content" : "content",
   "views" : 1,
-  "createdAt" : "2022-07-30T23:13",
+  "createdAt" : "2022-08-01T21:25",
+  "updatedAt" : "2022-08-01T21:25",
+  "isAuthor" : false
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_익명_게시물_조회"><a class="link" href="#_익명_게시물_조회">익명 게시물 조회</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 328
+
+{
+  "title" : "title",
+  "author" : {
+    "name" : "익명",
+    "avatarUrl" : "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"
+  },
+  "content" : "content",
+  "views" : 1,
+  "createdAt" : "2022-08-01T21:25",
+  "updatedAt" : "2022-08-01T21:25",
   "isAuthor" : false
 }</code></pre>
 </div>
@@ -703,8 +738,14 @@ Content-Length: 195
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">생성 날짜</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>updatedAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">수정 날짜</p></td>
+</tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 </div>
@@ -962,7 +1003,7 @@ Content-Length: 634
     "category" : "question",
     "commentCount" : 3,
     "views" : 2,
-    "createdAt" : "2022-07-30T23:13:48.023258"
+    "createdAt" : "2022-08-01T21:25:58.138629"
   }, {
     "id" : 2,
     "title" : "제목2",
@@ -974,7 +1015,7 @@ Content-Length: 634
     "category" : "discussion",
     "commentCount" : 10,
     "views" : 5,
-    "createdAt" : "2022-07-30T23:13:48.023273"
+    "createdAt" : "2022-08-01T21:25:58.139187"
   } ],
   "hasNext" : false
 }</code></pre>
@@ -1053,7 +1094,7 @@ Content-Length: 634
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-28 16:57:02 +0900
+Last updated 2022-08-01 21:25:14 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

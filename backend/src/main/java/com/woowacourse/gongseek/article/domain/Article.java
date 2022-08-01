@@ -95,4 +95,8 @@ public class Article {
     public int getViews() {
         return views.getValue();
     }
+
+    public Boolean isAnonymous() {
+        return isAnonymous;
+    }
 }

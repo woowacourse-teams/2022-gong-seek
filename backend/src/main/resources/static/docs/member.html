@@ -452,18 +452,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_회원_조회">회원 조회</a>
 <ul class="sectlevel2">
 <li><a href="#_request">Request</a></li>
+<li><a href="#_header">Header</a></li>
 <li><a href="#_response">Response</a></li>
 </ul>
 </li>
 <li><a href="#_게시글_조회">게시글 조회</a>
 <ul class="sectlevel2">
 <li><a href="#_request_2">Request</a></li>
+<li><a href="#_header_2">Header</a></li>
 <li><a href="#_response_2">Response</a></li>
 </ul>
 </li>
 <li><a href="#_댓글_조회">댓글 조회</a>
 <ul class="sectlevel2">
 <li><a href="#_request_3">Request</a></li>
+<li><a href="#_header_3">Header</a></li>
 </ul>
 </li>
 <li><a href="#_response_3">Response</a></li>
@@ -486,6 +489,27 @@ Authorization: Bearer token
 Host: localhost:8080</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_header"><a class="link" href="#_header">Header</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bearer + 토큰</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect2">
 <h3 id="_response"><a class="link" href="#_response">Response</a></h3>
@@ -550,6 +574,27 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect2">
+<h3 id="_header_2"><a class="link" href="#_header_2">Header</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bearer + 토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
 <h3 id="_response_2"><a class="link" href="#_response_2">Response</a></h3>
 <div class="listingblock">
 <div class="content">
@@ -566,16 +611,16 @@ Content-Length: 409
     "title" : "title1",
     "category" : "question1",
     "commentCount" : 10,
-    "createdAt" : "2022-07-30T23:13",
-    "updatedAt" : "2022-07-30T23:13",
+    "createdAt" : "2022-08-01T21:26",
+    "updatedAt" : "2022-08-01T21:26",
     "views" : 100
   }, {
     "id" : 1,
     "title" : "title2",
     "category" : "question2",
     "commentCount" : 20,
-    "createdAt" : "2022-07-30T23:13",
-    "updatedAt" : "2022-07-30T23:13",
+    "createdAt" : "2022-08-01T21:26",
+    "updatedAt" : "2022-08-01T21:26",
     "views" : 200
   } ]
 }</code></pre>
@@ -651,6 +696,27 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_header_3"><a class="link" href="#_header_3">Header</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bearer + 토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -669,13 +735,13 @@ Content-Length: 267
   "comments" : [ {
     "id" : 1,
     "content" : "댓글1",
-    "createdAt" : "2022-07-30T23:13",
-    "updatedAt" : "2022-07-30T23:13"
+    "createdAt" : "2022-08-01T21:26",
+    "updatedAt" : "2022-08-01T21:26"
   }, {
     "id" : 1,
     "content" : "댓글2",
-    "createdAt" : "2022-07-30T23:13",
-    "updatedAt" : "2022-07-30T23:13"
+    "createdAt" : "2022-08-01T21:26",
+    "updatedAt" : "2022-08-01T21:26"
   } ]
 }</code></pre>
 </div>
@@ -722,7 +788,7 @@ Content-Length: 267
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-30 23:13:09 +0900
+Last updated 2022-08-01 19:46:46 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

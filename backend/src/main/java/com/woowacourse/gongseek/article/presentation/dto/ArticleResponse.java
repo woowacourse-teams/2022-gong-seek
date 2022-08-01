@@ -43,4 +43,16 @@ public class ArticleResponse {
                 article.getUpdatedAt()
         );
     }
+
+    public ArticleResponse(Article article, AuthorDto authorDto, boolean isAuthor) {
+        this(
+                article.getTitle(),
+                authorDto,
+                article.getContent(),
+                isAuthor,
+                article.getViews(),
+                article.getCreatedAt(),
+                article.getUpdatedAt()
+        );
+    }
 }
