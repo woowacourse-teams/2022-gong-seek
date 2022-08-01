@@ -126,7 +126,7 @@ class ArticleRepositoryTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"wow", "w", "WOW", "W", "WoW", "W ow", "w o w"})
-    void 내용과_일치하는_게시물을_검색한다(String searchText) {
+    void 띄어쓰기와_대소문자_관계_없이_내용으로_게시물을_검색한다(String searchText) {
         Article article = articleRepository.save(new Article("this is wooteco", "wow", Category.QUESTION, member));
         articleRepository.save(new Article("i am 주디", "hello", Category.QUESTION, member));
 
