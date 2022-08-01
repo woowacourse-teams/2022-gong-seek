@@ -6,7 +6,7 @@ import { AxiosError } from 'axios';
 import { useQuery } from 'react-query';
 import { useSetRecoilState } from 'recoil';
 
-const useGetErrorDetailArticle = (id: string) => {
+const useGetDetailArticle = (id: string) => {
 	const { data, isError, isSuccess, isLoading, error, isIdle } = useQuery<ArticleType, AxiosError>(
 		['detail-article', `article${id}`],
 		() => getDetailArticle(id),
@@ -28,4 +28,4 @@ const useGetErrorDetailArticle = (id: string) => {
 	return { isSuccess, isLoading, data, isIdle };
 };
 
-export default useGetErrorDetailArticle;
+export default useGetDetailArticle;
