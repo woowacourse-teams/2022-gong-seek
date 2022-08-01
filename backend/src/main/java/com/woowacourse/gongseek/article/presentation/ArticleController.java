@@ -60,15 +60,25 @@ public class ArticleController {
     }
 
     @GetMapping
-    public ResponseEntity<ArticlePageResponse> getArticles(
+    public ResponseEntity<ArticlePageResponse> getAll(
             @RequestParam String category,
             @RequestParam String sort,
             @RequestParam(required = false) Long cursorId,
             @RequestParam(required = false) Integer cursorViews,
-            @RequestParam Integer size
+            @RequestParam Integer pageSize
     ) {
-        ArticlePageResponse response = articleService.getArticles(cursorId, cursorViews, category, sort, size);
+        ArticlePageResponse response = articleService.getAll(cursorId, cursorViews, category, sort, pageSize);
 
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<ArticlePageResponse> search(
+            @RequestParam(required = false) Long cursorId,
+            @RequestParam Integer pageSize,
+            @RequestParam String searchText
+    ) {
+        ArticlePageResponse response = articleService.search(cursorId, pageSize, searchText);
         return ResponseEntity.ok(response);
     }
 }

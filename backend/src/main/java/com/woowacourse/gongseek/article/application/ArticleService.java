@@ -16,6 +16,7 @@ import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,6 @@ public class ArticleService {
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
         Article article = articleRepository.save(articleRequest.toEntity(getMember(appMember)));
-
         return new ArticleIdResponse(article);
     }
 
@@ -44,9 +44,13 @@ public class ArticleService {
         }
     }
 
+    private Member getMember(AppMember appMember) {
+        return memberRepository.findById(appMember.getPayload())
+                .orElseThrow(MemberNotFoundException::new);
+    }
+
     public ArticleResponse getOne(AppMember appMember, Long id) {
-        Article article = articleRepository.findById(id)
-                .orElseThrow(ArticleNotFoundException::new);
+        Article article = getArticle(id);
         article.addViews();
         if (appMember.isGuest()) {
             return new ArticleResponse(article, false);
@@ -54,22 +58,53 @@ public class ArticleService {
         return new ArticleResponse(article, article.isAuthor(getMember(appMember)));
     }
 
+    private Article getArticle(Long id) {
+        return articleRepository.findById(id)
+                .orElseThrow(ArticleNotFoundException::new);
+    }
+
     @Transactional(readOnly = true)
-    public ArticlePageResponse getArticles(Long cursorId, Integer cursorViews, String category, String sortType,
-                                           int pageSize) {
-        List<ArticlePreviewResponse> articles = articleRepository.findAllByPage(cursorId, cursorViews, category,
-                        sortType, pageSize).stream()
+    public ArticlePageResponse getAll(Long cursorId, Integer cursorViews, String category, String sortType,
+                                      int pageSize) {
+        List<ArticlePreviewResponse> articles = getAllByPage(cursorId, cursorViews, category, sortType, pageSize);
+
+        return getArticlePageResponse(articles, pageSize);
+    }
+
+    private List<ArticlePreviewResponse> getAllByPage(Long cursorId, Integer cursorViews, String category,
+                                                      String sortType, int pageSize) {
+        return articleRepository.findAllByPage(cursorId, cursorViews, category, sortType, pageSize)
+                .stream()
                 .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))
                 .collect(Collectors.toList());
+    }
 
+    private int getCommentCount(Article article) {
+        return commentRepository.countByArticleId(article.getId());
+    }
+
+    private ArticlePageResponse getArticlePageResponse(List<ArticlePreviewResponse> articles, int pageSize) {
         if (articles.size() == pageSize + 1) {
             return new ArticlePageResponse(articles.subList(0, pageSize), true);
         }
         return new ArticlePageResponse(articles, false);
     }
 
-    private int getCommentCount(Article article) {
-        return commentRepository.countByArticleId(article.getId());
+    @Transactional(readOnly = true)
+    public ArticlePageResponse search(Long cursorId, int pageSize, String searchText) {
+        if (searchText.isBlank()) {
+            return new ArticlePageResponse(new ArrayList<>(), false);
+        }
+        List<ArticlePreviewResponse> articles = searchByText(cursorId, pageSize, searchText);
+
+        return getArticlePageResponse(articles, pageSize);
+    }
+
+    private List<ArticlePreviewResponse> searchByText(Long cursorId, int pageSize, String searchText) {
+        return articleRepository.searchByContainingText(cursorId, pageSize, searchText)
+                .stream()
+                .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))
+                .collect(Collectors.toList());
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
@@ -77,11 +112,6 @@ public class ArticleService {
         article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent());
 
         return new ArticleUpdateResponse(article);
-    }
-
-    public void delete(AppMember appMember, Long id) {
-        Article article = checkAuthorization(appMember, id);
-        articleRepository.delete(article);
     }
 
     private Article checkAuthorization(AppMember appMember, Long id) {
@@ -98,13 +128,8 @@ public class ArticleService {
         }
     }
 
-    private Member getMember(AppMember appMember) {
-        return memberRepository.findById(appMember.getPayload())
-                .orElseThrow(MemberNotFoundException::new);
-    }
-
-    private Article getArticle(Long id) {
-        return articleRepository.findById(id)
-                .orElseThrow(ArticleNotFoundException::new);
+    public void delete(AppMember appMember, Long id) {
+        Article article = checkAuthorization(appMember, id);
+        articleRepository.delete(article);
     }
 }
