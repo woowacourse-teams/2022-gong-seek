@@ -70,7 +70,7 @@ class ArticleControllerTest {
     @Test
     void 질문_게시물_생성_API_문서화() throws Exception {
         ArticleIdResponse response = new ArticleIdResponse(1L);
-        ArticleRequest request = new ArticleRequest("title", "content", "question");
+        ArticleRequest request = new ArticleRequest("title", "content", "question", false);
 
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
@@ -91,7 +91,8 @@ class ArticleControllerTest {
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
-                                fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리")
+                                fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리"),
+                                fieldWithPath("isAnonymous").type(JsonFieldType.BOOLEAN).description("익명 여부")
                         ),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("식별자")

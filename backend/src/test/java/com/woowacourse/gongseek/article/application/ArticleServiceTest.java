@@ -54,7 +54,7 @@ public class ArticleServiceTest {
     @BeforeEach
     void setUp() {
         member = memberRepository.save(new Member("slo", "hanull", "avatar.com"));
-        articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue());
+        articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
     }
 
     @AfterEach
