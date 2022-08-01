@@ -64,8 +64,8 @@ export const getAllArticle = async ({
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
-		cursorId: data.articles[data.articles.length - 1].id,
-		cursorViews: data.articles[data.articles.length - 1].views,
+		cursorId: data.articles[data.articles.length - 1]?.id,
+		cursorViews: data.articles[data.articles.length - 1]?.views,
 	};
 };
 

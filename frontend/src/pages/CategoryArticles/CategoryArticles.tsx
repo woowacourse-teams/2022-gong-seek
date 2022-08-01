@@ -17,12 +17,12 @@ const CategoryArticles = () => {
 		throw new Error('카테고리를 찾을 수 없습니다');
 	}
 	const { data, isLoading, isError, refetch } = useQuery('articles', () =>
-		getAllArticle(category, sortIndex),
+		getAllArticle({category, sort: sortIndex}),
 	);
 
 	useEffect(() => {
 		refetch();
-	}, [sortIndex]);
+	}, [category, sortIndex]);
 
 	if (isLoading) {
 		return <Loading />;
