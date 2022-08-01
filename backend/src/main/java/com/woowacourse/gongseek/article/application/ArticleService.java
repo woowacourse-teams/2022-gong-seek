@@ -38,12 +38,6 @@ public class ArticleService {
         return new ArticleIdResponse(article);
     }
 
-    private void validateGuest(AppMember appMember) {
-        if (appMember.isGuest()) {
-            throw new NoAuthorizationException();
-        }
-    }
-
     public ArticleResponse getOne(AppMember appMember, Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(ArticleNotFoundException::new);
@@ -87,6 +81,12 @@ public class ArticleService {
                 .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))
                 .collect(Collectors.toList());
         return getArticlePageResponse(articles, pageSize);
+    }
+
+    private void validateGuest(AppMember appMember) {
+        if (appMember.isGuest()) {
+            throw new NoAuthorizationException();
+        }
     }
 
     private int getCommentCount(Article article) {
