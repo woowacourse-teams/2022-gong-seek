@@ -57,7 +57,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public List<Article> searchByTextLike(Long cursorId, int pageSize, String searchText) {
+    public List<Article> searchByContainingText(Long cursorId, int pageSize, String searchText) {
         return queryFactory
                 .selectFrom(article)
                 .where(

@@ -203,7 +203,7 @@ public class ArticleServiceTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getArticles(null, 0, Category.QUESTION.getValue(), "latest", 10);
+        ArticlePageResponse response = articleService.getAll(null, 0, Category.QUESTION.getValue(), "latest", 10);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
         assertAll(
@@ -221,7 +221,7 @@ public class ArticleServiceTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getArticles(10L, 0, Category.QUESTION.getValue(), "latest", 10);
+        ArticlePageResponse response = articleService.getAll(10L, 0, Category.QUESTION.getValue(), "latest", 10);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
         assertAll(
@@ -242,7 +242,7 @@ public class ArticleServiceTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getArticles(null, cursorViews, Category.QUESTION.getValue(),
+        ArticlePageResponse response = articleService.getAll(null, cursorViews, Category.QUESTION.getValue(),
                 "latest", 10);
         List<ArticlePreviewResponse> responses = response.getArticles();
 

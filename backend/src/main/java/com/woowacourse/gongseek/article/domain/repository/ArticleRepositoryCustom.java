@@ -7,5 +7,5 @@ public interface ArticleRepositoryCustom {
 
     List<Article> findAllByPage(Long cursorId, Integer views, String category, String sortType, int pageSize);
 
-    List<Article> searchByTextLike(Long cursorId, int pageSize, String searchText);
+    List<Article> searchByContainingText(Long cursorId, int pageSize, String searchText);
 }

@@ -229,7 +229,7 @@ class ArticleControllerTest {
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
-        given(articleService.getArticles(anyLong(), anyInt(), any(), any(), anyInt())).willReturn(response);
+        given(articleService.getAll(anyLong(), anyInt(), any(), any(), anyInt())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles")
                 .param("category", Category.DISCUSSION.getValue())
