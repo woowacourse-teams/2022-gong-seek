@@ -3,8 +3,6 @@ package com.woowacourse.gongseek.auth.utils;
 import com.woowacourse.gongseek.auth.exception.EmptyTokenException;
 import com.woowacourse.gongseek.auth.exception.InvalidTokenTypeException;
 import java.util.Objects;
-import javax.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpHeaders;
 
 public class TokenExtractor {
 

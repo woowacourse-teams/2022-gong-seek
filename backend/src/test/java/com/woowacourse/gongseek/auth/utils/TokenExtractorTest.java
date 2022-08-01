@@ -2,15 +2,11 @@ package com.woowacourse.gongseek.auth.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import com.woowacourse.gongseek.auth.exception.EmptyTokenException;
 import com.woowacourse.gongseek.auth.exception.InvalidTokenTypeException;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
-import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpHeaders;
 
 @SuppressWarnings("NonAsciiCharacters")
 class TokenExtractorTest {
