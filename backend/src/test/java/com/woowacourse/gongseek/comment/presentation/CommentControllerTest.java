@@ -89,6 +89,7 @@ class CommentControllerTest {
                 "content1",
                 new AuthorDto("authorName", "authorAvatarUrl1"),
                 true,
+                LocalDateTime.now(),
                 LocalDateTime.now()
         );
         CommentResponse nonAuthorComment = new CommentResponse(
@@ -96,6 +97,7 @@ class CommentControllerTest {
                 "content2",
                 new AuthorDto("nonAuthorName", "authorAvatarUrl2"),
                 false,
+                LocalDateTime.now(),
                 LocalDateTime.now()
         );
 
@@ -115,7 +117,8 @@ class CommentControllerTest {
                                         fieldWithPath("comments[].author.avatarUrl").type(JsonFieldType.STRING)
                                                 .description("작성자 이미지"),
                                         fieldWithPath("comments[].isAuthor").type(JsonFieldType.BOOLEAN).description("작성자 여부"),
-                                        fieldWithPath("comments[].createdAt").type(JsonFieldType.STRING).description("생성 날짜")
+                                        fieldWithPath("comments[].createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
+                                        fieldWithPath("comments[].updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
                                 )
                         )
                 );

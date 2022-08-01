@@ -7,6 +7,7 @@ import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.utils.TokenExtractor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -28,7 +29,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        String token = TokenExtractor.extract(request);
+        String token = TokenExtractor.extract(request.getHeader(HttpHeaders.AUTHORIZATION));
         validateToken(token);
         String payload = jwtTokenProvider.getPayload(token);
         request.setAttribute(PAYLOAD, payload);

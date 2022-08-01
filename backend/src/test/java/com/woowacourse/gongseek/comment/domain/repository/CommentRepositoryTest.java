@@ -87,4 +87,19 @@ class CommentRepositoryTest {
 
         assertThat(deletedComment).isEmpty();
     }
+
+    @Test
+    void 회원이_작성한_댓글을_조회한다() {
+        Comment firstComment = commentRepository.save(new Comment("content1", member, article));
+        commentRepository.save(new Comment("content2", member, article));
+
+        List<Comment> comments = commentRepository.findAllByMemberId(member.getId());
+
+        assertAll(
+                () -> assertThat(comments).size().isEqualTo(2),
+                () -> assertThat(comments.get(0).getContent()).isEqualTo(firstComment.getContent()),
+                () -> assertThat(comments.get(0).getMember()).isEqualTo(firstComment.getMember()),
+                () -> assertThat(comments.get(0).getArticle()).isEqualTo(firstComment.getArticle())
+        );
+    }
 }

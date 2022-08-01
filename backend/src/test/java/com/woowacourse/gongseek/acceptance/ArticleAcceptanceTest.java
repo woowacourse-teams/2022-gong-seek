@@ -67,6 +67,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(articleResponse)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
+                        .ignoringFields("updatedAt")
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
@@ -74,6 +75,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         "content",
                                         false,
                                         1,
+                                        LocalDateTime.now(),
                                         LocalDateTime.now()
                                 )
                         )
@@ -96,6 +98,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(articleResponse)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
+                        .ignoringFields("updatedAt")
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
@@ -103,6 +106,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         "content",
                                         true,
                                         1,
+                                        LocalDateTime.now(),
                                         LocalDateTime.now()
                                 )
                         )
@@ -126,6 +130,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(articleResponse)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
+                        .ignoringFields("updatedAt")
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
@@ -133,6 +138,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         "content",
                                         true,
                                         2,
+                                        LocalDateTime.now(),
                                         LocalDateTime.now()
                                 )
                         )
