@@ -56,7 +56,7 @@ const Home = () => {
 				<SortDropdown sortIndex={sortIndex} setSortIndex={setSortIndex} />
 			</S.CategoryTitleContainer>
 			{data ? (
-				<InfiniteScrollObserver hasNext={data.pages[-1].hasNext} fetchNextPage={fetchNextPage}>
+				<InfiniteScrollObserver hasNext={data.pages[data.pages.length - 1].hasNext} fetchNextPage={fetchNextPage}>
 					<S.ArticleItemList>
 						{data.pages.map(({ articles }) =>
 							articles.map((item) => (
