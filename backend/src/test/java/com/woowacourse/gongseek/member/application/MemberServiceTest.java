@@ -18,6 +18,7 @@ import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,12 @@ class MemberServiceTest {
 
     @BeforeEach
     void setUp() {
-        databaseCleaner.tableClear();
         member = memberRepository.save(new Member("rennon", "brorae", "avatar.com"));
+    }
+
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.tableClear();
     }
 
     @Test
