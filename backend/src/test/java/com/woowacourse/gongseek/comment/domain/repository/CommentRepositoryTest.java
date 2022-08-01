@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Import;
 class CommentRepositoryTest {
 
     private final Member member = new Member("jurl", "jurlring", "");
-    private final Article article = new Article("title", "content", Category.QUESTION, member);
+    private final Article article = new Article("title", "content", Category.QUESTION, member, false);
 
     @Autowired
     private CommentRepository commentRepository;

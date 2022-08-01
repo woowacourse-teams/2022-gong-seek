@@ -31,6 +31,6 @@ public class ArticleRequest {
     private Boolean isAnonymous;
 
     public Article toEntity(Member member) {
-        return new Article(title, content, Category.from(category), member);
+        return new Article(title, content, Category.from(category), member, isAnonymous);
     }
 }

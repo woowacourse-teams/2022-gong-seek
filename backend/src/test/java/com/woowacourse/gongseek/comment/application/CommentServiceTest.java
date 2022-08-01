@@ -32,7 +32,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class CommentServiceTest {
 
     private final Member member = new Member("slow", "hanull", "avatarUrl");
-    private final Article article = new Article("title", "content", Category.QUESTION, member);
+    private final Article article = new Article("title", "content", Category.QUESTION, member, false);
     private final Comment comment = new Comment("content", member, article);
 
     @Autowired

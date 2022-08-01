@@ -41,7 +41,7 @@ class ArticleRepositoryTest {
         String title = "질문합니다.";
         String content = "내용입나다....";
 
-        Article article = new Article(title, content, Category.QUESTION, member);
+        Article article = new Article(title, content, Category.QUESTION, member, false);
         Article savedArticle = articleRepository.save(article);
 
         assertThat(savedArticle).isSameAs(article);
@@ -57,7 +57,7 @@ class ArticleRepositoryTest {
     @Test
     void 게시물을_5개씩_조회한다() {
         for (int i = 0; i < 5; i++) {
-            articleRepository.save(new Article("title", "content", Category.QUESTION, member));
+            articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
         }
         List<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "views", 5);
 
@@ -67,8 +67,8 @@ class ArticleRepositoryTest {
     @ParameterizedTest
     @CsvSource({"all, 2", "question, 1", "discussion, 1"})
     void 카테고리별로_게시물을_조회한다(String category, int expectedSize) {
-        articleRepository.save(new Article("title", "content", Category.QUESTION, member));
-        articleRepository.save(new Article("title", "content", Category.DISCUSSION, member));
+        articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
+        articleRepository.save(new Article("title", "content", Category.DISCUSSION, member, false));
 
         List<Article> articles = articleRepository.findAllByPage(null, 0, category, "views", 5);
 
@@ -77,9 +77,9 @@ class ArticleRepositoryTest {
 
     @Test
     void 게시물을_조회순으로_조회한다() {
-        Article firstArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member));
-        Article secondArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member));
-        Article thirdArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member));
+        Article firstArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
+        Article thirdArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
         firstArticle.addViews();
         firstArticle.addViews();
         secondArticle.addViews();
@@ -91,9 +91,9 @@ class ArticleRepositoryTest {
 
     @Test
     void 게시물을_최신순으로_조회한다() {
-        Article thirdArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member));
-        Article secondArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member));
-        Article firstArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member));
+        Article thirdArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
+        Article firstArticle = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
 
         List<Article> articles = articleRepository.findAllByPage(null, null, Category.QUESTION.getValue(), "latest", 3);
 
@@ -108,7 +108,7 @@ class ArticleRepositoryTest {
         Member member = new Member("slo", "hanull", "avatar.com");
         memberRepository.save(member);
 
-        Article article = new Article(title, content, Category.QUESTION, member);
+        Article article = new Article(title, content, Category.QUESTION, member, false);
         Article savedArticle = articleRepository.save(article);
 
         assertThat(savedArticle).isSameAs(article);
