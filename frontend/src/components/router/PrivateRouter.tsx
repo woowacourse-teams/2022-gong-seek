@@ -1,10 +1,14 @@
 import { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
+import useSnackBar from '@/hooks/useSnackBar';
+
+
 const PrivateRouter = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
+	const {showSnackBar} = useSnackBar();
 	useEffect(() => {
 		if (!isAuthenticated) {
-			alert('로그인 후 이용해주세요');
+			showSnackBar('로그인 후 사용해주세요');
 		}
 	}, [isAuthenticated]);
 
