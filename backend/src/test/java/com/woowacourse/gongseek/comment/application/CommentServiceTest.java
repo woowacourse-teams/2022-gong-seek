@@ -58,7 +58,7 @@ class CommentServiceTest {
     }
 
     @AfterEach
-    void tearDown(){
+    void tearDown() {
         databaseCleaner.tableClear();
     }
 

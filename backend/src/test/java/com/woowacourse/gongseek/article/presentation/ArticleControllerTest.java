@@ -140,7 +140,8 @@ class ArticleControllerTest {
     void 로그인한_사용자일때_익명_게시물_단건_조회_API_문서화() throws Exception {
         ArticleResponse response = new ArticleResponse(
                 "title",
-                new AuthorDto("익명", "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"),
+                new AuthorDto("익명",
+                        "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"),
                 "content",
                 false,
                 1,
