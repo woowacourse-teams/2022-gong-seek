@@ -73,26 +73,6 @@ export const HeaderSection = styled.header`
 	}
 `;
 
-export const HeaderOpenSection = styled.div`
-	display: flex;
-
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-
-	width: 100%;
-	height: ${({ theme }) => theme.size.SIZE_056};
-
-	background-color: ${({ theme }) => theme.colors.WHITE};
-
-	padding: 1rem 0;
-
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
-		width: calc(100% - ${({ theme }) => theme.size.SIZE_160} * 2);
-		padding: 1rem ${({ theme }) => theme.size.SIZE_160};
-		justify-content: center;
-}
-`
 
 export const LogoLink = styled.h1`
 	font-weight: 800;
@@ -100,6 +80,11 @@ export const LogoLink = styled.h1`
 
 	color: ${({ theme }) => theme.colors.PURPLE_500};
 `;
+
+export const LogoImage = styled.img`
+	width: ${({theme}) => theme.size.SIZE_030};
+	height: ${({theme}) => theme.size.SIZE_030};
+`
 
 export const SearchBarBox = styled.div`
 	width: 60%;
