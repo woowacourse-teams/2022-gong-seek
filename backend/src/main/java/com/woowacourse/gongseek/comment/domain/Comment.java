@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -47,6 +48,9 @@ public class Comment {
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     public Comment(String content, Member member, Article article) {
         this.content = new Content(content);

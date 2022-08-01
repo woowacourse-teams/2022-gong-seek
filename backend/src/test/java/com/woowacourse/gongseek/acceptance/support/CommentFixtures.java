@@ -17,7 +17,7 @@ import org.springframework.http.MediaType;
 public class CommentFixtures {
 
     public static ExtractableResponse<Response> 댓글을_등록한다(TokenResponse tokenResponse,
-            ArticleIdResponse articleIdResponse) {
+                                                         ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .pathParam("article_id", articleIdResponse.getId())
@@ -31,7 +31,7 @@ public class CommentFixtures {
     }
 
     public static CommentsResponse 댓글을_조회한다(TokenResponse tokenResponse,
-            ArticleIdResponse articleIdResponse) {
+                                            ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .pathParam("article_id", articleIdResponse.getId())
@@ -45,7 +45,7 @@ public class CommentFixtures {
     }
 
     public static ExtractableResponse<Response> 댓글을_수정한다(TokenResponse tokenResponse,
-            List<CommentResponse> commentResponses) {
+                                                         List<CommentResponse> commentResponses) {
         return RestAssured
                 .given().log().all()
                 .pathParam("comment_id", commentResponses.get(0).getId())
@@ -59,7 +59,7 @@ public class CommentFixtures {
     }
 
     public static ExtractableResponse<Response> 댓글을_삭제한다(TokenResponse tokenResponse,
-            List<CommentResponse> commentResponses) {
+                                                         List<CommentResponse> commentResponses) {
         return RestAssured
                 .given().log().all()
                 .pathParam("comment_id", commentResponses.get(0).getId())

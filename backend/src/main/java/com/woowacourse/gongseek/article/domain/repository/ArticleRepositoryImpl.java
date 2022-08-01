@@ -17,7 +17,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public List<Article> findAllByPage(Long cursorId, Integer cursorViews, String category, String sortType,
-            int pageSize) {
+                                       int pageSize) {
         JPAQuery<Article> query = queryFactory
                 .selectFrom(article)
                 .where(

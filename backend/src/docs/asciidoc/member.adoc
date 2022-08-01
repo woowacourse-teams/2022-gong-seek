@@ -1,0 +1,66 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Member
+---
+= 기본 API
+
+== 회원 조회
+
+`GET /api/members/me`
+
+=== Request
+
+include::{snippets}/member-get-one/http-request.adoc[]
+
+=== Header
+
+include::{snippets}/member-get-one/request-headers.adoc[]
+
+
+=== Response
+
+include::{snippets}/member-get-one/http-response.adoc[]
+include::{snippets}/member-get-one/response-fields.adoc[]
+
+== 게시글 조회
+
+`GET /api/members/me/articles`
+
+=== Request
+
+include::{snippets}/member-get-articles/http-request.adoc[]
+
+=== Header
+
+include::{snippets}/member-get-articles/request-headers.adoc[]
+
+
+=== Response
+
+include::{snippets}/member-get-articles/http-response.adoc[]
+include::{snippets}/member-get-articles/response-fields.adoc[]
+
+== 댓글 조회
+
+`GET /api/members/me/comments`
+
+=== Request
+
+include::{snippets}/member-get-comments/http-request.adoc[]
+
+=== Header
+
+include::{snippets}/member-get-comments/request-headers.adoc[]
+
+== Response
+
+include::{snippets}/member-get-comments/http-response.adoc[]
+include::{snippets}/member-get-comments/response-fields.adoc[]
