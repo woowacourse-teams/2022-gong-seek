@@ -93,9 +93,9 @@ public class ArticleService {
         return commentRepository.countByArticleId(article.getId());
     }
 
-    private ArticlePageResponse getArticlePageResponse(List<ArticlePreviewResponse> articles, int size) {
-        if (articles.size() == size + 1) {
-            return new ArticlePageResponse(articles.subList(0, size), true);
+    private ArticlePageResponse getArticlePageResponse(List<ArticlePreviewResponse> articles, int pageSize) {
+        if (articles.size() == pageSize + 1) {
+            return new ArticlePageResponse(articles.subList(0, pageSize), true);
         }
         return new ArticlePageResponse(articles, false);
     }
