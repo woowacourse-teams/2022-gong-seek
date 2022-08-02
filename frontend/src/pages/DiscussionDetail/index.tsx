@@ -1,9 +1,13 @@
+import { useParams } from "react-router-dom";
+
+import Detail from "@/pages/Detail";
+import Vote from "@/pages/Discussion/Vote/Vote";
+
 import Loading from "@/components/common/Loading/Loading";
+
 import useGetDetailArticle from "@/hooks/useGetDetailArticle";
 import useGetDetailComment from "@/hooks/useGetDetailComment";
-import { useParams } from "react-router-dom";
-import Detail from "../Detail";
-import Vote from "../Discussion/Vote/Vote";
+
 
 const DiscussionDetail = () => {
   const { id } = useParams();
