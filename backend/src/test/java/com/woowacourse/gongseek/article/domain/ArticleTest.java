@@ -19,7 +19,7 @@ class ArticleTest {
                 () -> assertThat(article.getTitle()).isEqualTo("title"),
                 () -> assertThat(article.getContent()).isEqualTo("content"),
                 () -> assertThat(article.getCategory()).isEqualTo(Category.QUESTION),
-                () -> assertThat(article.getIsAnonymous()).isFalse()
+                () -> assertThat(article.isAnonymous()).isFalse()
         );
     }
 

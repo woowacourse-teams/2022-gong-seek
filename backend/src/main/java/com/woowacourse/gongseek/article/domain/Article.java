@@ -52,7 +52,7 @@ public class Article {
     private Views views;
 
     @Column(nullable = false)
-    private Boolean isAnonymous;
+    private boolean isAnonymous;
 
     @CreatedDate
     @Column(updatable = false)
@@ -62,7 +62,7 @@ public class Article {
     @Column(updatable = false)
     private LocalDateTime updatedAt;
 
-    public Article(String title, String content, Category category, Member member, Boolean isAnonymous) {
+    public Article(String title, String content, Category category, Member member, boolean isAnonymous) {
         this.title = new Title(title);
         this.content = new Content(content);
         this.category = category;
@@ -94,9 +94,5 @@ public class Article {
 
     public int getViews() {
         return views.getValue();
-    }
-
-    public Boolean isAnonymous() {
-        return isAnonymous;
     }
 }
