@@ -28,3 +28,17 @@ export interface infiniteArticleResponse extends AllArticleResponse {
 	cursorId: number;
 	cursorViews: number;
 }
+
+export interface UserArticleItemType {
+	id: number,
+	title: string,
+	category: string,
+	commentCount: number,
+	createdAt: string,
+	updatedAt: string,
+	views: number,
+}
+
+export interface UserArticlesResponse {
+	articles: UserArticleItemType[];
+}
