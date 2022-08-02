@@ -17,6 +17,9 @@ import NotFound from '@/pages/NotFound';
 import UpdateWriting from '@/pages/UpdateWriting';
 import VoteGenerator from '@/pages/VoteGenerator';
 import WritingArticles from '@/pages/WritingArticles';
+import Search from '@/pages/Search';
+import DiscussionDetail from '@/pages/DiscussionDetail';
+
 import { getUserIsLogin } from '@/store/userState';
 import styled from '@emotion/styled';
 
@@ -57,6 +60,11 @@ const App = () => {
 					<Route path="/articles/question/:id" element={<ErrorDetail />} />
 					<Route path="/articles/:category" element={<CategoryArticles />} />
 					<Route path="/articles/modify/:category/:id" element={<UpdateWriting />} />
+					<Route path="/search-result" element={<Search />} />
+					<Route
+						path="/articles/discussion/:id"
+						element={<DiscussionDetail />}
+					/>
 					<Route path="/" element={<Home />} />
 					<Route path="/*" element={<NotFound />} />
 				</Routes>

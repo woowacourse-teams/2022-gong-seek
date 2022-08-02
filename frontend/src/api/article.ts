@@ -29,7 +29,7 @@ export interface PopularArticles {
 
 export const getPopularArticles = async () => {
 	const result = await axios.get<PopularArticles>(
-		`${HOME_URL}/api/articles?category=all&sort=views&size=10`,
+		`${HOME_URL}/api/articles?category=all&sort=views&pageSize=10`,
 	);
 	return result.data;
 };
@@ -58,14 +58,14 @@ export const getAllArticle = async ({
 }) => {
 	const currentSort = sort === '최신순' ? 'latest' : 'views';
 	const { data } = await axios.get<AllArticleResponse>(
-		`${HOME_URL}/api/articles?category=${category}&sort=${currentSort}&cursorId=${cursorId}&cursorViews=${cursorViews}&size=5`,
+		`${HOME_URL}/api/articles?category=${category}&sort=${currentSort}&cursorId=${cursorId}&cursorViews=${cursorViews}&pageSize=5`,
 	);
 
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
-		cursorId: data.articles[data.articles.length - 1].id,
-		cursorViews: data.articles[data.articles.length - 1].views,
+		cursorId: data.articles[data.articles.length - 1]?.id,
+		cursorViews: data.articles[data.articles.length - 1]?.views,
 	};
 };
 
