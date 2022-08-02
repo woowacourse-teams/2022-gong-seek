@@ -1,24 +1,22 @@
-import { useRecoilValue } from 'recoil';
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
+import gongseek from '@/assets/gongseek.png';
 import SearchBar from '@/components/common/SearchBar/SearchBar';
+import * as S from '@/components/layout/Header/Header.styles';
 import { searchState } from '@/store/searchState';
 import { getUserIsLogin } from '@/store/userState';
 
-import gongseek from '@/assets/gongseek.png';
-
-import * as S from '@/components/layout/Header/Header.styles';
-
 const Header = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
-	const {isSearchOpen} = useRecoilValue(searchState);
-	if(isSearchOpen){
+	const { isSearchOpen } = useRecoilValue(searchState);
+	if (isSearchOpen) {
 		return (
 			<S.Container>
 				<S.HeaderSection>
-				<S.StyledLink to="/">
-					<S.LogoImage src={gongseek}/>
-				</S.StyledLink>
+					<S.StyledLink to="/">
+						<S.LogoImage src={gongseek} />
+					</S.StyledLink>
 					<S.SearchOpenBox>
 						<Link to="/search-result ">
 							<SearchBar isValid={false} />
@@ -26,7 +24,7 @@ const Header = () => {
 					</S.SearchOpenBox>
 				</S.HeaderSection>
 			</S.Container>
-		)
+		);
 	}
 	return (
 		<S.Container>
