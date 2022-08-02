@@ -3,8 +3,10 @@ import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
+import useSnackBar from '@/hooks/useSnackBar';
 
 const useDeleteArticleContent = () => {
+	const {showSnackBar} = useSnackBar();
 	const { isSuccess, isError, isLoading, error, mutate } = useMutation<unknown, AxiosError, string>(
 		deleteArticle,
 	);
@@ -12,7 +14,7 @@ const useDeleteArticleContent = () => {
 
 	useEffect(() => {
 		if (isSuccess) {
-			alert('게시글이 삭제 되었습니다');
+			showSnackBar('게시글이 삭제 되었습니다');
 			navigate('/');
 		}
 	}, [isSuccess]);
