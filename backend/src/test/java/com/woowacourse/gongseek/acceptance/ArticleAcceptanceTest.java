@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.acceptance;
 
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
-import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.댓글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.기명으로_댓글을_등록한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -480,7 +480,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
             ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.DISCUSSION).as(
                     ArticleIdResponse.class);
             로그인_안한_유저가_게시물을_조회한다(articleIdResponse);
-            댓글을_등록한다(tokenResponse, articleIdResponse);
+            기명으로_댓글을_등록한다(tokenResponse, articleIdResponse);
         }
         for (int i = 0; i < 10; i++) {
             기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
