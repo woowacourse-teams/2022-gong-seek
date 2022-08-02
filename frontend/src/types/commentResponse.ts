@@ -8,7 +8,7 @@ export interface CommentType {
 	isAuthor: boolean;
 }
 
-export interface UserComment { 
+export interface UserComment {
 	id: number;
 	content: string;
 	createdAt: string;

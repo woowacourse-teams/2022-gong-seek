@@ -30,13 +30,13 @@ export interface infiniteArticleResponse extends AllArticleResponse {
 }
 
 export interface UserArticleItemType {
-	id: number,
-	title: string,
-	category: string,
-	commentCount: number,
-	createdAt: string,
-	updatedAt: string,
-	views: number,
+	id: number;
+	title: string;
+	category: string;
+	commentCount: number;
+	createdAt: string;
+	updatedAt: string;
+	views: number;
 }
 
 export interface UserArticlesResponse {

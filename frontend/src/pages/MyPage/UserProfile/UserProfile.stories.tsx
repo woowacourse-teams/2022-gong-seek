@@ -18,6 +18,6 @@ const Template: Story<UserProfileProps> = (args) => <UserProfile {...args} />;
 export const DiscussionArticleItem = Template.bind({});
 
 DiscussionArticleItem.args = {
-    name: '샐리',
-    avatarUrl: 'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg',
+	name: '샐리',
+	avatarUrl: 'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg',
 };
