@@ -47,7 +47,9 @@ const MyPage = () => {
 					{info && <UserProfile name={info.name} avatarUrl={info.avatarUrl} />}
 					<UserItemBox subTitle="내가 작성한 글">
 						{articles ? (
-							articles.articles.map((article) => <UserArticleItem article={article} />)
+							articles.articles.map((article) => (
+								<UserArticleItem key={article.id} article={article} />
+							))
 						) : (
 							<div>작성하신 글이 없습니다</div>
 						)}
@@ -55,7 +57,9 @@ const MyPage = () => {
 
 					<UserItemBox subTitle="내가 작성한 댓글">
 						{comments ? (
-							comments.comments.map((comment) => <UserCommentBox comment={comment} />)
+							comments.comments.map((comment) => (
+								<UserCommentBox key={comment.id} comment={comment} />
+							))
 						) : (
 							<div>작성하신 댓글이 없습니다</div>
 						)}
