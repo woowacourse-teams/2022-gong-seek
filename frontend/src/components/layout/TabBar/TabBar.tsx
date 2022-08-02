@@ -16,7 +16,11 @@ const TabBar = () => {
 						navigate('/category');
 					}}
 				/>
-				<S.UserCircleLink />
+				<S.UserCircleLink
+					onClick={() => {
+						navigate('/my-page');
+					}}
+				/>
 				<S.MenuLink
 					onClick={() => {
 						setIsMenuSliderOpen(true);
