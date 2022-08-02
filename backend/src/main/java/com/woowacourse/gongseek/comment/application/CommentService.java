@@ -10,10 +10,12 @@ import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
+import com.woowacourse.gongseek.comment.presentation.dto.CommentUpdateRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentsResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
+import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CommentService {
 
+    private static final AuthorDto ANONYMOUS_AUTHOR = new AuthorDto(
+            "익명",
+            "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"
+    );
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
@@ -33,9 +39,8 @@ public class CommentService {
         validateGuest(appMember);
         Member member = getMember(appMember);
         Article article = getArticle(articleId);
-        Comment comment = new Comment(commentRequest.getContent(), member, article);
 
-        commentRepository.save(comment);
+        commentRepository.save(commentRequest.toEntity(member, article));
     }
 
     private void validateGuest(AppMember appMember) {
@@ -44,7 +49,7 @@ public class CommentService {
         }
     }
 
-    public void update(AppMember appMember, Long commentId, CommentRequest updateRequest) {
+    public void update(AppMember appMember, Long commentId, CommentUpdateRequest updateRequest) {
         Comment comment = checkAuthorization(appMember, commentId);
         comment.updateContent(updateRequest.getContent());
     }
@@ -71,17 +76,23 @@ public class CommentService {
     @Transactional(readOnly = true)
     public CommentsResponse getAllByArticleId(AppMember appMember, Long articleId) {
         List<CommentResponse> responses = commentRepository.findAllByArticleId(articleId).stream()
-                .map(comment -> CommentResponse.of(comment, isAuthor(appMember, comment)))
+                .map(comment -> checkAuthor(appMember, comment))
                 .collect(Collectors.toList());
         return new CommentsResponse(responses);
     }
 
-    private boolean isAuthor(AppMember appMember, Comment comment) {
+    private CommentResponse checkAuthor(AppMember appMember, Comment comment) {
         if (appMember.isGuest()) {
-            return false;
+            return checkAnonymous(comment, false);
         }
-        Member member = getMember(appMember);
-        return comment.isAuthor(member);
+        return checkAnonymous(comment, comment.isAuthor(getMember(appMember)));
+    }
+
+    private CommentResponse checkAnonymous(Comment comment, boolean isAuthor) {
+        if (comment.isAnonymous()) {
+            return new CommentResponse(comment, ANONYMOUS_AUTHOR, isAuthor);
+        }
+        return new CommentResponse(comment, isAuthor);
     }
 
     private Member getMember(AppMember appMember) {

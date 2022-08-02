@@ -16,7 +16,7 @@ public class ArticleFixtures {
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ArticleRequest("title", "content", "question"))
+                .body(new ArticleRequest("title", "content", "question", false))
                 .when()
                 .post("/api/articles")
                 .then().log().all()

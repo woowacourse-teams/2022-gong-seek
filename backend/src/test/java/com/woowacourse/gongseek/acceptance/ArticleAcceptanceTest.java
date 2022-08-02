@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.acceptance;
 
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
-import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.댓글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.기명으로_댓글을_등록한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -30,32 +30,59 @@ import org.springframework.http.MediaType;
 @SuppressWarnings("NonAsciiCharacters")
 public class ArticleAcceptanceTest extends AcceptanceTest {
 
+    private static final AuthorDto anonymousAuthor = new AuthorDto(
+            "익명",
+            "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"
+    );
+
     @Test
-    void 유저가_깃허브로_로그인을_하고_게시글을_등록할_수_있다() {
+    void 유저가_깃허브로_로그인을_하고_기명으로_게시글을_등록할_수_있다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
 
         // when
-        ExtractableResponse<Response> response = 게시물을_등록한다(tokenResponse, Category.QUESTION);
+        ExtractableResponse<Response> response = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
 
     @Test
-    void 유저가_깃허브로_로그인을_하지_않고_게시글을_등록할_수_없다() {
+    void 유저가_깃허브로_로그인을_하고_익명으로_게시글을_등록할_수_있다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다(주디);
+
         // when
-        ExtractableResponse<Response> response = 게시물을_등록한다(new TokenResponse(""), Category.QUESTION);
+        ExtractableResponse<Response> response = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    void 유저가_깃허브로_로그인을_하지_않고_기명으로_게시글을_등록할_수_없다() {
+        // when
+        ExtractableResponse<Response> response = 기명으로_게시물을_등록한다(new TokenResponse(""), Category.QUESTION);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
-    void 로그인_없이_게시물을_단건_조회할_수_있다() {
+    void 유저가_깃허브로_로그인을_하지_않고_익명으로_게시글을_등록할_수_없다() {
+        // when
+        ExtractableResponse<Response> response = 익명으로_게시물을_등록한다(new TokenResponse(""), Category.QUESTION);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void 로그인_없이_기명_게시물을_단건_조회할_수_있다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
 
         // when
         ExtractableResponse<Response> response = 로그인_안한_유저가_게시물을_조회한다(articleIdResponse);
@@ -83,10 +110,43 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 로그인을_하고_게시물을_단건_조회할_수_있다() {
+    void 로그인_없이_익명_게시물을_단건_조회할_수_있다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
+
+        // when
+        ExtractableResponse<Response> response = 로그인_안한_유저가_게시물을_조회한다(articleIdResponse);
+        ArticleResponse articleResponse = response.as(ArticleResponse.class);
+
+        // then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(articleResponse)
+                        .usingRecursiveComparison()
+                        .ignoringFields("createdAt")
+                        .ignoringFields("updatedAt")
+                        .isEqualTo(
+                                new ArticleResponse(
+                                        "title",
+                                        anonymousAuthor,
+                                        "content",
+                                        false,
+                                        1,
+                                        LocalDateTime.now(),
+                                        LocalDateTime.now()
+                                )
+                        )
+        );
+    }
+
+    @Test
+    void 작성자가_로그인을_하고_기명_게시물을_단건_조회할_수_있다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다(주디);
+        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
 
         // when
         ExtractableResponse<Response> response = 로그인_후_게시물을_조회한다(tokenResponse, articleIdResponse);
@@ -114,10 +174,43 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    void 작성자가_로그인을_하고_익명_게시물을_단건_조회할_수_있다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다(주디);
+        ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
+
+        // when
+        ExtractableResponse<Response> response = 로그인_후_게시물을_조회한다(tokenResponse, articleIdResponse);
+        ArticleResponse articleResponse = response.as(ArticleResponse.class);
+
+        // then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(articleResponse)
+                        .usingRecursiveComparison()
+                        .ignoringFields("createdAt")
+                        .ignoringFields("updatedAt")
+                        .isEqualTo(
+                                new ArticleResponse(
+                                        "title",
+                                        anonymousAuthor,
+                                        "content",
+                                        true,
+                                        1,
+                                        LocalDateTime.now(),
+                                        LocalDateTime.now()
+                                )
+                        )
+        );
+    }
+
+    @Test
     void 게시물을_단건_조회를_계속_하면_조회수가_계속_증가한다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
 
         // when
         로그인_후_게시물을_조회한다(tokenResponse, articleIdResponse);
@@ -146,10 +239,11 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 로그인_하지_않으면_게시물을_수정할_수_없다() {
+    void 로그인_하지_않으면_기명_게시물을_수정할_수_없다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
 
         // when
         ExtractableResponse<Response> response = 로그인_안한_유저가_게시물을_수정한다(articleIdResponse);
@@ -159,10 +253,25 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 게시물_작성자가_아니면_게시물을_수정할_수_없다() {
+    void 로그인_하지_않으면_익명_게시물을_수정할_수_없다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
+
+        // when
+        ExtractableResponse<Response> response = 로그인_안한_유저가_게시물을_수정한다(articleIdResponse);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void 게시물_작성자가_아니면_기명_게시물을_수정할_수_없다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다(주디);
+        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
 
         // when
         ExtractableResponse<Response> response = 로그인_후_게시물을_수정한다(new TokenResponse("abc"), articleIdResponse);
@@ -172,10 +281,25 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 게시물_작성자는_게시물을_수정할_수_있다() {
+    void 게시물_작성자가_아니면_익명_게시물을_수정할_수_없다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
+
+        // when
+        ExtractableResponse<Response> response = 로그인_후_게시물을_수정한다(new TokenResponse("abc"), articleIdResponse);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void 게시물_작성자는_기명_게시물을_수정할_수_있다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다(주디);
+        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
 
         // when
         ExtractableResponse<Response> response = 로그인_후_게시물을_수정한다(tokenResponse, articleIdResponse);
@@ -190,10 +314,30 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 게시물_작성자는_게시물을_삭제할_수_있다() {
+    void 게시물_작성자는_익명_게시물을_수정할_수_있다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
+
+        // when
+        ExtractableResponse<Response> response = 로그인_후_게시물을_수정한다(tokenResponse, articleIdResponse);
+        ArticleUpdateResponse articleUpdateResponse = response.as(ArticleUpdateResponse.class);
+
+        // then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(articleUpdateResponse.getId()).isEqualTo(articleIdResponse.getId()),
+                () -> assertThat(articleUpdateResponse.getCategory()).isEqualTo(Category.QUESTION.getValue())
+        );
+    }
+
+    @Test
+    void 게시물_작성자는_기명_게시물을_삭제할_수_있다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다(주디);
+        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
 
         // when
         ExtractableResponse<Response> response = 로그인_후_게시물을_삭제한다(tokenResponse, articleIdResponse);
@@ -203,10 +347,39 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 게시물_작성자가_아니면_게시물을_삭제할_수_없다() {
+    void 게시물_작성자는_익명_게시물을_삭제할_수_있다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
+
+        // when
+        ExtractableResponse<Response> response = 로그인_후_게시물을_삭제한다(tokenResponse, articleIdResponse);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    void 게시물_작성자가_아니면_기명_게시물을_삭제할_수_없다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다(주디);
+        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
+
+        // when
+        ExtractableResponse<Response> response = 로그인_후_게시물을_삭제한다(new TokenResponse("abc"), articleIdResponse);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void 게시물_작성자가_아니면_익명_게시물을_삭제할_수_없다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다(주디);
+        ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
 
         // when
         ExtractableResponse<Response> response = 로그인_후_게시물을_삭제한다(new TokenResponse("abc"), articleIdResponse);
@@ -232,6 +405,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> secondResponse = 게시물_전체를_조회한다("all", "latest",
                 firstArticles.get(firstArticles.size() - 1).getId(), null);
         ArticlePageResponse secondArticles = secondResponse.as(ArticlePageResponse.class);
+
         //then
         assertAll(
                 () -> assertThat(secondResponse.statusCode()).isEqualTo(HttpStatus.OK.value()),
@@ -303,13 +477,13 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //given
         TokenResponse tokenResponse = 로그인을_한다(주디);
         for (int i = 0; i < 5; i++) {
-            ArticleIdResponse articleIdResponse = 게시물을_등록한다(tokenResponse, Category.DISCUSSION).as(
+            ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.DISCUSSION).as(
                     ArticleIdResponse.class);
             로그인_안한_유저가_게시물을_조회한다(articleIdResponse);
-            댓글을_등록한다(tokenResponse, articleIdResponse);
+            기명으로_댓글을_등록한다(tokenResponse, articleIdResponse);
         }
         for (int i = 0; i < 10; i++) {
-            게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
+            기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
         }
 
         //when
@@ -345,7 +519,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //given
         TokenResponse tokenResponse = 로그인을_한다(주디);
         for (int i = 0; i < 20; i++) {
-            게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
+            기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
         }
 
         //when
@@ -439,14 +613,14 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     void 게시물을_검색한다() {
         //given
         TokenResponse tokenResponse = 로그인을_한다(주디);
-        특정_게시물을_등록한다(new ArticleRequest("커스텀 예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue()));
-        특정_게시물을_등록한다(new ArticleRequest("커스텀예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue()));
-        특정_게시물을_등록한다(new ArticleRequest("예외를 커스텀하려면?", "내용", Category.QUESTION.getValue()));
-        특정_게시물을_등록한다(new ArticleRequest("예외를커스텀하려면?", "내용", Category.QUESTION.getValue()));
-        특정_게시물을_등록한다(new ArticleRequest("제목", "예외 어떻게 커스텀하죠 ㅠㅠ", Category.QUESTION.getValue()));
-        특정_게시물을_등록한다(new ArticleRequest("제목", "예외 어떻게커스텀하죠 ㅠㅠ", Category.QUESTION.getValue()));
-        특정_게시물을_등록한다(new ArticleRequest("제목", "예외는 이렇게 커스텀 하면 됩니다.", Category.DISCUSSION.getValue()));
-        특정_게시물을_등록한다(new ArticleRequest("제목", "예외는 이렇게 커스텀하면 됩니다.", Category.DISCUSSION.getValue()));
+        특정_게시물을_등록한다(new ArticleRequest("커스텀 예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), false));
+        특정_게시물을_등록한다(new ArticleRequest("커스텀예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), false));
+        특정_게시물을_등록한다(new ArticleRequest("예외를 커스텀하려면?", "내용", Category.QUESTION.getValue(), false));
+        특정_게시물을_등록한다(new ArticleRequest("예외를커스텀하려면?", "내용", Category.QUESTION.getValue(), false));
+        특정_게시물을_등록한다(new ArticleRequest("제목", "예외 어떻게 커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), false));
+        특정_게시물을_등록한다(new ArticleRequest("제목", "예외 어떻게커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), false));
+        특정_게시물을_등록한다(new ArticleRequest("제목", "예외는 이렇게 커스텀 하면 됩니다.", Category.DISCUSSION.getValue(), false));
+        특정_게시물을_등록한다(new ArticleRequest("제목", "예외는 이렇게 커스텀하면 됩니다.", Category.DISCUSSION.getValue(), false));
 
         //when
         int pageSize = 4;
@@ -508,7 +682,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
     private void 조회수가_있는_게시물_5개를_생성한다(TokenResponse tokenResponse, int count, Category category) {
         for (int i = 0; i < 5; i++) {
-            ArticleIdResponse response = 게시물을_등록한다(tokenResponse, category)
+            ArticleIdResponse response = 기명으로_게시물을_등록한다(tokenResponse, category)
                     .as(ArticleIdResponse.class);
             for (int j = 0; j < count; j++) {
                 로그인_안한_유저가_게시물을_조회한다(response);
@@ -531,12 +705,24 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 .extract();
     }
 
-    private ExtractableResponse<Response> 게시물을_등록한다(TokenResponse tokenResponse, Category category) {
+    private ExtractableResponse<Response> 기명으로_게시물을_등록한다(TokenResponse tokenResponse, Category category) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ArticleRequest("title", "content", category.getValue()))
+                .body(new ArticleRequest("title", "content", category.getValue(), false))
+                .when()
+                .post("/api/articles")
+                .then().log().all()
+                .extract();
+    }
+
+    private ExtractableResponse<Response> 익명으로_게시물을_등록한다(TokenResponse tokenResponse, Category category) {
+        return RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new ArticleRequest("title", "content", category.getValue(), true))
                 .when()
                 .post("/api/articles")
                 .then().log().all()
@@ -600,3 +786,4 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 .extract();
     }
 }
+

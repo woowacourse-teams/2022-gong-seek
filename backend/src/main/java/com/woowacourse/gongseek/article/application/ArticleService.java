@@ -16,6 +16,7 @@ import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
+import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ArticleService {
 
+    private static final AuthorDto ANONYMOUS_AUTHOR = new AuthorDto(
+            "익명",
+            "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"
+    );
+
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
@@ -35,6 +41,7 @@ public class ArticleService {
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
         Article article = articleRepository.save(articleRequest.toEntity(getMember(appMember)));
+
         return new ArticleIdResponse(article);
     }
 
@@ -52,15 +59,27 @@ public class ArticleService {
     public ArticleResponse getOne(AppMember appMember, Long id) {
         Article article = getArticle(id);
         article.addViews();
-        if (appMember.isGuest()) {
-            return new ArticleResponse(article, false);
-        }
-        return new ArticleResponse(article, article.isAuthor(getMember(appMember)));
+
+        return checkAuthor(appMember, article);
     }
 
     private Article getArticle(Long id) {
         return articleRepository.findById(id)
                 .orElseThrow(ArticleNotFoundException::new);
+    }
+
+    private ArticleResponse checkAuthor(AppMember appMember, Article article) {
+        if (appMember.isGuest()) {
+            return checkAnonymous(article, false);
+        }
+        return checkAnonymous(article, article.isAuthor(getMember(appMember)));
+    }
+
+    private ArticleResponse checkAnonymous(Article article, boolean isAuthor) {
+        if (article.isAnonymous()) {
+            return new ArticleResponse(article, ANONYMOUS_AUTHOR, isAuthor);
+        }
+        return new ArticleResponse(article, isAuthor);
     }
 
     @Transactional(readOnly = true)
