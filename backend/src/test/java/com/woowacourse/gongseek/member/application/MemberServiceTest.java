@@ -92,8 +92,8 @@ class MemberServiceTest {
     @Test
     void 회원이_작성한_게시글의_댓글수를_확인한다() {
         Article article = articleRepository.save(new Article("title1", "content1", Category.QUESTION, member, false));
-        commentRepository.save(new Comment("hi1", member, article));
-        commentRepository.save(new Comment("hi2", member, article));
+        commentRepository.save(new Comment("hi1", member, article, false));
+        commentRepository.save(new Comment("hi2", member, article, false));
 
         MyPageArticlesResponse myPageArticlesResponse = memberService.getArticles(new LoginMember(member.getId()));
 
@@ -103,8 +103,8 @@ class MemberServiceTest {
     @Test
     void 회원이_작성한_댓글들을_조회할_수_있다() {
         Article article = articleRepository.save(new Article("title1", "content1", Category.QUESTION, member, false));
-        commentRepository.save(new Comment("댓글1", member, article));
-        commentRepository.save(new Comment("댓글2", member, article));
+        commentRepository.save(new Comment("댓글1", member, article, false));
+        commentRepository.save(new Comment("댓글2", member, article, false));
 
         MyPageCommentsResponse response = memberService.getComments(new LoginMember(member.getId()));
 

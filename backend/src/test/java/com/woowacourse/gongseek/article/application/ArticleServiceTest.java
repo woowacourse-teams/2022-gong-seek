@@ -350,7 +350,8 @@ public class ArticleServiceTest {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
         for (int i = 0; i < 10; i++) {
             articleRepository.save(
-                    new Article(articleRequest.getTitle(), articleRequest.getContent(), Category.QUESTION, member, false));
+                    new Article(articleRequest.getTitle(), articleRequest.getContent(), Category.QUESTION, member,
+                            false));
         }
 
         ArticlePageResponse articlePageResponse = articleService.search(null, 10, "질문");
@@ -366,7 +367,8 @@ public class ArticleServiceTest {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
         for (int i = 0; i < 20; i++) {
             articleRepository.save(
-                    new Article(articleRequest.getTitle(), articleRequest.getContent(), Category.QUESTION, member, false));
+                    new Article(articleRequest.getTitle(), articleRequest.getContent(), Category.QUESTION, member,
+                            false));
         }
 
         ArticlePageResponse firstPageResponse = articleService.search(null, 10, "질문");

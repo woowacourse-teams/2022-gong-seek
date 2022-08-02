@@ -16,7 +16,6 @@ import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
@@ -34,7 +33,6 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @Disabled
     void 유저가_깃허브로_로그인을_하고_익명_댓글을_등록할_수_있다() {
         TokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
@@ -52,7 +50,6 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @Disabled
     void 유저가_로그인을_하지_않고_익명_댓글을_등록할_수_없다() {
         ExtractableResponse<Response> 댓글 = 익명으로_댓글을_등록한다(new TokenResponse(""), new ArticleIdResponse(1L));
 
@@ -72,7 +69,6 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @Disabled
     void 익명_댓글을_조회할_수_있다() {
         TokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
@@ -97,7 +93,6 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @Disabled
     void 익명_댓글을_작성한_유저일_경우_수정할_수_있다() {
         TokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
@@ -122,7 +117,6 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @Disabled
     void 익명_댓글을_작성한_유저일_경우_삭제할_수_있다() {
         TokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);

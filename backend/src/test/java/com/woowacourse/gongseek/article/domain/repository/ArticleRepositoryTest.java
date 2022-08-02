@@ -116,7 +116,8 @@ class ArticleRepositoryTest {
     @ValueSource(strings = {"this is wooteco", "is", "THIS IS WOOTECO", "IS", "THiS Is WOOteCO", "Is", "thisis",
             "thisIs", "this iswooteco"})
     void 띄어쓰기와_대소문자_관계_없이_제목으로_게시물을_검색한다(String searchText) {
-        Article article = articleRepository.save(new Article("this is wooteco", "wow", Category.QUESTION, member, false));
+        Article article = articleRepository.save(
+                new Article("this is wooteco", "wow", Category.QUESTION, member, false));
         articleRepository.save(new Article("i am judy", "hello", Category.QUESTION, member, false));
 
         List<Article> articles = articleRepository.searchByContainingText(null, 2, searchText);
@@ -127,7 +128,8 @@ class ArticleRepositoryTest {
     @ParameterizedTest
     @ValueSource(strings = {"wow", "w", "WOW", "W", "WoW", "W ow", "w o w"})
     void 띄어쓰기와_대소문자_관계_없이_내용으로_게시물을_검색한다(String searchText) {
-        Article article = articleRepository.save(new Article("this is wooteco", "wow", Category.QUESTION, member, false));
+        Article article = articleRepository.save(
+                new Article("this is wooteco", "wow", Category.QUESTION, member, false));
         articleRepository.save(new Article("i am 주디", "hello", Category.QUESTION, member, false));
 
         List<Article> articles = articleRepository.searchByContainingText(null, 2, searchText);
