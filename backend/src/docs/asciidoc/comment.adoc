@@ -40,9 +40,17 @@ include::{snippets}/comment-create/http-response.adoc[]
 
 include::{snippets}/comment-find-all-by-article-id/http-request.adoc[]
 
+==== Header
+
+include::{snippets}/comment-find-all-by-article-id/request-headers.adoc[]
+
 === Response
 
 include::{snippets}/comment-find-all-by-article-id/http-response.adoc[]
+
+==== Body
+
+include::{snippets}/comment-find-all-by-article-id/response-fields.adoc[]
 
 == 댓글 수정
 

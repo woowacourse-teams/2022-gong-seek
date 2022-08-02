@@ -121,6 +121,9 @@ class CommentControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("comment-find-all-by-article-id",
+                                requestHeaders(
+                                        headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                                ),
                                 responseFields(
                                         fieldWithPath("comments[].id").type(JsonFieldType.NUMBER).description("댓글 아이디"),
                                         fieldWithPath("comments[].content").type(JsonFieldType.STRING).description("댓글 내용"),
