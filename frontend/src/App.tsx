@@ -17,6 +17,8 @@ import VoteGenerator from '@/pages/VoteGenerator';
 import WritingArticles from '@/pages/WritingArticles';
 import { getUserIsLogin } from '@/store/userState';
 
+import SnackBar from '@/components/common/SnackBar/SnackBar';
+
 import styled from '@emotion/styled';
 
 const Layout = styled.div`
@@ -68,6 +70,7 @@ const App = () => {
 				</Routes>
 			</Content>
 			<TabBar />
+			<SnackBar />
 		</Layout>
 	);
 };
