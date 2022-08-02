@@ -16,18 +16,18 @@ import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
+import com.woowacourse.gongseek.commons.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @SpringBootTest
 class CommentServiceTest {
 
@@ -47,11 +47,19 @@ class CommentServiceTest {
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
+
     @BeforeEach
     void setUp() {
         memberRepository.save(member);
         articleRepository.save(article);
         commentRepository.save(comment);
+    }
+
+    @AfterEach
+    void tearDown(){
+        databaseCleaner.tableClear();
     }
 
     @Test

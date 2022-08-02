@@ -36,7 +36,7 @@ public class CommentController {
     }
 
     @GetMapping("/{articleId}/comments")
-    public ResponseEntity<CommentsResponse> findByArticleId(
+    public ResponseEntity<CommentsResponse> getAllByArticleId(
             @AuthenticationPrinciple AppMember appMember,
             @PathVariable Long articleId
     ) {

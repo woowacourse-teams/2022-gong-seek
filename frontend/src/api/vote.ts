@@ -10,14 +10,14 @@ export interface VoteItems {
 export const getVoteItems = async (articleId: string) => {
 	const accessToken = localStorage.getItem('accessToken');
 
-	const { data } = await axios.get<VoteItems[]>(`${HOME_URL}/articles/${articleId}/votes`, {
+	const { data } = await axios.get<VoteItems[]>(`${HOME_URL}/api/articles/${articleId}/votes`, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			Authorization: `Bearer ${accessToken}`,
 		},
 	});
 
-	return data;
+	return data; 
 };
 
 export const registerVoteItems = ({

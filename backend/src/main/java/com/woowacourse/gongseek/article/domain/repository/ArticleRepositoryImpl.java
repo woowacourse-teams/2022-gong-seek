@@ -3,6 +3,8 @@ package com.woowacourse.gongseek.article.domain.repository;
 import static com.woowacourse.gongseek.article.domain.QArticle.article;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.article.domain.Article;
@@ -17,12 +19,13 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public List<Article> findAllByPage(Long cursorId, Integer cursorViews, String category, String sortType,
-            int pageSize) {
+                                       int pageSize) {
         JPAQuery<Article> query = queryFactory
                 .selectFrom(article)
                 .where(
                         cursorIdAndCursorViews(cursorId, cursorViews, sortType),
-                        categoryEquals(category))
+                        categoryEquals(category)
+                )
                 .limit(pageSize + 1);
 
         if (sortType.equals("views")) {
@@ -42,14 +45,35 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                     .or(article.views.value.lt(cursorViews));
         }
 
-        return articleIdStatus(cursorId);
+        return isOverArticleId(cursorId);
     }
 
-    private BooleanExpression articleIdStatus(Long cursorId) {
+    private BooleanExpression isOverArticleId(Long cursorId) {
         return cursorId == null ? null : article.id.lt(cursorId);
     }
 
     private BooleanExpression categoryEquals(String category) {
         return "all".equals(category) ? null : article.category.eq(Category.from(category));
+    }
+
+    @Override
+    public List<Article> searchByContainingText(Long cursorId, int pageSize, String searchText) {
+        return queryFactory
+                .selectFrom(article)
+                .where(
+                        containsTitleOrContent(searchText),
+                        isOverArticleId(cursorId)
+                )
+                .limit(pageSize + 1)
+                .orderBy(article.id.desc())
+                .fetch();
+    }
+
+    private BooleanExpression containsTitleOrContent(String searchText) {
+        String text = searchText.toLowerCase().replace(" ", "");
+        StringExpression title = Expressions.stringTemplate("replace({0},' ','')", article.title.value).lower();
+        StringExpression content = Expressions.stringTemplate("replace({0},' ','')", article.content.value).lower();
+        return title.contains(text)
+                .or(content.contains(text));
     }
 }

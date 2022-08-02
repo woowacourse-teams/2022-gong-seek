@@ -9,9 +9,9 @@ import { theme } from '@/styles/Theme';
 import { reset } from '@/styles/reset';
 import { ThemeProvider, Global } from '@emotion/react';
 
-// if (process.env.NODE_ENV === 'development') {
-// 	worker.start();
-// }
+if (process.env.NODE_ENV === 'development') {
+	worker.start();
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 

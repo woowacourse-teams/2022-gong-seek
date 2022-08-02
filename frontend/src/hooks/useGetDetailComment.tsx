@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 
-const useGetErrorDetailComment = (id: string) => {
+const useGetDetailComment = (id: string) => {
 	const { data, isError, isSuccess, isLoading, isIdle, error } = useQuery<
 		{ comments: CommentType[] },
 		AxiosError
@@ -19,4 +19,4 @@ const useGetErrorDetailComment = (id: string) => {
 	return { isLoading, isSuccess, data, isIdle };
 };
 
-export default useGetErrorDetailComment;
+export default useGetDetailComment;

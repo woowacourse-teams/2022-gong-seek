@@ -3,6 +3,7 @@ package com.woowacourse.gongseek.article.presentation;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -23,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
@@ -31,7 +31,6 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.config.RestDocsConfig;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
@@ -109,6 +108,7 @@ class ArticleControllerTest {
                 "content",
                 false,
                 1,
+                LocalDateTime.now(),
                 LocalDateTime.now()
         );
         given(articleService.getOne(any(), any())).willReturn(response);
@@ -130,7 +130,8 @@ class ArticleControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
                         )
                 ));
     }
@@ -143,6 +144,7 @@ class ArticleControllerTest {
                 "content",
                 false,
                 1,
+                LocalDateTime.now(),
                 LocalDateTime.now()
         );
         given(articleService.getOne(any(), any())).willReturn(response);
@@ -160,7 +162,8 @@ class ArticleControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
                         )
                 ));
     }
@@ -230,14 +233,14 @@ class ArticleControllerTest {
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
-        given(articleService.getArticles(anyLong(), anyInt(), any(), any(), anyInt())).willReturn(response);
+        given(articleService.getAll(anyLong(), anyInt(), any(), any(), anyInt())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles")
                 .param("category", Category.DISCUSSION.getValue())
                 .param("sort", "latest")
                 .param("cursorId", "1")
                 .param("cursorViews", "0")
-                .param("size", "10")
+                .param("pageSize", "10")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .characterEncoding("UTF-8"));
 
@@ -249,7 +252,57 @@ class ArticleControllerTest {
                                 parameterWithName("sort").description("정렬 기준(latest-최신순, views-조회순)"),
                                 parameterWithName("cursorId").description("시작은 null, 마지막으로 조회한 게시물 식별자").optional(),
                                 parameterWithName("cursorViews").description("마지막으로 조회한 게시물 조회수").optional(),
-                                parameterWithName("size").description("가져올 게시글 개수")
+                                parameterWithName("pageSize").description("가져올 게시글 개수")
+                        ),
+                        responseFields(
+                                fieldWithPath("articles[].id").type(JsonFieldType.NUMBER).description("게시글 식별자"),
+                                fieldWithPath("articles[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("articles[].author.name").type(JsonFieldType.STRING)
+                                        .description("게시글 작성자 이름"),
+                                fieldWithPath("articles[].author.avatarUrl").type(JsonFieldType.STRING)
+                                        .description("게시글 작성자 프로필 이미지"),
+                                fieldWithPath("articles[].content").type(JsonFieldType.STRING).description("게시글 내용"),
+                                fieldWithPath("articles[].category").type(JsonFieldType.STRING).description("게시글 종류"),
+                                fieldWithPath("articles[].commentCount").type(JsonFieldType.NUMBER)
+                                        .description("게시글 댓글 개수"),
+                                fieldWithPath("articles[].createdAt").type(JsonFieldType.STRING)
+                                        .description("게시글 생성 날짜"),
+                                fieldWithPath("articles[].views").type(JsonFieldType.NUMBER).description("게시글 조회 수"),
+                                fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN)
+                                        .description("다음에 조회 할 게시글이 있으면 true")
+                        )
+                ));
+    }
+
+    @Test
+    void 게시물_검색_문서화() throws Exception {
+        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목",
+                new AuthorDto("작성자1", "작성자1 이미지 url"),
+                "내용", Category.QUESTION.getValue(), 3, 2, LocalDateTime.now());
+        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목",
+                new AuthorDto("작성자2", "작성자2 이미지 url"),
+                "내용", Category.DISCUSSION.getValue(), 10, 5, LocalDateTime.now());
+        ArticlePageResponse response = new ArticlePageResponse(
+                List.of(articlePreviewResponse1, articlePreviewResponse2), false);
+
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(articleService.search(anyLong(), anyInt(), anyString())).willReturn(response);
+
+        ResultActions results = mockMvc.perform(get("/api/articles/search")
+                .param("cursorId", "1")
+                .param("pageSize", "10")
+                .param("searchText", "제목")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .characterEncoding("UTF-8"));
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("article-search",
+                        requestParameters(
+                                parameterWithName("cursorId").description("시작은 null, 마지막으로 조회한 게시물 식별자").optional(),
+                                parameterWithName("pageSize").description("가져올 게시글 개수"),
+                                parameterWithName("searchText").description("검색할 Text")
                         ),
                         responseFields(
                                 fieldWithPath("articles[].id").type(JsonFieldType.NUMBER).description("게시글 식별자"),

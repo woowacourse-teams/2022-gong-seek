@@ -4,7 +4,10 @@ import { useMutation } from 'react-query';
 import { CommentInputModalProps } from '@/components/common/CommentInputModal/CommentInputModal';
 import { AxiosError } from 'axios';
 
+import useSnackBar from '@/hooks/useSnackBar';
+
 const usePutCommentInputModal = (closeModal: CommentInputModalProps['closeModal']) => {
+	const {showSnackBar} = useSnackBar();
 	const { isLoading, isError, isSuccess, mutate, error } = useMutation<
 		unknown,
 		AxiosError,
@@ -19,7 +22,7 @@ const usePutCommentInputModal = (closeModal: CommentInputModalProps['closeModal'
 
 	useEffect(() => {
 		if (isSuccess) {
-			alert('댓글이 수정되었습니다');
+			showSnackBar('댓글이 수정되었습니다');
 			closeModal();
 		}
 	}, [isSuccess]);
