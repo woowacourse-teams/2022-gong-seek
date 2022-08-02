@@ -18,7 +18,7 @@ import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
-import com.woowacourse.gongseek.commons.DatabaseCleaner;
+import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import java.util.ArrayList;
