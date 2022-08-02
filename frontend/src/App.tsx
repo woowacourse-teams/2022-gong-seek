@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
+import SnackBar from '@/components/common/SnackBar/SnackBar';
 import Header from '@/components/layout/Header/Header';
 import TabBar from '@/components/layout/TabBar/TabBar';
 import PrivateRouter from '@/components/router/PrivateRouter';
@@ -11,14 +12,12 @@ import ErrorDetail from '@/pages/ErrorDetail';
 import Home from '@/pages/Home';
 import Login from '@/pages/Login';
 import LoginController from '@/pages/Login/LoginController/LoginController';
+import MyPage from '@/pages/MyPage';
 import NotFound from '@/pages/NotFound';
 import UpdateWriting from '@/pages/UpdateWriting';
 import VoteGenerator from '@/pages/VoteGenerator';
 import WritingArticles from '@/pages/WritingArticles';
 import { getUserIsLogin } from '@/store/userState';
-
-import SnackBar from '@/components/common/SnackBar/SnackBar';
-
 import styled from '@emotion/styled';
 
 const Layout = styled.div`
@@ -50,6 +49,7 @@ const App = () => {
 					<Route element={<PrivateRouter isAuthenticated={isLogin} />}>
 						<Route path="/article/:category" element={<WritingArticles />} />
 						<Route path="/votes/:articleId" element={<VoteGenerator />} />
+						<Route path="/my-page" element={<MyPage />} />
 					</Route>
 					<Route element={<PublicRouter isAuthenticated={isLogin} />}>
 						<Route path="/login" element={<Login />} />
@@ -57,14 +57,6 @@ const App = () => {
 					<Route path="/articles/question/:id" element={<ErrorDetail />} />
 					<Route path="/articles/:category" element={<CategoryArticles />} />
 					<Route path="/articles/modify/:category/:id" element={<UpdateWriting />} />
-					{/* <Route
-						path="/articles/discussion/:id"
-						element={
-							// <Detail>
-							// 	<Vote articleId="4" />
-							// </Detail>
-						}
-					/> */}
 					<Route path="/" element={<Home />} />
 					<Route path="/*" element={<NotFound />} />
 				</Routes>
