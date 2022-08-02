@@ -1,7 +1,7 @@
-package com.woowacourse.gongseek.comment.domain;
+package com.woowacourse.gongseek.vote.domain;
 
-import com.woowacourse.gongseek.comment.exception.CommentNullOrEmptyException;
-import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
+import com.woowacourse.gongseek.vote.exception.VoteItemNullOrEmptyException;
+import com.woowacourse.gongseek.vote.exception.VoteItemTooLongException;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Content {
 
-    private static final int MAX_CONTENT_LENGTH = 10_000;
+    private static final int MAX_CONTENT_LENGTH = 100;
 
-    @Column(name = "content", nullable = false, length = MAX_CONTENT_LENGTH)
+    @Column(name = "content", nullable = false)
     private String value;
 
     public Content(String value) {
@@ -27,13 +27,13 @@ public class Content {
 
     private void validateNullOrEmpty(String value) {
         if (Objects.isNull(value) || value.trim().isBlank()) {
-            throw new CommentNullOrEmptyException();
+            throw new VoteItemNullOrEmptyException();
         }
     }
 
     private void validateLength(String value) {
         if (value.length() > MAX_CONTENT_LENGTH) {
-            throw new CommentTooLongException();
+            throw new VoteItemTooLongException();
         }
     }
 }

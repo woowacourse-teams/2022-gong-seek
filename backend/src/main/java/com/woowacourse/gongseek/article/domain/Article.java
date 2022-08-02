@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -25,6 +26,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
 @Entity
 public class Article {
@@ -59,11 +61,7 @@ public class Article {
     private LocalDateTime updatedAt;
 
     public Article(String title, String content, Category category, Member member) {
-        this.title = new Title(title);
-        this.content = new Content(content);
-        this.category = category;
-        this.member = member;
-        this.views = new Views();
+        this(null, new Title(title), new Content(content), category, member, new Views(), LocalDateTime.now());
     }
 
     public boolean isAuthor(Member member) {
