@@ -1,77 +1,76 @@
-import styled from "@emotion/styled";
+import { BiCommentDetail } from 'react-icons/bi';
 
-import { BiCommentDetail } from "react-icons/bi";
+import styled from '@emotion/styled';
 
 export const Container = styled.div`
-    display: flex;
+	display: flex;
 
-    flex-direction: column;
+	flex-direction: column;
 
-    width: 100%;
-    height: ${({theme}) => theme.size.SIZE_126};
+	width: 90%;
+	height: ${({ theme }) => theme.size.SIZE_126};
 
-    border: ${({theme}) => theme.size.SIZE_001} solid ${({theme}) => theme.colors.GRAY_500};
-    border-radius: ${({theme}) => theme.size.SIZE_004};
+	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
+	border-radius: ${({ theme }) => theme.size.SIZE_004};
 
-    background-color: ${({theme}) => theme.colors.GRAY_100};
+	background-color: ${({ theme }) => theme.colors.GRAY_100};
 
-    padding: ${({theme}) => theme.size.SIZE_006};
+	padding: ${({ theme }) => theme.size.SIZE_006};
 
-    gap: ${({theme}) => theme.size.SIZE_010};
-`
+	gap: ${({ theme }) => theme.size.SIZE_010};
+`;
 
-export const CategoryName = styled.div<{isQuestion: boolean}>`
-    width: fit-content;
-    height: fit-content;
+export const CategoryName = styled.div<{ isQuestion: boolean }>`
+	width: fit-content;
+	height: fit-content;
 
-    color: ${({theme})=> theme.colors.WHITE};
+	color: ${({ theme }) => theme.colors.WHITE};
 
-    border: ${({theme}) => theme.size.SIZE_001} solid ${({theme}) => theme.colors.GRAY_500};
-    border-radius: ${({theme}) => theme.size.SIZE_010};
+	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
+	border-radius: ${({ theme }) => theme.size.SIZE_010};
 
-    background-color: ${(props) => (props.isQuestion ? '#FF0063' : '#3AB0FF')};
+	background-color: ${(props) => (props.isQuestion ? '#FF0063' : '#3AB0FF')};
 
-    padding: ${({theme}) => theme.size.SIZE_004};
-`
+	padding: ${({ theme }) => theme.size.SIZE_004};
+`;
 
 export const ArticleTitle = styled.div`
-    height: ${({theme}) => theme.size.SIZE_050};
-    font-size: ${({theme}) => theme.size.SIZE_016};
+	height: ${({ theme }) => theme.size.SIZE_050};
+	font-size: ${({ theme }) => theme.size.SIZE_016};
 
-    overflow: hidden;
-    word-break: break-all;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+	overflow: hidden;
+	word-break: break-all;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 
-    padding: ${({theme}) => theme.size.SIZE_002};
+	padding: ${({ theme }) => theme.size.SIZE_002};
 `;
 
 export const ArticleSubInfo = styled.div`
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 `;
 
 export const ArticleTime = styled.div`
-    font-size: ${({theme}) => theme.size.SIZE_012};
-    color: ${({theme})=>theme.colors.BLACK_400};
+	font-size: ${({ theme }) => theme.size.SIZE_012};
+	color: ${({ theme }) => theme.colors.BLACK_400};
 `;
 
 export const ArticleRightBox = styled.div`
-    display: flex;
-    gap: ${({theme}) => theme.size.SIZE_004};
-`
+	display: flex;
+	gap: ${({ theme }) => theme.size.SIZE_004};
+`;
 
 export const CommentBox = styled.div`
-    display: flex;
+	display: flex;
 
-    gap: ${({theme}) => theme.size.SIZE_006};
+	gap: ${({ theme }) => theme.size.SIZE_006};
 `;
 export const CommentIcon = styled(BiCommentDetail)``;
 export const CommentCount = styled.div`
-    font-size: ${({theme}) => theme.size.SIZE_014};
+	font-size: ${({ theme }) => theme.size.SIZE_014};
 `;
 
-
 export const Views = styled.span`
-    font-size: ${({theme}) => theme.size.SIZE_014};
+	font-size: ${({ theme }) => theme.size.SIZE_014};
 `;
