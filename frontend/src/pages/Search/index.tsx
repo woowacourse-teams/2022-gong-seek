@@ -22,8 +22,11 @@ const Search = () => {
 	useEffect(() => {
 		if (validatedSearchInput(target)) {
 			setValidSearch(true);
+			return;
 		}
-	}, [isSearching]);
+
+		setValidSearch(false);
+	}, [target]);
 
 	return (
 		<S.Container>
