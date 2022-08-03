@@ -24,7 +24,6 @@ class ErrorBoundary extends Component<Props, State> {
 
 	componentDidUpdate(_, prevState: State) {
 		if (prevState.error !== this.state.error) {
-			console.log(this.state.error?.errorCode);
 			if (this.state.error && this.state.error.errorCode === '1005') {
 				alert('토큰이 만료되었습니다.');
 
@@ -39,7 +38,6 @@ class ErrorBoundary extends Component<Props, State> {
 	}
 
 	static getDerivedStateFromError(error: Error) {
-		console.log(error);
 		return { error: error };
 	}
 
