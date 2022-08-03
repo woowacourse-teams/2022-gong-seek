@@ -88,7 +88,7 @@ export const ArticleHandler = [
 				throw new Error('글을 찾을수 없습니다.');
 			}
 
-			return res(ctx.status(200), ctx.json({ id, category: 'error' }));
+			return res(ctx.status(200), ctx.json({ id, category: 'question' }));
 		},
 	),
 
