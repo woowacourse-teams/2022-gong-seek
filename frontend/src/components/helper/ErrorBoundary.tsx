@@ -1,5 +1,6 @@
-import CustomError from './CustomError';
 import { Component } from 'react';
+
+import CustomError from '@/components/helper/CustomError';
 
 type Props = {
 	fallback?: React.ReactNode;

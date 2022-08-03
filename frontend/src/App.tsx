@@ -1,8 +1,8 @@
-import ErrorBoundary from './components/helper/ErrorBoundary';
 import { Routes, Route } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import SnackBar from '@/components/common/SnackBar/SnackBar';
+import ErrorBoundary from '@/components/helper/ErrorBoundary';
 import PrivateRouter from '@/components/helper/PrivateRouter';
 import PublicRouter from '@/components/helper/PublicRouter';
 import Header from '@/components/layout/Header/Header';
