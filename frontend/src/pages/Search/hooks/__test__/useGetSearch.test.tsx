@@ -6,6 +6,8 @@ import { RecoilRoot } from 'recoil';
 
 import { SearchHandler } from '@/mock';
 import useGetSearch from '@/pages/Search/hooks/useGetSearch';
+import { theme } from '@/styles/Theme';
+import { ThemeProvider } from '@emotion/react';
 import { renderHook } from '@testing-library/react-hooks';
 
 const server = setupServer(...SearchHandler);
@@ -18,11 +20,13 @@ describe('검색이 작동되는지에 대해서 테스트 한다', () => {
 	const queryClient = new QueryClient();
 	const wrapper = ({ children }: { children: React.ReactNode }) => (
 		<React.StrictMode>
-			<QueryClientProvider client={queryClient}>
-				<RecoilRoot>
-					<BrowserRouter>{children}</BrowserRouter>
-				</RecoilRoot>
-			</QueryClientProvider>
+			<ThemeProvider theme={theme}>
+				<QueryClientProvider client={queryClient}>
+					<RecoilRoot>
+						<BrowserRouter>{children}</BrowserRouter>
+					</RecoilRoot>
+				</QueryClientProvider>
+			</ThemeProvider>
 		</React.StrictMode>
 	);
 

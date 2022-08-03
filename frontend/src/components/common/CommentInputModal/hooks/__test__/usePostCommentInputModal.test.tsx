@@ -6,6 +6,8 @@ import { RecoilRoot } from 'recoil';
 
 import usePostCommentInputModal from '@/components/common/CommentInputModal/hooks/usePostCommentInputModal';
 import { CommentHandler } from '@/mock/comment';
+import { theme } from '@/styles/Theme';
+import { ThemeProvider } from '@emotion/react';
 import { renderHook } from '@testing-library/react-hooks';
 
 const server = setupServer(...CommentHandler);
@@ -20,11 +22,13 @@ describe('usePostCommentInputModal에 대한 테스트', () => {
 		const queryClient = new QueryClient();
 		const wrapper = ({ children }: { children: React.ReactNode }) => (
 			<React.StrictMode>
-				<RecoilRoot>
-					<QueryClientProvider client={queryClient}>
-						<BrowserRouter>{children}</BrowserRouter>
-					</QueryClientProvider>
-				</RecoilRoot>
+				<ThemeProvider theme={theme}>
+					<RecoilRoot>
+						<QueryClientProvider client={queryClient}>
+							<BrowserRouter>{children}</BrowserRouter>
+						</QueryClientProvider>
+					</RecoilRoot>
+				</ThemeProvider>
 			</React.StrictMode>
 		);
 

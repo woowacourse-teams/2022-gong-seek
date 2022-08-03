@@ -8,6 +8,8 @@ import { MyPageHandler } from '@/mock';
 import useGetUserArticles from '@/pages/MyPage/hooks/useGetUserArticles';
 import useGetUserComments from '@/pages/MyPage/hooks/useGetUserComments';
 import useGetUserInfo from '@/pages/MyPage/hooks/useGetUserInfo';
+import { theme } from '@/styles/Theme';
+import { ThemeProvider } from '@emotion/react';
 import { renderHook } from '@testing-library/react-hooks';
 
 const server = setupServer(...MyPageHandler);
@@ -20,11 +22,13 @@ describe('마이페이지에 대한 정보를 제대로 조회하는지에 대�
 	const queryClient = new QueryClient();
 	const wrapper = ({ children }: { children: React.ReactNode }) => (
 		<React.StrictMode>
-			<QueryClientProvider client={queryClient}>
-				<RecoilRoot>
-					<BrowserRouter>{children}</BrowserRouter>
-				</RecoilRoot>
-			</QueryClientProvider>
+			<ThemeProvider theme={theme}>
+				<QueryClientProvider client={queryClient}>
+					<RecoilRoot>
+						<BrowserRouter>{children}</BrowserRouter>
+					</RecoilRoot>
+				</QueryClientProvider>
+			</ThemeProvider>
 		</React.StrictMode>
 	);
 
