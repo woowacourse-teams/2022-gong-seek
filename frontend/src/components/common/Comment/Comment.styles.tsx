@@ -8,7 +8,6 @@ export const Container = styled.div`
 	gap: ${({ theme }) => theme.size.SIZE_014};
 
 	width: 100%;
-	height: fit-content;
 
 	border-bottom: ${({ theme }) => theme.size.SIZE_001} solid
 		${({ theme }) => theme.colors.BLACK_200};
