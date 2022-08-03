@@ -32,6 +32,6 @@ describe('useGetPopularArticles 테스트', () => {
 
 		const { data } = result.current;
 		const { articles } = data;
-		expect(articles.length).toEqual(10);
+		expect(articles[0].title.length >= 1).toEqual(true);
 	});
 });
