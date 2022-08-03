@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import AnonymouseCheckBox from '@/components/common/AnonymousCheckBox/AnonymouseCheckBox';
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import ToastUiEditor from '@/pages/WritingArticles/ToastUiEditor/ToastUiEditor';
@@ -8,7 +10,7 @@ import * as S from '@/pages/WritingArticles/index.styles';
 
 const WritingArticles = () => {
 	const { category } = useParams();
-
+	const [isAnonymous, setIsAnonymous] = useState(false);
 	const {
 		isLoading,
 		content,
@@ -17,7 +19,7 @@ const WritingArticles = () => {
 		setTitle,
 		categoryOption,
 		setCategoryOption,
-	} = usePostWritingArticles(category);
+	} = usePostWritingArticles({ category, isAnonymous });
 
 	if (isLoading) return <Loading />;
 
@@ -59,10 +61,7 @@ const WritingArticles = () => {
 			<S.Content>
 				<ToastUiEditor initContent={''} ref={content} />
 			</S.Content>
-			<S.AnonymousBox>
-				<S.AnonymousCheckInput type="checkbox" />
-				<p>익명</p>
-			</S.AnonymousBox>
+			<AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />
 			<S.SubmitButton
 				type="button"
 				onClick={() => handleSubmitButtonClick({ title, categoryOption })}
