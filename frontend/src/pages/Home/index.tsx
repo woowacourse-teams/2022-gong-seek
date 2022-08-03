@@ -2,12 +2,11 @@ import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
-import Loading from '@/components/common/Loading/Loading';
 import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
+import Loading from '@/components/common/Loading/Loading';
 import SortDropdown from '@/pages/CategoryArticles/SortDropdown/SortDropDown';
 import PopularArticle from '@/pages/Home//PopularArticle/PopularArticle';
 import useGetAllArticles from '@/pages/Home/hooks/useGetAllArticles';
-
 import * as S from '@/pages/Home/index.styles';
 
 const Home = () => {
@@ -56,7 +55,10 @@ const Home = () => {
 				<SortDropdown sortIndex={sortIndex} setSortIndex={setSortIndex} />
 			</S.CategoryTitleContainer>
 			{data ? (
-				<InfiniteScrollObserver hasNext={data.pages[data.pages.length - 1].hasNext} fetchNextPage={fetchNextPage}>
+				<InfiniteScrollObserver
+					hasNext={data.pages[data.pages.length - 1].hasNext}
+					fetchNextPage={fetchNextPage}
+				>
 					<S.ArticleItemList>
 						{data.pages.map(({ articles }) =>
 							articles.map((item) => (

@@ -26,7 +26,7 @@ const usePostCommentInputModal = (closeModal: CommentInputModalProps['closeModal
 		}
 	}, [isSuccess]);
 
-	return { isLoading, mutate };
+	return { isLoading,isSuccess, mutate };
 };
 
 export default usePostCommentInputModal;

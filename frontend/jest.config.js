@@ -4,6 +4,8 @@ module.exports = {
 		'^.+\\.js$': 'babel-jest',
 	},
 	collectCoverage: true,
+	testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
+	moduleFileExtensions: ['tsx', 'js', 'json', 'node', 'ts', 'svg'],
 	collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
 	coverageDirectory: 'coverage',
 	testEnvironment: 'jsdom',
