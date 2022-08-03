@@ -27,7 +27,7 @@ const CategoryArticles = () => {
 		<S.Container>
 			<S.TitleBox>
 				<S.CategoryArticlesTitle category={category}>
-					{category === 'discussion' ? '토론' : '에러'}
+					{category === 'discussion' ? '토론' : '질문'}
 				</S.CategoryArticlesTitle>
 				<SortDropdown sortIndex={sortIndex} setSortIndex={setSortIndex} />
 			</S.TitleBox>

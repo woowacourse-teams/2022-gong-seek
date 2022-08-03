@@ -28,7 +28,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 	};
 
 	const navigateUpdateArticle = () => {
-		const categoryName = category === '에러' ? 'question' : 'discussion';
+		const categoryName = category === '질문' ? 'question' : 'discussion';
 		navigate(`/articles/modify/${categoryName}/${articleId}`);
 	};
 

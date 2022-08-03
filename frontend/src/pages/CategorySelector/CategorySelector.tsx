@@ -15,7 +15,7 @@ const CategorySelector = () => (
 			<S.CategoryButtonBox>
 				<S.StyledLink to="/article/question">
 					<S.CategoryButton type="button" categoryType="question">
-						에러
+						질문
 					</S.CategoryButton>
 				</S.StyledLink>
 				<S.StyledLink to="/article/discussion">

@@ -43,7 +43,7 @@ const Home = () => {
 						isActive={currentCategory === 'question'}
 						onClick={() => setCurrentCategory('question')}
 					>
-						에러
+						질문
 					</S.CategoryTitle>
 					<S.CategoryTitle
 						isActive={currentCategory === 'discussion'}
