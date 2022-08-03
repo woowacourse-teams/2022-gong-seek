@@ -25,8 +25,8 @@ export interface AllArticleResponse {
 }
 
 export interface infiniteArticleResponse extends AllArticleResponse {
-	cursorId: number;
-	cursorViews?: number;
+	cursorId: string;
+	cursorViews?: string;
 }
 
 export interface UserArticleItemType {

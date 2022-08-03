@@ -1,17 +1,26 @@
-import { infiniteArticleResponse } from '@/types/articleResponse';
-import { useInfiniteQuery } from 'react-query';
-import { getAllArticle } from '@/api/article';
 import { useEffect, useState } from 'react';
+import { useInfiniteQuery } from 'react-query';
+
+import { getAllArticle } from '@/api/article';
+import { infiniteArticleResponse } from '@/types/articleResponse';
 
 const useGetAllArticles = () => {
 	const [currentCategory, setCurrentCategory] = useState('question');
 	const [sortIndex, setSortIndex] = useState('최신순');
+
 	const { data, isError, isLoading, isSuccess, error, refetch, fetchNextPage } = useInfiniteQuery<
 		infiniteArticleResponse,
 		Error
 	>(
 		['all-articles', currentCategory],
-		() => getAllArticle({ category: currentCategory, sort: sortIndex }),
+		({
+			pageParam = {
+				category: currentCategory,
+				sort: sortIndex,
+				cursorId: '',
+				cursorViews: '',
+			},
+		}) => getAllArticle(pageParam),
 		{
 			getNextPageParam: (lastPage) => {
 				const { hasNext, cursorId, cursorViews } = lastPage;
@@ -23,7 +32,7 @@ const useGetAllArticles = () => {
 						cursorViews,
 					};
 				}
-				return undefined;
+				return;
 			},
 		},
 	);
