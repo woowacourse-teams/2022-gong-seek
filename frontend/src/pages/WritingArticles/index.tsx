@@ -3,9 +3,7 @@ import { useParams } from 'react-router-dom';
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import ToastUiEditor from '@/pages/WritingArticles/ToastUiEditor/ToastUiEditor';
-
 import usePostWritingArticles from '@/pages/WritingArticles/hooks/usePostWritingArticles';
-
 import * as S from '@/pages/WritingArticles/index.styles';
 
 const WritingArticles = () => {
@@ -61,6 +59,10 @@ const WritingArticles = () => {
 			<S.Content>
 				<ToastUiEditor initContent={''} ref={content} />
 			</S.Content>
+			<S.AnonymousBox>
+				<S.AnonymousCheckInput type="checkbox" />
+				<p>익명</p>
+			</S.AnonymousBox>
 			<S.SubmitButton
 				type="button"
 				onClick={() => handleSubmitButtonClick({ title, categoryOption })}
