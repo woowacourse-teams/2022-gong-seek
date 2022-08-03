@@ -26,7 +26,7 @@
 		"build": "webpack --mode production --config webpack/webpack.common.js",
 		"storybook": "start-storybook -p 6006",
 		"build-storybook": "build-storybook",
-		"test": "jest --coverage --watch",
+		"test": "jest",
 		"pretty": "prettier --write \"src/**/*.{ts,tsx,json}\""
 	},
 	"devDependencies": {
