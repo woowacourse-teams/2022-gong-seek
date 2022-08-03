@@ -8,15 +8,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class IdentifierEncryptor implements Encryptor {
 
-    private final String ENCRYPTION_ALGORITHM;
+    private final String encryptionAlgorithm;
 
     public IdentifierEncryptor(@Value("${security.encryption.algorithm}") String encryptionAlgorithm) {
-        this.ENCRYPTION_ALGORITHM = encryptionAlgorithm;
+        this.encryptionAlgorithm = encryptionAlgorithm;
     }
 
     public String encrypt(String text) {
         try {
-            MessageDigest md = MessageDigest.getInstance(ENCRYPTION_ALGORITHM);
+            MessageDigest md = MessageDigest.getInstance(encryptionAlgorithm);
             md.update(text.getBytes());
             return bytesToHex(md.digest());
         } catch (NoSuchAlgorithmException e) {

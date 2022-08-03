@@ -59,7 +59,6 @@ public class Article {
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(updatable = false)
     private LocalDateTime updatedAt;
 
     public Article(String title, String content, Category category, Member member, boolean isAnonymous) {
@@ -73,6 +72,10 @@ public class Article {
 
     public boolean isAuthor(Member member) {
         return member.equals(this.getMember());
+    }
+
+    public boolean isAnonymousAuthor(String cipherId) {
+        return member.isAnonymous(cipherId);
     }
 
     public void addViews() {

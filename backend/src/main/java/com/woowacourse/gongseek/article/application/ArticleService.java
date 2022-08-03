@@ -13,10 +13,10 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
+import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
-import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,18 +29,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ArticleService {
 
-    private static final AuthorDto ANONYMOUS_AUTHOR = new AuthorDto(
-            "익명",
-            "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"
-    );
+    private static final String ANONYMOUS_AVATAR_URL = "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png";
+    private static final String ANONYMOUS_NAME = "익명";
 
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
+    private final Encryptor encryptor;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
-        Article article = articleRepository.save(articleRequest.toEntity(getMember(appMember)));
+        Member member = getAuthor(appMember, articleRequest);
+        Article article = articleRepository.save(articleRequest.toEntity(member));
 
         return new ArticleIdResponse(article);
     }
@@ -49,6 +49,15 @@ public class ArticleService {
         if (appMember.isGuest()) {
             throw new NoAuthorizationException();
         }
+    }
+
+    private Member getAuthor(AppMember appMember, ArticleRequest articleRequest) {
+        if (articleRequest.getIsAnonymous()) {
+            String cipherId = encryptor.encrypt(String.valueOf(appMember.getPayload()));
+            return memberRepository.findByGithubId(cipherId)
+                    .orElseGet(() -> memberRepository.save(new Member(ANONYMOUS_NAME, cipherId, ANONYMOUS_AVATAR_URL)));
+        }
+        return getMember(appMember);
     }
 
     private Member getMember(AppMember appMember) {
@@ -60,7 +69,7 @@ public class ArticleService {
         Article article = getArticle(id);
         article.addViews();
 
-        return checkAuthor(appMember, article);
+        return checkGuest(article, appMember);
     }
 
     private Article getArticle(Long id) {
@@ -68,18 +77,19 @@ public class ArticleService {
                 .orElseThrow(ArticleNotFoundException::new);
     }
 
-    private ArticleResponse checkAuthor(AppMember appMember, Article article) {
+    private ArticleResponse checkGuest(Article article, AppMember appMember) {
         if (appMember.isGuest()) {
-            return checkAnonymous(article, false);
+            return new ArticleResponse(article, false);
         }
-        return checkAnonymous(article, article.isAuthor(getMember(appMember)));
+        return checkAuthor(article, getMember(appMember));
     }
 
-    private ArticleResponse checkAnonymous(Article article, boolean isAuthor) {
+    private ArticleResponse checkAuthor(Article article, Member member) {
         if (article.isAnonymous()) {
-            return new ArticleResponse(article, ANONYMOUS_AUTHOR, isAuthor);
+            String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
+            return new ArticleResponse(article, article.isAnonymousAuthor(cipherId));
         }
-        return new ArticleResponse(article, isAuthor);
+        return new ArticleResponse(article, article.isAuthor(member));
     }
 
     @Transactional(readOnly = true)
@@ -135,16 +145,24 @@ public class ArticleService {
 
     private Article checkAuthorization(AppMember appMember, Long id) {
         validateGuest(appMember);
-        Article article = getArticle(id);
         Member member = getMember(appMember);
+        Article article = getArticle(id);
         validateAuthor(article, member);
         return article;
     }
 
     private void validateAuthor(Article article, Member member) {
-        if (!article.isAuthor(member)) {
+        if (!isAuthor(article, member)) {
             throw new NoAuthorizationException();
         }
+    }
+
+    private boolean isAuthor(Article article, Member member) {
+        if (article.isAnonymous()) {
+            String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
+            return article.isAnonymousAuthor(cipherId);
+        }
+        return article.isAuthor(member);
     }
 
     public void delete(AppMember appMember, Long id) {
