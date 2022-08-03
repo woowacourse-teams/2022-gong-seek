@@ -88,7 +88,7 @@ export const CommentContent = styled.div`
 
 	font-size: ${({ theme }) => theme.size.SIZE_014};
 	line-height: ${({ theme }) => theme.size.SIZE_030};
-	word-break: keep-all;
+	word-break: break-all;
 `;
 
 export const DimmerContainer = styled.div`

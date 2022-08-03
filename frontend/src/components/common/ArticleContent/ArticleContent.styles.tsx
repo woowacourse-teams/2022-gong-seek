@@ -65,7 +65,7 @@ export const ArticleTitle = styled.h3`
 
 	color: ${({ theme }) => theme.colors.BLACK_600};
 
-	word-break: keep-all;
+	word-break: break-all;
 `;
 
 export const ArticleDetailInfo = styled.div`
