@@ -75,10 +75,9 @@ export const dateTimeConverter = (dateTime: string) => {
 	const [year, month, day] = date.split('-').map((e) => Number(e));
 	const [hour, minute, second] = time.split(':').map((e) => Number(e));
 
-	const createdAt = new Date(year, month - 1, day, hour, minute, second);
+	const createdAt = new Date(year, month - 1, day, hour, minute, second || 0);
 
 	const timeGap = (Date.now() - createdAt.getTime()) / 1000;
-
 	const yearGap = Math.floor(timeGap / (3600 * 24 * 30 * 12));
 	const monthGap = Math.floor((timeGap / (3600 * 24 * 30)) % 12);
 	const dayGap = Math.floor((timeGap / (3600 * 24)) % 30);

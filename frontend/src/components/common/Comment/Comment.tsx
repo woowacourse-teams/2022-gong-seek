@@ -1,11 +1,11 @@
-import CommentInputModal from '@/components/common/CommentInputModal/CommentInputModal';
 import { useState } from 'react';
 
 import * as S from '@/components/common/Comment/Comment.styles';
-import Loading from '@/components/common/Loading/Loading';
 import useDeleteComment from '@/components/common/Comment/hooks/useDeleteComment';
-
+import CommentInputModal from '@/components/common/CommentInputModal/CommentInputModal';
+import Loading from '@/components/common/Loading/Loading';
 import { CommentType } from '@/types/commentResponse';
+import { dateTimeConverter } from '@/utils/converter';
 
 interface CommentProps extends CommentType {
 	articleId: string;
@@ -30,7 +30,7 @@ const Comment = ({ id, author, content, createdAt, isAuthor, articleId }: Commen
 					<S.UserProfile alt="유저 프로필이 보여지는 곳입니다" src={author.avatarUrl} />
 					<S.CommentInfoSub>
 						<S.UserName>{author.name}</S.UserName>
-						<S.CreateTime>{createdAt}</S.CreateTime>
+						<S.CreateTime>{dateTimeConverter(createdAt)}</S.CreateTime>
 					</S.CommentInfoSub>
 				</S.CommentInfo>
 				{isAuthor && (
