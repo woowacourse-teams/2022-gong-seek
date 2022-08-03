@@ -48,24 +48,25 @@ export const getDetailArticle = async (id: string) => {
 export const getAllArticle = async ({
 	category,
 	sort,
-	cursorId = '',
-	cursorViews = '',
+	cursorId,
+	cursorViews,
 }: {
 	category: string;
 	sort: string;
-	cursorId?: string;
-	cursorViews?: string;
+	cursorId: string;
+	cursorViews: string;
 }) => {
 	const currentSort = sort === '최신순' ? 'latest' : 'views';
-	const { data } = await axios.get<AllArticleResponse>(
+	const result = await axios.get<AllArticleResponse>(
 		`${HOME_URL}/api/articles?category=${category}&sort=${currentSort}&cursorId=${cursorId}&cursorViews=${cursorViews}&pageSize=5`,
 	);
+	const data = result.data;
 
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
-		cursorId: data.articles[data.articles.length - 1]?.id,
-		cursorViews: data.articles[data.articles.length - 1]?.views,
+		cursorId: String(data.articles[data.articles.length - 1]?.id),
+		cursorViews: String(data.articles[data.articles.length - 1]?.views),
 	};
 };
 
