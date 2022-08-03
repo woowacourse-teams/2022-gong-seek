@@ -1,21 +1,29 @@
 import Loading from '@/components/common/Loading/Loading';
-
-import { convertIdxToVoteColorKey } from '@/utils/converter';
-import usePostVoteItem from '@/pages/Discussion/hooks/usePostVoteItem';
-
 import * as S from '@/pages/Discussion/VoteItem/VoteItem.styles';
+import usePostVoteItem from '@/pages/Discussion/hooks/usePostVoteItem';
+import { convertIdxToVoteColorKey } from '@/utils/converter';
 
 export interface VoteItemProps {
+	voteId: number;
 	title: string;
 	itemVotes: number;
 	totalVotes: number;
-	idx: number;
-	name: string;
+	colorIdx: number;
+	articleId: string;
+	isExpired: boolean;
 }
 
-const VoteItem = ({ title, itemVotes, totalVotes, idx, name }: VoteItemProps) => {
+const VoteItem = ({
+	voteId,
+	title,
+	itemVotes,
+	totalVotes,
+	colorIdx,
+	articleId,
+	isExpired,
+}: VoteItemProps) => {
 	const progressivePercent = Math.floor((itemVotes / totalVotes) * 100);
-	const { onChangeRadio, isLoading } = usePostVoteItem();
+	const { onChangeRadio, isLoading } = usePostVoteItem(articleId);
 
 	if (isLoading) return <Loading />;
 
@@ -24,10 +32,11 @@ const VoteItem = ({ title, itemVotes, totalVotes, idx, name }: VoteItemProps) =>
 			<S.TitleBox>
 				<S.RadioButton
 					type="radio"
-					name={name}
+					name={articleId}
 					onChange={() => {
-						onChangeRadio(name, idx);
+						onChangeRadio(articleId, voteId);
 					}}
+					disabled={isExpired}
 				/>
 				<S.Title>
 					<p>{title}</p>
@@ -38,7 +47,7 @@ const VoteItem = ({ title, itemVotes, totalVotes, idx, name }: VoteItemProps) =>
 			<S.ProgressiveBar>
 				<S.ProgressiveBarContent
 					percent={progressivePercent || 0}
-					colorKey={convertIdxToVoteColorKey(idx)}
+					colorKey={convertIdxToVoteColorKey(colorIdx)}
 				/>
 			</S.ProgressiveBar>
 		</S.Container>

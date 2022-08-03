@@ -1,11 +1,11 @@
-import { getVoteItems } from '@/api/vote';
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import { AxiosError } from 'axios';
-import { VoteItems } from '@/api/vote';
+
+import { getVoteItems, TVote } from '@/api/vote';
 
 const useVote = (articleId: string) => {
-	const { data, isLoading, isError, isSuccess, error } = useQuery<VoteItems[], AxiosError>(
+	const { data, isLoading, isError, isSuccess, error } = useQuery<TVote, AxiosError>(
 		['vote', `vote${articleId}`],
 		() => getVoteItems(articleId),
 	);
@@ -13,7 +13,7 @@ const useVote = (articleId: string) => {
 
 	useEffect(() => {
 		if (isSuccess) {
-			setTotalCount(data.reduce((acc, cur) => acc + cur.count, 0));
+			setTotalCount(data.voteItems.reduce((acc, cur) => acc + cur.amount, 0));
 		}
 	});
 
