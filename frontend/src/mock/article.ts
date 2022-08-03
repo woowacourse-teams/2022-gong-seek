@@ -3,8 +3,8 @@ import type { PathParams } from 'msw';
 
 import { WritingArticles } from '@/api/article';
 import { HOME_URL } from '@/constants/url';
-import mockData from '@/mock/data/detailArticle.json';
 import mockArticle from '@/mock/data/articles.json';
+import mockData from '@/mock/data/detailArticle.json';
 
 interface WritingArticlesWithId extends WritingArticles {
 	id: number;
@@ -14,7 +14,7 @@ export const ArticleHandler = [
 	rest.post<{ title: string; content: string; category: string }, never, { id: number }>(
 		`${HOME_URL}/api/articles`,
 		(req, res, ctx) => {
-			const {  category } = req.body;
+			const { category } = req.body;
 			return res(ctx.status(201), ctx.json({ id: 1, category }));
 		},
 	),
@@ -46,15 +46,14 @@ export const ArticleHandler = [
 	}),
 
 	rest.get(`${HOME_URL}/api/articles`, (req, res, ctx) => {
-		const size = req.url.searchParams.get('size');
+		const size = req.url.searchParams.get('pageSize');
 		const category = req.url.searchParams.get('category');
-
 
 		if (category === null || size === null) {
 			return res(ctx.status(200), ctx.json({ articles: mockArticle.articles }));
 		}
-		const articlesPage = mockArticle.articles.map(article => 
-			({
+		const articlesPage = mockArticle.articles
+			.map((article) => ({
 				id: article.id,
 				title: article.title,
 				author: article.author,
@@ -62,9 +61,9 @@ export const ArticleHandler = [
 				category: category,
 				createdAt: article.createdAt,
 				updatedAt: article.updatedAt,
-				views: article.views, 
-			} )
-		).slice(0,Number(size));
+				views: article.views,
+			}))
+			.slice(0, Number(size));
 
 		return res(
 			ctx.status(200),
@@ -93,5 +92,7 @@ export const ArticleHandler = [
 		},
 	),
 
-	rest.delete<never, PathParams>(`${HOME_URL}/api/articles/:id`, (req, res, ctx) => res(ctx.status(204))),
+	rest.delete<never, PathParams>(`${HOME_URL}/api/articles/:id`, (req, res, ctx) =>
+		res(ctx.status(204)),
+	),
 ];
