@@ -1,15 +1,19 @@
-import { deleteArticle } from '@/api/article';
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { AxiosError } from 'axios';
+
+import { deleteArticle } from '@/api/article';
+import CustomError from '@/components/helper/CustomError';
 import useSnackBar from '@/hooks/useSnackBar';
 
 const useDeleteArticleContent = () => {
-	const {showSnackBar} = useSnackBar();
-	const { isSuccess, isError, isLoading, error, mutate } = useMutation<unknown, AxiosError, string>(
-		deleteArticle,
-	);
+	const { showSnackBar } = useSnackBar();
+	const { isSuccess, isError, isLoading, error, mutate } = useMutation<
+		unknown,
+		AxiosError<{ errorCode: string; message: string }>,
+		string
+	>(deleteArticle);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -21,7 +25,7 @@ const useDeleteArticleContent = () => {
 
 	useEffect(() => {
 		if (isError) {
-			throw new Error(error.message);
+			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
 		}
 	}, [isError]);
 

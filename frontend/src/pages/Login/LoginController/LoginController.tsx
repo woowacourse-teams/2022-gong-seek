@@ -14,7 +14,7 @@ const LoginController = () => {
 	}
 	const { data, isError, isSuccess, error, mutate } = useMutation<
 		AxiosResponse<{ accessToken: string }>,
-		AxiosError,
+		AxiosError<{ errorCode: string; message: string }>,
 		string
 	>(postLogin);
 
