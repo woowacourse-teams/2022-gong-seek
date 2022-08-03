@@ -3,6 +3,7 @@ import { useState } from 'react';
 import * as S from '@/components/common/ArticleItem/ArticleItem.styles';
 import { Category, CommonArticleType } from '@/types/articleResponse';
 import { Author } from '@/types/author';
+import { dateTimeConverter } from '@/utils/converter';
 
 interface ArticleItemProps {
 	article: {
@@ -30,7 +31,7 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 				<div>{article.title}</div>
 			</S.ArticleItemTitle>
 			<S.ArticleInfoBox>
-				<S.ArticleTimeStamp>{article.createdAt}</S.ArticleTimeStamp>
+				<S.ArticleTimeStamp>{dateTimeConverter(article.createdAt)}</S.ArticleTimeStamp>
 				<S.Views>댓글 수 {article.commentCount}</S.Views>
 			</S.ArticleInfoBox>
 			<S.Content>{article.content}</S.Content>

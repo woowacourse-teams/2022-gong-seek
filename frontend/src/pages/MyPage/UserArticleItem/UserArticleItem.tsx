@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import * as S from '@/pages/MyPage/UserArticleItem/UserArticleItem.styles';
 import { UserArticleItemType } from '@/types/articleResponse';
+import { dateTimeConverter } from '@/utils/converter';
 
 const UserArticleItem = ({ article }: { article: UserArticleItemType }) => {
 	const navigate = useNavigate();
@@ -18,7 +19,9 @@ const UserArticleItem = ({ article }: { article: UserArticleItemType }) => {
 			<S.CategoryName isQuestion={category === 'question'}>{한글_카테고리}</S.CategoryName>
 			<S.ArticleTitle>{title}</S.ArticleTitle>
 			<S.ArticleSubInfo>
-				<S.ArticleTime>{updatedAt.length !== 0 ? updatedAt : createdAt}</S.ArticleTime>
+				<S.ArticleTime>
+					{updatedAt.length !== 0 ? dateTimeConverter(updatedAt) : dateTimeConverter(createdAt)}
+				</S.ArticleTime>
 				<S.ArticleRightBox>
 					<S.CommentBox>
 						<S.CommentIcon
