@@ -59,6 +59,10 @@ const WritingArticles = () => {
 			<S.Content>
 				<ToastUiEditor initContent={''} ref={content} />
 			</S.Content>
+			<S.AnonymousBox>
+				<S.AnonymousCheckInput type="checkbox" />
+				<p>익명</p>
+			</S.AnonymousBox>
 			<S.SubmitButton
 				type="button"
 				onClick={() => handleSubmitButtonClick({ title, categoryOption })}
