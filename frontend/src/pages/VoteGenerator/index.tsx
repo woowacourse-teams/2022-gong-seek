@@ -1,11 +1,7 @@
-import { AxiosError, AxiosResponse } from 'axios';
 import React, { useState } from 'react';
-import { useMutation } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { registerVoteItems } from '@/api/vote';
 import Input from '@/components/common/Input/Input';
-import Loading from '@/components/common/Loading/Loading';
 import AddedOption from '@/pages/VoteGenerator/AddedOption/AddedOption';
 import * as S from '@/pages/VoteGenerator/index.styles';
 
@@ -13,11 +9,7 @@ const VoteGenerator = () => {
 	const [options, setOptions] = useState<string[]>([]);
 	const [input, setInput] = useState('');
 	const { articleId } = useParams();
-	const { isLoading, mutate, isError, data, isSuccess } = useMutation<
-		AxiosResponse<{ articleId: string }>,
-		AxiosError,
-		{ articleId: string; options: string[] }
-	>(registerVoteItems);
+	const navigate = useNavigate();
 
 	const onSubmitAddOption = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -28,22 +20,13 @@ const VoteGenerator = () => {
 
 	const onSubmitVoteForm = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (articleId) {
-			mutate({ articleId, options });
-		}
 
-		if (isSuccess) {
-			console.log(data.data.articleId);
-		}
+		navigate(`/votes-deadline`, { state: { articleId, options } });
 	};
 
-	if (isLoading) return <Loading />;
-
-	if (isError) return <div>에러..!</div>;
-
 	return (
-		<>
-			<S.Form onSubmit={onSubmitAddOption}>
+		<S.Container>
+			<S.AddOptionForm onSubmit={onSubmitAddOption}>
 				<S.OptionInputBox>
 					<Input
 						width="70%"
@@ -57,16 +40,18 @@ const VoteGenerator = () => {
 						<S.AddButton />
 					</S.AddButtonWrapper>
 				</S.OptionInputBox>
-			</S.Form>
-			<S.Form onSubmit={onSubmitVoteForm}>
+			</S.AddOptionForm>
+			<S.ContentForm onSubmit={onSubmitVoteForm}>
+				<S.RegisteredOptionTitle>등록된 항목</S.RegisteredOptionTitle>
+
 				<S.Content>
 					{options.map((option, idx) => (
 						<AddedOption key={idx}>{option}</AddedOption>
 					))}
-					<S.SubmitButton>등록하기</S.SubmitButton>
 				</S.Content>
-			</S.Form>
-		</>
+				<S.SubmitButton>등록하기</S.SubmitButton>
+			</S.ContentForm>
+		</S.Container>
 	);
 };
 

@@ -17,21 +17,23 @@ export const getVoteItems = async (articleId: string) => {
 		},
 	});
 
-	return data; 
+	return data;
 };
 
 export const registerVoteItems = ({
 	articleId,
 	options,
+	expiryDate,
 }: {
 	articleId: string;
 	options: string[];
+	expiryDate: string;
 }) => {
 	const accessToken = localStorage.getItem('accessToken');
 
 	return axios.post<{ articleId: string }>(
 		`${HOME_URL}/api/articles/${articleId}/votes`,
-		{ options },
+		{ items: options, expiryDate },
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
