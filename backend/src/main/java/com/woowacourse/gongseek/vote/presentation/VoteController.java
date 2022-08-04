@@ -3,6 +3,7 @@ package com.woowacourse.gongseek.vote.presentation;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.vote.application.VoteService;
+import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
@@ -39,5 +40,14 @@ public class VoteController {
             @AuthenticationPrinciple AppMember appMember,
             @PathVariable Long articleId) {
         return ResponseEntity.ok(voteService.getOne(articleId, appMember));
+    }
+
+    @PostMapping("/do")
+    public ResponseEntity<Void> doVote(
+            @AuthenticationPrinciple AppMember appMember,
+            @PathVariable Long articleId,
+            @RequestBody SelectVoteItemIdRequest request) {
+        voteService.doVote(articleId, appMember, request);
+        return ResponseEntity.noContent().build();
     }
 }

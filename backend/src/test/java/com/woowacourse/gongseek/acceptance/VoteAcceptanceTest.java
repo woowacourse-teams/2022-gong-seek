@@ -8,8 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
+import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateResponse;
+import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -24,16 +26,19 @@ public class VoteAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 토론게시물에서_투표를_생성한다() {
+        //given
         TokenResponse tokenResponse = 로그인을_한다(슬로);
         Long articleId = 게시글을_등록한다(tokenResponse, Category.DISCUSSION.getValue()).getId();
 
+        //when
         ExtractableResponse<Response> response = 투표를_생성한다(
                 tokenResponse,
                 articleId,
                 new VoteCreateRequest(Set.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
         );
-
         VoteCreateResponse voteCreateResponse = response.as(VoteCreateResponse.class);
+
+        //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
                 () -> assertThat(voteCreateResponse.getArticleId()).isEqualTo(articleId)
@@ -50,6 +55,86 @@ public class VoteAcceptanceTest extends AcceptanceTest {
                 .when()
                 .body(voteCreateRequest)
                 .post("/api/articles/{articleId}/votes")
+                .then().log().all()
+                .extract();
+    }
+
+    @Test
+    void 투표를_안한_사용자가_투표를_조회하면_선택한_투표_식별자는_null이_나온다() {
+        //given
+        TokenResponse tokenResponse = 로그인을_한다(슬로);
+        Long articleId = 게시글을_등록한다(tokenResponse, Category.DISCUSSION.getValue()).getId();
+
+        투표를_생성한다(
+                tokenResponse, articleId,
+                new VoteCreateRequest(Set.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
+        );
+
+        //when
+        ExtractableResponse<Response> response = 투표를_조회한다(tokenResponse, articleId);
+        VoteResponse voteResponse = response.as(VoteResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(voteResponse.getArticleId()).isEqualTo(articleId),
+                () -> assertThat(voteResponse.getVotedItemId()).isNull(),
+                () -> assertThat(voteResponse.getVoteItems()).hasSize(2)
+        );
+    }
+
+    private ExtractableResponse<Response> 투표를_조회한다(TokenResponse tokenResponse, Long articleId) {
+        return RestAssured
+                .given().log().all()
+                .pathParam("articleId", articleId)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("/api/articles/{articleId}/votes")
+                .then().log().all()
+                .extract();
+    }
+
+
+    @Test
+    void 투표를_한_사용자가_투표를_조회한다() {
+        //given
+        TokenResponse tokenResponse = 로그인을_한다(슬로);
+        Long articleId = 게시글을_등록한다(tokenResponse, Category.DISCUSSION.getValue()).getId();
+
+        투표를_생성한다(
+                tokenResponse,
+                articleId,
+                new VoteCreateRequest(Set.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
+        );
+        VoteResponse firstGetResponse = 투표를_조회한다(tokenResponse, articleId).as(VoteResponse.class);
+
+        //when
+        Long vottedItemId = firstGetResponse.getVoteItems().get(0).getId();
+        ExtractableResponse<Response> response = 투표를_한다(tokenResponse, articleId,
+                new SelectVoteItemIdRequest(vottedItemId));
+        VoteResponse voteResponse = 투표를_조회한다(tokenResponse, articleId).as(VoteResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value()),
+                () -> assertThat(voteResponse.getArticleId()).isEqualTo(articleId),
+                () -> assertThat(voteResponse.getVotedItemId()).isEqualTo(vottedItemId),
+                () -> assertThat(voteResponse.getVoteItems()).hasSize(2)
+        );
+
+    }
+
+    private ExtractableResponse<Response> 투표를_한다(TokenResponse tokenResponse, Long articleId,
+                                                 SelectVoteItemIdRequest request) {
+        return RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .pathParam("articleId", articleId)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .body(request)
+                .post("/api/articles/{articleId}/votes/do")
                 .then().log().all()
                 .extract();
     }

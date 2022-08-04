@@ -1,29 +1,30 @@
 package com.woowacourse.gongseek.vote.presentation.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.vote.domain.Vote;
 import com.woowacourse.gongseek.vote.domain.VoteHistory;
 import java.util.List;
 import java.util.Objects;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class VoteResponse {
 
-    private final Long articleId;
+    private Long articleId;
 
-    private final List<VoteItemResponse> voteItems;
+    private List<VoteItemResponse> voteItems;
 
-    private final Long votedItemId;
+    private Long votedItemId;
 
-    @JsonProperty(namespace = "isExpired")
-    private boolean isExpired;
+    private boolean expired;
 
-    public VoteResponse(Vote vote, List<VoteItemResponse> voteItems, VoteHistory voteHistory, boolean isExpired) {
+    public VoteResponse(Vote vote, List<VoteItemResponse> voteItems, VoteHistory voteHistory, boolean expired) {
         this.articleId = vote.getArticle().getId();
         this.voteItems = voteItems;
         this.votedItemId = getVotedItemIdOrNull(voteHistory);
-        this.isExpired = isExpired;
+        this.expired = expired;
     }
 
     private Long getVotedItemIdOrNull(VoteHistory voteHistory) {

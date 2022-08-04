@@ -109,7 +109,7 @@ class VoteServiceTest {
     @Test
     void 투표를_한_사용자가_투표를_조회한다() {
         Long selectVoteItemId = voteItems.get(0).getId();
-        voteService.doVote(vote.getId(), new LoginMember(member.getId()),
+        voteService.doVote(discussionArticle.getId(), new LoginMember(member.getId()),
                 new SelectVoteItemIdRequest(selectVoteItemId));
 
         VoteResponse voteResponse = voteService.getOne(discussionArticle.getId(), new LoginMember(member.getId()));
@@ -127,7 +127,7 @@ class VoteServiceTest {
         LoginMember loginMember = new LoginMember(member.getId());
         int selectIndex = 0;
 
-        voteService.doVote(vote.getId(), loginMember, new SelectVoteItemIdRequest(voteItems.get(selectIndex).getId()));
+        voteService.doVote(discussionArticle.getId(), loginMember, new SelectVoteItemIdRequest(voteItems.get(selectIndex).getId()));
 
         List<VoteItemResponse> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember)
                 .getVoteItems();
@@ -140,9 +140,9 @@ class VoteServiceTest {
     @Test
     void 다른_항목을_투표하면_기존의_투표수는_감소하고_선택한_투표수가_증가한다() {
         LoginMember loginMember = new LoginMember(member.getId());
-        voteService.doVote(vote.getId(), loginMember, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
+        voteService.doVote(discussionArticle.getId(), loginMember, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
 
-        voteService.doVote(vote.getId(), loginMember, new SelectVoteItemIdRequest(voteItems.get(1).getId()));
+        voteService.doVote(discussionArticle.getId(), loginMember, new SelectVoteItemIdRequest(voteItems.get(1).getId()));
 
         List<VoteItemResponse> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember)
                 .getVoteItems();
@@ -158,8 +158,8 @@ class VoteServiceTest {
         LoginMember loginMember1 = new LoginMember(member.getId());
         LoginMember loginMember2 = new LoginMember(other.getId());
 
-        voteService.doVote(vote.getId(), loginMember1, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
-        voteService.doVote(vote.getId(), loginMember2, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
+        voteService.doVote(discussionArticle.getId(), loginMember1, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
+        voteService.doVote(discussionArticle.getId(), loginMember2, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
 
         List<VoteItemResponse> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember1)
                 .getVoteItems();
@@ -169,7 +169,7 @@ class VoteServiceTest {
 
     @Test
     void 비회원이_투표를_하면_예외를_발생한다() {
-        assertThatThrownBy(() -> voteService.doVote(vote.getId(), new GuestMember(),
+        assertThatThrownBy(() -> voteService.doVote(discussionArticle.getId(), new GuestMember(),
                 new SelectVoteItemIdRequest(voteItems.get(0).getId())))
                 .isExactlyInstanceOf(NoAuthorizationException.class)
                 .hasMessage("권한이 없습니다.");

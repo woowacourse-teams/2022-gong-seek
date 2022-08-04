@@ -1,5 +1,6 @@
 package com.woowacourse.gongseek.vote.domain;
 
+import java.util.Set;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

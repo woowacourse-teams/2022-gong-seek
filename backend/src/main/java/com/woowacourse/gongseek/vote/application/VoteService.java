@@ -11,21 +11,22 @@ import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.vote.domain.Vote;
 import com.woowacourse.gongseek.vote.domain.VoteHistory;
 import com.woowacourse.gongseek.vote.domain.VoteItem;
+import com.woowacourse.gongseek.vote.domain.VoteItems;
 import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import com.woowacourse.gongseek.vote.exception.AlreadyVoteSameItemException;
 import com.woowacourse.gongseek.vote.exception.CannotCreateVoteException;
+import com.woowacourse.gongseek.vote.exception.VoteItemNotFoundException;
 import com.woowacourse.gongseek.vote.exception.VoteNotFoundException;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateResponse;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteItemNotFoundException;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteItemResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -48,9 +49,10 @@ public class VoteService {
         Article article = getArticle(articleId);
         validateAuthor(member, article);
         validateCategory(article);
-
         Vote vote = voteRepository.save(new Vote(article, voteCreateRequest.getExpiryDate()));
 
+        Set<VoteItem> voteItems = VoteItems.of(voteCreateRequest.getItems(), vote).getVoteItems();
+        voteItemRepository.saveAll(voteItems);
         return new VoteCreateResponse(vote);
     }
 
@@ -92,7 +94,8 @@ public class VoteService {
         VoteHistory voteHistory = voteHistoryRepository.findByVoteIdAndMemberId(foundVote.getId(),
                 appMember.getPayload()).orElse(null);
 
-        return new VoteResponse(foundVote, convertVoteItemResponse(voteItems), voteHistory, isExpired(foundVote.getExpiryAt()));
+        return new VoteResponse(foundVote, convertVoteItemResponse(voteItems), voteHistory,
+                isExpired(foundVote.getExpiryAt()));
     }
 
     private List<VoteItemResponse> convertVoteItemResponse(List<VoteItem> voteItems) {
@@ -105,19 +108,18 @@ public class VoteService {
         return expiryAt.isBefore(LocalDateTime.now());
     }
 
-    public void doVote(Long voteId, AppMember appMember, SelectVoteItemIdRequest selectVoteItemIdRequest) {
+    public void doVote(Long articleId, AppMember appMember, SelectVoteItemIdRequest selectVoteItemIdRequest) {
         validateGuest(appMember);
-        Vote vote = getVote(voteId);
+        Vote vote = voteRepository.findByArticleId(articleId)
+                .orElseThrow(ArticleNotFoundException::new);
         Member member = getMember(appMember);
         VoteItem selectedVoteItem = getVoteItem(selectVoteItemIdRequest.getVoteItemId());
 
-        Optional<VoteHistory> hasVoteHistory = voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(),
-                member.getId());
-        if (hasVoteHistory.isPresent()) {
-            updateVoteHistory(vote.getId(), member.getId(), selectedVoteItem, hasVoteHistory.get());
-            return;
-        }
-        saveVoteHistory(vote, member, selectedVoteItem);
+        voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(), member.getId())
+                .ifPresentOrElse(
+                        voteHistory -> updateVoteHistory(vote.getId(), member.getId(), selectedVoteItem, voteHistory),
+                        () -> saveVoteHistory(vote, member, selectedVoteItem)
+                );
     }
 
     private Vote getVote(Long voteId) {

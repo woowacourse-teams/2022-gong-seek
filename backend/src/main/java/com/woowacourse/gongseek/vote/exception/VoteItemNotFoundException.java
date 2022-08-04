@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.vote.presentation.dto;
+package com.woowacourse.gongseek.vote.exception;
 
 import com.woowacourse.gongseek.common.exception.ApplicationException;
 
