@@ -47,9 +47,13 @@ public class ArticleFixtures {
         for (int i = 0; i < 5; i++) {
             ArticleIdResponse response = 기명으로_게시물을_등록한다(tokenResponse, category)
                     .as(ArticleIdResponse.class);
-            for (int j = 0; j < count; j++) {
-                로그인을_하지_않고_게시물을_조회한다(response);
-            }
+            조회수를_증가시킨다(count, response);
+        }
+    }
+
+    private static void 조회수를_증가시킨다(int count, ArticleIdResponse response) {
+        for (int j = 0; j < count; j++) {
+            로그인을_하지_않고_게시물을_조회한다(response);
         }
     }
 
