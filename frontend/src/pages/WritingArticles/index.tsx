@@ -3,9 +3,7 @@ import { useParams } from 'react-router-dom';
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import ToastUiEditor from '@/pages/WritingArticles/ToastUiEditor/ToastUiEditor';
-
 import usePostWritingArticles from '@/pages/WritingArticles/hooks/usePostWritingArticles';
-
 import * as S from '@/pages/WritingArticles/index.styles';
 
 const WritingArticles = () => {
@@ -46,7 +44,7 @@ const WritingArticles = () => {
 								<option value="" disabled>
 									카테고리를 선택해주세요
 								</option>
-								<option value="question">에러</option>
+								<option value="question">질문</option>
 								<option value="discussion">토론</option>
 							</S.CategorySelector>
 							<S.SelectorButton />

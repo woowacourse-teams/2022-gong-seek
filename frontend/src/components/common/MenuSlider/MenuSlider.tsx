@@ -68,7 +68,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 							closeSlider();
 						}}
 					>
-						에러 카테고리
+						질문 카테고리
 					</S.LinkItem>
 					<S.LinkItem
 						onClick={() => {

@@ -2,4 +2,4 @@ import jest from 'jest';
 
 import '@testing-library/jest-dom';
 
-jest.setTimeout(50000);
+jest.setTimeout(30000);

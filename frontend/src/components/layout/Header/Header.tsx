@@ -49,7 +49,7 @@ const Header = () => {
 				)}
 
 				<S.NavBarItem to="/category">글 쓰러 가기</S.NavBarItem>
-				<S.NavBarItem to="/articles/question">에러 카테고리</S.NavBarItem>
+				<S.NavBarItem to="/articles/question">질문 카테고리</S.NavBarItem>
 				<S.NavBarItem to="/articles/discussion">토론 카테고리</S.NavBarItem>
 				<S.NavBarItem to="/">문의하기</S.NavBarItem>
 			</S.NavBar>
