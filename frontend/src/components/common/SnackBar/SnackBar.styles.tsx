@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import { keyframes } from "@emotion/react";
+import { keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
 
 const PopUpAnimation = keyframes`
       0%{
@@ -13,44 +13,45 @@ const PopUpAnimation = keyframes`
         box-shadow: 10px 5px 5px #9c9c9c;
       }
       
-`
+`;
 
 export const Container = styled.section`
-    display: flex;
+	display: flex;
 
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
 
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-`
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+`;
 
 export const MessageBox = styled.div`
-    width: 80%;
-    height: fit-content;
-    text-align: center;
-    word-break: keep-all;
+	width: 80%;
+	height: fit-content;
+	text-align: center;
+	word-break: keep-all;
 
-    padding: ${({theme}) => theme.size.SIZE_012};
-    font-size: ${({theme}) => theme.size.SIZE_012};
-    color: ${({theme}) => theme.colors.WHITE};
+	padding: ${({ theme }) => theme.size.SIZE_012};
+	font-size: ${({ theme }) => theme.size.SIZE_012};
+	color: ${({ theme }) => theme.colors.WHITE};
 
-    border-radius: ${({theme}) => theme.size.SIZE_010};
-    border-style: none;
-  
-    background-color: ${({theme}) => theme.colors.PURPLE_500};
+	border-radius: ${({ theme }) => theme.size.SIZE_010};
+	border-style: none;
 
-    transform: translateY( -${({theme}) => theme.size.SIZE_100});
-    box-shadow: ${({theme}) => theme.size.SIZE_010} ${({theme}) => theme.size.SIZE_004} ${({theme}) => theme.size.SIZE_004} #9c9c9c;
+	background-color: ${({ theme }) => theme.colors.PURPLE_500};
 
-    animation: ${PopUpAnimation} 0.3s ease-in-out;
+	transform: translateY(-${({ theme }) => theme.size.SIZE_100});
+	box-shadow: ${({ theme }) => theme.size.SIZE_010} ${({ theme }) => theme.size.SIZE_004}
+		${({ theme }) => theme.size.SIZE_004} #9c9c9c;
 
-    @media (min-width: ${({theme}) => theme.breakpoints}){
-        width: fit-content;
-        font-size: ${({theme}) => theme.size.SIZE_016};
-    }
-`
+	animation: ${PopUpAnimation} 0.3s ease-in-out;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints}) {
+		width: fit-content;
+		font-size: ${({ theme }) => theme.size.SIZE_016};
+	}
+`;

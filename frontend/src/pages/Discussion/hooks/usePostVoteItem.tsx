@@ -5,10 +5,12 @@ import { useMutation } from 'react-query';
 import { checkVoteItems } from '@/api/vote';
 import { queryClient } from '@/index';
 
-const usePostVoteItem = (articleId: string) => {
+import CustomError from '@/components/helper/CustomError';
+
+const usePostVoteItem = () => {
 	const { isLoading, isError, error, mutate, isSuccess } = useMutation<
 		unknown,
-		AxiosError,
+		AxiosError<{ errorCode: string; message: string }>,
 		{ articleId: string; voteId: string }
 	>(checkVoteItems);
 
@@ -20,7 +22,7 @@ const usePostVoteItem = (articleId: string) => {
 
 	useEffect(() => {
 		if (isError) {
-			throw new Error(error.message);
+			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
 		}
 	}, [isError]);
 

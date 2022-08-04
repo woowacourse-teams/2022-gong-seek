@@ -15,7 +15,7 @@ const VoteDeadlineGenerator = () => {
 	const navigate = useNavigate();
 	const { isLoading, mutate, isError, data, isSuccess } = useMutation<
 		AxiosResponse<{ articleId: string }>,
-		AxiosError,
+		AxiosError<{ errorCode: string; message: string }>,
 		{ articleId: string; items: string[]; expiryDate: string }
 	>(registerVoteItems);
 

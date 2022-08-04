@@ -3,9 +3,11 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
 import { getVoteItems, TVote } from '@/api/vote';
+import CustomError from '@/components/helper/CustomError';
 
 const useVote = (articleId: string) => {
-	const { data, isLoading, isError, isSuccess, error } = useQuery<TVote, AxiosError>(
+	const { data, isLoading, isError, isSuccess, error } = useQuery<TVote, AxiosError<{ errorCode: string; message: string }>
+>(
 		['vote', `vote${articleId}`],
 		() => getVoteItems(articleId),
 	);
@@ -19,7 +21,7 @@ const useVote = (articleId: string) => {
 
 	useEffect(() => {
 		if (isError) {
-			throw new Error(error.message);
+			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
 		}
 	}, [isError]);
 
