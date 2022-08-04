@@ -1,18 +1,20 @@
-import { getComments } from '@/api/comments';
-import { CommentType } from '@/types/commentResponse';
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 
+import { getComments } from '@/api/comments';
+import CustomError from '@/components/helper/CustomError';
+import { CommentType } from '@/types/commentResponse';
+
 const useGetDetailComment = (id: string) => {
 	const { data, isError, isSuccess, isLoading, isIdle, error } = useQuery<
 		{ comments: CommentType[] },
-		AxiosError
+		AxiosError<{ errorCode: string; message: string }>
 	>('comments', () => getComments(id));
 
 	useEffect(() => {
 		if (isError) {
-			throw new Error(error.message);
+			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
 		}
 	}, [isError]);
 
