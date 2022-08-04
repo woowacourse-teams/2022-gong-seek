@@ -86,11 +86,13 @@ public class VoteService {
         if (!articleRepository.existsById(articleId)) {
             throw new ArticleNotFoundException();
         }
-        validateGuest(appMember);
         Vote foundVote = getVote(articleId);
         List<VoteItem> voteItems = voteItemRepository.findAllByVoteArticleId(articleId);
 
-        return new VoteResponse(foundVote, convertVoteItemResponse(voteItems), isExpired(foundVote.getExpiryAt()));
+        VoteHistory voteHistory = voteHistoryRepository.findByVoteIdAndMemberId(foundVote.getId(),
+                appMember.getPayload()).orElse(null);
+
+        return new VoteResponse(foundVote, convertVoteItemResponse(voteItems), voteHistory, isExpired(foundVote.getExpiryAt()));
     }
 
     private List<VoteItemResponse> convertVoteItemResponse(List<VoteItem> voteItems) {
@@ -100,7 +102,7 @@ public class VoteService {
     }
 
     private boolean isExpired(LocalDateTime expiryAt) {
-        return expiryAt.isAfter(LocalDateTime.now());
+        return expiryAt.isBefore(LocalDateTime.now());
     }
 
     public void doVote(Long voteId, AppMember appMember, SelectVoteItemIdRequest selectVoteItemIdRequest) {

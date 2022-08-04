@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
+import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
@@ -93,10 +95,31 @@ class VoteServiceTest {
     }
 
     @Test
-    void 생성된_투표를_조회한다() {
+    void 투표를_안한_사용자가_투표를_조회한다() {
         VoteResponse voteResponse = voteService.getOne(discussionArticle.getId(), new LoginMember(member.getId()));
 
-        assertThat(voteResponse.getArticleId()).isEqualTo(discussionArticle.getId());
+        assertAll(
+                () -> assertThat(voteResponse.getArticleId()).isEqualTo(discussionArticle.getId()),
+                () -> assertThat(voteResponse.getVotedItemId()).isNull(),
+                () -> assertThat(voteResponse.getVoteItems()).hasSize(2),
+                () -> assertThat(voteResponse.isExpired()).isFalse()
+        );
+    }
+
+    @Test
+    void 투표를_한_사용자가_투표를_조회한다() {
+        Long selectVoteItemId = voteItems.get(0).getId();
+        voteService.doVote(vote.getId(), new LoginMember(member.getId()),
+                new SelectVoteItemIdRequest(selectVoteItemId));
+
+        VoteResponse voteResponse = voteService.getOne(discussionArticle.getId(), new LoginMember(member.getId()));
+
+        assertAll(
+                () -> assertThat(voteResponse.getArticleId()).isEqualTo(discussionArticle.getId()),
+                () -> assertThat(voteResponse.getVotedItemId()).isEqualTo(selectVoteItemId),
+                () -> assertThat(voteResponse.getVoteItems()).hasSize(2),
+                () -> assertThat(voteResponse.isExpired()).isFalse()
+        );
     }
 
     @Test
@@ -127,5 +150,28 @@ class VoteServiceTest {
                 () -> assertThat(foundVoteItems.get(0).getAmount()).isEqualTo(0),
                 () -> assertThat(foundVoteItems.get(1).getAmount()).isEqualTo(1)
         );
+    }
+
+    @Test
+    void 서로_다른_두_사람이_같은_항목을_투표하면_투표수는_2가_된다() {
+        Member other = memberRepository.save(new Member("다른이", "gittt", "avater.url"));
+        LoginMember loginMember1 = new LoginMember(member.getId());
+        LoginMember loginMember2 = new LoginMember(other.getId());
+
+        voteService.doVote(vote.getId(), loginMember1, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
+        voteService.doVote(vote.getId(), loginMember2, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
+
+        List<VoteItemResponse> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember1)
+                .getVoteItems();
+
+        assertThat(foundVoteItems.get(0).getAmount()).isEqualTo(2);
+    }
+
+    @Test
+    void 비회원이_투표를_하면_예외를_발생한다() {
+        assertThatThrownBy(() -> voteService.doVote(vote.getId(), new GuestMember(),
+                new SelectVoteItemIdRequest(voteItems.get(0).getId())))
+                .isExactlyInstanceOf(NoAuthorizationException.class)
+                .hasMessage("권한이 없습니다.");
     }
 }
