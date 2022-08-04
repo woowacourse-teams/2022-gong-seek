@@ -35,7 +35,7 @@ class AuthServiceTest {
     private DatabaseCleaner databaseCleaner;
 
     @AfterEach
-    void tearDown(){
+    void tearDown() {
         databaseCleaner.tableClear();
     }
 

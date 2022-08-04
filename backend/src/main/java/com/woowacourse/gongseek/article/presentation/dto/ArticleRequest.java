@@ -1,9 +1,11 @@
 package com.woowacourse.gongseek.article.presentation.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.member.domain.Member;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +26,11 @@ public class ArticleRequest {
     @NotBlank
     private String category;
 
+    @NotNull
+    @JsonProperty("isAnonymous")
+    private Boolean isAnonymous;
+
     public Article toEntity(Member member) {
-        return new Article(title, content, Category.from(category), member);
+        return new Article(title, content, Category.from(category), member, isAnonymous);
     }
 }

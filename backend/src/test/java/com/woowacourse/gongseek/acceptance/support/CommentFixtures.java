@@ -4,6 +4,7 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
+import com.woowacourse.gongseek.comment.presentation.dto.CommentUpdateRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentsResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -16,14 +17,28 @@ import org.springframework.http.MediaType;
 @SuppressWarnings("NonAsciiCharacters")
 public class CommentFixtures {
 
-    public static ExtractableResponse<Response> 댓글을_등록한다(TokenResponse tokenResponse,
-                                                         ArticleIdResponse articleIdResponse) {
+    public static ExtractableResponse<Response> 기명으로_댓글을_등록한다(TokenResponse tokenResponse,
+                                                              ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
                 .pathParam("article_id", articleIdResponse.getId())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new CommentRequest("content"))
+                .body(new CommentRequest("content", false))
+                .when()
+                .post("/api/articles/{article_id}/comments")
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> 익명으로_댓글을_등록한다(TokenResponse tokenResponse,
+                                                              ArticleIdResponse articleIdResponse) {
+        return RestAssured
+                .given().log().all()
+                .pathParam("article_id", articleIdResponse.getId())
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new CommentRequest("content", true))
                 .when()
                 .post("/api/articles/{article_id}/comments")
                 .then().log().all()
@@ -51,7 +66,7 @@ public class CommentFixtures {
                 .pathParam("comment_id", commentResponses.get(0).getId())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new CommentRequest("Update Content"))
+                .body(new CommentUpdateRequest("Update Content"))
                 .when()
                 .put("/api/articles/comments/{comment_id}")
                 .then().log().all()

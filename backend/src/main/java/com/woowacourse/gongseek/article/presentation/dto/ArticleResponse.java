@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -22,6 +23,7 @@ public class ArticleResponse {
     private String content;
 
     @JsonProperty("isAuthor")
+    @Accessors(fluent = true)
     private boolean isAuthor;
 
     private int views;
@@ -32,15 +34,23 @@ public class ArticleResponse {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime updatedAt;
 
-    public ArticleResponse(Article article, boolean isAuthor) {
+    public ArticleResponse(Article article, AuthorDto authorDto, boolean isAuthor) {
         this(
                 article.getTitle(),
-                new AuthorDto(article.getMember()),
+                authorDto,
                 article.getContent(),
                 isAuthor,
                 article.getViews(),
                 article.getCreatedAt(),
                 article.getUpdatedAt()
+        );
+    }
+
+    public ArticleResponse(Article article, boolean isAuthor) {
+        this(
+                article,
+                new AuthorDto(article.getMember()),
+                isAuthor
         );
     }
 }
