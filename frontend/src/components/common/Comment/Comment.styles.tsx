@@ -8,7 +8,6 @@ export const Container = styled.div`
 	gap: ${({ theme }) => theme.size.SIZE_014};
 
 	width: 100%;
-	height: fit-content;
 
 	border-bottom: ${({ theme }) => theme.size.SIZE_001} solid
 		${({ theme }) => theme.colors.BLACK_200};
@@ -88,7 +87,7 @@ export const CommentContent = styled.div`
 
 	font-size: ${({ theme }) => theme.size.SIZE_014};
 	line-height: ${({ theme }) => theme.size.SIZE_030};
-	word-break: keep-all;
+	word-break: break-all;
 `;
 
 export const DimmerContainer = styled.div`
