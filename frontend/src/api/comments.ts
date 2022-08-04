@@ -3,11 +3,19 @@ import axios from 'axios';
 import { HOME_URL } from '@/constants/url';
 import { CommentType } from '@/types/commentResponse';
 
-export const postComments = ({ content, id }: { content: string; id: string }) => {
+export const postComments = ({
+	content,
+	id,
+	isAnonymous,
+}: {
+	content: string;
+	id: string;
+	isAnonymous: boolean;
+}) => {
 	const accessToken = localStorage.getItem('accessToken');
 	return axios.post(
 		`${HOME_URL}/api/articles/${id}/comments`,
-		{ content },
+		{ content, isAnonymous },
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
