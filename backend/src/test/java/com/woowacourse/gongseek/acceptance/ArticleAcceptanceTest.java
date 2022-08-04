@@ -1,5 +1,17 @@
 package com.woowacourse.gongseek.acceptance;
 
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물_전체를_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_검색한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_처음_검색한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.기명으로_게시물을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_게시물을_삭제한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_게시물을_수정한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_게시물을_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인을_하지_않고_게시물을_수정한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인을_하지_않고_게시물을_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.익명으로_게시물을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.조회수가_있는_게시물_5개를_생성한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.특정_게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.기명으로_댓글을_등록한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
@@ -12,20 +24,16 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
-import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class ArticleAcceptanceTest extends AcceptanceTest {
@@ -85,7 +93,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 ArticleIdResponse.class);
 
         // when
-        ExtractableResponse<Response> response = 로그인_안한_유저가_게시물을_조회한다(articleIdResponse);
+        ExtractableResponse<Response> response = 로그인을_하지_않고_게시물을_조회한다(articleIdResponse);
         ArticleResponse articleResponse = response.as(ArticleResponse.class);
 
         // then
@@ -117,7 +125,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 ArticleIdResponse.class);
 
         // when
-        ExtractableResponse<Response> response = 로그인_안한_유저가_게시물을_조회한다(articleIdResponse);
+        ExtractableResponse<Response> response = 로그인을_하지_않고_게시물을_조회한다(articleIdResponse);
         ArticleResponse articleResponse = response.as(ArticleResponse.class);
 
         // then
@@ -246,7 +254,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 ArticleIdResponse.class);
 
         // when
-        ExtractableResponse<Response> response = 로그인_안한_유저가_게시물을_수정한다(articleIdResponse);
+        ExtractableResponse<Response> response = 로그인을_하지_않고_게시물을_수정한다(articleIdResponse);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -260,7 +268,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 ArticleIdResponse.class);
 
         // when
-        ExtractableResponse<Response> response = 로그인_안한_유저가_게시물을_수정한다(articleIdResponse);
+        ExtractableResponse<Response> response = 로그인을_하지_않고_게시물을_수정한다(articleIdResponse);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -479,7 +487,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         for (int i = 0; i < 5; i++) {
             ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.DISCUSSION).as(
                     ArticleIdResponse.class);
-            로그인_안한_유저가_게시물을_조회한다(articleIdResponse);
+            로그인을_하지_않고_게시물을_조회한다(articleIdResponse);
             기명으로_댓글을_등록한다(tokenResponse, articleIdResponse);
         }
         for (int i = 0; i < 10; i++) {
@@ -610,17 +618,19 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 게시물을_검색한다() {
+    void 특정_검색어로_게시물을_검색한다() {
         //given
         TokenResponse tokenResponse = 로그인을_한다(주디);
-        특정_게시물을_등록한다(new ArticleRequest("커스텀 예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), false));
-        특정_게시물을_등록한다(new ArticleRequest("커스텀예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), false));
-        특정_게시물을_등록한다(new ArticleRequest("예외를 커스텀하려면?", "내용", Category.QUESTION.getValue(), false));
-        특정_게시물을_등록한다(new ArticleRequest("예외를커스텀하려면?", "내용", Category.QUESTION.getValue(), false));
-        특정_게시물을_등록한다(new ArticleRequest("제목", "예외 어떻게 커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), false));
-        특정_게시물을_등록한다(new ArticleRequest("제목", "예외 어떻게커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), false));
-        특정_게시물을_등록한다(new ArticleRequest("제목", "예외는 이렇게 커스텀 하면 됩니다.", Category.DISCUSSION.getValue(), false));
-        특정_게시물을_등록한다(new ArticleRequest("제목", "예외는 이렇게 커스텀하면 됩니다.", Category.DISCUSSION.getValue(), false));
+        특정_게시물을_등록한다(tokenResponse, new ArticleRequest("커스텀 예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), false));
+        특정_게시물을_등록한다(tokenResponse, new ArticleRequest("커스텀예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), false));
+        특정_게시물을_등록한다(tokenResponse, new ArticleRequest("예외를 커스텀하려면?", "내용", Category.QUESTION.getValue(), false));
+        특정_게시물을_등록한다(tokenResponse, new ArticleRequest("예외를커스텀하려면?", "내용", Category.QUESTION.getValue(), false));
+        특정_게시물을_등록한다(tokenResponse, new ArticleRequest("제목", "예외 어떻게 커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), false));
+        특정_게시물을_등록한다(tokenResponse, new ArticleRequest("제목", "예외 어떻게커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), false));
+        특정_게시물을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외는 이렇게 커스텀 하면 됩니다.", Category.DISCUSSION.getValue(), false));
+        특정_게시물을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외는 이렇게 커스텀하면 됩니다.", Category.DISCUSSION.getValue(), false));
 
         //when
         int pageSize = 4;
@@ -640,150 +650,6 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 () -> secondPage.getArticles()
                         .forEach(article -> assertThat(article.getContent()).isEqualTo("내용"))
         );
-    }
-
-    private ArticlePageResponse 게시물을_처음_검색한다(int pageSize, String searchText) {
-        return RestAssured
-                .given().log().all()
-                .when()
-                .param("pageSize", pageSize)
-                .param("searchText", searchText)
-                .get("/api/articles/search")
-                .then().log().all()
-                .extract()
-                .as(ArticlePageResponse.class);
-    }
-
-    private ArticlePageResponse 게시물을_검색한다(long cursorId, int pageSize, String searchText) {
-        return RestAssured
-                .given().log().all()
-                .when()
-                .param("cursorId", cursorId)
-                .param("pageSize", pageSize)
-                .param("searchText", searchText)
-                .get("/api/articles/search")
-                .then().log().all()
-                .extract()
-                .as(ArticlePageResponse.class);
-    }
-
-    private void 특정_게시물을_등록한다(ArticleRequest articleRequest) {
-        TokenResponse tokenResponse = 로그인을_한다(주디);
-        RestAssured
-                .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(articleRequest)
-                .when()
-                .post("/api/articles")
-                .then().log().all()
-                .extract();
-    }
-
-    private void 조회수가_있는_게시물_5개를_생성한다(TokenResponse tokenResponse, int count, Category category) {
-        for (int i = 0; i < 5; i++) {
-            ArticleIdResponse response = 기명으로_게시물을_등록한다(tokenResponse, category)
-                    .as(ArticleIdResponse.class);
-            for (int j = 0; j < count; j++) {
-                로그인_안한_유저가_게시물을_조회한다(response);
-            }
-        }
-    }
-
-    private ExtractableResponse<Response> 게시물_전체를_조회한다(String category, String sort, Long cursorId,
-                                                       Integer cursorViews) {
-        return RestAssured
-                .given().log().all()
-                .when()
-                .param("category", category)
-                .param("sort", sort)
-                .param("cursorId", cursorId)
-                .param("cursorViews", cursorViews)
-                .param("pageSize", 10)
-                .get("/api/articles")
-                .then().log().all()
-                .extract();
-    }
-
-    private ExtractableResponse<Response> 기명으로_게시물을_등록한다(TokenResponse tokenResponse, Category category) {
-        return RestAssured
-                .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ArticleRequest("title", "content", category.getValue(), false))
-                .when()
-                .post("/api/articles")
-                .then().log().all()
-                .extract();
-    }
-
-    private ExtractableResponse<Response> 익명으로_게시물을_등록한다(TokenResponse tokenResponse, Category category) {
-        return RestAssured
-                .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ArticleRequest("title", "content", category.getValue(), true))
-                .when()
-                .post("/api/articles")
-                .then().log().all()
-                .extract();
-    }
-
-    private ExtractableResponse<Response> 로그인_후_게시물을_삭제한다(TokenResponse tokenResponse,
-                                                          ArticleIdResponse articleIdResponse) {
-        return RestAssured
-                .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .delete("/api/articles/{id}", articleIdResponse.getId())
-                .then().log().all()
-                .extract();
-    }
-
-
-    private ExtractableResponse<Response> 로그인_안한_유저가_게시물을_조회한다(ArticleIdResponse articleIdResponse) {
-        return RestAssured
-                .given().log().all()
-                .when()
-                .get("/api/articles/{articleId}", articleIdResponse.getId())
-                .then().log().all()
-                .extract();
-    }
-
-    private ExtractableResponse<Response> 로그인_후_게시물을_조회한다(TokenResponse tokenResponse,
-                                                          ArticleIdResponse articleIdResponse) {
-        return RestAssured
-                .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
-                .when()
-                .get("/api/articles/{articleId}", articleIdResponse.getId())
-                .then().log().all()
-                .extract();
-    }
-
-    private ExtractableResponse<Response> 로그인_안한_유저가_게시물을_수정한다(ArticleIdResponse articleIdResponse) {
-        return RestAssured
-                .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ArticleUpdateRequest("title2", "content2"))
-                .when()
-                .put("/api/articles/{articleId}", articleIdResponse.getId())
-                .then().log().all()
-                .extract();
-    }
-
-    private ExtractableResponse<Response> 로그인_후_게시물을_수정한다(TokenResponse tokenResponse,
-                                                          ArticleIdResponse articleIdResponse) {
-        return RestAssured
-                .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ArticleUpdateRequest("title2", "content2"))
-                .when()
-                .put("/api/articles/{articleId}", articleIdResponse.getId())
-                .then().log().all()
-                .extract();
     }
 }
 
