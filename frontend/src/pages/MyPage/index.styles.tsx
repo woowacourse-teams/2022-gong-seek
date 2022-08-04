@@ -5,7 +5,6 @@ export const Container = styled.section`
 	flex-direction: column;
 
 	width: 100%;
-	height: 100vh;
 `;
 
 export const Title = styled.h2`

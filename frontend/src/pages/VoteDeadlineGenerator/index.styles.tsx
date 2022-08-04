@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.form`
-	height: calc(100vh - 15rem);
-
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

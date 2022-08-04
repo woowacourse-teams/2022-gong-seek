@@ -7,7 +7,6 @@ export const Container = styled.div`
 	flex-direction: column;
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_016};
-	height: calc(100vh - 15rem);
 `;
 
 export const AddOptionForm = styled.form`
