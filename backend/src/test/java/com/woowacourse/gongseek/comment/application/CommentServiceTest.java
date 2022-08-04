@@ -21,7 +21,7 @@ import com.woowacourse.gongseek.commons.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
-import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
+import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
@@ -34,8 +34,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class CommentServiceTest {
 
+    private static final String CONTENT = "content";
+    private static final String ANONYMOUS_NAME = "익명";
+    private static final String ANONYMOUS_AVATAR_URL = "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png";
+
     private final Member member = new Member("slow", "hanull", "avatarUrl");
-    private final Article article = new Article("title", "content", Category.QUESTION, member, false);
+    private final Article article = new Article("title", CONTENT, Category.QUESTION, member, false);
 
     @Autowired
     private CommentService commentService;
@@ -64,7 +68,7 @@ class CommentServiceTest {
     }
 
     @Test
-    void 기명_댓글을_생성한다() {
+    void 회원이_기명_댓글을_생성한다() {
         CommentRequest request = new CommentRequest("content2", false);
         LoginMember member = new LoginMember(this.member.getId());
 
@@ -79,7 +83,7 @@ class CommentServiceTest {
     }
 
     @Test
-    void 익명_댓글을_생성한다() {
+    void 회원이_익명_댓글을_생성한다() {
         CommentRequest request = new CommentRequest("content2", true);
         LoginMember member = new LoginMember(this.member.getId());
 
@@ -94,8 +98,8 @@ class CommentServiceTest {
     }
 
     @Test
-    void 비회원인_경우_기명_댓글을_생성할_수_없다() {
-        CommentRequest request = new CommentRequest("content", false);
+    void 비회원은_기명_댓글을_생성할_수_없다() {
+        CommentRequest request = new CommentRequest(CONTENT, false);
 
         assertThatThrownBy(() -> commentService.save(new GuestMember(), article.getId(), request))
                 .isInstanceOf(NoAuthorizationException.class)
@@ -103,8 +107,8 @@ class CommentServiceTest {
     }
 
     @Test
-    void 비회원인_경우_익명_댓글을_생성할_수_없다() {
-        CommentRequest request = new CommentRequest("content", true);
+    void 비회원은_익명_댓글을_생성할_수_없다() {
+        CommentRequest request = new CommentRequest(CONTENT, true);
 
         assertThatThrownBy(() -> commentService.save(new GuestMember(), article.getId(), request))
                 .isInstanceOf(NoAuthorizationException.class)
@@ -113,7 +117,7 @@ class CommentServiceTest {
 
     @Test
     void 회원이_존재하지_않는_경우_댓글을_생성할_수_없다() {
-        CommentRequest request = new CommentRequest("content", false);
+        CommentRequest request = new CommentRequest(CONTENT, false);
 
         assertThatThrownBy(() -> commentService.save(new LoginMember(-1L), article.getId(), request))
                 .isInstanceOf(MemberNotFoundException.class)
@@ -122,7 +126,7 @@ class CommentServiceTest {
 
     @Test
     void 게시글이_존재하지_않는_경우_댓글을_생성할_수_없다() {
-        CommentRequest request = new CommentRequest("content", true);
+        CommentRequest request = new CommentRequest(CONTENT, true);
 
         assertThatThrownBy(() -> commentService.save(new LoginMember(member.getId()), -1L, request))
                 .isInstanceOf(ArticleNotFoundException.class)
@@ -130,55 +134,43 @@ class CommentServiceTest {
     }
 
     @Test
-    void 회원이_자신이_쓴_기명_댓글을_조회한다() {
-        commentRepository.save(new Comment("content", member, article, false));
+    void 회원이_작성한_기명_댓글을_조회한다() {
+        commentService.save(new LoginMember(member.getId()), article.getId(), new CommentRequest(CONTENT, false));
 
         List<CommentResponse> savedComments = commentService.getAllByArticleId(new LoginMember(member.getId()),
                 article.getId()).getComments();
 
-        List<CommentResponse> authorizedComments = savedComments.stream()
-                .filter(CommentResponse::isAuthor)
-                .collect(Collectors.toList());
-
         assertAll(
-                () -> assertThat(authorizedComments.size()).isEqualTo(1),
-                () -> assertThat(authorizedComments.get(0).getAuthor())
+                () -> assertThat(savedComments.size()).isEqualTo(1),
+                () -> assertThat(savedComments.get(0))
                         .usingRecursiveComparison()
-                        .isEqualTo(new AuthorDto("slow", "avatarUrl")),
-                () -> assertThat(authorizedComments.get(0).isAuthor()).isTrue()
+                        .ignoringFields("id", "createdAt", "updatedAt")
+                        .isEqualTo(new CommentResponse(new Comment(CONTENT, member, article, false), true))
         );
     }
 
     @Test
-    void 회원이_자신이_쓴_익명_댓글을_조회한다() {
-        commentRepository.save(new Comment("content", member, article, true));
+    void 회원이_작성한_익명_댓글을_조회한다() {
+        commentService.save(new LoginMember(member.getId()), article.getId(), new CommentRequest(CONTENT, true));
 
         List<CommentResponse> savedComments = commentService.getAllByArticleId(new LoginMember(member.getId()),
                 article.getId()).getComments();
-        List<CommentResponse> authorizedComments = savedComments.stream()
-                .filter(CommentResponse::isAuthor)
-                .collect(Collectors.toList());
 
         assertAll(
-                () -> assertThat(authorizedComments.size()).isEqualTo(1),
-                () -> assertThat(authorizedComments.get(0).getAuthor())
+                () -> assertThat(savedComments).hasSize(1),
+                () -> assertThat(savedComments.get(0).getAuthor())
                         .usingRecursiveComparison()
-                        .isEqualTo(
-                                new AuthorDto(
-                                        "익명",
-                                        "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"
-                                )
-                        ),
-                () -> assertThat(authorizedComments.get(0).isAuthor()).isTrue()
+                        .isEqualTo(new MemberDto(ANONYMOUS_NAME, ANONYMOUS_AVATAR_URL)),
+                () -> assertThat(savedComments.get(0).isAuthor()).isTrue()
         );
     }
 
     @Test
-    void 회원이_자신이_쓰지않은_댓글을_조회한다() {
+    void 회원이_작성하지_않은_댓글을_조회한다() {
         Member newMember = new Member("jurl", "jurlring", "avatarUrl");
         memberRepository.save(newMember);
-        commentRepository.save(new Comment("content", member, article, true));
-        commentRepository.save(new Comment("content", member, article, false));
+        commentRepository.save(new Comment(CONTENT, member, article, true));
+        commentRepository.save(new Comment(CONTENT, member, article, false));
 
         List<CommentResponse> savedComments = commentService.getAllByArticleId(new LoginMember(newMember.getId()),
                 article.getId()).getComments();
@@ -188,14 +180,14 @@ class CommentServiceTest {
 
         assertAll(
                 () -> assertThat(savedComments).hasSize(2),
-                () -> assertThat(authorizedComments.size()).isEqualTo(0)
+                () -> assertThat(authorizedComments).hasSize(0)
         );
     }
 
     @Test
     void 비회원이_댓글을_조회한다() {
-        commentRepository.save(new Comment("content", member, article, true));
-        commentRepository.save(new Comment("content", member, article, false));
+        commentRepository.save(new Comment(CONTENT, member, article, true));
+        commentRepository.save(new Comment(CONTENT, member, article, false));
 
         List<CommentResponse> savedComments = commentService.getAllByArticleId(new GuestMember(),
                 article.getId()).getComments();
@@ -205,42 +197,66 @@ class CommentServiceTest {
 
         assertAll(
                 () -> assertThat(savedComments).hasSize(2),
-                () -> assertThat(authorizedComments.size()).isEqualTo(0)
+                () -> assertThat(authorizedComments).hasSize(0)
         );
     }
 
     @Test
-    void 댓글_작성자가_기명_댓글을_수정한다() {
-        commentRepository.save(new Comment("content", member, article, false));
-        LoginMember member = new LoginMember(this.member.getId());
-        List<CommentResponse> comments = commentService.getAllByArticleId(member, article.getId()).getComments();
+    void 작성자인_회원이_기명_댓글을_수정한다() {
+        commentRepository.save(new Comment(CONTENT, member, article, false));
+        LoginMember appMember = new LoginMember(this.member.getId());
+        List<CommentResponse> comments = commentService.getAllByArticleId(appMember, article.getId()).getComments();
         String updateContent = "update";
         CommentUpdateRequest updateRequest = new CommentUpdateRequest(updateContent);
 
-        commentService.update(member, comments.get(0).getId(), updateRequest);
-        List<CommentResponse> savedComments = commentService.getAllByArticleId(member, article.getId()).getComments();
+        commentService.update(appMember, comments.get(0).getId(), updateRequest);
+        List<CommentResponse> savedComments = commentService.getAllByArticleId(appMember, article.getId())
+                .getComments();
 
         assertThat(savedComments.get(0).getContent()).isEqualTo(updateContent);
     }
 
     @Test
-    void 댓글_작성자가_익명_댓글을_수정한다() {
-        commentRepository.save(new Comment("content", member, article, true));
-        LoginMember member = new LoginMember(this.member.getId());
-        List<CommentResponse> comments = commentService.getAllByArticleId(member, article.getId()).getComments();
+    void 작성자인_회원이_익명_댓글을_수정한다() {
+        LoginMember appMember = new LoginMember(member.getId());
+        commentService.save(appMember, article.getId(), new CommentRequest(CONTENT, true));
+        List<CommentResponse> comments = commentService.getAllByArticleId(appMember, article.getId()).getComments();
         String updateContent = "update";
         CommentUpdateRequest updateRequest = new CommentUpdateRequest(updateContent);
 
-        commentService.update(member, comments.get(0).getId(), updateRequest);
-        List<CommentResponse> savedComments = commentService.getAllByArticleId(member, article.getId()).getComments();
+        commentService.update(appMember, comments.get(0).getId(), updateRequest);
+        List<CommentResponse> savedComments = commentService.getAllByArticleId(appMember, article.getId())
+                .getComments();
 
         assertThat(savedComments.get(0).getContent()).isEqualTo(updateContent);
     }
 
     @Test
-    void 비회원인_경우_기명_댓글을_수정할_수_없다() {
-        Comment comment = commentRepository.save(new Comment("content", member, article, false));
-        CommentUpdateRequest request = new CommentUpdateRequest("content");
+    void 작성자가_아닌_회원은_기명_댓글을_수정할_수_없다() {
+        Comment comment = commentRepository.save(new Comment(CONTENT, member, article, false));
+
+        Member newMember = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
+        assertThatThrownBy(() -> commentService.update(new LoginMember(newMember.getId()), comment.getId(),
+                new CommentUpdateRequest("update content")))
+                .isInstanceOf(NoAuthorizationException.class)
+                .hasMessage("권한이 없습니다.");
+    }
+
+    @Test
+    void 작성자가_아닌_회원은_익명_댓글을_수정할_수_없다() {
+        Comment comment = commentRepository.save(new Comment(CONTENT, member, article, true));
+
+        Member newMember = memberRepository.save(new Member("judy", "judyhithub", "avatarUrl"));
+        assertThatThrownBy(() -> commentService.update(new LoginMember(newMember.getId()), comment.getId(),
+                new CommentUpdateRequest("update content")))
+                .isInstanceOf(NoAuthorizationException.class)
+                .hasMessage("권한이 없습니다.");
+    }
+
+    @Test
+    void 비회원은_기명_댓글을_수정할_수_없다() {
+        Comment comment = commentRepository.save(new Comment(CONTENT, member, article, false));
+        CommentUpdateRequest request = new CommentUpdateRequest(CONTENT);
 
         assertThatThrownBy(() -> commentService.update(new GuestMember(), comment.getId(), request))
                 .isInstanceOf(NoAuthorizationException.class)
@@ -248,9 +264,9 @@ class CommentServiceTest {
     }
 
     @Test
-    void 비회원인_경우_익명_댓글을_수정할_수_없다() {
-        Comment comment = commentRepository.save(new Comment("content", member, article, true));
-        CommentUpdateRequest request = new CommentUpdateRequest("content");
+    void 비회원은_익명_댓글을_수정할_수_없다() {
+        Comment comment = commentRepository.save(new Comment(CONTENT, member, article, true));
+        CommentUpdateRequest request = new CommentUpdateRequest(CONTENT);
 
         assertThatThrownBy(() -> commentService.update(new GuestMember(), comment.getId(), request))
                 .isInstanceOf(NoAuthorizationException.class)
@@ -267,66 +283,52 @@ class CommentServiceTest {
     }
 
     @Test
-    void 회원이_아닌_경우_댓글을_수정할_수_없다() {
-        Comment comment = commentRepository.save(new Comment("content", member, article, true));
+    void 회원이_작성한_기명_댓글을_삭제한다() {
+        LoginMember appMember = new LoginMember(member.getId());
+        commentService.save(appMember, article.getId(), new CommentRequest(CONTENT, true));
+        CommentResponse comment = commentService.getAllByArticleId(appMember, article.getId()).getComments().get(0);
+        commentService.delete(appMember, comment.getId());
 
-        assertThatThrownBy(() -> commentService.update(new LoginMember(-1L), comment.getId(),
-                new CommentUpdateRequest("update content")))
-                .isInstanceOf(MemberNotFoundException.class)
-                .hasMessage("회원이 존재하지 않습니다.");
+        List<CommentResponse> responses = commentService.getAllByArticleId(appMember, article.getId()).getComments();
+
+        assertThat(responses).hasSize(0);
     }
 
     @Test
-    void 기명_댓글을_작성한_회원이_아닌_경우_수정할_수_없다() {
-        Comment comment = commentRepository.save(new Comment("content", member, article, false));
+    void 회원이_작성한_익명_댓글을_삭제한다() {
+        LoginMember appMember = new LoginMember(member.getId());
+        commentService.save(appMember, article.getId(), new CommentRequest(CONTENT, true));
+        CommentResponse comment = commentService.getAllByArticleId(appMember, article.getId()).getComments().get(0);
+        commentService.delete(appMember, comment.getId());
 
+        List<CommentResponse> responses = commentService.getAllByArticleId(appMember, article.getId()).getComments();
+
+        assertThat(responses).hasSize(0);
+    }
+
+    @Test
+    void 작성자가_아닌_회원은_기명_댓글을_삭제할_수_없다() {
+        Comment comment = commentRepository.save(new Comment(CONTENT, member, article, false));
         Member newMember = memberRepository.save(new Member("judy", "judyhithub", "avatarUrl"));
-        assertThatThrownBy(() -> commentService.update(new LoginMember(newMember.getId()), comment.getId(),
-                new CommentUpdateRequest("update content")))
+
+        assertThatThrownBy(() -> commentService.delete(new LoginMember(newMember.getId()), comment.getId()))
                 .isInstanceOf(NoAuthorizationException.class)
                 .hasMessage("권한이 없습니다.");
     }
 
     @Test
-    void 익명_댓글을_작성한_회원이_아닌_경우_수정할_수_없다() {
-        Comment comment = commentRepository.save(new Comment("content", member, article, true));
-
+    void 작성자가_아닌_회원은_익명_댓글을_삭제할_수_없다() {
+        Comment comment = commentRepository.save(new Comment(CONTENT, member, article, true));
         Member newMember = memberRepository.save(new Member("judy", "judyhithub", "avatarUrl"));
-        assertThatThrownBy(() -> commentService.update(new LoginMember(newMember.getId()), comment.getId(),
-                new CommentUpdateRequest("update content")))
+
+        assertThatThrownBy(() -> commentService.delete(new LoginMember(newMember.getId()), comment.getId()))
                 .isInstanceOf(NoAuthorizationException.class)
                 .hasMessage("권한이 없습니다.");
-    }
-
-    @Test
-    void 기명_댓글을_삭제한다() {
-        Comment comment = commentRepository.save(new Comment("content", member, article, false));
-        LoginMember member = new LoginMember(this.member.getId());
-        commentService.delete(member, comment.getId());
-        List<CommentResponse> comments = commentService.getAllByArticleId(member, article.getId()).getComments();
-
-        boolean isFind = comments.stream()
-                .anyMatch(it -> it.getId().equals(comment.getId()));
-
-        assertThat(isFind).isFalse();
-    }
-
-    @Test
-    void 익명_댓글을_삭제한다() {
-        Comment comment = commentRepository.save(new Comment("content", member, article, true));
-        LoginMember member = new LoginMember(this.member.getId());
-        commentService.delete(member, comment.getId());
-        List<CommentResponse> comments = commentService.getAllByArticleId(member, article.getId()).getComments();
-
-        boolean isFind = comments.stream()
-                .anyMatch(it -> it.getId().equals(comment.getId()));
-
-        assertThat(isFind).isFalse();
     }
 
     @Test
     void 비회원인_경우_기명_댓글을_삭제할_수_없다() {
-        Comment comment = commentRepository.save(new Comment("content", member, article, false));
+        Comment comment = commentRepository.save(new Comment(CONTENT, member, article, false));
 
         assertThatThrownBy(() -> commentService.delete(new GuestMember(), comment.getId()))
                 .isInstanceOf(NoAuthorizationException.class)
@@ -335,7 +337,7 @@ class CommentServiceTest {
 
     @Test
     void 비회원인_경우_익명_댓글을_삭제할_수_없다() {
-        Comment comment = commentRepository.save(new Comment("content", member, article, true));
+        Comment comment = commentRepository.save(new Comment(CONTENT, member, article, true));
 
         assertThatThrownBy(() -> commentService.delete(new GuestMember(), comment.getId()))
                 .isInstanceOf(NoAuthorizationException.class)
@@ -351,30 +353,10 @@ class CommentServiceTest {
 
     @Test
     void 회원이_존재하지_않는_경우_댓글을_삭제할_수_없다() {
-        Comment comment = commentRepository.save(new Comment("content", member, article, true));
+        Comment comment = commentRepository.save(new Comment(CONTENT, member, article, true));
 
         assertThatThrownBy(() -> commentService.delete(new LoginMember(-1L), comment.getId()))
                 .isInstanceOf(MemberNotFoundException.class)
                 .hasMessage("회원이 존재하지 않습니다.");
-    }
-
-    @Test
-    void 기명_댓글을_작성한_회원이_아닌_경우_삭제할_수_없다() {
-        Comment comment = commentRepository.save(new Comment("content", member, article, false));
-
-        Member newMember = memberRepository.save(new Member("judy", "judyhithub", "avatarUrl"));
-        assertThatThrownBy(() -> commentService.delete(new LoginMember(newMember.getId()), comment.getId()))
-                .isInstanceOf(NoAuthorizationException.class)
-                .hasMessage("권한이 없습니다.");
-    }
-
-    @Test
-    void 익명_댓글을_작성한_회원이_아닌_경우_삭제할_수_없다() {
-        Comment comment = commentRepository.save(new Comment("content", member, article, true));
-
-        Member newMember = memberRepository.save(new Member("judy", "judyhithub", "avatarUrl"));
-        assertThatThrownBy(() -> commentService.delete(new LoginMember(newMember.getId()), comment.getId()))
-                .isInstanceOf(NoAuthorizationException.class)
-                .hasMessage("권한이 없습니다.");
     }
 }

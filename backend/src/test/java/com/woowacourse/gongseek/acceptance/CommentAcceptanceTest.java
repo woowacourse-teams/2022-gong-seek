@@ -73,7 +73,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
         List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호).getComments();
 
-        assertThat(댓글리스트.size()).isEqualTo(1);
+        assertThat(댓글리스트).hasSize(1);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
         List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호).getComments();
 
-        assertThat(댓글리스트.size()).isEqualTo(1);
+        assertThat(댓글리스트).hasSize(1);
     }
 
     @Test

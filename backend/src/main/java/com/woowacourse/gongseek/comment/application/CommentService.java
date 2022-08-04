@@ -12,6 +12,7 @@ import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentUpdateRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentsResponse;
+import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -27,17 +28,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CommentService {
 
-    private static final AuthorDto ANONYMOUS_AUTHOR = new AuthorDto(
-            "익명",
-            "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"
-    );
+    private static final String ANONYMOUS_NAME = "익명";
+    private static final String ANONYMOUS_AVATAR_URL = "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png";
+    private static final AuthorDto ANONYMOUS_AUTHOR = new AuthorDto(ANONYMOUS_NAME, ANONYMOUS_AVATAR_URL);
+
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
+    private final Encryptor encryptor;
 
     public void save(AppMember appMember, Long articleId, CommentRequest commentRequest) {
         validateGuest(appMember);
-        Member member = getMember(appMember);
+        Member member = getAuthor(appMember, commentRequest);
         Article article = getArticle(articleId);
 
         commentRepository.save(commentRequest.toEntity(member, article));
@@ -49,50 +51,13 @@ public class CommentService {
         }
     }
 
-    public void update(AppMember appMember, Long commentId, CommentUpdateRequest updateRequest) {
-        Comment comment = checkAuthorization(appMember, commentId);
-        comment.updateContent(updateRequest.getContent());
-    }
-
-    public void delete(AppMember appMember, Long commentId) {
-        Comment comment = checkAuthorization(appMember, commentId);
-        commentRepository.delete(comment);
-    }
-
-    private Comment checkAuthorization(AppMember appMember, Long commentId) {
-        validateGuest(appMember);
-        Comment comment = getComment(commentId);
-        Member member = getMember(appMember);
-        validateAuthor(member, comment);
-        return comment;
-    }
-
-    private void validateAuthor(Member member, Comment comment) {
-        if (!comment.isAuthor(member)) {
-            throw new NoAuthorizationException();
+    private Member getAuthor(AppMember appMember, CommentRequest commentRequest) {
+        if (commentRequest.getIsAnonymous()) {
+            String cipherId = encryptor.encrypt(String.valueOf(appMember.getPayload()));
+            return memberRepository.findByGithubId(cipherId)
+                    .orElseGet(() -> memberRepository.save(new Member(ANONYMOUS_NAME, cipherId, ANONYMOUS_AVATAR_URL)));
         }
-    }
-
-    @Transactional(readOnly = true)
-    public CommentsResponse getAllByArticleId(AppMember appMember, Long articleId) {
-        List<CommentResponse> responses = commentRepository.findAllByArticleId(articleId).stream()
-                .map(comment -> checkAuthor(appMember, comment))
-                .collect(Collectors.toList());
-        return new CommentsResponse(responses);
-    }
-
-    private CommentResponse checkAuthor(AppMember appMember, Comment comment) {
-        if (appMember.isGuest()) {
-            return checkAnonymous(comment, false);
-        }
-        return checkAnonymous(comment, comment.isAuthor(getMember(appMember)));
-    }
-
-    private CommentResponse checkAnonymous(Comment comment, boolean isAuthor) {
-        if (comment.isAnonymous()) {
-            return new CommentResponse(comment, ANONYMOUS_AUTHOR, isAuthor);
-        }
-        return new CommentResponse(comment, isAuthor);
+        return getMember(appMember);
     }
 
     private Member getMember(AppMember appMember) {
@@ -105,9 +70,64 @@ public class CommentService {
                 .orElseThrow(ArticleNotFoundException::new);
     }
 
+    @Transactional(readOnly = true)
+    public CommentsResponse getAllByArticleId(AppMember appMember, Long articleId) {
+        List<CommentResponse> responses = commentRepository.findAllByArticleId(articleId).stream()
+                .map(comment -> checkGuest(comment, appMember))
+                .collect(Collectors.toList());
+        return new CommentsResponse(responses);
+    }
+
+    private CommentResponse checkGuest(Comment comment, AppMember appMember) {
+        if (appMember.isGuest()) {
+            return new CommentResponse(comment, false);
+        }
+        return checkAuthor(comment, getMember(appMember));
+    }
+
+    private CommentResponse checkAuthor(Comment comment, Member member) {
+        if (comment.isAnonymous()) {
+            String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
+            return new CommentResponse(comment, comment.isAnonymousAuthor(cipherId));
+        }
+        return new CommentResponse(comment, comment.isAuthor(member));
+    }
+
+    public void update(AppMember appMember, Long commentId, CommentUpdateRequest updateRequest) {
+        Comment comment = checkAuthorization(appMember, commentId);
+        comment.updateContent(updateRequest.getContent());
+    }
+
+    private Comment checkAuthorization(AppMember appMember, Long commentId) {
+        validateGuest(appMember);
+        Comment comment = getComment(commentId);
+        Member member = getMember(appMember);
+        validateAuthor(comment, member);
+        return comment;
+    }
+
     private Comment getComment(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
+    }
+
+    private void validateAuthor(Comment comment, Member member) {
+        if (!isAuthor(comment, member)) {
+            throw new NoAuthorizationException();
+        }
+    }
+
+    private boolean isAuthor(Comment comment, Member member) {
+        if (comment.isAnonymous()) {
+            String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
+            return comment.isAnonymousAuthor(cipherId);
+        }
+        return comment.isAuthor(member);
+    }
+
+    public void delete(AppMember appMember, Long commentId) {
+        Comment comment = checkAuthorization(appMember, commentId);
+        commentRepository.delete(comment);
     }
 }
 

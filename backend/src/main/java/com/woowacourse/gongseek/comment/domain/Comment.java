@@ -70,6 +70,10 @@ public class Comment {
         return this.member.equals(member);
     }
 
+    public boolean isAnonymousAuthor(String cipherId) {
+        return member.isAnonymous(cipherId);
+    }
+
     public String getContent() {
         return content.getValue();
     }

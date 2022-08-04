@@ -65,7 +65,7 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 회원은_기명_게시물을_저장한다() {
+    void 회원이_기명_게시물을_저장한다() {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
 
@@ -73,7 +73,7 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 회원은_익명_게시물을_저장한다() {
+    void 회원이_익명_게시물을_저장한다() {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), true);
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
 
