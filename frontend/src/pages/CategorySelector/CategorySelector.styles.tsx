@@ -11,7 +11,11 @@ export const Container = styled.div`
 	align-items: center;
 
 	width: 100%;
-	height: calc(100vh - 15rem);
+	height: 100%;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		margin-top: ${({ theme }) => theme.size.SIZE_160};
+	}
 `;
 
 export const CategoryButtonBox = styled.div`
