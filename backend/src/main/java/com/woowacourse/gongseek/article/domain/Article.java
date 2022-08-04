@@ -61,7 +61,8 @@ public class Article {
     private LocalDateTime updatedAt;
 
     public Article(String title, String content, Category category, Member member) {
-        this(null, new Title(title), new Content(content), category, member, new Views(), LocalDateTime.now());
+        this(null, new Title(title), new Content(content), category, member, new Views(), LocalDateTime.now(),
+                LocalDateTime.now());
     }
 
     public boolean isAuthor(Member member) {
@@ -72,9 +73,14 @@ public class Article {
         views.addValue();
     }
 
-    public void update(String title, String content) {
+    public void update(String title, String content, LocalDateTime now) {
         this.title = new Title(title);
         this.content = new Content(content);
+        this.updatedAt = now;
+    }
+
+    public boolean cannotCreateVote() {
+        return !Category.DISCUSSION.equals(this.category);
     }
 
     public String getTitle() {

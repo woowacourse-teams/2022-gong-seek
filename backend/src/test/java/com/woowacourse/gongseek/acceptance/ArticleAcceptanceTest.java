@@ -75,6 +75,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         "content",
                                         false,
                                         1,
+                                        false,
                                         LocalDateTime.now(),
                                         LocalDateTime.now()
                                 )
@@ -106,6 +107,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         "content",
                                         true,
                                         1,
+                                        false,
                                         LocalDateTime.now(),
                                         LocalDateTime.now()
                                 )
@@ -138,6 +140,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         "content",
                                         true,
                                         2,
+                                        false,
                                         LocalDateTime.now(),
                                         LocalDateTime.now()
                                 )
@@ -295,7 +298,6 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                 )
                         )
         );
-
     }
 
     @Test
@@ -337,7 +339,6 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                 )
                         )
         );
-
     }
 
     @Test
@@ -438,7 +439,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 게시물을_검색한다() {
         //given
-        TokenResponse tokenResponse = 로그인을_한다(주디);
+        로그인을_한다(주디);
         특정_게시물을_등록한다(new ArticleRequest("커스텀 예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue()));
         특정_게시물을_등록한다(new ArticleRequest("커스텀예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue()));
         특정_게시물을_등록한다(new ArticleRequest("예외를 커스텀하려면?", "내용", Category.QUESTION.getValue()));

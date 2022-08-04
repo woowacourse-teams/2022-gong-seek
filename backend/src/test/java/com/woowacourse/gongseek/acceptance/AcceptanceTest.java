@@ -2,6 +2,7 @@ package com.woowacourse.gongseek.acceptance;
 
 import com.woowacourse.gongseek.common.DatabaseCleaner;
 import io.restassured.RestAssured;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +21,10 @@ public abstract class AcceptanceTest {
     @BeforeEach
     void init() {
         RestAssured.port = port;
+    }
+
+    @AfterEach
+    void tearDown() {
         databaseCleaner.tableClear();
     }
 }

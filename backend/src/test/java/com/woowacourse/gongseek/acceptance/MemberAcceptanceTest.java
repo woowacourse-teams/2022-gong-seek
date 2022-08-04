@@ -1,12 +1,13 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.*;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.댓글을_등록한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
@@ -49,7 +50,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     void 내가_작성한_게시글들을_조회한다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(레넌);
-        게시물을_등록한다(tokenResponse);
+        게시글을_등록한다(tokenResponse, Category.DISCUSSION.getValue());
 
         // when
         ExtractableResponse<Response> response = RestAssured
@@ -72,7 +73,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     void 내가_작성한_댓글들을_조회한다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(레넌);
-        ArticleIdResponse 게시글번호 = 게시물을_등록한다(tokenResponse);
+        ArticleIdResponse 게시글번호 = 게시글을_등록한다(tokenResponse, Category.DISCUSSION.getValue());
         댓글을_등록한다(tokenResponse, 게시글번호);
 
         // when
