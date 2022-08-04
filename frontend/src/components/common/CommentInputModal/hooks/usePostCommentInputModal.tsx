@@ -12,7 +12,7 @@ const usePostCommentInputModal = (closeModal: CommentInputModalProps['closeModal
 	const { isLoading, isError, error, isSuccess, mutate } = useMutation<
 		unknown,
 		AxiosError<{ errorCode: string; message: string }>,
-		{ content: string; id: string }
+		{ content: string; id: string; isAnonymous: boolean }
 	>(postComments);
 
 	useEffect(() => {
@@ -28,7 +28,7 @@ const usePostCommentInputModal = (closeModal: CommentInputModalProps['closeModal
 		}
 	}, [isSuccess]);
 
-	return { isLoading,isSuccess, mutate };
+	return { isLoading, isSuccess, mutate };
 };
 
 export default usePostCommentInputModal;
