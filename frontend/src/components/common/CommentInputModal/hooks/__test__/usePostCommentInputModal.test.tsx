@@ -39,7 +39,7 @@ describe('usePostCommentInputModal에 대한 테스트', () => {
 				}),
 			{ wrapper },
 		);
-		result.current.mutate({ content: '제목', id: '1' });
+		result.current.mutate({ content: '제목', id: '1', isAnonymous: false });
 
 		await waitFor(() => result.current.isSuccess, { interval: 100 });
 		expect(result.current.isSuccess).toEqual(true);
