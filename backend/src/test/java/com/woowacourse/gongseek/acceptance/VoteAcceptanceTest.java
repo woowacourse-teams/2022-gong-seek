@@ -110,7 +110,11 @@ public class VoteAcceptanceTest extends AcceptanceTest {
         VoteResponse firstGetResponse = 투표를_조회한다(tokenResponse, articleId).as(VoteResponse.class);
 
         //when
-        Long vottedItemId = firstGetResponse.getVoteItems().get(0).getId();
+        Long vottedItemId = firstGetResponse.getVoteItems()
+                .stream()
+                .findFirst()
+                .get()
+                .getId();
         ExtractableResponse<Response> response = 투표를_한다(tokenResponse, articleId,
                 new SelectVoteItemIdRequest(vottedItemId));
         VoteResponse voteResponse = 투표를_조회한다(tokenResponse, articleId).as(VoteResponse.class);

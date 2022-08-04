@@ -645,7 +645,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 242
+Content-Length: 264
 
 {
   "title" : "title",
@@ -655,8 +655,9 @@ Content-Length: 242
   },
   "content" : "content",
   "views" : 1,
-  "createdAt" : "2022-08-01T20:27",
-  "updatedAt" : "2022-08-01T20:27",
+  "hasVote" : false,
+  "createdAt" : "2022-08-05T02:08",
+  "updatedAt" : "2022-08-05T02:08",
   "isAuthor" : false
 }</code></pre>
 </div>
@@ -706,14 +707,19 @@ Content-Length: 242
 <td class="tableblock halign-left valign-top"><p class="tableblock">작성자이면 true</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdAt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">생성 날짜</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>hasVote</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">투표가 있으면 true</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>updatedAt</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">수정 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">생성 날짜</p></td>
 </tr>
 </tbody>
 </table>
@@ -974,7 +980,7 @@ Content-Length: 663
     "category" : "question",
     "commentCount" : 3,
     "views" : 2,
-    "createdAt" : "2022-08-01T20:27:09.4411717"
+    "createdAt" : "2022-08-05T02:08:33.3410262"
   }, {
     "id" : 2,
     "title" : "제목2",
@@ -986,7 +992,7 @@ Content-Length: 663
     "category" : "discussion",
     "commentCount" : 10,
     "views" : 5,
-    "createdAt" : "2022-08-01T20:27:09.4411717"
+    "createdAt" : "2022-08-05T02:08:33.3410262"
   } ],
   "hasNext" : false
 }</code></pre>
@@ -1129,7 +1135,7 @@ Content-Length: 650
     "category" : "question",
     "commentCount" : 3,
     "views" : 2,
-    "createdAt" : "2022-08-01T20:27:08.6877197"
+    "createdAt" : "2022-08-05T02:08:32.9079969"
   }, {
     "id" : 2,
     "title" : "제목",
@@ -1141,7 +1147,7 @@ Content-Length: 650
     "category" : "discussion",
     "commentCount" : 10,
     "views" : 5,
-    "createdAt" : "2022-08-01T20:27:08.6877197"
+    "createdAt" : "2022-08-05T02:08:32.9079969"
   } ],
   "hasNext" : false
 }</code></pre>
@@ -1220,7 +1226,7 @@ Content-Length: 650
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-31 20:14:50 +0900
+Last updated 2022-08-04 21:30:41 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
