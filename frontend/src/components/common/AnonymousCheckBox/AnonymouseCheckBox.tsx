@@ -14,7 +14,7 @@ const AnonymouseCheckBox = ({
 	return (
 		<S.AnonymousBox>
 			<S.AnonymousCheckInput type="checkbox" onChange={onChangeCheckBox} />
-			<p>익명</p>
+			<S.AnonymousText>익명</S.AnonymousText>
 		</S.AnonymousBox>
 	);
 };

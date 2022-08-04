@@ -13,7 +13,8 @@ export const AnonymousBox = styled.div`
 	font-size: ${({ theme }) => theme.size.SIZE_018};
 
 	padding-right: 5%;
+`;
 
-	margin-left: auto;
-	margin-top: ${({ theme }) => theme.size.SIZE_024};
+export const AnonymousText = styled.div`
+	white-space: nowrap;
 `;

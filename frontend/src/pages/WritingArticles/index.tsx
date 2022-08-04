@@ -61,13 +61,15 @@ const WritingArticles = () => {
 			<S.Content>
 				<ToastUiEditor initContent={''} ref={content} />
 			</S.Content>
-			<AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />
-			<S.SubmitButton
-				type="button"
-				onClick={() => handleSubmitButtonClick({ title, categoryOption })}
-			>
-				등록하기
-			</S.SubmitButton>
+			<S.SubmitBox>
+				<AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />
+				<S.SubmitButton
+					type="button"
+					onClick={() => handleSubmitButtonClick({ title, categoryOption })}
+				>
+					등록하기
+				</S.SubmitButton>
+			</S.SubmitBox>
 		</S.Container>
 	);
 };

@@ -80,10 +80,12 @@ const CommentInputModal = ({
 				onChange={(e) => setComment(e.target.value)}
 				placeholder={placeholder}
 			></S.CommentContent>
-			<AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />
-			<S.CommentPostButton onClick={onClickCommentPostButton}>
-				{modalStatus[modalType].buttonText}
-			</S.CommentPostButton>
+			<S.SubmitBox>
+				<AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />
+				<S.CommentPostButton onClick={onClickCommentPostButton}>
+					{modalStatus[modalType].buttonText}
+				</S.CommentPostButton>
+			</S.SubmitBox>
 		</S.CommentContainer>,
 		commentModal,
 	);
