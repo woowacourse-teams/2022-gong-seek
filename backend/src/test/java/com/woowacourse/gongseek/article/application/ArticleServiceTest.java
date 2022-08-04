@@ -421,6 +421,22 @@ public class ArticleServiceTest {
     }
 
     @Test
+    void 카테고리_상관_없이_게시물이_검색된다() {
+        String title = "질문합니다.";
+        String content = "내용입니다~!";
+        for (int i = 0; i < 5; i++) {
+            articleRepository.save(new Article(title, content, Category.QUESTION, member, false));
+        }
+        for (int i = 0; i < 5; i++) {
+            articleRepository.save(new Article(title, content, Category.DISCUSSION, member, false));
+        }
+
+        ArticlePageResponse articlePageResponse = articleService.search(null, 10, "질문");
+
+        assertThat(articlePageResponse.getArticles()).hasSize(10);
+    }
+
+    @Test
     void 공백으로_게시물을_검색한_경우_빈_값이_나온다() {
         ArticlePageResponse articlePageResponse = articleService.search(null, 1, " ");
 
