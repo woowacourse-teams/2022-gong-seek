@@ -11,6 +11,7 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 	const onChangeInputValue = (e: { target: HTMLInputElement }) => {
 		setSearchInput(e.target.value);
 	};
+
 	const onSubmitSearchTarget = () => {
 		setSearchInputState({
 			isSearching: true,

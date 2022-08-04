@@ -2,7 +2,7 @@ import { BiSearchAlt } from 'react-icons/bi';
 
 import styled from '@emotion/styled';
 
-export const Container = styled.div`
+export const Container = styled.form`
 	display: flex;
 
 	justify-content: center;
@@ -39,7 +39,7 @@ export const SearchInput = styled.input`
 export const SearchButtonBox = styled.button`
 	border-style: none;
 	background-color: transparent;
-`
+`;
 
 export const SearchButton = styled(BiSearchAlt)`
 	font-size: ${({ theme }) => theme.size.SIZE_024};
