@@ -28,7 +28,7 @@ const usePutCommentInputModal = (closeModal: CommentInputModalProps['closeModal'
 		}
 	}, [isSuccess]);
 
-	return { isLoading, mutate };
+	return { isLoading, mutate, isSuccess };
 };
 
 export default usePutCommentInputModal;
