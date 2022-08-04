@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import reactDom from 'react-dom';
 
-import usePutCommentInputModal from '@/components/common/CommentInputModal/hooks/usePutCommentInputModal';
-import usePostCommentInputModal from '@/components/common/CommentInputModal/hooks/usePostCommentInputModal';
-
+import AnonymouseCheckBox from '@/components/common/AnonymousCheckBox/AnonymouseCheckBox';
 import * as S from '@/components/common/CommentInputModal/CommentInputModal.styles';
+import usePostCommentInputModal from '@/components/common/CommentInputModal/hooks/usePostCommentInputModal';
+import usePutCommentInputModal from '@/components/common/CommentInputModal/hooks/usePutCommentInputModal';
+import { queryClient } from '@/index';
 
 export interface CommentInputModalProps {
 	closeModal: () => void;
@@ -34,8 +35,24 @@ const CommentInputModal = ({
 }: CommentInputModalProps) => {
 	const commentModal = document.getElementById('comment-portal');
 	const [comment, setComment] = useState('');
-	const { isLoading: postIsLoading, mutate: postMutate } = usePostCommentInputModal(closeModal);
-	const { isLoading: putIsLoading, mutate: putMutate } = usePutCommentInputModal(closeModal);
+	const [isAnonymous, setIsAnonymous] = useState(false);
+
+	const {
+		isLoading: postIsLoading,
+		mutate: postMutate,
+		isSuccess: postIsSuccess,
+	} = usePostCommentInputModal(closeModal);
+	const {
+		isLoading: putIsLoading,
+		mutate: putMutate,
+		isSuccess: putIsSuccess,
+	} = usePutCommentInputModal(closeModal);
+
+	useEffect(() => {
+		if (postIsSuccess || putIsSuccess) {
+			queryClient.refetchQueries('comments');
+		}
+	});
 
 	if (commentModal === null) {
 		throw new Error('모달을 찾지 못하였습니다.');
@@ -43,7 +60,7 @@ const CommentInputModal = ({
 
 	const onClickCommentPostButton = () => {
 		if (modalType === 'register') {
-			postMutate({ content: comment, id: articleId });
+			postMutate({ content: comment, id: articleId, isAnonymous });
 			return;
 		}
 		if (typeof commentId === 'undefined') {
@@ -63,9 +80,12 @@ const CommentInputModal = ({
 				onChange={(e) => setComment(e.target.value)}
 				placeholder={placeholder}
 			></S.CommentContent>
-			<S.CommentPostButton onClick={onClickCommentPostButton}>
-				{modalStatus[modalType].buttonText}
-			</S.CommentPostButton>
+			<S.SubmitBox>
+				<AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />
+				<S.CommentPostButton onClick={onClickCommentPostButton}>
+					{modalStatus[modalType].buttonText}
+				</S.CommentPostButton>
+			</S.SubmitBox>
 		</S.CommentContainer>,
 		commentModal,
 	);

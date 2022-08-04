@@ -1,9 +1,11 @@
-import { getPopularArticles, PopularArticles } from '@/api/article';
 import { AxiosError } from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
-import * as S from '@/pages/Home/PopularArticle/PopularArticle.styles';
 import { useNavigate } from 'react-router-dom';
+
+import { getPopularArticles, PopularArticles } from '@/api/article';
+import CustomError from '@/components/helper/CustomError';
+import * as S from '@/pages/Home/PopularArticle/PopularArticle.styles';
 
 const useGetPopularArticles = () => {
 	const navigate = useNavigate();
@@ -13,7 +15,7 @@ const useGetPopularArticles = () => {
 
 	const { data, error, isSuccess, isError, isLoading, isIdle } = useQuery<
 		PopularArticles,
-		AxiosError
+		AxiosError<{ errorCode: string; message: string }>
 	>('popular-articles', getPopularArticles);
 
 	useEffect(() => {
@@ -25,7 +27,7 @@ const useGetPopularArticles = () => {
 
 	useEffect(() => {
 		if (isError) {
-			throw Error(error.message);
+			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
 		}
 	}, [isError]);
 
@@ -59,6 +61,7 @@ const useGetPopularArticles = () => {
 		data,
 		isLoading,
 		isIdle,
+		isSuccess,
 		currentIndex,
 		handleLeftSlideEvent,
 		handleRightSlideEvent,

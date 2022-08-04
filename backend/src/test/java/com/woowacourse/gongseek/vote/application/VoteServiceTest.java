@@ -62,7 +62,7 @@ class VoteServiceTest {
     void setUp() {
         member = memberRepository.save(new Member("기론", "gyuchool", "avatar.url"));
         discussionArticle = articleRepository.save(
-                new Article("게시글 제목입니다.", "내용이 들어갑니다.", Category.DISCUSSION, member)
+                new Article("게시글 제목입니다.", "내용이 들어갑니다.", Category.DISCUSSION, member, false)
         );
         vote = voteRepository.save(new Vote(discussionArticle, LocalDateTime.now().plusDays(7)));
         voteItems = voteItemRepository.saveAll(List.of(new VoteItem("content1", vote), new VoteItem("content2", vote)));
@@ -86,7 +86,7 @@ class VoteServiceTest {
 
     @Test
     void 질문게시물에서_투표를_생성하면_예외가_발생한다() {
-        Article article = articleRepository.save(new Article("토론입니당", "내용입니다..", Category.QUESTION, member));
+        Article article = articleRepository.save(new Article("토론입니당", "내용입니다..", Category.QUESTION, member, false));
 
         assertThatThrownBy(() -> voteService.create(new LoginMember(member.getId()), article.getId(),
                 new VoteCreateRequest(Set.of("Dto 최고다.", "VO 최고다"), LocalDateTime.now().plusDays(5)))

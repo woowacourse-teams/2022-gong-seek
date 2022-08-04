@@ -148,7 +148,6 @@ export const SubmitButton = styled.button`
 	background-color: ${({ theme }) => theme.colors.PURPLE_500};
 
 	padding: ${({ theme }) => theme.size.SIZE_004};
-	margin-top: ${({ theme }) => theme.size.SIZE_050};
 
 	cursor: pointer;
 
@@ -162,8 +161,6 @@ export const SubmitButton = styled.button`
 		height: ${({ theme }) => theme.size.SIZE_040};
 
 		font-size: ${({ theme }) => theme.size.SIZE_016};
-
-		margin-left: auto;
 	}
 `;
 
@@ -188,5 +185,20 @@ export const LinkButton = styled(Link)`
 	&:hover,
 	&:active {
 		filter: brightness(1.01);
+	}
+`;
+
+export const SubmitBox = styled.div`
+	display: flex;
+	gap: ${({ theme }) => theme.size.SIZE_022};
+
+	align-items: center;
+	justify-content: end;
+	margin-top: ${({ theme }) => theme.size.SIZE_050};
+	width: 85%;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		margin-left: auto;
+		width: min-content;
 	}
 `;

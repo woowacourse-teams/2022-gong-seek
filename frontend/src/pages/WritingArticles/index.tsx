@@ -1,16 +1,16 @@
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import AnonymouseCheckBox from '@/components/common/AnonymousCheckBox/AnonymouseCheckBox';
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import ToastUiEditor from '@/pages/WritingArticles/ToastUiEditor/ToastUiEditor';
-
 import usePostWritingArticles from '@/pages/WritingArticles/hooks/usePostWritingArticles';
-
 import * as S from '@/pages/WritingArticles/index.styles';
 
 const WritingArticles = () => {
 	const { category } = useParams();
-
+	const [isAnonymous, setIsAnonymous] = useState(false);
 	const {
 		isLoading,
 		content,
@@ -19,7 +19,7 @@ const WritingArticles = () => {
 		setTitle,
 		categoryOption,
 		setCategoryOption,
-	} = usePostWritingArticles(category);
+	} = usePostWritingArticles({ category, isAnonymous });
 
 	if (isLoading) return <Loading />;
 
@@ -46,7 +46,7 @@ const WritingArticles = () => {
 								<option value="" disabled>
 									카테고리를 선택해주세요
 								</option>
-								<option value="question">에러</option>
+								<option value="question">질문</option>
 								<option value="discussion">토론</option>
 							</S.CategorySelector>
 							<S.SelectorButton />
@@ -61,12 +61,15 @@ const WritingArticles = () => {
 			<S.Content>
 				<ToastUiEditor initContent={''} ref={content} />
 			</S.Content>
-			<S.SubmitButton
-				type="button"
-				onClick={() => handleSubmitButtonClick({ title, categoryOption })}
-			>
-				등록하기
-			</S.SubmitButton>
+			<S.SubmitBox>
+				<AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />
+				<S.SubmitButton
+					type="button"
+					onClick={() => handleSubmitButtonClick({ title, categoryOption })}
+				>
+					등록하기
+				</S.SubmitButton>
+			</S.SubmitBox>
 		</S.Container>
 	);
 };

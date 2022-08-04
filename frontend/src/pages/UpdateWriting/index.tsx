@@ -2,9 +2,8 @@ import { useParams } from 'react-router-dom';
 
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
-import ToastUiEditor from '@/pages/WritingArticles/ToastUiEditor/ToastUiEditor';
 import usePostWritingArticle from '@/pages/UpdateWriting/hooks/usePostUpdateWritingArticle';
-
+import ToastUiEditor from '@/pages/WritingArticles/ToastUiEditor/ToastUiEditor';
 import * as S from '@/pages/WritingArticles/index.styles';
 
 const UpdateWriting = () => {
@@ -39,7 +38,7 @@ const UpdateWriting = () => {
 							<option value="" disabled>
 								카테고리를 선택해주세요
 							</option>
-							<option value="question">에러</option>
+							<option value="question">질문</option>
 							<option value="discussion">토론</option>
 						</S.CategorySelector>
 						<S.SelectorButton />

@@ -19,12 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+@SuppressWarnings("NonAsciiCharacters")
 @Import({JpaAuditingConfig.class, QuerydslConfig.class})
 @DataJpaTest
 class CommentRepositoryTest {
 
     private final Member member = new Member("jurl", "jurlring", "");
-    private final Article article = new Article("title", "content", Category.QUESTION, member);
+    private final Article article = new Article("title", "content", Category.QUESTION, member, false);
 
     @Autowired
     private CommentRepository commentRepository;
@@ -43,7 +44,7 @@ class CommentRepositoryTest {
 
     @Test
     void 댓글을_저장한다() {
-        Comment comment = new Comment("content", member, article);
+        Comment comment = new Comment("content", member, article, false);
 
         Comment savedComment = commentRepository.save(comment);
 
@@ -52,7 +53,7 @@ class CommentRepositoryTest {
 
     @Test
     void 게시물_아이디로_댓글을_조회한다() {
-        Comment comment = new Comment("content", member, article);
+        Comment comment = new Comment("content", member, article, false);
         commentRepository.save(comment);
 
         List<Comment> comments = commentRepository.findAllByArticleId(article.getId());
@@ -61,13 +62,14 @@ class CommentRepositoryTest {
                 () -> assertThat(comments).hasSize(1),
                 () -> assertThat(comments.get(0).getMember()).isEqualTo(member),
                 () -> assertThat(comments.get(0).getArticle()).isEqualTo(article),
-                () -> assertThat(comments.get(0).getContent()).isEqualTo(comment.getContent())
+                () -> assertThat(comments.get(0).getContent()).isEqualTo(comment.getContent()),
+                () -> assertThat(comments.get(0).isAnonymous()).isFalse()
         );
     }
 
     @Test
     void 댓글을_수정한다() {
-        Comment comment = new Comment("content", member, article);
+        Comment comment = new Comment("content", member, article, false);
         commentRepository.save(comment);
 
         String updateContent = "Update Content";
@@ -79,7 +81,7 @@ class CommentRepositoryTest {
 
     @Test
     void 댓글을_삭제한다() {
-        Comment comment = new Comment("content", member, article);
+        Comment comment = new Comment("content", member, article, false);
         commentRepository.save(comment);
 
         commentRepository.delete(comment);
@@ -90,8 +92,8 @@ class CommentRepositoryTest {
 
     @Test
     void 회원이_작성한_댓글을_조회한다() {
-        Comment firstComment = commentRepository.save(new Comment("content1", member, article));
-        commentRepository.save(new Comment("content2", member, article));
+        Comment firstComment = commentRepository.save(new Comment("content1", member, article, false));
+        commentRepository.save(new Comment("content2", member, article, false));
 
         List<Comment> comments = commentRepository.findAllByMemberId(member.getId());
 
@@ -99,7 +101,8 @@ class CommentRepositoryTest {
                 () -> assertThat(comments).size().isEqualTo(2),
                 () -> assertThat(comments.get(0).getContent()).isEqualTo(firstComment.getContent()),
                 () -> assertThat(comments.get(0).getMember()).isEqualTo(firstComment.getMember()),
-                () -> assertThat(comments.get(0).getArticle()).isEqualTo(firstComment.getArticle())
+                () -> assertThat(comments.get(0).getArticle()).isEqualTo(firstComment.getArticle()),
+                () -> assertThat(comments.get(0).isAnonymous()).isFalse()
         );
     }
 }

@@ -4,6 +4,7 @@ import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.application.CommentService;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
+import com.woowacourse.gongseek.comment.presentation.dto.CommentUpdateRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentsResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,8 +48,8 @@ public class CommentController {
     public ResponseEntity<Void> update(
             @AuthenticationPrinciple AppMember appMember,
             @PathVariable Long commentId,
-            @RequestBody CommentRequest commentRequest) {
-        commentService.update(appMember, commentId, commentRequest);
+            @RequestBody CommentUpdateRequest commentUpdateRequest) {
+        commentService.update(appMember, commentId, commentUpdateRequest);
         return ResponseEntity.ok().build();
     }
 

@@ -53,6 +53,9 @@ public class Article {
     @Embedded
     private Views views;
 
+    @Column(nullable = false)
+    private boolean isAnonymous;
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -60,13 +63,17 @@ public class Article {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    public Article(String title, String content, Category category, Member member) {
-        this(null, new Title(title), new Content(content), category, member, new Views(), LocalDateTime.now(),
+    public Article(String title, String content, Category category, Member member, boolean isAnonymous) {
+        this(null, new Title(title), new Content(content), category, member, new Views(), isAnonymous, LocalDateTime.now(),
                 LocalDateTime.now());
     }
 
     public boolean isAuthor(Member member) {
         return member.equals(this.getMember());
+    }
+
+    public boolean isAnonymousAuthor(String cipherId) {
+        return member.isAnonymous(cipherId);
     }
 
     public void addViews() {

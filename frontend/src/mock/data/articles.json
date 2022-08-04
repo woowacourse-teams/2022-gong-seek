@@ -10,7 +10,8 @@
 			"content": "게시글 상세 조회 예시 markdown이 보여질 곳 ",
 			"views": 10,
 			"isAuthor": true,
-			"createdAt": "2022-07-19 13:32"
+			"createdAt": "2022-07-19T13:32",
+			"updatedAt": "2022-07-29T16:55"
 		},
 		{
 			"id": 2,
@@ -22,7 +23,8 @@
 			"content": "게시글 상세 조회 예시 markdown이 보여질 곳 ",
 			"views": 10,
 			"isAuthor": true,
-			"createdAt": "2022-07-19 13:32"
+			"createdAt": "2022-07-19T13:32",
+			"updatedAt": "2022-07-29T16:55"
 		},
 		{
 			"id": 3,
@@ -34,7 +36,8 @@
 			"content": "게시글 상세 조회 예시 markdown이 보여질 곳 ",
 			"views": 10,
 			"isAuthor": true,
-			"createdAt": "2022-07-19 13:32"
+			"createdAt": "2022-07-19T13:32",
+			"updatedAt": "2022-07-29T16:55"
 		},
 		{
 			"id": 4,
@@ -46,7 +49,8 @@
 			"content": "게시글 상세 조회 예시 markdown이 보여질 곳 ",
 			"views": 10,
 			"isAuthor": true,
-			"createdAt": "2022-07-19 13:32"
+			"createdAt": "2022-07-19T13:32",
+			"updatedAt": "2022-07-29T16:55"
 		},
 		{
 			"id": 5,
@@ -58,7 +62,112 @@
 			"content": "게시글 상세 조회 예시 markdown이 보여질 곳 ",
 			"views": 10,
 			"isAuthor": true,
-			"createdAt": "2022-07-19 13:32"
+			"createdAt": "2022-07-19T13:32",
+			"updatedAt": "2022-07-29T16:55"
+		},
+		{
+			"id": 6,
+			"title": "게시글 상세 조회 예시 타이틀",
+			"author": {
+				"name": "샐리",
+				"avatarUrl": "http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg"
+			},
+			"content": "게시글 상세 조회 예시 markdown이 보여질 곳 ",
+			"views": 10,
+			"isAuthor": true,
+			"createdAt": "2022-07-19T13:32",
+			"updatedAt": "2022-07-29T16:55"
+		},
+		{
+			"id": 7,
+			"title": "게시글 상세 조회 예시 타이틀",
+			"author": {
+				"name": "샐리",
+				"avatarUrl": "http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg"
+			},
+			"content": "게시글 상세 조회 예시 markdown이 보여질 곳 ",
+			"views": 10,
+			"isAuthor": true,
+			"createdAt": "2022-07-19T13:32",
+			"updatedAt": "2022-07-29T16:55"
+		},
+		{
+			"id": 8,
+			"title": "게시글 상세 조회 예시 타이틀",
+			"author": {
+				"name": "샐리",
+				"avatarUrl": "http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg"
+			},
+			"content": "게시글 상세 조회 예시 markdown이 보여질 곳 ",
+			"views": 10,
+			"isAuthor": true,
+			"createdAt": "2022-07-19T13:32",
+			"updatedAt": "2022-07-29T16:55"
+		},
+		{
+			"id": 9,
+			"title": "게시글 상세 조회 예시 타이틀",
+			"author": {
+				"name": "샐리",
+				"avatarUrl": "http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg"
+			},
+			"content": "게시글 상세 조회 예시 markdown이 보여질 곳 ",
+			"views": 10,
+			"isAuthor": true,
+			"createdAt": "2022-07-19T13:32",
+			"updatedAt": "2022-07-29T16:55"
+		},
+		{
+			"id": 10,
+			"title": "게시글 상세 조회 예시 타이틀",
+			"author": {
+				"name": "샐리",
+				"avatarUrl": "http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg"
+			},
+			"content": "게시글 상세 조회 예시 markdown이 보여질 곳 ",
+			"views": 10,
+			"isAuthor": true,
+			"createdAt": "2022-07-19T13:32",
+			"updatedAt": "2022-07-29T16:55"
+		},
+		{
+			"id": 11,
+			"title": "게시글 상세 조회 예시 타이틀",
+			"author": {
+				"name": "샐리",
+				"avatarUrl": "http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg"
+			},
+			"content": "게시글 상세 조회 예시 markdown이 보여질 곳 ",
+			"views": 10,
+			"isAuthor": true,
+			"createdAt": "2022-07-19T13:32",
+			"updatedAt": "2022-07-29T16:55"
+		},
+		{
+			"id": 12,
+			"title": "게시글 상세 조회 예시 타이틀",
+			"author": {
+				"name": "샐리",
+				"avatarUrl": "http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg"
+			},
+			"content": "게시글 상세 조회 예시 markdown이 보여질 곳 ",
+			"views": 10,
+			"isAuthor": true,
+			"createdAt": "2022-07-19T13:32",
+			"updatedAt": "2022-07-29T16:55"
+		},
+		{
+			"id": 13,
+			"title": "게시글 상세 조회 예시 타이틀",
+			"author": {
+				"name": "샐리",
+				"avatarUrl": "http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg"
+			},
+			"content": "게시글 상세 조회 예시 markdown이 보여질 곳 ",
+			"views": 10,
+			"isAuthor": true,
+			"createdAt": "2022-07-19T13:32",
+			"updatedAt": "2022-07-29T16:55"
 		}
 	]
 }

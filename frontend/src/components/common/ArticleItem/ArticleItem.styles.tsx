@@ -42,9 +42,17 @@ export const ArticleItemTitle = styled.h2`
 
 	gap: ${({ theme }) => theme.size.SIZE_010};
 
+	height: ${({ theme }) => theme.size.SIZE_040};
+
 	font-size: ${({ theme }) => theme.size.SIZE_016};
 	font-weight: 600;
 
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+	white-space: normal;
+	line-height: 1.2;
+	word-wrap: break-word;
 	&:hover,
 	&:active {
 		text-decoration: underline;
@@ -64,6 +72,8 @@ export const ArticleInfoBox = styled.div`
 `;
 
 export const Content = styled.div`
+	height: ${({ theme }) => theme.size.SIZE_032};
+
 	font-size: ${({ theme }) => theme.size.SIZE_012};
 	line-height: ${({ theme }) => theme.size.SIZE_016};
 	text-overflow: ellipsis;

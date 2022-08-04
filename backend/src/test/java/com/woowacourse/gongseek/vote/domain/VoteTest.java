@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 class VoteTest {
 
     private static final Member MEMBER = new Member("slow", "hanull", "avatarUrl");
-    private static final Article ARTICLE = new Article("title", "content", Category.QUESTION, MEMBER);
+    private static final Article ARTICLE = new Article("title", "content", Category.QUESTION, MEMBER, false);
 
     @Test
     void 만료일을_시작일_전으로_설정한_경우_예외를_발생한다() {

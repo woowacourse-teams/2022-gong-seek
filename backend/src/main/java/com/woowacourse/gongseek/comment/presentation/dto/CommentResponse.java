@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -22,7 +23,8 @@ public class CommentResponse {
     private AuthorDto author;
 
     @JsonProperty("isAuthor")
-    private Boolean isAuthor;
+    @Accessors(fluent = true)
+    private boolean isAuthor;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
@@ -30,11 +32,22 @@ public class CommentResponse {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime updatedAt;
 
-    public static CommentResponse of(Comment comment, Boolean isAuthor) {
-        return new CommentResponse(
+    public CommentResponse(Comment comment, boolean isAuthor) {
+        this(
                 comment.getId(),
                 comment.getContent(),
                 new AuthorDto(comment.getMember().getName(), comment.getMember().getAvatarUrl()),
+                isAuthor,
+                comment.getCreatedAt(),
+                comment.getUpdatedAt()
+        );
+    }
+
+    public CommentResponse(Comment comment, AuthorDto authorDto, boolean isAuthor) {
+        this(
+                comment.getId(),
+                comment.getContent(),
+                authorDto,
                 isAuthor,
                 comment.getCreatedAt(),
                 comment.getUpdatedAt()

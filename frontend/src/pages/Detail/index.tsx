@@ -26,7 +26,7 @@ const Detail = ({ children, article, commentList, articleId }: DetailProps) => {
 			<ArticleContent
 				article={article}
 				author={article.author}
-				category={children ? '토론' : '에러'}
+				category={children ? '토론' : '질문'}
 				articleId={articleId}
 			/>
 			{children}

@@ -71,7 +71,7 @@ class ArticleControllerTest {
     @Test
     void 질문_게시물_생성_API_문서화() throws Exception {
         ArticleIdResponse response = new ArticleIdResponse(1L);
-        ArticleRequest request = new ArticleRequest("title", "content", "question");
+        ArticleRequest request = new ArticleRequest("title", "content", "question", false);
 
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
@@ -92,7 +92,8 @@ class ArticleControllerTest {
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
-                                fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리")
+                                fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리"),
+                                fieldWithPath("isAnonymous").type(JsonFieldType.BOOLEAN).description("익명 여부")
                         ),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("식별자")
@@ -101,7 +102,7 @@ class ArticleControllerTest {
     }
 
     @Test
-    void 로그인한_사용자일때_게시물_단건_조회_API_문서화() throws Exception {
+    void 로그인한_사용자일때_기명_게시물_단건_조회_API_문서화() throws Exception {
         ArticleResponse response = new ArticleResponse(
                 "title",
                 new AuthorDto("rennon", "avatar.com"),
@@ -139,7 +140,46 @@ class ArticleControllerTest {
     }
 
     @Test
-    void 로그인_안한_사용자일때_게시물_단건_조회_API_문서화() throws Exception {
+    void 로그인한_사용자일때_익명_게시물_단건_조회_API_문서화() throws Exception {
+        ArticleResponse response = new ArticleResponse(
+                "title",
+                new AuthorDto("익명",
+                        "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"),
+                "content",
+                false,
+                1,
+                false,
+                LocalDateTime.now(),
+                LocalDateTime.now()
+        );
+        given(articleService.getOne(any(), any())).willReturn(response);
+
+        ResultActions results = mockMvc.perform(get("/api/articles/{id}", 1L)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
+                .characterEncoding("UTF-8"));
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("article-find-one-anonymous-login",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
+                        responseFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                                fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
+                                fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
+                                fieldWithPath("hasVote").type(JsonFieldType.BOOLEAN).description("투표가 있으면 true"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
+                        )
+                ));
+    }
+
+    @Test
+    void 로그인_안한_사용자일때_기명_게시물_단건_조회_API_문서화() throws Exception {
         ArticleResponse response = new ArticleResponse(
                 "title",
                 new AuthorDto("rennon", "avatar.com"),

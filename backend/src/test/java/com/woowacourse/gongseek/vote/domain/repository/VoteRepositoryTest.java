@@ -34,7 +34,7 @@ class VoteRepositoryTest {
     @BeforeEach
     void setUp() {
         Member savedMember = memberRepository.save(new Member("slow", "githubId", "avatarUrl"));
-        article = new Article("title", "content", Category.QUESTION, savedMember);
+        article = new Article("title", "content", Category.QUESTION, savedMember, false);
         articleRepository.save(article);
     }
 

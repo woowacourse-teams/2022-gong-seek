@@ -1,12 +1,11 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.슬로;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
@@ -28,7 +27,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
     void 토론게시물에서_투표를_생성한다() {
         //given
         TokenResponse tokenResponse = 로그인을_한다(슬로);
-        Long articleId = 게시글을_등록한다(tokenResponse, Category.DISCUSSION.getValue()).getId();
+        Long articleId = 토론_게시물을_등록한다(tokenResponse).getId();
 
         //when
         ExtractableResponse<Response> response = 투표를_생성한다(
@@ -63,7 +62,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
     void 투표를_안한_사용자가_투표를_조회하면_선택한_투표_식별자는_null이_나온다() {
         //given
         TokenResponse tokenResponse = 로그인을_한다(슬로);
-        Long articleId = 게시글을_등록한다(tokenResponse, Category.DISCUSSION.getValue()).getId();
+        Long articleId = 토론_게시물을_등록한다(tokenResponse).getId();
 
         투표를_생성한다(
                 tokenResponse, articleId,
@@ -100,7 +99,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
     void 투표를_한_사용자가_투표를_조회한다() {
         //given
         TokenResponse tokenResponse = 로그인을_한다(슬로);
-        Long articleId = 게시글을_등록한다(tokenResponse, Category.DISCUSSION.getValue()).getId();
+        Long articleId = 토론_게시물을_등록한다(tokenResponse).getId();
 
         투표를_생성한다(
                 tokenResponse,

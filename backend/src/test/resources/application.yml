@@ -4,7 +4,7 @@ spring:
       replace: none
 
   profiles:
-    include: jwt, oauth
+    include: jwt, oauth, encryption
 
   h2.console:
     enabled: true

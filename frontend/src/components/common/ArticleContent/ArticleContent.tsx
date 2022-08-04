@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import * as S from '@/components/common/ArticleContent/ArticleContent.styles';
 import ToastUiViewer from '@/components/common/ArticleContent/ToastUiViewer/ToastUiViewer';
+import useDeleteArticleContent from '@/components/common/ArticleContent/hooks/useDeleteArticleContent';
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
-import useDeleteArticleContent from '@/components/common/ArticleContent/hooks/useDeleteArticleContent';
 import { ArticleType } from '@/types/articleResponse';
 import { Author } from '@/types/author';
+import { dateTimeConverter } from '@/utils/converter';
 
-import * as S from '@/components/common/ArticleContent/ArticleContent.styles';
 export interface ArticleContentProps {
 	category: string;
 	article: ArticleType;
@@ -27,7 +28,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 	};
 
 	const navigateUpdateArticle = () => {
-		const categoryName = category === '에러' ? 'question' : 'discussion';
+		const categoryName = category === '질문' ? 'question' : 'discussion';
 		navigate(`/articles/modify/${categoryName}/${articleId}`);
 	};
 
@@ -48,7 +49,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 				<S.ArticleInfo>
 					<S.ArticleTitle>{article.title}</S.ArticleTitle>
 					<S.ArticleDetailInfo>
-						<S.DetailBox>{article.createdAt}</S.DetailBox>
+						<S.DetailBox>{dateTimeConverter(article.createdAt)}</S.DetailBox>
 						<S.DetailBox>조회수 {article.views}</S.DetailBox>
 					</S.ArticleDetailInfo>
 				</S.ArticleInfo>

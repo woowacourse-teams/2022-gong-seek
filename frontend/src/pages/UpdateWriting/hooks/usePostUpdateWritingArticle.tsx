@@ -1,11 +1,13 @@
-import { putArticle } from '@/api/article';
-import { articleState } from '@/store/articleState';
-import { Editor } from '@toast-ui/react-editor';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+
+import { putArticle } from '@/api/article';
+import CustomError from '@/components/helper/CustomError';
+import { articleState } from '@/store/articleState';
+import { Editor } from '@toast-ui/react-editor';
 
 const usePostUpdateWritingArticle = () => {
 	const navigate = useNavigate();
@@ -17,7 +19,7 @@ const usePostUpdateWritingArticle = () => {
 
 	const { data, isError, isSuccess, isLoading, error, mutate } = useMutation<
 		AxiosResponse<{ id: number; category: string }>,
-		AxiosError,
+		AxiosError<{ errorCode: string; message: string }>,
 		{ title: string; content: string; id: string }
 	>(putArticle);
 
@@ -29,7 +31,7 @@ const usePostUpdateWritingArticle = () => {
 
 	useEffect(() => {
 		if (isError) {
-			throw new Error(error.message);
+			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
 		}
 	}, [isError]);
 

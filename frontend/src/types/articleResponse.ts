@@ -25,6 +25,20 @@ export interface AllArticleResponse {
 }
 
 export interface infiniteArticleResponse extends AllArticleResponse {
-	cursorId: number;
-	cursorViews: number;
+	cursorId: string;
+	cursorViews?: string;
+}
+
+export interface UserArticleItemType {
+	id: number;
+	title: string;
+	category: string;
+	commentCount: number;
+	createdAt: string;
+	updatedAt: string;
+	views: number;
+}
+
+export interface UserArticlesResponse {
+	articles: UserArticleItemType[];
 }

@@ -1,6 +1,39 @@
 import { Link } from 'react-router-dom';
 
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
+
+
+const searchOpenMaxAnimation = keyframes`
+	0% {
+		width: 40%;
+	}
+	10%, 40%{
+		width: 45%;
+	}
+	40%, 80% {
+		width: 55%;
+	}
+	80%, 100%{
+		width: 60%;
+	}
+`
+
+
+const searchOpenMidAnimation = keyframes`
+	0% {
+		width: 40%;
+	}
+	10%, 40%{
+		width: 55%;
+	}
+	40%, 80% {
+		width: 65%;
+	}
+	80%, 100%{
+		width: 80%;
+	}
+`
 
 export const Container = styled.div`
 	position: sticky;
@@ -40,6 +73,7 @@ export const HeaderSection = styled.header`
 	}
 `;
 
+
 export const LogoLink = styled.h1`
 	font-weight: 800;
 	font-size: ${({ theme }) => theme.size.SIZE_022};
@@ -47,13 +81,28 @@ export const LogoLink = styled.h1`
 	color: ${({ theme }) => theme.colors.PURPLE_500};
 `;
 
+export const LogoImage = styled.img`
+	width: ${({theme}) => theme.size.SIZE_030};
+	height: ${({theme}) => theme.size.SIZE_030};
+`
+
 export const SearchBarBox = styled.div`
 	width: 60%;
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
-		width: 40%;
+		min-width: 40%;
 	}
 `;
+
+export const SearchOpenBox = styled.div`
+	width: 80%;
+	animation: ${searchOpenMidAnimation} 0.3s ease-in-out;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: 60%;
+		animation: ${searchOpenMaxAnimation} 0.3s ease-in-out;
+	}
+`
 
 export const StyledLink = styled(Link)`
 	text-decoration: none;
@@ -99,3 +148,5 @@ export const LogOutItem = styled.button`
 		color: ${({ theme }) => theme.colors.PURPLE_500};
 	}
 `;
+
+

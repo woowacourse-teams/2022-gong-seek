@@ -17,9 +17,9 @@ const data = localStorage.getItem('mock-votes');
 const mockVotes = data ? (JSON.parse(data) as VoteData[]) : [];
 
 export const VoteHandler = [
-	rest.post<{ options: string[] }>(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
+	rest.post<{ items: string[] }>(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
 		const { articleId } = req.params;
-		const { options } = req.body;
+		const { items } = req.body;
 
 		if (typeof articleId !== 'string') {
 			return;
@@ -30,9 +30,9 @@ export const VoteHandler = [
 			JSON.stringify(
 				mockVotes.concat({
 					articleId,
-					options: options.map((option, idx) => ({
+					options: items.map((item, idx) => ({
 						voteId: String(idx),
-						option,
+						option: item,
 						count: 0,
 					})),
 				}),
