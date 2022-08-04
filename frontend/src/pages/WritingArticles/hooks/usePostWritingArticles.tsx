@@ -1,15 +1,17 @@
-import { postWritingArticle } from '@/api/article';
-import { CATEGORY } from '@/constants/categoryType';
-import { Editor } from '@toast-ui/react-editor';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
+import { postWritingArticle } from '@/api/article';
+import CustomError from '@/components/helper/CustomError';
+import { CATEGORY } from '@/constants/categoryType';
+import { Editor } from '@toast-ui/react-editor';
+
 const usePostWritingArticles = (category?: string) => {
 	const { data, mutate, isError, isLoading, isSuccess, error } = useMutation<
 		AxiosResponse<{ id: string }>,
-		AxiosError,
+		AxiosError<{ errorCode: string; message: string }>,
 		{ title: string; category: string; content: string }
 	>(postWritingArticle);
 	const content = useRef<Editor | null>(null);
@@ -37,7 +39,7 @@ const usePostWritingArticles = (category?: string) => {
 
 	useEffect(() => {
 		if (isError) {
-			throw new Error(error.message);
+			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
 		}
 	}, []);
 

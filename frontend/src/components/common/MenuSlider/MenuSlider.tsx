@@ -18,6 +18,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 	const onLogoutClick = () => {
 		if (confirm('정말로 로그아웃 하시겠습니까?')) {
 			localStorage.removeItem('accessToken');
+			window.location.href = '/';
 		}
 	};
 
@@ -68,7 +69,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 							closeSlider();
 						}}
 					>
-						에러 카테고리
+						질문 카테고리
 					</S.LinkItem>
 					<S.LinkItem
 						onClick={() => {

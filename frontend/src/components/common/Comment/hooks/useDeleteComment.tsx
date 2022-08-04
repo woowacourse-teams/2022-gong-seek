@@ -1,13 +1,15 @@
-import { queryClient } from '@/index';
-import { deleteComments } from '@/api/comments';
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
-import { AxiosError } from 'axios';
+
+import { deleteComments } from '@/api/comments';
+import CustomError from '@/components/helper/CustomError';
+import { queryClient } from '@/index';
 
 const useDeleteComment = () => {
 	const { isLoading, isError, error, isSuccess, mutate } = useMutation<
 		unknown,
-		AxiosError,
+		AxiosError<{ errorCode: string; message: string }>,
 		{ commentId: string }
 	>(deleteComments);
 
@@ -25,7 +27,7 @@ const useDeleteComment = () => {
 
 	useEffect(() => {
 		if (isError) {
-			throw new Error(error.message);
+			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
 		}
 	}, [isError]);
 
