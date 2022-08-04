@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 
 import { ArticleHandler } from '@/mock/article';
+import { theme } from '@/styles/Theme';
+import { ThemeProvider } from '@emotion/react';
 import { renderHook } from '@testing-library/react-hooks';
 
 const server = setupServer(...ArticleHandler);
@@ -18,9 +20,11 @@ describe('useGetPopularArticles 테스트', () => {
 		const queryClient = new QueryClient();
 		const wrapper = ({ children }: { children: React.ReactNode }) => (
 			<React.StrictMode>
-				<QueryClientProvider client={queryClient}>
-					<BrowserRouter>{children}</BrowserRouter>
-				</QueryClientProvider>
+				<ThemeProvider theme={theme}>
+					<QueryClientProvider client={queryClient}>
+						<BrowserRouter>{children}</BrowserRouter>
+					</QueryClientProvider>
+				</ThemeProvider>
 			</React.StrictMode>
 		);
 

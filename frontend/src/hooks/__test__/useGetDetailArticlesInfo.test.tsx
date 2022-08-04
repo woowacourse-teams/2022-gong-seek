@@ -8,6 +8,8 @@ import useGetDetailArticle from '@/hooks/useGetDetailArticle';
 import useGetDetailComment from '@/hooks/useGetDetailComment';
 import { CommentHandler } from '@/mock';
 import { ArticleHandler } from '@/mock/article';
+import { theme } from '@/styles/Theme';
+import { ThemeProvider } from '@emotion/react';
 import { renderHook } from '@testing-library/react-hooks';
 
 const server = setupServer(...ArticleHandler, ...CommentHandler);
@@ -20,11 +22,13 @@ describe('글들에 대한 상세 정보를 제대로 가져오는지에 대해�
 	const queryClient = new QueryClient();
 	const wrapper = ({ children }: { children: React.ReactNode }) => (
 		<React.StrictMode>
-			<QueryClientProvider client={queryClient}>
-				<RecoilRoot>
-					<BrowserRouter>{children}</BrowserRouter>
-				</RecoilRoot>
-			</QueryClientProvider>
+			<ThemeProvider theme={theme}>
+				<QueryClientProvider client={queryClient}>
+					<RecoilRoot>
+						<BrowserRouter>{children}</BrowserRouter>
+					</RecoilRoot>
+				</QueryClientProvider>
+			</ThemeProvider>
 		</React.StrictMode>
 	);
 
