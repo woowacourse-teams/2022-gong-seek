@@ -16,6 +16,7 @@ import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
+import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
+    private final VoteRepository voteRepository;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
@@ -45,18 +47,18 @@ public class ArticleService {
     }
 
     public ArticleResponse getOne(AppMember appMember, Long id) {
-        Article article = articleRepository.findById(id)
-                .orElseThrow(ArticleNotFoundException::new);
+        Article article = getArticle(id);
         article.addViews();
+        boolean hasVote = voteRepository.existsByArticleId(article.getId());
         if (appMember.isGuest()) {
-            return new ArticleResponse(article, false);
+            return new ArticleResponse(article, false, hasVote);
         }
-        return new ArticleResponse(article, article.isAuthor(getMember(appMember)));
+        return new ArticleResponse(article, article.isAuthor(getMember(appMember)), hasVote);
     }
 
     @Transactional(readOnly = true)
     public ArticlePageResponse getArticles(Long cursorId, Integer cursorViews, String category, String sortType,
-            int size) {
+                                           int size) {
         List<ArticlePreviewResponse> articles = articleRepository.findAllByPage(cursorId, cursorViews, category,
                         sortType, size).stream()
                 .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))

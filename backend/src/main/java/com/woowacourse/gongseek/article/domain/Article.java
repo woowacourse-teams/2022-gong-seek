@@ -74,6 +74,10 @@ public class Article {
         this.content = new Content(content);
     }
 
+    public boolean cannotCreateVote() {
+        return !Category.DISCUSSION.equals(this.category);
+    }
+
     public String getTitle() {
         return title.getValue();
     }
