@@ -1,0 +1,9 @@
+security:
+  oauth2:
+    client-id: clientId
+    client-secret: clientSecret
+
+github:
+  url:
+    base: http://localhost:8888/api/auth
+    profile: http://localhost:8888/api/auth/user

@@ -1,0 +1,125 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Article
+---
+= 기본 API
+
+== 게시물 생성
+
+`POST /api/articles`
+
+=== Request
+
+include::{snippets}/article-create/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/article-create/request-headers.adoc[]
+
+==== Body
+
+include::{snippets}/article-create/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/article-create/http-response.adoc[]
+include::{snippets}/article-create/response-fields.adoc[]
+
+== 게시물 단건 조회
+
+`GET /api/articles/1`
+
+=== Request
+
+==== 로그인 사용자
+
+include::{snippets}/article-find-one-login/http-request.adoc[]
+
+==== 비로그인 사용자
+
+include::{snippets}/article-find-one-not-login/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/article-find-one-login/http-response.adoc[]
+include::{snippets}/article-find-one-login/response-fields.adoc[]
+
+== 게시물 수정
+
+`PUT /api/articles/1`
+
+=== Request
+
+include::{snippets}/article-update/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/article-update/request-headers.adoc[]
+
+==== Body
+
+include::{snippets}/article-update/http-request.adoc[]
+include::{snippets}/article-update/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/article-create/http-response.adoc[]
+include::{snippets}/article-create/response-fields.adoc[]
+
+== 게시물 삭제
+
+`DELETE /api/articles/1`
+
+=== Request
+
+include::{snippets}/article-delete/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/article-delete/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/article-delete/http-response.adoc[]
+
+== 게시물 전체 조회
+
+`GET /api/articles`
+
+=== Request
+
+include::{snippets}/article-get-all/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/article-get-all/request-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/article-get-all/http-response.adoc[]
+include::{snippets}/article-get-all/response-fields.adoc[]
+
+== 게시물 검색
+
+`GET /api/articles/search`
+
+=== Request
+
+include::{snippets}/article-search/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/article-search/request-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/article-search/http-response.adoc[]
+include::{snippets}/article-search/response-fields.adoc[]

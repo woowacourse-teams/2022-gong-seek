@@ -1,0 +1,81 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Comment
+---
+= 기본 API
+
+== 댓글 생성
+
+`POST /api/articles/1/comments`
+
+=== Request
+
+include::{snippets}/comment-create/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/comment-create/request-headers.adoc[]
+
+==== Body
+
+include::{snippets}/comment-create/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/comment-create/http-response.adoc[]
+
+== 댓글 조회
+
+`GET /api/articles/1/comments`
+
+=== Request
+
+include::{snippets}/comment-find-all-by-article-id/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/comment-find-all-by-article-id/http-response.adoc[]
+
+== 댓글 수정
+
+`PUT /api/articles/comments/1`
+
+=== Request
+
+include::{snippets}/comment-update/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/comment-update/request-headers.adoc[]
+
+==== Body
+
+include::{snippets}/comment-update/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/comment-update/http-response.adoc[]
+
+== 댓글 삭제
+
+`DELETE /api/articles/comments/1`
+
+=== Request
+
+include::{snippets}/comment-delete/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/comment-delete/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/comment-delete/http-response.adoc[]

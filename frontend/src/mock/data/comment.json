@@ -1,0 +1,48 @@
+{
+	"comments": [
+		{
+			"id": 1,
+			"content": "commentcommentcomment",
+			"author": {
+				"name": "slow",
+				"avatarUrl": "http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg"
+			},
+			"isAuthor": "true",
+			"createdAt": "2022 07-18T12:23",
+			"updatedAt": "2022-07-18T23:22"
+		},
+		{
+			"id": 2,
+			"content": "commentcommentcomment",
+			"author": {
+				"name": "slow",
+				"avatarUrl": "http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg"
+			},
+			"isAuthor": false,
+			"createdAt": "2022 07-18T12:44",
+			"updatedAt": "2022-07-18T12:22"
+		},
+		{
+			"id": 3,
+			"content": "commentcommentcomment",
+			"author": {
+				"name": "slow",
+				"avatarUrl": "http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg"
+			},
+			"isAuthor": false,
+			"createdAt": "2022 07-18T12:33",
+			"updatedAt": "2022-07-18T11:12"
+		},
+		{
+			"id": 4,
+			"content": "commentcommentcomment",
+			"author": {
+				"name": "slow",
+				"avatarUrl": "http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg"
+			},
+			"isAuthor": false,
+			"createdAt": "2022 07-18T10:41",
+			"updatedAt": "2022-07-18T10:22"
+		}
+	]
+}
