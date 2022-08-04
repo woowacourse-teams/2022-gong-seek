@@ -6,17 +6,19 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@EqualsAndHashCode
 @Embeddable
 public class Content {
 
-    private static final int MAX_CONTENT_LENGTH = 100;
+    private static final int MAX_CONTENT_LENGTH = 500;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = false, length = MAX_CONTENT_LENGTH)
     private String value;
 
     public Content(String value) {

@@ -26,12 +26,22 @@ public class VoteItem {
     @Embedded
     private Content content;
 
+    @Embedded
+    private Amount amount;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vote_id", nullable = false)
     private Vote vote;
 
-    public VoteItem(Long id, String content) {
-        this.id = id;
-        this.content = new Content(content);
+    public VoteItem(String content, Vote vote) {
+        this(null, new Content(content), new Amount(), vote);
+    }
+
+    public void decreaseAmount() {
+        amount = amount.decrease();
+    }
+
+    public void increaseAmount() {
+        amount = amount.increase();
     }
 }
