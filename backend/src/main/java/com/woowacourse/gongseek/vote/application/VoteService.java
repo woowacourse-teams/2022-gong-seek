@@ -18,7 +18,6 @@ import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import com.woowacourse.gongseek.vote.exception.AlreadyVoteSameItemException;
 import com.woowacourse.gongseek.vote.exception.CannotCreateVoteException;
 import com.woowacourse.gongseek.vote.exception.VoteItemNotFoundException;
-import com.woowacourse.gongseek.vote.exception.VoteNotFoundException;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateResponse;
@@ -88,7 +87,7 @@ public class VoteService {
         if (!articleRepository.existsById(articleId)) {
             throw new ArticleNotFoundException();
         }
-        Vote foundVote = getVote(articleId);
+        Vote foundVote = getVoteByArticleId(articleId);
         List<VoteItem> voteItems = voteItemRepository.findAllByVoteArticleId(articleId);
 
         VoteHistory voteHistory = voteHistoryRepository.findByVoteIdAndMemberId(foundVote.getId(),
@@ -110,8 +109,7 @@ public class VoteService {
 
     public void doVote(Long articleId, AppMember appMember, SelectVoteItemIdRequest selectVoteItemIdRequest) {
         validateGuest(appMember);
-        Vote vote = voteRepository.findByArticleId(articleId)
-                .orElseThrow(ArticleNotFoundException::new);
+        Vote vote = getVoteByArticleId(articleId);
         Member member = getMember(appMember);
         VoteItem selectedVoteItem = getVoteItem(selectVoteItemIdRequest.getVoteItemId());
 
@@ -122,9 +120,9 @@ public class VoteService {
                 );
     }
 
-    private Vote getVote(Long voteId) {
-        return voteRepository.findById(voteId)
-                .orElseThrow(VoteNotFoundException::new);
+    private Vote getVoteByArticleId(Long articleId) {
+        return voteRepository.findByArticleId(articleId)
+                .orElseThrow(ArticleNotFoundException::new);
     }
 
     private VoteItem getVoteItem(Long voteItemId) {
