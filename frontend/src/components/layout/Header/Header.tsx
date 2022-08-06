@@ -41,7 +41,7 @@ const Header = () => {
 			<S.NavBar>
 				{isLogin ? (
 					<>
-						<S.NavBarItem to="">마이페이지</S.NavBarItem>
+						<S.NavBarItem to="/my-page">마이페이지</S.NavBarItem>
 						<S.LogOutItem>로그아웃</S.LogOutItem>
 					</>
 				) : (
