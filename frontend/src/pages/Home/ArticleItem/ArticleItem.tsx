@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import * as S from '@/pages/Home/ArticleItem/ArticleItem.styles';
 
 interface ArticleItemProps {
-	data: {
+	article: {
 		id: number;
 		title: string;
 		commentCount: number;
@@ -15,9 +15,9 @@ interface ArticleItemProps {
 	};
 }
 
-const ArticleItem = ({ data }: ArticleItemProps) => {
+const ArticleItem = ({ article }: ArticleItemProps) => {
 	const navigate = useNavigate();
-	const { id, title, author, commentCount, category } = data;
+	const { id, title, author, commentCount, category } = article;
 	return (
 		<>
 			<S.Title onClick={() => navigate(`/articles/${category}/${id}`)}>{title}</S.Title>
