@@ -10,6 +10,13 @@ import { getUserIsLogin } from '@/store/userState';
 const Header = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const { isSearchOpen } = useRecoilValue(searchState);
+
+	const onLogOutClick = () => {
+		window.confirm('정말로 로그아웃을 하시겠습니까?');
+		localStorage.removeItem('accessToken');
+		window.location.href = '/';
+	};
+
 	if (isSearchOpen) {
 		return (
 			<S.Container>
@@ -42,7 +49,7 @@ const Header = () => {
 				{isLogin ? (
 					<>
 						<S.NavBarItem to="/my-page">마이페이지</S.NavBarItem>
-						<S.LogOutItem>로그아웃</S.LogOutItem>
+						<S.LogOutItem onClick={onLogOutClick}>로그아웃</S.LogOutItem>
 					</>
 				) : (
 					<S.NavBarItem to="/login">로그인</S.NavBarItem>
