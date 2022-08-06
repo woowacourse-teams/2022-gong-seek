@@ -25,6 +25,15 @@ export const ArticleItemList = styled.div`
 	flex-direction: column;
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_024};
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+		place-items: center;
+		margin: 0 auto;
+		gap: ${({ theme }) => theme.size.SIZE_022};
+		margin-top: ${({ theme }) => theme.size.SIZE_040};
+	}
 `;
 
 export const TitleBox = styled.div`

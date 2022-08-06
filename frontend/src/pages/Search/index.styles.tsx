@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 export const Container = styled.section`
 	display: flex;
 
-	width: 100vw;
+	width: 100%;
 `;
 
 export const EmptyResultBox = styled.div`
