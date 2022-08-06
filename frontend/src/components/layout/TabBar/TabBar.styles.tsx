@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 
 export const Section = styled.section`
 	display: flex;
-	position: sticky;
+	position: fixed;
 
 	bottom: 0;
 

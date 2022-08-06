@@ -2,7 +2,7 @@ package com.woowacourse.gongseek.acceptance;
 
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
-import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.댓글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.기명으로_댓글을_등록한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -73,7 +73,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         // given
         TokenResponse tokenResponse = 로그인을_한다(레넌);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(tokenResponse);
-        댓글을_등록한다(tokenResponse, 게시글번호);
+        기명으로_댓글을_등록한다(tokenResponse, 게시글번호);
 
         // when
         ExtractableResponse<Response> response = RestAssured

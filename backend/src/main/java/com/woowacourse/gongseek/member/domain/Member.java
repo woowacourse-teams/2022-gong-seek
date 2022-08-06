@@ -33,6 +33,10 @@ public class Member {
         this.avatarUrl = avatarUrl;
     }
 
+    public boolean isAnonymous(String cipherId) {
+        return githubId.equals(cipherId);
+    }
+
     public void updateAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }

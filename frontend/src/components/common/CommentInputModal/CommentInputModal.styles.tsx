@@ -80,12 +80,26 @@ export const CommentPostButton = styled.button`
 	color: ${({ theme }) => theme.colors.WHITE};
 
 	padding: ${({ theme }) => theme.size.SIZE_004};
-	margin-top: ${({ theme }) => theme.size.SIZE_020};
 
 	cursor: pointer;
 
 	&:hover,
 	&:active {
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
+	}
+`;
+
+export const SubmitBox = styled.div`
+	display: flex;
+	gap: ${({ theme }) => theme.size.SIZE_022};
+
+	align-items: center;
+	justify-content: end;
+	margin-top: ${({ theme }) => theme.size.SIZE_050};
+	width: 80%;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		margin-left: auto;
+		width: max-content;
 	}
 `;

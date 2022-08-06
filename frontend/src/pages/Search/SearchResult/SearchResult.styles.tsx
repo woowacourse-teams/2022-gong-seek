@@ -16,6 +16,9 @@ export const Title = styled.h2`
 `;
 export const SearchResultBox = styled.div`
 	display: flex;
+	flex-direction: column;
+	width: 100%;
+
 
 	justify-content: center;
 	align-items: center;

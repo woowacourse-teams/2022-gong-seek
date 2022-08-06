@@ -20,6 +20,7 @@ import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.comment.application.CommentService;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
+import com.woowacourse.gongseek.comment.presentation.dto.CommentUpdateRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentsResponse;
 import com.woowacourse.gongseek.config.RestDocsConfig;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
@@ -38,6 +39,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+@SuppressWarnings("NonAsciiCharacters")
 @DisplayName("댓글 문서화")
 @AutoConfigureRestDocs
 @WebMvcTest(CommentController.class)
@@ -58,7 +60,7 @@ class CommentControllerTest {
 
     @Test
     void 댓글_생성_API_문서화() throws Exception {
-        CommentRequest request = new CommentRequest("content");
+        CommentRequest request = new CommentRequest("content", false);
 
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
@@ -76,7 +78,8 @@ class CommentControllerTest {
                                         headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
                                 ),
                                 requestFields(
-                                        fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                                        fieldWithPath("isAnonymous").type(JsonFieldType.BOOLEAN).description("익명 여부")
                                 )
                         )
                 );
@@ -100,15 +103,27 @@ class CommentControllerTest {
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
+        CommentResponse anonymousComment = new CommentResponse(
+                3L,
+                "content3",
+                new AuthorDto("익명",
+                        "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"),
+                false,
+                LocalDateTime.now(),
+                LocalDateTime.now()
+        );
 
         given(commentService.getAllByArticleId(any(), any())).willReturn(
-                new CommentsResponse(List.of(authorComment, nonAuthorComment)));
+                new CommentsResponse(List.of(authorComment, nonAuthorComment, anonymousComment)));
 
         mockMvc.perform(get("/api/articles/{articleId}/comments", 1)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer token"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("comment-find-all-by-article-id",
+                                requestHeaders(
+                                        headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                                ),
                                 responseFields(
                                         fieldWithPath("comments[].id").type(JsonFieldType.NUMBER).description("댓글 아이디"),
                                         fieldWithPath("comments[].content").type(JsonFieldType.STRING).description("댓글 내용"),
@@ -126,7 +141,7 @@ class CommentControllerTest {
 
     @Test
     void 댓글_수정_API_문서화() throws Exception {
-        CommentRequest request = new CommentRequest("content");
+        CommentUpdateRequest request = new CommentUpdateRequest("content");
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
 

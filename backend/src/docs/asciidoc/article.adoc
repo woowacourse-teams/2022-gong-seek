@@ -49,7 +49,14 @@ include::{snippets}/article-find-one-not-login/http-request.adoc[]
 
 === Response
 
+==== 기명 게시물 조회
+
 include::{snippets}/article-find-one-login/http-response.adoc[]
+
+==== 익명 게시물 조회
+
+include::{snippets}/article-find-one-anonymous-login/http-response.adoc[]
+
 include::{snippets}/article-find-one-login/response-fields.adoc[]
 
 == 게시물 수정

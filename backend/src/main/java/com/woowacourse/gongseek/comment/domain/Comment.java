@@ -45,6 +45,9 @@ public class Comment {
     @JoinColumn(name = "article_id", nullable = false)
     private Article article;
 
+    @Column(nullable = false)
+    private boolean isAnonymous;
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -52,10 +55,11 @@ public class Comment {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    public Comment(String content, Member member, Article article) {
+    public Comment(String content, Member member, Article article, boolean isAnonymous) {
         this.content = new Content(content);
         this.member = member;
         this.article = article;
+        this.isAnonymous = isAnonymous;
     }
 
     public void updateContent(String content) {
@@ -64,6 +68,10 @@ public class Comment {
 
     public boolean isAuthor(Member member) {
         return this.member.equals(member);
+    }
+
+    public boolean isAnonymousAuthor(String cipherId) {
+        return member.isAnonymous(cipherId);
     }
 
     public String getContent() {

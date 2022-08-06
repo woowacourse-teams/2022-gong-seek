@@ -8,11 +8,17 @@ import CustomError from '@/components/helper/CustomError';
 import { CATEGORY } from '@/constants/categoryType';
 import { Editor } from '@toast-ui/react-editor';
 
-const usePostWritingArticles = (category?: string) => {
+const usePostWritingArticles = ({
+	category,
+	isAnonymous,
+}: {
+	category?: string;
+	isAnonymous: boolean;
+}) => {
 	const { data, mutate, isError, isLoading, isSuccess, error } = useMutation<
 		AxiosResponse<{ id: string }>,
 		AxiosError<{ errorCode: string; message: string }>,
-		{ title: string; category: string; content: string }
+		{ title: string; category: string; content: string; isAnonymous: boolean }
 	>(postWritingArticle);
 	const content = useRef<Editor | null>(null);
 	const [title, setTitle] = useState('');
@@ -57,6 +63,7 @@ const usePostWritingArticles = (category?: string) => {
 			title,
 			category: categoryOption,
 			content: content.current.getInstance().getMarkdown(),
+			isAnonymous,
 		});
 	};
 

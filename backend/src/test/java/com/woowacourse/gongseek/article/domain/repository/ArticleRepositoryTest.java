@@ -41,7 +41,7 @@ class ArticleRepositoryTest {
 
     @Test
     void 질문을_저장한다() {
-        Article article = new Article(TITLE, CONTENT, Category.QUESTION, member);
+        Article article = new Article(TITLE, CONTENT, Category.QUESTION, member, false);
         Article savedArticle = articleRepository.save(article);
 
         assertThat(savedArticle).isSameAs(article);
@@ -57,7 +57,7 @@ class ArticleRepositoryTest {
     @Test
     void 게시물을_5개씩_조회한다() {
         for (int i = 0; i < 5; i++) {
-            articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member));
+            articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         }
         List<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "views", 5);
 
@@ -67,8 +67,8 @@ class ArticleRepositoryTest {
     @ParameterizedTest
     @CsvSource({"all, 2", "question, 1", "discussion, 1"})
     void 카테고리별로_게시물을_조회한다(String category, int expectedSize) {
-        articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member));
-        articleRepository.save(new Article(TITLE, CONTENT, Category.DISCUSSION, member));
+        articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        articleRepository.save(new Article(TITLE, CONTENT, Category.DISCUSSION, member, false));
 
         List<Article> articles = articleRepository.findAllByPage(null, 0, category, "views", 5);
 
@@ -77,9 +77,9 @@ class ArticleRepositoryTest {
 
     @Test
     void 게시물을_조회순으로_조회한다() {
-        Article firstArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member));
-        Article secondArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member));
-        Article thirdArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member));
+        Article firstArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        Article thirdArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         firstArticle.addViews();
         firstArticle.addViews();
         secondArticle.addViews();
@@ -91,9 +91,9 @@ class ArticleRepositoryTest {
 
     @Test
     void 게시물을_최신순으로_조회한다() {
-        Article thirdArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member));
-        Article secondArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member));
-        Article firstArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member));
+        Article thirdArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        Article firstArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
 
         List<Article> articles = articleRepository.findAllByPage(null, null, Category.QUESTION.getValue(), "latest", 3);
 
@@ -106,7 +106,7 @@ class ArticleRepositoryTest {
         String title = "질문합니다.";
         String content = "a".repeat(count);
 
-        Article article = new Article(title, content, Category.QUESTION, member);
+        Article article = new Article(title, content, Category.QUESTION, member, false);
         Article savedArticle = articleRepository.save(article);
 
         assertThat(savedArticle).isSameAs(article);
@@ -116,8 +116,9 @@ class ArticleRepositoryTest {
     @ValueSource(strings = {"this is wooteco", "is", "THIS IS WOOTECO", "IS", "THiS Is WOOteCO", "Is", "thisis",
             "thisIs", "this iswooteco"})
     void 띄어쓰기와_대소문자_관계_없이_제목으로_게시물을_검색한다(String searchText) {
-        Article article = articleRepository.save(new Article("this is wooteco", "wow", Category.QUESTION, member));
-        articleRepository.save(new Article("i am judy", "hello", Category.QUESTION, member));
+        Article article = articleRepository.save(
+                new Article("this is wooteco", "wow", Category.QUESTION, member, false));
+        articleRepository.save(new Article("i am judy", "hello", Category.QUESTION, member, false));
 
         List<Article> articles = articleRepository.searchByContainingText(null, 2, searchText);
 
@@ -127,8 +128,9 @@ class ArticleRepositoryTest {
     @ParameterizedTest
     @ValueSource(strings = {"wow", "w", "WOW", "W", "WoW", "W ow", "w o w"})
     void 띄어쓰기와_대소문자_관계_없이_내용으로_게시물을_검색한다(String searchText) {
-        Article article = articleRepository.save(new Article("this is wooteco", "wow", Category.QUESTION, member));
-        articleRepository.save(new Article("i am 주디", "hello", Category.QUESTION, member));
+        Article article = articleRepository.save(
+                new Article("this is wooteco", "wow", Category.QUESTION, member, false));
+        articleRepository.save(new Article("i am 주디", "hello", Category.QUESTION, member, false));
 
         List<Article> articles = articleRepository.searchByContainingText(null, 2, searchText);
 
@@ -138,7 +140,7 @@ class ArticleRepositoryTest {
     @Test
     void 게시물을_5개씩_검색한다() {
         for (int i = 0; i < 5; i++) {
-            articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member));
+            articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         }
         List<Article> articles = articleRepository.searchByContainingText(null, 5, "title");
 
@@ -154,8 +156,10 @@ class ArticleRepositoryTest {
 
     @Test
     void 회원이_작성한_게시글들을_조회할_수_있다() {
-        Article firstArticle = articleRepository.save(new Article("title1", "content1", Category.QUESTION, member));
-        Article secondArticle = articleRepository.save(new Article("title2", "content2", Category.DISCUSSION, member));
+        Article firstArticle = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
 
         List<Article> articles = articleRepository.findAllByMemberId(member.getId());
 
