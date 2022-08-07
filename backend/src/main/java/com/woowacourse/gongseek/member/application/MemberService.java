@@ -13,6 +13,7 @@ import com.woowacourse.gongseek.member.presentation.dto.MyPageArticleResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,8 @@ public class MemberService {
 
     private final CommentRepository commentRepository;
 
+    private final Encryptor encryptor;
+
     public MemberDto getOne(AppMember appMember) {
         Member member = getMember(appMember);
         return new MemberDto(member);
@@ -42,7 +45,14 @@ public class MemberService {
 
     public MyPageArticlesResponse getArticles(AppMember appMember) {
         Member member = getMember(appMember);
-        List<Article> articles = articleRepository.findAllByMemberId(member.getId());
+        List<Long> memberIds = new ArrayList<>(List.of(member.getId()));
+
+        String cipherId = encryptor.encrypt(String.valueOf(appMember.getPayload()));
+        memberRepository.findByGithubId(cipherId)
+                .ifPresent(it -> memberIds.add(it.getId()));
+
+        List<Article> articles = articleRepository.findByMemberIdIn(memberIds);
+
         List<MyPageArticleResponse> myPageArticleResponses = getMyPageArticleResponses(articles);
         return new MyPageArticlesResponse(myPageArticleResponses);
     }

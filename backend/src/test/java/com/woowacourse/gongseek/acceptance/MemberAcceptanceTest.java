@@ -1,12 +1,15 @@
 package com.woowacourse.gongseek.acceptance;
 
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.기명으로_게시물을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.익명으로_게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.기명으로_댓글을_등록한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
@@ -46,7 +49,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 내가_작성한_게시글들을_조회한다() {
+    void 내가_작성한_기명_게시글들을_조회한다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(레넌);
         게시물을_등록한다(tokenResponse);
@@ -65,6 +68,30 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(myPageArticlesResponse.getArticles()).size().isEqualTo(1)
+        );
+    }
+
+    @Test
+    void 내가_작성한_익명_기명_게시글을_모두_조회한다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다(레넌);
+        기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
+        익명으로_게시물을_등록한다(tokenResponse, Category.DISCUSSION);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .when()
+                .get("/api/members/me/articles")
+                .then().log().all()
+                .extract();
+        MyPageArticlesResponse myPageArticlesResponse = response.as(MyPageArticlesResponse.class);
+
+        // then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(myPageArticlesResponse.getArticles()).size().isEqualTo(2)
         );
     }
 

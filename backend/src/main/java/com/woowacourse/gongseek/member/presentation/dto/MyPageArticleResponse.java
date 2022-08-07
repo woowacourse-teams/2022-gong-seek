@@ -40,4 +40,17 @@ public class MyPageArticleResponse {
                 article.getViews()
         );
     }
+
+    @Override
+    public String toString() {
+        return "MyPageArticleResponse{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", category='" + category + '\'' +
+                ", commentCount=" + commentCount +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", views=" + views +
+                '}';
+    }
 }
