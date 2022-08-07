@@ -65,4 +65,8 @@ public class Vote {
             throw new InvalidVoteExpiryAtException();
         }
     }
+
+    public boolean isExpired(){
+        return expiryAt.isBefore(LocalDateTime.now());
+    }
 }

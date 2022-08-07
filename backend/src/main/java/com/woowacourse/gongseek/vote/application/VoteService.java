@@ -93,8 +93,7 @@ public class VoteService {
         VoteHistory voteHistory = voteHistoryRepository.findByVoteIdAndMemberId(foundVote.getId(),
                 appMember.getPayload()).orElse(null);
 
-        return new VoteResponse(foundVote, convertVoteItemResponse(voteItems), voteHistory,
-                isExpired(foundVote.getExpiryAt()));
+        return new VoteResponse(foundVote, convertVoteItemResponse(voteItems), voteHistory, foundVote.isExpired());
     }
 
     private Vote getVoteByArticleId(Long articleId) {
@@ -106,10 +105,6 @@ public class VoteService {
         return voteItems.stream()
                 .map(VoteItemResponse::new)
                 .collect(Collectors.toList());
-    }
-
-    private boolean isExpired(LocalDateTime expiryAt) {
-        return expiryAt.isBefore(LocalDateTime.now());
     }
 
     public void doVote(Long articleId, AppMember appMember, SelectVoteItemIdRequest selectVoteItemIdRequest) {
