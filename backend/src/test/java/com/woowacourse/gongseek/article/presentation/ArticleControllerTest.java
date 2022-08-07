@@ -103,6 +103,8 @@ class ArticleControllerTest {
 
     @Test
     void 로그인한_사용자일때_기명_게시물_단건_조회_API_문서화() throws Exception {
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+
         ArticleResponse response = new ArticleResponse(
                 "title",
                 new AuthorDto("rennon", "avatar.com"),
@@ -139,6 +141,8 @@ class ArticleControllerTest {
 
     @Test
     void 로그인한_사용자일때_익명_게시물_단건_조회_API_문서화() throws Exception {
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+
         ArticleResponse response = new ArticleResponse(
                 "title",
                 new AuthorDto("익명",
@@ -176,6 +180,8 @@ class ArticleControllerTest {
 
     @Test
     void 로그인_안한_사용자일때_기명_게시물_단건_조회_API_문서화() throws Exception {
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+
         ArticleResponse response = new ArticleResponse(
                 "title",
                 new AuthorDto("rennon", "avatar.com"),
@@ -188,6 +194,7 @@ class ArticleControllerTest {
         given(articleService.getOne(any(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/{id}", 1L)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                 .characterEncoding("UTF-8"));
 
         results.andExpect(status().isOk())
@@ -259,6 +266,8 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_전체_조회_문서화() throws Exception {
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+
         ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목",
                 new AuthorDto("기론", "프로필 이미지 url"),
                 "내용입니다", Category.QUESTION.getValue(), 3, 2, LocalDateTime.now());
@@ -274,6 +283,7 @@ class ArticleControllerTest {
         given(articleService.getAll(anyLong(), anyInt(), any(), any(), anyInt())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                 .param("category", Category.DISCUSSION.getValue())
                 .param("sort", "latest")
                 .param("cursorId", "1")
@@ -314,6 +324,8 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_검색_문서화() throws Exception {
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+
         ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목",
                 new AuthorDto("작성자1", "작성자1 이미지 url"),
                 "내용", Category.QUESTION.getValue(), 3, 2, LocalDateTime.now());
@@ -328,6 +340,7 @@ class ArticleControllerTest {
         given(articleService.search(anyLong(), anyInt(), anyString())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/search")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                 .param("cursorId", "1")
                 .param("pageSize", "10")
                 .param("searchText", "제목")
