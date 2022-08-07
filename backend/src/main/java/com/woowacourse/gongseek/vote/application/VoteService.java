@@ -97,6 +97,11 @@ public class VoteService {
                 isExpired(foundVote.getExpiryAt()));
     }
 
+    private Vote getVoteByArticleId(Long articleId) {
+        return voteRepository.findByArticleId(articleId)
+                .orElseThrow(ArticleNotFoundException::new);
+    }
+
     private List<VoteItemResponse> convertVoteItemResponse(List<VoteItem> voteItems) {
         return voteItems.stream()
                 .map(VoteItemResponse::new)
@@ -118,11 +123,6 @@ public class VoteService {
                         voteHistory -> updateVoteHistory(vote.getId(), member.getId(), selectedVoteItem, voteHistory),
                         () -> saveVoteHistory(vote, member, selectedVoteItem)
                 );
-    }
-
-    private Vote getVoteByArticleId(Long articleId) {
-        return voteRepository.findByArticleId(articleId)
-                .orElseThrow(ArticleNotFoundException::new);
     }
 
     private VoteItem getVoteItem(Long voteItemId) {
