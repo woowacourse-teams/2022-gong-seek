@@ -164,7 +164,7 @@ class ArticleRepositoryTest {
                 new Article("title2", "content2", Category.DISCUSSION, otherMember, false));
 
         List<Long> memberIds = List.of(member.getId(), otherMember.getId());
-        List<Article> articles = articleRepository.findByMemberIdIn(memberIds);
+        List<Article> articles = articleRepository.findAllByMemberIdIn(memberIds);
 
         assertThat(articles).containsExactly(firstArticle, secondArticle);
     }

@@ -5,6 +5,7 @@ import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.기명
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.익명으로_게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.기명으로_댓글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.익명으로_댓글을_등록한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -96,11 +97,12 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 내가_작성한_댓글들을_조회한다() {
+    void 내가_작성한_익명_기명_댓글들을_조회한다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(레넌);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(tokenResponse);
         기명으로_댓글을_등록한다(tokenResponse, 게시글번호);
+        익명으로_댓글을_등록한다(tokenResponse, 게시글번호);
 
         // when
         ExtractableResponse<Response> response = RestAssured
@@ -115,7 +117,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(myPageCommentsResponse.getComments()).size().isEqualTo(1)
+                () -> assertThat(myPageCommentsResponse.getComments()).size().isEqualTo(2)
         );
     }
 }

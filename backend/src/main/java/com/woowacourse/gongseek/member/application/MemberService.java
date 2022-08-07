@@ -44,17 +44,22 @@ public class MemberService {
     }
 
     public MyPageArticlesResponse getArticles(AppMember appMember) {
+        List<Long> memberIds = getMemberIdsIncludeCipherId(appMember);
+
+        List<Article> articles = articleRepository.findAllByMemberIdIn(memberIds);
+
+        List<MyPageArticleResponse> myPageArticleResponses = getMyPageArticleResponses(articles);
+        return new MyPageArticlesResponse(myPageArticleResponses);
+    }
+
+    private List<Long> getMemberIdsIncludeCipherId(AppMember appMember) {
         Member member = getMember(appMember);
         List<Long> memberIds = new ArrayList<>(List.of(member.getId()));
 
         String cipherId = encryptor.encrypt(String.valueOf(appMember.getPayload()));
         memberRepository.findByGithubId(cipherId)
                 .ifPresent(it -> memberIds.add(it.getId()));
-
-        List<Article> articles = articleRepository.findByMemberIdIn(memberIds);
-
-        List<MyPageArticleResponse> myPageArticleResponses = getMyPageArticleResponses(articles);
-        return new MyPageArticlesResponse(myPageArticleResponses);
+        return memberIds;
     }
 
     private List<MyPageArticleResponse> getMyPageArticleResponses(List<Article> articles) {
@@ -64,8 +69,10 @@ public class MemberService {
     }
 
     public MyPageCommentsResponse getComments(AppMember appMember) {
-        Member member = getMember(appMember);
-        List<Comment> comments = commentRepository.findAllByMemberId(member.getId());
+        List<Long> memberIds = getMemberIdsIncludeCipherId(appMember);
+
+        List<Comment> comments = commentRepository.findAllByMemberIdIn(memberIds);
+
         List<MyPageCommentResponse> myPageCommentResponses = getMyPageCommentResponses(comments);
         return new MyPageCommentsResponse(myPageCommentResponses);
     }
