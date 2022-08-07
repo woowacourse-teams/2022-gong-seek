@@ -71,8 +71,11 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 유저가_깃허브로_로그인을_하지_않고_기명으로_게시글을_등록할_수_없다() {
+        //given
+        TokenResponse 비회원 = new TokenResponse(null);
+
         //when
-        ErrorResponse response = 기명으로_게시물을_등록한다(new TokenResponse(null), Category.QUESTION).as(ErrorResponse.class);
+        ErrorResponse response = 기명으로_게시물을_등록한다(비회원, Category.QUESTION).as(ErrorResponse.class);
 
         //then
         assertAll(
@@ -83,8 +86,11 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 유저가_깃허브로_로그인을_하지_않고_익명으로_게시글을_등록할_수_없다() {
+        //given
+        TokenResponse 비회원 = new TokenResponse(null);
+
         //when
-        ErrorResponse response = 익명으로_게시물을_등록한다(new TokenResponse(null), Category.QUESTION).as(ErrorResponse.class);
+        ErrorResponse response = 익명으로_게시물을_등록한다(비회원, Category.QUESTION).as(ErrorResponse.class);
 
         //then
         assertAll(
