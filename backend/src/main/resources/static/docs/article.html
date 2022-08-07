@@ -502,13 +502,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/articles HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer token
-Content-Length: 79
+Content-Length: 100
 Host: localhost:8080
 
 {
   "title" : "title",
   "content" : "content",
-  "category" : "question"
+  "category" : "question",
+  "isAnonymous" : false
 }</code></pre>
 </div>
 </div>
@@ -564,6 +565,11 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">카테고리</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isAnonymous</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">익명 여부</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -577,7 +583,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 16
+Content-Length: 14
 
 {
   "id" : 1
@@ -638,6 +644,8 @@ Host: localhost:8080</code></pre>
 </div>
 <div class="sect2">
 <h3 id="_response_2"><a class="link" href="#_response_2">Response</a></h3>
+<div class="sect3">
+<h4 id="_기명_게시물_조회"><a class="link" href="#_기명_게시물_조회">기명 게시물 조회</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -645,7 +653,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 242
+Content-Length: 231
 
 {
   "title" : "title",
@@ -655,8 +663,34 @@ Content-Length: 242
   },
   "content" : "content",
   "views" : 1,
-  "createdAt" : "2022-08-01T20:27",
-  "updatedAt" : "2022-08-01T20:27",
+  "createdAt" : "2022-08-07T18:02",
+  "updatedAt" : "2022-08-07T18:02",
+  "isAuthor" : false
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_익명_게시물_조회"><a class="link" href="#_익명_게시물_조회">익명 게시물 조회</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 328
+
+{
+  "title" : "title",
+  "author" : {
+    "name" : "익명",
+    "avatarUrl" : "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"
+  },
+  "content" : "content",
+  "views" : 1,
+  "createdAt" : "2022-08-07T18:02",
+  "updatedAt" : "2022-08-07T18:02",
   "isAuthor" : false
 }</code></pre>
 </div>
@@ -720,6 +754,7 @@ Content-Length: 242
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
 <h2 id="_게시물_수정"><a class="link" href="#_게시물_수정">게시물 수정</a></h2>
 <div class="sectionbody">
@@ -733,7 +768,7 @@ Content-Length: 242
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/articles/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer token
-Content-Length: 83
+Content-Length: 80
 Host: localhost:8080
 
 {
@@ -770,7 +805,7 @@ Host: localhost:8080
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/articles/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer token
-Content-Length: 83
+Content-Length: 80
 Host: localhost:8080
 
 {
@@ -816,7 +851,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 16
+Content-Length: 14
 
 {
   "id" : 1
@@ -960,7 +995,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 663
+Content-Length: 634
 
 {
   "articles" : [ {
@@ -974,7 +1009,7 @@ Content-Length: 663
     "category" : "question",
     "commentCount" : 3,
     "views" : 2,
-    "createdAt" : "2022-08-01T20:27:09.4411717"
+    "createdAt" : "2022-08-07T18:02:19.561148"
   }, {
     "id" : 2,
     "title" : "제목2",
@@ -986,7 +1021,7 @@ Content-Length: 663
     "category" : "discussion",
     "commentCount" : 10,
     "views" : 5,
-    "createdAt" : "2022-08-01T20:27:09.4411717"
+    "createdAt" : "2022-08-07T18:02:19.561203"
   } ],
   "hasNext" : false
 }</code></pre>
@@ -1115,7 +1150,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 650
+Content-Length: 619
 
 {
   "articles" : [ {
@@ -1129,7 +1164,7 @@ Content-Length: 650
     "category" : "question",
     "commentCount" : 3,
     "views" : 2,
-    "createdAt" : "2022-08-01T20:27:08.6877197"
+    "createdAt" : "2022-08-07T18:02:19.2347"
   }, {
     "id" : 2,
     "title" : "제목",
@@ -1141,7 +1176,7 @@ Content-Length: 650
     "category" : "discussion",
     "commentCount" : 10,
     "views" : 5,
-    "createdAt" : "2022-08-01T20:27:08.6877197"
+    "createdAt" : "2022-08-07T18:02:19.234735"
   } ],
   "hasNext" : false
 }</code></pre>
@@ -1220,7 +1255,7 @@ Content-Length: 650
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-31 20:14:50 +0900
+Last updated 2022-08-07 16:13:29 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
