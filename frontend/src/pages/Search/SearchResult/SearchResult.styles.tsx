@@ -19,7 +19,18 @@ export const SearchResultBox = styled.div`
 	flex-direction: column;
 	width: 100%;
 
+
 	justify-content: center;
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_020};
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: 90%;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+		place-items: center;
+		margin: 0 auto;
+		gap: ${({ theme }) => theme.size.SIZE_022};
+		margin-top: ${({ theme }) => theme.size.SIZE_040};
+	}
 `;

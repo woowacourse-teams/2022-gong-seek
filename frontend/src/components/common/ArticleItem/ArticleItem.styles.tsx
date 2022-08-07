@@ -35,6 +35,11 @@ export const Container = styled.div`
 
 		cursor: pointer;
 	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		height: ${({ theme }) => theme.size.SIZE_300};
+		width: ${({ theme }) => theme.size.SIZE_260};
+	}
 `;
 
 export const ArticleItemTitle = styled.h2`
