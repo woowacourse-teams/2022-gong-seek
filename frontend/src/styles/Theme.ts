@@ -1,4 +1,5 @@
 const colors = {
+	PURPLE_100: '#EBB3FF',
 	PURPLE_500: '#5E0080',
 	PURPLE_400: 'rgba(94, 0, 128, 0.75)',
 	RED_600: '#FF0063',
