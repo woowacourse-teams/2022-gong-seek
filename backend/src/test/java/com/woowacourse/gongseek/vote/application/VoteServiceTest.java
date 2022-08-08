@@ -13,6 +13,7 @@ import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.vote.domain.Vote;
 import com.woowacourse.gongseek.vote.domain.VoteItem;
 import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
@@ -171,7 +172,7 @@ class VoteServiceTest {
     void 비회원이_투표를_하면_예외를_발생한다() {
         assertThatThrownBy(() -> voteService.doVote(discussionArticle.getId(), new GuestMember(),
                 new SelectVoteItemIdRequest(voteItems.get(0).getId())))
-                .isExactlyInstanceOf(NoAuthorizationException.class)
-                .hasMessage("권한이 없습니다.");
+                .isExactlyInstanceOf(MemberNotFoundException.class)
+                .hasMessage("회원이 존재하지 않습니다.");
     }
 }

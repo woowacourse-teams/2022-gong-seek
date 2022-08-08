@@ -44,8 +44,8 @@ public class VoteService {
     private final VoteHistoryRepository voteHistoryRepository;
 
     public VoteCreateResponse create(AppMember appMember, Long articleId, VoteCreateRequest voteCreateRequest) {
-        validateGuest(appMember);
         Member member = getMember(appMember);
+
         Article article = getArticle(articleId);
         validateAuthor(member, article);
         validateCategory(article);
@@ -54,12 +54,6 @@ public class VoteService {
         Set<VoteItem> voteItems = VoteItems.of(voteCreateRequest.getItems(), vote).getVoteItems();
         voteItemRepository.saveAll(voteItems);
         return new VoteCreateResponse(vote);
-    }
-
-    private void validateGuest(AppMember appMember) {
-        if (appMember.isGuest()) {
-            throw new NoAuthorizationException();
-        }
     }
 
     private Member getMember(AppMember appMember) {
@@ -84,6 +78,7 @@ public class VoteService {
         }
     }
 
+    @Transactional(readOnly = true)
     public VoteResponse getOne(Long articleId, AppMember appMember) {
         if (!articleRepository.existsById(articleId)) {
             throw new ArticleNotFoundException();
@@ -116,7 +111,6 @@ public class VoteService {
     }
 
     public void doVote(Long articleId, AppMember appMember, SelectVoteItemIdRequest selectVoteItemIdRequest) {
-        validateGuest(appMember);
         Vote vote = getVoteByArticleId(articleId);
         Member member = getMember(appMember);
         VoteItem selectedVoteItem = getVoteItem(selectVoteItemIdRequest.getVoteItemId());
