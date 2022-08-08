@@ -13,7 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
-    private static final String ANONYMOUS_ACCESS_TOKEN = "Bearer null";
+    private static final String GUEST_ACCESS_TOKEN = "Bearer null";
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -27,7 +27,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        if (isAnonymous(request)) {
+        if (isGuest(request)) {
             return true;
         }
 
@@ -38,8 +38,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    private boolean isAnonymous(HttpServletRequest request) {
-        return request.getHeader(HttpHeaders.AUTHORIZATION).equals(ANONYMOUS_ACCESS_TOKEN);
+    private boolean isGuest(HttpServletRequest request) {
+        return request.getHeader(HttpHeaders.AUTHORIZATION).equals(GUEST_ACCESS_TOKEN);
     }
 
     private void validateToken(String token) {
