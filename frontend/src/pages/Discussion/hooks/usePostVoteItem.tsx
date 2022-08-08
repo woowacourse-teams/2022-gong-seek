@@ -3,15 +3,14 @@ import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 
 import { checkVoteItems } from '@/api/vote';
+import CustomError from '@/components/helper/CustomError';
 import { queryClient } from '@/index';
 
-import CustomError from '@/components/helper/CustomError';
-
-const usePostVoteItem = () => {
+const usePostVoteItem = (articleId: string) => {
 	const { isLoading, isError, error, mutate, isSuccess } = useMutation<
 		unknown,
 		AxiosError<{ errorCode: string; message: string }>,
-		{ articleId: string; voteId: string }
+		{ articleId: string; voteItemId: string }
 	>(checkVoteItems);
 
 	useEffect(() => {
@@ -27,7 +26,7 @@ const usePostVoteItem = () => {
 	}, [isError]);
 
 	const onChangeRadio = (articleId: string, idx: number) => {
-		mutate({ articleId, voteId: String(idx) });
+		mutate({ articleId, voteItemId: String(idx) });
 	};
 
 	return { onChangeRadio, isLoading };
