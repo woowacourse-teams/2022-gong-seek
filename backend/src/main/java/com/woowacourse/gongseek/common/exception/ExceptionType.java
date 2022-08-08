@@ -21,6 +21,7 @@ import com.woowacourse.gongseek.vote.exception.AlreadyVoteSameItemException;
 import com.woowacourse.gongseek.vote.exception.CannotCreateVoteException;
 import com.woowacourse.gongseek.vote.exception.InvalidVoteAmountException;
 import com.woowacourse.gongseek.vote.exception.InvalidVoteExpiryAtException;
+import com.woowacourse.gongseek.vote.exception.InvalidVoteItemCountException;
 import com.woowacourse.gongseek.vote.exception.VoteItemNullOrEmptyException;
 import com.woowacourse.gongseek.vote.exception.VoteItemTooLongException;
 import com.woowacourse.gongseek.vote.exception.VoteNotFoundException;
@@ -68,11 +69,12 @@ public enum ExceptionType {
     VOTE_ITEM_NOT_FOUND_EXCEPTION("5007", "투표 항목이 존재하지 않습니다.", VoteItemNotFoundException.class),
     VOTE_HISTORY_NOT_FOUND_EXCEPTION("5008", "투표 내역이 존재하지 않습니다.", VoteHistoryNotFoundException.class),
     ALREADY_VOTE_SAME_ITEM_EXCEPTION("5009", "이미 같은 항목에 투표했습니다.", AlreadyVoteSameItemException.class),
+    INVALID_VOTE_ITEM_COUNT_EXCEPTION("5010", "투표 항목 수는 2이상 5이하여야 합니다.", InvalidVoteItemCountException.class),
     ;
 
-    private String errorCode;
-    private String message;
-    private Class<? extends ApplicationException> type;
+    private final String errorCode;
+    private final String message;
+    private final Class<? extends ApplicationException> type;
 
     public static ExceptionType from(Class<?> classType) {
         return Arrays.stream(values())

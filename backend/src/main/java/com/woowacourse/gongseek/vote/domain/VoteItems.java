@@ -1,11 +1,10 @@
 package com.woowacourse.gongseek.vote.domain;
 
+import com.woowacourse.gongseek.vote.exception.InvalidVoteItemCountException;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
 public class VoteItems {
 
@@ -17,6 +16,17 @@ public class VoteItems {
                 .collect(Collectors.toSet());
 
         return new VoteItems(collect);
+    }
+
+    public VoteItems(Set<VoteItem> voteItems) {
+        validateSize(voteItems);
+        this.voteItems = voteItems;
+    }
+
+    private void validateSize(Set<VoteItem> voteItems) {
+        if (voteItems.size() < 2 || voteItems.size() > 5) {
+            throw new InvalidVoteItemCountException();
+        }
     }
 
 }
