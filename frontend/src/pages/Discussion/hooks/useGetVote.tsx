@@ -5,11 +5,12 @@ import { useQuery } from 'react-query';
 import { getVoteItems } from '@/api/vote';
 import { VoteItems } from '@/api/vote';
 import CustomError from '@/components/helper/CustomError';
+import { ErrorMessage } from '@/constants/ErrorMessage';
 
 const useVote = (articleId: string) => {
 	const { data, isLoading, isError, isSuccess, error } = useQuery<
 		VoteItems[],
-		AxiosError<{ errorCode: string; message: string }>
+		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(['vote', `vote${articleId}`], () => getVoteItems(articleId));
 	const [totalCount, setTotalCount] = useState(0);
 
@@ -21,7 +22,13 @@ const useVote = (articleId: string) => {
 
 	useEffect(() => {
 		if (isError) {
-			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
+			if (!error.response) {
+				return;
+			}
+			throw new CustomError(
+				error.response.data.errorCode,
+				ErrorMessage[error.response.data.errorCode],
+			);
 		}
 	}, [isError]);
 

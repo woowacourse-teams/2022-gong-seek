@@ -4,17 +4,24 @@ import { useQuery } from 'react-query';
 
 import { getComments } from '@/api/comments';
 import CustomError from '@/components/helper/CustomError';
+import { ErrorMessage } from '@/constants/ErrorMessage';
 import { CommentType } from '@/types/commentResponse';
 
 const useGetDetailComment = (id: string) => {
 	const { data, isError, isSuccess, isLoading, isIdle, error } = useQuery<
 		{ comments: CommentType[] },
-		AxiosError<{ errorCode: string; message: string }>
+		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('comments', () => getComments(id));
 
 	useEffect(() => {
 		if (isError) {
-			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
+			if (!error.response) {
+				return;
+			}
+			throw new CustomError(
+				error.response.data.errorCode,
+				ErrorMessage[error.response.data.errorCode],
+			);
 		}
 	}, [isError]);
 
