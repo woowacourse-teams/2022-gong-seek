@@ -16,4 +16,12 @@ public class Likes {
     public Likes() {
         this.values = new ArrayList<>();
     }
+
+    public void add(Like like) {
+        values.add(like);
+    }
+
+    public void remove(Like like) {
+        values.remove(like);
+    }
 }

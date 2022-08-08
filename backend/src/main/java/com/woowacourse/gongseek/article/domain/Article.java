@@ -88,6 +88,14 @@ public class Article {
         views.addValue();
     }
 
+    public void like(Like like) {
+        likes.add(like);
+    }
+
+    public void unlike(Like like) {
+        likes.remove(like);
+    }
+
     public void update(String title, String content) {
         this.title = new Title(title);
         this.content = new Content(content);

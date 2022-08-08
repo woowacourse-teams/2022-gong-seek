@@ -29,8 +29,9 @@ public class LikeService {
         Member member = getMember(appMember);
         Article article = getArticle(articleId);
 
-        likeRepository.findByArticleIdAndMemberId(article.getId(), member.getId())
-                .orElseGet(() -> likeRepository.save(new Like(article, member)));
+        if (!likeRepository.existsByArticleIdAndMemberId(article.getId(), member.getId())) {
+            article.like(new Like(article, member));
+        }
         return new LikeResponse(true, article.getLikes().size());
     }
 
@@ -56,7 +57,7 @@ public class LikeService {
         Article article = getArticle(articleId);
 
         likeRepository.findByArticleIdAndMemberId(article.getId(), member.getId())
-                .ifPresent(like -> article.getLikes().remove(like));
+                .ifPresent(article::unlike);
         return new LikeResponse(false, article.getLikes().size());
     }
 }
