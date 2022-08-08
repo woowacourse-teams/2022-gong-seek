@@ -37,16 +37,4 @@ public class MyPageCommentResponse {
                 comment.getUpdatedAt()
         );
     }
-
-    @Override
-    public String toString() {
-        return "MyPageCommentResponse{" +
-                "id=" + id +
-                ", content='" + content + '\'' +
-                ", articleId=" + articleId +
-                ", category='" + category + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 }

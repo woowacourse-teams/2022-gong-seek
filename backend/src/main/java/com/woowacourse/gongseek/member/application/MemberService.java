@@ -26,11 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-
     private final ArticleRepository articleRepository;
-
     private final CommentRepository commentRepository;
-
     private final Encryptor encryptor;
 
     public MemberDto getOne(AppMember appMember) {
@@ -56,7 +53,7 @@ public class MemberService {
         Member member = getMember(appMember);
         List<Long> memberIds = new ArrayList<>(List.of(member.getId()));
 
-        String cipherId = encryptor.encrypt(String.valueOf(appMember.getPayload()));
+        String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
         memberRepository.findByGithubId(cipherId)
                 .ifPresent(it -> memberIds.add(it.getId()));
         return memberIds;
