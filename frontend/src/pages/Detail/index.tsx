@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import ArticleContent from '@/components/common/ArticleContent/ArticleContent';
 import Comment from '@/components/common/Comment/Comment';
 import CommentInputModal from '@/components/common/CommentInputModal/CommentInputModal';
 import * as S from '@/pages/Detail/index.styles';
+import { getUserIsLogin } from '@/store/userState';
 import { ArticleType } from '@/types/articleResponse';
 import { CommentType } from '@/types/commentResponse';
 
@@ -17,10 +19,25 @@ interface DetailProps {
 
 const Detail = ({ children, article, commentList, articleId }: DetailProps) => {
 	const [isCommentOpen, setIsCommentOpen] = useState(false);
+	const isLogin = useRecoilValue(getUserIsLogin);
+	const navigate = useNavigate();
+
 	const { id } = useParams();
 	if (typeof id === 'undefined') {
 		throw new Error('글을 찾지 못하였습니다.');
 	}
+
+	const onClickCommentButton = () => {
+		if (isLogin) {
+			setIsCommentOpen(true);
+			return;
+		}
+
+		if (window.confirm('로그인이 필요한 서비스입니다. 로그인 창으로 이동하시겠습니까?')) {
+			navigate('/login');
+		}
+	};
+
 	return (
 		<S.Container>
 			<ArticleContent
@@ -34,11 +51,11 @@ const Detail = ({ children, article, commentList, articleId }: DetailProps) => {
 				<S.CommentInputBox>
 					<S.CommentInput
 						aria-label="댓글을 입력하는 창으로 이동하는 링크 입니다"
-						onClick={() => setIsCommentOpen(true)}
+						onClick={onClickCommentButton}
 					/>
 					<S.CreateCommentButton
 						aria-label="댓글을 입력하는 창으로 이동하는 링크입니다."
-						onClick={() => setIsCommentOpen(true)}
+						onClick={onClickCommentButton}
 					/>
 				</S.CommentInputBox>
 
