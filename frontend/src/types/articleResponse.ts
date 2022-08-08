@@ -11,6 +11,7 @@ export interface CommonArticleType {
 	commentCount: number;
 	createdAt: string;
 	views: number;
+	hashtag: string[];
 }
 
 export interface ArticleType extends CommonArticleType {
