@@ -144,7 +144,7 @@ public class ArticleService {
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
         Article article = checkAuthorization(appMember, id);
-        article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent(), LocalDateTime.now());
+        article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent());
 
         return new ArticleUpdateResponse(article);
     }

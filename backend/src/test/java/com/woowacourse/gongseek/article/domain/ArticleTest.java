@@ -53,13 +53,12 @@ class ArticleTest {
         String updatedTitle = "updatedTitle";
         String updatedContent = "수정된 내용입니다~~";
 
-        LocalDateTime now = LocalDateTime.now();
-        article.update(updatedTitle, updatedContent, now);
+        article.update(updatedTitle, updatedContent);
 
         assertAll(
                 () -> assertThat(article.getTitle()).isEqualTo(updatedTitle),
-                () -> assertThat(article.getContent()).isEqualTo(updatedContent),
-                () -> assertThat(article.getUpdatedAt()).isEqualTo(now)
+                () -> assertThat(article.getContent()).isEqualTo(updatedContent)
         );
+
     }
 }
