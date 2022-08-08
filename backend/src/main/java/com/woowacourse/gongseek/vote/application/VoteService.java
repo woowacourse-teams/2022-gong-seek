@@ -25,6 +25,7 @@ import com.woowacourse.gongseek.vote.presentation.dto.VoteItemResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -93,7 +94,14 @@ public class VoteService {
         VoteHistory voteHistory = voteHistoryRepository.findByVoteIdAndMemberId(foundVote.getId(),
                 appMember.getPayload()).orElse(null);
 
-        return new VoteResponse(foundVote, convertVoteItemResponse(voteItems), voteHistory, foundVote.isExpired());
+        return new VoteResponse(foundVote, convertVoteItemResponse(voteItems), getVotedItemIdOrNull(voteHistory), foundVote.isExpired());
+    }
+
+    private Long getVotedItemIdOrNull(VoteHistory voteHistory) {
+        if (Objects.isNull(voteHistory)) {
+            return null;
+        }
+        return voteHistory.getVoteItemId();
     }
 
     private Vote getVoteByArticleId(Long articleId) {

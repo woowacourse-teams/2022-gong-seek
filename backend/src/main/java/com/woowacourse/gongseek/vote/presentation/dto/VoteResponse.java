@@ -23,17 +23,10 @@ public class VoteResponse {
 
     private boolean expired;
 
-    public VoteResponse(Vote vote, List<VoteItemResponse> voteItems, VoteHistory voteHistory, boolean expired) {
+    public VoteResponse(Vote vote, List<VoteItemResponse> voteItems, Long votedItemId, boolean expired) {
         this.articleId = vote.getArticle().getId();
         this.voteItems = voteItems;
-        this.votedItemId = getVotedItemIdOrNull(voteHistory);
+        this.votedItemId = votedItemId;
         this.expired = expired;
-    }
-
-    private Long getVotedItemIdOrNull(VoteHistory voteHistory) {
-        if (Objects.isNull(voteHistory)) {
-            return null;
-        }
-        return voteHistory.getVoteItemId();
     }
 }
