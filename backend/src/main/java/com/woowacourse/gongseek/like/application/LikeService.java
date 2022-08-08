@@ -32,7 +32,7 @@ public class LikeService {
         if (!likeRepository.existsByArticleIdAndMemberId(article.getId(), member.getId())) {
             article.like(new Like(article, member));
         }
-        return new LikeResponse(true, article.getLikes().size());
+        return new LikeResponse(true, article.getLikeCount());
     }
 
     private void validateGuest(AppMember appMember) {
@@ -58,6 +58,6 @@ public class LikeService {
 
         likeRepository.findByArticleIdAndMemberId(article.getId(), member.getId())
                 .ifPresent(article::unlike);
-        return new LikeResponse(false, article.getLikes().size());
+        return new LikeResponse(false, article.getLikeCount());
     }
 }

@@ -4,7 +4,6 @@ import com.woowacourse.gongseek.like.domain.Like;
 import com.woowacourse.gongseek.like.domain.Likes;
 import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -113,7 +112,7 @@ public class Article {
         return views.getValue();
     }
 
-    public List<Like> getLikes() {
-        return likes.getValues();
+    public int getLikeCount() {
+        return likes.getLikeCount();
     }
 }

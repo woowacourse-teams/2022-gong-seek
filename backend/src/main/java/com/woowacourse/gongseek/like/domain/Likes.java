@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
-import lombok.Getter;
 
 @Embeddable
-@Getter
 public class Likes {
 
     @OneToMany(mappedBy = "article", orphanRemoval = true)
@@ -23,5 +21,9 @@ public class Likes {
 
     public void remove(Like like) {
         values.remove(like);
+    }
+
+    public int getLikeCount() {
+        return values.size();
     }
 }
