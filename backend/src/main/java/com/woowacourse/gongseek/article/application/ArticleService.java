@@ -72,9 +72,7 @@ public class ArticleService {
         Article article = getArticle(id);
         article.addViews();
         boolean hasVote = voteRepository.existsByArticleId(article.getId());
-        if (appMember.isGuest()) {
-            return new ArticleResponse(article, false, hasVote);
-        }
+
         return checkGuest(article, appMember, hasVote);
     }
 
