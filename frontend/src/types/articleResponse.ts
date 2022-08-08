@@ -11,12 +11,12 @@ export interface CommonArticleType {
 	commentCount: number;
 	createdAt: string;
 	views: number;
+	isLike: boolean;
+	like: number;
 }
 
 export interface ArticleType extends CommonArticleType {
 	isAuthor: boolean;
-	views: number;
-	likeCount: number;
 }
 
 export interface AllArticleResponse {
