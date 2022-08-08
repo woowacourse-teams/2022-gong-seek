@@ -57,8 +57,16 @@ export const getAllArticle = async ({
 	cursorViews: string;
 }) => {
 	const currentSort = sort === '최신순' ? 'latest' : 'views';
+	const accessToken = localStorage.getItem('accessToken');
+
 	const { data } = await axios.get<AllArticleResponse>(
 		`${HOME_URL}/api/articles?category=${category}&sort=${currentSort}&cursorId=${cursorId}&cursorViews=${cursorViews}&pageSize=5`,
+		{
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				Authorization: `Bearer ${accessToken}`,
+			},
+		},
 	);
 
 	return {
