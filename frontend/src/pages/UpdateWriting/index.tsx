@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 
+import HashTag from '@/components/common/HashTag/HashTag';
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import usePostWritingArticle from '@/pages/UpdateWriting/hooks/usePostUpdateWritingArticle';
@@ -14,8 +15,16 @@ const UpdateWriting = () => {
 		throw new Error('id와  category 값을 가지고 오지 못하였습니다');
 	}
 
-	const { isLoading, title, setTitle, tempArticle, content, handleUpdateButtonClick } =
-		usePostWritingArticle();
+	const {
+		isLoading,
+		title,
+		setTitle,
+		tempArticle,
+		content,
+		hashTag,
+		setHashTag,
+		handleUpdateButtonClick,
+	} = usePostWritingArticle();
 
 	if (isLoading) {
 		return <Loading />;
@@ -44,9 +53,7 @@ const UpdateWriting = () => {
 						<S.SelectorButton />
 					</S.CategorySelectorBox>
 				</PageLayout>
-				<PageLayout width="100%" height="fit-content">
-					<S.HashTagInput type="text" placeholder="해쉬태그를 입력해주세요" />
-				</PageLayout>
+				<HashTag hashTags={hashTag} setHashTags={setHashTag} />
 			</S.SelectorBox>
 
 			<S.Content>

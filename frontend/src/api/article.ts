@@ -84,11 +84,16 @@ export const postArticle = (article: { id: string; title: string; content: strin
 	);
 };
 
-export const putArticle = (article: { id: string; title: string; content: string }) => {
+export const putArticle = (article: {
+	id: string;
+	title: string;
+	content: string;
+	hashTag: string[];
+}) => {
 	const accessToken = localStorage.getItem('accessToken');
 	return axios.put<{ id: number; category: string }>(
 		`${HOME_URL}/api/articles/${article.id}`,
-		{ title: article.title, content: article.content },
+		{ title: article.title, content: article.content, hashTag: article.hashTag },
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
