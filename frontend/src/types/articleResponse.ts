@@ -16,7 +16,6 @@ export interface CommonArticleType {
 
 export interface ArticleType extends CommonArticleType {
 	isAuthor: boolean;
-	views: number;
 	likeCount: number;
 }
 
