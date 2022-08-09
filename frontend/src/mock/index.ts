@@ -4,6 +4,4 @@ import { LoginHandler } from '@/mock/login';
 import { MyPageHandler } from '@/mock/myPage';
 import { SearchHandler } from '@/mock/search';
 
-// import { VoteHandler } from '@/mock/vote';
-
 export { LoginHandler, ArticleHandler, CommentHandler, MyPageHandler, SearchHandler };
