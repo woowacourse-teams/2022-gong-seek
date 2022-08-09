@@ -90,9 +90,19 @@ public class ArticleService {
 
     public ArticleResponse getOne(AppMember appMember, Long id) {
         Article article = getArticle(id);
+
+        List<String> tagNames = getTagNames(article);
+
         article.addViews();
 
-        return checkGuest(article, appMember);
+        return checkGuest(article, tagNames, appMember);
+    }
+
+    private List<String> getTagNames(Article article) {
+        List<ArticleTag> articleTags = articleTagRepository.findAllByArticleId(article.getId());
+        return articleTags.stream()
+                .map(articleTag -> articleTag.getTag().getName())
+                .collect(Collectors.toList());
     }
 
     private Article getArticle(Long id) {
@@ -100,19 +110,19 @@ public class ArticleService {
                 .orElseThrow(ArticleNotFoundException::new);
     }
 
-    private ArticleResponse checkGuest(Article article, AppMember appMember) {
+    private ArticleResponse checkGuest(Article article, List<String> tagNames, AppMember appMember) {
         if (appMember.isGuest()) {
-            return new ArticleResponse(article, false);
+            return new ArticleResponse(article, tagNames, false);
         }
-        return checkAuthor(article, getMember(appMember));
+        return checkAuthor(article, tagNames, getMember(appMember));
     }
 
-    private ArticleResponse checkAuthor(Article article, Member member) {
+    private ArticleResponse checkAuthor(Article article, List<String> tagNames, Member member) {
         if (article.isAnonymous()) {
             String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
-            return new ArticleResponse(article, article.isAnonymousAuthor(cipherId));
+            return new ArticleResponse(article, tagNames, article.isAnonymousAuthor(cipherId));
         }
-        return new ArticleResponse(article, article.isAuthor(member));
+        return new ArticleResponse(article, tagNames, article.isAuthor(member));
     }
 
     @Transactional(readOnly = true)
@@ -127,8 +137,13 @@ public class ArticleService {
                                                       String sortType, int pageSize) {
         return articleRepository.findAllByPage(cursorId, cursorViews, category, sortType, pageSize)
                 .stream()
-                .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))
+                .map(this::getArticlePreviewResponse)
                 .collect(Collectors.toList());
+    }
+
+    private ArticlePreviewResponse getArticlePreviewResponse(Article article) {
+        List<String> tagNames = getTagNames(article);
+        return ArticlePreviewResponse.of(article, tagNames, getCommentCount(article));
     }
 
     private int getCommentCount(Article article) {
@@ -155,7 +170,7 @@ public class ArticleService {
     private List<ArticlePreviewResponse> searchByText(Long cursorId, int pageSize, String searchText) {
         return articleRepository.searchByContainingText(cursorId, pageSize, searchText)
                 .stream()
-                .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))
+                .map(this::getArticlePreviewResponse)
                 .collect(Collectors.toList());
     }
 

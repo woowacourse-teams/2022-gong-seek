@@ -120,6 +120,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
+                                        List.of("SPRING"),
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         false,
@@ -152,6 +153,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
+                                        List.of("SPRING"),
                                         anonymousAuthor,
                                         "content",
                                         false,
@@ -184,6 +186,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
+                                        List.of("SPRING"),
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         true,
@@ -216,6 +219,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
+                                        List.of("SPRING"),
                                         anonymousAuthor,
                                         "content",
                                         true,
@@ -249,6 +253,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .isEqualTo(
                                 new ArticleResponse(
                                         "title",
+                                        List.of("SPRING"),
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         true,
@@ -440,6 +445,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                 new ArticlePreviewResponse(
                                         10L,
                                         "title",
+                                        List.of("SPRING"),
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         "discussion",
@@ -482,6 +488,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                 new ArticlePreviewResponse(
                                         16L,
                                         "title",
+                                        List.of("SPRING"),
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         "question",
@@ -524,6 +531,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                 new ArticlePreviewResponse(
                                         1L,
                                         "title",
+                                        List.of("SPRING"),
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         "discussion",

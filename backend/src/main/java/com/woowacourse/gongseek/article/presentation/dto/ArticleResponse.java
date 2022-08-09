@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +18,8 @@ import lombok.experimental.Accessors;
 public class ArticleResponse {
 
     private String title;
+
+    private List<String> hashtag;
 
     private AuthorDto author;
 
@@ -34,9 +37,10 @@ public class ArticleResponse {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime updatedAt;
 
-    public ArticleResponse(Article article, AuthorDto authorDto, boolean isAuthor) {
+    public ArticleResponse(Article article, List<String> hashtag, AuthorDto authorDto, boolean isAuthor) {
         this(
                 article.getTitle(),
+                hashtag,
                 authorDto,
                 article.getContent(),
                 isAuthor,
@@ -46,9 +50,10 @@ public class ArticleResponse {
         );
     }
 
-    public ArticleResponse(Article article, boolean isAuthor) {
+    public ArticleResponse(Article article, List<String> hashTag, boolean isAuthor) {
         this(
                 article,
+                hashTag,
                 new AuthorDto(article.getMember()),
                 isAuthor
         );
