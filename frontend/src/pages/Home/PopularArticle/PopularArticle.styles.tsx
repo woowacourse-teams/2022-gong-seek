@@ -180,3 +180,8 @@ export const CommentIcon = styled(FaRegCommentDots)`
 
 	color: ${({ theme }) => theme.colors.BLACK_600};
 `;
+
+export const EmptyText = styled.div`
+	margin: 0 auto;
+	font-size: ${({ theme }) => theme.size.SIZE_018};
+`;

@@ -1,9 +1,7 @@
 import Loading from '@/components/common/Loading/Loading';
-
-import { convertIdxToArticleColorKey } from '@/utils/converter';
-import useGetPopularArticles from '@/pages/Home/hooks/useGetPopularArticles';
-
 import * as S from '@/pages/Home/PopularArticle/PopularArticle.styles';
+import useGetPopularArticles from '@/pages/Home/hooks/useGetPopularArticles';
+import { convertIdxToArticleColorKey } from '@/utils/converter';
 
 const PopularArticle = () => {
 	const {
@@ -30,6 +28,10 @@ const PopularArticle = () => {
 		}
 		return convertIdxToArticleColorKey(index);
 	};
+
+	if (!data?.articles.length) {
+		return <S.EmptyText>텅 비었어요..!</S.EmptyText>;
+	}
 
 	return data ? (
 		<S.Container>
