@@ -21,12 +21,10 @@ import com.woowacourse.gongseek.vote.exception.VoteItemNotFoundException;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateResponse;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteItemResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,19 +85,13 @@ public class VoteService {
 
         VoteHistory voteHistory = voteHistoryRepository.findByVoteIdAndMemberId(foundVote.getId(),
                 appMember.getPayload()).orElse(null);
-
-        return new VoteResponse(foundVote.getArticle().getId(), convertVoteItemResponse(voteItems), getVotedItemIdOrNull(voteHistory), foundVote.isExpired());
+        return VoteResponse.of(foundVote.getArticle().getId(), voteItems, getVotedItemIdOrNull(voteHistory),
+                foundVote.isExpired());
     }
 
     private Vote getVoteByArticleId(Long articleId) {
         return voteRepository.findByArticleId(articleId)
                 .orElseThrow(ArticleNotFoundException::new);
-    }
-
-    private List<VoteItemResponse> convertVoteItemResponse(List<VoteItem> voteItems) {
-        return voteItems.stream()
-                .map(VoteItemResponse::new)
-                .collect(Collectors.toList());
     }
 
     private Long getVotedItemIdOrNull(VoteHistory voteHistory) {
