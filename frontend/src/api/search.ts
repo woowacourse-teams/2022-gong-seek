@@ -10,8 +10,15 @@ export const getSearchResult = async ({
 	target: string;
 	cursorId: string;
 }) => {
+	const accessToken = localStorage.getItem('accessToken');
 	const { data } = await axios.get<SearchResultType>(
 		`${HOME_URL}/api/articles/search?searchText=${target}&cursorId=${cursorId}&pageSize=5`,
+		{
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				Authorization: `Bearer ${accessToken}`,
+			},
+		},
 	);
 
 	return {
