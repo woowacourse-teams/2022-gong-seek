@@ -1,0 +1,47 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Comment
+---
+= 기본 API
+
+== 추천
+
+`POST /api/articles/1/like`
+
+=== Request
+
+include::{snippets}/like-article/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/like-article/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/like-article/http-response.adoc[]
+include::{snippets}/like-article/response-fields.adoc[]
+
+== 추천 취소
+
+`DELETE /api/articles/1/unlike`
+
+=== Request
+
+include::{snippets}/unlike-article/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/unlike-article/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/unlike-article/http-response.adoc[]
+include::{snippets}/unlike-article/response-fields.adoc[]

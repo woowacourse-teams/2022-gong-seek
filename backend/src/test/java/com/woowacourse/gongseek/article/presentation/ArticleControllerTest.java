@@ -50,7 +50,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @SuppressWarnings("NonAsciiCharacters")
-@DisplayName("질문 게시판 문서화")
+@DisplayName("게시판 문서화")
 @AutoConfigureRestDocs
 @WebMvcTest(ArticleController.class)
 @Import(RestDocsConfig.class)

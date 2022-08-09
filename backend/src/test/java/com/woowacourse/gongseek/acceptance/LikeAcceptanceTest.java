@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,7 +24,7 @@ public class LikeAcceptanceTest extends AcceptanceTest {
     void 게시물을_추천한다() {
         //given
         TokenResponse 엑세스토큰 = 로그인을_한다(주디);
-        ArticleIdResponse 게시물 = 게시물을_등록한다(엑세스토큰);
+        ArticleIdResponse 게시물 = 토론_게시물을_등록한다(엑세스토큰);
 
         //when
         ExtractableResponse<Response> response = RestAssured
@@ -49,7 +49,7 @@ public class LikeAcceptanceTest extends AcceptanceTest {
     void 게시물_추천을_취소한다() {
         //given
         TokenResponse 엑세스토큰 = 로그인을_한다(주디);
-        ArticleIdResponse 게시물 = 게시물을_등록한다(엑세스토큰);
+        ArticleIdResponse 게시물 = 토론_게시물을_등록한다(엑세스토큰);
 
         //when
         RestAssured
