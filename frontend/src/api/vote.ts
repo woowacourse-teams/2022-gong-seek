@@ -51,13 +51,23 @@ export const registerVoteItems = ({
 	);
 };
 
-export const checkVoteItems = ({ articleId, voteId }: { articleId: string; voteId: string }) => {
+export const checkVoteItems = ({
+	articleId,
+	voteItemId,
+}: {
+	articleId: string;
+	voteItemId: string;
+}) => {
 	const accessToken = localStorage.getItem('accessToken');
 
-	return axios.post(`${HOME_URL}/api/articles/${articleId}/votes/${voteId}`, {
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			Authorization: `Bearer ${accessToken}`,
+	return axios.post(
+		`${HOME_URL}/api/articles/${articleId}/votes/do`,
+		{ voteItemId },
+		{
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				Authorization: `Bearer ${accessToken}`,
+			},
 		},
-	});
+	);
 };

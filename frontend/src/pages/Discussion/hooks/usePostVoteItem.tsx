@@ -11,7 +11,7 @@ const usePostVoteItem = (articleId: string) => {
 	const { isLoading, isError, error, mutate, isSuccess } = useMutation<
 		unknown,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
-		{ articleId: string; voteId: string }
+		{ articleId: string; voteItemId: string }
 	>(checkVoteItems);
 
 	useEffect(() => {
@@ -33,7 +33,7 @@ const usePostVoteItem = (articleId: string) => {
 	}, [isError]);
 
 	const onChangeRadio = (articleId: string, idx: number) => {
-		mutate({ articleId, voteId: String(idx) });
+		mutate({ articleId, voteItemId: String(idx) });
 	};
 
 	return { onChangeRadio, isLoading };

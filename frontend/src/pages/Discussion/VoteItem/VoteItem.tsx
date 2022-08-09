@@ -4,7 +4,7 @@ import usePostVoteItem from '@/pages/Discussion/hooks/usePostVoteItem';
 import { convertIdxToVoteColorKey } from '@/utils/converter';
 
 export interface VoteItemProps {
-	voteId: number;
+	voteItemId: number;
 	title: string;
 	itemVotes: number;
 	totalVotes: number;
@@ -14,7 +14,7 @@ export interface VoteItemProps {
 }
 
 const VoteItem = ({
-	voteId,
+	voteItemId,
 	title,
 	itemVotes,
 	totalVotes,
@@ -34,7 +34,7 @@ const VoteItem = ({
 					type="radio"
 					name={articleId}
 					onChange={() => {
-						onChangeRadio(articleId, voteId);
+						onChangeRadio(articleId, voteItemId);
 					}}
 					disabled={isExpired}
 				/>
