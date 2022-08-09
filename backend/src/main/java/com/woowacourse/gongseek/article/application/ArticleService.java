@@ -17,6 +17,9 @@ import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
+import com.woowacourse.gongseek.tag.domain.Tag;
+import com.woowacourse.gongseek.tag.domain.Tags;
+import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,12 +38,18 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
+    private final TagRepository tagRepository;
     private final Encryptor encryptor;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
         Member member = getAuthor(appMember, articleRequest);
+
+        Tags tags = new Tags(articleRequest.toTags());
+        Tags foundTags = getTags(tags);
+
         Article article = articleRepository.save(articleRequest.toEntity(member));
+        article.addTags(foundTags);
 
         return new ArticleIdResponse(article);
     }
@@ -58,6 +67,18 @@ public class ArticleService {
                     .orElseGet(() -> memberRepository.save(new Member(ANONYMOUS_NAME, cipherId, ANONYMOUS_AVATAR_URL)));
         }
         return getMember(appMember);
+    }
+
+    private Tags getTags(Tags tags) {
+        List<Tag> foundTags = tags.getTagNames().stream()
+                .map(this::getOrCreateTagIfNotExist)
+                .collect(Collectors.toList());
+        return new Tags(foundTags);
+    }
+
+    private Tag getOrCreateTagIfNotExist(String name) {
+        return tagRepository.findByName(name)
+                .orElseGet(() -> tagRepository.save(new Tag(name)));
     }
 
     private Member getMember(AppMember appMember) {

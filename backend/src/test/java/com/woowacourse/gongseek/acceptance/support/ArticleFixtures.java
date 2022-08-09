@@ -9,6 +9,8 @@ import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
@@ -29,19 +31,25 @@ public class ArticleFixtures {
     }
 
     public static ArticleIdResponse 게시물을_등록한다(TokenResponse tokenResponse) {
-        ArticleRequest request = new ArticleRequest("title", "content", "question", false);
+        ArticleRequest request = new ArticleRequest("title", "content", "question", List.of("Spring"), false);
         return 특정_게시물을_등록한다(tokenResponse, request).as(ArticleIdResponse.class);
     }
 
     public static ExtractableResponse<Response> 기명으로_게시물을_등록한다(TokenResponse tokenResponse, Category category) {
-        ArticleRequest request = new ArticleRequest("title", "content", category.getValue(), false);
+        ArticleRequest request = new ArticleRequest("title", "content", category.getValue(), List.of("Spring"), false);
         return 특정_게시물을_등록한다(tokenResponse, request);
     }
 
     public static ExtractableResponse<Response> 익명으로_게시물을_등록한다(TokenResponse tokenResponse, Category category) {
-        ArticleRequest request = new ArticleRequest("title", "content", category.getValue(), true);
+        ArticleRequest request = new ArticleRequest("title", "content", category.getValue(), List.of("Spring"), true);
         return 특정_게시물을_등록한다(tokenResponse, request);
     }
+
+    public static ExtractableResponse<Response> 해시태그_없이_게시글을_등록한다(TokenResponse tokenResponse, Category category) {
+        ArticleRequest request = new ArticleRequest("title", "content", category.getValue(), new ArrayList<>(), true);
+        return 특정_게시물을_등록한다(tokenResponse, request);
+    }
+
 
     public static void 조회수가_있는_게시물_5개를_생성한다(TokenResponse tokenResponse, int count, Category category) {
         for (int i = 0; i < 5; i++) {

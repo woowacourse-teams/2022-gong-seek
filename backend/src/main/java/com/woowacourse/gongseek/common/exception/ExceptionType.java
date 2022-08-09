@@ -6,6 +6,7 @@ import com.woowacourse.gongseek.article.exception.ArticleContentTooLongException
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.ArticleTitleNullOrEmptyException;
 import com.woowacourse.gongseek.article.exception.ArticleTitleTooLongException;
+import com.woowacourse.gongseek.article.exception.DuplicateTagException;
 import com.woowacourse.gongseek.auth.exception.EmptyTokenException;
 import com.woowacourse.gongseek.auth.exception.GithubAccessTokenLoadFailException;
 import com.woowacourse.gongseek.auth.exception.GithubUserProfileLoadFailException;
@@ -17,6 +18,7 @@ import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
 import com.woowacourse.gongseek.comment.exception.CommentNullOrEmptyException;
 import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
+import com.woowacourse.gongseek.tag.exception.ExceededTagsException;
 import com.woowacourse.gongseek.tag.exception.TagNameLengthException;
 import com.woowacourse.gongseek.tag.exception.TagNameNullOrBlankException;
 import java.util.Arrays;
@@ -54,6 +56,8 @@ public enum ExceptionType {
 
     TAG_NAME_NULL_OR_BLANK_EXCEPTION("6001", "해시태그 이름은 비어있을 수 없습니다.", TagNameNullOrBlankException.class),
     TAG_NAME_LENGTH_EXCEPTION("6002", "해시태그 이름은 2자 이상 20자 이하입니다.", TagNameLengthException.class),
+    DUPLICATE_TAG_EXCEPTION("6003", "해시태그 이름은 중복될 수 없습니다.", DuplicateTagException.class),
+    EXCEEDED_TAGS_EXCEPTION("6004", "해시태그는 한 게시글 당 최대 5개입니다.", ExceededTagsException.class),
     ;
 
     private String errorCode;

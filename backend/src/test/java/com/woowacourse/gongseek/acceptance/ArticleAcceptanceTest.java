@@ -12,8 +12,10 @@ import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.익명으로_게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.조회수가_있는_게시물_5개를_생성한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.특정_게시물을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.해시태그_없이_게시글을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.기명으로_댓글을_등록한다;
+import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -62,6 +64,18 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> response = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    void 유저가_깃허브로_로그인을_하고_해시태그를_포함하지_않고_게시글을_등록할_수_있다() {
+        // given
+        TokenResponse tokenResponse = 로그인을_한다(레넌);
+
+        // when
+        ExtractableResponse<Response> response = 해시태그_없이_게시글을_등록한다(tokenResponse, Category.QUESTION);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
@@ -621,16 +635,24 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     void 특정_검색어로_게시물을_검색한다() {
         //given
         TokenResponse tokenResponse = 로그인을_한다(주디);
-        특정_게시물을_등록한다(tokenResponse, new ArticleRequest("커스텀 예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), false));
-        특정_게시물을_등록한다(tokenResponse, new ArticleRequest("커스텀예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), false));
-        특정_게시물을_등록한다(tokenResponse, new ArticleRequest("예외를 커스텀하려면?", "내용", Category.QUESTION.getValue(), false));
-        특정_게시물을_등록한다(tokenResponse, new ArticleRequest("예외를커스텀하려면?", "내용", Category.QUESTION.getValue(), false));
-        특정_게시물을_등록한다(tokenResponse, new ArticleRequest("제목", "예외 어떻게 커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), false));
-        특정_게시물을_등록한다(tokenResponse, new ArticleRequest("제목", "예외 어떻게커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), false));
         특정_게시물을_등록한다(tokenResponse,
-                new ArticleRequest("제목", "예외는 이렇게 커스텀 하면 됩니다.", Category.DISCUSSION.getValue(), false));
+                new ArticleRequest("커스텀 예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), List.of("Spring"), false));
         특정_게시물을_등록한다(tokenResponse,
-                new ArticleRequest("제목", "예외는 이렇게 커스텀하면 됩니다.", Category.DISCUSSION.getValue(), false));
+                new ArticleRequest("커스텀예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), List.of("Spring"), false));
+        특정_게시물을_등록한다(tokenResponse,
+                new ArticleRequest("예외를 커스텀하려면?", "내용", Category.QUESTION.getValue(), List.of("Spring"), false));
+        특정_게시물을_등록한다(tokenResponse,
+                new ArticleRequest("예외를커스텀하려면?", "내용", Category.QUESTION.getValue(), List.of("Spring"), false));
+        특정_게시물을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외 어떻게 커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), List.of("Spring"), false));
+        특정_게시물을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외 어떻게커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), List.of("Spring"), false));
+        특정_게시물을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외는 이렇게 커스텀 하면 됩니다.", Category.DISCUSSION.getValue(), List.of("Spring"),
+                        false));
+        특정_게시물을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외는 이렇게 커스텀하면 됩니다.", Category.DISCUSSION.getValue(), List.of("Spring"),
+                        false));
 
         //when
         int pageSize = 4;

@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
@@ -8,6 +9,9 @@ import com.woowacourse.gongseek.config.JpaAuditingConfig;
 import com.woowacourse.gongseek.config.QuerydslConfig;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.tag.domain.Tag;
+import com.woowacourse.gongseek.tag.domain.Tags;
+import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +20,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -34,13 +39,19 @@ class ArticleRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private TagRepository tagRepository;
+
+    @Autowired
+    private TestEntityManager testEntityManager;
+
     @BeforeEach
     void setUp() {
         memberRepository.save(member);
     }
 
     @Test
-    void 질문을_저장한다() {
+    void 게시글을_저장한다() {
         Article article = new Article(TITLE, CONTENT, Category.QUESTION, member, false);
         Article savedArticle = articleRepository.save(article);
 
@@ -48,14 +59,36 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    void 게시물이_없으면_빈_값을_반환한다() {
+    void 게시글을_해시태그와_함께_저장한다() {
+        Tag tag1 = new Tag("SPRING");
+        Tag tag2 = new Tag("BACKEND");
+        Article article = new Article(TITLE, CONTENT, Category.QUESTION, member, false);
+
+        Tag savedTag1 = tagRepository.save(tag1);
+        Tag savedTag2 = tagRepository.save(tag2);
+        Article savedArticle = articleRepository.save(article);
+        savedArticle.addTags(new Tags(List.of(savedTag1, savedTag2)));
+
+        testEntityManager.flush();
+        testEntityManager.clear();
+
+        assertAll(
+                () -> assertThat(savedArticle).isSameAs(article),
+                () -> assertThat(savedTag1).isSameAs(tag1),
+                () -> assertThat(savedTag2).isSameAs(tag2),
+                () -> assertThat(savedArticle.getArticleTags()).hasSize(2)
+        );
+    }
+
+    @Test
+    void 게시글이_없으면_빈_값을_반환한다() {
         List<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "", 5);
 
         assertThat(articles).hasSize(0);
     }
 
     @Test
-    void 게시물을_5개씩_조회한다() {
+    void 게시글을_5개씩_조회한다() {
         for (int i = 0; i < 5; i++) {
             articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         }
@@ -66,7 +99,7 @@ class ArticleRepositoryTest {
 
     @ParameterizedTest
     @CsvSource({"all, 2", "question, 1", "discussion, 1"})
-    void 카테고리별로_게시물을_조회한다(String category, int expectedSize) {
+    void 카테고리별로_게시글을_조회한다(String category, int expectedSize) {
         articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         articleRepository.save(new Article(TITLE, CONTENT, Category.DISCUSSION, member, false));
 
@@ -76,7 +109,7 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    void 게시물을_조회순으로_조회한다() {
+    void 게시글을_조회순으로_조회한다() {
         Article firstArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         Article secondArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         Article thirdArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
@@ -90,7 +123,7 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    void 게시물을_최신순으로_조회한다() {
+    void 게시글을_최신순으로_조회한다() {
         Article thirdArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         Article secondArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         Article firstArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
@@ -115,7 +148,7 @@ class ArticleRepositoryTest {
     @ParameterizedTest
     @ValueSource(strings = {"this is wooteco", "is", "THIS IS WOOTECO", "IS", "THiS Is WOOteCO", "Is", "thisis",
             "thisIs", "this iswooteco"})
-    void 띄어쓰기와_대소문자_관계_없이_제목으로_게시물을_검색한다(String searchText) {
+    void 띄어쓰기와_대소문자_관계_없이_제목으로_게시글을_검색한다(String searchText) {
         Article article = articleRepository.save(
                 new Article("this is wooteco", "wow", Category.QUESTION, member, false));
         articleRepository.save(new Article("i am judy", "hello", Category.QUESTION, member, false));
@@ -127,7 +160,7 @@ class ArticleRepositoryTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"wow", "w", "WOW", "W", "WoW", "W ow", "w o w"})
-    void 띄어쓰기와_대소문자_관계_없이_내용으로_게시물을_검색한다(String searchText) {
+    void 띄어쓰기와_대소문자_관계_없이_내용으로_게시글을_검색한다(String searchText) {
         Article article = articleRepository.save(
                 new Article("this is wooteco", "wow", Category.QUESTION, member, false));
         articleRepository.save(new Article("i am 주디", "hello", Category.QUESTION, member, false));
@@ -138,7 +171,7 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    void 게시물을_5개씩_검색한다() {
+    void 게시글을_5개씩_검색한다() {
         for (int i = 0; i < 5; i++) {
             articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         }
@@ -148,7 +181,7 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    void 게시물이_없을_때_검색하면_빈_값을_반환한다() {
+    void 게시글이_없을_때_검색하면_빈_값을_반환한다() {
         List<Article> articles = articleRepository.searchByContainingText(null, 5, "empty");
 
         assertThat(articles).hasSize(0);

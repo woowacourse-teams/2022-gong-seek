@@ -8,6 +8,7 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
+import com.woowacourse.gongseek.article.exception.DuplicateTagException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
@@ -22,6 +23,8 @@ import com.woowacourse.gongseek.commons.DatabaseCleaner;
 import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
+import com.woowacourse.gongseek.tag.exception.ExceededTagsException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -47,6 +50,9 @@ public class ArticleServiceTest {
     private MemberRepository memberRepository;
 
     @Autowired
+    private TagRepository tagRepository;
+
+    @Autowired
     private Encryptor encryptor;
 
     @Autowired
@@ -65,24 +71,57 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 회원이_기명_게시물을_저장한다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+    void 회원이_기명_게시글을_저장한다() {
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
+
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         assertThat(articleIdResponse.getId()).isNotNull();
     }
 
     @Test
-    void 회원이_익명_게시물을_저장한다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), true);
+    void 회원이_익명_게시글을_저장한다() {
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true);
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         assertThat(articleIdResponse.getId()).isNotNull();
     }
 
     @Test
-    void 회원이_익명_게시물을_저장하면_익명_회원이_저장된다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), true);
+    void 회원이_중복된_해시태그로_게시글을_저장하면_예외가_발생한다() {
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring", "spring"), true);
+
+        assertThatThrownBy(() -> articleService.save(new LoginMember(member.getId()), articleRequest))
+                .isInstanceOf(DuplicateTagException.class)
+                .hasMessage("해시태그 이름은 중복될 수 없습니다.");
+    }
+
+    @Test
+    void 회원이_게시글에_해시태그를_5개_초과하여_저장하면_예외가_발생한다() {
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("aa", "bb", "cc", "dd", "ee", "ff"), true);
+
+        assertThatThrownBy(() -> articleService.save(new LoginMember(member.getId()), articleRequest))
+                .isInstanceOf(ExceededTagsException.class)
+                .hasMessage("해시태그는 한 게시글 당 최대 5개입니다.");
+    }
+
+    @Test
+    void 회원이_게시글에_해시태그를_달지_않고_저장한다() {
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of(), true);
+        ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
+
+        assertThat(articleIdResponse.getId()).isNotNull();
+    }
+
+    @Test
+    void 회원이_익명_게시글을_저장하면_익명_회원이_저장된다() {
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true);
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         Long id = member.getId();
@@ -103,9 +142,10 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 회원이_익명_게시물을_2번_저장한다() {
+    void 회원이_익명_게시글을_2번_저장한다() {
         String cipherText = encryptor.encrypt(String.valueOf(member.getId()));
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), true);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true);
         ArticleIdResponse firstArticleId = articleService.save(new LoginMember(member.getId()), articleRequest);
         ArticleIdResponse secondArticleId = articleService.save(new LoginMember(member.getId()), articleRequest);
 
@@ -123,8 +163,9 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 비회원은_게시물을_저장할_수_없다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+    void 비회원은_게시글을_저장할_수_없다() {
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
 
         assertThatThrownBy(() -> articleService.save(new GuestMember(), articleRequest))
                 .isExactlyInstanceOf(NoAuthorizationException.class)
@@ -132,8 +173,9 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 작성자인_회원이_기명_게시물을_조회한다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+    void 작성자인_회원이_기명_게시글을_조회한다() {
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         ArticleResponse articleResponse = articleService.getOne(new LoginMember(member.getId()), savedArticle.getId());
@@ -148,8 +190,9 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 작성자인_회원이_익명_게시물을_조회한다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), true);
+    void 작성자인_회원이_익명_게시글을_조회한다() {
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         ArticleResponse articleResponse = articleService.getOne(new LoginMember(member.getId()), savedArticle.getId());
@@ -164,9 +207,10 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 작성자가_아닌_회원이_기명_게시물을_조회한다() {
+    void 작성자가_아닌_회원이_기명_게시글을_조회한다() {
         Member notAuthorMember = memberRepository.save(new Member("judy", "juriring", "avatar.com"));
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(this.member.getId()), articleRequest);
 
         ArticleResponse articleResponse = articleService.getOne(new LoginMember(notAuthorMember.getId()),
@@ -182,9 +226,10 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 작성자가_아닌_회원이_익명_게시물을_조회한다() {
+    void 작성자가_아닌_회원이_익명_게시글을_조회한다() {
         Member notAuthorMember = memberRepository.save(new Member("judy", "juriring", "avatar.com"));
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), true);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(notAuthorMember.getId()), articleRequest);
 
         ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
@@ -199,8 +244,9 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 비회원이_기명_게시물을_조회한다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+    void 비회원이_기명_게시글을_조회한다() {
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
@@ -215,8 +261,9 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 비회원이_익명_게시물을_조회한다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), true);
+    void 비회원이_익명_게시글을_조회한다() {
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
@@ -231,8 +278,9 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 게시물을_조회하면_조회수가_올라간다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+    void 게시글을_조회하면_조회수가_올라간다() {
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         articleService.getOne(new GuestMember(), savedArticle.getId());
@@ -247,9 +295,10 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 작성자인_회원이_기명_게시물을_수정한다() {
+    void 작성자인_회원이_기명_게시글을_수정한다() {
         AppMember loginMember = new LoginMember(member.getId());
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(loginMember, articleRequest);
 
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.");
@@ -265,9 +314,10 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 작성자인_회원이_익명_게시물을_수정한다() {
+    void 작성자인_회원이_익명_게시글을_수정한다() {
         AppMember loginMember = new LoginMember(member.getId());
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), true);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true);
         ArticleIdResponse savedArticle = articleService.save(loginMember, articleRequest);
 
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.");
@@ -283,9 +333,10 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 작성자가_아닌_회원이_게시물을_수정하면_예외가_발생한다() {
+    void 작성자가_아닌_회원이_게시글을_수정하면_예외가_발생한다() {
         Member noAuthor = memberRepository.save(new Member("작성자아닌사람이름", "giithub", "www.avatar.cax"));
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
         AppMember noAuthorMember = new LoginMember(noAuthor.getId());
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.");
@@ -296,9 +347,10 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 비회원이_게시물을_수정하면_예외가_발생한다() {
+    void 비회원이_게시글을_수정하면_예외가_발생한다() {
         AppMember guestMember = new GuestMember();
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.");
 
@@ -308,9 +360,10 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 작성자인_회원이_기명_게시물을_삭제한다() {
+    void 작성자인_회원이_기명_게시글을_삭제한다() {
         AppMember loginMember = new LoginMember(member.getId());
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(loginMember, articleRequest);
 
         articleService.delete(loginMember, savedArticle.getId());
@@ -321,9 +374,10 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 작성자인_회원이_익명_게시물을_삭제한다() {
+    void 작성자인_회원이_익명_게시글을_삭제한다() {
         AppMember loginMember = new LoginMember(member.getId());
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), true);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true);
         ArticleIdResponse savedArticle = articleService.save(loginMember, articleRequest);
 
         articleService.delete(loginMember, savedArticle.getId());
@@ -334,9 +388,10 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 작성자가_아닌_회원이_게시물을_삭제하면_예외가_발생한다() {
+    void 작성자가_아닌_회원이_게시글을_삭제하면_예외가_발생한다() {
         Member noAuthor = memberRepository.save(new Member("작성자아닌사람이름", "giithub", "www.avatar.cax"));
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
         AppMember noAuthorMember = new LoginMember(noAuthor.getId());
 
@@ -346,9 +401,10 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 비회원이_게시물을_삭제하면_예외가_발생한다() {
+    void 비회원이_게시글을_삭제하면_예외가_발생한다() {
         AppMember guestMember = new GuestMember();
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         assertThatThrownBy(() -> articleService.delete(guestMember, savedArticle.getId()))
@@ -358,7 +414,8 @@ public class ArticleServiceTest {
 
     @Test
     void 페이지가_10개씩_조회된다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
         List<Article> articles = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             articles.add(
@@ -378,7 +435,8 @@ public class ArticleServiceTest {
 
     @Test
     void 요청으로_들어온_페이지ID_다음부터_반환해준다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
         List<Article> articles = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             articles.add(
@@ -401,7 +459,8 @@ public class ArticleServiceTest {
     @NullSource
     @ValueSource(ints = {0})
     void 페이지가_10개씩_조회된_후_더이상_조회할_페이지가_없으면_hasNext는_false가_된다(Integer cursorViews) {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
         List<Article> articles = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             articles.add(
@@ -421,7 +480,7 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 공백으로_게시물을_검색한_경우_빈_값이_나온다() {
+    void 공백으로_게시글을_검색한_경우_빈_값이_나온다() {
         ArticlePageResponse articlePageResponse = articleService.search(null, 1, " ");
 
         assertAll(
@@ -432,7 +491,8 @@ public class ArticleServiceTest {
 
     @Test
     void 페이지가_10개씩_검색된_후_더이상_조회할_페이지가_없으면_hasNext가_false가_된다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
         for (int i = 0; i < 10; i++) {
             articleRepository.save(
                     new Article(articleRequest.getTitle(), articleRequest.getContent(), Category.QUESTION, member,
@@ -449,7 +509,8 @@ public class ArticleServiceTest {
 
     @Test
     void 검색할_때_무한_스크롤이_가능하다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), false);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
         for (int i = 0; i < 20; i++) {
             articleRepository.save(
                     new Article(articleRequest.getTitle(), articleRequest.getContent(), Category.QUESTION, member,
