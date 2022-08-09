@@ -28,29 +28,33 @@ public class ArticleResponse {
 
     private int views;
 
+    private boolean hasVote;
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime updatedAt;
 
-    public ArticleResponse(Article article, AuthorDto authorDto, boolean isAuthor) {
+    public ArticleResponse(Article article, AuthorDto authorDto, boolean isAuthor,  boolean hasVote) {
         this(
                 article.getTitle(),
                 authorDto,
                 article.getContent(),
                 isAuthor,
                 article.getViews(),
+                hasVote,
                 article.getCreatedAt(),
                 article.getUpdatedAt()
         );
     }
 
-    public ArticleResponse(Article article, boolean isAuthor) {
+    public ArticleResponse(Article article, boolean isAuthor, boolean hasVote) {
         this(
                 article,
                 new AuthorDto(article.getMember()),
-                isAuthor
+                isAuthor,
+                hasVote
         );
     }
 }

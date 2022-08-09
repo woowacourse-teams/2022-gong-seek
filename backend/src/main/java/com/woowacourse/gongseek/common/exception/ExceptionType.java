@@ -17,6 +17,16 @@ import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
 import com.woowacourse.gongseek.comment.exception.CommentNullOrEmptyException;
 import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
+import com.woowacourse.gongseek.vote.exception.AlreadyVoteSameItemException;
+import com.woowacourse.gongseek.vote.exception.InvalidVoteAmountException;
+import com.woowacourse.gongseek.vote.exception.InvalidVoteExpiryAtException;
+import com.woowacourse.gongseek.vote.exception.InvalidVoteItemCountException;
+import com.woowacourse.gongseek.vote.exception.UnavailableArticleException;
+import com.woowacourse.gongseek.vote.exception.VoteHistoryNotFoundException;
+import com.woowacourse.gongseek.vote.exception.VoteItemNotFoundException;
+import com.woowacourse.gongseek.vote.exception.VoteItemNullOrEmptyException;
+import com.woowacourse.gongseek.vote.exception.VoteItemTooLongException;
+import com.woowacourse.gongseek.vote.exception.VoteNotFoundException;
 import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,7 +43,7 @@ public enum ExceptionType {
             GithubUserProfileLoadFailException.class),
     EMPTY_TOKEN_EXCEPTION("1003", "토큰이 존재하지 않습니다.", EmptyTokenException.class),
     INVALID_TOKEN_TYPE_EXCEPTION("1004", "토큰 타입이 올바르지 않습니다.", InvalidTokenTypeException.class),
-    INVALID_TOKEN_EXCEPTION("1005", "토큰 타입이 유효하지 않습니다.", InvalidTokenException.class),
+    INVALID_TOKEN_EXCEPTION("1005", "토큰이 유효하지 않습니다.", InvalidTokenException.class),
     NO_SUCH_AUTHENTICATION_DATA_EXCEPTION("1006", "인증할 수 있는 사용자 데이터가 없습니다.", NoSuchAuthenticationDataException.class),
     NO_AUTHORIZATION_EXCEPTION("1007", "권한이 없습니다.", NoAuthorizationException.class),
 
@@ -49,11 +59,22 @@ public enum ExceptionType {
     COMMENT_NOT_FOUND_EXCEPTION("4001", "댓글이 존재하지 않습니다.", CommentNotFoundException.class),
     COMMENT_NULL_OR_EMPTY_EXCEPTION("4002", "댓글은 비어있을 수 없습니다.", CommentNullOrEmptyException.class),
     COMMENT_TOO_LONG_EXCEPTION("4003", "댓글은 10000자를 초과할 수 없습니다.", CommentTooLongException.class),
+
+    INVALID_VOTE_EXPIRY_DATE_EXCEPTION("5001", "투표 만료일 설정이 잘못되었습니다.", InvalidVoteExpiryAtException.class),
+    VOTE_ITEM_NULL_OR_EMPTY_EXCEPTION("5002", "투표 항목 내용은 비어있을 수 없습니다.", VoteItemNullOrEmptyException.class),
+    VOTE_ITEM_TOO_LONG_EXCEPTION("5003", "투표 항목 내용은 500자를 초과할 수 없습니다.", VoteItemTooLongException.class),
+    VOTE_NOT_FOUND_EXCEPTION("5004", "투표가 존재하지 않습니다.", VoteNotFoundException.class),
+    UNAVAILABLE_ARTICLE_EXCEPTION("5005", "토론 게시물만 투표를 생성할 수 있습니다.", UnavailableArticleException.class),
+    INVALID_VOTE_AMOUNT_EXCEPTION("5006", "투표수는 양수여야만 합니다.", InvalidVoteAmountException.class),
+    VOTE_ITEM_NOT_FOUND_EXCEPTION("5007", "투표 항목이 존재하지 않습니다.", VoteItemNotFoundException.class),
+    VOTE_HISTORY_NOT_FOUND_EXCEPTION("5008", "투표 내역이 존재하지 않습니다.", VoteHistoryNotFoundException.class),
+    ALREADY_VOTE_SAME_ITEM_EXCEPTION("5009", "이미 같은 항목에 투표했습니다.", AlreadyVoteSameItemException.class),
+    INVALID_VOTE_ITEM_COUNT_EXCEPTION("5010", "투표 항목 수는 2이상 5이하여야 합니다.", InvalidVoteItemCountException.class),
     ;
 
-    private String errorCode;
-    private String message;
-    private Class<? extends ApplicationException> type;
+    private final String errorCode;
+    private final String message;
+    private final Class<? extends ApplicationException> type;
 
     public static ExceptionType from(Class<?> classType) {
         return Arrays.stream(values())
