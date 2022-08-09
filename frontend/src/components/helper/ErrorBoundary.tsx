@@ -24,11 +24,12 @@ class ErrorBoundary extends Component<Props, State> {
 
 	componentDidUpdate(_, prevState: State) {
 		if (prevState.error !== this.state.error) {
-			if (this.state.error && this.state.error.errorCode === '1005') {
-				alert('토큰이 만료되었습니다.');
-
-				localStorage.removeItem('accessToken');
-				window.location.href = '/';
+			if (this.state.error && this.state.error.errorCode === 1005) {
+				window.location.href = '/check-login';
+			}
+			if (this.state.error && this.state.error.errorCode === 1008) {
+				alert('다시 로그인 해주세요');
+				window.location.href = '/login';
 			}
 		}
 
