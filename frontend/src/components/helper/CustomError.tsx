@@ -1,7 +1,9 @@
+import { ErrorMessage } from '@/constants/ErrorMessage';
+
 class CustomError extends Error {
 	public errorCode;
 
-	constructor(code?: string, message?: string) {
+	constructor(code?: keyof typeof ErrorMessage, message?: string) {
 		super(message);
 		this.name = 'CustomError';
 		this.errorCode = code;

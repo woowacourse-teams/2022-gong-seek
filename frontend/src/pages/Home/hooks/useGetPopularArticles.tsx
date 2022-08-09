@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { getPopularArticles, PopularArticles } from '@/api/article';
 import CustomError from '@/components/helper/CustomError';
+import { ErrorMessage } from '@/constants/ErrorMessage';
 import * as S from '@/pages/Home/PopularArticle/PopularArticle.styles';
 
 const useGetPopularArticles = () => {
@@ -15,7 +16,7 @@ const useGetPopularArticles = () => {
 
 	const { data, error, isSuccess, isError, isLoading, isIdle } = useQuery<
 		PopularArticles,
-		AxiosError<{ errorCode: string; message: string }>
+		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('popular-articles', getPopularArticles);
 
 	useEffect(() => {
@@ -27,7 +28,13 @@ const useGetPopularArticles = () => {
 
 	useEffect(() => {
 		if (isError) {
-			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
+			if (!error.response) {
+				return;
+			}
+			throw new CustomError(
+				error.response.data.errorCode,
+				ErrorMessage[error.response.data.errorCode],
+			);
 		}
 	}, [isError]);
 
