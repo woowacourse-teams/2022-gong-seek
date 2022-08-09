@@ -4,10 +4,8 @@ import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.슬로;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.gongseek.auth.exception.InvalidTokenTypeException;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.common.exception.ErrorResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
@@ -96,7 +94,6 @@ public class VoteAcceptanceTest extends AcceptanceTest {
                 .then().log().all()
                 .extract();
     }
-
 
     @Test
     void 투표를_한_사용자가_투표를_조회한다() {

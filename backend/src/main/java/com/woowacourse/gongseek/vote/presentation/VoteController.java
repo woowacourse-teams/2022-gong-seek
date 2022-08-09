@@ -31,8 +31,8 @@ public class VoteController {
             @PathVariable Long articleId,
             @RequestBody @Valid VoteCreateRequest voteCreateRequest
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(voteService.create(appMember, articleId,
-                voteCreateRequest));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(voteService.create(appMember, articleId, voteCreateRequest));
     }
 
     @GetMapping
