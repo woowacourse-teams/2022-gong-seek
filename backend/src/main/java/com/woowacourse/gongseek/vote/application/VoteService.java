@@ -89,7 +89,7 @@ public class VoteService {
         VoteHistory voteHistory = voteHistoryRepository.findByVoteIdAndMemberId(foundVote.getId(),
                 appMember.getPayload()).orElse(null);
 
-        return new VoteResponse(foundVote, convertVoteItemResponse(voteItems), getVotedItemIdOrNull(voteHistory), foundVote.isExpired());
+        return new VoteResponse(foundVote.getArticle().getId(), convertVoteItemResponse(voteItems), getVotedItemIdOrNull(voteHistory), foundVote.isExpired());
     }
 
     private Long getVotedItemIdOrNull(VoteHistory voteHistory) {
