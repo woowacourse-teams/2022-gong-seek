@@ -4,11 +4,12 @@ import { useQuery } from 'react-query';
 
 import { getGithubURL } from '@/api/login';
 import CustomError from '@/components/helper/CustomError';
+import { ErrorMessage } from '@/constants/ErrorMessage';
 
 const useGetLoginURL = () => {
 	const { data, error, isError, isLoading, isSuccess, refetch } = useQuery<
 		string,
-		AxiosError<{ errorCode: string; message: string }>
+		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('github-url', getGithubURL, {
 		enabled: false,
 	});
@@ -16,7 +17,13 @@ const useGetLoginURL = () => {
 
 	useEffect(() => {
 		if (isError) {
-			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
+			if (!error.response) {
+				return;
+			}
+			throw new CustomError(
+				error.response.data.errorCode,
+				ErrorMessage[error.response.data.errorCode],
+			);
 		}
 	}, [isError]);
 

@@ -4,12 +4,13 @@ import { useMutation } from 'react-query';
 
 import { deleteComments } from '@/api/comments';
 import CustomError from '@/components/helper/CustomError';
+import { ErrorMessage } from '@/constants/ErrorMessage';
 import { queryClient } from '@/index';
 
 const useDeleteComment = () => {
 	const { isLoading, isError, error, isSuccess, mutate } = useMutation<
 		unknown,
-		AxiosError<{ errorCode: string; message: string }>,
+		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ commentId: string }
 	>(deleteComments);
 
@@ -27,7 +28,13 @@ const useDeleteComment = () => {
 
 	useEffect(() => {
 		if (isError) {
-			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
+			if (!error.response) {
+				return;
+			}
+			throw new CustomError(
+				error.response.data.errorCode,
+				ErrorMessage[error.response.data.errorCode],
+			);
 		}
 	}, [isError]);
 

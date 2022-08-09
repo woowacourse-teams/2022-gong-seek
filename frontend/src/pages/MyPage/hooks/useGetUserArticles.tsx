@@ -4,17 +4,24 @@ import { useQuery } from 'react-query';
 
 import { getUserArticles } from '@/api/myPage';
 import CustomError from '@/components/helper/CustomError';
+import { ErrorMessage } from '@/constants/ErrorMessage';
 import { UserArticlesResponse } from '@/types/articleResponse';
 
 const useGetUserArticles = () => {
 	const { data, isSuccess, isLoading, isError, isIdle, error } = useQuery<
 		UserArticlesResponse,
-		AxiosError<{ errorCode: string; message: string }>
+		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('user-articles', getUserArticles);
 
 	useEffect(() => {
 		if (isError) {
-			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
+			if (!error.response) {
+				return;
+			}
+			throw new CustomError(
+				error.response.data.errorCode,
+				ErrorMessage[error.response.data.errorCode],
+			);
 		}
 	}, [isError]);
 

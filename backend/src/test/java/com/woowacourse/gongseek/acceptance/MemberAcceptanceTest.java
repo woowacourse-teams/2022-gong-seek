@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.기명으로_댓글을_등록한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
@@ -49,7 +49,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     void 내가_작성한_게시글들을_조회한다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(레넌);
-        게시물을_등록한다(tokenResponse);
+        토론_게시물을_등록한다(tokenResponse);
 
         // when
         ExtractableResponse<Response> response = RestAssured
@@ -72,7 +72,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     void 내가_작성한_댓글들을_조회한다() {
         // given
         TokenResponse tokenResponse = 로그인을_한다(레넌);
-        ArticleIdResponse 게시글번호 = 게시물을_등록한다(tokenResponse);
+        ArticleIdResponse 게시글번호 = 토론_게시물을_등록한다(tokenResponse);
         기명으로_댓글을_등록한다(tokenResponse, 게시글번호);
 
         // when
