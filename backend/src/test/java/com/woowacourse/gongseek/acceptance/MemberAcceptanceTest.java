@@ -57,7 +57,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(myPageArticlesResponse.getArticles()).size().isEqualTo(1)
+                () -> assertThat(myPageArticlesResponse.getArticles()).hasSize(1)
         );
     }
 
@@ -75,7 +75,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(myPageArticlesResponse.getArticles()).size().isEqualTo(2)
+                () -> assertThat(myPageArticlesResponse.getArticles()).hasSize(2)
         );
     }
 
@@ -94,7 +94,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(myPageCommentsResponse.getComments()).size().isEqualTo(2)
+                () -> assertThat(myPageCommentsResponse.getComments()).hasSize(2)
         );
     }
 }
