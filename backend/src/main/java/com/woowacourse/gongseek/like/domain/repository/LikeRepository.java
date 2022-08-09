@@ -9,5 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface LikeRepository extends JpaRepository<Like, Long> {
     Optional<Like> findByArticleIdAndMemberId(Long articleId, Long memberId);
 
-    boolean existsByArticleIdAndMemberId(Long id, Long id1);
+    boolean existsByArticleIdAndMemberId(Long articleId, Long memberId);
+
+    Long countByArticleId(Long articleId);
 }

@@ -1,7 +1,5 @@
 package com.woowacourse.gongseek.article.domain;
 
-import com.woowacourse.gongseek.like.domain.Like;
-import com.woowacourse.gongseek.like.domain.Likes;
 import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -63,9 +61,6 @@ public class Article {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @Embedded
-    private Likes likes;
-
     public Article(String title, String content, Category category, Member member, boolean isAnonymous) {
         this.title = new Title(title);
         this.content = new Content(content);
@@ -87,14 +82,6 @@ public class Article {
         views.addValue();
     }
 
-    public void like(Like like) {
-        likes.add(like);
-    }
-
-    public void unlike(Like like) {
-        likes.remove(like);
-    }
-
     public void update(String title, String content) {
         this.title = new Title(title);
         this.content = new Content(content);
@@ -110,9 +97,5 @@ public class Article {
 
     public int getViews() {
         return views.getValue();
-    }
-
-    public int getLikeCount() {
-        return likes.getLikeCount();
     }
 }

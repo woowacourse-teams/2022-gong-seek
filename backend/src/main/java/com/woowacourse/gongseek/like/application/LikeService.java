@@ -30,9 +30,9 @@ public class LikeService {
         Article article = getArticle(articleId);
 
         if (!likeRepository.existsByArticleIdAndMemberId(article.getId(), member.getId())) {
-            article.like(new Like(article, member));
+            likeRepository.save(new Like(article, member));
         }
-        return new LikeResponse(true, article.getLikeCount());
+        return new LikeResponse(true, likeRepository.countByArticleId(articleId));
     }
 
     private void validateGuest(AppMember appMember) {
@@ -57,7 +57,7 @@ public class LikeService {
         Article article = getArticle(articleId);
 
         likeRepository.findByArticleIdAndMemberId(article.getId(), member.getId())
-                .ifPresent(article::unlike);
-        return new LikeResponse(false, article.getLikeCount());
+                .ifPresent(likeRepository::delete);
+        return new LikeResponse(false, likeRepository.countByArticleId(articleId));
     }
 }

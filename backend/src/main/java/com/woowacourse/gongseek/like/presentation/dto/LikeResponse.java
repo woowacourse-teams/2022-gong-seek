@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -13,8 +12,7 @@ import lombok.experimental.Accessors;
 public class LikeResponse {
 
     @JsonProperty("isLike")
-    @Accessors(fluent = true)
-    private boolean isLike;
+    private Boolean isLike;
 
-    private int likeCount;
+    private Long likeCount;
 }

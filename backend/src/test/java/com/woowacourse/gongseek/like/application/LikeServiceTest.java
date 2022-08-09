@@ -40,7 +40,7 @@ class LikeServiceTest {
         LikeResponse likeResponse = likeService.likeArticle(new LoginMember(member.getId()), article.getId());
 
         assertAll(
-                () -> assertThat(likeResponse.isLike()).isTrue(),
+                () -> assertThat(likeResponse.getIsLike()).isTrue(),
                 () -> assertThat(likeResponse.getLikeCount()).isEqualTo(1)
         );
     }
@@ -84,7 +84,7 @@ class LikeServiceTest {
         LikeResponse likeResponse = likeService.unlikeArticle(appMember, article.getId());
 
         assertAll(
-                () -> assertThat(likeResponse.isLike()).isFalse(),
+                () -> assertThat(likeResponse.getIsLike()).isFalse(),
                 () -> assertThat(likeResponse.getLikeCount()).isEqualTo(0)
         );
     }
