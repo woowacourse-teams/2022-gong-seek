@@ -2,7 +2,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 
-import { requestUnlikeArticle, requestLikeArticle } from '@/api/like';
+import { deleteLikeArticle, postAddLikeArticle } from '@/api/like';
 import { queryClient } from '@/index';
 
 const useHeartClick = (articleId: string) => {
@@ -15,7 +15,7 @@ const useHeartClick = (articleId: string) => {
 		isSuccess: postIsSuccess,
 	} = useMutation<AxiosResponse<{ isLike: boolean; likeCount: number }>, AxiosError, string>(
 		`like${articleId}`,
-		requestLikeArticle,
+		postAddLikeArticle,
 	);
 	const {
 		data: deleteData,
@@ -26,7 +26,7 @@ const useHeartClick = (articleId: string) => {
 		isSuccess: deleteIsSuccess,
 	} = useMutation<AxiosResponse<{ isLike: boolean; likeCount: number }>, AxiosError, string>(
 		`unlike${articleId}`,
-		requestUnlikeArticle,
+		deleteLikeArticle,
 	);
 
 	useEffect(() => {
