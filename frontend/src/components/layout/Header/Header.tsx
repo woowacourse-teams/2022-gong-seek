@@ -12,9 +12,11 @@ const Header = () => {
 	const { isSearchOpen } = useRecoilValue(searchState);
 
 	const onLogOutClick = () => {
-		window.confirm('정말로 로그아웃을 하시겠습니까?');
-		localStorage.removeItem('accessToken');
-		window.location.href = '/';
+		if (window.confirm('정말로 로그아웃을 하시겠습니까?')) {
+			localStorage.removeItem('accessToken');
+			window.location.href = '/';
+			return;
+		}
 	};
 
 	if (isSearchOpen) {
