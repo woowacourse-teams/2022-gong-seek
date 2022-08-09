@@ -12,7 +12,7 @@ export interface CommonArticleType {
 	createdAt: string;
 	views: number;
 	isLike: boolean;
-	like: number;
+	likeCount: number;
 }
 
 export interface ArticleType extends CommonArticleType {

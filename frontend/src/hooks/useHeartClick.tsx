@@ -1,26 +1,33 @@
-import { AxiosError } from 'axios';
-import { useEffect, useState } from 'react';
+import { AxiosError, AxiosResponse } from 'axios';
+import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 
 import { deleteLikeArticle, postLikeArticle } from '@/api/like';
 import { queryClient } from '@/index';
 
-const useHeartClick = (isLike: boolean, articleId: string) => {
-	const [isHeartClick, setIsHeartClick] = useState(isLike);
+const useHeartClick = (articleId: string) => {
 	const {
+		data: postData,
 		mutate: postMutate,
 		isLoading: postIsLoading,
 		isError: postIsError,
 		error: postError,
 		isSuccess: postIsSuccess,
-	} = useMutation<unknown, AxiosError, string>(`like${articleId}`, postLikeArticle);
+	} = useMutation<AxiosResponse<{ isLike: boolean; likeCount: number }>, AxiosError, string>(
+		`like${articleId}`,
+		postLikeArticle,
+	);
 	const {
+		data: deleteData,
 		mutate: deleteMutate,
 		isLoading: deleteIsLoading,
 		isError: deleteIsError,
 		error: deleteError,
 		isSuccess: deleteIsSuccess,
-	} = useMutation<unknown, AxiosError, string>(`unlike${articleId}`, deleteLikeArticle);
+	} = useMutation<AxiosResponse<{ isLike: boolean; likeCount: number }>, AxiosError, string>(
+		`unlike${articleId}`,
+		deleteLikeArticle,
+	);
 
 	useEffect(() => {
 		if (postIsError) {
@@ -39,16 +46,21 @@ const useHeartClick = (isLike: boolean, articleId: string) => {
 	});
 
 	const onLikeButtonClick = () => {
-		setIsHeartClick(true);
 		postMutate(articleId);
 	};
 
 	const onUnlikeButtonClick = () => {
-		setIsHeartClick(false);
 		deleteMutate(articleId);
 	};
 
-	return { postIsLoading, deleteIsLoading, onLikeButtonClick, onUnlikeButtonClick, isHeartClick };
+	return {
+		postIsLoading,
+		deleteIsLoading,
+		onLikeButtonClick,
+		onUnlikeButtonClick,
+		isLike: postData?.data.isLike || deleteData?.data.isLike,
+		likeCount: postData?.data.likeCount || deleteData?.data.likeCount,
+	};
 };
 
 export default useHeartClick;

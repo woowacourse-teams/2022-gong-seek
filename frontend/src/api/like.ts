@@ -14,7 +14,7 @@ export const postLikeArticle = (articleId: string) => {
 
 export const deleteLikeArticle = (articleId: string) => {
 	const accessToken = localStorage.getItem('accessToken');
-	return axios.delete<never, unknown, unknown>(`${HOME_URL}/api/articles/${articleId}/unlike`, {
+	return axios.delete(`${HOME_URL}/api/articles/${articleId}/unlike`, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			Authorization: `Bearer ${accessToken}`,

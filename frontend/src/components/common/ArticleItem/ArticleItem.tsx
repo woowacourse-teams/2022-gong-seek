@@ -1,7 +1,7 @@
 import * as S from '@/components/common/ArticleItem/ArticleItem.styles';
 import Loading from '@/components/common/Loading/Loading';
 import useHeartClick from '@/hooks/useHeartClick';
-import { Category, CommonArticleType } from '@/types/articleResponse';
+import { Category } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 import { dateTimeConverter, exculdeSpecialWordConverter } from '@/utils/converter';
 
@@ -15,14 +15,20 @@ interface ArticleItemProps {
 		commentCount: number;
 		createdAt: string;
 		isLike: boolean;
-		like: number;
+		likeCount: number;
 	};
 	onClick: () => void;
 }
 
 const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
-	const { deleteIsLoading, isHeartClick, onLikeButtonClick, onUnlikeButtonClick, postIsLoading } =
-		useHeartClick(article.isLike, String(article.id));
+	const {
+		deleteIsLoading,
+		onLikeButtonClick,
+		onUnlikeButtonClick,
+		postIsLoading,
+		isLike,
+		likeCount,
+	} = useHeartClick(String(article.id));
 
 	if (deleteIsLoading || postIsLoading) {
 		return <Loading />;
@@ -45,12 +51,12 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 				</S.ProfileBox>
 				<S.RightFooterBox>
 					<S.HeartBox>
-						{isHeartClick ? (
+						{isLike ? (
 							<S.FillHeart onClick={onUnlikeButtonClick} />
 						) : (
 							<S.EmptyHeart onClick={onLikeButtonClick} />
 						)}
-						<div>{article.like}</div>
+						<div>{likeCount}</div>
 					</S.HeartBox>
 				</S.RightFooterBox>
 			</S.FooterBox>

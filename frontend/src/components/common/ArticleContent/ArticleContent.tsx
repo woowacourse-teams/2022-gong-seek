@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as S from '@/components/common/ArticleContent/ArticleContent.styles';
@@ -19,8 +18,14 @@ export interface ArticleContentProps {
 }
 
 const ArticleContent = ({ category, article, author, articleId }: ArticleContentProps) => {
-	const { deleteIsLoading, isHeartClick, onLikeButtonClick, onUnlikeButtonClick, postIsLoading } =
-		useHeartClick(article.isLike, String(article.id));
+	const {
+		deleteIsLoading,
+		onLikeButtonClick,
+		onUnlikeButtonClick,
+		postIsLoading,
+		isLike,
+		likeCount,
+	} = useHeartClick(String(article.id));
 	const { isLoading, handleDeleteArticle } = useDeleteArticleContent();
 	const navigate = useNavigate();
 
@@ -69,12 +74,12 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 						)}
 					</S.WritingOrderBox>
 					<S.LikeContentBox>
-						{isHeartClick ? (
+						{isLike ? (
 							<S.FillHeart onClick={onUnlikeButtonClick} />
 						) : (
 							<S.EmptyHeart onClick={onLikeButtonClick} />
 						)}
-						<div>{article.like}</div>
+						<div>{likeCount}</div>
 					</S.LikeContentBox>
 				</S.Footer>
 			</PageLayout>
