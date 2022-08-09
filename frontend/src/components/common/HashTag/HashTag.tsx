@@ -44,13 +44,7 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 				return;
 			}
 
-			setHashTags(
-				hashTags.filter((item, index) => {
-					if (index < hashTags.length - 1) {
-						return item;
-					}
-				}),
-			);
+			setHashTags(hashTags.filter((item, index) => index < hashTags.length - 1));
 			return;
 		}
 	};
