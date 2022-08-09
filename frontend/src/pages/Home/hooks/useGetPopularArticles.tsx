@@ -1,7 +1,6 @@
 import { AxiosError } from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 
 import { getPopularArticles, PopularArticles } from '@/api/article';
 import CustomError from '@/components/helper/CustomError';
@@ -9,7 +8,6 @@ import { ErrorMessage } from '@/constants/ErrorMessage';
 import * as S from '@/pages/Home/PopularArticle/PopularArticle.styles';
 
 const useGetPopularArticles = () => {
-	const navigate = useNavigate();
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [indexLimit, setIndexLimit] = useState(0);
 	const mainArticleContent = useRef<HTMLDivElement>(null);
@@ -56,14 +54,6 @@ const useGetPopularArticles = () => {
 		mainArticleContent.current?.animate(S.showPopularSlider, S.animationTiming);
 	};
 
-	const navigateDetailPage = () => {
-		if (isSuccess) {
-			navigate(
-				`/articles/${data.articles[currentIndex].category}/${data.articles[currentIndex].id}`,
-			);
-		}
-	};
-
 	return {
 		data,
 		isLoading,
@@ -72,7 +62,6 @@ const useGetPopularArticles = () => {
 		currentIndex,
 		handleLeftSlideEvent,
 		handleRightSlideEvent,
-		navigateDetailPage,
 		mainArticleContent,
 	};
 };

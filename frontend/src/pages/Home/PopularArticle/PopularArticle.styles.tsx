@@ -27,6 +27,8 @@ export const Container = styled.section`
 
 	width: 100%;
 	height: ${({ theme }) => theme.size.SIZE_080};
+
+	z-index: ${({ theme }) => theme.zIndex.POPULAR_ARTICLES};
 `;
 
 export const LeftBackgroundArticle = styled.div<{ colorKey: keyof typeof articleColors }>`
