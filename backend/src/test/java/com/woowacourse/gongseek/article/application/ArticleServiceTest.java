@@ -301,7 +301,7 @@ public class ArticleServiceTest {
                 List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(loginMember, articleRequest);
 
-        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.");
+        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
         articleService.update(loginMember, request, savedArticle.getId());
 
         ArticleResponse response = articleService.getOne(loginMember, savedArticle.getId());
@@ -320,7 +320,7 @@ public class ArticleServiceTest {
                 List.of("Spring"), true);
         ArticleIdResponse savedArticle = articleService.save(loginMember, articleRequest);
 
-        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.");
+        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
         articleService.update(loginMember, request, savedArticle.getId());
 
         ArticleResponse response = articleService.getOne(loginMember, savedArticle.getId());
@@ -339,7 +339,7 @@ public class ArticleServiceTest {
                 List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
         AppMember noAuthorMember = new LoginMember(noAuthor.getId());
-        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.");
+        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
 
         assertThatThrownBy(() -> articleService.update(noAuthorMember, request, savedArticle.getId()))
                 .isExactlyInstanceOf(NoAuthorizationException.class)
@@ -352,7 +352,7 @@ public class ArticleServiceTest {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
-        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.");
+        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
 
         assertThatThrownBy(() -> articleService.update(guestMember, request, savedArticle.getId()))
                 .isExactlyInstanceOf(NoAuthorizationException.class)

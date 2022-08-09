@@ -47,4 +47,19 @@ class ArticleTagRepositoryTest {
 
         assertThat(articleTags).hasSize(2);
     }
+
+    @Test
+    void 게시글_별_해시태그를_삭제한다() {
+        Member member = memberRepository.save(new Member("rennon", "brorae", "avatar.com"));
+        Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
+        Tag tag1 = tagRepository.save(new Tag("Spring"));
+        Tag tag2 = tagRepository.save(new Tag("Java"));
+        articleTagRepository.save(new ArticleTag(article, tag1));
+        articleTagRepository.save(new ArticleTag(article, tag2));
+
+        articleTagRepository.deleteAllByArticleId(article.getId());
+        List<ArticleTag> articleTags = articleTagRepository.findAllByArticleId(article.getId());
+
+        assertThat(articleTags).hasSize(0);
+    }
 }

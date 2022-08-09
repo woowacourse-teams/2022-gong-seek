@@ -215,7 +215,7 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_수정_API_문서화() throws Exception {
-        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 바꿀께요", "내용 수정합니다~~~");
+        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 바꿀께요", "내용 수정합니다~~~", List.of("JAVA"));
         ArticleUpdateResponse articleUpdateResponse = new ArticleUpdateResponse(1L, Category.QUESTION.getValue());
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
@@ -235,7 +235,8 @@ class ArticleControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("수정할 게시물 제목"),
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("수정할 게시물 내용")
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("수정할 게시물 내용"),
+                                fieldWithPath("hashtag").type(JsonFieldType.ARRAY).description("수정할 게시물 해시태그")
                         ),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시물 식별자"),

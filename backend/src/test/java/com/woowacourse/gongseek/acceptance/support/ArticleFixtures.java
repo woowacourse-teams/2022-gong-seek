@@ -102,7 +102,7 @@ public class ArticleFixtures {
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ArticleUpdateRequest("title2", "content2"))
+                .body(new ArticleUpdateRequest("title2", "content2", List.of("JAVA")))
                 .when()
                 .put("/api/articles/{articleId}", articleIdResponse.getId())
                 .then().log().all()
@@ -113,7 +113,7 @@ public class ArticleFixtures {
         return RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ArticleUpdateRequest("title2", "content2"))
+                .body(new ArticleUpdateRequest("title2", "content2", List.of("JAVA")))
                 .when()
                 .put("/api/articles/{articleId}", articleIdResponse.getId())
                 .then().log().all()

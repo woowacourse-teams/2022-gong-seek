@@ -332,11 +332,15 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 로그인_후_게시물을_수정한다(tokenResponse, articleIdResponse);
         ArticleUpdateResponse articleUpdateResponse = response.as(ArticleUpdateResponse.class);
 
+        ArticleResponse articleResponse = 로그인을_하지_않고_게시물을_조회한다(articleIdResponse).as(ArticleResponse.class);
+
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(articleUpdateResponse.getId()).isEqualTo(articleIdResponse.getId()),
-                () -> assertThat(articleUpdateResponse.getCategory()).isEqualTo(Category.QUESTION.getValue())
+                () -> assertThat(articleUpdateResponse.getCategory()).isEqualTo(Category.QUESTION.getValue()),
+                () -> assertThat(articleResponse.getHashtag()).hasSize(1),
+                () -> assertThat(articleResponse.getHashtag().get(0)).isEqualTo("JAVA")
         );
     }
 
@@ -351,11 +355,15 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 로그인_후_게시물을_수정한다(tokenResponse, articleIdResponse);
         ArticleUpdateResponse articleUpdateResponse = response.as(ArticleUpdateResponse.class);
 
+        ArticleResponse articleResponse = 로그인을_하지_않고_게시물을_조회한다(articleIdResponse).as(ArticleResponse.class);
+
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(articleUpdateResponse.getId()).isEqualTo(articleIdResponse.getId()),
-                () -> assertThat(articleUpdateResponse.getCategory()).isEqualTo(Category.QUESTION.getValue())
+                () -> assertThat(articleUpdateResponse.getCategory()).isEqualTo(Category.QUESTION.getValue()),
+                () -> assertThat(articleResponse.getHashtag()).hasSize(1),
+                () -> assertThat(articleResponse.getHashtag().get(0)).isEqualTo("JAVA")
         );
     }
 

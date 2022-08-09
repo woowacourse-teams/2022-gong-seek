@@ -175,8 +175,14 @@ public class ArticleService {
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
+        Tags tags = new Tags(articleUpdateRequest.toTag());
+        List<Tag> foundTags = getTags(tags);
+
         Article article = checkAuthorization(appMember, id);
         article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent());
+
+        articleTagRepository.deleteAllByArticleId(article.getId());
+        foundTags.forEach(tag -> articleTagRepository.save(new ArticleTag(article, tag)));
 
         return new ArticleUpdateResponse(article);
     }

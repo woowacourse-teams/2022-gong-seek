@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ArticleTagRepository extends JpaRepository<ArticleTag, Long> {
 
     List<ArticleTag> findAllByArticleId(Long articleId);
+
+    void deleteAllByArticleId(Long articleId);
 }
