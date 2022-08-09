@@ -6,6 +6,7 @@ import com.woowacourse.gongseek.article.exception.ArticleContentTooLongException
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.ArticleTitleNullOrEmptyException;
 import com.woowacourse.gongseek.article.exception.ArticleTitleTooLongException;
+import com.woowacourse.gongseek.auth.exception.EmptyCookieException;
 import com.woowacourse.gongseek.auth.exception.EmptyTokenException;
 import com.woowacourse.gongseek.auth.exception.GithubAccessTokenLoadFailException;
 import com.woowacourse.gongseek.auth.exception.GithubUserProfileLoadFailException;
@@ -38,7 +39,7 @@ public enum ExceptionType {
     NO_SUCH_AUTHENTICATION_DATA_EXCEPTION("1006", "인증할 수 있는 사용자 데이터가 없습니다.", NoSuchAuthenticationDataException.class),
     NO_AUTHORIZATION_EXCEPTION("1007", "권한이 없습니다.", NoAuthorizationException.class),
     REFRESH_TOKEN_EXPIRATION_EXCEPTION("1008", "리프레시 토큰이 유효하지 않습니다.", InvalidRefreshTokenException.class),
-
+    EMPTY_COOKIE_EXCEPTION("1009", "쿠키가 비어있습니다.", EmptyCookieException.class),
     MEMBER_NOT_FOUND_EXCEPTION("2001", "회원이 존재하지 않습니다.", MemberNotFoundException.class),
 
     ARTICLE_NOT_FOUND_EXCEPTION("3001", "게시글이 존재하지 않습니다.", ArticleNotFoundException.class),

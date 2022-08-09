@@ -2,7 +2,6 @@ package com.woowacourse.gongseek.auth.presentation;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -20,7 +19,6 @@ import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
-import com.woowacourse.gongseek.auth.utils.CookieUtils;
 import com.woowacourse.gongseek.config.RestDocsConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,8 +27,8 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseCookie;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -68,11 +66,12 @@ class AuthControllerTest {
     }
 
     @Test
-    void 로그인_ACCESS_TOKEN_생성_API_문서화() throws Exception {
+    void 로그인_API_문서화() throws Exception {
         OAuthCodeRequest request = new OAuthCodeRequest("code");
         given(authService.generateToken(any())).willReturn(new TokenResponse("refreshToken", "accessToken"));
 
         ResultActions results = mockMvc.perform(post("/api/auth/login")
+                .header(HttpHeaders.SET_COOKIE, "gongSeek-refreshToken")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8"));
@@ -80,11 +79,36 @@ class AuthControllerTest {
         results.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("login-token",
+                                responseHeaders(
+                                        headerWithName(HttpHeaders.SET_COOKIE).description("리프레시토큰")
+                                ),
                                 requestFields(
                                         fieldWithPath("code").type(JsonFieldType.STRING).description("사용자 인가코드")
                                 ),
                                 responseFields(
                                         fieldWithPath("accessToken").type(JsonFieldType.STRING).description("로그인 엑세스 토큰")
+                                )
+                        )
+                );
+    }
+
+    @Test
+    void 토큰_재발급_API_문서화() throws Exception {
+        given(authService.renewToken(any())).willReturn(new TokenResponse("new-refreshToken", "new-accessToken"));
+
+        ResultActions results = mockMvc.perform(get("/api/auth/refresh")
+                .header(HttpHeaders.SET_COOKIE, "gongSeek-refreshToken")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8"));
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("renew-token",
+                                responseHeaders(
+                                        headerWithName(HttpHeaders.SET_COOKIE).description("리프레시토큰")
+                                ),
+                                responseFields(
+                                        fieldWithPath("accessToken").type(JsonFieldType.STRING).description("갱신된 엑세스 토큰")
                                 )
                         )
                 );

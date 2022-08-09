@@ -1,16 +1,19 @@
 package com.woowacourse.gongseek.auth.presentation;
 
 import com.woowacourse.gongseek.auth.application.AuthService;
+import com.woowacourse.gongseek.auth.exception.EmptyCookieException;
+import com.woowacourse.gongseek.auth.exception.EmptyTokenException;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.auth.utils.CookieUtils;
+import java.util.Objects;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -37,8 +40,7 @@ public class AuthController {
                                                      HttpServletResponse httpServletResponse) {
         TokenResponse tokenResponse = authService.generateToken(OAuthCodeRequest);
         ResponseCookie cookie = CookieUtils.create(tokenResponse.getRefreshToken());
-
-        httpServletResponse.setHeader("Set-Cookie", cookie.toString());
+        httpServletResponse.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         return ResponseEntity.ok(new AccessTokenResponse(tokenResponse.getAccessToken()));
     }
@@ -47,10 +49,10 @@ public class AuthController {
     public ResponseEntity<AccessTokenResponse> renewal(
             @CookieValue(value = "refreshToken", required = false) Cookie cookie,
             HttpServletResponse httpServletResponse) {
-
+        CookieUtils.validateCookie(cookie);
         TokenResponse tokenResponse = authService.renewToken(cookie.getValue());
         ResponseCookie newCookie = CookieUtils.create(tokenResponse.getRefreshToken());
-        httpServletResponse.setHeader("Set-Cookie", newCookie.toString());
+        httpServletResponse.setHeader(HttpHeaders.SET_COOKIE, newCookie.toString());
 
         return ResponseEntity.ok(new AccessTokenResponse(tokenResponse.getAccessToken()));
     }
