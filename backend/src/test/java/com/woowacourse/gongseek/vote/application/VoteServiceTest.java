@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
-import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.common.DatabaseCleaner;
@@ -18,7 +17,7 @@ import com.woowacourse.gongseek.vote.domain.Vote;
 import com.woowacourse.gongseek.vote.domain.VoteItem;
 import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
-import com.woowacourse.gongseek.vote.exception.CannotCreateVoteException;
+import com.woowacourse.gongseek.vote.exception.UnavailableArticleException;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateResponse;
@@ -56,7 +55,6 @@ class VoteServiceTest {
 
     private Member member;
     private Article discussionArticle;
-    private Vote vote;
     private List<VoteItem> voteItems;
 
     @BeforeEach
@@ -65,7 +63,7 @@ class VoteServiceTest {
         discussionArticle = articleRepository.save(
                 new Article("게시글 제목입니다.", "내용이 들어갑니다.", Category.DISCUSSION, member, false)
         );
-        vote = voteRepository.save(new Vote(discussionArticle, LocalDateTime.now().plusDays(7)));
+        Vote vote = voteRepository.save(new Vote(discussionArticle, LocalDateTime.now().plusDays(7)));
         voteItems = voteItemRepository.saveAll(List.of(new VoteItem("content1", vote), new VoteItem("content2", vote)));
     }
 
@@ -91,7 +89,7 @@ class VoteServiceTest {
 
         assertThatThrownBy(() -> voteService.create(new LoginMember(member.getId()), article.getId(),
                 new VoteCreateRequest(Set.of("Dto 최고다.", "VO 최고다"), LocalDateTime.now().plusDays(5)))
-        ).isExactlyInstanceOf(CannotCreateVoteException.class)
+        ).isExactlyInstanceOf(UnavailableArticleException.class)
                 .hasMessage("토론 게시물만 투표를 생성할 수 있습니다.");
     }
 
@@ -128,7 +126,8 @@ class VoteServiceTest {
         LoginMember loginMember = new LoginMember(member.getId());
         int selectIndex = 0;
 
-        voteService.doVote(discussionArticle.getId(), loginMember, new SelectVoteItemIdRequest(voteItems.get(selectIndex).getId()));
+        voteService.doVote(discussionArticle.getId(), loginMember,
+                new SelectVoteItemIdRequest(voteItems.get(selectIndex).getId()));
 
         List<VoteItemResponse> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember)
                 .getVoteItems();
@@ -141,9 +140,11 @@ class VoteServiceTest {
     @Test
     void 다른_항목을_투표하면_기존의_투표수는_감소하고_선택한_투표수가_증가한다() {
         LoginMember loginMember = new LoginMember(member.getId());
-        voteService.doVote(discussionArticle.getId(), loginMember, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
+        voteService.doVote(discussionArticle.getId(), loginMember,
+                new SelectVoteItemIdRequest(voteItems.get(0).getId()));
 
-        voteService.doVote(discussionArticle.getId(), loginMember, new SelectVoteItemIdRequest(voteItems.get(1).getId()));
+        voteService.doVote(discussionArticle.getId(), loginMember,
+                new SelectVoteItemIdRequest(voteItems.get(1).getId()));
 
         List<VoteItemResponse> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember)
                 .getVoteItems();
@@ -159,8 +160,10 @@ class VoteServiceTest {
         LoginMember loginMember1 = new LoginMember(member.getId());
         LoginMember loginMember2 = new LoginMember(other.getId());
 
-        voteService.doVote(discussionArticle.getId(), loginMember1, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
-        voteService.doVote(discussionArticle.getId(), loginMember2, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
+        voteService.doVote(discussionArticle.getId(), loginMember1,
+                new SelectVoteItemIdRequest(voteItems.get(0).getId()));
+        voteService.doVote(discussionArticle.getId(), loginMember2,
+                new SelectVoteItemIdRequest(voteItems.get(0).getId()));
 
         List<VoteItemResponse> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember1)
                 .getVoteItems();

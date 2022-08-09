@@ -16,14 +16,13 @@ import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import com.woowacourse.gongseek.vote.exception.AlreadyVoteSameItemException;
-import com.woowacourse.gongseek.vote.exception.CannotCreateVoteException;
+import com.woowacourse.gongseek.vote.exception.UnavailableArticleException;
 import com.woowacourse.gongseek.vote.exception.VoteItemNotFoundException;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteItemResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -74,7 +73,7 @@ public class VoteService {
 
     private void validateCategory(Article article) {
         if (article.cannotCreateVote()) {
-            throw new CannotCreateVoteException();
+            throw new UnavailableArticleException();
         }
     }
 
@@ -92,13 +91,6 @@ public class VoteService {
         return new VoteResponse(foundVote.getArticle().getId(), convertVoteItemResponse(voteItems), getVotedItemIdOrNull(voteHistory), foundVote.isExpired());
     }
 
-    private Long getVotedItemIdOrNull(VoteHistory voteHistory) {
-        if (Objects.isNull(voteHistory)) {
-            return null;
-        }
-        return voteHistory.getVoteItemId();
-    }
-
     private Vote getVoteByArticleId(Long articleId) {
         return voteRepository.findByArticleId(articleId)
                 .orElseThrow(ArticleNotFoundException::new);
@@ -108,6 +100,13 @@ public class VoteService {
         return voteItems.stream()
                 .map(VoteItemResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    private Long getVotedItemIdOrNull(VoteHistory voteHistory) {
+        if (Objects.isNull(voteHistory)) {
+            return null;
+        }
+        return voteHistory.getVoteItemId();
     }
 
     public void doVote(Long articleId, AppMember appMember, SelectVoteItemIdRequest selectVoteItemIdRequest) {
