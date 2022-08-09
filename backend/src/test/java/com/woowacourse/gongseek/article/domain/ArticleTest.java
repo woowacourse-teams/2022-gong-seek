@@ -1,14 +1,9 @@
 package com.woowacourse.gongseek.article.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.gongseek.article.exception.DuplicateTagException;
 import com.woowacourse.gongseek.member.domain.Member;
-import com.woowacourse.gongseek.tag.domain.Tag;
-import com.woowacourse.gongseek.tag.domain.Tags;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -63,27 +58,5 @@ class ArticleTest {
                 () -> assertThat(article.getTitle()).isEqualTo(updatedTitle),
                 () -> assertThat(article.getContent()).isEqualTo(updatedContent)
         );
-    }
-
-    @Test
-    void 게시글의_해시태그를_추가한다() {
-        Article article = new Article("제목", "내용", Category.QUESTION, member, false);
-        Tag tag1 = new Tag("spring");
-        Tag tag2 = new Tag("backend");
-
-        article.addTags(new Tags(List.of(tag1, tag2)));
-
-        assertThat(article.getArticleTags()).hasSize(2);
-    }
-
-    @Test
-    void 게시글에_중복되는_해시태그를_추가하면_예외가_발생한다() {
-        Article article = new Article("제목", "내용", Category.QUESTION, member, false);
-        Tag tag1 = new Tag("spring");
-        Tag tag2 = new Tag("SPRING");
-
-        assertThatThrownBy(() -> article.addTags(new Tags(List.of(tag1, tag2))))
-                .isInstanceOf(DuplicateTagException.class)
-                .hasMessage("해시태그 이름은 중복될 수 없습니다.");
     }
 }

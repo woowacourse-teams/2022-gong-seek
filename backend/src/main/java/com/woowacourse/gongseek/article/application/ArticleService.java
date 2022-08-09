@@ -1,7 +1,9 @@
 package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
+import com.woowacourse.gongseek.article.domain.articletag.ArticleTag;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
@@ -39,6 +41,7 @@ public class ArticleService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final TagRepository tagRepository;
+    private final ArticleTagRepository articleTagRepository;
     private final Encryptor encryptor;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
@@ -46,10 +49,10 @@ public class ArticleService {
         Member member = getAuthor(appMember, articleRequest);
 
         Tags tags = new Tags(articleRequest.toTags());
-        Tags foundTags = getTags(tags);
+        List<Tag> foundTags = getTags(tags);
 
         Article article = articleRepository.save(articleRequest.toEntity(member));
-        article.addTags(foundTags);
+        foundTags.forEach(tag -> articleTagRepository.save(new ArticleTag(article, tag)));
 
         return new ArticleIdResponse(article);
     }
@@ -69,11 +72,10 @@ public class ArticleService {
         return getMember(appMember);
     }
 
-    private Tags getTags(Tags tags) {
-        List<Tag> foundTags = tags.getTagNames().stream()
+    private List<Tag> getTags(Tags tags) {
+        return tags.getTagNames().stream()
                 .map(this::getOrCreateTagIfNotExist)
                 .collect(Collectors.toList());
-        return new Tags(foundTags);
     }
 
     private Tag getOrCreateTagIfNotExist(String name) {

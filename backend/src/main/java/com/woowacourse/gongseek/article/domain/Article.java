@@ -1,11 +1,7 @@
 package com.woowacourse.gongseek.article.domain;
 
-import com.woowacourse.gongseek.article.domain.articletag.ArticleTag;
-import com.woowacourse.gongseek.article.domain.articletag.ArticleTags;
 import com.woowacourse.gongseek.member.domain.Member;
-import com.woowacourse.gongseek.tag.domain.Tags;
 import java.time.LocalDateTime;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -55,9 +51,6 @@ public class Article {
     @Embedded
     private Views views;
 
-    @Embedded
-    private ArticleTags articleTags;
-
     @Column(nullable = false)
     private boolean isAnonymous;
 
@@ -74,7 +67,6 @@ public class Article {
         this.category = category;
         this.member = member;
         this.views = new Views();
-        this.articleTags = new ArticleTags();
         this.isAnonymous = isAnonymous;
     }
 
@@ -95,10 +87,6 @@ public class Article {
         this.content = new Content(content);
     }
 
-    public void addTags(Tags tags) {
-        articleTags.addTags(this, tags);
-    }
-
     public String getTitle() {
         return title.getValue();
     }
@@ -109,9 +97,5 @@ public class Article {
 
     public int getViews() {
         return views.getValue();
-    }
-
-    public List<ArticleTag> getArticleTags() {
-        return articleTags.getArticleTags();
     }
 }

@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
@@ -9,8 +8,6 @@ import com.woowacourse.gongseek.config.JpaAuditingConfig;
 import com.woowacourse.gongseek.config.QuerydslConfig;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
-import com.woowacourse.gongseek.tag.domain.Tag;
-import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +17,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -42,9 +38,6 @@ class ArticleRepositoryTest {
     @Autowired
     private TagRepository tagRepository;
 
-    @Autowired
-    private TestEntityManager testEntityManager;
-
     @BeforeEach
     void setUp() {
         memberRepository.save(member);
@@ -56,28 +49,6 @@ class ArticleRepositoryTest {
         Article savedArticle = articleRepository.save(article);
 
         assertThat(savedArticle).isSameAs(article);
-    }
-
-    @Test
-    void 게시글을_해시태그와_함께_저장한다() {
-        Tag tag1 = new Tag("SPRING");
-        Tag tag2 = new Tag("BACKEND");
-        Article article = new Article(TITLE, CONTENT, Category.QUESTION, member, false);
-
-        Tag savedTag1 = tagRepository.save(tag1);
-        Tag savedTag2 = tagRepository.save(tag2);
-        Article savedArticle = articleRepository.save(article);
-        savedArticle.addTags(new Tags(List.of(savedTag1, savedTag2)));
-
-        testEntityManager.flush();
-        testEntityManager.clear();
-
-        assertAll(
-                () -> assertThat(savedArticle).isSameAs(article),
-                () -> assertThat(savedTag1).isSameAs(tag1),
-                () -> assertThat(savedTag2).isSameAs(tag2),
-                () -> assertThat(savedArticle.getArticleTags()).hasSize(2)
-        );
     }
 
     @Test
