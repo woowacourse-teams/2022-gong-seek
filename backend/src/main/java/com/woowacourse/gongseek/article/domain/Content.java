@@ -27,7 +27,7 @@ public class Content {
     }
 
     private void validateNullOrEmpty(String value) {
-        if (Objects.isNull(value) || value.trim().isBlank()) {
+        if (Objects.isNull(value) || value.isBlank()) {
             throw new ArticleContentNullOrEmptyException();
         }
     }
