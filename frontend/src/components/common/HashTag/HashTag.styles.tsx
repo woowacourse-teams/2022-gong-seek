@@ -1,4 +1,3 @@
-import { theme } from '@/styles/Theme';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
@@ -12,7 +11,7 @@ export const Container = styled.div`
 export const HashTagItemBox = styled.div`
 	display: flex;
 
-	width: 100%;
+	width: fit-content;
 	height: fit-content;
 
 	flex-wrap: wrap;
@@ -43,14 +42,15 @@ export const HashTagForm = styled.form`
 `;
 
 export const HastTagInput = styled.input`
-	width: 100%;
+	width: 50%;
+	overflow: auto;
 
 	border: none;
 	background-color: transparent;
 
 	padding: 0.6rem 0.8rem;
 
-	font-size: 0.8rem;
+	font-size: ${({ theme }) => theme.size.SIZE_010};
 
 	&:focus {
 		outline: none;

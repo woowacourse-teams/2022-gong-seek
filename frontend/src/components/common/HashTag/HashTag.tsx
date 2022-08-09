@@ -37,27 +37,57 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 		setHashInput('');
 	};
 
+	const onHashTagDeleteEventHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.code === 'Backspace' && hashTags.length >= 1 && hashTagInput.length === 0) {
+			if (hashTags.length <= 1) {
+				setHashTags([]);
+				return;
+			}
+
+			setHashTags(
+				hashTags.filter((item, index) => {
+					if (index < hashTags.length - 1) {
+						return item;
+					}
+				}),
+			);
+			return;
+		}
+	};
+
 	return (
 		<S.Container>
 			<S.HashTagForm
 				aria-label="해시태그가 보여지고 입력하는 곳입니다"
 				onSubmit={onHashTagEnterEventHandler}
 			>
-				<PageLayout width="100%" height="fit-content" justifyContent="flex-start">
+				<PageLayout
+					width="100%"
+					height="fit-content"
+					justifyContent="flex-start"
+					flexWrap="wrap"
+					flexDirection="row"
+					padding="0.25rem"
+				>
+					<S.HashTagItemBox>
+						{hashTags.length >= 1 &&
+							hashTags.map((item) => <S.HastTagItem key={item}>{item}</S.HastTagItem>)}
+					</S.HashTagItemBox>
 					<S.HastTagInput
+						minLength={2}
+						maxLength={20}
 						aria-label="해시태그를 입력하는 곳입니다"
 						placeholder="해시태그를 입력해주세요"
 						value={hashTagInput}
 						onChange={(e) => {
 							setHashInput(e.target.value);
 						}}
+						onKeyDown={(e) => {
+							onHashTagDeleteEventHandler(e);
+						}}
 					/>
 				</PageLayout>
 				<S.ErrorMessage>{errorMsg}</S.ErrorMessage>
-				<S.HashTagItemBox>
-					{hashTags.length >= 1 &&
-						hashTags.map((item) => <S.HastTagItem key={item}>{item}</S.HastTagItem>)}
-				</S.HashTagItemBox>
 			</S.HashTagForm>
 		</S.Container>
 	);
