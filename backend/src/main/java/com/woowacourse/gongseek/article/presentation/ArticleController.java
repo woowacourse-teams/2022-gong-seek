@@ -13,7 +13,6 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,9 +65,11 @@ public class ArticleController {
             @RequestParam String sort,
             @RequestParam(required = false) Long cursorId,
             @RequestParam(required = false) Integer cursorViews,
-            @RequestParam Integer pageSize
+            @RequestParam Integer pageSize,
+            @AuthenticationPrinciple AppMember appMember
     ) {
-        ArticlePageResponse response = articleService.getAll(cursorId, cursorViews, category, sort, pageSize);
+        ArticlePageResponse response = articleService.getAll(cursorId, cursorViews, category, sort, pageSize,
+                appMember);
 
         return ResponseEntity.ok(response);
     }
@@ -77,9 +78,10 @@ public class ArticleController {
     public ResponseEntity<ArticlePageResponse> search(
             @RequestParam(required = false) Long cursorId,
             @RequestParam Integer pageSize,
-            @RequestParam String searchText
+            @RequestParam String searchText,
+            @AuthenticationPrinciple AppMember appMember
     ) {
-        ArticlePageResponse response = articleService.search(cursorId, pageSize, searchText);
+        ArticlePageResponse response = articleService.search(cursorId, pageSize, searchText, appMember);
         return ResponseEntity.ok(response);
     }
 }

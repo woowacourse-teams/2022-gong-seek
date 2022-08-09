@@ -13,13 +13,14 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
+import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
+import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,7 @@ public class ArticleService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final VoteRepository voteRepository;
+    private final LikeRepository likeRepository;
     private final Encryptor encryptor;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
@@ -72,8 +74,10 @@ public class ArticleService {
         Article article = getArticle(id);
         article.addViews();
         boolean hasVote = voteRepository.existsByArticleId(article.getId());
+        boolean isLike = isLike(article, appMember);
+        Long likeCount = getLikeCount(article);
 
-        return checkGuest(article, appMember, hasVote);
+        return checkGuest(article, appMember, hasVote, isLike, likeCount);
     }
 
     private Article getArticle(Long id) {
@@ -81,34 +85,52 @@ public class ArticleService {
                 .orElseThrow(ArticleNotFoundException::new);
     }
 
-    private ArticleResponse checkGuest(Article article, AppMember appMember, boolean hasVote) {
-        if (appMember.isGuest()) {
-            return new ArticleResponse(article, false, hasVote);
-        }
-        return checkAuthor(article, getMember(appMember), hasVote);
+    private Long getLikeCount(Article article) {
+        return likeRepository.countByArticleId(article.getId());
     }
 
-    private ArticleResponse checkAuthor(Article article, Member member, boolean hasVote) {
+    private boolean isLike(Article article, AppMember appMember) {
+        if (appMember.isGuest()) {
+            return false;
+        }
+        return likeRepository.existsByArticleIdAndMemberId(article.getId(), appMember.getPayload());
+    }
+
+    private ArticleResponse checkGuest(Article article, AppMember appMember, boolean hasVote, boolean isLike,
+                                       Long likeCount) {
+        if (appMember.isGuest()) {
+            LikeResponse likeResponse = new LikeResponse(isLike, likeCount);
+            return new ArticleResponse(article, false, hasVote, likeResponse);
+        }
+        return checkAuthor(article, getMember(appMember), hasVote, isLike, likeCount);
+    }
+
+    private ArticleResponse checkAuthor(Article article, Member member, boolean hasVote, boolean isLike,
+                                        Long likeCount) {
         if (article.isAnonymous()) {
             String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
-            return new ArticleResponse(article, article.isAnonymousAuthor(cipherId), hasVote);
+            LikeResponse likeResponse = new LikeResponse(isLike, likeCount);
+            return new ArticleResponse(article, article.isAnonymousAuthor(cipherId), hasVote, likeResponse);
         }
-        return new ArticleResponse(article, article.isAuthor(member), hasVote);
+        LikeResponse likeResponse = new LikeResponse(isLike, likeCount);
+        return new ArticleResponse(article, article.isAuthor(member), hasVote, likeResponse);
     }
 
     @Transactional(readOnly = true)
     public ArticlePageResponse getAll(Long cursorId, Integer cursorViews, String category, String sortType,
-                                      int pageSize) {
-        List<ArticlePreviewResponse> articles = getAllByPage(cursorId, cursorViews, category, sortType, pageSize);
+                                      int pageSize, AppMember appMember) {
+        List<ArticlePreviewResponse> articles = getAllByPage(cursorId, cursorViews, category, sortType, pageSize,
+                appMember);
 
         return getArticlePageResponse(articles, pageSize);
     }
 
     private List<ArticlePreviewResponse> getAllByPage(Long cursorId, Integer cursorViews, String category,
-                                                      String sortType, int pageSize) {
+                                                      String sortType, int pageSize, AppMember appMember) {
         return articleRepository.findAllByPage(cursorId, cursorViews, category, sortType, pageSize)
                 .stream()
-                .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))
+                .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article),
+                        new LikeResponse(isLike(article, appMember), getLikeCount(article))))
                 .collect(Collectors.toList());
     }
 
@@ -124,19 +146,22 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticlePageResponse search(Long cursorId, int pageSize, String searchText) {
+    public ArticlePageResponse search(Long cursorId, int pageSize, String searchText,
+                                      AppMember appMember) {
         if (searchText.isBlank()) {
             return new ArticlePageResponse(new ArrayList<>(), false);
         }
-        List<ArticlePreviewResponse> articles = searchByText(cursorId, pageSize, searchText);
+        List<ArticlePreviewResponse> articles = searchByText(cursorId, pageSize, searchText, appMember);
 
         return getArticlePageResponse(articles, pageSize);
     }
 
-    private List<ArticlePreviewResponse> searchByText(Long cursorId, int pageSize, String searchText) {
+    private List<ArticlePreviewResponse> searchByText(Long cursorId, int pageSize, String searchText,
+                                                      AppMember appMember) {
         return articleRepository.searchByContainingText(cursorId, pageSize, searchText)
                 .stream()
-                .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article)))
+                .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article),
+                        new LikeResponse(isLike(article, appMember), getLikeCount(article))))
                 .collect(Collectors.toList());
     }
 

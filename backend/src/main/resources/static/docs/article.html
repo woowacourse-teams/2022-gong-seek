@@ -2347,6 +2347,7 @@ Host: localhost:8080</code></pre>
                     <div class="listingblock">
                         <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/articles/1 HTTP/1.1
+Authorization: Bearer token
 Host: localhost:8080</code></pre>
                         </div>
                     </div>
@@ -2363,7 +2364,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 264
+Content-Length: 305
 
 {
   "title" : "title",
@@ -2374,8 +2375,10 @@ Content-Length: 264
   "content" : "content",
   "views" : 1,
   "hasVote" : false,
-  "createdAt" : "2022-08-09T17:03",
-  "updatedAt" : "2022-08-09T17:03",
+  "isLike" : false,
+  "likeCount" : 0,
+  "createdAt" : "2022-08-09T22:14",
+  "updatedAt" : "2022-08-09T22:14",
   "isAuthor" : false
 }</code></pre>
                         </div>
@@ -2390,7 +2393,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 361
+Content-Length: 402
 
 {
   "title" : "title",
@@ -2401,8 +2404,10 @@ Content-Length: 361
   "content" : "content",
   "views" : 1,
   "hasVote" : false,
-  "createdAt" : "2022-08-09T17:03",
-  "updatedAt" : "2022-08-09T17:03",
+  "isLike" : false,
+  "likeCount" : 0,
+  "createdAt" : "2022-08-09T22:14",
+  "updatedAt" : "2022-08-09T22:14",
   "isAuthor" : false
 }</code></pre>
                         </div>
@@ -2469,6 +2474,20 @@ Content-Length: 361
                             <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
                             </td>
                             <td class="tableblock halign-left valign-top"><p class="tableblock">투표가 있으면 true</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>isLike</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">추천 여부</p></td>
+                        </tr>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>likeCount</code>
+                            </p></td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p>
+                            </td>
+                            <td class="tableblock halign-left valign-top"><p class="tableblock">추천 수</p></td>
                         </tr>
                         <tr>
                             <td class="tableblock halign-left valign-top"><p class="tableblock"><code>updatedAt</code>
@@ -2686,6 +2705,7 @@ Vary: Access-Control-Request-Headers</code></pre>
                     <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/articles?category=discussion&amp;sort=latest&amp;cursorId=1&amp;cursorViews=0&amp;pageSize=10 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
+Authorization: Bearer token
 Host: localhost:8080</code></pre>
                     </div>
                 </div>
@@ -2745,7 +2765,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 663
+Content-Length: 751
 
 {
   "articles" : [ {
@@ -2759,7 +2779,9 @@ Content-Length: 663
     "category" : "question",
     "commentCount" : 3,
     "views" : 2,
-    "createdAt" : "2022-08-09T17:03:03.8185648"
+    "isLike" : false,
+    "likeCount" : 0,
+    "createdAt" : "2022-08-09T22:14:45.769159"
   }, {
     "id" : 2,
     "title" : "제목2",
@@ -2771,7 +2793,9 @@ Content-Length: 663
     "category" : "discussion",
     "commentCount" : 10,
     "views" : 5,
-    "createdAt" : "2022-08-09T17:03:03.8185648"
+    "isLike" : false,
+    "likeCount" : 0,
+    "createdAt" : "2022-08-09T22:14:45.769159"
   } ],
   "hasNext" : false
 }</code></pre>
@@ -2846,6 +2870,19 @@ Content-Length: 663
                         <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 조회 수</p></td>
                     </tr>
                     <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">
+                            <code>articles[].isLike</code></p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
+                        </td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">추천 여부</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">
+                            <code>articles[].likeCount</code></p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">추천 수</p></td>
+                    </tr>
+                    <tr>
                         <td class="tableblock halign-left valign-top"><p class="tableblock"><code>hasNext</code></p>
                         </td>
                         <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
@@ -2870,6 +2907,7 @@ Content-Length: 663
                     <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/articles/search?cursorId=1&amp;pageSize=10&amp;searchText=%EC%A0%9C%EB%AA%A9 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
+Authorization: Bearer token
 Host: localhost:8080</code></pre>
                     </div>
                 </div>
@@ -2916,7 +2954,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 650
+Content-Length: 740
 
 {
   "articles" : [ {
@@ -2930,7 +2968,9 @@ Content-Length: 650
     "category" : "question",
     "commentCount" : 3,
     "views" : 2,
-    "createdAt" : "2022-08-09T17:03:03.2305631"
+    "isLike" : false,
+    "likeCount" : 0,
+    "createdAt" : "2022-08-09T22:14:45.4092592"
   }, {
     "id" : 2,
     "title" : "제목",
@@ -2942,7 +2982,9 @@ Content-Length: 650
     "category" : "discussion",
     "commentCount" : 10,
     "views" : 5,
-    "createdAt" : "2022-08-09T17:03:03.2305631"
+    "isLike" : false,
+    "likeCount" : 0,
+    "createdAt" : "2022-08-09T22:14:45.4092592"
   } ],
   "hasNext" : false
 }</code></pre>
@@ -3015,6 +3057,19 @@ Content-Length: 650
                             <code>articles[].views</code></p></td>
                         <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
                         <td class="tableblock halign-left valign-top"><p class="tableblock">게시글 조회 수</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">
+                            <code>articles[].isLike</code></p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p>
+                        </td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">추천 여부</p></td>
+                    </tr>
+                    <tr>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">
+                            <code>articles[].likeCount</code></p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+                        <td class="tableblock halign-left valign-top"><p class="tableblock">추천 수</p></td>
                     </tr>
                     <tr>
                         <td class="tableblock halign-left valign-top"><p class="tableblock"><code>hasNext</code></p>

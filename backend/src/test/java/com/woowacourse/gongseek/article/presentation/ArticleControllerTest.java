@@ -110,6 +110,8 @@ class ArticleControllerTest {
                 false,
                 1,
                 false,
+                false,
+                0L,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
@@ -133,6 +135,8 @@ class ArticleControllerTest {
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
                                 fieldWithPath("hasVote").type(JsonFieldType.BOOLEAN).description("투표가 있으면 true"),
+                                fieldWithPath("isLike").type(JsonFieldType.BOOLEAN).description("추천 여부"),
+                                fieldWithPath("likeCount").type(JsonFieldType.NUMBER).description("추천 수"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
                         )
@@ -149,6 +153,8 @@ class ArticleControllerTest {
                 false,
                 1,
                 false,
+                false,
+                0L,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
@@ -172,6 +178,8 @@ class ArticleControllerTest {
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
                                 fieldWithPath("hasVote").type(JsonFieldType.BOOLEAN).description("투표가 있으면 true"),
+                                fieldWithPath("isLike").type(JsonFieldType.BOOLEAN).description("추천 여부"),
+                                fieldWithPath("likeCount").type(JsonFieldType.NUMBER).description("추천 수"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
                         )
@@ -187,17 +195,23 @@ class ArticleControllerTest {
                 false,
                 1,
                 false,
+                false,
+                0L,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
         given(articleService.getOne(any(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/{id}", 1L)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                 .characterEncoding("UTF-8"));
 
         results.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("article-find-one-not-login",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
                         responseFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
@@ -206,6 +220,8 @@ class ArticleControllerTest {
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
                                 fieldWithPath("hasVote").type(JsonFieldType.BOOLEAN).description("투표가 있으면 true"),
+                                fieldWithPath("isLike").type(JsonFieldType.BOOLEAN).description("추천 여부"),
+                                fieldWithPath("likeCount").type(JsonFieldType.NUMBER).description("추천 수"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
                         )
@@ -267,19 +283,20 @@ class ArticleControllerTest {
     void 게시물_전체_조회_문서화() throws Exception {
         ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목",
                 new AuthorDto("기론", "프로필 이미지 url"),
-                "내용입니다", Category.QUESTION.getValue(), 3, 2, LocalDateTime.now());
+                "내용입니다", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
 
         ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목2",
                 new AuthorDto("기론2", "프로필2 이미지 url"),
-                "내용입니다22", Category.DISCUSSION.getValue(), 10, 5, LocalDateTime.now());
+                "내용입니다22", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
 
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
-        given(articleService.getAll(anyLong(), anyInt(), any(), any(), anyInt())).willReturn(response);
+        given(articleService.getAll(anyLong(), anyInt(), any(), any(), anyInt(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                 .param("category", Category.DISCUSSION.getValue())
                 .param("sort", "latest")
                 .param("cursorId", "1")
@@ -291,6 +308,9 @@ class ArticleControllerTest {
         results.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("article-get-all",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
                         requestParameters(
                                 parameterWithName("category").description("조회할 카테고리(all, discussion, question"),
                                 parameterWithName("sort").description("정렬 기준(latest-최신순, views-조회순)"),
@@ -312,6 +332,8 @@ class ArticleControllerTest {
                                 fieldWithPath("articles[].createdAt").type(JsonFieldType.STRING)
                                         .description("게시글 생성 날짜"),
                                 fieldWithPath("articles[].views").type(JsonFieldType.NUMBER).description("게시글 조회 수"),
+                                fieldWithPath("articles[].isLike").type(JsonFieldType.BOOLEAN).description("추천 여부"),
+                                fieldWithPath("articles[].likeCount").type(JsonFieldType.NUMBER).description("추천 수"),
                                 fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN)
                                         .description("다음에 조회 할 게시글이 있으면 true")
                         )
@@ -322,18 +344,19 @@ class ArticleControllerTest {
     void 게시물_검색_문서화() throws Exception {
         ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목",
                 new AuthorDto("작성자1", "작성자1 이미지 url"),
-                "내용", Category.QUESTION.getValue(), 3, 2, LocalDateTime.now());
+                "내용", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
         ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목",
                 new AuthorDto("작성자2", "작성자2 이미지 url"),
-                "내용", Category.DISCUSSION.getValue(), 10, 5, LocalDateTime.now());
+                "내용", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
-        given(articleService.search(anyLong(), anyInt(), anyString())).willReturn(response);
+        given(articleService.search(anyLong(), anyInt(), anyString(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/search")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                 .param("cursorId", "1")
                 .param("pageSize", "10")
                 .param("searchText", "제목")
@@ -343,6 +366,9 @@ class ArticleControllerTest {
         results.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("article-search",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
                         requestParameters(
                                 parameterWithName("cursorId").description("시작은 null, 마지막으로 조회한 게시물 식별자").optional(),
                                 parameterWithName("pageSize").description("가져올 게시글 개수"),
@@ -362,6 +388,8 @@ class ArticleControllerTest {
                                 fieldWithPath("articles[].createdAt").type(JsonFieldType.STRING)
                                         .description("게시글 생성 날짜"),
                                 fieldWithPath("articles[].views").type(JsonFieldType.NUMBER).description("게시글 조회 수"),
+                                fieldWithPath("articles[].isLike").type(JsonFieldType.BOOLEAN).description("추천 여부"),
+                                fieldWithPath("articles[].likeCount").type(JsonFieldType.NUMBER).description("추천 수"),
                                 fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN)
                                         .description("다음에 조회 할 게시글이 있으면 true")
                         )
