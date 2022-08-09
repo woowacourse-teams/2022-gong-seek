@@ -27,8 +27,8 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         }
 
         String token = TokenExtractor.extract(request.getHeader(HttpHeaders.AUTHORIZATION));
-        if (jwtTokenProvider.validateToken(token)) {
-            request.setAttribute(PAYLOAD, jwtTokenProvider.getPayload(token));
+        if (jwtTokenProvider.validateAccessToken(token)) {
+            request.setAttribute(PAYLOAD, jwtTokenProvider.getAccessTokenPayload(token));
             return true;
         }
         return true;

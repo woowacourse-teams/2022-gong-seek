@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.acceptance.support;
 
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
+import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
@@ -17,7 +18,7 @@ import org.springframework.http.MediaType;
 @SuppressWarnings("NonAsciiCharacters")
 public class CommentFixtures {
 
-    public static ExtractableResponse<Response> 기명으로_댓글을_등록한다(TokenResponse tokenResponse,
+    public static ExtractableResponse<Response> 기명으로_댓글을_등록한다(AccessTokenResponse tokenResponse,
                                                               ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
@@ -31,7 +32,7 @@ public class CommentFixtures {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 익명으로_댓글을_등록한다(TokenResponse tokenResponse,
+    public static ExtractableResponse<Response> 익명으로_댓글을_등록한다(AccessTokenResponse tokenResponse,
                                                               ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
@@ -45,7 +46,7 @@ public class CommentFixtures {
                 .extract();
     }
 
-    public static CommentsResponse 댓글을_조회한다(TokenResponse tokenResponse,
+    public static CommentsResponse 댓글을_조회한다(AccessTokenResponse tokenResponse,
                                             ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
@@ -59,7 +60,7 @@ public class CommentFixtures {
                 .as(CommentsResponse.class);
     }
 
-    public static ExtractableResponse<Response> 댓글을_수정한다(TokenResponse tokenResponse,
+    public static ExtractableResponse<Response> 댓글을_수정한다(AccessTokenResponse tokenResponse,
                                                          List<CommentResponse> commentResponses) {
         return RestAssured
                 .given().log().all()
@@ -73,7 +74,7 @@ public class CommentFixtures {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 댓글을_삭제한다(TokenResponse tokenResponse,
+    public static ExtractableResponse<Response> 댓글을_삭제한다(AccessTokenResponse tokenResponse,
                                                          List<CommentResponse> commentResponses) {
         return RestAssured
                 .given().log().all()

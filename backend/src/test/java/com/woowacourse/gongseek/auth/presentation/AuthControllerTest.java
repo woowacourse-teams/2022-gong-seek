@@ -2,6 +2,9 @@ package com.woowacourse.gongseek.auth.presentation;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -17,6 +20,7 @@ import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
+import com.woowacourse.gongseek.auth.utils.CookieUtils;
 import com.woowacourse.gongseek.config.RestDocsConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +30,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseCookie;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -65,9 +70,9 @@ class AuthControllerTest {
     @Test
     void 로그인_ACCESS_TOKEN_생성_API_문서화() throws Exception {
         OAuthCodeRequest request = new OAuthCodeRequest("code");
-        given(authService.generateAccessToken(any())).willReturn(new TokenResponse("accessToken"));
+        given(authService.generateToken(any())).willReturn(new TokenResponse("refreshToken", "accessToken"));
 
-        ResultActions results = mockMvc.perform(post("/api/auth/token")
+        ResultActions results = mockMvc.perform(post("/api/auth/login")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8"));

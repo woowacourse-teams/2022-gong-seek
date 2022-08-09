@@ -11,7 +11,7 @@ import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
+import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -24,7 +24,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 유저가_깃허브로_로그인을_하고_기명_댓글을_등록할_수_있다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
 
         ExtractableResponse<Response> 댓글 = 기명으로_댓글을_등록한다(엑세스토큰, 게시글번호);
@@ -34,7 +34,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 유저가_깃허브로_로그인을_하고_익명_댓글을_등록할_수_있다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
 
         ExtractableResponse<Response> 댓글 = 익명으로_댓글을_등록한다(엑세스토큰, 게시글번호);
@@ -44,9 +44,9 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 유저가_로그인을_하지_않고_기명_댓글을_등록할_수_없다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
-        TokenResponse 비회원 = new TokenResponse("Bearer ");
+        AccessTokenResponse 비회원 = new AccessTokenResponse("Bearer ");
 
         ExtractableResponse<Response> 댓글 = 기명으로_댓글을_등록한다(비회원, new ArticleIdResponse(게시글번호.getId()));
 
@@ -55,9 +55,9 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 유저가_로그인을_하지_않고_익명_댓글을_등록할_수_없다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
-        TokenResponse 비회원 = new TokenResponse("Bearer ");
+        AccessTokenResponse 비회원 = new AccessTokenResponse("Bearer ");
 
         ExtractableResponse<Response> 댓글 = 익명으로_댓글을_등록한다(비회원, new ArticleIdResponse(게시글번호.getId()));
 
@@ -66,7 +66,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 기명_댓글을_조회할_수_있다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
 
         기명으로_댓글을_등록한다(엑세스토큰, 게시글번호);
@@ -78,7 +78,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 익명_댓글을_조회할_수_있다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
 
         익명으로_댓글을_등록한다(엑세스토큰, 게시글번호);
@@ -90,7 +90,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 기명_댓글을_작성한_유저일_경우_수정할_수_있다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
         기명으로_댓글을_등록한다(엑세스토큰, 게시글번호);
         List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호).getComments();
@@ -102,7 +102,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 익명_댓글을_작성한_유저일_경우_수정할_수_있다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
         익명으로_댓글을_등록한다(엑세스토큰, 게시글번호);
         List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호).getComments();
@@ -114,10 +114,10 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 기명_댓글의_작성자가_아닌_경우_수정할_수_없다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
         기명으로_댓글을_등록한다(엑세스토큰, 게시글번호);
-        TokenResponse 비회원 = new TokenResponse("Bearer ");
+        AccessTokenResponse 비회원 = new AccessTokenResponse("Bearer ");
         List<CommentResponse> 댓글리스트 = 댓글을_조회한다(비회원, 게시글번호).getComments();
 
         ExtractableResponse<Response> response = 댓글을_수정한다(비회원, 댓글리스트);
@@ -127,20 +127,20 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 익명_댓글의_작성자가_아닌_경우_수정할_수_없다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
         익명으로_댓글을_등록한다(엑세스토큰, 게시글번호);
-        TokenResponse 비회원 = new TokenResponse("Bearer ");
+        AccessTokenResponse 비회원 = new AccessTokenResponse("Bearer ");
         List<CommentResponse> 댓글리스트 = 댓글을_조회한다(비회원, 게시글번호).getComments();
 
-        ExtractableResponse<Response> response = 댓글을_수정한다(new TokenResponse("Bearer "), 댓글리스트);
+        ExtractableResponse<Response> response = 댓글을_수정한다(new AccessTokenResponse("Bearer "), 댓글리스트);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
     void 기명_댓글을_작성한_유저일_경우_삭제할_수_있다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
         기명으로_댓글을_등록한다(엑세스토큰, 게시글번호);
         List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호).getComments();
@@ -152,7 +152,7 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 익명_댓글을_작성한_유저일_경우_삭제할_수_있다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
         익명으로_댓글을_등록한다(엑세스토큰, 게시글번호);
         List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호).getComments();
@@ -164,10 +164,10 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 기명_댓글의_작성자가_아닌_경우_삭제할_수_없다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
         기명으로_댓글을_등록한다(엑세스토큰, 게시글번호);
-        TokenResponse 비회원 = new TokenResponse("Bearer ");
+        AccessTokenResponse 비회원 = new AccessTokenResponse("Bearer ");
         List<CommentResponse> 댓글리스트 = 댓글을_조회한다(비회원, 게시글번호).getComments();
 
         ExtractableResponse<Response> response = 댓글을_삭제한다(비회원, 댓글리스트);
@@ -177,10 +177,10 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 익명_댓글의_작성자가_아닌_경우_삭제할_수_없다() {
-        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시글번호 = 게시물을_등록한다(엑세스토큰);
         익명으로_댓글을_등록한다(엑세스토큰, 게시글번호);
-        TokenResponse 비회원 = new TokenResponse("Bearer ");
+        AccessTokenResponse 비회원 = new AccessTokenResponse("Bearer ");
         List<CommentResponse> 댓글리스트 = 댓글을_조회한다(비회원, 게시글번호).getComments();
 
         ExtractableResponse<Response> response = 댓글을_삭제한다(비회원, 댓글리스트);

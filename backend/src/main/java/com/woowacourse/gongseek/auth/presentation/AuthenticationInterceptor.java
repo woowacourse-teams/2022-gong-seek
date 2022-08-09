@@ -2,7 +2,7 @@ package com.woowacourse.gongseek.auth.presentation;
 
 import static org.hibernate.validator.internal.metadata.core.ConstraintHelper.PAYLOAD;
 
-import com.woowacourse.gongseek.auth.exception.InvalidTokenException;
+import com.woowacourse.gongseek.auth.exception.InvalidAccessTokenException;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.utils.TokenExtractor;
 import javax.servlet.http.HttpServletRequest;
@@ -29,16 +29,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        String token = TokenExtractor.extract(request.getHeader(HttpHeaders.AUTHORIZATION));
-        validateToken(token);
-        String payload = jwtTokenProvider.getPayload(token);
+        String accessToken = TokenExtractor.extract(request.getHeader(HttpHeaders.AUTHORIZATION));
+        if (!jwtTokenProvider.validateAccessToken(accessToken)) {
+            throw new InvalidAccessTokenException();
+        }
+        String payload = jwtTokenProvider.getAccessTokenPayload(accessToken);
         request.setAttribute(PAYLOAD, payload);
         return true;
-    }
-
-    private void validateToken(String token) {
-        if (!jwtTokenProvider.validateToken(token)) {
-            throw new InvalidTokenException();
-        }
     }
 }

@@ -53,7 +53,7 @@ class AuthServiceTest {
                 주디.getGithubId(), 주디.getName(), 주디.getAvatarUrl());
         given(githubOAuthClient.getMemberProfile(주디.getCode())).willReturn(profileResponse);
 
-        TokenResponse response = authService.generateAccessToken(new OAuthCodeRequest(주디.getCode()));
+        TokenResponse response = authService.generateToken(new OAuthCodeRequest(주디.getCode()));
 
         assertThat(response).isNotNull();
     }
@@ -67,7 +67,7 @@ class AuthServiceTest {
         Member member = new Member(주디.getGithubId(), 주디.getName(), "previous avatar url");
         memberRepository.save(member);
 
-        TokenResponse response = authService.generateAccessToken(new OAuthCodeRequest(주디.getCode()));
+        TokenResponse response = authService.generateToken(new OAuthCodeRequest(주디.getCode()));
 
         Member actual = memberRepository.findByGithubId(주디.getGithubId()).get();
         assertAll(

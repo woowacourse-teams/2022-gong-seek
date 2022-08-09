@@ -2,9 +2,15 @@ package com.woowacourse.gongseek.auth.application;
 
 public interface TokenProvider {
 
-    String createToken(String payload);
+    String createAccessToken(String payload);
 
-    String getPayload(String token);
+    String createRefreshToken(String payload);
 
-    boolean validateToken(String token);
+    String getAccessTokenPayload(String token);
+
+    String getRefreshTokenPayload(String token);
+
+    boolean validateAccessToken(String token);
+
+    boolean validateRefreshToken(String token);
 }

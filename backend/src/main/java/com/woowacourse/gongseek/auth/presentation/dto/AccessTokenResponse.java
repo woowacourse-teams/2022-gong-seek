@@ -2,16 +2,12 @@ package com.woowacourse.gongseek.auth.presentation.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Getter
-public class TokenResponse {
-
-    private String refreshToken;
+public class AccessTokenResponse {
     private String accessToken;
 }
