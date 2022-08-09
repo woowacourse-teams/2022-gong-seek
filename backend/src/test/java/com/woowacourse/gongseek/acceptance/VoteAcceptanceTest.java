@@ -109,20 +109,20 @@ public class VoteAcceptanceTest extends AcceptanceTest {
         VoteResponse firstGetResponse = 투표를_조회한다(tokenResponse, articleId).as(VoteResponse.class);
 
         //when
-        Long vottedItemId = firstGetResponse.getVoteItems()
+        Long votedItemId = firstGetResponse.getVoteItems()
                 .stream()
                 .findFirst()
                 .get()
                 .getId();
         ExtractableResponse<Response> response = 투표를_한다(tokenResponse, articleId,
-                new SelectVoteItemIdRequest(vottedItemId));
+                new SelectVoteItemIdRequest(votedItemId));
         VoteResponse voteResponse = 투표를_조회한다(tokenResponse, articleId).as(VoteResponse.class);
 
         //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value()),
                 () -> assertThat(voteResponse.getArticleId()).isEqualTo(articleId),
-                () -> assertThat(voteResponse.getVotedItemId()).isEqualTo(vottedItemId),
+                () -> assertThat(voteResponse.getVotedItemId()).isEqualTo(votedItemId),
                 () -> assertThat(voteResponse.getVoteItems()).hasSize(2)
         );
     }
