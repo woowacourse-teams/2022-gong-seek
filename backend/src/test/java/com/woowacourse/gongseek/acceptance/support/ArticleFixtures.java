@@ -28,8 +28,8 @@ public class ArticleFixtures {
                 .extract();
     }
 
-    public static ArticleIdResponse 게시물을_등록한다(TokenResponse tokenResponse) {
-        ArticleRequest request = new ArticleRequest("title", "content", "question", false);
+    public static ArticleIdResponse 토론_게시물을_등록한다(TokenResponse tokenResponse) {
+        ArticleRequest request = new ArticleRequest("title", "content", Category.DISCUSSION.getValue(), false);
         return 특정_게시물을_등록한다(tokenResponse, request).as(ArticleIdResponse.class);
     }
 

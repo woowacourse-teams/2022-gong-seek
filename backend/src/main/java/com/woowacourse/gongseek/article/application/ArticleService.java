@@ -17,7 +17,9 @@ import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
+    private final VoteRepository voteRepository;
     private final Encryptor encryptor;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
@@ -68,8 +71,9 @@ public class ArticleService {
     public ArticleResponse getOne(AppMember appMember, Long id) {
         Article article = getArticle(id);
         article.addViews();
+        boolean hasVote = voteRepository.existsByArticleId(article.getId());
 
-        return checkGuest(article, appMember);
+        return checkGuest(article, appMember, hasVote);
     }
 
     private Article getArticle(Long id) {
@@ -77,19 +81,19 @@ public class ArticleService {
                 .orElseThrow(ArticleNotFoundException::new);
     }
 
-    private ArticleResponse checkGuest(Article article, AppMember appMember) {
+    private ArticleResponse checkGuest(Article article, AppMember appMember, boolean hasVote) {
         if (appMember.isGuest()) {
-            return new ArticleResponse(article, false);
+            return new ArticleResponse(article, false, hasVote);
         }
-        return checkAuthor(article, getMember(appMember));
+        return checkAuthor(article, getMember(appMember), hasVote);
     }
 
-    private ArticleResponse checkAuthor(Article article, Member member) {
+    private ArticleResponse checkAuthor(Article article, Member member, boolean hasVote) {
         if (article.isAnonymous()) {
             String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
-            return new ArticleResponse(article, article.isAnonymousAuthor(cipherId));
+            return new ArticleResponse(article, article.isAnonymousAuthor(cipherId), hasVote);
         }
-        return new ArticleResponse(article, article.isAuthor(member));
+        return new ArticleResponse(article, article.isAuthor(member), hasVote);
     }
 
     @Transactional(readOnly = true)

@@ -109,6 +109,7 @@ class ArticleControllerTest {
                 "content",
                 false,
                 1,
+                false,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
@@ -131,8 +132,9 @@ class ArticleControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
-                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
+                                fieldWithPath("hasVote").type(JsonFieldType.BOOLEAN).description("투표가 있으면 true"),
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
                         )
                 ));
     }
@@ -146,6 +148,7 @@ class ArticleControllerTest {
                 "content",
                 false,
                 1,
+                false,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
@@ -168,6 +171,7 @@ class ArticleControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
+                                fieldWithPath("hasVote").type(JsonFieldType.BOOLEAN).description("투표가 있으면 true"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
                         )
@@ -182,6 +186,7 @@ class ArticleControllerTest {
                 "content",
                 false,
                 1,
+                false,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
@@ -200,8 +205,9 @@ class ArticleControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
-                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
+                                fieldWithPath("hasVote").type(JsonFieldType.BOOLEAN).description("투표가 있으면 true"),
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
                         )
                 ));
     }
