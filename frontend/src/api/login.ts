@@ -24,3 +24,13 @@ export const postLogin = (code: string) =>
 			withCredentials: true,
 		},
 	);
+
+export const getAccessTokenByRefreshToken = () => {
+	axios.get<{ accessToken: string }>(`${HOME_URL}/api/auth/refresh`, {
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+			'Access-Control-Allow-Credentials': true,
+		},
+		withCredentials: true,
+	});
+};
