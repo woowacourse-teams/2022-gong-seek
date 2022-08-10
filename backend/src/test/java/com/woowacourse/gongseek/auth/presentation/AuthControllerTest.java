@@ -3,6 +3,7 @@ package com.woowacourse.gongseek.auth.presentation;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -69,9 +70,7 @@ class AuthControllerTest {
     void 로그인_API_문서화() throws Exception {
         OAuthCodeRequest request = new OAuthCodeRequest("code");
         given(authService.generateToken(any())).willReturn(new TokenResponse("refreshToken", "accessToken"));
-
         ResultActions results = mockMvc.perform(post("/api/auth/login")
-                .header(HttpHeaders.SET_COOKIE, "gongSeek-refreshToken")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8"));
@@ -80,7 +79,7 @@ class AuthControllerTest {
                 .andDo(print())
                 .andDo(document("login-token",
                                 responseHeaders(
-                                        headerWithName(HttpHeaders.SET_COOKIE).description("리프레시토큰")
+                                        headerWithName(HttpHeaders.SET_COOKIE).description("리프레시 토큰")
                                 ),
                                 requestFields(
                                         fieldWithPath("code").type(JsonFieldType.STRING).description("사용자 인가코드")
@@ -97,15 +96,18 @@ class AuthControllerTest {
         given(authService.renewToken(any())).willReturn(new TokenResponse("new-refreshToken", "new-accessToken"));
 
         ResultActions results = mockMvc.perform(get("/api/auth/refresh")
-                .header(HttpHeaders.SET_COOKIE, "gongSeek-refreshToken")
+                .header(HttpHeaders.COOKIE, "gongSeek-refreshToken")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8"));
 
         results.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("renew-token",
+                                requestHeaders(
+                                        headerWithName(HttpHeaders.COOKIE).description("기존의 리프레시 토큰")
+                                ),
                                 responseHeaders(
-                                        headerWithName(HttpHeaders.SET_COOKIE).description("리프레시 토큰")
+                                        headerWithName(HttpHeaders.SET_COOKIE).description("갱신된 리프레시 토큰")
                                 ),
                                 responseFields(
                                         fieldWithPath("accessToken").type(JsonFieldType.STRING).description("갱신된 엑세스 토큰")
