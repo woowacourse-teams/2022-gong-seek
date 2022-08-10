@@ -3,7 +3,8 @@ package com.woowacourse.gongseek.comment.application;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
-import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
+import com.woowacourse.gongseek.auth.exception.NotAuthorException;
+import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
@@ -45,7 +46,7 @@ public class CommentService {
 
     private void validateGuest(AppMember appMember) {
         if (appMember.isGuest()) {
-            throw new NoAuthorizationException();
+            throw new NotMemberException();
         }
     }
 
@@ -111,7 +112,7 @@ public class CommentService {
 
     private void validateAuthor(Comment comment, Member member) {
         if (!isAuthor(comment, member)) {
-            throw new NoAuthorizationException();
+            throw new NotAuthorException();
         }
     }
 

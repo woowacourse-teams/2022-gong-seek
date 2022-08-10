@@ -1,10 +1,10 @@
 package com.woowacourse.gongseek.vote.exception;
 
-import com.woowacourse.gongseek.common.exception.ApplicationException;
+import com.woowacourse.gongseek.common.exception.BadRequestException;
 
-public class AlreadyVoteSameItemException extends ApplicationException {
+public class AlreadyVoteSameItemException extends BadRequestException {
 
-    public AlreadyVoteSameItemException(Long id) {
-        super(" : " + id);
-    }
+//    public AlreadyVoteSameItemException(Long id) {
+//        super(" : " + id);
+//    }
 }

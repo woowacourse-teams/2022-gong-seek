@@ -11,8 +11,9 @@ import com.woowacourse.gongseek.auth.exception.GithubAccessTokenLoadFailExceptio
 import com.woowacourse.gongseek.auth.exception.GithubUserProfileLoadFailException;
 import com.woowacourse.gongseek.auth.exception.InvalidTokenException;
 import com.woowacourse.gongseek.auth.exception.InvalidTokenTypeException;
-import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
 import com.woowacourse.gongseek.auth.exception.NoSuchAuthenticationDataException;
+import com.woowacourse.gongseek.auth.exception.NotAuthorException;
+import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
 import com.woowacourse.gongseek.comment.exception.CommentNullOrEmptyException;
 import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
@@ -28,14 +29,13 @@ import com.woowacourse.gongseek.vote.exception.VoteItemNullOrEmptyException;
 import com.woowacourse.gongseek.vote.exception.VoteItemTooLongException;
 import com.woowacourse.gongseek.vote.exception.VoteNotFoundException;
 import java.util.Arrays;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
 public enum ExceptionType {
-
-    NOT_FOUND_EXCEPTION_TYPE("0000", "해당 에러 타입을 찾을 수 없습니다.", UnSupportedExceptionType.class),
 
     GITHUB_ACCESS_TOKEN_LOAD_FAIL_EXCEPTION("1001", "Github API에서 Accesstoken을 받는것에 실패했습니다.",
             GithubAccessTokenLoadFailException.class),
@@ -45,7 +45,8 @@ public enum ExceptionType {
     INVALID_TOKEN_TYPE_EXCEPTION("1004", "토큰 타입이 올바르지 않습니다.", InvalidTokenTypeException.class),
     INVALID_TOKEN_EXCEPTION("1005", "토큰이 유효하지 않습니다.", InvalidTokenException.class),
     NO_SUCH_AUTHENTICATION_DATA_EXCEPTION("1006", "인증할 수 있는 사용자 데이터가 없습니다.", NoSuchAuthenticationDataException.class),
-    NO_AUTHORIZATION_EXCEPTION("1007", "권한이 없습니다.", NoAuthorizationException.class),
+    NOT_AUTHOR_EXCEPTION("1007", "작성자가 아니므로 권한이 없습니다.", NotAuthorException.class),
+    NO_MEMBER_EXCEPTION("1008", "회원이 아니므로 권한이 없습니다.", NotMemberException.class),
 
     MEMBER_NOT_FOUND_EXCEPTION("2001", "회원이 존재하지 않습니다.", MemberNotFoundException.class),
 
@@ -70,16 +71,25 @@ public enum ExceptionType {
     VOTE_HISTORY_NOT_FOUND_EXCEPTION("5008", "투표 내역이 존재하지 않습니다.", VoteHistoryNotFoundException.class),
     ALREADY_VOTE_SAME_ITEM_EXCEPTION("5009", "이미 같은 항목에 투표했습니다.", AlreadyVoteSameItemException.class),
     INVALID_VOTE_ITEM_COUNT_EXCEPTION("5010", "투표 항목 수는 2이상 5이하여야 합니다.", InvalidVoteItemCountException.class),
+
+    UNHANDLED_EXCEPTION("0000", "알 수 없는 서버 에러가 발생했습니다."),
+    METHOD_ARGUMENT_NOT_VALID_EXCEPTION("0001", "요청 데이터가 잘못되었습니다."),
     ;
 
     private final String errorCode;
     private final String message;
-    private final Class<? extends ApplicationException> type;
+
+    private Class<? extends ApplicationException> type;
+
+    ExceptionType(String errorCode, String message) {
+        this.errorCode = errorCode;
+        this.message = message;
+    }
 
     public static ExceptionType from(Class<?> classType) {
         return Arrays.stream(values())
-                .filter(it -> it.type.equals(classType))
+                .filter(it -> Objects.nonNull(it.type) && it.type.equals(classType))
                 .findFirst()
-                .orElseThrow(UnSupportedExceptionType::new);
+                .orElse(UNHANDLED_EXCEPTION);
     }
 }

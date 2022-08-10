@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.vote.exception;
 
-import com.woowacourse.gongseek.common.exception.ApplicationException;
+import com.woowacourse.gongseek.common.exception.BadRequestException;
 
-public class InvalidVoteAmountException extends ApplicationException {
+public class InvalidVoteAmountException extends BadRequestException {
 
 }

@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.comment.exception;
 
-import com.woowacourse.gongseek.common.exception.ApplicationException;
+import com.woowacourse.gongseek.common.exception.BadRequestException;
 
-public class CommentTooLongException extends ApplicationException {
+public class CommentTooLongException extends BadRequestException {
 
 }

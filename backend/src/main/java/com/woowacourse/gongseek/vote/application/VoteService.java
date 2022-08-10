@@ -3,7 +3,7 @@ package com.woowacourse.gongseek.vote.application;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
-import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
+import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
@@ -65,7 +65,7 @@ public class VoteService {
 
     private void validateAuthor(Member member, Article article) {
         if (!article.isAuthor(member)) {
-            throw new NoAuthorizationException();
+            throw new NotAuthorException();
         }
     }
 
@@ -120,7 +120,7 @@ public class VoteService {
 
     private void updateVoteHistory(Long voteId, Long memberId, VoteItem selectedVoteItem, VoteHistory voteHistory) {
         if (voteHistory.isSelectSameVoteItem(selectedVoteItem.getId())) {
-            throw new AlreadyVoteSameItemException(selectedVoteItem.getId());
+            throw new AlreadyVoteSameItemException();
         }
         VoteItem originVoteItem = getVoteItem(voteHistory.getVoteItemId());
         originVoteItem.decreaseAmount();

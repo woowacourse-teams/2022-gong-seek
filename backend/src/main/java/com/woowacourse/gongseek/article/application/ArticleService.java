@@ -10,7 +10,8 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
-import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
+import com.woowacourse.gongseek.auth.exception.NotAuthorException;
+import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.member.application.Encryptor;
@@ -49,7 +50,7 @@ public class ArticleService {
 
     private void validateGuest(AppMember appMember) {
         if (appMember.isGuest()) {
-            throw new NoAuthorizationException();
+            throw new NotMemberException();
         }
     }
 
@@ -156,7 +157,7 @@ public class ArticleService {
 
     private void validateAuthor(Article article, Member member) {
         if (!isAuthor(article, member)) {
-            throw new NoAuthorizationException();
+            throw new NotAuthorException();
         }
     }
 
