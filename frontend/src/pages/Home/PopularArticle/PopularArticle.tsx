@@ -1,4 +1,5 @@
 import Loading from '@/components/common/Loading/Loading';
+import ArticleItem from '@/pages/Home/ArticleItem/ArticleItem';
 import * as S from '@/pages/Home/PopularArticle/PopularArticle.styles';
 import useGetPopularArticles from '@/pages/Home/hooks/useGetPopularArticles';
 import { convertIdxToArticleColorKey } from '@/utils/converter';
@@ -11,7 +12,6 @@ const PopularArticle = () => {
 		currentIndex,
 		handleLeftSlideEvent,
 		handleRightSlideEvent,
-		navigateDetailPage,
 		mainArticleContent,
 	} = useGetPopularArticles();
 
@@ -38,22 +38,7 @@ const PopularArticle = () => {
 			<S.LeftArrowButton onClick={handleLeftSlideEvent} />
 			<S.LeftBackgroundArticle colorKey={getColorKey(currentIndex - 1)} />
 			<S.ArticleContent colorKey={getColorKey(currentIndex)} ref={mainArticleContent}>
-				<S.Title onClick={navigateDetailPage}>{data.articles[currentIndex].title}</S.Title>
-				<S.ArticleInfo>
-					<S.ProfileBox>
-						<S.UserImg
-							alt="유저의 프로필 이미지가 보여지는 곳 입니다 "
-							src={data?.articles[currentIndex].author.avatarUrl}
-						/>
-						<S.UserName>{data.articles[currentIndex].author.name}</S.UserName>
-					</S.ProfileBox>
-					<S.CommentBox>
-						<S.CommentCount aria-label="댓글의 개수가 표시되는 곳입니다">
-							{data.articles[currentIndex].commentCount}
-						</S.CommentCount>
-						<S.CommentIcon />
-					</S.CommentBox>
-				</S.ArticleInfo>
+				<ArticleItem article={data.articles[currentIndex]} />
 			</S.ArticleContent>
 			<S.RightBackgroundArticle colorKey={getColorKey(currentIndex + 1)} />
 			<S.RightArrowButton onClick={handleRightSlideEvent} />

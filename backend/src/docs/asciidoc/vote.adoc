@@ -1,0 +1,69 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Vote
+---
+= 기본 API
+
+== 투표 생성
+
+`POST /api/articles/1/votes`
+
+=== Request
+
+include::{snippets}/vote-create/http-request.adoc[]
+==== Header
+
+include::{snippets}/vote-create/request-headers.adoc[]
+
+==== Body
+
+include::{snippets}/vote-create/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/vote-create/http-response.adoc[]
+include::{snippets}/vote-create/response-fields.adoc[]
+
+== 투표 조회
+
+`GET /api/articles/1/votes`
+
+=== Request
+
+include::{snippets}/vote-get/http-request.adoc[]
+==== Header
+
+include::{snippets}/vote-get/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/vote-get/http-response.adoc[]
+include::{snippets}/vote-get/response-fields.adoc[]
+
+== 투표 하기
+
+`POST /api/articles/1/votes/do`
+
+=== Request
+
+include::{snippets}/vote-do/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/vote-do/request-headers.adoc[]
+
+==== Body
+
+include::{snippets}/vote-do/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/vote-do/http-response.adoc[]
