@@ -6,7 +6,6 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

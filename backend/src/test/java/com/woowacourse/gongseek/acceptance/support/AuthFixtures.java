@@ -3,7 +3,6 @@ package com.woowacourse.gongseek.acceptance.support;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.auth.support.GithubClientFixtures;
 import io.restassured.RestAssured;
 import org.springframework.http.HttpStatus;

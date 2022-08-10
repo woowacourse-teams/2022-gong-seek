@@ -105,7 +105,7 @@ class AuthControllerTest {
                 .andDo(print())
                 .andDo(document("renew-token",
                                 responseHeaders(
-                                        headerWithName(HttpHeaders.SET_COOKIE).description("리프레시토큰")
+                                        headerWithName(HttpHeaders.SET_COOKIE).description("리프레시 토큰")
                                 ),
                                 responseFields(
                                         fieldWithPath("accessToken").type(JsonFieldType.STRING).description("갱신된 엑세스 토큰")
