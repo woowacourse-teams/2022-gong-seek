@@ -13,12 +13,12 @@ import * as S from '@/pages/VoteDeadlineGenerator/index.styles';
 const VoteDeadlineGenerator = () => {
 	const dateRef = useRef<HTMLInputElement>(null);
 	const timeRef = useRef<HTMLInputElement>(null);
-	const { articleId, options } = useLocationState<{ articleId: string; options: string[] }>();
+	const { articleId, items } = useLocationState<{ articleId: string; items: string[] }>();
 	const navigate = useNavigate();
 	const { isLoading, mutate, isError, data, error, isSuccess } = useMutation<
 		AxiosResponse<{ articleId: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
-		{ articleId: string; options: string[]; expiryDate: string }
+		{ articleId: string; items: string[]; expiryDate: string }
 	>(registerVoteItems);
 
 	useEffect(() => {
@@ -45,7 +45,7 @@ const VoteDeadlineGenerator = () => {
 
 		mutate({
 			articleId,
-			options,
+			items,
 			expiryDate: `${dateRef.current?.value}T${timeRef.current?.value}`,
 		});
 	};

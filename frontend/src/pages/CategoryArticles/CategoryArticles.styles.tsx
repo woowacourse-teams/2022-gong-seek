@@ -43,3 +43,8 @@ export const TitleBox = styled.div`
 	align-items: center;
 	justify-content: space-between;
 `;
+
+export const EmptyText = styled.div`
+	margin: 0 auto;
+	font-size: ${({ theme }) => theme.size.SIZE_024};
+`;

@@ -29,6 +29,10 @@ const PopularArticle = () => {
 		return convertIdxToArticleColorKey(index);
 	};
 
+	if (!data?.articles.length) {
+		return <S.EmptyText>텅 비었어요..!</S.EmptyText>;
+	}
+
 	return data ? (
 		<S.Container>
 			<S.LeftArrowButton onClick={handleLeftSlideEvent} />
