@@ -31,7 +31,7 @@ const CategoryArticles = () => {
 				</S.CategoryArticlesTitle>
 				<SortDropdown sortIndex={sortIndex} setSortIndex={setSortIndex} />
 			</S.TitleBox>
-			{data ? (
+			{data?.pages.length ? (
 				<InfiniteScrollObserver
 					hasNext={data?.pages[data.pages.length - 1].hasNext}
 					fetchNextPage={fetchNextPage}
@@ -51,7 +51,7 @@ const CategoryArticles = () => {
 					</S.ArticleItemList>
 				</InfiniteScrollObserver>
 			) : (
-				<div> 데이터가 존재하지 않습니다</div>
+				<S.EmptyText>텅 비었어요..!</S.EmptyText>
 			)}
 		</S.Container>
 	);
