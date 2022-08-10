@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
-import com.woowacourse.gongseek.common.exception.ErrorResponse;
+import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;

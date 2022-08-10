@@ -27,7 +27,7 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
-import com.woowacourse.gongseek.common.exception.ErrorResponse;
+import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

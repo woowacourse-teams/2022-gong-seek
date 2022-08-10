@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
-import com.woowacourse.gongseek.common.exception.ErrorResponse;
+import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateResponse;
