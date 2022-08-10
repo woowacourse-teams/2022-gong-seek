@@ -87,6 +87,7 @@ class CommentControllerTest {
 
     @Test
     void 댓글_조회_API_문서화() throws Exception {
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         CommentResponse authorComment = new CommentResponse(
                 1L,
                 "content1",

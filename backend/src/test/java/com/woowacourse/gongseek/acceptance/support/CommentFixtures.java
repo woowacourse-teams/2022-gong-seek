@@ -17,32 +17,29 @@ import org.springframework.http.MediaType;
 @SuppressWarnings("NonAsciiCharacters")
 public class CommentFixtures {
 
-    public static ExtractableResponse<Response> 기명으로_댓글을_등록한다(AccessTokenResponse tokenResponse,
-                                                              ArticleIdResponse articleIdResponse) {
+    private static ExtractableResponse<Response> 댓글을_등록한다(AccessTokenResponse tokenResponse,
+                                                          ArticleIdResponse articleIdResponse,
+                                                          boolean isAnonymous) {
         return RestAssured
                 .given().log().all()
                 .pathParam("article_id", articleIdResponse.getId())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new CommentRequest("content", false))
+                .body(new CommentRequest("content", isAnonymous))
                 .when()
                 .post("/api/articles/{article_id}/comments")
                 .then().log().all()
                 .extract();
     }
 
+    public static ExtractableResponse<Response> 기명으로_댓글을_등록한다(AccessTokenResponse tokenResponse,
+                                                              ArticleIdResponse articleIdResponse) {
+        return 댓글을_등록한다(tokenResponse, articleIdResponse, false);
+    }
+
     public static ExtractableResponse<Response> 익명으로_댓글을_등록한다(AccessTokenResponse tokenResponse,
                                                               ArticleIdResponse articleIdResponse) {
-        return RestAssured
-                .given().log().all()
-                .pathParam("article_id", articleIdResponse.getId())
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new CommentRequest("content", true))
-                .when()
-                .post("/api/articles/{article_id}/comments")
-                .then().log().all()
-                .extract();
+        return 댓글을_등록한다(tokenResponse, articleIdResponse, true);
     }
 
     public static CommentsResponse 댓글을_조회한다(AccessTokenResponse tokenResponse,

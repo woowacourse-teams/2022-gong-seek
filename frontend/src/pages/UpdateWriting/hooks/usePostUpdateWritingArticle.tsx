@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 
 import { putArticle } from '@/api/article';
 import CustomError from '@/components/helper/CustomError';
+import { ErrorMessage } from '@/constants/ErrorMessage';
 import { articleState } from '@/store/articleState';
 import { Editor } from '@toast-ui/react-editor';
 
@@ -19,7 +20,7 @@ const usePostUpdateWritingArticle = () => {
 
 	const { data, isError, isSuccess, isLoading, error, mutate } = useMutation<
 		AxiosResponse<{ id: number; category: string }>,
-		AxiosError<{ errorCode: string; message: string }>,
+		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ title: string; content: string; id: string }
 	>(putArticle);
 
@@ -31,7 +32,13 @@ const usePostUpdateWritingArticle = () => {
 
 	useEffect(() => {
 		if (isError) {
-			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
+			if (!error.response) {
+				return;
+			}
+			throw new CustomError(
+				error.response.data.errorCode,
+				ErrorMessage[error.response.data.errorCode],
+			);
 		}
 	}, [isError]);
 

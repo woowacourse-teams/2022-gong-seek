@@ -17,6 +17,10 @@ public class MyPageCommentResponse {
 
     private String content;
 
+    private Long articleId;
+
+    private String category;
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
@@ -24,6 +28,13 @@ public class MyPageCommentResponse {
     private LocalDateTime updatedAt;
 
     public MyPageCommentResponse(Comment comment) {
-        this(comment.getId(), comment.getContent(), comment.getCreatedAt(), comment.getUpdatedAt());
+        this(
+                comment.getId(),
+                comment.getContent(),
+                comment.getArticle().getId(),
+                comment.getArticle().getCategory().getValue(),
+                comment.getCreatedAt(),
+                comment.getUpdatedAt()
+        );
     }
 }

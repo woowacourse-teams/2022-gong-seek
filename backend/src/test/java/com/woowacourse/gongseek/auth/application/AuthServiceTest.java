@@ -15,7 +15,7 @@ import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.auth.support.GithubClientFixtures;
-import com.woowacourse.gongseek.commons.DatabaseCleaner;
+import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
