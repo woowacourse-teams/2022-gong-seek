@@ -69,7 +69,12 @@ class AuthControllerTest {
     @Test
     void 로그인_API_문서화() throws Exception {
         OAuthCodeRequest request = new OAuthCodeRequest("code");
-        given(authService.generateToken(any())).willReturn(new TokenResponse("refreshToken", "accessToken"));
+        given(authService.generateToken(any())).willReturn(
+                TokenResponse.builder()
+                        .refreshToken("refreshToken")
+                        .accessToken("accessToken")
+                        .build()
+        );
         ResultActions results = mockMvc.perform(post("/api/auth/login")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -93,7 +98,12 @@ class AuthControllerTest {
 
     @Test
     void 토큰_재발급_API_문서화() throws Exception {
-        given(authService.renewToken(any())).willReturn(new TokenResponse("new-refreshToken", "new-accessToken"));
+        given(authService.renewToken(any())).willReturn(
+                TokenResponse.builder()
+                        .refreshToken("new-refreshToken")
+                        .accessToken("new-accessToken")
+                        .build()
+        );
 
         ResultActions results = mockMvc.perform(get("/api/auth/refresh")
                 .header(HttpHeaders.COOKIE, "gongSeek-refreshToken")
