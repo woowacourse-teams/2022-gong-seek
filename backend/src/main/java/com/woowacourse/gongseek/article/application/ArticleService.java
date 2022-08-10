@@ -74,10 +74,9 @@ public class ArticleService {
         Article article = getArticle(id);
         article.addViews();
         boolean hasVote = voteRepository.existsByArticleId(article.getId());
-        boolean isLike = isLike(article, appMember);
-        Long likeCount = getLikeCount(article);
+        LikeResponse likeResponse = new LikeResponse(isLike(article, appMember), getLikeCount(article));
 
-        return checkGuest(article, appMember, hasVote, isLike, likeCount);
+        return checkGuest(article, appMember, hasVote, likeResponse);
     }
 
     private Article getArticle(Long id) {
@@ -96,23 +95,19 @@ public class ArticleService {
         return likeRepository.existsByArticleIdAndMemberId(article.getId(), appMember.getPayload());
     }
 
-    private ArticleResponse checkGuest(Article article, AppMember appMember, boolean hasVote, boolean isLike,
-                                       Long likeCount) {
+    private ArticleResponse checkGuest(Article article, AppMember appMember, boolean hasVote,
+                                       LikeResponse likeResponse) {
         if (appMember.isGuest()) {
-            LikeResponse likeResponse = new LikeResponse(isLike, likeCount);
             return new ArticleResponse(article, false, hasVote, likeResponse);
         }
-        return checkAuthor(article, getMember(appMember), hasVote, isLike, likeCount);
+        return checkAuthor(article, getMember(appMember), hasVote, likeResponse);
     }
 
-    private ArticleResponse checkAuthor(Article article, Member member, boolean hasVote, boolean isLike,
-                                        Long likeCount) {
+    private ArticleResponse checkAuthor(Article article, Member member, boolean hasVote, LikeResponse likeResponse) {
         if (article.isAnonymous()) {
             String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
-            LikeResponse likeResponse = new LikeResponse(isLike, likeCount);
             return new ArticleResponse(article, article.isAnonymousAuthor(cipherId), hasVote, likeResponse);
         }
-        LikeResponse likeResponse = new LikeResponse(isLike, likeCount);
         return new ArticleResponse(article, article.isAuthor(member), hasVote, likeResponse);
     }
 
