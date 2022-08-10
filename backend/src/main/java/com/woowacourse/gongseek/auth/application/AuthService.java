@@ -60,7 +60,7 @@ public class AuthService {
     }
 
     private void validateRefreshToken(String token) {
-        if(!jwtTokenProvider.isValidRefreshToken(token)){
+        if (!jwtTokenProvider.isValidRefreshToken(token)) {
             throw new InvalidRefreshTokenException();
         }
     }

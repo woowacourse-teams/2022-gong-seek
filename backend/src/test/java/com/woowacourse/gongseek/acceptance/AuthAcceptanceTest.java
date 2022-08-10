@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
+import com.woowacourse.gongseek.auth.support.GithubClientFixtures;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -40,15 +41,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     void 로그인을_하면_쿠키에_리프레시토큰을_담고_바디에는_엑세스토큰을_담아서_준다() {
         //given
         //when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new OAuthCodeRequest(기론.getCode()))
-                .when()
-                .post("/api/auth/login")
-                .then().log().all()
-                .statusCode(HttpStatus.OK.value())
-                .extract();
+        ExtractableResponse<Response> response = 로그인을_하여_상태를_반환한다(기론);
         AccessTokenResponse tokenResponse = response.as(AccessTokenResponse.class);
 
         //then
@@ -59,25 +52,38 @@ public class AuthAcceptanceTest extends AcceptanceTest {
 
     }
 
+    private ExtractableResponse<Response> 로그인을_하여_상태를_반환한다(GithubClientFixtures client) {
+        return RestAssured
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new OAuthCodeRequest(client.getCode()))
+                .when()
+                .post("/api/auth/login")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
+    }
+
     @Test
     void 리프래시토큰과_액새스토큰을_재발급_받는다() {
         //given
-        //when
-        ExtractableResponse<Response> response = 토큰을_재발급한다();
-        AccessTokenResponse tokenResponse = response.as(AccessTokenResponse.class);
+        ExtractableResponse<Response> login = 로그인을_하여_상태를_반환한다(기론);
 
+        //when
+        ExtractableResponse<Response> response = 토큰을_재발급한다(login.cookie("refreshToken"));
+        AccessTokenResponse tokenResponse = response.as(AccessTokenResponse.class);
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.header(HttpHeaders.COOKIE)).isNotNull(),
+                () -> assertThat(response.header(HttpHeaders.SET_COOKIE)).isNotNull(),
                 () -> assertThat(tokenResponse.getAccessToken()).isNotNull()
         );
     }
 
-    private ExtractableResponse<Response> 토큰을_재발급한다() {
+    private ExtractableResponse<Response> 토큰을_재발급한다(String token) {
         return RestAssured
                 .given().log().all()
+                .cookie("refreshToken", token)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.SET_COOKIE, "refreshToken")
                 .when()
                 .get("/api/auth/refresh")
                 .then().log().all()
