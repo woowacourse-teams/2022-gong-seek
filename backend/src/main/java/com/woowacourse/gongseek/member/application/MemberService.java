@@ -13,6 +13,7 @@ import com.woowacourse.gongseek.member.presentation.dto.MyPageArticleResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-
     private final ArticleRepository articleRepository;
-
     private final CommentRepository commentRepository;
+    private final Encryptor encryptor;
 
     public MemberDto getOne(AppMember appMember) {
         Member member = getMember(appMember);
@@ -41,10 +41,22 @@ public class MemberService {
     }
 
     public MyPageArticlesResponse getArticles(AppMember appMember) {
-        Member member = getMember(appMember);
-        List<Article> articles = articleRepository.findAllByMemberId(member.getId());
+        List<Long> memberIds = getMemberIdsIncludeCipherId(appMember);
+
+        List<Article> articles = articleRepository.findAllByMemberIdIn(memberIds);
+
         List<MyPageArticleResponse> myPageArticleResponses = getMyPageArticleResponses(articles);
         return new MyPageArticlesResponse(myPageArticleResponses);
+    }
+
+    private List<Long> getMemberIdsIncludeCipherId(AppMember appMember) {
+        Member member = getMember(appMember);
+        List<Long> memberIds = new ArrayList<>(List.of(member.getId()));
+
+        String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
+        memberRepository.findByGithubId(cipherId)
+                .ifPresent(it -> memberIds.add(it.getId()));
+        return memberIds;
     }
 
     private List<MyPageArticleResponse> getMyPageArticleResponses(List<Article> articles) {
@@ -54,8 +66,10 @@ public class MemberService {
     }
 
     public MyPageCommentsResponse getComments(AppMember appMember) {
-        Member member = getMember(appMember);
-        List<Comment> comments = commentRepository.findAllByMemberId(member.getId());
+        List<Long> memberIds = getMemberIdsIncludeCipherId(appMember);
+
+        List<Comment> comments = commentRepository.findAllByMemberIdIn(memberIds);
+
         List<MyPageCommentResponse> myPageCommentResponses = getMyPageCommentResponses(comments);
         return new MyPageCommentsResponse(myPageCommentResponses);
     }

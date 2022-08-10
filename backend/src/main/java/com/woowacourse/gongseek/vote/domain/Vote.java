@@ -66,7 +66,7 @@ public class Vote {
         }
     }
 
-    public boolean isExpired(){
+    public boolean isExpired() {
         return expiryAt.isBefore(LocalDateTime.now());
     }
 }

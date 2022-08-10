@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.config.RestDocsConfig;
@@ -117,8 +118,10 @@ public class MemberControllerTest {
     void 로그인한_사용자일때_회원_댓글_조회_API_문서화() throws Exception {
         MyPageCommentsResponse myPageCommentsResponse = new MyPageCommentsResponse(
                 List.of(
-                        new MyPageCommentResponse(1L, "댓글1", LocalDateTime.now(), LocalDateTime.now()),
-                        new MyPageCommentResponse(1L, "댓글2", LocalDateTime.now(), LocalDateTime.now()))
+                        new MyPageCommentResponse(1L, "댓글1", 1L, Category.QUESTION.getValue(), LocalDateTime.now(),
+                                LocalDateTime.now()),
+                        new MyPageCommentResponse(2L, "댓글2", 1L, Category.DISCUSSION.getValue(), LocalDateTime.now(),
+                                LocalDateTime.now()))
         );
         given(jwtTokenProvider.validateToken(any())).willReturn(true);
         given(jwtTokenProvider.getPayload(any())).willReturn("1");
@@ -137,6 +140,8 @@ public class MemberControllerTest {
                         responseFields(
                                 fieldWithPath("comments[].id").type(JsonFieldType.NUMBER).description("댓글 아이디"),
                                 fieldWithPath("comments[].content").type(JsonFieldType.STRING).description("내용"),
+                                fieldWithPath("comments[].articleId").type(JsonFieldType.NUMBER).description("게시글 아이디"),
+                                fieldWithPath("comments[].category").type(JsonFieldType.STRING).description("게시글 카테고리"),
                                 fieldWithPath("comments[].createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                 fieldWithPath("comments[].updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
                         )

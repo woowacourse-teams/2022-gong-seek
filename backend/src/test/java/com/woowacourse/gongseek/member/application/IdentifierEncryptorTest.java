@@ -18,7 +18,6 @@ class IdentifierEncryptorTest {
         Long id = 1L;
 
         String cipherText = encryptor.encrypt(String.valueOf(id));
-        System.out.println(cipherText);
 
         assertThat(cipherText).isEqualTo(encryptor.encrypt(String.valueOf(id)));
     }
