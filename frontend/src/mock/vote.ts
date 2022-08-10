@@ -1,82 +1,77 @@
-import { rest } from 'msw';
+// import { rest } from 'msw';
 
-import { VoteItems } from '@/api/vote';
-import { HOME_URL } from '@/constants/url';
+// import { TVote } from '@/api/vote';
+// import { HOME_URL } from '@/constants/url';
 
-interface VoteItemsWithId extends VoteItems {
-	voteId: string;
-}
+// const data = localStorage.getItem('mock-votes');
 
-interface VoteData {
-	articleId: string;
-	options: VoteItemsWithId[];
-}
+// const mockVotes = data ? (JSON.parse(data) as TVote) : {
+// 	articleId: '0',
+// 	voteItems: [],
 
-const data = localStorage.getItem('mock-votes');
+// }
 
-const mockVotes = data ? (JSON.parse(data) as VoteData[]) : [];
+// export const VoteHandler = [
+// 	rest.post<{ items: string[] }>(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
+// 		const { articleId } = req.params;
+// 		const { items } = req.body;
 
-export const VoteHandler = [
-	rest.post<{ items: string[] }>(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
-		const { articleId } = req.params;
-		const { items } = req.body;
+// 		if (typeof articleId !== 'string') {
+// 			return;
+// 		}
 
-		if (typeof articleId !== 'string') {
-			return;
-		}
+// 		localStorage.setItem(
+// 			'mock-votes',
+// 			JSON.stringify(
+// 				mockVotes.concat({
+// 					articleId,
+// 					options: items.map((item, idx) => ({
+// 						voteId: String(idx),
+// 						option: item,
+// 						count: 0,
+// 					})),
+// 				}),
+// 			),
+// 		);
 
-		localStorage.setItem(
-			'mock-votes',
-			JSON.stringify(
-				mockVotes.concat({
-					articleId,
-					options: items.map((item, idx) => ({
-						voteId: String(idx),
-						option: item,
-						count: 0,
-					})),
-				}),
-			),
-		);
+// 		return res(
+// 			ctx.status(201),
+// 			ctx.json({
+// 				articleId,
+// 			}),
+// 		);
+// 	}),
 
-		return res(
-			ctx.status(201),
-			ctx.json({
-				articleId,
-			}),
-		);
-	}),
+// 	rest.get(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
+// 		const { articleId } = req.params;
 
-	rest.get(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
-		const { articleId } = req.params;
+// 		const vote = mockVotes.find((mockVote) => mockVote.articleId === articleId);
 
-		const vote = mockVotes.find((mockVote) => mockVote.articleId === articleId);
+// 		if (typeof vote === 'undefined') {
+// 			throw new Error('투표를 찾지 못하였습니다');
+// 		}
 
-		if (typeof vote === 'undefined') {
-			throw new Error('투표를 찾지 못하였습니다');
-		}
+// 		return res(ctx.status(200), ctx.json([...vote.options]));
+// 	}),
 
-		return res(ctx.status(200), ctx.json([...vote.options]));
-	}),
+// 	rest.post(`${HOME_URL}/api/articles/:articleId/votes/:voteId`, (req, res, ctx) => {
+// 		const { voteId, articleId } = req.params;
 
-	rest.post(`${HOME_URL}/api/articles/:articleId/votes/:voteId`, (req, res, ctx) => {
-		const { voteId, articleId } = req.params;
+// 		const vote = mockVotes.find((mockVote) => mockVote.articleId === articleId);
+// 		if (typeof vote === 'undefined') {
+// 			throw new Error('투표를 찾지 못하였습니다');
+// 		}
 
-		const vote = mockVotes.find((mockVote) => mockVote.articleId === articleId);
-		if (typeof vote === 'undefined') {
-			throw new Error('투표를 찾지 못하였습니다');
-		}
+// 		const selectedOption = vote.options.find((option) => option.voteId === voteId);
 
-		const selectedOption = vote.options.find((option) => option.voteId === voteId);
+// 		if (typeof selectedOption === 'undefined') {
+// 			throw new Error('투표를 찾지 못하였습니다');
+// 		}
 
-		if (typeof selectedOption === 'undefined') {
-			throw new Error('투표를 찾지 못하였습니다');
-		}
+// 		selectedOption.count += 1;
 
-		selectedOption.count += 1;
+// 		localStorage.setItem('mock-votes', JSON.stringify(mockVotes));
 
-		localStorage.setItem('mock-votes', JSON.stringify(mockVotes));
-
-		return res(ctx.status(201));
-	}),
-];
+// 		return res(ctx.status(201));
+// 	}),
+// ];
