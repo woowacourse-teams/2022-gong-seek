@@ -15,7 +15,7 @@ import com.woowacourse.gongseek.comment.application.CommentService;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
-import com.woowacourse.gongseek.commons.DatabaseCleaner;
+import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;

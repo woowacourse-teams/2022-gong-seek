@@ -5,19 +5,26 @@ import { useMutation } from 'react-query';
 import { postComments } from '@/api/comments';
 import { CommentInputModalProps } from '@/components/common/CommentInputModal/CommentInputModal';
 import CustomError from '@/components/helper/CustomError';
+import { ErrorMessage } from '@/constants/ErrorMessage';
 import useSnackBar from '@/hooks/useSnackBar';
 
 const usePostCommentInputModal = (closeModal: CommentInputModalProps['closeModal']) => {
 	const { showSnackBar } = useSnackBar();
 	const { isLoading, isError, error, isSuccess, mutate } = useMutation<
 		unknown,
-		AxiosError<{ errorCode: string; message: string }>,
+		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ content: string; id: string; isAnonymous: boolean }
 	>(postComments);
 
 	useEffect(() => {
 		if (isError) {
-			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
+			if (!error.response) {
+				return;
+			}
+			throw new CustomError(
+				error.response.data.errorCode,
+				ErrorMessage[error.response.data.errorCode],
+			);
 		}
 	}, [isError]);
 
