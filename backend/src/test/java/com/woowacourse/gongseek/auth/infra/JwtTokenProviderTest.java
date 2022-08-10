@@ -54,4 +54,29 @@ class JwtTokenProviderTest {
 
         assertThat(jwtTokenProvider.getAccessTokenPayload(token)).isEqualTo(payload);
     }
+
+    @Test
+    void 리프레시_토큰_생성() {
+        String payload = "payload";
+        String token = jwtTokenProvider.createRefreshToken(payload);
+
+        assertThat(jwtTokenProvider.getRefreshTokenPayload(token)).isEqualTo(payload);
+    }
+
+    @Test
+    void 만료된_리프레시_토큰_검사() {
+        String token = Jwts.builder()
+                .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS256)
+                .setSubject("1L")
+                .setExpiration(new Date(new Date().getTime() - 1))
+                .compact();
+
+        assertThat(jwtTokenProvider.isValidRefreshToken(token)).isFalse();
+    }
+    @Test
+    void 올바른_리프레시_토큰_검사() {
+        String refreshToken = jwtTokenProvider.createRefreshToken("1");
+
+        assertThat(jwtTokenProvider.isValidRefreshToken(refreshToken)).isTrue();
+    }
 }
