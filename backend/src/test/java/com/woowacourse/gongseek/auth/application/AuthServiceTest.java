@@ -1,9 +1,15 @@
 package com.woowacourse.gongseek.auth.application;
 
+import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.기론;
+import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
 
+import com.woowacourse.gongseek.auth.domain.AccessTokenProperty;
+import com.woowacourse.gongseek.auth.domain.TokenProperty;
+import com.woowacourse.gongseek.auth.exception.InvalidRefreshTokenException;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
@@ -48,7 +54,6 @@ class AuthServiceTest {
 
     @Test
     void 엑세스토큰을_발급한다() {
-        GithubClientFixtures 주디 = GithubClientFixtures.주디;
         GithubProfileResponse profileResponse = new GithubProfileResponse(
                 주디.getGithubId(), 주디.getName(), 주디.getAvatarUrl());
         given(githubOAuthClient.getMemberProfile(주디.getCode())).willReturn(profileResponse);
@@ -60,7 +65,6 @@ class AuthServiceTest {
 
     @Test
     void 기존_유저의_정보가_바뀌면_로그인을_했을때_업데이트되고_엑세스토큰을_발급한다() {
-        GithubClientFixtures 주디 = GithubClientFixtures.주디;
         GithubProfileResponse profileResponse = new GithubProfileResponse(
                 주디.getGithubId(), 주디.getName(), 주디.getAvatarUrl());
         given(githubOAuthClient.getMemberProfile(주디.getCode())).willReturn(profileResponse);
@@ -74,5 +78,29 @@ class AuthServiceTest {
                 () -> assertThat(actual.getAvatarUrl()).isEqualTo(주디.getAvatarUrl()),
                 () -> assertThat(response).isNotNull()
         );
+    }
+
+    @Test
+    void 리프레시토큰이_유효하면_토큰을_재발급한다(){
+        GithubProfileResponse profileResponse = new GithubProfileResponse(
+                기론.getGithubId(), 기론.getName(), 기론.getAvatarUrl());
+        given(githubOAuthClient.getMemberProfile(기론.getCode())).willReturn(profileResponse);
+        memberRepository.save(new Member(기론.getGithubId(), 기론.getName(), "previous avatar url"));
+        TokenResponse tokenResponse = authService.generateToken(new OAuthCodeRequest(기론.getCode()));
+
+        TokenResponse renewToken = authService.renewToken(tokenResponse.getRefreshToken());
+
+        assertAll(
+                () -> assertThat(renewToken.getRefreshToken()).isNotNull(),
+                () -> assertThat(renewToken.getAccessToken()).isNotNull()
+        );
+    }
+
+    @Test
+    void 유효하지않는_리프레시토큰이_들어오면_예외를_발생한다(){
+
+        assertThatThrownBy(()->authService.renewToken("invalid-refresh-token"))
+                .isExactlyInstanceOf(InvalidRefreshTokenException.class)
+                .hasMessage("리프레시 토큰이 유효하지 않습니다.");
     }
 }
