@@ -87,7 +87,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     void 유저가_깃허브로_로그인을_하지_않고_익명으로_게시글을_등록할_수_없다() {
         //given
         // when
-        ErrorResponse response = 익명으로_게시물을_등록한다(new AccessTokenResponse(null), Category.QUESTION).as(ErrorResponse.class);
+        ErrorResponse response = 익명으로_게시물을_등록한다(new AccessTokenResponse(null), Category.QUESTION).as(
+                ErrorResponse.class);
 
         //then
         assertAll(
@@ -301,7 +302,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     void 게시물_작성자가_아니면_기명_게시물을_수정할_수_없다() {
         // given
         AccessTokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
 
         //when
         AccessTokenResponse nonAuthorToken = 로그인을_한다(슬로);
@@ -318,7 +320,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     void 게시물_작성자가_아니면_익명_게시물을_수정할_수_없다() {
         // given
         AccessTokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
 
         // when
         AccessTokenResponse nonAuthorToken = 로그인을_한다(슬로);
@@ -401,7 +404,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     void 게시물_작성자가_아니면_기명_게시물을_삭제할_수_없다() {
         // given
         AccessTokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
         AccessTokenResponse nonAuthorToken = 로그인을_한다(슬로);
 
         //when
@@ -418,7 +422,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     void 게시물_작성자가_아니면_익명_게시물을_삭제할_수_없다() {
         // given
         AccessTokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(ArticleIdResponse.class);
+        ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
         AccessTokenResponse nonAuthorToken = 로그인을_한다(슬로);
 
         //when

@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.common.exception.ErrorResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
@@ -18,7 +17,6 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
 import java.util.Set;
-import javax.persistence.Access;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -162,7 +160,8 @@ public class VoteAcceptanceTest extends AcceptanceTest {
                 .findFirst()
                 .get()
                 .getId();
-        ErrorResponse response = 투표를_한다(new AccessTokenResponse(""), articleId, new SelectVoteItemIdRequest(vottedItemId)).as(
+        ErrorResponse response = 투표를_한다(new AccessTokenResponse(""), articleId,
+                new SelectVoteItemIdRequest(vottedItemId)).as(
                 ErrorResponse.class);
         assertAll(
                 () -> assertThat(response.getErrorCode()).isEqualTo("1004"),

@@ -73,6 +73,7 @@ class JwtTokenProviderTest {
 
         assertThat(jwtTokenProvider.isValidRefreshToken(token)).isFalse();
     }
+
     @Test
     void 올바른_리프레시_토큰_검사() {
         String refreshToken = jwtTokenProvider.createRefreshToken("1");

@@ -7,14 +7,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
 
-import com.woowacourse.gongseek.auth.domain.AccessTokenProperty;
-import com.woowacourse.gongseek.auth.domain.TokenProperty;
 import com.woowacourse.gongseek.auth.exception.InvalidRefreshTokenException;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
-import com.woowacourse.gongseek.auth.support.GithubClientFixtures;
 import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
@@ -81,7 +78,7 @@ class AuthServiceTest {
     }
 
     @Test
-    void 리프레시토큰이_유효하면_토큰을_재발급한다(){
+    void 리프레시토큰이_유효하면_토큰을_재발급한다() {
         GithubProfileResponse profileResponse = new GithubProfileResponse(
                 기론.getGithubId(), 기론.getName(), 기론.getAvatarUrl());
         given(githubOAuthClient.getMemberProfile(기론.getCode())).willReturn(profileResponse);
@@ -97,9 +94,9 @@ class AuthServiceTest {
     }
 
     @Test
-    void 유효하지않는_리프레시토큰이_들어오면_예외를_발생한다(){
+    void 유효하지않는_리프레시토큰이_들어오면_예외를_발생한다() {
 
-        assertThatThrownBy(()->authService.renewToken("invalid-refresh-token"))
+        assertThatThrownBy(() -> authService.renewToken("invalid-refresh-token"))
                 .isExactlyInstanceOf(InvalidRefreshTokenException.class)
                 .hasMessage("리프레시 토큰이 유효하지 않습니다.");
     }

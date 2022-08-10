@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.acceptance.support;
 
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
