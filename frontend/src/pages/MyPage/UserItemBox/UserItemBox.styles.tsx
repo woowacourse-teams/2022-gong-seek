@@ -66,10 +66,10 @@ export const DropDownButton = styled.button`
 	background-color: transparent;
 `;
 
-export const DropDownImg = styled(IoIosArrowBack)<{ isOpen: boolean }>`
+export const DropDownImg = styled(IoIosArrowBack)<{ isopen: string }>`
 	font-size: ${({ theme }) => theme.size.SIZE_018};
 	color: ${({ theme }) => theme.colors.WHITE};
-	transform: ${(props) => (props.isOpen ? 'rotate(90deg)' : 'rotate(-90deg)')};
+	transform: ${(props) => (props.isopen === 'true' ? 'rotate(90deg)' : 'rotate(-90deg)')};
 `;
 
 export const ChildrenBox = styled.div`

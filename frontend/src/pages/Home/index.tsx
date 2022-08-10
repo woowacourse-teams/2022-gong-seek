@@ -23,12 +23,6 @@ const Home = () => {
 		fetchNextPage,
 	} = useGetAllArticles();
 
-	if (typeof data !== 'undefined') {
-		if (data.pages.length === 0) {
-			return <div>게시글이 존재하지 않습니다</div>;
-		}
-	}
-
 	if (isLoading) {
 		return <Loading />;
 	}
@@ -54,7 +48,7 @@ const Home = () => {
 				</S.CategoryTitleBox>
 				<SortDropdown sortIndex={sortIndex} setSortIndex={setSortIndex} />
 			</S.CategoryTitleContainer>
-			{data ? (
+			{data?.pages.length ? (
 				<InfiniteScrollObserver
 					hasNext={data.pages[data.pages.length - 1].hasNext}
 					fetchNextPage={fetchNextPage}
@@ -74,7 +68,7 @@ const Home = () => {
 					</S.ArticleItemList>
 				</InfiniteScrollObserver>
 			) : (
-				<div>데이터가 존재하지 않습니다</div>
+				<S.EmptyText>텅 비었어요..!</S.EmptyText>
 			)}
 		</S.Container>
 	);
