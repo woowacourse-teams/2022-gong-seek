@@ -35,7 +35,7 @@ public class JwtTokenProvider implements TokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(accessTokenProperty.getTokenSecretKey(), SignatureAlgorithm.HS256)
+                .signWith(tokenProperty.getTokenSecretKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -44,7 +44,6 @@ public class JwtTokenProvider implements TokenProvider {
         Claims claims = Jwts.claims().setSubject(payload);
         return generateToken(claims, refreshTokenProperty);
     }
-
 
     @Override
     public String getAccessTokenPayload(String token) {
@@ -61,7 +60,7 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public boolean validateAccessToken(String token) {
+    public boolean isValidAccessToken(String token) {
         try {
             Jws<Claims> claims = getClaimsJws(token, accessTokenProperty.getTokenSecretKey());
 
@@ -74,7 +73,7 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public boolean validateRefreshToken(String token) {
+    public boolean isValidRefreshToken(String token) {
         try {
             Jws<Claims> claims = getClaimsJws(token, refreshTokenProperty.getTokenSecretKey());
 

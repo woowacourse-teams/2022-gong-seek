@@ -30,7 +30,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         }
 
         String accessToken = TokenExtractor.extract(request.getHeader(HttpHeaders.AUTHORIZATION));
-        if (!jwtTokenProvider.validateAccessToken(accessToken)) {
+        if (!jwtTokenProvider.isValidAccessToken(accessToken)) {
             throw new InvalidAccessTokenException();
         }
         String payload = jwtTokenProvider.getAccessTokenPayload(accessToken);

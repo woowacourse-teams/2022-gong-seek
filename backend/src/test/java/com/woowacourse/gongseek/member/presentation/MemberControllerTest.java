@@ -57,7 +57,7 @@ public class MemberControllerTest {
     @Test
     void 로그인한_사용자일때_회원_조회_API_문서화() throws Exception {
         MemberDto memberDto = new MemberDto("레넌", "https://avatars.githubusercontent.com/u/70756680?v=4");
-        given(jwtTokenProvider.validateAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         given(memberService.getOne(new LoginMember(any()))).willReturn(memberDto);
 
@@ -87,7 +87,7 @@ public class MemberControllerTest {
                         new MyPageArticleResponse(1L, "title2", "question2", 20, LocalDateTime.now(),
                                 LocalDateTime.now(), 200))
         );
-        given(jwtTokenProvider.validateAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         given(memberService.getArticles(new LoginMember(any()))).willReturn(myPageArticlesResponse);
 
@@ -120,7 +120,7 @@ public class MemberControllerTest {
                         new MyPageCommentResponse(1L, "댓글1", LocalDateTime.now(), LocalDateTime.now()),
                         new MyPageCommentResponse(1L, "댓글2", LocalDateTime.now(), LocalDateTime.now()))
         );
-        given(jwtTokenProvider.validateAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         given(memberService.getComments(new LoginMember(any()))).willReturn(myPageCommentsResponse);
 

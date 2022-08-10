@@ -33,22 +33,22 @@ class JwtTokenProviderTest {
 
     @Test
     void 잘못된_토큰_검사() {
-        assertThat(jwtTokenProvider.validateAccessToken("thiIsInvalidToken")).isFalse();
+        assertThat(jwtTokenProvider.isValidAccessToken("thiIsInvalidToken")).isFalse();
     }
 
     @Test
-    void 만료된_토큰_검사() {
+    void 만료된_엑세스_토큰_검사() {
         String token = Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS256)
                 .setSubject("1L")
                 .setExpiration(new Date(new Date().getTime() - 1))
                 .compact();
 
-        assertThat(jwtTokenProvider.validateAccessToken(token)).isFalse();
+        assertThat(jwtTokenProvider.isValidAccessToken(token)).isFalse();
     }
 
     @Test
-    void 토큰_페이로드_확인() {
+    void 엑세스_토큰_페이로드_확인() {
         String payload = "payload";
         String token = jwtTokenProvider.createAccessToken(payload);
 

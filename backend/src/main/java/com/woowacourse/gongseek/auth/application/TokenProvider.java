@@ -10,7 +10,7 @@ public interface TokenProvider {
 
     String getRefreshTokenPayload(String token);
 
-    boolean validateAccessToken(String token);
+    boolean isValidAccessToken(String token);
 
-    boolean validateRefreshToken(String token);
+    boolean isValidRefreshToken(String token);
 }

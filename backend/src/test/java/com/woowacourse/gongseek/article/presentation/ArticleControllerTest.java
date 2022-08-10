@@ -73,7 +73,7 @@ class ArticleControllerTest {
         ArticleIdResponse response = new ArticleIdResponse(1L);
         ArticleRequest request = new ArticleRequest("title", "content", "question", false);
 
-        given(jwtTokenProvider.validateAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
         given(articleService.save(any(), any())).willReturn(response);
 
@@ -210,7 +210,7 @@ class ArticleControllerTest {
     void 게시물_수정_API_문서화() throws Exception {
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 바꿀께요", "내용 수정합니다~~~");
         ArticleUpdateResponse articleUpdateResponse = new ArticleUpdateResponse(1L, Category.QUESTION.getValue());
-        given(jwtTokenProvider.validateAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(articleService.update(any(), any(), any())).willReturn(articleUpdateResponse);
 
         ResultActions results = mockMvc.perform(put("/api/articles/{id}", 1L)
@@ -238,7 +238,7 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_삭제_API_문서화() throws Exception {
-        given(jwtTokenProvider.validateAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         doNothing().when(articleService).delete(any(), any());
 
@@ -268,7 +268,7 @@ class ArticleControllerTest {
 
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
-        given(jwtTokenProvider.validateAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         given(articleService.getAll(anyLong(), anyInt(), any(), any(), anyInt())).willReturn(response);
 
@@ -322,7 +322,7 @@ class ArticleControllerTest {
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 
-        given(jwtTokenProvider.validateAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         given(articleService.search(anyLong(), anyInt(), anyString())).willReturn(response);
 

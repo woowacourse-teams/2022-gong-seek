@@ -62,7 +62,7 @@ class CommentControllerTest {
     void 댓글_생성_API_문서화() throws Exception {
         CommentRequest request = new CommentRequest("content", false);
 
-        given(jwtTokenProvider.validateAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
 
         ResultActions results = mockMvc.perform(post("/api/articles/{articleId}/comments", 1)
@@ -142,7 +142,7 @@ class CommentControllerTest {
     @Test
     void 댓글_수정_API_문서화() throws Exception {
         CommentUpdateRequest request = new CommentUpdateRequest("content");
-        given(jwtTokenProvider.validateAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
 
         ResultActions results = mockMvc.perform(put("/api/articles/comments/{commentId}", 1)
@@ -166,7 +166,7 @@ class CommentControllerTest {
 
     @Test
     void 댓글_삭제_API_문서화() throws Exception {
-        given(jwtTokenProvider.validateAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
 
         mockMvc.perform(delete("/api/articles/comments/{commentId}", 1)

@@ -7,7 +7,6 @@ import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,7 +60,7 @@ public class AuthService {
     }
 
     private void validateRefreshToken(String token) {
-        if(jwtTokenProvider.validateRefreshToken(token)){
+        if(!jwtTokenProvider.isValidRefreshToken(token)){
             throw new InvalidRefreshTokenException();
         }
     }
