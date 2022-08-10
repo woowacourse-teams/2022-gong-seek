@@ -79,7 +79,14 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 					>
 						토론 카테고리
 					</S.LinkItem>
-					<S.LinkItem onClick={() => alert('준비중입니다..!')}>문의하기</S.LinkItem>
+					<S.LinkItem
+						onClick={() => {
+							navigate('/inquire');
+							closeSlider();
+						}}
+					>
+						문의하기
+					</S.LinkItem>
 				</S.LinkBox>
 			</S.MenuBox>
 		</S.Container>,
