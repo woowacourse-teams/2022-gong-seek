@@ -14,6 +14,7 @@ import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.조회
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.특정_게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.기명으로_댓글을_등록한다;
+import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.슬로;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -26,6 +27,7 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
+import com.woowacourse.gongseek.common.exception.ErrorResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -69,20 +71,32 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 유저가_깃허브로_로그인을_하지_않고_기명으로_게시글을_등록할_수_없다() {
-        // when
-        ExtractableResponse<Response> response = 기명으로_게시물을_등록한다(new TokenResponse(""), Category.QUESTION);
+        //given
+        TokenResponse 비회원 = new TokenResponse(null);
 
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        //when
+        ErrorResponse response = 기명으로_게시물을_등록한다(비회원, Category.QUESTION).as(ErrorResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
+                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+        );
     }
 
     @Test
     void 유저가_깃허브로_로그인을_하지_않고_익명으로_게시글을_등록할_수_없다() {
-        // when
-        ExtractableResponse<Response> response = 익명으로_게시물을_등록한다(new TokenResponse(""), Category.QUESTION);
+        //given
+        TokenResponse 비회원 = new TokenResponse(null);
 
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        //when
+        ErrorResponse response = 익명으로_게시물을_등록한다(비회원, Category.QUESTION).as(ErrorResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
+                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+        );
     }
 
     @Test
@@ -268,11 +282,14 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
                 ArticleIdResponse.class);
 
-        // when
-        ExtractableResponse<Response> response = 로그인을_하지_않고_게시물을_수정한다(articleIdResponse);
+        //when
+        ErrorResponse response = 로그인을_하지_않고_게시물을_수정한다(articleIdResponse).as(ErrorResponse.class);
 
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        //then
+        assertAll(
+                () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
+                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+        );
     }
 
     @Test
@@ -282,39 +299,50 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
                 ArticleIdResponse.class);
 
-        // when
-        ExtractableResponse<Response> response = 로그인을_하지_않고_게시물을_수정한다(articleIdResponse);
+        //when
+        ErrorResponse response = 로그인을_하지_않고_게시물을_수정한다(articleIdResponse).as(ErrorResponse.class);
 
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        //then
+        assertAll(
+                () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
+                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+        );
     }
 
     @Test
     void 게시물_작성자가_아니면_기명_게시물을_수정할_수_없다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+        TokenResponse authorToken = 로그인을_한다(주디);
+        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(authorToken, Category.QUESTION).as(
                 ArticleIdResponse.class);
+        TokenResponse nonAuthorToken = 로그인을_한다(슬로);
 
-        // when
-        ExtractableResponse<Response> response = 로그인_후_게시물을_수정한다(new TokenResponse("abc"), articleIdResponse);
+        //when
+        ErrorResponse response = 로그인_후_게시물을_수정한다(nonAuthorToken, articleIdResponse).as(ErrorResponse.class);
 
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        //then
+        assertAll(
+                () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
+                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+        );
     }
 
     @Test
     void 게시물_작성자가_아니면_익명_게시물을_수정할_수_없다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+        TokenResponse authorToken = 로그인을_한다(주디);
+        ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(authorToken, Category.QUESTION).as(
                 ArticleIdResponse.class);
+        TokenResponse nonAuthorToken = 로그인을_한다(슬로);
 
-        // when
-        ExtractableResponse<Response> response = 로그인_후_게시물을_수정한다(new TokenResponse("abc"), articleIdResponse);
+        //when
+        ErrorResponse response = 로그인_후_게시물을_수정한다(nonAuthorToken, articleIdResponse).as(ErrorResponse.class);
 
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        //then
+        assertAll(
+                () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
+                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+        );
     }
 
     @Test
@@ -386,29 +414,37 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 게시물_작성자가_아니면_기명_게시물을_삭제할_수_없다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+        TokenResponse authorToken = 로그인을_한다(주디);
+        ArticleIdResponse articleIdResponse = 기명으로_게시물을_등록한다(authorToken, Category.QUESTION).as(
                 ArticleIdResponse.class);
+        TokenResponse nonAuthorToken = 로그인을_한다(슬로);
 
-        // when
-        ExtractableResponse<Response> response = 로그인_후_게시물을_삭제한다(new TokenResponse("abc"), articleIdResponse);
+        //when
+        ErrorResponse response = 로그인_후_게시물을_삭제한다(nonAuthorToken, articleIdResponse).as(ErrorResponse.class);
 
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        //then
+        assertAll(
+                () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
+                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+        );
     }
 
     @Test
     void 게시물_작성자가_아니면_익명_게시물을_삭제할_수_없다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(주디);
-        ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(tokenResponse, Category.QUESTION).as(
+        TokenResponse authorToken = 로그인을_한다(주디);
+        ArticleIdResponse articleIdResponse = 익명으로_게시물을_등록한다(authorToken, Category.QUESTION).as(
                 ArticleIdResponse.class);
+        TokenResponse nonAuthorToken = 로그인을_한다(슬로);
 
-        // when
-        ExtractableResponse<Response> response = 로그인_후_게시물을_삭제한다(new TokenResponse("abc"), articleIdResponse);
+        //when
+        ErrorResponse response = 로그인_후_게시물을_삭제한다(nonAuthorToken, articleIdResponse).as(ErrorResponse.class);
 
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        //then
+        assertAll(
+                () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
+                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+        );
     }
 
     @Test
