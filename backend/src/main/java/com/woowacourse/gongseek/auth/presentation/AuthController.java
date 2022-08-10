@@ -1,15 +1,11 @@
 package com.woowacourse.gongseek.auth.presentation;
 
 import com.woowacourse.gongseek.auth.application.AuthService;
-import com.woowacourse.gongseek.auth.exception.EmptyCookieException;
-import com.woowacourse.gongseek.auth.exception.EmptyTokenException;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.auth.utils.CookieUtils;
-import java.util.Objects;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,10 +43,10 @@ public class AuthController {
 
     @GetMapping("/refresh")
     public ResponseEntity<AccessTokenResponse> renewal(
-            @CookieValue(value = "refreshToken", required = false) Cookie cookie,
+            @CookieValue(value = "refreshToken", required = false) String refreshToken,
             HttpServletResponse httpServletResponse) {
-        CookieUtils.validateCookie(cookie);
-        TokenResponse tokenResponse = authService.renewToken(cookie.getValue());
+
+        TokenResponse tokenResponse = authService.renewToken(refreshToken);
         ResponseCookie newCookie = CookieUtils.create(tokenResponse.getRefreshToken());
         httpServletResponse.setHeader(HttpHeaders.SET_COOKIE, newCookie.toString());
 
