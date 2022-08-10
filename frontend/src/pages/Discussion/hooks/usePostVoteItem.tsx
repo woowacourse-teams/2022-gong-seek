@@ -16,7 +16,7 @@ const usePostVoteItem = (articleId: string) => {
 
 	useEffect(() => {
 		if (isSuccess) {
-			queryClient.refetchQueries(`vote${articleId}`);
+			queryClient.refetchQueries(['vote', `vote${articleId}`]);
 		}
 	}, [isSuccess]);
 
