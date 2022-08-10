@@ -4,13 +4,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.comment.application.CommentService;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
+import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
@@ -39,6 +43,12 @@ class MemberServiceTest {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private ArticleService articleService;
+
+    @Autowired
+    private CommentService commentService;
 
     @Autowired
     private DatabaseCleaner databaseCleaner;
@@ -74,12 +84,14 @@ class MemberServiceTest {
 
     @Test
     void 회원이_작성한_게시글들을_조회할_수_있다() {
+        articleService.save(new LoginMember(member.getId()),
+                new ArticleRequest("cipherTitle", "cipherContent", Category.QUESTION.getValue(), true));
         articleRepository.save(new Article("title1", "content1", Category.QUESTION, member, false));
         articleRepository.save(new Article("title2", "content2", Category.QUESTION, member, false));
 
         MyPageArticlesResponse response = memberService.getArticles(new LoginMember(member.getId()));
 
-        assertThat(response.getArticles()).size().isEqualTo(2);
+        assertThat(response.getArticles()).size().isEqualTo(3);
     }
 
     @Test
@@ -103,12 +115,14 @@ class MemberServiceTest {
     @Test
     void 회원이_작성한_댓글들을_조회할_수_있다() {
         Article article = articleRepository.save(new Article("title1", "content1", Category.QUESTION, member, false));
+        commentService.save(new LoginMember(member.getId()), article.getId(),
+                new CommentRequest("cipherContent", true));
         commentRepository.save(new Comment("댓글1", member, article, false));
         commentRepository.save(new Comment("댓글2", member, article, false));
 
         MyPageCommentsResponse response = memberService.getComments(new LoginMember(member.getId()));
 
-        assertThat(response.getComments()).size().isEqualTo(2);
+        assertThat(response.getComments()).size().isEqualTo(3);
     }
 
     @Test

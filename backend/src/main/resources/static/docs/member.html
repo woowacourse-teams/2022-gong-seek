@@ -520,7 +520,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 98
+Content-Length: 95
 
 {
   "name" : "레넌",
@@ -603,7 +603,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 427
+Content-Length: 409
 
 {
   "articles" : [ {
@@ -611,16 +611,16 @@ Content-Length: 427
     "title" : "title1",
     "category" : "question1",
     "commentCount" : 10,
-    "createdAt" : "2022-08-09T17:41",
-    "updatedAt" : "2022-08-09T17:41",
+    "createdAt" : "2022-08-07T18:02",
+    "updatedAt" : "2022-08-07T18:02",
     "views" : 100
   }, {
     "id" : 1,
     "title" : "title2",
     "category" : "question2",
     "commentCount" : 20,
-    "createdAt" : "2022-08-09T17:41",
-    "updatedAt" : "2022-08-09T17:41",
+    "createdAt" : "2022-08-07T18:02",
+    "updatedAt" : "2022-08-07T18:02",
     "views" : 200
   } ]
 }</code></pre>
@@ -729,19 +729,23 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 279
+Content-Length: 369
 
 {
   "comments" : [ {
     "id" : 1,
     "content" : "댓글1",
-    "createdAt" : "2022-08-09T17:41",
-    "updatedAt" : "2022-08-09T17:41"
+    "articleId" : 1,
+    "category" : "question",
+    "createdAt" : "2022-08-07T18:02",
+    "updatedAt" : "2022-08-07T18:02"
   }, {
-    "id" : 1,
+    "id" : 2,
     "content" : "댓글2",
-    "createdAt" : "2022-08-09T17:41",
-    "updatedAt" : "2022-08-09T17:41"
+    "articleId" : 1,
+    "category" : "discussion",
+    "createdAt" : "2022-08-07T18:02",
+    "updatedAt" : "2022-08-07T18:02"
   } ]
 }</code></pre>
 </div>
@@ -771,6 +775,16 @@ Content-Length: 279
 <td class="tableblock halign-left valign-top"><p class="tableblock">내용</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comments[].articleId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게시글 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>comments[].category</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게시글 카테고리</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>comments[].createdAt</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">생성 날짜</p></td>
@@ -788,7 +802,7 @@ Content-Length: 279
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-08-02 19:07:45 +0900
+Last updated 2022-08-07 16:13:29 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

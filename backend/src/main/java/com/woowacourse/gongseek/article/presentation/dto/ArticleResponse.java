@@ -36,7 +36,7 @@ public class ArticleResponse {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime updatedAt;
 
-    public ArticleResponse(Article article, AuthorDto authorDto, boolean isAuthor,  boolean hasVote) {
+    public ArticleResponse(Article article, AuthorDto authorDto, boolean isAuthor, boolean hasVote) {
         this(
                 article.getTitle(),
                 authorDto,

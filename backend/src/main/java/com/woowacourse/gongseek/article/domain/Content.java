@@ -5,7 +5,6 @@ import com.woowacourse.gongseek.article.exception.ArticleContentTooLongException
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Lob;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
