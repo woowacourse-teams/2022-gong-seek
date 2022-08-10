@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
@@ -159,14 +160,32 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    void 회원이_작성한_게시글들을_조회할_수_있다() {
+    void 회원들이_작성한_게시글들을_조회할_수_있다() {
+        Member otherMember = new Member("rennon", "brorae", "avatar.com");
+        memberRepository.save(otherMember);
         Article firstArticle = articleRepository.save(
                 new Article("title1", "content1", Category.QUESTION, member, false));
         Article secondArticle = articleRepository.save(
-                new Article("title2", "content2", Category.DISCUSSION, member, false));
+                new Article("title2", "content2", Category.DISCUSSION, otherMember, false));
 
-        List<Article> articles = articleRepository.findAllByMemberId(member.getId());
+        List<Long> memberIds = List.of(member.getId(), otherMember.getId());
+        List<Article> articles = articleRepository.findAllByMemberIdIn(memberIds);
 
         assertThat(articles).containsExactly(firstArticle, secondArticle);
+    }
+
+    @Test
+    void 회원이_작성한_게시글들을_수정할_수_있다() {
+        Article article = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+
+        article.update("수정 제목", "내용 바꿉니다.");
+        articleRepository.flush();
+
+        assertAll(
+                () -> assertThat(article.getTitle()).isEqualTo("수정 제목"),
+                () -> assertThat(article.getContent()).isEqualTo("내용 바꿉니다."),
+                () -> assertThat(article.getUpdatedAt()).isNotEqualTo(article.getCreatedAt())
+        );
     }
 }

@@ -21,6 +21,16 @@ import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.tag.exception.ExceededTagsException;
 import com.woowacourse.gongseek.tag.exception.TagNameLengthException;
 import com.woowacourse.gongseek.tag.exception.TagNameNullOrBlankException;
+import com.woowacourse.gongseek.vote.exception.AlreadyVoteSameItemException;
+import com.woowacourse.gongseek.vote.exception.InvalidVoteAmountException;
+import com.woowacourse.gongseek.vote.exception.InvalidVoteExpiryAtException;
+import com.woowacourse.gongseek.vote.exception.InvalidVoteItemCountException;
+import com.woowacourse.gongseek.vote.exception.UnavailableArticleException;
+import com.woowacourse.gongseek.vote.exception.VoteHistoryNotFoundException;
+import com.woowacourse.gongseek.vote.exception.VoteItemNotFoundException;
+import com.woowacourse.gongseek.vote.exception.VoteItemNullOrEmptyException;
+import com.woowacourse.gongseek.vote.exception.VoteItemTooLongException;
+import com.woowacourse.gongseek.vote.exception.VoteNotFoundException;
 import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -54,15 +64,26 @@ public enum ExceptionType {
     COMMENT_NULL_OR_EMPTY_EXCEPTION("4002", "댓글은 비어있을 수 없습니다.", CommentNullOrEmptyException.class),
     COMMENT_TOO_LONG_EXCEPTION("4003", "댓글은 10000자를 초과할 수 없습니다.", CommentTooLongException.class),
 
+    INVALID_VOTE_EXPIRY_DATE_EXCEPTION("5001", "투표 만료일 설정이 잘못되었습니다.", InvalidVoteExpiryAtException.class),
+    VOTE_ITEM_NULL_OR_EMPTY_EXCEPTION("5002", "투표 항목 내용은 비어있을 수 없습니다.", VoteItemNullOrEmptyException.class),
+    VOTE_ITEM_TOO_LONG_EXCEPTION("5003", "투표 항목 내용은 500자를 초과할 수 없습니다.", VoteItemTooLongException.class),
+    VOTE_NOT_FOUND_EXCEPTION("5004", "투표가 존재하지 않습니다.", VoteNotFoundException.class),
+    UNAVAILABLE_ARTICLE_EXCEPTION("5005", "토론 게시물만 투표를 생성할 수 있습니다.", UnavailableArticleException.class),
+    INVALID_VOTE_AMOUNT_EXCEPTION("5006", "투표수는 양수여야만 합니다.", InvalidVoteAmountException.class),
+    VOTE_ITEM_NOT_FOUND_EXCEPTION("5007", "투표 항목이 존재하지 않습니다.", VoteItemNotFoundException.class),
+    VOTE_HISTORY_NOT_FOUND_EXCEPTION("5008", "투표 내역이 존재하지 않습니다.", VoteHistoryNotFoundException.class),
+    ALREADY_VOTE_SAME_ITEM_EXCEPTION("5009", "이미 같은 항목에 투표했습니다.", AlreadyVoteSameItemException.class),
+    INVALID_VOTE_ITEM_COUNT_EXCEPTION("5010", "투표 항목 수는 2이상 5이하여야 합니다.", InvalidVoteItemCountException.class),
+
     TAG_NAME_NULL_OR_BLANK_EXCEPTION("6001", "해시태그 이름은 비어있을 수 없습니다.", TagNameNullOrBlankException.class),
     TAG_NAME_LENGTH_EXCEPTION("6002", "해시태그 이름은 2자 이상 20자 이하입니다.", TagNameLengthException.class),
     DUPLICATE_TAG_EXCEPTION("6003", "해시태그 이름은 중복될 수 없습니다.", DuplicateTagException.class),
     EXCEEDED_TAGS_EXCEPTION("6004", "해시태그는 한 게시글 당 최대 5개입니다.", ExceededTagsException.class),
     ;
 
-    private String errorCode;
-    private String message;
-    private Class<? extends ApplicationException> type;
+    private final String errorCode;
+    private final String message;
+    private final Class<? extends ApplicationException> type;
 
     public static ExceptionType from(Class<?> classType) {
         return Arrays.stream(values())

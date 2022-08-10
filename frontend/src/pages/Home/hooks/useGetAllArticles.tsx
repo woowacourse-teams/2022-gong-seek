@@ -4,6 +4,7 @@ import { useInfiniteQuery } from 'react-query';
 
 import { getAllArticle } from '@/api/article';
 import CustomError from '@/components/helper/CustomError';
+import { ErrorMessage } from '@/constants/ErrorMessage';
 import { infiniteArticleResponse } from '@/types/articleResponse';
 
 const useGetAllArticles = () => {
@@ -12,7 +13,7 @@ const useGetAllArticles = () => {
 
 	const { data, isError, isLoading, isSuccess, error, refetch, fetchNextPage } = useInfiniteQuery<
 		infiniteArticleResponse,
-		AxiosError<{ errorCode: string; message: string }>
+		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(
 		['all-articles', currentCategory],
 		({
@@ -45,7 +46,13 @@ const useGetAllArticles = () => {
 
 	useEffect(() => {
 		if (isError) {
-			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
+			if (!error.response) {
+				return;
+			}
+			throw new CustomError(
+				error.response.data.errorCode,
+				ErrorMessage[error.response.data.errorCode],
+			);
 		}
 	}, [isError]);
 

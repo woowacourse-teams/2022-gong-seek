@@ -58,5 +58,6 @@ class ArticleTest {
                 () -> assertThat(article.getTitle()).isEqualTo(updatedTitle),
                 () -> assertThat(article.getContent()).isEqualTo(updatedContent)
         );
+
     }
 }

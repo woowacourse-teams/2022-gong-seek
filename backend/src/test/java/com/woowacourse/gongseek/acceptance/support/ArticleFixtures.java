@@ -30,8 +30,9 @@ public class ArticleFixtures {
                 .extract();
     }
 
-    public static ArticleIdResponse 게시물을_등록한다(TokenResponse tokenResponse) {
-        ArticleRequest request = new ArticleRequest("title", "content", "question", List.of("Spring"), false);
+    public static ArticleIdResponse 토론_게시물을_동록한다(TokenResponse tokenResponse) {
+        ArticleRequest request = new ArticleRequest("title", "content", Category.DISCUSSION.getValue(),
+                List.of("Spring"), false);
         return 특정_게시물을_등록한다(tokenResponse, request).as(ArticleIdResponse.class);
     }
 
@@ -75,6 +76,7 @@ public class ArticleFixtures {
     public static ExtractableResponse<Response> 로그인을_하지_않고_게시물을_조회한다(ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
                 .when()
                 .get("/api/articles/{articleId}", articleIdResponse.getId())
                 .then().log().all()
@@ -85,6 +87,7 @@ public class ArticleFixtures {
                                                              Integer cursorViews) {
         return RestAssured
                 .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
                 .when()
                 .param("category", category)
                 .param("sort", sort)
@@ -96,11 +99,10 @@ public class ArticleFixtures {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 로그인_후_게시물을_수정한다(TokenResponse tokenResponse,
-                                                                ArticleIdResponse articleIdResponse) {
+    private static ExtractableResponse<Response> 게시물을_수정한다(String accessToken, ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(new ArticleUpdateRequest("title2", "content2", List.of("JAVA")))
                 .when()
@@ -109,15 +111,13 @@ public class ArticleFixtures {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> 로그인_후_게시물을_수정한다(TokenResponse tokenResponse,
+                                                                ArticleIdResponse articleIdResponse) {
+        return 게시물을_수정한다(tokenResponse.getAccessToken(), articleIdResponse);
+    }
+
     public static ExtractableResponse<Response> 로그인을_하지_않고_게시물을_수정한다(ArticleIdResponse articleIdResponse) {
-        return RestAssured
-                .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ArticleUpdateRequest("title2", "content2", List.of("JAVA")))
-                .when()
-                .put("/api/articles/{articleId}", articleIdResponse.getId())
-                .then().log().all()
-                .extract();
+        return 게시물을_수정한다(null, articleIdResponse);
     }
 
     public static ExtractableResponse<Response> 로그인_후_게시물을_삭제한다(TokenResponse tokenResponse,
@@ -135,6 +135,7 @@ public class ArticleFixtures {
     public static ArticlePageResponse 게시물을_처음_검색한다(int pageSize, String searchText) {
         return RestAssured
                 .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
                 .when()
                 .param("pageSize", pageSize)
                 .param("searchText", searchText)
@@ -147,6 +148,7 @@ public class ArticleFixtures {
     public static ArticlePageResponse 게시물을_검색한다(long cursorId, int pageSize, String searchText) {
         return RestAssured
                 .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
                 .when()
                 .param("cursorId", cursorId)
                 .param("pageSize", pageSize)

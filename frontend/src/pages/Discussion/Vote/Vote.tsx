@@ -1,11 +1,9 @@
 import { MdOutlineHowToVote } from 'react-icons/md';
 
 import Loading from '@/components/common/Loading/Loading';
-import VoteItem from '@/pages/Discussion/VoteItem/VoteItem';
-
-import useGetVote from '@/pages/Discussion/hooks/useGetVote';
-
 import * as S from '@/pages/Discussion/Vote/Vote.styles';
+import VoteItem from '@/pages/Discussion/VoteItem/VoteItem';
+import useGetVote from '@/pages/Discussion/hooks/useGetVote';
 
 const Vote = ({ articleId }: { articleId: string }) => {
 	const { data, isLoading, totalCount } = useGetVote(articleId);
@@ -15,7 +13,7 @@ const Vote = ({ articleId }: { articleId: string }) => {
 	return (
 		<S.Container>
 			<S.VoteTitleBox>
-				<S.VoteTitle>투표</S.VoteTitle>
+				<S.VoteTitle>{`투표(${data?.isExpired ? '만료' : '진행중'})`}</S.VoteTitle>
 				<S.TotalVotesBox>
 					<MdOutlineHowToVote />
 					<S.TotalVotes>총 {totalCount}표</S.TotalVotes>
@@ -23,14 +21,16 @@ const Vote = ({ articleId }: { articleId: string }) => {
 			</S.VoteTitleBox>
 			<S.VoteBox>
 				{data &&
-					data.map((datum, idx) => (
+					data.voteItems.map((datum, idx) => (
 						<VoteItem
-							key={idx}
-							title={datum.option}
+							voteItemId={datum.id}
+							key={datum.id}
+							title={datum.content}
 							totalVotes={totalCount}
-							itemVotes={datum.count}
-							name={articleId}
-							idx={idx}
+							itemVotes={datum.amount}
+							articleId={articleId}
+							colorIdx={idx}
+							isExpired={data.isExpired}
 						/>
 					))}
 			</S.VoteBox>

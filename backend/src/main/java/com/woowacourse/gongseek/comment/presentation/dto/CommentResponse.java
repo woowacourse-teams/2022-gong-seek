@@ -42,15 +42,4 @@ public class CommentResponse {
                 comment.getUpdatedAt()
         );
     }
-
-    public CommentResponse(Comment comment, AuthorDto authorDto, boolean isAuthor) {
-        this(
-                comment.getId(),
-                comment.getContent(),
-                authorDto,
-                isAuthor,
-                comment.getCreatedAt(),
-                comment.getUpdatedAt()
-        );
-    }
 }

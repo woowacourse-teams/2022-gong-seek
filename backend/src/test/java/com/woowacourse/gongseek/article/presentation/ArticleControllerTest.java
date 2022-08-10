@@ -104,6 +104,8 @@ class ArticleControllerTest {
 
     @Test
     void 로그인한_사용자일때_기명_게시물_단건_조회_API_문서화() throws Exception {
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+
         ArticleResponse response = new ArticleResponse(
                 "title",
                 List.of("SPRING", "JAVA"),
@@ -111,6 +113,7 @@ class ArticleControllerTest {
                 "content",
                 false,
                 1,
+                false,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
@@ -134,14 +137,17 @@ class ArticleControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
-                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
+                                fieldWithPath("hasVote").type(JsonFieldType.BOOLEAN).description("투표가 있으면 true"),
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
                         )
                 ));
     }
 
     @Test
     void 로그인한_사용자일때_익명_게시물_단건_조회_API_문서화() throws Exception {
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+
         ArticleResponse response = new ArticleResponse(
                 "title",
                 List.of("SPRING", "JAVA"),
@@ -150,6 +156,7 @@ class ArticleControllerTest {
                 "content",
                 false,
                 1,
+                false,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
@@ -173,6 +180,7 @@ class ArticleControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
+                                fieldWithPath("hasVote").type(JsonFieldType.BOOLEAN).description("투표가 있으면 true"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
                         )
@@ -181,6 +189,8 @@ class ArticleControllerTest {
 
     @Test
     void 로그인_안한_사용자일때_기명_게시물_단건_조회_API_문서화() throws Exception {
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+
         ArticleResponse response = new ArticleResponse(
                 "title",
                 List.of("SPRING", "JAVA"),
@@ -188,12 +198,14 @@ class ArticleControllerTest {
                 "content",
                 false,
                 1,
+                false,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
         given(articleService.getOne(any(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/{id}", 1L)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                 .characterEncoding("UTF-8"));
 
         results.andExpect(status().isOk())
@@ -207,8 +219,9 @@ class ArticleControllerTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
-                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
-                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
+                                fieldWithPath("hasVote").type(JsonFieldType.BOOLEAN).description("투표가 있으면 true"),
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
                         )
                 ));
     }
@@ -267,6 +280,8 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_전체_조회_문서화() throws Exception {
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+
         ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
                 new AuthorDto("기론", "프로필 이미지 url"),
                 "내용입니다", Category.QUESTION.getValue(), 3, 2, LocalDateTime.now());
@@ -282,6 +297,7 @@ class ArticleControllerTest {
         given(articleService.getAll(anyLong(), anyInt(), any(), any(), anyInt())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                 .param("category", Category.DISCUSSION.getValue())
                 .param("sort", "latest")
                 .param("cursorId", "1")
@@ -323,6 +339,8 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_검색_문서화() throws Exception {
+        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+
         ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
                 new AuthorDto("작성자1", "작성자1 이미지 url"),
                 "내용", Category.QUESTION.getValue(), 3, 2, LocalDateTime.now());
@@ -337,6 +355,7 @@ class ArticleControllerTest {
         given(articleService.search(anyLong(), anyInt(), anyString())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/search")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                 .param("cursorId", "1")
                 .param("pageSize", "10")
                 .param("searchText", "제목")

@@ -27,6 +27,8 @@ export const Container = styled.section`
 
 	width: 100%;
 	height: ${({ theme }) => theme.size.SIZE_080};
+
+	z-index: ${({ theme }) => theme.zIndex.POPULAR_ARTICLES};
 `;
 
 export const LeftBackgroundArticle = styled.div<{ colorKey: keyof typeof articleColors }>`
@@ -179,4 +181,9 @@ export const CommentIcon = styled(FaRegCommentDots)`
 	font-size: ${({ theme }) => theme.size.SIZE_016};
 
 	color: ${({ theme }) => theme.colors.BLACK_600};
+`;
+
+export const EmptyText = styled.div`
+	margin: 0 auto;
+	font-size: ${({ theme }) => theme.size.SIZE_018};
 `;

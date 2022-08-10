@@ -22,6 +22,7 @@ import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
+import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,6 +41,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
+    private final VoteRepository voteRepository;
     private final TagRepository tagRepository;
     private final ArticleTagRepository articleTagRepository;
     private final Encryptor encryptor;
@@ -95,7 +97,9 @@ public class ArticleService {
 
         article.addViews();
 
-        return checkGuest(article, tagNames, appMember);
+        boolean hasVote = voteRepository.existsByArticleId(article.getId());
+
+        return checkGuest(article, tagNames, appMember, hasVote);
     }
 
     private List<String> getTagNames(Article article) {
@@ -110,19 +114,19 @@ public class ArticleService {
                 .orElseThrow(ArticleNotFoundException::new);
     }
 
-    private ArticleResponse checkGuest(Article article, List<String> tagNames, AppMember appMember) {
+    private ArticleResponse checkGuest(Article article, List<String> tagNames, AppMember appMember, boolean hasVote) {
         if (appMember.isGuest()) {
-            return new ArticleResponse(article, tagNames, false);
+            return new ArticleResponse(article, tagNames, false, hasVote);
         }
-        return checkAuthor(article, tagNames, getMember(appMember));
+        return checkAuthor(article, tagNames, getMember(appMember), hasVote);
     }
 
-    private ArticleResponse checkAuthor(Article article, List<String> tagNames, Member member) {
+    private ArticleResponse checkAuthor(Article article, List<String> tagNames, Member member, boolean hasVote) {
         if (article.isAnonymous()) {
             String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
-            return new ArticleResponse(article, tagNames, article.isAnonymousAuthor(cipherId));
+            return new ArticleResponse(article, tagNames, article.isAnonymousAuthor(cipherId), hasVote);
         }
-        return new ArticleResponse(article, tagNames, article.isAuthor(member));
+        return new ArticleResponse(article, tagNames, article.isAuthor(member), hasVote);
     }
 
     @Transactional(readOnly = true)

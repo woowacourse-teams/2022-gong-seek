@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +17,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table(name = "articletag")
 @Entity
 public class ArticleTag {
 
