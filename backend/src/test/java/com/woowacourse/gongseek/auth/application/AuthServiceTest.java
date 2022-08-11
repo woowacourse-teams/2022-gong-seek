@@ -95,7 +95,6 @@ class AuthServiceTest {
 
     @Test
     void 유효하지않는_리프레시토큰이_들어오면_예외를_발생한다() {
-
         assertThatThrownBy(() -> authService.renewToken("invalid-refresh-token"))
                 .isExactlyInstanceOf(InvalidRefreshTokenException.class)
                 .hasMessage("리프레시 토큰이 유효하지 않습니다.");

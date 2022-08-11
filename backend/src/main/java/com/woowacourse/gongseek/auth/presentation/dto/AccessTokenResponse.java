@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class AccessTokenResponse {
+
     private String accessToken;
 }

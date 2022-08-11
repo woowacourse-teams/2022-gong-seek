@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AccessTokenProperty implements TokenProperty {
+
     private final long tokenValidityInMilliseconds;
     private final Key tokenSecretKey;
 

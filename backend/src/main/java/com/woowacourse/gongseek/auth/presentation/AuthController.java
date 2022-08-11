@@ -42,10 +42,10 @@ public class AuthController {
     }
 
     @GetMapping("/refresh")
-    public ResponseEntity<AccessTokenResponse> renewal(
+    public ResponseEntity<AccessTokenResponse> renew(
             @CookieValue(value = "refreshToken", required = false) String refreshToken,
-            HttpServletResponse httpServletResponse) {
-
+            HttpServletResponse httpServletResponse
+    ) {
         TokenResponse tokenResponse = authService.renewToken(refreshToken);
         ResponseCookie newCookie = CookieUtils.create(tokenResponse.getRefreshToken());
         httpServletResponse.setHeader(HttpHeaders.SET_COOKIE, newCookie.toString());
