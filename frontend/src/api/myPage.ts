@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 import { HOME_URL } from '@/constants/url';
 import { UserArticlesResponse } from '@/types/articleResponse';
@@ -36,4 +36,19 @@ export const getUserComments = async () => {
 		},
 	});
 	return result.data;
+};
+
+export const editUserInfo = ({ name }: { name: string }) => {
+	const accessToken = localStorage.getItem('accessToken');
+
+	return axios.put<{ name: string }, AxiosResponse<{ name: string }>>(
+		`${HOME_URL}/api/members/me`,
+		{ name },
+		{
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				Authorization: `Bearer ${accessToken}`,
+			},
+		},
+	);
 };
