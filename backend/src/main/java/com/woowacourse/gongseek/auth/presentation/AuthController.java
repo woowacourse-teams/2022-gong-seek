@@ -52,5 +52,4 @@ public class AuthController {
 
         return ResponseEntity.ok(new AccessTokenResponse(tokenResponse.getAccessToken()));
     }
-
 }

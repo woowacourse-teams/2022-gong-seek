@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.auth.domain;
+package com.woowacourse.gongseek.auth.config;
 
 import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +16,6 @@ public class AccessTokenProperty implements TokenProperty {
         this.tokenValidityInMilliseconds = tokenValidityInMilliseconds;
         this.tokenSecretKey = Keys.hmacShaKeyFor(tokenSecretKey.getBytes(StandardCharsets.UTF_8));
     }
-
 
     @Override
     public long getTokenValidityInMilliseconds() {

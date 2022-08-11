@@ -1,9 +1,9 @@
 package com.woowacourse.gongseek.auth.infra;
 
 import com.woowacourse.gongseek.auth.application.TokenProvider;
-import com.woowacourse.gongseek.auth.domain.AccessTokenProperty;
-import com.woowacourse.gongseek.auth.domain.RefreshTokenProperty;
-import com.woowacourse.gongseek.auth.domain.TokenProperty;
+import com.woowacourse.gongseek.auth.config.AccessTokenProperty;
+import com.woowacourse.gongseek.auth.config.RefreshTokenProperty;
+import com.woowacourse.gongseek.auth.config.TokenProperty;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;

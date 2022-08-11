@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.auth.domain;
+package com.woowacourse.gongseek.auth.config;
 
 import java.security.Key;
 

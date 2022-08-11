@@ -40,6 +40,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     @Test
     void 로그인을_하면_쿠키에_리프레시토큰을_담고_바디에는_엑세스토큰을_담아서_준다() {
         //given
+
         //when
         ExtractableResponse<Response> response = 로그인을_하여_상태를_반환한다(기론);
         AccessTokenResponse tokenResponse = response.as(AccessTokenResponse.class);

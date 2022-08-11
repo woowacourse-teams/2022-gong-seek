@@ -3,8 +3,8 @@ package com.woowacourse.gongseek.auth.infra;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.gongseek.auth.application.TokenProvider;
-import com.woowacourse.gongseek.auth.domain.AccessTokenProperty;
-import com.woowacourse.gongseek.auth.domain.RefreshTokenProperty;
+import com.woowacourse.gongseek.auth.config.AccessTokenProperty;
+import com.woowacourse.gongseek.auth.config.RefreshTokenProperty;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;

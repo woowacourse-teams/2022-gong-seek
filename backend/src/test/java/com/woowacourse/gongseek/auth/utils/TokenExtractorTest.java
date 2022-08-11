@@ -3,8 +3,8 @@ package com.woowacourse.gongseek.auth.utils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.woowacourse.gongseek.auth.domain.AccessTokenProperty;
-import com.woowacourse.gongseek.auth.domain.RefreshTokenProperty;
+import com.woowacourse.gongseek.auth.config.AccessTokenProperty;
+import com.woowacourse.gongseek.auth.config.RefreshTokenProperty;
 import com.woowacourse.gongseek.auth.exception.EmptyTokenException;
 import com.woowacourse.gongseek.auth.exception.InvalidTokenTypeException;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
