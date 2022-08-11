@@ -81,6 +81,14 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 					</S.LinkItem>
 					<S.LinkItem
 						onClick={() => {
+							navigate('/hash-tag');
+							closeSlider();
+						}}
+					>
+						해시태그로 검색하기
+					</S.LinkItem>
+					<S.LinkItem
+						onClick={() => {
 							navigate('/inquire');
 							closeSlider();
 						}}
