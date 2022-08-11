@@ -28,7 +28,11 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 		postIsLoading,
 		isLike,
 		likeCount,
-	} = useHeartClick(String(article.id));
+	} = useHeartClick({
+		prevIsLike: article.isLike,
+		prevLikeCount: article.likeCount,
+		articleId: String(article.id),
+	});
 
 	if (deleteIsLoading || postIsLoading) {
 		return <Loading />;

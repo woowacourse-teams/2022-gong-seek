@@ -25,7 +25,11 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 		postIsLoading,
 		isLike,
 		likeCount,
-	} = useHeartClick(String(article.id));
+	} = useHeartClick({
+		prevIsLike: article.isLike,
+		prevLikeCount: article.likeCount,
+		articleId,
+	});
 	const { isLoading, handleDeleteArticle } = useDeleteArticleContent();
 	const navigate = useNavigate();
 
