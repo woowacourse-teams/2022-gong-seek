@@ -44,7 +44,7 @@ jobs:
       - name: Comment Sonarqube URL
         uses: actions/github-script@v4
         with:
-          script:
+          script: |
             const { SONARQUBE_PROJECT_KEY, SONARQUBE_URL, PR_NUMBER } = process.env
             github.issues.createComment({
               issue_number: context.issue.number,
