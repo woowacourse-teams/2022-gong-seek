@@ -7,6 +7,7 @@ import { postWritingArticle } from '@/api/article';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { CATEGORY } from '@/constants/categoryType';
+import { validatedTitleInput } from '@/utils/validateInput';
 import { Editor } from '@toast-ui/react-editor';
 
 const usePostWritingArticles = ({
@@ -24,6 +25,8 @@ const usePostWritingArticles = ({
 	const content = useRef<Editor | null>(null);
 	const [title, setTitle] = useState('');
 	const [categoryOption, setCategoryOption] = useState(category ? category : '');
+	const [isValidTitleInput, setIsValidTitleInput] = useState(true);
+	const titleInputRef = useRef<HTMLInputElement>(null);
 
 	const navigate = useNavigate();
 
@@ -54,7 +57,7 @@ const usePostWritingArticles = ({
 				ErrorMessage[error.response.data.errorCode],
 			);
 		}
-	}, []);
+	}, [isError]);
 
 	const handleSubmitButtonClick = ({
 		title,
@@ -66,6 +69,17 @@ const usePostWritingArticles = ({
 		if (content.current === null) {
 			return;
 		}
+
+		if (!validatedTitleInput(title)) {
+			setIsValidTitleInput(false);
+
+			if (titleInputRef.current !== null) {
+				titleInputRef.current.focus();
+			}
+
+			return;
+		}
+		setIsValidTitleInput(true);
 		mutate({
 			title,
 			category: categoryOption,
@@ -79,6 +93,8 @@ const usePostWritingArticles = ({
 		content,
 		isLoading,
 		title,
+		titleInputRef,
+		isValidTitleInput,
 		setTitle,
 		categoryOption,
 		setCategoryOption,
