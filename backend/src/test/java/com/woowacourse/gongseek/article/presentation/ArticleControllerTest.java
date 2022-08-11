@@ -299,8 +299,8 @@ class ArticleControllerTest {
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
         given(articleService.getAll(anyLong(), anyInt(), any(), any(), anyInt(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles")
@@ -361,8 +361,8 @@ class ArticleControllerTest {
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
         given(articleService.search(anyLong(), anyInt(), anyString(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/search")
