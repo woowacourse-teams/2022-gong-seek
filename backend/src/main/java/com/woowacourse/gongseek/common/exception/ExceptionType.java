@@ -19,7 +19,7 @@ import com.woowacourse.gongseek.comment.exception.CommentNullOrEmptyException;
 import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.vote.exception.InvalidVoteAmountException;
-import com.woowacourse.gongseek.vote.exception.InvalidVoteExpiryAtException;
+import com.woowacourse.gongseek.vote.exception.InvalidVoteExpiryDateException;
 import com.woowacourse.gongseek.vote.exception.InvalidVoteItemCountException;
 import com.woowacourse.gongseek.vote.exception.UnavailableArticleException;
 import com.woowacourse.gongseek.vote.exception.VoteHistoryNotFoundException;
@@ -60,7 +60,7 @@ public enum ExceptionType {
     COMMENT_NULL_OR_EMPTY_EXCEPTION("4002", "댓글은 비어있을 수 없습니다.", CommentNullOrEmptyException.class),
     COMMENT_TOO_LONG_EXCEPTION("4003", "댓글은 10000자를 초과할 수 없습니다.", CommentTooLongException.class),
 
-    INVALID_VOTE_EXPIRY_DATE_EXCEPTION("5001", "투표 만료일 설정이 잘못되었습니다.", InvalidVoteExpiryAtException.class),
+    INVALID_VOTE_EXPIRY_DATE_EXCEPTION("5001", "투표 만료일 설정이 잘못되었습니다.", InvalidVoteExpiryDateException.class),
     VOTE_ITEM_NULL_OR_EMPTY_EXCEPTION("5002", "투표 항목 내용은 비어있을 수 없습니다.", VoteItemNullOrEmptyException.class),
     VOTE_ITEM_TOO_LONG_EXCEPTION("5003", "투표 항목 내용은 500자를 초과할 수 없습니다.", VoteItemTooLongException.class),
     VOTE_NOT_FOUND_EXCEPTION("5004", "투표가 존재하지 않습니다.", VoteNotFoundException.class),
