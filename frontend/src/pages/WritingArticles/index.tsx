@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import AnonymouseCheckBox from '@/components/common/AnonymousCheckBox/AnonymouseCheckBox';
@@ -11,12 +11,15 @@ import * as S from '@/pages/WritingArticles/index.styles';
 const WritingArticles = () => {
 	const { category } = useParams();
 	const [isAnonymous, setIsAnonymous] = useState(false);
+
 	const {
 		isLoading,
 		content,
 		handleSubmitButtonClick,
 		title,
+		isValidTitleInput,
 		setTitle,
+		titleInputRef,
 		categoryOption,
 		setCategoryOption,
 	} = usePostWritingArticles({ category, isAnonymous });
@@ -32,8 +35,12 @@ const WritingArticles = () => {
 						placeholder="제목을 입력해주세요"
 						value={title}
 						onChange={(e) => setTitle(e.target.value)}
+						ref={titleInputRef}
 					/>
 				</PageLayout>
+				{!isValidTitleInput && (
+					<S.TitleInputErrorMsgBox>제목은 1글자 이상 500자 이하여야 합니다</S.TitleInputErrorMsgBox>
+				)}
 				<S.OptionBox>
 					<PageLayout width="100%" height="fit-content">
 						<S.CategorySelectorBox>
