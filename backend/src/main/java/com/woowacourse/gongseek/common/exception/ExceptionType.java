@@ -46,7 +46,7 @@ public enum ExceptionType {
     INVALID_TOKEN_EXCEPTION("1005", "토큰이 유효하지 않습니다.", InvalidTokenException.class),
     HTTP_REQUEST_NULL_EXCEPTION("1006", "인증할 수 있는 사용자 데이터가 없습니다.", HttpRequestNullException.class),
     NOT_AUTHOR_EXCEPTION("1007", "작성자가 아니므로 권한이 없습니다.", NotAuthorException.class),
-    NO_MEMBER_EXCEPTION("1008", "회원이 아니므로 권한이 없습니다.", NotMemberException.class),
+    NOT_MEMBER_EXCEPTION("1008", "회원이 아니므로 권한이 없습니다.", NotMemberException.class),
 
     MEMBER_NOT_FOUND_EXCEPTION("2001", "회원이 존재하지 않습니다.", MemberNotFoundException.class),
 
