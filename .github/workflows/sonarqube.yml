@@ -1,0 +1,55 @@
+name: gongseek-backend-sonarqube
+
+# 하기 내용에 해당하는 이벤트 발생 시 github action 동작
+on:
+  pull_request: # 모든 브랜치에서 PR이 일어났을 때 github action 동작
+    branches:
+      - '*'
+    types: [opened, synchronize]
+defaults:
+  run:
+    working-directory: ./backend
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04 # 실행 환경 지정
+
+    steps:
+      - name: Checkout source code
+      - uses: actions/checkout@v2
+  analysis:
+    runs-on: ubuntu-22.04
+    env:
+      SONARQUBE_PROJECT_KEY: gongseek
+      SONARQUBE_URL: ${{secrets.SONARQUBE_URL}}
+      SONARQUBE_TOKEN: ${{secrets.SONARQUBE_TOKEN}}
+      PR_NUMBER: ${{github.event.pull_request.number}}
+    steps:
+      # 소스코드 체크아웃 수행
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      # gradlw 파일 권한 변경
+      - name: gradlew permission change
+        run: sudo chmod 755 gradlew
+
+      # Gralde 의 Scanner 발동, 위의 env 에서 선언한 환경변수와 함께 발동
+      - name: Sonaqube Analysis
+        run: ./gradlew test sonarqube
+          -Dsonar.host.url=${{ env.SONARQUBE_URL }}
+          -Dsonar.projectKey=${{ env.SONARQUBE_PROJECT_KEY }}
+          -Dsonar.projectName=${{ env.SONARQUBE_PROJECT_KEY }}-${{ env.PR_NUMBER }}
+          -Dsonar.login=${{ env.SONARQUBE_TOKEN }}
+      # PR 에 Comment 를 달아주는 스크립트 실행
+      - name: Comment Sonarqube URL
+        uses: actions/github-script@v4
+        with:
+          script:
+            const { SONARQUBE_PROJECT_KEY, SONARQUBE_URL, PR_NUMBER } = process.env
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `📊 ${ SONARQUBE_PROJECT_KEY }-${ PR_NUMBER } 분석 결과 확인하기 [링크](${SONARQUBE_URL})`
+            })
+
