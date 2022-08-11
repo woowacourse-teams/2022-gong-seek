@@ -1,33 +1,36 @@
-import { AxiosError, AxiosResponse } from 'axios';
-import { useEffect } from 'react';
+import { AxiosError } from 'axios';
+import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 
 import { deleteLikeArticle, postAddLikeArticle } from '@/api/like';
 import { queryClient } from '@/index';
 
-const useHeartClick = (articleId: string) => {
+const useHeartClick = ({
+	prevIsLike,
+	prevLikeCount,
+	articleId,
+}: {
+	prevIsLike: boolean;
+	prevLikeCount: number;
+	articleId: string;
+}) => {
+	const [isLike, setIsLike] = useState(prevIsLike);
+	const [likeCount, setLikeCount] = useState(prevLikeCount);
+
 	const {
-		data: postData,
 		mutate: postMutate,
 		isLoading: postIsLoading,
 		isError: postIsError,
 		error: postError,
 		isSuccess: postIsSuccess,
-	} = useMutation<AxiosResponse<{ isLike: boolean; likeCount: number }>, AxiosError, string>(
-		`like${articleId}`,
-		postAddLikeArticle,
-	);
+	} = useMutation<unknown, AxiosError, string>(`like${articleId}`, postAddLikeArticle);
 	const {
-		data: deleteData,
 		mutate: deleteMutate,
 		isLoading: deleteIsLoading,
 		isError: deleteIsError,
 		error: deleteError,
 		isSuccess: deleteIsSuccess,
-	} = useMutation<AxiosResponse<{ isLike: boolean; likeCount: number }>, AxiosError, string>(
-		`unlike${articleId}`,
-		deleteLikeArticle,
-	);
+	} = useMutation<unknown, AxiosError, string>(`unlike${articleId}`, deleteLikeArticle);
 
 	useEffect(() => {
 		if (postIsError) {
@@ -46,10 +49,14 @@ const useHeartClick = (articleId: string) => {
 	});
 
 	const onLikeButtonClick = () => {
+		setIsLike(true);
+		setLikeCount((prevLikeCount) => prevLikeCount + 1);
 		postMutate(articleId);
 	};
 
 	const onUnlikeButtonClick = () => {
+		setIsLike(false);
+		setLikeCount((prevLikeCount) => prevLikeCount - 1);
 		deleteMutate(articleId);
 	};
 
@@ -58,8 +65,8 @@ const useHeartClick = (articleId: string) => {
 		deleteIsLoading,
 		onLikeButtonClick,
 		onUnlikeButtonClick,
-		isLike: postData?.data.isLike || deleteData?.data.isLike,
-		likeCount: postData?.data.likeCount || deleteData?.data.likeCount,
+		isLike,
+		likeCount,
 	};
 };
 
