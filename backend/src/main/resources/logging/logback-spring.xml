@@ -13,17 +13,17 @@
     <property name="MAX_HISTORY" value="14"/>
 
     <springProfile name="local">
-        <include resource="logging/console-appender.xml"/>
+        <include resource="console-appender.xml"/>
         <root level="info">
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
 
     <springProfile name="prod">
-        <include resource="logging/console-appender.xml"/>
-        <include resource="logging/file-info-appender.xml"/>
-        <include resource="logging/file-warn-appender.xml"/>
-        <include resource="logging/file-error-appender.xml"/>
+        <include resource="console-appender.xml"/>
+        <include resource="file-info-appender.xml"/>
+        <include resource="file-warn-appender.xml"/>
+        <include resource="file-error-appender.xml"/>
         <root level="info">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-INFO"/>
@@ -33,11 +33,11 @@
     </springProfile>
 
     <springProfile name="dev">
-        <include resource="logging/console-appender.xml"/>
-        <include resource="logging/file-debug-appender.xml"/>
-        <include resource="logging/file-info-appender.xml"/>
-        <include resource="logging/file-warn-appender.xml"/>
-        <include resource="logging/file-error-appender.xml"/>
+        <include resource="console-appender.xml"/>
+        <include resource="file-debug-appender.xml"/>
+        <include resource="file-info-appender.xml"/>
+        <include resource="file-warn-appender.xml"/>
+        <include resource="file-error-appender.xml"/>
         <root level="debug">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-DEBUG"/>

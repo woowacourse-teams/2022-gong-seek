@@ -65,9 +65,11 @@ public class ArticleController {
             @RequestParam String sort,
             @RequestParam(required = false) Long cursorId,
             @RequestParam(required = false) Integer cursorViews,
-            @RequestParam Integer pageSize
+            @RequestParam Integer pageSize,
+            @AuthenticationPrinciple AppMember appMember
     ) {
-        ArticlePageResponse response = articleService.getAll(cursorId, cursorViews, category, sort, pageSize);
+        ArticlePageResponse response = articleService.getAll(cursorId, cursorViews, category, sort, pageSize,
+                appMember);
 
         return ResponseEntity.ok(response);
     }
@@ -76,9 +78,10 @@ public class ArticleController {
     public ResponseEntity<ArticlePageResponse> search(
             @RequestParam(required = false) Long cursorId,
             @RequestParam Integer pageSize,
-            @RequestParam String searchText
+            @RequestParam String searchText,
+            @AuthenticationPrinciple AppMember appMember
     ) {
-        ArticlePageResponse response = articleService.search(cursorId, pageSize, searchText);
+        ArticlePageResponse response = articleService.search(cursorId, pageSize, searchText, appMember);
         return ResponseEntity.ok(response);
     }
 }

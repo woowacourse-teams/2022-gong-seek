@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import * as S from '@/pages/CategoryArticles/SortDropdown/SortDropdown.styles';
 
-const SortList = ['최신순', '조회순'];
+const SortList = ['최신순', '조회순', '좋아요순'];
 
 interface SortPropDownProps {
 	sortIndex: string;

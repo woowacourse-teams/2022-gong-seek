@@ -123,6 +123,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         false,
                                         1,
                                         false,
+                                        false,
+                                        0L,
                                         LocalDateTime.now(),
                                         LocalDateTime.now()
                                 )
@@ -156,6 +158,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         false,
                                         1,
                                         false,
+                                        false,
+                                        0L,
                                         LocalDateTime.now(),
                                         LocalDateTime.now()
                                 )
@@ -189,6 +193,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         true,
                                         1,
                                         false,
+                                        false,
+                                        0L,
                                         LocalDateTime.now(),
                                         LocalDateTime.now()
                                 )
@@ -222,6 +228,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         true,
                                         1,
                                         false,
+                                        false,
+                                        0L,
                                         LocalDateTime.now(),
                                         LocalDateTime.now()
                                 )
@@ -256,6 +264,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         true,
                                         2,
                                         false,
+                                        false,
+                                        0L,
                                         LocalDateTime.now(),
                                         LocalDateTime.now()
                                 )
@@ -471,6 +481,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         "discussion",
                                         0,
                                         2,
+                                        false,
+                                        0L,
                                         LocalDateTime.now()
                                 )
                         )
@@ -513,6 +525,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         "question",
                                         0,
                                         1,
+                                        false,
+                                        0L,
                                         LocalDateTime.now()
                                 )
                         )
@@ -554,6 +568,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         "discussion",
                                         1,
                                         1,
+                                        false,
+                                        0L,
                                         LocalDateTime.now()
                                 )
                         )

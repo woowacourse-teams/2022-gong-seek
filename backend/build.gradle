@@ -12,6 +12,9 @@ plugins {
     id 'org.asciidoctor.jvm.convert' version "3.3.2"
     // querydsl
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+    //sonarqube
+    id "org.sonarqube" version "3.0"
+    id 'jacoco'
 }
 
 group = 'com.woowacourse'
@@ -38,7 +41,7 @@ dependencies {
     // jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-    //querydsl
+    // querydsl
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
@@ -46,7 +49,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    //jwt
+    // jwt
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
@@ -54,6 +57,9 @@ dependencies {
     // DB
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
+
+    // sonarqube
+    implementation 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
 
     // lombok
     annotationProcessor 'org.projectlombok:lombok'
@@ -76,6 +82,7 @@ ext {
 test {
     outputs.dir snippetsDir
     useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
 }
 
 asciidoctor {
@@ -122,4 +129,30 @@ configurations {
         extendsFrom annotationProcessor
     }
     querydsl.extendsFrom compileClasspath
+}
+
+// =========sonarqube=============
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled false
+    }
+}
+sonarqube {
+    properties {
+        property "sonar.projectKey", "gongseek"
+        property "sonar.projectName" , "gongseek"
+        property "sonar.sources", "src" // 소스 경로
+        property "sonar.language", "java" // 언어
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.profile", "Sonar way" // SonarQube 에서 분석할 때 적용할 프로필(분석할 수준 설정)
+        property "sonar.java.binaries", "${buildDir}/classes" // 자바 클래스 파일위치
+        property "sonar.test.inclusions", "**/*Test.java" // 코드 분석에 사용할 테스트 소스
+        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml" // jacoco 플러그인의 결과 파일
+    }
 }

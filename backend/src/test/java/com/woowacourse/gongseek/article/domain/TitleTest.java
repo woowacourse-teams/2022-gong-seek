@@ -23,7 +23,7 @@ public class TitleTest {
     @Test
     void 타이틀이_null_이면_예외를_발생한다() {
         assertThatThrownBy(() -> new Title(null))
-                .isInstanceOf(ArticleTitleNullOrEmptyException.class)
+                .isExactlyInstanceOf(ArticleTitleNullOrEmptyException.class)
                 .hasMessage("게시글 제목은 비어있을 수 없습니다.");
     }
 
@@ -31,7 +31,7 @@ public class TitleTest {
     @ValueSource(strings = {"", " "})
     void 타이틀이_빈_경우_예외를_발생한다(String value) {
         assertThatThrownBy(() -> new Title(value))
-                .isInstanceOf(ArticleTitleNullOrEmptyException.class)
+                .isExactlyInstanceOf(ArticleTitleNullOrEmptyException.class)
                 .hasMessage("게시글 제목은 비어있을 수 없습니다.");
     }
 
@@ -40,7 +40,7 @@ public class TitleTest {
         String title = "t".repeat(501);
 
         assertThatThrownBy(() -> new Title(title))
-                .isInstanceOf(ArticleTitleTooLongException.class)
+                .isExactlyInstanceOf(ArticleTitleTooLongException.class)
                 .hasMessage("게시글 제목은 500자를 초과할 수 없습니다.");
     }
 }
