@@ -14,7 +14,7 @@ export const getGithubURL = async () => {
 
 export const postLogin = (code: string) =>
 	axios.post<{ accessToken: string }>(
-		`${HOME_URL}/api/auth/token`,
+		`${HOME_URL}/api/auth/login`,
 		{ code },
 		{
 			headers: {
