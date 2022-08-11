@@ -18,7 +18,6 @@ import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
 import com.woowacourse.gongseek.comment.exception.CommentNullOrEmptyException;
 import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
-import com.woowacourse.gongseek.vote.exception.AlreadyVoteSameItemException;
 import com.woowacourse.gongseek.vote.exception.InvalidVoteAmountException;
 import com.woowacourse.gongseek.vote.exception.InvalidVoteExpiryAtException;
 import com.woowacourse.gongseek.vote.exception.InvalidVoteItemCountException;
@@ -69,8 +68,7 @@ public enum ExceptionType {
     INVALID_VOTE_AMOUNT_EXCEPTION("5006", "투표수는 양수여야만 합니다.", InvalidVoteAmountException.class),
     VOTE_ITEM_NOT_FOUND_EXCEPTION("5007", "투표 항목이 존재하지 않습니다.", VoteItemNotFoundException.class),
     VOTE_HISTORY_NOT_FOUND_EXCEPTION("5008", "투표 내역이 존재하지 않습니다.", VoteHistoryNotFoundException.class),
-    ALREADY_VOTE_SAME_ITEM_EXCEPTION("5009", "이미 같은 항목에 투표했습니다.", AlreadyVoteSameItemException.class),
-    INVALID_VOTE_ITEM_COUNT_EXCEPTION("5010", "투표 항목 수는 2이상 5이하여야 합니다.", InvalidVoteItemCountException.class),
+    INVALID_VOTE_ITEM_COUNT_EXCEPTION("5009", "투표 항목 수는 2이상 5이하여야 합니다.", InvalidVoteItemCountException.class),
 
     UNHANDLED_EXCEPTION("0000", "알 수 없는 서버 에러가 발생했습니다."),
     METHOD_ARGUMENT_NOT_VALID_EXCEPTION("0001", "요청 데이터가 잘못되었습니다."),

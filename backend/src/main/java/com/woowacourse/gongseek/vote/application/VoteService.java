@@ -15,7 +15,6 @@ import com.woowacourse.gongseek.vote.domain.VoteItems;
 import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
-import com.woowacourse.gongseek.vote.exception.AlreadyVoteSameItemException;
 import com.woowacourse.gongseek.vote.exception.UnavailableArticleException;
 import com.woowacourse.gongseek.vote.exception.VoteItemNotFoundException;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
@@ -119,9 +118,6 @@ public class VoteService {
     }
 
     private void updateVoteHistory(Long voteId, Long memberId, VoteItem selectedVoteItem, VoteHistory voteHistory) {
-        if (voteHistory.isSelectSameVoteItem(selectedVoteItem.getId())) {
-            throw new AlreadyVoteSameItemException();
-        }
         VoteItem originVoteItem = getVoteItem(voteHistory.getVoteItemId());
         originVoteItem.decreaseAmount();
         voteHistoryRepository.updateHistory(selectedVoteItem.getId(), memberId, voteId);
