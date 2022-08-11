@@ -4,6 +4,4 @@ import com.woowacourse.gongseek.common.exception.ForbiddenException;
 
 public class NotAuthorException extends ForbiddenException {
 
-    public NotAuthorException() {
-    }
 }
