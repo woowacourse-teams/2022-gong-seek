@@ -293,7 +293,7 @@ public class ArticleServiceTest {
 
         assertThatThrownBy(() -> articleService.update(noAuthorMember, request, savedArticle.getId()))
                 .isExactlyInstanceOf(NotAuthorException.class)
-                .hasMessage("작성자가 아니므로 권한이 없습니다.");
+                .hasMessageContaining("작성자가 아니므로 권한이 없습니다.");
     }
 
     @Test
@@ -318,7 +318,7 @@ public class ArticleServiceTest {
 
         assertThatThrownBy(() -> articleService.getOne(loginMember, savedArticle.getId()))
                 .isExactlyInstanceOf(ArticleNotFoundException.class)
-                .hasMessage("게시글이 존재하지 않습니다.");
+                .hasMessageContaining("게시글이 존재하지 않습니다.");
     }
 
     @Test
@@ -331,7 +331,7 @@ public class ArticleServiceTest {
 
         assertThatThrownBy(() -> articleService.getOne(loginMember, savedArticle.getId()))
                 .isExactlyInstanceOf(ArticleNotFoundException.class)
-                .hasMessage("게시글이 존재하지 않습니다.");
+                .hasMessageContaining("게시글이 존재하지 않습니다.");
     }
 
     @Test
@@ -343,7 +343,7 @@ public class ArticleServiceTest {
 
         assertThatThrownBy(() -> articleService.delete(noAuthorMember, savedArticle.getId()))
                 .isExactlyInstanceOf(NotAuthorException.class)
-                .hasMessage("작성자가 아니므로 권한이 없습니다.");
+                .hasMessageContaining("작성자가 아니므로 권한이 없습니다.");
     }
 
     @Test

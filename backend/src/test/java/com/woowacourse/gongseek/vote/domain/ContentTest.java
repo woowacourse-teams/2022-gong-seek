@@ -30,6 +30,6 @@ class ContentTest {
         String content = "a".repeat(501);
         assertThatThrownBy(() -> new Content(content))
                 .isInstanceOf(VoteItemTooLongException.class)
-                .hasMessage("투표 항목 내용은 500자를 초과할 수 없습니다.");
+                .hasMessageContaining("투표 항목 내용은 500자를 초과할 수 없습니다.");
     }
 }

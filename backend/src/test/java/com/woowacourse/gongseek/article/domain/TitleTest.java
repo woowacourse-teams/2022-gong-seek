@@ -41,6 +41,6 @@ public class TitleTest {
 
         assertThatThrownBy(() -> new Title(title))
                 .isInstanceOf(ArticleTitleTooLongException.class)
-                .hasMessage("게시글 제목은 500자를 초과할 수 없습니다.");
+                .hasMessageContaining("게시글 제목은 500자를 초과할 수 없습니다.");
     }
 }

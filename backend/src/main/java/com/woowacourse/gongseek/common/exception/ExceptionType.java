@@ -54,7 +54,7 @@ public enum ExceptionType {
     ARTICLE_TITLE_NULL_OR_EMPTY_EXCEPTION("3003", "게시글 제목은 비어있을 수 없습니다.", ArticleTitleNullOrEmptyException.class),
     ARTICLE_CONTENT_TOO_LONG_EXCEPTION("3004", "게시글 내용은 10000자를 초과할 수 없습니다.", ArticleContentTooLongException.class),
     ARTICLE_CONTENT_NULL_OR_EMPTY_EXCEPTION("3003", "게시글 내용은 비어있을 수 없습니다.", ArticleContentNullOrEmptyException.class),
-    ARTICLE_CATEGORY_NOT_FOUND_EXCEPTION("3005", "게시글의 카테고리가 존재하지 않습니다.", ArticleCategoryNotFoundException.class),
+    ARTICLE_CATEGORY_NOT_FOUND_EXCEPTION("3005", "존재하지 않는 카테고리입니다.", ArticleCategoryNotFoundException.class),
 
     COMMENT_NOT_FOUND_EXCEPTION("4001", "댓글이 존재하지 않습니다.", CommentNotFoundException.class),
     COMMENT_NULL_OR_EMPTY_EXCEPTION("4002", "댓글은 비어있을 수 없습니다.", CommentNullOrEmptyException.class),

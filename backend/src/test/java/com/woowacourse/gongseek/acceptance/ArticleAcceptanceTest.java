@@ -313,7 +313,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(response.getMessage()).isEqualTo("작성자가 아니므로 권한이 없습니다.")
+                () -> assertThat(response.getMessage()).contains("작성자가 아니므로 권한이 없습니다.")
         );
     }
 
@@ -331,7 +331,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(response.getMessage()).isEqualTo("작성자가 아니므로 권한이 없습니다.")
+                () -> assertThat(response.getMessage()).contains("작성자가 아니므로 권한이 없습니다.")
         );
     }
 
@@ -415,7 +415,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(response.getMessage()).isEqualTo("작성자가 아니므로 권한이 없습니다.")
+                () -> assertThat(response.getMessage()).contains("작성자가 아니므로 권한이 없습니다.")
         );
     }
 
@@ -433,7 +433,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(response.getMessage()).isEqualTo("작성자가 아니므로 권한이 없습니다.")
+                () -> assertThat(response.getMessage()).contains("작성자가 아니므로 권한이 없습니다.")
         );
     }
 

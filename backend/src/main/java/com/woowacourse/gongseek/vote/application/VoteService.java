@@ -17,6 +17,7 @@ import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import com.woowacourse.gongseek.vote.exception.UnavailableArticleException;
 import com.woowacourse.gongseek.vote.exception.VoteItemNotFoundException;
+import com.woowacourse.gongseek.vote.exception.VoteNotFoundException;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateResponse;
@@ -54,30 +55,30 @@ public class VoteService {
 
     private Member getMember(AppMember appMember) {
         return memberRepository.findById(appMember.getPayload())
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberNotFoundException(appMember.getPayload()));
     }
 
     private Article getArticle(Long articleId) {
         return articleRepository.findById(articleId)
-                .orElseThrow(ArticleNotFoundException::new);
+                .orElseThrow(() -> new ArticleNotFoundException(articleId));
     }
 
     private void validateAuthor(Member member, Article article) {
         if (!article.isAuthor(member)) {
-            throw new NotAuthorException();
+            throw new NotAuthorException(article.getId(), member.getId());
         }
     }
 
     private void validateCategory(Article article) {
         if (article.cannotCreateVote()) {
-            throw new UnavailableArticleException();
+            throw new UnavailableArticleException(article.getId());
         }
     }
 
     @Transactional(readOnly = true)
     public VoteResponse getOne(Long articleId, AppMember appMember) {
         if (!articleRepository.existsById(articleId)) {
-            throw new ArticleNotFoundException();
+            throw new ArticleNotFoundException(articleId);
         }
         Vote foundVote = getVoteByArticleId(articleId);
         List<VoteItem> voteItems = voteItemRepository.findAllByVoteArticleId(articleId);
@@ -90,7 +91,7 @@ public class VoteService {
 
     private Vote getVoteByArticleId(Long articleId) {
         return voteRepository.findByArticleId(articleId)
-                .orElseThrow(ArticleNotFoundException::new);
+                .orElseThrow(() -> new VoteNotFoundException(articleId));
     }
 
     private Long getVotedItemIdOrNull(VoteHistory voteHistory) {
@@ -114,7 +115,7 @@ public class VoteService {
 
     private VoteItem getVoteItem(Long voteItemId) {
         return voteItemRepository.findById(voteItemId)
-                .orElseThrow(VoteItemNotFoundException::new);
+                .orElseThrow(() -> new VoteItemNotFoundException(voteItemId));
     }
 
     private void updateVoteHistory(Long voteId, Long memberId, VoteItem selectedVoteItem, VoteHistory voteHistory) {

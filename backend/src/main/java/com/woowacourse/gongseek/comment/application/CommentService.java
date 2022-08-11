@@ -61,12 +61,12 @@ public class CommentService {
 
     private Member getMember(AppMember appMember) {
         return memberRepository.findById(appMember.getPayload())
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberNotFoundException(appMember.getPayload()));
     }
 
     private Article getArticle(Long articleId) {
         return articleRepository.findById(articleId)
-                .orElseThrow(ArticleNotFoundException::new);
+                .orElseThrow(() -> new ArticleNotFoundException(articleId));
     }
 
     @Transactional(readOnly = true)
@@ -107,12 +107,12 @@ public class CommentService {
 
     private Comment getComment(Long commentId) {
         return commentRepository.findById(commentId)
-                .orElseThrow(CommentNotFoundException::new);
+                .orElseThrow(() -> new CommentNotFoundException(commentId));
     }
 
     private void validateAuthor(Comment comment, Member member) {
         if (!isAuthor(comment, member)) {
-            throw new NotAuthorException();
+            throw new NotAuthorException(comment.getArticle().getId(), member.getId());
         }
     }
 

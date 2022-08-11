@@ -65,7 +65,7 @@ public class ArticleService {
 
     private Member getMember(AppMember appMember) {
         return memberRepository.findById(appMember.getPayload())
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberNotFoundException(appMember.getPayload()));
     }
 
     public ArticleResponse getOne(AppMember appMember, Long id) {
@@ -78,7 +78,7 @@ public class ArticleService {
 
     private Article getArticle(Long id) {
         return articleRepository.findById(id)
-                .orElseThrow(ArticleNotFoundException::new);
+                .orElseThrow(() -> new ArticleNotFoundException(id));
     }
 
     private ArticleResponse checkGuest(Article article, AppMember appMember, boolean hasVote) {
@@ -157,7 +157,7 @@ public class ArticleService {
 
     private void validateAuthor(Article article, Member member) {
         if (!isAuthor(article, member)) {
-            throw new NotAuthorException();
+            throw new NotAuthorException(article.getId(), member.getId());
         }
     }
 
