@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/articles/{articleId}")
+@RequestMapping("/api/articles/{articleId}/like")
 @RestController
 public class LikeController {
 
     private final LikeService likeService;
 
-    @PostMapping("/like")
+    @PostMapping
     public ResponseEntity<LikeResponse> likeArticle(
             @PathVariable Long articleId,
             @AuthenticationPrinciple AppMember appMember
@@ -29,7 +29,7 @@ public class LikeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @DeleteMapping("/unlike")
+    @DeleteMapping
     public ResponseEntity<LikeResponse> unlikeArticle(
             @PathVariable Long articleId,
             @AuthenticationPrinciple AppMember appMember
