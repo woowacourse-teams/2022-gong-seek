@@ -15,7 +15,7 @@ const RefreshTokenHandler = () => {
 	const { showSnackBar } = useSnackBar();
 
 	useEffect(() => {
-		localStorage.setItem('accessToken', '');
+		localStorage.removeItem('accessToken');
 	}, []);
 
 	useEffect(() => {
