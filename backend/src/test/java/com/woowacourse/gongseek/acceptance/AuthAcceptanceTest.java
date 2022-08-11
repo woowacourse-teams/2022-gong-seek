@@ -28,10 +28,11 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         OAuthLoginUrlResponse urlResponse = 로그인_URL을_얻는다();
 
         //when
-        AccessTokenResponse tokenResponse = 로그인을_한다(주디);
-
+        ExtractableResponse<Response> response = 로그인을_하여_상태를_반환한다(기론);
+        AccessTokenResponse tokenResponse = response.as(AccessTokenResponse.class);
         //then
         assertAll(
+                () -> assertThat(response.header(HttpHeaders.SET_COOKIE)).isNotNull(),
                 () -> assertThat(urlResponse.getUrl()).isNotNull(),
                 () -> assertThat(tokenResponse.getAccessToken()).isNotNull()
         );
