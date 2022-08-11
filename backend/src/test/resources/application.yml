@@ -4,7 +4,6 @@ spring:
       replace: none
 
   profiles:
-    active: test
     include: jwt, oauth, encryption
 
   h2.console:
