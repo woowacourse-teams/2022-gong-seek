@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.article.presentation.dto;
 
 import com.woowacourse.gongseek.article.domain.Article;
+import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -22,9 +23,11 @@ public class ArticlePreviewResponse {
     private String category;
     private Integer commentCount;
     private Integer views;
+    private Boolean isLike;
+    private Long likeCount;
     private LocalDateTime createdAt;
 
-    public static ArticlePreviewResponse of(Article article, int commentCount) {
+    public static ArticlePreviewResponse of(Article article, int commentCount, LikeResponse likeResponse) {
 
         return new ArticlePreviewResponseBuilder()
                 .id(article.getId())
@@ -34,6 +37,8 @@ public class ArticlePreviewResponse {
                 .category(article.getCategory().getValue())
                 .commentCount(commentCount)
                 .views(article.getViews())
+                .isLike(likeResponse.getIsLike())
+                .likeCount(likeResponse.getLikeCount())
                 .createdAt(article.getCreatedAt())
                 .build();
     }

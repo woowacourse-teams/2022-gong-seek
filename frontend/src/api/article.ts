@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { HOME_URL } from '@/constants/url';
 import { AllArticleResponse, ArticleType, CommonArticleType } from '@/types/articleResponse';
+import { convertSort } from '@/utils/converter';
 
 export interface WritingArticles {
 	title: string;
@@ -60,11 +61,11 @@ export const getAllArticle = async ({
 	cursorViews,
 }: {
 	category: string;
-	sort: string;
+	sort: '좋아요순' | '조회순' | '최신순';
 	cursorId: string;
 	cursorViews: string;
 }) => {
-	const currentSort = sort === '최신순' ? 'latest' : 'views';
+	const currentSort = convertSort(sort);
 	const accessToken = localStorage.getItem('accessToken');
 
 	const { data } = await axios.get<AllArticleResponse>(
