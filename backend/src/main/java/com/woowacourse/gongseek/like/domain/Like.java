@@ -39,7 +39,6 @@ public class Like {
     private Member member;
 
     public Like(Article article, Member member) {
-        this.article = article;
-        this.member = member;
+        this(null, article, member);
     }
 }
