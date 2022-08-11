@@ -89,9 +89,6 @@ public class ArticleService {
     }
 
     private boolean isLike(Article article, AppMember appMember) {
-        if (appMember.isGuest()) {
-            return false;
-        }
         return likeRepository.existsByArticleIdAndMemberId(article.getId(), appMember.getPayload());
     }
 
