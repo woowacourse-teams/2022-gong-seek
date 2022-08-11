@@ -20,4 +20,8 @@ export const ContentContainer = styled.div`
 	flex-direction: column;
 
 	gap: ${({ theme }) => theme.size.SIZE_040};
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		gap: ${({ theme }) => theme.size.SIZE_056};
+	}
 `;

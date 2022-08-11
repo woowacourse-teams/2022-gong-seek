@@ -51,6 +51,10 @@ export const HeaderLine = styled.div`
 	border-top-right-radius: ${({ theme }) => theme.size.SIZE_010};
 
 	padding: ${({ theme }) => theme.size.SIZE_010};
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: 50%;
+	}
 `;
 
 export const SubTitle = styled.div`
@@ -90,4 +94,8 @@ export const ChildrenBox = styled.div`
 	border-bottom-right-radius: ${({ theme }) => theme.size.SIZE_010};
 
 	gap: ${({ theme }) => theme.size.SIZE_020};
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: 50%;
+	}
 `;
