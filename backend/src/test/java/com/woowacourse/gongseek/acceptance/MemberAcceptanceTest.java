@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
+import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
@@ -30,7 +30,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     void 회원_정보를_조회한다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(레넌);
+        AccessTokenResponse tokenResponse = 로그인을_한다(레넌);
 
         // when
         ExtractableResponse<Response> response = 내_정보를_조회한다(tokenResponse);
@@ -47,7 +47,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     void 회원이_작성한_기명_게시글들을_조회한다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(레넌);
+        AccessTokenResponse tokenResponse = 로그인을_한다(레넌);
         토론_게시물을_등록한다(tokenResponse);
 
         // when
@@ -64,7 +64,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     void 회원이_작성한_익명_기명_게시글을_모두_조회한다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(레넌);
+        AccessTokenResponse tokenResponse = 로그인을_한다(레넌);
         기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
         익명으로_게시물을_등록한다(tokenResponse, Category.DISCUSSION);
 
@@ -82,7 +82,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @Test
     void 회원이_작성한_익명_기명_댓글들을_조회한다() {
         // given
-        TokenResponse tokenResponse = 로그인을_한다(레넌);
+        AccessTokenResponse tokenResponse = 로그인을_한다(레넌);
         ArticleIdResponse 게시글번호 = 토론_게시물을_등록한다(tokenResponse);
         기명으로_댓글을_등록한다(tokenResponse, 게시글번호);
         익명으로_댓글을_등록한다(tokenResponse, 게시글번호);

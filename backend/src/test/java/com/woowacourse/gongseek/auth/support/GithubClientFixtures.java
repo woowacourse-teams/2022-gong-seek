@@ -8,7 +8,8 @@ public enum GithubClientFixtures {
 
     주디("1", "token1", "주디", "jurlring", "https://avatars.githubusercontent.com/u/78091011?v=4"),
     슬로("2", "token2", "슬로", "hanull", "https://avatars.githubusercontent.com/u/46413629?v=4"),
-    레넌("3", "token3", "레넌", "brorae", "https://avatars.githubusercontent.com/u/70756680?v=4");
+    레넌("3", "token3", "레넌", "brorae", "https://avatars.githubusercontent.com/u/70756680?v=4"),
+    기론("4", "token3", "기론", "gyuchool", "https://avatars.githubusercontent.com/u/60054318?v=4");
 
 
     private final String code;

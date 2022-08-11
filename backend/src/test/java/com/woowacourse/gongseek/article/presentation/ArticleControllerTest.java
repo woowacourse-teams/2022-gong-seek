@@ -73,8 +73,8 @@ class ArticleControllerTest {
         ArticleIdResponse response = new ArticleIdResponse(1L);
         ArticleRequest request = new ArticleRequest("title", "content", "question", false);
 
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
         given(articleService.save(any(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(post("/api/articles")
@@ -103,7 +103,7 @@ class ArticleControllerTest {
 
     @Test
     void 로그인한_사용자일때_기명_게시물_단건_조회_API_문서화() throws Exception {
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
         ArticleResponse response = new ArticleResponse(
                 "title",
@@ -143,7 +143,7 @@ class ArticleControllerTest {
 
     @Test
     void 로그인한_사용자일때_익명_게시물_단건_조회_API_문서화() throws Exception {
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
         ArticleResponse response = new ArticleResponse(
                 "title",
@@ -184,7 +184,7 @@ class ArticleControllerTest {
 
     @Test
     void 로그인_안한_사용자일때_기명_게시물_단건_조회_API_문서화() throws Exception {
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
         ArticleResponse response = new ArticleResponse(
                 "title",
@@ -223,8 +223,7 @@ class ArticleControllerTest {
     void 게시물_수정_API_문서화() throws Exception {
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 바꿀께요", "내용 수정합니다~~~");
         ArticleUpdateResponse articleUpdateResponse = new ArticleUpdateResponse(1L, Category.QUESTION.getValue());
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(articleService.update(any(), any(), any())).willReturn(articleUpdateResponse);
 
         ResultActions results = mockMvc.perform(put("/api/articles/{id}", 1L)
@@ -252,8 +251,8 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_삭제_API_문서화() throws Exception {
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         doNothing().when(articleService).delete(any(), any());
 
         ResultActions results = mockMvc.perform(delete("/api/articles/{id}", 1L)
@@ -272,7 +271,7 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_전체_조회_문서화() throws Exception {
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
         ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목",
                 new AuthorDto("기론", "프로필 이미지 url"),
@@ -284,8 +283,8 @@ class ArticleControllerTest {
 
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         given(articleService.getAll(anyLong(), anyInt(), any(), any(), anyInt())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles")
@@ -330,7 +329,7 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_검색_문서화() throws Exception {
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
         ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목",
                 new AuthorDto("작성자1", "작성자1 이미지 url"),
@@ -341,8 +340,8 @@ class ArticleControllerTest {
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         given(articleService.search(anyLong(), anyInt(), anyString())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/search")
