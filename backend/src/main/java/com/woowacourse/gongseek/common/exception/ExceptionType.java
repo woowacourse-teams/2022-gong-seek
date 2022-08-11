@@ -9,9 +9,9 @@ import com.woowacourse.gongseek.article.exception.ArticleTitleTooLongException;
 import com.woowacourse.gongseek.auth.exception.EmptyTokenException;
 import com.woowacourse.gongseek.auth.exception.GithubAccessTokenLoadFailException;
 import com.woowacourse.gongseek.auth.exception.GithubUserProfileLoadFailException;
+import com.woowacourse.gongseek.auth.exception.HttpRequestNullException;
 import com.woowacourse.gongseek.auth.exception.InvalidTokenException;
 import com.woowacourse.gongseek.auth.exception.InvalidTokenTypeException;
-import com.woowacourse.gongseek.auth.exception.NoSuchAuthenticationDataException;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
@@ -44,7 +44,7 @@ public enum ExceptionType {
     EMPTY_TOKEN_EXCEPTION("1003", "토큰이 존재하지 않습니다.", EmptyTokenException.class),
     INVALID_TOKEN_TYPE_EXCEPTION("1004", "토큰 타입이 올바르지 않습니다.", InvalidTokenTypeException.class),
     INVALID_TOKEN_EXCEPTION("1005", "토큰이 유효하지 않습니다.", InvalidTokenException.class),
-    NO_SUCH_AUTHENTICATION_DATA_EXCEPTION("1006", "인증할 수 있는 사용자 데이터가 없습니다.", NoSuchAuthenticationDataException.class),
+    HTTP_REQUEST_NULL_EXCEPTION("1006", "인증할 수 있는 사용자 데이터가 없습니다.", HttpRequestNullException.class),
     NOT_AUTHOR_EXCEPTION("1007", "작성자가 아니므로 권한이 없습니다.", NotAuthorException.class),
     NO_MEMBER_EXCEPTION("1008", "회원이 아니므로 권한이 없습니다.", NotMemberException.class),
 
