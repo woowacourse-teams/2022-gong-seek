@@ -11,6 +11,7 @@ import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.common.exception.ApplicationException;
 import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
@@ -51,7 +52,7 @@ class LikeServiceTest {
         Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
 
         assertThatThrownBy(() -> likeService.likeArticle(new GuestMember(), article.getId()))
-                .isInstanceOf(NoAuthorizationException.class)
+                .isExactlyInstanceOf(NoAuthorizationException.class)
                 .hasMessage("권한이 없습니다.");
     }
 
@@ -60,7 +61,7 @@ class LikeServiceTest {
         Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
 
         assertThatThrownBy(() -> likeService.likeArticle(new LoginMember(member.getId()), -1L))
-                .isInstanceOf(ArticleNotFoundException.class)
+                .isExactlyInstanceOf(ArticleNotFoundException.class)
                 .hasMessage("게시글이 존재하지 않습니다.");
     }
 
@@ -70,7 +71,7 @@ class LikeServiceTest {
         Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
 
         assertThatThrownBy(() -> likeService.likeArticle(new LoginMember(-1L), article.getId()))
-                .isInstanceOf(MemberNotFoundException.class)
+                .isExactlyInstanceOf(MemberNotFoundException.class)
                 .hasMessage("회원이 존재하지 않습니다.");
     }
 
@@ -95,7 +96,7 @@ class LikeServiceTest {
         Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
 
         assertThatThrownBy(() -> likeService.unlikeArticle(new GuestMember(), article.getId()))
-                .isInstanceOf(NoAuthorizationException.class)
+                .isExactlyInstanceOf(NoAuthorizationException.class)
                 .hasMessage("권한이 없습니다.");
     }
 
@@ -104,7 +105,7 @@ class LikeServiceTest {
         Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
 
         assertThatThrownBy(() -> likeService.unlikeArticle(new LoginMember(member.getId()), -1L))
-                .isInstanceOf(ArticleNotFoundException.class)
+                .isExactlyInstanceOf(ArticleNotFoundException.class)
                 .hasMessage("게시글이 존재하지 않습니다.");
     }
 
@@ -114,7 +115,7 @@ class LikeServiceTest {
         Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
 
         assertThatThrownBy(() -> likeService.unlikeArticle(new LoginMember(-1L), article.getId()))
-                .isInstanceOf(MemberNotFoundException.class)
+                .isExactlyInstanceOf(ApplicationException.class)
                 .hasMessage("회원이 존재하지 않습니다.");
     }
 }
