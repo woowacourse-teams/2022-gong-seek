@@ -84,4 +84,41 @@ public class LikeAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.getLikeCount()).isEqualTo(1)
         );
     }
+
+    @Test
+    void 게시물_추천은_한_번만_할_수_있다() {
+        //given
+        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        ArticleIdResponse 게시물 = 토론_게시물을_등록한다(엑세스토큰);
+
+        //when
+        게시물을_추천한다(엑세스토큰, 게시물);
+        게시물을_추천한다(엑세스토큰, 게시물);
+        ArticleResponse response = 로그인_후_게시물을_조회한다(엑세스토큰, 게시물).as(ArticleResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.getIsLike()).isTrue(),
+                () -> assertThat(response.getLikeCount()).isEqualTo(1)
+        );
+    }
+
+    @Test
+    void 게시물_추천_취소는_한_번만_할_수_있다() {
+        //given
+        TokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        ArticleIdResponse 게시물 = 토론_게시물을_등록한다(엑세스토큰);
+
+        //when
+        게시물을_추천한다(엑세스토큰, 게시물);
+        게시물_추천을_취소한다(엑세스토큰, 게시물);
+        게시물_추천을_취소한다(엑세스토큰, 게시물);
+        ArticleResponse response = 로그인_후_게시물을_조회한다(엑세스토큰, 게시물).as(ArticleResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.getIsLike()).isFalse(),
+                () -> assertThat(response.getLikeCount()).isEqualTo(0)
+        );
+    }
 }
