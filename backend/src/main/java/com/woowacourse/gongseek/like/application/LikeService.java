@@ -28,6 +28,10 @@ public class LikeService {
         Member member = getMember(appMember);
         Article article = getArticle(articleId);
 
+        saveByExistsLike(member, article);
+    }
+
+    private void saveByExistsLike(Member member, Article article) {
         if (!likeRepository.existsByArticleIdAndMemberId(article.getId(), member.getId())) {
             likeRepository.save(new Like(article, member));
         }
