@@ -9,5 +9,4 @@ public class GongseekApplication {
     public static void main(String[] args) {
         SpringApplication.run(GongseekApplication.class, args);
     }
-
 }
