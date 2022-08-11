@@ -37,4 +37,22 @@ include::{snippets}/login-token/request-fields.adoc[]
 === Response
 
 include::{snippets}/login-token/http-response.adoc[]
+include::{snippets}/login-token/response-headers.adoc[]
 include::{snippets}/login-token/response-fields.adoc[]
+
+== REFRESH TOKEN 재발급
+
+`GET /api/auth/refresh'
+
+=== Request
+
+include::{snippets}/renew-token/http-request.adoc[]
+include::{snippets}/renew-token/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/renew-token/http-response.adoc[]
+include::{snippets}/renew-token/response-headers.adoc[]
+include::{snippets}/renew-token/response-fields.adoc[]
+
+

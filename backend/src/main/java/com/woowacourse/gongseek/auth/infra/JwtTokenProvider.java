@@ -1,57 +1,68 @@
 package com.woowacourse.gongseek.auth.infra;
 
 import com.woowacourse.gongseek.auth.application.TokenProvider;
+import com.woowacourse.gongseek.auth.config.AccessTokenProperty;
+import com.woowacourse.gongseek.auth.config.RefreshTokenProperty;
+import com.woowacourse.gongseek.auth.config.TokenProperty;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+@RequiredArgsConstructor
 @Component
 public class JwtTokenProvider implements TokenProvider {
 
-    private final long validityInMilliseconds;
-    private final Key secretKey;
-
-    public JwtTokenProvider(
-            @Value("${security.jwt.token.expire-length}") long validityInMilliseconds,
-            @Value("${security.jwt.token.secret-key}") String secretKey
-    ) {
-        this.validityInMilliseconds = validityInMilliseconds;
-        this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-    }
+    private final AccessTokenProperty accessTokenProperty;
+    private final RefreshTokenProperty refreshTokenProperty;
 
     @Override
-    public String createToken(String payload) {
+    public String createAccessToken(String payload) {
         Claims claims = Jwts.claims().setSubject(payload);
+        return generateToken(claims, accessTokenProperty);
+    }
+
+    private String generateToken(Claims claims, TokenProperty tokenProperty) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
+        Date validity = new Date(now.getTime() + tokenProperty.getTokenValidityInMilliseconds());
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .signWith(tokenProperty.getTokenSecretKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     @Override
-    public String getPayload(String token) {
-        return getClaimsJws(token)
+    public String createRefreshToken(String payload) {
+        Claims claims = Jwts.claims().setSubject(payload);
+        return generateToken(claims, refreshTokenProperty);
+    }
+
+    @Override
+    public String getAccessTokenPayload(String token) {
+        return getClaimsJws(token, accessTokenProperty.getTokenSecretKey())
                 .getBody()
                 .getSubject();
     }
 
     @Override
-    public boolean validateToken(String token) {
+    public String getRefreshTokenPayload(String token) {
+        return getClaimsJws(token, refreshTokenProperty.getTokenSecretKey())
+                .getBody()
+                .getSubject();
+    }
+
+    @Override
+    public boolean isValidAccessToken(String token) {
         try {
-            Jws<Claims> claims = getClaimsJws(token);
+            Jws<Claims> claims = getClaimsJws(token, accessTokenProperty.getTokenSecretKey());
 
             return !claims.getBody()
                     .getExpiration()
@@ -61,7 +72,20 @@ public class JwtTokenProvider implements TokenProvider {
         }
     }
 
-    private Jws<Claims> getClaimsJws(String token) {
+    @Override
+    public boolean isValidRefreshToken(String token) {
+        try {
+            Jws<Claims> claims = getClaimsJws(token, refreshTokenProperty.getTokenSecretKey());
+
+            return !claims.getBody()
+                    .getExpiration()
+                    .before(new Date());
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    private Jws<Claims> getClaimsJws(String token, Key secretKey) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
