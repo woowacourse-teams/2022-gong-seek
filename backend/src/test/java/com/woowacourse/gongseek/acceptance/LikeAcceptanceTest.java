@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
-import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
@@ -30,14 +29,9 @@ public class LikeAcceptanceTest extends AcceptanceTest {
 
         //when
         ExtractableResponse<Response> response = 게시물을_추천한다(엑세스토큰, 게시물);
-        LikeResponse likeResponse = response.as(LikeResponse.class);
 
         //then
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
-                () -> assertThat(likeResponse.getIsLike()).isTrue(),
-                () -> assertThat(likeResponse.getLikeCount()).isEqualTo(1)
-        );
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
     @Test
@@ -49,14 +43,9 @@ public class LikeAcceptanceTest extends AcceptanceTest {
         //when
         게시물을_추천한다(엑세스토큰, 게시물);
         ExtractableResponse<Response> response = 게시물_추천을_취소한다(엑세스토큰, 게시물);
-        LikeResponse likeResponse = response.as(LikeResponse.class);
 
         //then
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(likeResponse.getIsLike()).isFalse(),
-                () -> assertThat(likeResponse.getLikeCount()).isEqualTo(0)
-        );
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
     @Test

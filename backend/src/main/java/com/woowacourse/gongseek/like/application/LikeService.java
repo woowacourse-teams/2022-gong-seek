@@ -7,7 +7,6 @@ import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.like.domain.Like;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
-import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -24,7 +23,7 @@ public class LikeService {
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
 
-    public LikeResponse likeArticle(AppMember appMember, Long articleId) {
+    public void likeArticle(AppMember appMember, Long articleId) {
         validateGuest(appMember);
         Member member = getMember(appMember);
         Article article = getArticle(articleId);
@@ -32,7 +31,6 @@ public class LikeService {
         if (!likeRepository.existsByArticleIdAndMemberId(article.getId(), member.getId())) {
             likeRepository.save(new Like(article, member));
         }
-        return new LikeResponse(true, likeRepository.countByArticleId(articleId));
     }
 
     private void validateGuest(AppMember appMember) {
@@ -51,13 +49,12 @@ public class LikeService {
                 .orElseThrow(ArticleNotFoundException::new);
     }
 
-    public LikeResponse unlikeArticle(AppMember appMember, Long articleId) {
+    public void unlikeArticle(AppMember appMember, Long articleId) {
         validateGuest(appMember);
         Member member = getMember(appMember);
         Article article = getArticle(articleId);
 
         likeRepository.findByArticleIdAndMemberId(article.getId(), member.getId())
                 .ifPresent(likeRepository::delete);
-        return new LikeResponse(false, likeRepository.countByArticleId(articleId));
     }
 }

@@ -5,7 +5,6 @@ import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.like.application.LikeService;
 import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,8 +24,8 @@ public class LikeController {
             @PathVariable Long articleId,
             @AuthenticationPrinciple AppMember appMember
     ) {
-        LikeResponse response = likeService.likeArticle(appMember, articleId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        likeService.likeArticle(appMember, articleId);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping
@@ -34,7 +33,7 @@ public class LikeController {
             @PathVariable Long articleId,
             @AuthenticationPrinciple AppMember appMember
     ) {
-        LikeResponse response = likeService.unlikeArticle(appMember, articleId);
-        return ResponseEntity.ok(response);
+        likeService.unlikeArticle(appMember, articleId);
+        return ResponseEntity.ok().build();
     }
 }

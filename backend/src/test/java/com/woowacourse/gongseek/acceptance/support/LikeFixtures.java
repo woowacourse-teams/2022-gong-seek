@@ -29,7 +29,7 @@ public class LikeFixtures {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .delete("/api/articles/{articleId}/unlike", article.getId())
+                .delete("/api/articles/{articleId}/like", article.getId())
                 .then().log().all()
                 .extract();
     }

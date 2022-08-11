@@ -1,8 +1,7 @@
 package com.woowacourse.gongseek.like.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
@@ -11,8 +10,6 @@ import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
-import com.woowacourse.gongseek.common.exception.ApplicationException;
-import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -38,12 +35,7 @@ class LikeServiceTest {
         Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
         Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
 
-        LikeResponse likeResponse = likeService.likeArticle(new LoginMember(member.getId()), article.getId());
-
-        assertAll(
-                () -> assertThat(likeResponse.getIsLike()).isTrue(),
-                () -> assertThat(likeResponse.getLikeCount()).isEqualTo(1)
-        );
+        assertDoesNotThrow(() -> likeService.likeArticle(new LoginMember(member.getId()), article.getId()));
     }
 
     @Test
@@ -82,12 +74,7 @@ class LikeServiceTest {
         LoginMember appMember = new LoginMember(member.getId());
         likeService.likeArticle(appMember, article.getId());
 
-        LikeResponse likeResponse = likeService.unlikeArticle(appMember, article.getId());
-
-        assertAll(
-                () -> assertThat(likeResponse.getIsLike()).isFalse(),
-                () -> assertThat(likeResponse.getLikeCount()).isEqualTo(0)
-        );
+        assertDoesNotThrow(() -> likeService.unlikeArticle(new LoginMember(member.getId()), article.getId()));
     }
 
     @Test
@@ -115,7 +102,7 @@ class LikeServiceTest {
         Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
 
         assertThatThrownBy(() -> likeService.unlikeArticle(new LoginMember(-1L), article.getId()))
-                .isExactlyInstanceOf(ApplicationException.class)
+                .isExactlyInstanceOf(MemberNotFoundException.class)
                 .hasMessage("회원이 존재하지 않습니다.");
     }
 }
