@@ -21,7 +21,7 @@ class TokenExtractorTest {
         String token = null;
 
         assertThatThrownBy(() -> TokenExtractor.extract(token))
-                .isInstanceOf(EmptyTokenException.class)
+                .isExactlyInstanceOf(EmptyTokenException.class)
                 .hasMessage("토큰이 존재하지 않습니다.");
     }
 
@@ -30,7 +30,7 @@ class TokenExtractorTest {
         String token = "Basic " + jwtTokenProvider.createToken("payload");
 
         assertThatThrownBy(() -> TokenExtractor.extract(token))
-                .isInstanceOf(InvalidTokenTypeException.class)
+                .isExactlyInstanceOf(InvalidTokenTypeException.class)
                 .hasMessage("토큰 타입이 올바르지 않습니다.");
     }
 

@@ -180,8 +180,7 @@ class ArticleRepositoryTest {
 
         assertAll(
                 () -> assertThat(article.getTitle()).isEqualTo("수정 제목"),
-                () -> assertThat(article.getContent()).isEqualTo("내용 바꿉니다."),
-                () -> assertThat(article.getUpdatedAt()).isNotEqualTo(article.getCreatedAt())
+                () -> assertThat(article.getContent()).isEqualTo("내용 바꿉니다.")
         );
     }
 }
