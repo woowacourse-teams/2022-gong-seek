@@ -7,7 +7,7 @@ import Loading from '@/components/common/Loading/Loading';
 import { CommentType } from '@/types/commentResponse';
 import { dateTimeConverter } from '@/utils/converter';
 
-interface CommentProps extends CommentType {
+export interface CommentProps extends CommentType {
 	articleId: string;
 }
 

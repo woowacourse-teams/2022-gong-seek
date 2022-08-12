@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.auth.exception;
 
-import com.woowacourse.gongseek.common.exception.ApplicationException;
+import com.woowacourse.gongseek.common.exception.UnAuthorizedException;
 
-public class InvalidRefreshTokenException extends ApplicationException {
+public class InvalidRefreshTokenException extends UnAuthorizedException {
+
 }

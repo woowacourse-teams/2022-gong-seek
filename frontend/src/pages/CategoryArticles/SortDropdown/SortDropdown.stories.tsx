@@ -1,4 +1,7 @@
-import SortDropdown from '@/pages/CategoryArticles/SortDropdown/SortDropDown';
+import SortDropdown, {
+	SortPropDownProps,
+} from '@/pages/CategoryArticles/SortDropdown/SortDropDown';
+import { action } from '@storybook/addon-actions';
 import { Meta, Story } from '@storybook/react';
 
 export default {
@@ -6,14 +9,17 @@ export default {
 	component: SortDropdown,
 	decorators: [
 		(Story) => (
-			<div style={{ width: '320px' }}>
+			<div>
 				<Story />
 			</div>
 		),
 	],
 } as Meta;
 
-const Template: Story = (args) => <SortDropdown {...args} />;
+const Template: Story<SortPropDownProps> = (args) => <SortDropdown {...args} />;
 
 export const DefaultSortDropdown = Template.bind({});
-DefaultSortDropdown.args = {};
+DefaultSortDropdown.args = {
+	sortIndex: '최신순',
+	setSortIndex: () => action('setSortIndex'),
+};

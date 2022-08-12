@@ -21,6 +21,8 @@ export const SortBox = styled.div`
 	align-items: center;
 	justify-content: center;
 
+	width: fit-content;
+
 	color: ${({ theme }) => theme.colors.BLACK_600};
 
 	cursor: pointer;

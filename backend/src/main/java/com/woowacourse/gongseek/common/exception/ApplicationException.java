@@ -1,20 +1,25 @@
 package com.woowacourse.gongseek.common.exception;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public class ApplicationException extends RuntimeException {
 
-    private final ExceptionType exceptionType = ExceptionType.from(this.getClass());
+    private final HttpStatus httpStatus;
     private final String errorCode;
     private final String message;
 
-    public ApplicationException() {
+    public ApplicationException(HttpStatus httpStatus) {
+        ExceptionType exceptionType = ExceptionType.from(this.getClass());
+        this.httpStatus = httpStatus;
         this.errorCode = exceptionType.getErrorCode();
         this.message = exceptionType.getMessage();
     }
 
-    public ApplicationException(String optionalMessage) {
+    public ApplicationException(HttpStatus httpStatus, String optionalMessage) {
+        ExceptionType exceptionType = ExceptionType.from(this.getClass());
+        this.httpStatus = httpStatus;
         this.errorCode = exceptionType.getErrorCode();
         this.message = exceptionType.getMessage() + optionalMessage;
     }

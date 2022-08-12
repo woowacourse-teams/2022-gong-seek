@@ -8,6 +8,7 @@ const PageLayout = styled.section<Size>`
 	justify-content: ${({ justifyContent }) => justifyContent || 'center'};
 	align-items: ${({ alignItems }) => alignItems || 'center'};
 	gap: ${({ gap }) => gap};
+	flex-wrap: ${({ flexWrap }) => flexWrap || 'nowrap'};
 
 	width: ${({ width }) => width || 'fit-content'};
 	max-width: ${({ maxWidth }) => maxWidth};

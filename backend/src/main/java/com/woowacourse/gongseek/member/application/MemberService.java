@@ -39,7 +39,7 @@ public class MemberService {
 
     private Member getMember(AppMember appMember) {
         return memberRepository.findById(appMember.getPayload())
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberNotFoundException(appMember.getPayload()));
     }
 
     public MyPageArticlesResponse getArticles(AppMember appMember) {

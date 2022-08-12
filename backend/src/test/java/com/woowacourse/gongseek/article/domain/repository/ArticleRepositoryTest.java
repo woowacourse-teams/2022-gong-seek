@@ -9,7 +9,6 @@ import com.woowacourse.gongseek.config.JpaAuditingConfig;
 import com.woowacourse.gongseek.config.QuerydslConfig;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
-import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,9 +35,6 @@ class ArticleRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @Autowired
-    private TagRepository tagRepository;
-
     @BeforeEach
     void setUp() {
         memberRepository.save(member);
@@ -56,7 +52,7 @@ class ArticleRepositoryTest {
     void 게시글이_없으면_빈_값을_반환한다() {
         List<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "", 5);
 
-        assertThat(articles).hasSize(0);
+        assertThat(articles).isEmpty();
     }
 
     @Test

@@ -29,7 +29,7 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
-import com.woowacourse.gongseek.common.exception.ErrorResponse;
+import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -92,8 +92,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(errorResponse.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(errorResponse.getMessage()).isEqualTo("권한이 없습니다.")
+                () -> assertThat(errorResponse.getErrorCode()).isEqualTo("1008"),
+                () -> assertThat(errorResponse.getMessage()).isEqualTo("회원이 아니므로 권한이 없습니다.")
         );
     }
 
@@ -106,8 +106,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+                () -> assertThat(response.getErrorCode()).isEqualTo("1008"),
+                () -> assertThat(response.getMessage()).isEqualTo("회원이 아니므로 권한이 없습니다.")
         );
     }
 
@@ -304,8 +304,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+                () -> assertThat(response.getErrorCode()).isEqualTo("1008"),
+                () -> assertThat(response.getMessage()).isEqualTo("회원이 아니므로 권한이 없습니다.")
         );
     }
 
@@ -321,8 +321,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+                () -> assertThat(response.getErrorCode()).isEqualTo("1008"),
+                () -> assertThat(response.getMessage()).isEqualTo("회원이 아니므로 권한이 없습니다.")
         );
     }
 
@@ -340,7 +340,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+                () -> assertThat(response.getMessage()).contains("작성자가 아니므로 권한이 없습니다.")
         );
     }
 
@@ -358,7 +358,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+                () -> assertThat(response.getMessage()).contains("작성자가 아니므로 권한이 없습니다.")
         );
     }
 
@@ -450,7 +450,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+                () -> assertThat(response.getMessage()).contains("작성자가 아니므로 권한이 없습니다.")
         );
     }
 
@@ -468,7 +468,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+                () -> assertThat(response.getMessage()).contains("작성자가 아니므로 권한이 없습니다.")
         );
     }
 
@@ -743,4 +743,3 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         );
     }
 }
-

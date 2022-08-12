@@ -3,7 +3,7 @@ package com.woowacourse.gongseek.like.application;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
-import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
+import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.like.domain.Like;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
@@ -39,18 +39,18 @@ public class LikeService {
 
     private void validateGuest(AppMember appMember) {
         if (appMember.isGuest()) {
-            throw new NoAuthorizationException();
+            throw new NotMemberException();
         }
     }
 
     private Member getMember(AppMember appMember) {
         return memberRepository.findById(appMember.getPayload())
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberNotFoundException(appMember.getPayload()));
     }
 
     private Article getArticle(Long id) {
         return articleRepository.findById(id)
-                .orElseThrow(ArticleNotFoundException::new);
+                .orElseThrow(() -> new ArticleNotFoundException(id));
     }
 
     public void unlikeArticle(AppMember appMember, Long articleId) {

@@ -16,12 +16,13 @@ const usePostUpdateWritingArticle = () => {
 	const tempArticle = useRecoilValue(articleState);
 
 	const content = useRef<Editor | null>(null);
-	const [title, setTitle] = useState(tempArticle.title);
+	const [title, setTitle] = useState<string>(tempArticle.title);
+	const [hashTag, setHashTag] = useState<string[]>(tempArticle.tag);
 
 	const { data, isError, isSuccess, isLoading, error, mutate } = useMutation<
 		AxiosResponse<{ id: number; category: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
-		{ title: string; content: string; id: string }
+		{ title: string; content: string; id: string; tag: string[] }
 	>(putArticle);
 
 	useEffect(() => {
@@ -46,10 +47,19 @@ const usePostUpdateWritingArticle = () => {
 		if (content.current === null) {
 			return;
 		}
-		mutate({ title, content: content.current.getInstance().getMarkdown(), id });
+		mutate({ title, content: content.current.getInstance().getMarkdown(), id, tag: hashTag });
 	};
 
-	return { isLoading, title, setTitle, tempArticle, content, handleUpdateButtonClick };
+	return {
+		isLoading,
+		title,
+		setTitle,
+		tempArticle,
+		content,
+		hashTag,
+		setHashTag,
+		handleUpdateButtonClick,
+	};
 };
 
 export default usePostUpdateWritingArticle;

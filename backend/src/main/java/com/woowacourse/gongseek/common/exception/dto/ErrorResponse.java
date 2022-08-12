@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.common.exception;
+package com.woowacourse.gongseek.common.exception.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
