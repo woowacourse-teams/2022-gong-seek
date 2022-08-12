@@ -15,6 +15,7 @@ import Home from '@/pages/Home';
 import InquirePage from '@/pages/Inquire';
 import Login from '@/pages/Login';
 import LoginController from '@/pages/Login/LoginController/LoginController';
+import RefreshTokenHandler from '@/pages/Login/RefreshTokenHandler/RefreshTokenHandler';
 import MyPage from '@/pages/MyPage';
 import NotFound from '@/pages/NotFound';
 import Search from '@/pages/Search';
@@ -51,6 +52,7 @@ const App = () => {
 				<Content>
 					<Routes>
 						<Route path="/callback" element={<LoginController />} />
+						<Route path="/check-login" element={<RefreshTokenHandler />} />
 						<Route path="/category" element={<CategorySelector />} />
 						<Route element={<PrivateRouter isAuthenticated={isLogin} />}>
 							<Route path="/article/:category" element={<WritingArticles />} />

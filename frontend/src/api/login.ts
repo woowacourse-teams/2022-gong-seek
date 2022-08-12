@@ -14,11 +14,24 @@ export const getGithubURL = async () => {
 
 export const postLogin = (code: string) =>
 	axios.post<{ accessToken: string }>(
-		`${HOME_URL}/api/auth/token`,
+		`${HOME_URL}/api/auth/login`,
 		{ code },
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Credentials': true,
 			},
+			withCredentials: true,
 		},
 	);
+
+export const getAccessTokenByRefreshToken = async () => {
+	const response = await axios.get<{ accessToken: string }>(`${HOME_URL}/api/auth/refresh`, {
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+			'Access-Control-Allow-Credentials': true,
+		},
+		withCredentials: true,
+	});
+	return response.data;
+};

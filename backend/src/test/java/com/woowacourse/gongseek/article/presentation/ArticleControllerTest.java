@@ -50,7 +50,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @SuppressWarnings("NonAsciiCharacters")
-@DisplayName("게시판 문서화")
+@DisplayName("질문 게시판 문서화")
 @AutoConfigureRestDocs
 @WebMvcTest(ArticleController.class)
 @Import(RestDocsConfig.class)
@@ -71,7 +71,7 @@ class ArticleControllerTest {
     @Test
     void 질문_게시물_생성_API_문서화() throws Exception {
         ArticleIdResponse response = new ArticleIdResponse(1L);
-        ArticleRequest request = new ArticleRequest("title", "content", "question", false);
+        ArticleRequest request = new ArticleRequest("title", "content", "question", List.of("Spring"), false);
 
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
@@ -93,6 +93,7 @@ class ArticleControllerTest {
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리"),
+                                fieldWithPath("tag.[]").type(JsonFieldType.ARRAY).description("해시태그"),
                                 fieldWithPath("isAnonymous").type(JsonFieldType.BOOLEAN).description("익명 여부")
                         ),
                         responseFields(
@@ -107,6 +108,7 @@ class ArticleControllerTest {
 
         ArticleResponse response = new ArticleResponse(
                 "title",
+                List.of("SPRING", "JAVA"),
                 new AuthorDto("rennon", "avatar.com"),
                 "content",
                 false,
@@ -131,6 +133,7 @@ class ArticleControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("tag").type(JsonFieldType.ARRAY).description("해시태그"),
                                 fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
@@ -151,6 +154,7 @@ class ArticleControllerTest {
 
         ArticleResponse response = new ArticleResponse(
                 "title",
+                List.of("SPRING", "JAVA"),
                 new AuthorDto("익명",
                         "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"),
                 "content",
@@ -176,6 +180,7 @@ class ArticleControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("tag").type(JsonFieldType.ARRAY).description("해시태그"),
                                 fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
@@ -196,6 +201,7 @@ class ArticleControllerTest {
 
         ArticleResponse response = new ArticleResponse(
                 "title",
+                List.of("SPRING", "JAVA"),
                 new AuthorDto("rennon", "avatar.com"),
                 "content",
                 false,
@@ -220,6 +226,7 @@ class ArticleControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("tag").type(JsonFieldType.ARRAY).description("해시태그"),
                                 fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
@@ -236,7 +243,7 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_수정_API_문서화() throws Exception {
-        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 바꿀께요", "내용 수정합니다~~~");
+        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 바꿀께요", "내용 수정합니다~~~", List.of("JAVA"));
         ArticleUpdateResponse articleUpdateResponse = new ArticleUpdateResponse(1L, Category.QUESTION.getValue());
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(articleService.update(any(), any(), any())).willReturn(articleUpdateResponse);
@@ -255,6 +262,7 @@ class ArticleControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("수정할 게시물 제목"),
+                                fieldWithPath("tag").type(JsonFieldType.ARRAY).description("수정할 게시물 해시태그"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("수정할 게시물 내용")
                         ),
                         responseFields(
@@ -288,11 +296,11 @@ class ArticleControllerTest {
     void 게시물_전체_조회_문서화() throws Exception {
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
-        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목",
+        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
                 new AuthorDto("기론", "프로필 이미지 url"),
                 "내용입니다", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
 
-        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목2",
+        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목2", List.of("SPRING"),
                 new AuthorDto("기론2", "프로필2 이미지 url"),
                 "내용입니다22", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
 
@@ -329,6 +337,7 @@ class ArticleControllerTest {
                         responseFields(
                                 fieldWithPath("articles[].id").type(JsonFieldType.NUMBER).description("게시글 식별자"),
                                 fieldWithPath("articles[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("articles[].tag").type(JsonFieldType.ARRAY).description("게시글 해시태그"),
                                 fieldWithPath("articles[].author.name").type(JsonFieldType.STRING)
                                         .description("게시글 작성자 이름"),
                                 fieldWithPath("articles[].author.avatarUrl").type(JsonFieldType.STRING)
@@ -352,10 +361,10 @@ class ArticleControllerTest {
     void 게시물_검색_문서화() throws Exception {
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
-        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목",
+        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
                 new AuthorDto("작성자1", "작성자1 이미지 url"),
                 "내용", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
-        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목",
+        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목", List.of("SPRING"),
                 new AuthorDto("작성자2", "작성자2 이미지 url"),
                 "내용", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
         ArticlePageResponse response = new ArticlePageResponse(
@@ -387,6 +396,7 @@ class ArticleControllerTest {
                         responseFields(
                                 fieldWithPath("articles[].id").type(JsonFieldType.NUMBER).description("게시글 식별자"),
                                 fieldWithPath("articles[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("articles[].tag").type(JsonFieldType.ARRAY).description("게시글 해시태그"),
                                 fieldWithPath("articles[].author.name").type(JsonFieldType.STRING)
                                         .description("게시글 작성자 이름"),
                                 fieldWithPath("articles[].author.avatarUrl").type(JsonFieldType.STRING)

@@ -91,17 +91,20 @@ asciidoctor {
     dependsOn test
 }
 
-bootJar {
-    dependsOn asciidoctor
-    from("${asciidoctor.outputDir}/asciidoc") {
-        into 'static/docs'
-    }
-}
-
 task copyDocument(type: Copy) {
     dependsOn asciidoctor
-    from file("build/docs/asciidoc/")
+    from file("${asciidoctor.outputDir}")
+    into file("build/resources/main/static")
+}
+
+task copyToSrcDocument(type: Copy) {
+    dependsOn asciidoctor
+    from file("build/docs/asciidoc/static")
     into file("src/main/resources/static/docs")
+}
+
+bootJar {
+    dependsOn asciidoctor
 }
 
 build {
@@ -146,13 +149,14 @@ jacocoTestReport {
 sonarqube {
     properties {
         property "sonar.projectKey", "gongseek"
-        property "sonar.projectName" , "gongseek"
+        property "sonar.projectName", "gongseek"
         property "sonar.sources", "src" // 소스 경로
         property "sonar.language", "java" // 언어
         property "sonar.sourceEncoding", "UTF-8"
         property "sonar.profile", "Sonar way" // SonarQube 에서 분석할 때 적용할 프로필(분석할 수준 설정)
         property "sonar.java.binaries", "${buildDir}/classes" // 자바 클래스 파일위치
         property "sonar.test.inclusions", "**/*Test.java" // 코드 분석에 사용할 테스트 소스
-        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml" // jacoco 플러그인의 결과 파일
+        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+        // jacoco 플러그인의 결과 파일
     }
 }

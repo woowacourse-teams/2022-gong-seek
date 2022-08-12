@@ -6,6 +6,7 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +19,8 @@ import lombok.experimental.Accessors;
 public class ArticleResponse {
 
     private String title;
+
+    private List<String> tag;
 
     private AuthorDto author;
 
@@ -41,10 +44,11 @@ public class ArticleResponse {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime updatedAt;
 
-    public ArticleResponse(Article article, AuthorDto authorDto, boolean isAuthor, boolean hasVote,
-                           LikeResponse likeResponse) {
+    public ArticleResponse(Article article, List<String> tag, AuthorDto authorDto, boolean isAuthor,
+                           boolean hasVote, LikeResponse likeResponse) {
         this(
                 article.getTitle(),
+                tag,
                 authorDto,
                 article.getContent(),
                 isAuthor,
@@ -57,9 +61,11 @@ public class ArticleResponse {
         );
     }
 
-    public ArticleResponse(Article article, boolean isAuthor, boolean hasVote, LikeResponse likeResponse) {
+    public ArticleResponse(Article article, List<String> tag, boolean isAuthor, boolean hasVote,
+                           LikeResponse likeResponse) {
         this(
                 article,
+                tag,
                 new AuthorDto(article.getMember()),
                 isAuthor,
                 hasVote,

@@ -54,7 +54,7 @@ public class AuthService {
     public TokenResponse renewToken(String refreshToken) {
         validateRefreshToken(refreshToken);
         Long memberId = Long.valueOf(jwtTokenProvider.getRefreshTokenPayload(refreshToken));
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
 
         return getTokenResponse(member);
     }

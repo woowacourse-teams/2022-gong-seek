@@ -14,6 +14,8 @@ export interface ArticleItemProps {
 		category: Category;
 		commentCount: number;
 		createdAt: string;
+		tag: string[];
+		views: number;
 		isLike: boolean;
 		likeCount: number;
 		views: number;
@@ -42,9 +44,15 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 			</S.ArticleItemTitle>
 			<S.ArticleInfoBox>
 				<S.ArticleTimeStamp>{dateTimeConverter(article.createdAt)}</S.ArticleTimeStamp>
-				<S.Views>댓글 수 {article.commentCount}</S.Views>
+				<S.CommentCount>댓글 수 {article.commentCount}</S.CommentCount>
+				<S.Views>조회 수 {article.views}</S.Views>
 			</S.ArticleInfoBox>
 			<S.Content>{exculdeSpecialWordConverter(article.content)}</S.Content>
+			<S.HashTagListBox>
+				{article.tag &&
+					article.tag.length >= 1 &&
+					article.tag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}
+			</S.HashTagListBox>
 			<S.FooterBox>
 				<S.ProfileBox>
 					<S.UserProfile src={article.author.avatarUrl} />
