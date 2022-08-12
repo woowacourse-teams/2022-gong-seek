@@ -56,7 +56,7 @@ class ArticleRepositoryTest {
     void 게시글이_없으면_빈_값을_반환한다() {
         List<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "", 5);
 
-        assertThat(articles).hasSize(0);
+        assertThat(articles).isEmpty();
     }
 
     @Test
@@ -143,6 +143,16 @@ class ArticleRepositoryTest {
     }
 
     @Test
+    void 유저_이름을_이용하여_게시글을_검색한다() {
+        articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+
+        List<Article> articles = articleRepository.searchByContainingText(null, 3, member.getName());
+
+        assertThat(articles).hasSize(2);
+    }
+
+    @Test
     void 게시글을_5개씩_검색한다() {
         for (int i = 0; i < 5; i++) {
             articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
@@ -156,7 +166,7 @@ class ArticleRepositoryTest {
     void 게시글이_없을_때_검색하면_빈_값을_반환한다() {
         List<Article> articles = articleRepository.searchByContainingText(null, 5, "empty");
 
-        assertThat(articles).hasSize(0);
+        assertThat(articles).isEmpty();
     }
 
     @Test

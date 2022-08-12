@@ -448,7 +448,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
-                () -> assertThat(response.isHasNext()).isEqualTo(true)
+                () -> assertThat(response.isHasNext()).isTrue()
         );
     }
 
@@ -472,7 +472,7 @@ public class ArticleServiceTest {
         assertAll(
                 () -> assertThat(responses).hasSize(9),
                 () -> assertThat(responses.get(0).getId()).isEqualTo(9L),
-                () -> assertThat(response.isHasNext()).isEqualTo(false)
+                () -> assertThat(response.isHasNext()).isFalse()
         );
     }
 
@@ -497,7 +497,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
-                () -> assertThat(response.isHasNext()).isEqualTo(false)
+                () -> assertThat(response.isHasNext()).isFalse()
         );
     }
 
@@ -507,7 +507,7 @@ public class ArticleServiceTest {
         ArticlePageResponse articlePageResponse = articleService.search(null, 1, " ", loginMember);
 
         assertAll(
-                () -> assertThat(articlePageResponse.getArticles()).hasSize(0),
+                () -> assertThat(articlePageResponse.getArticles()).isEmpty(),
                 () -> assertThat(articlePageResponse.isHasNext()).isFalse()
         );
     }
@@ -552,5 +552,23 @@ public class ArticleServiceTest {
                 () -> assertThat(secondPageResponse.getArticles()).hasSize(10),
                 () -> assertThat(secondPageResponse.isHasNext()).isFalse()
         );
+    }
+
+    @Test
+    void 이름으로_검색할_경우_익명_게시물을_제외하고_조회된다() {
+        AppMember loginMember = new LoginMember(member.getId());
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false);
+        for (int i = 0; i < 5; i++) {
+            articleService.save(loginMember, articleRequest);
+        }
+        articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), List.of("Spring"), true);
+        for (int i = 0; i < 5; i++) {
+            articleService.save(loginMember, articleRequest);
+        }
+
+        ArticlePageResponse pageResponse = articleService.search(null, 10, member.getName(), loginMember);
+
+        assertThat(pageResponse.getArticles()).hasSize(5);
     }
 }

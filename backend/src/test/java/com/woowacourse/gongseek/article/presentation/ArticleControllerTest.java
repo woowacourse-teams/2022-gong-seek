@@ -391,7 +391,7 @@ class ArticleControllerTest {
                         requestParameters(
                                 parameterWithName("cursorId").description("시작은 null, 마지막으로 조회한 게시물 식별자").optional(),
                                 parameterWithName("pageSize").description("가져올 게시글 개수"),
-                                parameterWithName("searchText").description("검색할 Text")
+                                parameterWithName("searchText").description("검색할 Text(제목, 내용, 작성자)")
                         ),
                         responseFields(
                                 fieldWithPath("articles[].id").type(JsonFieldType.NUMBER).description("게시글 식별자"),
