@@ -3,7 +3,7 @@ import { atom } from 'recoil';
 interface ArticleStateType {
 	title: string;
 	content: string;
-	hashTag: string[];
+	tag: string[];
 }
 
 export const articleState = atom<ArticleStateType>({
@@ -11,6 +11,6 @@ export const articleState = atom<ArticleStateType>({
 	default: {
 		title: '',
 		content: '',
-		hashTag: [],
+		tag: [],
 	},
 });

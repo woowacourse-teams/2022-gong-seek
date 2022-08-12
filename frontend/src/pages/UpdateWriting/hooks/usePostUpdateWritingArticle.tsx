@@ -17,12 +17,12 @@ const usePostUpdateWritingArticle = () => {
 
 	const content = useRef<Editor | null>(null);
 	const [title, setTitle] = useState<string>(tempArticle.title);
-	const [hashTag, setHashTag] = useState<string[]>(tempArticle.hashTag);
+	const [hashTag, setHashTag] = useState<string[]>(tempArticle.tag);
 
 	const { data, isError, isSuccess, isLoading, error, mutate } = useMutation<
 		AxiosResponse<{ id: number; category: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
-		{ title: string; content: string; id: string; hashTag: string[] }
+		{ title: string; content: string; id: string; tag: string[] }
 	>(putArticle);
 
 	useEffect(() => {
@@ -47,7 +47,7 @@ const usePostUpdateWritingArticle = () => {
 		if (content.current === null) {
 			return;
 		}
-		mutate({ title, content: content.current.getInstance().getMarkdown(), id, hashTag });
+		mutate({ title, content: content.current.getInstance().getMarkdown(), id, tag: hashTag });
 	};
 
 	return {
