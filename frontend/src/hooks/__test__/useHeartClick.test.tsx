@@ -1,11 +1,11 @@
-import useHeartClick from '../useHeartClick';
 import { setupServer } from 'msw/node';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
-import { LikeHandler, ArticleHandler } from '@/mock';
+import useHeartClick from '@/hooks/useHeartClick';
+import { LikeHandler } from '@/mock';
 import { theme } from '@/styles/Theme';
 import { ThemeProvider } from '@emotion/react';
 import { renderHook } from '@testing-library/react-hooks';
