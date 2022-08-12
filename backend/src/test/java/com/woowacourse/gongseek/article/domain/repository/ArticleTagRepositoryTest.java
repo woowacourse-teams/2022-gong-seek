@@ -60,6 +60,6 @@ class ArticleTagRepositoryTest {
         articleTagRepository.deleteAllByArticleId(article.getId());
         List<ArticleTag> articleTags = articleTagRepository.findAllByArticleId(article.getId());
 
-        assertThat(articleTags).hasSize(0);
+        assertThat(articleTags).isEmpty();
     }
 }

@@ -180,7 +180,7 @@ class CommentServiceTest {
 
         assertAll(
                 () -> assertThat(savedComments).hasSize(2),
-                () -> assertThat(authorizedComments).hasSize(0)
+                () -> assertThat(authorizedComments).isEmpty()
         );
     }
 
@@ -197,7 +197,7 @@ class CommentServiceTest {
 
         assertAll(
                 () -> assertThat(savedComments).hasSize(2),
-                () -> assertThat(authorizedComments).hasSize(0)
+                () -> assertThat(authorizedComments).isEmpty()
         );
     }
 
@@ -291,7 +291,7 @@ class CommentServiceTest {
 
         List<CommentResponse> responses = commentService.getAllByArticleId(appMember, article.getId()).getComments();
 
-        assertThat(responses).hasSize(0);
+        assertThat(responses).isEmpty();
     }
 
     @Test
@@ -303,7 +303,7 @@ class CommentServiceTest {
 
         List<CommentResponse> responses = commentService.getAllByArticleId(appMember, article.getId()).getComments();
 
-        assertThat(responses).hasSize(0);
+        assertThat(responses).isEmpty();
     }
 
     @Test
