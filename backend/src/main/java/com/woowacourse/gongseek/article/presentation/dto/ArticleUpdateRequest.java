@@ -1,5 +1,6 @@
 package com.woowacourse.gongseek.article.presentation.dto;
 
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,4 +17,6 @@ public class ArticleUpdateRequest {
 
     @Length(max = 10_000)
     private String content;
+
+    private List<String> tag;
 }
