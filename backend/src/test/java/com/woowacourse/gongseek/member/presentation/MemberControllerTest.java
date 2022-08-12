@@ -152,7 +152,6 @@ public class MemberControllerTest {
 
     @Test
     void 마이페이지에서_회원_수정_API_문서화() throws Exception {
-
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
         given(memberService.update(new LoginMember(any()), any())).willReturn(new MemberUpdateResponse("홍길동"));
