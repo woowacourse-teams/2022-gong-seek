@@ -13,7 +13,7 @@
     <property name="MAX_HISTORY" value="14"/>
 
     <springProfile name="local">
-        <include resource="console-appender.xml"/>
+        <include resource="logging/console-appender.xml"/>
         <root level="info">
             <appender-ref ref="CONSOLE"/>
         </root>
@@ -33,7 +33,7 @@
     </springProfile>
 
     <springProfile name="dev">
-        <include resource="console-appender.xml"/>
+        <include resource="logging/console-appender.xml"/>
         <include resource="logging/file-debug-appender.xml"/>
         <include resource="logging/file-info-appender.xml"/>
         <include resource="logging/file-warn-appender.xml"/>
