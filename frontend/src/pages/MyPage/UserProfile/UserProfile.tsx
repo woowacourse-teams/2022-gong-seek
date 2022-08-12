@@ -41,7 +41,7 @@ const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 				)}
 				{isEdit ? (
 					<S.ConfirmIcon
-						size={25}
+						size={20}
 						onClick={() => {
 							onClickConfirmButton({ name: editedName });
 						}}

@@ -34,6 +34,8 @@ export const UserNameBox = styled.div`
 	display: flex;
 	gap: ${({ theme }) => theme.size.SIZE_016};
 	cursor: pointer;
+
+	align-items: center;
 `;
 
 export const EditIcon = styled(FaPencilAlt)`
