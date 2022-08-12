@@ -40,4 +40,8 @@ public class Member {
     public void updateAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
 }

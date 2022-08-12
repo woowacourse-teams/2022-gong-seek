@@ -1,8 +1,7 @@
 package com.woowacourse.gongseek.common.exception;
 
 import com.woowacourse.gongseek.article.exception.ArticleCategoryNotFoundException;
-import com.woowacourse.gongseek.article.exception.ArticleContentNullOrEmptyException;
-import com.woowacourse.gongseek.article.exception.ArticleContentTooLongException;
+import com.woowacourse.gongseek.article.exception.ArticleContentNullException;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.ArticleTitleNullOrEmptyException;
 import com.woowacourse.gongseek.article.exception.ArticleTitleTooLongException;
@@ -58,8 +57,7 @@ public enum ExceptionType {
     ARTICLE_NOT_FOUND_EXCEPTION("3001", "게시글이 존재하지 않습니다.", ArticleNotFoundException.class),
     ARTICLE_TITLE_LENGTH_EXCEPTION("3002", "게시글 제목은 500자를 초과할 수 없습니다.", ArticleTitleTooLongException.class),
     ARTICLE_TITLE_NULL_OR_EMPTY_EXCEPTION("3003", "게시글 제목은 비어있을 수 없습니다.", ArticleTitleNullOrEmptyException.class),
-    ARTICLE_CONTENT_TOO_LONG_EXCEPTION("3004", "게시글 내용은 10000자를 초과할 수 없습니다.", ArticleContentTooLongException.class),
-    ARTICLE_CONTENT_NULL_OR_EMPTY_EXCEPTION("3003", "게시글 내용은 비어있을 수 없습니다.", ArticleContentNullOrEmptyException.class),
+    ARTICLE_CONTENT_NULL_EXCEPTION("3004", "게시글 내용은 null일 수 없습니다.", ArticleContentNullException.class),
     ARTICLE_CATEGORY_NOT_FOUND_EXCEPTION("3005", "존재하지 않는 카테고리입니다.", ArticleCategoryNotFoundException.class),
 
     COMMENT_NOT_FOUND_EXCEPTION("4001", "댓글이 존재하지 않습니다.", CommentNotFoundException.class),

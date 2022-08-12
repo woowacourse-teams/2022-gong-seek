@@ -64,3 +64,20 @@ include::{snippets}/member-get-comments/request-headers.adoc[]
 
 include::{snippets}/member-get-comments/http-response.adoc[]
 include::{snippets}/member-get-comments/response-fields.adoc[]
+
+== 회원 정보 수정
+
+`PATCH /api/members/me`
+
+=== Request
+
+include::{snippets}/member-update/http-request.adoc[]
+
+=== Header
+
+include::{snippets}/member-update/request-headers.adoc[]
+
+== Response
+
+include::{snippets}/member-update/http-response.adoc[]
+include::{snippets}/member-update/response-fields.adoc[]

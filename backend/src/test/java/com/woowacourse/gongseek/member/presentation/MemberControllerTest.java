@@ -6,7 +6,9 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -18,6 +20,8 @@ import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.config.RestDocsConfig;
 import com.woowacourse.gongseek.member.application.MemberService;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
+import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateRequest;
+import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticleResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentResponse;
@@ -32,6 +36,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -56,10 +61,9 @@ public class MemberControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void 로그인한_사용자일때_회원_조회_API_문서화() throws Exception {
+    void 마이페이지에서_회원_조회_API_문서화() throws Exception {
         MemberDto memberDto = new MemberDto("레넌", "https://avatars.githubusercontent.com/u/70756680?v=4");
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
-        given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         given(memberService.getOne(new LoginMember(any()))).willReturn(memberDto);
 
         ResultActions results = mockMvc.perform(get("/api/members/me")
@@ -80,7 +84,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    void 로그인한_사용자일때_회원_게시글_조회_API_문서화() throws Exception {
+    void 마이페이지에서_회원_게시글_조회_API_문서화() throws Exception {
         MyPageArticlesResponse myPageArticlesResponse = new MyPageArticlesResponse(
                 List.of(
                         new MyPageArticleResponse(1L, "title1", "question1", 10, LocalDateTime.now(),
@@ -89,7 +93,6 @@ public class MemberControllerTest {
                                 LocalDateTime.now(), 200))
         );
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
-        given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         given(memberService.getArticles(new LoginMember(any()))).willReturn(myPageArticlesResponse);
 
         ResultActions results = mockMvc.perform(get("/api/members/me/articles")
@@ -115,7 +118,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    void 로그인한_사용자일때_회원_댓글_조회_API_문서화() throws Exception {
+    void 마이페이지에서_회원_댓글_조회_API_문서화() throws Exception {
         MyPageCommentsResponse myPageCommentsResponse = new MyPageCommentsResponse(
                 List.of(
                         new MyPageCommentResponse(1L, "댓글1", 1L, Category.QUESTION.getValue(), LocalDateTime.now(),
@@ -124,7 +127,6 @@ public class MemberControllerTest {
                                 LocalDateTime.now()))
         );
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
-        given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         given(memberService.getComments(new LoginMember(any()))).willReturn(myPageCommentsResponse);
 
         ResultActions results = mockMvc.perform(get("/api/members/me/comments")
@@ -144,6 +146,33 @@ public class MemberControllerTest {
                                 fieldWithPath("comments[].category").type(JsonFieldType.STRING).description("게시글 카테고리"),
                                 fieldWithPath("comments[].createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                 fieldWithPath("comments[].updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
+                        )
+                ));
+    }
+
+    @Test
+    void 마이페이지에서_회원_수정_API_문서화() throws Exception {
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
+        given(memberService.update(new LoginMember(any()), any())).willReturn(new MemberUpdateResponse("홍길동"));
+
+        ResultActions results = mockMvc.perform(patch("/api/members/me")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(new MemberUpdateRequest("홍길동")))
+                .characterEncoding("UTF-8"));
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("member-update",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
+                        requestFields(
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("수정할 이름")
+                        ),
+                        responseFields(
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("수정할 이름")
                         )
                 ));
     }
