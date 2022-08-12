@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.article.domain;
 
-import com.woowacourse.gongseek.article.exception.ArticleContentNullOrEmptyException;
-import com.woowacourse.gongseek.article.exception.ArticleContentTooLongException;
+import com.woowacourse.gongseek.article.exception.ArticleContentNullException;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -14,26 +13,17 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Content {
 
-    private static final int MAX_CONTENT_LENGTH = 10_000;
-
-    @Column(name = "content", nullable = false, length = MAX_CONTENT_LENGTH)
+    @Column(name = "content", nullable = false, columnDefinition = "text")
     private String value;
 
     public Content(String value) {
-        validateNullOrEmpty(value);
-        validateLength(value);
+        validateNull(value);
         this.value = value;
     }
 
-    private void validateNullOrEmpty(String value) {
-        if (Objects.isNull(value) || value.isBlank()) {
-            throw new ArticleContentNullOrEmptyException();
-        }
-    }
-
-    private void validateLength(String value) {
-        if (value.length() > MAX_CONTENT_LENGTH) {
-            throw new ArticleContentTooLongException(value.length());
+    private void validateNull(String value) {
+        if (Objects.isNull(value)) {
+            throw new ArticleContentNullException();
         }
     }
 }
