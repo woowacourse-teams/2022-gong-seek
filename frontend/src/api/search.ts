@@ -24,6 +24,7 @@ export const getSearchResult = async ({
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
-		cursorId: '',
+		cursorId: String(data.articles[data.articles.length - 1].id),
+		target: target,
 	};
 };
