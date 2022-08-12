@@ -13,7 +13,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> runtimeException() {
-        return ResponseEntity.internalServerError().body(new ErrorResponse("500", "알 수 없는 에러가 발생했습니다."));
+    public ResponseEntity<ErrorResponse> runtimeException(Exception e) {
+        return ResponseEntity.internalServerError().body(new ErrorResponse("500", e.getMessage()));
     }
 }

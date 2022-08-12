@@ -5,6 +5,7 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
+import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -17,7 +18,7 @@ import org.springframework.http.MediaType;
 @SuppressWarnings("NonAsciiCharacters")
 public class ArticleFixtures {
 
-    public static ExtractableResponse<Response> 특정_게시물을_등록한다(TokenResponse tokenResponse,
+    public static ExtractableResponse<Response> 특정_게시물을_등록한다(AccessTokenResponse tokenResponse,
                                                              ArticleRequest articleRequest) {
         return RestAssured
                 .given().log().all()
@@ -30,29 +31,29 @@ public class ArticleFixtures {
                 .extract();
     }
 
-    public static ArticleIdResponse 토론_게시물을_동록한다(TokenResponse tokenResponse) {
+    public static ArticleIdResponse 토론_게시물을_등록한다(AccessTokenResponse tokenResponse) {
         ArticleRequest request = new ArticleRequest("title", "content", Category.DISCUSSION.getValue(),
                 List.of("Spring"), false);
         return 특정_게시물을_등록한다(tokenResponse, request).as(ArticleIdResponse.class);
     }
 
-    public static ExtractableResponse<Response> 기명으로_게시물을_등록한다(TokenResponse tokenResponse, Category category) {
+    public static ExtractableResponse<Response> 기명으로_게시물을_등록한다(AccessTokenResponse tokenResponse, Category category) {
         ArticleRequest request = new ArticleRequest("title", "content", category.getValue(), List.of("Spring"), false);
         return 특정_게시물을_등록한다(tokenResponse, request);
     }
 
-    public static ExtractableResponse<Response> 익명으로_게시물을_등록한다(TokenResponse tokenResponse, Category category) {
+    public static ExtractableResponse<Response> 익명으로_게시물을_등록한다(AccessTokenResponse tokenResponse, Category category) {
         ArticleRequest request = new ArticleRequest("title", "content", category.getValue(), List.of("Spring"), true);
         return 특정_게시물을_등록한다(tokenResponse, request);
     }
 
-    public static ExtractableResponse<Response> 해시태그_없이_게시글을_등록한다(TokenResponse tokenResponse, Category category) {
+    public static ExtractableResponse<Response> 해시태그_없이_게시글을_등록한다(AccessTokenResponse tokenResponse,
+                                                                  Category category) {
         ArticleRequest request = new ArticleRequest("title", "content", category.getValue(), new ArrayList<>(), true);
         return 특정_게시물을_등록한다(tokenResponse, request);
     }
 
-
-    public static void 조회수가_있는_게시물_5개를_생성한다(TokenResponse tokenResponse, int count, Category category) {
+    public static void 조회수가_있는_게시물_5개를_생성한다(AccessTokenResponse tokenResponse, int count, Category category) {
         for (int i = 0; i < 5; i++) {
             ArticleIdResponse response = 기명으로_게시물을_등록한다(tokenResponse, category)
                     .as(ArticleIdResponse.class);
@@ -62,7 +63,7 @@ public class ArticleFixtures {
         }
     }
 
-    public static ExtractableResponse<Response> 로그인_후_게시물을_조회한다(TokenResponse tokenResponse,
+    public static ExtractableResponse<Response> 로그인_후_게시물을_조회한다(AccessTokenResponse tokenResponse,
                                                                 ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
@@ -99,6 +100,12 @@ public class ArticleFixtures {
                 .extract();
     }
 
+
+    public static ExtractableResponse<Response> 로그인_후_게시물을_수정한다(AccessTokenResponse tokenResponse,
+                                                                ArticleIdResponse articleIdResponse) {
+        return 게시물을_수정한다(tokenResponse.getAccessToken(), articleIdResponse);
+    }
+
     private static ExtractableResponse<Response> 게시물을_수정한다(String accessToken, ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
@@ -120,7 +127,7 @@ public class ArticleFixtures {
         return 게시물을_수정한다(null, articleIdResponse);
     }
 
-    public static ExtractableResponse<Response> 로그인_후_게시물을_삭제한다(TokenResponse tokenResponse,
+    public static ExtractableResponse<Response> 로그인_후_게시물을_삭제한다(AccessTokenResponse tokenResponse,
                                                                 ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()

@@ -3,6 +3,7 @@ package com.woowacourse.gongseek.article.presentation.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.article.domain.Article;
+import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,6 +34,10 @@ public class ArticleResponse {
 
     private boolean hasVote;
 
+    private Boolean isLike;
+
+    private Long likeCount;
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
@@ -40,7 +45,7 @@ public class ArticleResponse {
     private LocalDateTime updatedAt;
 
     public ArticleResponse(Article article, List<String> tag, AuthorDto authorDto, boolean isAuthor,
-                           boolean hasVote) {
+                           boolean hasVote, LikeResponse likeResponse) {
         this(
                 article.getTitle(),
                 tag,
@@ -49,18 +54,22 @@ public class ArticleResponse {
                 isAuthor,
                 article.getViews(),
                 hasVote,
+                likeResponse.getIsLike(),
+                likeResponse.getLikeCount(),
                 article.getCreatedAt(),
                 article.getUpdatedAt()
         );
     }
 
-    public ArticleResponse(Article article, List<String> tag, boolean isAuthor, boolean hasVote) {
+    public ArticleResponse(Article article, List<String> tag, boolean isAuthor, boolean hasVote,
+                           LikeResponse likeResponse) {
         this(
                 article,
                 tag,
                 new AuthorDto(article.getMember()),
                 isAuthor,
-                hasVote
+                hasVote,
+                likeResponse
         );
     }
 }

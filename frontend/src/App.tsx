@@ -12,6 +12,7 @@ import CategorySelector from '@/pages/CategorySelector/CategorySelector';
 import DiscussionDetail from '@/pages/DiscussionDetail';
 import ErrorDetail from '@/pages/ErrorDetail';
 import Home from '@/pages/Home';
+import InquirePage from '@/pages/Inquire';
 import Login from '@/pages/Login';
 import LoginController from '@/pages/Login/LoginController/LoginController';
 import MyPage from '@/pages/MyPage';
@@ -65,9 +66,9 @@ const App = () => {
 						<Route path="/articles/modify/:category/:id" element={<UpdateWriting />} />
 						<Route path="/search-result" element={<Search />} />
 						<Route path="/articles/discussion/:id" element={<DiscussionDetail />} />
-						<Route path="/articles/discussion/:id" element={<DiscussionDetail />} />
 						<Route path="/" element={<Home />} />
 						<Route path="/*" element={<NotFound />} />
+						<Route path="/inquire" element={<InquirePage />} />
 					</Routes>
 				</Content>
 			</ErrorBoundary>

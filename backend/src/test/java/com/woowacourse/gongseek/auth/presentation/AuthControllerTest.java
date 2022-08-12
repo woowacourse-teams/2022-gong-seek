@@ -2,6 +2,9 @@ package com.woowacourse.gongseek.auth.presentation;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -25,6 +28,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -63,11 +67,15 @@ class AuthControllerTest {
     }
 
     @Test
-    void 로그인_ACCESS_TOKEN_생성_API_문서화() throws Exception {
+    void 로그인_API_문서화() throws Exception {
         OAuthCodeRequest request = new OAuthCodeRequest("code");
-        given(authService.generateAccessToken(any())).willReturn(new TokenResponse("accessToken"));
-
-        ResultActions results = mockMvc.perform(post("/api/auth/token")
+        given(authService.generateToken(any())).willReturn(
+                TokenResponse.builder()
+                        .refreshToken("refreshToken")
+                        .accessToken("accessToken")
+                        .build()
+        );
+        ResultActions results = mockMvc.perform(post("/api/auth/login")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8"));
@@ -75,11 +83,44 @@ class AuthControllerTest {
         results.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("login-token",
+                                responseHeaders(
+                                        headerWithName(HttpHeaders.SET_COOKIE).description("리프레시 토큰")
+                                ),
                                 requestFields(
                                         fieldWithPath("code").type(JsonFieldType.STRING).description("사용자 인가코드")
                                 ),
                                 responseFields(
                                         fieldWithPath("accessToken").type(JsonFieldType.STRING).description("로그인 엑세스 토큰")
+                                )
+                        )
+                );
+    }
+
+    @Test
+    void 토큰_재발급_API_문서화() throws Exception {
+        given(authService.renewToken(any())).willReturn(
+                TokenResponse.builder()
+                        .refreshToken("new-refreshToken")
+                        .accessToken("new-accessToken")
+                        .build()
+        );
+
+        ResultActions results = mockMvc.perform(get("/api/auth/refresh")
+                .header(HttpHeaders.COOKIE, "gongSeek-refreshToken")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8"));
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("renew-token",
+                                requestHeaders(
+                                        headerWithName(HttpHeaders.COOKIE).description("기존의 리프레시 토큰")
+                                ),
+                                responseHeaders(
+                                        headerWithName(HttpHeaders.SET_COOKIE).description("갱신된 리프레시 토큰")
+                                ),
+                                responseFields(
+                                        fieldWithPath("accessToken").type(JsonFieldType.STRING).description("갱신된 엑세스 토큰")
                                 )
                         )
                 );

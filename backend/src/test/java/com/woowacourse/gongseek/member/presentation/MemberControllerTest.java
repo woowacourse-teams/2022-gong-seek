@@ -58,8 +58,8 @@ public class MemberControllerTest {
     @Test
     void 로그인한_사용자일때_회원_조회_API_문서화() throws Exception {
         MemberDto memberDto = new MemberDto("레넌", "https://avatars.githubusercontent.com/u/70756680?v=4");
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         given(memberService.getOne(new LoginMember(any()))).willReturn(memberDto);
 
         ResultActions results = mockMvc.perform(get("/api/members/me")
@@ -88,8 +88,8 @@ public class MemberControllerTest {
                         new MyPageArticleResponse(1L, "title2", "question2", 20, LocalDateTime.now(),
                                 LocalDateTime.now(), 200))
         );
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         given(memberService.getArticles(new LoginMember(any()))).willReturn(myPageArticlesResponse);
 
         ResultActions results = mockMvc.perform(get("/api/members/me/articles")
@@ -123,8 +123,8 @@ public class MemberControllerTest {
                         new MyPageCommentResponse(2L, "댓글2", 1L, Category.DISCUSSION.getValue(), LocalDateTime.now(),
                                 LocalDateTime.now()))
         );
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         given(memberService.getComments(new LoginMember(any()))).willReturn(myPageCommentsResponse);
 
         ResultActions results = mockMvc.perform(get("/api/members/me/comments")

@@ -79,7 +79,7 @@ class MemberServiceTest {
     @Test
     void 비회원은_회원_정보를_조회할_수_없다() {
         assertThatThrownBy(() -> memberService.getOne(new GuestMember()))
-                .isInstanceOf(MemberNotFoundException.class)
+                .isExactlyInstanceOf(MemberNotFoundException.class)
                 .hasMessage("회원이 존재하지 않습니다.");
     }
 
@@ -99,7 +99,7 @@ class MemberServiceTest {
     @Test
     void 비회원은_작성한_게시글들을_조회할_수_없다() {
         assertThatThrownBy(() -> memberService.getArticles(new GuestMember()))
-                .isInstanceOf(MemberNotFoundException.class)
+                .isExactlyInstanceOf(MemberNotFoundException.class)
                 .hasMessage("회원이 존재하지 않습니다.");
     }
 
@@ -130,7 +130,7 @@ class MemberServiceTest {
     @Test
     void 비회원은_작성한_댓글들을_조회할_수_없다() {
         assertThatThrownBy(() -> memberService.getComments(new GuestMember()))
-                .isInstanceOf(MemberNotFoundException.class)
+                .isExactlyInstanceOf(MemberNotFoundException.class)
                 .hasMessage("회원이 존재하지 않습니다.");
     }
 }

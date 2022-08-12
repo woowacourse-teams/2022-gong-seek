@@ -431,6 +431,7 @@ public class ArticleServiceTest {
 
     @Test
     void 페이지가_10개씩_조회된다() {
+        AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
         List<Article> articles = new ArrayList<>();
@@ -441,7 +442,8 @@ public class ArticleServiceTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(null, 0, Category.QUESTION.getValue(), "latest", 10);
+        ArticlePageResponse response = articleService.getAll(null, 0, Category.QUESTION.getValue(), "latest", 10,
+                loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
         assertAll(
@@ -452,6 +454,7 @@ public class ArticleServiceTest {
 
     @Test
     void 요청으로_들어온_페이지ID_다음부터_반환해준다() {
+        AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
         List<Article> articles = new ArrayList<>();
@@ -462,7 +465,8 @@ public class ArticleServiceTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(10L, 0, Category.QUESTION.getValue(), "latest", 10);
+        ArticlePageResponse response = articleService.getAll(10L, 0, Category.QUESTION.getValue(), "latest", 10,
+                loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
         assertAll(
@@ -476,6 +480,7 @@ public class ArticleServiceTest {
     @NullSource
     @ValueSource(ints = {0})
     void 페이지가_10개씩_조회된_후_더이상_조회할_페이지가_없으면_hasNext는_false가_된다(Integer cursorViews) {
+        AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
         List<Article> articles = new ArrayList<>();
@@ -487,7 +492,7 @@ public class ArticleServiceTest {
         articleRepository.saveAll(articles);
 
         ArticlePageResponse response = articleService.getAll(null, cursorViews, Category.QUESTION.getValue(),
-                "latest", 10);
+                "latest", 10, loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
         assertAll(
@@ -498,7 +503,8 @@ public class ArticleServiceTest {
 
     @Test
     void 공백으로_게시글을_검색한_경우_빈_값이_나온다() {
-        ArticlePageResponse articlePageResponse = articleService.search(null, 1, " ");
+        AppMember loginMember = new LoginMember(member.getId());
+        ArticlePageResponse articlePageResponse = articleService.search(null, 1, " ", loginMember);
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(0),
@@ -508,6 +514,7 @@ public class ArticleServiceTest {
 
     @Test
     void 페이지가_10개씩_검색된_후_더이상_조회할_페이지가_없으면_hasNext가_false가_된다() {
+        AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
         for (int i = 0; i < 10; i++) {
@@ -516,7 +523,7 @@ public class ArticleServiceTest {
                             false));
         }
 
-        ArticlePageResponse articlePageResponse = articleService.search(null, 10, "질문");
+        ArticlePageResponse articlePageResponse = articleService.search(null, 10, "질문", loginMember);
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(10),
@@ -526,6 +533,7 @@ public class ArticleServiceTest {
 
     @Test
     void 검색할_때_무한_스크롤이_가능하다() {
+        AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
         for (int i = 0; i < 20; i++) {
@@ -534,9 +542,9 @@ public class ArticleServiceTest {
                             false));
         }
 
-        ArticlePageResponse firstPageResponse = articleService.search(null, 10, "질문");
+        ArticlePageResponse firstPageResponse = articleService.search(null, 10, "질문", loginMember);
         ArticlePageResponse secondPageResponse = articleService.search(
-                firstPageResponse.getArticles().get(9).getId(), 10, "질문");
+                firstPageResponse.getArticles().get(9).getId(), 10, "질문", loginMember);
 
         assertAll(
                 () -> assertThat(firstPageResponse.getArticles()).hasSize(10),

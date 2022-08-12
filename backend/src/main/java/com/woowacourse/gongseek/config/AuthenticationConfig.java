@@ -23,6 +23,7 @@ public class AuthenticationConfig implements WebMvcConfigurer {
         WebMvcConfigurer.super.addInterceptors(registry);
         registry.addInterceptor(new AuthenticationInterceptor(jwtTokenProvider))
                 .addPathPatterns("/**")
+                .excludePathPatterns("/docs/**")
                 .excludePathPatterns("/api/auth/**");
     }
 
