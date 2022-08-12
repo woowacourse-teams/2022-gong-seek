@@ -5,4 +5,4 @@
 - link:/docs/comment.html[댓글 관련 API]
 - link:/docs/member.html[회원 관련 API]
 - link:/docs/vote.html[투표 관련 API]
-
+- link:/docs/like.html[추천 관련 API]
