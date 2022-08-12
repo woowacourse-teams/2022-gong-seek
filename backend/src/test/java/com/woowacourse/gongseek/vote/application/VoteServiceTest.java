@@ -90,7 +90,7 @@ class VoteServiceTest {
         assertThatThrownBy(() -> voteService.create(new LoginMember(member.getId()), article.getId(),
                 new VoteCreateRequest(Set.of("Dto 최고다.", "VO 최고다"), LocalDateTime.now().plusDays(5)))
         ).isExactlyInstanceOf(UnavailableArticleException.class)
-                .hasMessage("토론 게시물만 투표를 생성할 수 있습니다.");
+                .hasMessageContaining("토론 게시물만 투표를 생성할 수 있습니다.");
     }
 
     @Test
@@ -176,6 +176,6 @@ class VoteServiceTest {
         assertThatThrownBy(() -> voteService.doVote(discussionArticle.getId(), new GuestMember(),
                 new SelectVoteItemIdRequest(voteItems.get(0).getId())))
                 .isExactlyInstanceOf(MemberNotFoundException.class)
-                .hasMessage("회원이 존재하지 않습니다.");
+                .hasMessageContaining("회원이 존재하지 않습니다.");
     }
 }

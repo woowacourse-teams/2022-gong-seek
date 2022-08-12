@@ -3,7 +3,8 @@ package com.woowacourse.gongseek.comment.application;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
-import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
+import com.woowacourse.gongseek.auth.exception.NotAuthorException;
+import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
@@ -45,7 +46,7 @@ public class CommentService {
 
     private void validateGuest(AppMember appMember) {
         if (appMember.isGuest()) {
-            throw new NoAuthorizationException();
+            throw new NotMemberException();
         }
     }
 
@@ -60,12 +61,12 @@ public class CommentService {
 
     private Member getMember(AppMember appMember) {
         return memberRepository.findById(appMember.getPayload())
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberNotFoundException(appMember.getPayload()));
     }
 
     private Article getArticle(Long articleId) {
         return articleRepository.findById(articleId)
-                .orElseThrow(ArticleNotFoundException::new);
+                .orElseThrow(() -> new ArticleNotFoundException(articleId));
     }
 
     @Transactional(readOnly = true)
@@ -106,12 +107,12 @@ public class CommentService {
 
     private Comment getComment(Long commentId) {
         return commentRepository.findById(commentId)
-                .orElseThrow(CommentNotFoundException::new);
+                .orElseThrow(() -> new CommentNotFoundException(commentId));
     }
 
     private void validateAuthor(Comment comment, Member member) {
         if (!isAuthor(comment, member)) {
-            throw new NoAuthorizationException();
+            throw new NotAuthorException(comment.getArticle().getId(), member.getId());
         }
     }
 

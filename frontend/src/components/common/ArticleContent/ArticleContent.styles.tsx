@@ -140,3 +140,22 @@ export const FillHeart = styled(AiFillHeart)`
 
 	color: ${({ theme }) => theme.colors.RED_600};
 `;
+
+export const HashTagListBox = styled.section`
+	width: 100%;
+
+	display: flex;
+	flex-wrap: wrap;
+
+	gap: ${({ theme }) => theme.size.SIZE_004};
+`;
+
+export const HashTagItem = styled.div`
+	font-size: ${({ theme }) => theme.size.SIZE_014};
+
+	background: transparent;
+	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
+	border-radius: ${({ theme }) => theme.size.SIZE_004};
+
+	padding: ${({ theme }) => theme.size.SIZE_004};
+`;

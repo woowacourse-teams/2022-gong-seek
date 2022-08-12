@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.member.domain.Member;
+import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -25,6 +26,8 @@ public class ArticleRequest {
 
     @NotBlank
     private String category;
+
+    private List<String> tag;
 
     @NotNull
     @JsonProperty("isAnonymous")

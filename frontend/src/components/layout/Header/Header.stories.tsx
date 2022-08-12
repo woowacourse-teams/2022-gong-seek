@@ -4,13 +4,7 @@ import { Story, Meta } from '@storybook/react';
 export default {
 	title: 'layout/Header',
 	component: Header,
-	decorators: [
-		(Story) => (
-			<div style={{ width: '320px' }}>
-				<Story />
-			</div>
-		),
-	],
+	decorators: [(Story) => <Story />],
 } as Meta;
 
 const Template: Story = (args) => <Header {...args} />;

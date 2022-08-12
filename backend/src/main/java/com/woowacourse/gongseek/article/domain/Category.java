@@ -1,5 +1,6 @@
 package com.woowacourse.gongseek.article.domain;
 
+import com.woowacourse.gongseek.article.exception.ArticleCategoryNotFoundException;
 import java.util.Arrays;
 import lombok.Getter;
 
@@ -19,6 +20,6 @@ public enum Category {
         return Arrays.stream(values())
                 .filter(it -> it.value.equals(value))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
+                .orElseThrow(ArticleCategoryNotFoundException::new);
     }
 }
