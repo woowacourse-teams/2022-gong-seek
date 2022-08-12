@@ -137,7 +137,7 @@ class MemberServiceTest {
     }
 
     @Test
-    void 회원의_이름을_수정한다(){
+    void 회원의_이름을_수정한다() {
         MemberUpdateRequest request = new MemberUpdateRequest("홍길동");
         MemberUpdateResponse response = memberService.update(new LoginMember(member.getId()), request);
 
@@ -145,7 +145,7 @@ class MemberServiceTest {
     }
 
     @Test
-    void 권한이_없는_회원은_이름을_수정하면_예외가_발생한다(){
+    void 권한이_없는_회원은_이름을_수정하면_예외가_발생한다() {
         MemberUpdateRequest request = new MemberUpdateRequest("홍길동");
 
         assertThatThrownBy(() -> memberService.update(new GuestMember(), request))
