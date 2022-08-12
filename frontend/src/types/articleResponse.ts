@@ -11,6 +11,7 @@ export interface CommonArticleType {
 	commentCount: number;
 	createdAt: string;
 	views: number;
+	tag: string[];
 	isLike: boolean;
 	likeCount: number;
 }

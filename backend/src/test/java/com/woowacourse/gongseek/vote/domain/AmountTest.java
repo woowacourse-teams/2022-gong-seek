@@ -12,7 +12,7 @@ class AmountTest {
     void 투표수가_음수일경우_예외가_발생한다() {
         assertThatThrownBy(() -> new Amount(-1))
                 .isExactlyInstanceOf(InvalidVoteAmountException.class)
-                .hasMessage("투표수는 양수여야만 합니다.");
+                .hasMessageContaining("투표수는 양수여야만 합니다.");
     }
 
     @Test

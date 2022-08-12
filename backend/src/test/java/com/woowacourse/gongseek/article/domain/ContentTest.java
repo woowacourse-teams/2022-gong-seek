@@ -40,6 +40,6 @@ public class ContentTest {
         String content = "a".repeat(10001);
         assertThatThrownBy(() -> new Content(content))
                 .isExactlyInstanceOf(ArticleContentTooLongException.class)
-                .hasMessage("게시글 내용은 10000자를 초과할 수 없습니다.");
+                .hasMessageContaining("게시글 내용은 10000자를 초과할 수 없습니다.");
     }
 }

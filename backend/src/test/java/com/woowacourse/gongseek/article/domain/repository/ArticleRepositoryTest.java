@@ -9,7 +9,6 @@ import com.woowacourse.gongseek.config.JpaAuditingConfig;
 import com.woowacourse.gongseek.config.QuerydslConfig;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
-import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,9 +34,6 @@ class ArticleRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
-
-    @Autowired
-    private TagRepository tagRepository;
 
     @BeforeEach
     void setUp() {

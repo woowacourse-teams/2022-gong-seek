@@ -80,7 +80,7 @@ class MemberServiceTest {
     void 비회원은_회원_정보를_조회할_수_없다() {
         assertThatThrownBy(() -> memberService.getOne(new GuestMember()))
                 .isExactlyInstanceOf(MemberNotFoundException.class)
-                .hasMessage("회원이 존재하지 않습니다.");
+                .hasMessageContaining("회원이 존재하지 않습니다.");
     }
 
     @Test
@@ -93,14 +93,14 @@ class MemberServiceTest {
 
         MyPageArticlesResponse response = memberService.getArticles(new LoginMember(member.getId()));
 
-        assertThat(response.getArticles()).size().isEqualTo(3);
+        assertThat(response.getArticles()).hasSize(3);
     }
 
     @Test
     void 비회원은_작성한_게시글들을_조회할_수_없다() {
         assertThatThrownBy(() -> memberService.getArticles(new GuestMember()))
                 .isExactlyInstanceOf(MemberNotFoundException.class)
-                .hasMessage("회원이 존재하지 않습니다.");
+                .hasMessageContaining("회원이 존재하지 않습니다.");
     }
 
     @Test
@@ -124,13 +124,13 @@ class MemberServiceTest {
 
         MyPageCommentsResponse response = memberService.getComments(new LoginMember(member.getId()));
 
-        assertThat(response.getComments()).size().isEqualTo(3);
+        assertThat(response.getComments()).hasSize(3);
     }
 
     @Test
     void 비회원은_작성한_댓글들을_조회할_수_없다() {
         assertThatThrownBy(() -> memberService.getComments(new GuestMember()))
                 .isExactlyInstanceOf(MemberNotFoundException.class)
-                .hasMessage("회원이 존재하지 않습니다.");
+                .hasMessageContaining("회원이 존재하지 않습니다.");
     }
 }
