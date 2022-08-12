@@ -5,7 +5,7 @@ import { Category } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 import { dateTimeConverter, exculdeSpecialWordConverter } from '@/utils/converter';
 
-interface ArticleItemProps {
+export interface ArticleItemProps {
 	article: {
 		id: number;
 		title: string;
@@ -14,6 +14,8 @@ interface ArticleItemProps {
 		category: Category;
 		commentCount: number;
 		createdAt: string;
+		hashTag: string[];
+		views: number;
 		isLike: boolean;
 		likeCount: number;
 	};
@@ -41,7 +43,8 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 			</S.ArticleItemTitle>
 			<S.ArticleInfoBox>
 				<S.ArticleTimeStamp>{dateTimeConverter(article.createdAt)}</S.ArticleTimeStamp>
-				<S.Views>댓글 수 {article.commentCount}</S.Views>
+				<S.CommentCount>댓글 수 {article.commentCount}</S.CommentCount>
+				<S.Views>조회 수 {article.views}</S.Views>
 			</S.ArticleInfoBox>
 			<S.Content>{exculdeSpecialWordConverter(article.content)}</S.Content>
 			<S.FooterBox>
@@ -60,6 +63,10 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 					</S.HeartBox>
 				</S.RightFooterBox>
 			</S.FooterBox>
+			<S.HashTagListBox>
+				{article.hashTag.length >= 1 &&
+					article.hashTag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}
+			</S.HashTagListBox>
 		</S.Container>
 	);
 };

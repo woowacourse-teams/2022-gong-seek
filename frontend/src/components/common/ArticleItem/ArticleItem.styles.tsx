@@ -69,6 +69,11 @@ export const Views = styled.div`
 	font-weight: 400;
 `;
 
+export const CommentCount = styled.div`
+	font-size: ${({ theme }) => theme.size.SIZE_010};
+	font-weight: 400;
+`;
+
 export const ArticleInfoBox = styled.div`
 	display: flex;
 	justify-content: space-between;
@@ -145,4 +150,19 @@ export const RightFooterBox = styled.div`
 	gap: ${({ theme }) => theme.size.SIZE_012};
 
 	margin-left: auto;
+`;
+
+export const HashTagListBox = styled.div`
+	display: flex;
+	gap: ${({ theme }) => theme.size.SIZE_004};
+
+	margin-top: ${({ theme }) => theme.size.SIZE_010};
+`;
+
+export const HashTagItem = styled.div`
+	font-size: ${({ theme }) => theme.size.SIZE_010};
+	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
+	border-radius: ${({ theme }) => theme.size.SIZE_004};
+
+	padding: ${({ theme }) => theme.size.SIZE_004};
 `;

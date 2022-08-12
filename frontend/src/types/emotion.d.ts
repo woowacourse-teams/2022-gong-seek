@@ -10,6 +10,7 @@ declare module '@emotion/react' {
 		padding?: string;
 		display?: string;
 		flexDirection?: string;
+		flexWrap?: string;
 		alignItems?: string;
 		gap?: string;
 		justifyContent?: string;

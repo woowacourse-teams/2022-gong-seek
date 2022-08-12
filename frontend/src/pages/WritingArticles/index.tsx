@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import AnonymouseCheckBox from '@/components/common/AnonymousCheckBox/AnonymouseCheckBox';
+import HashTag from '@/components/common/HashTag/HashTag';
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import ToastUiEditor from '@/pages/WritingArticles/ToastUiEditor/ToastUiEditor';
@@ -19,6 +20,8 @@ const WritingArticles = () => {
 		setTitle,
 		categoryOption,
 		setCategoryOption,
+		hashTags,
+		setHashTags,
 	} = usePostWritingArticles({ category, isAnonymous });
 
 	if (isLoading) return <Loading />;
@@ -52,9 +55,7 @@ const WritingArticles = () => {
 							<S.SelectorButton />
 						</S.CategorySelectorBox>
 					</PageLayout>
-					<PageLayout width="100%" height="fit-content">
-						<S.HashTagInput type="text" placeholder="해쉬태그를 입력해주세요" />
-					</PageLayout>
+					<HashTag hashTags={hashTags} setHashTags={setHashTags} />
 				</S.OptionBox>
 			</S.SelectorBox>
 
@@ -63,10 +64,7 @@ const WritingArticles = () => {
 			</S.Content>
 			<S.SubmitBox>
 				<AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />
-				<S.SubmitButton
-					type="button"
-					onClick={() => handleSubmitButtonClick({ title, categoryOption })}
-				>
+				<S.SubmitButton type="button" onClick={() => handleSubmitButtonClick(categoryOption)}>
 					등록하기
 				</S.SubmitButton>
 			</S.SubmitBox>

@@ -19,11 +19,12 @@ const usePostWritingArticles = ({
 	const { data, mutate, isError, isLoading, isSuccess, error } = useMutation<
 		AxiosResponse<{ id: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
-		{ title: string; category: string; content: string; isAnonymous: boolean }
+		{ title: string; category: string; content: string; hashTag: string[]; isAnonymous: boolean }
 	>(postWritingArticle);
 	const content = useRef<Editor | null>(null);
-	const [title, setTitle] = useState('');
-	const [categoryOption, setCategoryOption] = useState(category ? category : '');
+	const [title, setTitle] = useState<string>('');
+	const [categoryOption, setCategoryOption] = useState<string>(category ? category : '');
+	const [hashTags, setHashTags] = useState<string[]>([]);
 
 	const navigate = useNavigate();
 
@@ -56,20 +57,15 @@ const usePostWritingArticles = ({
 		}
 	}, []);
 
-	const handleSubmitButtonClick = ({
-		title,
-		categoryOption,
-	}: {
-		title: string;
-		categoryOption: string;
-	}) => {
+	const handleSubmitButtonClick = (categoryOption: string) => {
 		if (content.current === null) {
 			return;
 		}
 		mutate({
-			title,
+			title: title,
 			category: categoryOption,
 			content: content.current.getInstance().getMarkdown(),
+			hashTag: hashTags,
 			isAnonymous,
 		});
 	};
@@ -80,6 +76,8 @@ const usePostWritingArticles = ({
 		isLoading,
 		title,
 		setTitle,
+		hashTags,
+		setHashTags,
 		categoryOption,
 		setCategoryOption,
 	};

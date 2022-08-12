@@ -1,9 +1,16 @@
 import { atom } from 'recoil';
 
-export const articleState = atom({
+interface ArticleStateType {
+	title: string;
+	content: string;
+	hashTag: string[];
+}
+
+export const articleState = atom<ArticleStateType>({
 	key: 'articleState',
 	default: {
 		title: '',
 		content: '',
+		hashTag: [],
 	},
 });
