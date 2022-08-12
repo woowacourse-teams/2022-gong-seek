@@ -64,7 +64,8 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 				</S.RightFooterBox>
 			</S.FooterBox>
 			<S.HashTagListBox>
-				{article.hashTag.length >= 1 &&
+				{article.hashTag &&
+					article.hashTag.length >= 1 &&
 					article.hashTag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}
 			</S.HashTagListBox>
 		</S.Container>
