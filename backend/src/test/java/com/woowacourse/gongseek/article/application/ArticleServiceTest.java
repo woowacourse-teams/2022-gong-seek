@@ -23,6 +23,7 @@ import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.exception.ExceededTagsException;
 import java.util.ArrayList;
@@ -116,6 +117,22 @@ public class ArticleServiceTest {
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         assertThat(articleIdResponse.getId()).isNotNull();
+    }
+
+    @Test
+    void 회원이_같은_해시태그로_게시글을_여러개_작성해도_해시태그는_하나이다() {
+        ArticleRequest firstArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true);
+        ArticleRequest secondArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true);
+        articleService.save(new LoginMember(member.getId()), firstArticleRequest);
+        articleService.save(new LoginMember(member.getId()), secondArticleRequest);
+
+        List<Tag> tags = tagRepository.findAll();
+        assertAll(
+                () -> assertThat(tags).hasSize(1),
+                () -> assertThat(tags.get(0).getName().getValue()).isEqualTo("SPRING")
+        );
     }
 
     @Test

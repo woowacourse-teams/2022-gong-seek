@@ -19,7 +19,7 @@ public class ArticleResponse {
 
     private String title;
 
-    private List<String> hashtag;
+    private List<String> tag;
 
     private AuthorDto author;
 
@@ -39,11 +39,11 @@ public class ArticleResponse {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime updatedAt;
 
-    public ArticleResponse(Article article, List<String> hashtag, AuthorDto authorDto, boolean isAuthor,
+    public ArticleResponse(Article article, List<String> tag, AuthorDto authorDto, boolean isAuthor,
                            boolean hasVote) {
         this(
                 article.getTitle(),
-                hashtag,
+                tag,
                 authorDto,
                 article.getContent(),
                 isAuthor,
@@ -54,10 +54,10 @@ public class ArticleResponse {
         );
     }
 
-    public ArticleResponse(Article article, List<String> hashTag, boolean isAuthor, boolean hasVote) {
+    public ArticleResponse(Article article, List<String> tag, boolean isAuthor, boolean hasVote) {
         this(
                 article,
-                hashTag,
+                tag,
                 new AuthorDto(article.getMember()),
                 isAuthor,
                 hasVote

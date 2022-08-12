@@ -10,21 +10,20 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-@SuppressWarnings("NonAsciiCharacters")
-class TagTest {
+class NameTest {
 
     @Test
-    void 태그를_생성한다() {
-        Tag tag = new Tag("Spring");
+    void 태그_이름을_생성한다() {
+        Name name = new Name("Spring");
 
-        assertThat(tag.getName().getValue()).isEqualTo("SPRING");
+        assertThat(name.getValue()).isEqualTo("SPRING");
     }
 
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = {"", " ", "   "})
-    void 태그의_이름이_null_이거나_빈값이면_예외가_발생한다(String name) {
-        assertThatThrownBy(() -> new Tag(name))
+    void 태그의_이름이_null_이거나_빈값이면_예외가_발생한다(String value) {
+        assertThatThrownBy(() -> new Name(value))
                 .isInstanceOf(TagNameNullOrBlankException.class)
                 .hasMessage("해시태그 이름은 비어있을 수 없습니다.");
     }
@@ -32,17 +31,17 @@ class TagTest {
     @ParameterizedTest
     @ValueSource(ints = {2, 20})
     void 태그의_이름은_2자_이상_20자_이하이다(int length) {
-        String name = "A".repeat(length);
-        Tag tag = new Tag(name);
+        String value = "A".repeat(length);
+        Name name = new Name(value);
 
-        assertThat(tag.getName().getValue()).isEqualTo(name);
+        assertThat(name.getValue()).isEqualTo(value);
     }
 
     @ParameterizedTest
     @ValueSource(ints = {1, 21})
     void 태그의_이름이_2자_미만_20자_초과이면_예외가_발생한다(int length) {
-        String name = "A".repeat(length);
-        assertThatThrownBy(() -> new Tag(name))
+        String value = "A".repeat(length);
+        assertThatThrownBy(() -> new Name(value))
                 .isInstanceOf(TagNameLengthException.class)
                 .hasMessage("해시태그 이름은 2자 이상 20자 이하입니다.");
     }

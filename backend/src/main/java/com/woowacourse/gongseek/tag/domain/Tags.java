@@ -19,7 +19,7 @@ public class Tags {
 
     private void validateDuplicateTag(List<Tag> tags) {
         long tagCount = tags.stream()
-                .map(Tag::getName)
+                .map(tag -> tag.getName().getValue())
                 .distinct()
                 .count();
 
@@ -36,7 +36,7 @@ public class Tags {
 
     public List<String> getTagNames() {
         return tags.stream()
-                .map(Tag::getName)
+                .map(tag -> tag.getName().getValue())
                 .collect(Collectors.toList());
     }
 }

@@ -93,7 +93,7 @@ class ArticleControllerTest {
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리"),
-                                fieldWithPath("hashtag.[]").type(JsonFieldType.ARRAY).description("해시태그"),
+                                fieldWithPath("tag.[]").type(JsonFieldType.ARRAY).description("해시태그"),
                                 fieldWithPath("isAnonymous").type(JsonFieldType.BOOLEAN).description("익명 여부")
                         ),
                         responseFields(
@@ -131,7 +131,7 @@ class ArticleControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                                fieldWithPath("hashtag").type(JsonFieldType.ARRAY).description("해시태그"),
+                                fieldWithPath("tag").type(JsonFieldType.ARRAY).description("해시태그"),
                                 fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
@@ -174,7 +174,7 @@ class ArticleControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                                fieldWithPath("hashtag").type(JsonFieldType.ARRAY).description("해시태그"),
+                                fieldWithPath("tag").type(JsonFieldType.ARRAY).description("해시태그"),
                                 fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
@@ -213,7 +213,7 @@ class ArticleControllerTest {
                 .andDo(document("article-find-one-not-login",
                         responseFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                                fieldWithPath("hashtag").type(JsonFieldType.ARRAY).description("해시태그"),
+                                fieldWithPath("tag").type(JsonFieldType.ARRAY).description("해시태그"),
                                 fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
@@ -249,7 +249,7 @@ class ArticleControllerTest {
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("수정할 게시물 제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("수정할 게시물 내용"),
-                                fieldWithPath("hashtag").type(JsonFieldType.ARRAY).description("수정할 게시물 해시태그")
+                                fieldWithPath("tag").type(JsonFieldType.ARRAY).description("수정할 게시물 해시태그")
                         ),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시물 식별자"),
@@ -319,7 +319,7 @@ class ArticleControllerTest {
                         responseFields(
                                 fieldWithPath("articles[].id").type(JsonFieldType.NUMBER).description("게시글 식별자"),
                                 fieldWithPath("articles[].title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                fieldWithPath("articles[].hashtag").type(JsonFieldType.ARRAY).description("게시글 해시태그"),
+                                fieldWithPath("articles[].tag").type(JsonFieldType.ARRAY).description("게시글 해시태그"),
                                 fieldWithPath("articles[].author.name").type(JsonFieldType.STRING)
                                         .description("게시글 작성자 이름"),
                                 fieldWithPath("articles[].author.avatarUrl").type(JsonFieldType.STRING)
@@ -373,7 +373,7 @@ class ArticleControllerTest {
                         responseFields(
                                 fieldWithPath("articles[].id").type(JsonFieldType.NUMBER).description("게시글 식별자"),
                                 fieldWithPath("articles[].title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                fieldWithPath("articles[].hashtag").type(JsonFieldType.ARRAY).description("게시글 해시태그"),
+                                fieldWithPath("articles[].tag").type(JsonFieldType.ARRAY).description("게시글 해시태그"),
                                 fieldWithPath("articles[].author.name").type(JsonFieldType.STRING)
                                         .description("게시글 작성자 이름"),
                                 fieldWithPath("articles[].author.avatarUrl").type(JsonFieldType.STRING)

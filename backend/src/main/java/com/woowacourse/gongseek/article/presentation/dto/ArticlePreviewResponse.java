@@ -18,7 +18,7 @@ public class ArticlePreviewResponse {
 
     private Long id;
     private String title;
-    private List<String> hashtag;
+    private List<String> tag;
     private AuthorDto author;
     private String content;
     private String category;
@@ -26,12 +26,12 @@ public class ArticlePreviewResponse {
     private Integer views;
     private LocalDateTime createdAt;
 
-    public static ArticlePreviewResponse of(Article article, List<String> hashtag, int commentCount) {
+    public static ArticlePreviewResponse of(Article article, List<String> tag, int commentCount) {
 
         return new ArticlePreviewResponseBuilder()
                 .id(article.getId())
                 .title(article.getTitle())
-                .hashtag(hashtag)
+                .tag(tag)
                 .author(new AuthorDto(article.getMember()))
                 .content(article.getContent())
                 .category(article.getCategory().getValue())

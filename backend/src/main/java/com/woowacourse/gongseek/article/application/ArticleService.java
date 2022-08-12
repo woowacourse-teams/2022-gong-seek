@@ -19,6 +19,7 @@ import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
+import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
@@ -50,7 +51,7 @@ public class ArticleService {
         validateGuest(appMember);
         Member member = getAuthor(appMember, articleRequest);
 
-        Tags tags = new Tags(articleRequest.toTags());
+        Tags tags = new Tags(getTags(articleRequest.getTag()));
         List<Tag> foundTags = getTags(tags);
 
         Article article = articleRepository.save(articleRequest.toEntity(member));
@@ -74,6 +75,12 @@ public class ArticleService {
         return getMember(appMember);
     }
 
+    public List<Tag> getTags(List<String> tag) {
+        return tag.stream()
+                .map(Tag::new)
+                .collect(Collectors.toList());
+    }
+
     private List<Tag> getTags(Tags tags) {
         return tags.getTagNames().stream()
                 .map(this::getOrCreateTagIfNotExist)
@@ -81,7 +88,7 @@ public class ArticleService {
     }
 
     private Tag getOrCreateTagIfNotExist(String name) {
-        return tagRepository.findByName(name)
+        return tagRepository.findByName(new Name(name))
                 .orElseGet(() -> tagRepository.save(new Tag(name)));
     }
 
@@ -105,7 +112,7 @@ public class ArticleService {
     private List<String> getTagNames(Article article) {
         List<ArticleTag> articleTags = articleTagRepository.findAllByArticleId(article.getId());
         return articleTags.stream()
-                .map(articleTag -> articleTag.getTag().getName())
+                .map(articleTag -> articleTag.getTag().getName().getValue())
                 .collect(Collectors.toList());
     }
 
@@ -179,7 +186,7 @@ public class ArticleService {
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
-        Tags tags = new Tags(articleUpdateRequest.toTag());
+        Tags tags = new Tags(getTags(articleUpdateRequest.getTag()));
         List<Tag> foundTags = getTags(tags);
 
         Article article = checkAuthorization(appMember, id);

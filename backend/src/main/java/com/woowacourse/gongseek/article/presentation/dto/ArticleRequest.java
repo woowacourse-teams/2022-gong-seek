@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.member.domain.Member;
-import com.woowacourse.gongseek.tag.domain.Tag;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -29,7 +27,7 @@ public class ArticleRequest {
     @NotBlank
     private String category;
 
-    private List<String> hashtag;
+    private List<String> tag;
 
     @NotNull
     @JsonProperty("isAnonymous")
@@ -37,11 +35,5 @@ public class ArticleRequest {
 
     public Article toEntity(Member member) {
         return new Article(title, content, Category.from(category), member, isAnonymous);
-    }
-
-    public List<Tag> toTags() {
-        return hashtag.stream()
-                .map(Tag::new)
-                .collect(Collectors.toList());
     }
 }

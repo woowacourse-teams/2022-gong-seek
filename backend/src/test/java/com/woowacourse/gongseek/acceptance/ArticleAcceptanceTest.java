@@ -372,8 +372,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(articleUpdateResponse.getId()).isEqualTo(articleIdResponse.getId()),
                 () -> assertThat(articleUpdateResponse.getCategory()).isEqualTo(Category.QUESTION.getValue()),
-                () -> assertThat(articleResponse.getHashtag()).hasSize(1),
-                () -> assertThat(articleResponse.getHashtag().get(0)).isEqualTo("JAVA")
+                () -> assertThat(articleResponse.getTag()).hasSize(1),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("JAVA")
         );
     }
 
@@ -395,8 +395,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(articleUpdateResponse.getId()).isEqualTo(articleIdResponse.getId()),
                 () -> assertThat(articleUpdateResponse.getCategory()).isEqualTo(Category.QUESTION.getValue()),
-                () -> assertThat(articleResponse.getHashtag()).hasSize(1),
-                () -> assertThat(articleResponse.getHashtag().get(0)).isEqualTo("JAVA")
+                () -> assertThat(articleResponse.getTag()).hasSize(1),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("JAVA")
         );
     }
 
