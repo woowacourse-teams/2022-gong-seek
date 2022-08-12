@@ -62,8 +62,8 @@ class VoteControllerTest {
         VoteCreateResponse response = new VoteCreateResponse(1L);
         VoteCreateRequest request = new VoteCreateRequest(Set.of("오점 제육", "오점 편의점", "오점 서브웨이"),
                 LocalDateTime.now().plusDays(5));
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
         given(voteService.create(any(), any(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(post("/api/articles/{articleId}/votes", response.getArticleId())
@@ -97,8 +97,8 @@ class VoteControllerTest {
         VoteCreateRequest request = new VoteCreateRequest(Set.of("오점 제육", "오점 편의점", "오점 서브웨이"),
                 LocalDateTime.now().plusDays(5));
 
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
         given(voteService.getOne(any(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/{articleId}/votes", response.getArticleId())
@@ -130,8 +130,8 @@ class VoteControllerTest {
     void 투표_하기_API_문서화() throws Exception {
         SelectVoteItemIdRequest request = new SelectVoteItemIdRequest(1L);
 
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
         doNothing().when(voteService).doVote(any(), any(), any());
 
         ResultActions results = mockMvc.perform(post("/api/articles/{articleId}/votes/do", 1L)

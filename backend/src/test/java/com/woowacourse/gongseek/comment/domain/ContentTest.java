@@ -13,7 +13,7 @@ class ContentTest {
     @Test
     void 댓글이_null_이면_예외를_발생한다() {
         assertThatThrownBy(() -> new Content(null))
-                .isInstanceOf(CommentNullOrEmptyException.class)
+                .isExactlyInstanceOf(CommentNullOrEmptyException.class)
                 .hasMessage("댓글은 비어있을 수 없습니다.");
     }
 
@@ -21,7 +21,7 @@ class ContentTest {
     @ValueSource(strings = {"", " "})
     void 댓글이_비어있는_경우_예외를_발생한다(String content) {
         assertThatThrownBy(() -> new Content(content))
-                .isInstanceOf(CommentNullOrEmptyException.class)
+                .isExactlyInstanceOf(CommentNullOrEmptyException.class)
                 .hasMessage("댓글은 비어있을 수 없습니다.");
     }
 
@@ -29,7 +29,7 @@ class ContentTest {
     void 댓글이_10000자를_초과하면_예외를_발생한다() {
         String content = "a".repeat(10001);
         assertThatThrownBy(() -> new Content(content))
-                .isInstanceOf(CommentTooLongException.class)
+                .isExactlyInstanceOf(CommentTooLongException.class)
                 .hasMessageContaining("댓글은 10000자를 초과할 수 없습니다.");
     }
 }

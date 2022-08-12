@@ -21,7 +21,7 @@ const VoteGenerator = () => {
 	const onSubmitVoteForm = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		navigate(`/votes-deadline`, { state: { articleId, options } });
+		navigate(`/votes-deadline`, { state: { articleId, items: options } });
 	};
 
 	return (

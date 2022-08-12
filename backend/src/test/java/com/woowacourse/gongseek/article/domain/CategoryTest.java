@@ -14,7 +14,7 @@ class CategoryTest {
         String category = "juri";
 
         assertThatThrownBy(() -> Category.from(category))
-                .isInstanceOf(ArticleCategoryNotFoundException.class)
+                .isExactlyInstanceOf(ArticleCategoryNotFoundException.class)
                 .hasMessage("존재하지 않는 카테고리입니다.");
     }
 

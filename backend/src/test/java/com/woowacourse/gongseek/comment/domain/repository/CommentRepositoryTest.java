@@ -91,18 +91,15 @@ class CommentRepositoryTest {
     }
 
     @Test
-    void 회원이_작성한_댓글을_조회한다() {
+    void 회원들이_작성한_댓글을_조회한다() {
+        Member otherMember = new Member("rennon", "brorae", "avatar.con");
+        memberRepository.save(otherMember);
         Comment firstComment = commentRepository.save(new Comment("content1", member, article, false));
-        commentRepository.save(new Comment("content2", member, article, false));
+        Comment secondComment = commentRepository.save(new Comment("content2", otherMember, article, false));
 
-        List<Comment> comments = commentRepository.findAllByMemberId(member.getId());
+        List<Long> memberIds = List.of(member.getId(), otherMember.getId());
+        List<Comment> comments = commentRepository.findAllByMemberIdIn(memberIds);
 
-        assertAll(
-                () -> assertThat(comments).size().isEqualTo(2),
-                () -> assertThat(comments.get(0).getContent()).isEqualTo(firstComment.getContent()),
-                () -> assertThat(comments.get(0).getMember()).isEqualTo(firstComment.getMember()),
-                () -> assertThat(comments.get(0).getArticle()).isEqualTo(firstComment.getArticle()),
-                () -> assertThat(comments.get(0).isAnonymous()).isFalse()
-        );
+        assertThat(comments).containsExactly(firstComment, secondComment);
     }
 }

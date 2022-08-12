@@ -6,11 +6,13 @@ import com.woowacourse.gongseek.article.exception.ArticleContentTooLongException
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.ArticleTitleNullOrEmptyException;
 import com.woowacourse.gongseek.article.exception.ArticleTitleTooLongException;
+import com.woowacourse.gongseek.article.exception.DuplicateTagException;
 import com.woowacourse.gongseek.auth.exception.EmptyTokenException;
 import com.woowacourse.gongseek.auth.exception.GithubAccessTokenLoadFailException;
 import com.woowacourse.gongseek.auth.exception.GithubUserProfileLoadFailException;
 import com.woowacourse.gongseek.auth.exception.HttpRequestNullException;
-import com.woowacourse.gongseek.auth.exception.InvalidTokenException;
+import com.woowacourse.gongseek.auth.exception.InvalidAccessTokenException;
+import com.woowacourse.gongseek.auth.exception.InvalidRefreshTokenException;
 import com.woowacourse.gongseek.auth.exception.InvalidTokenTypeException;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
@@ -18,6 +20,9 @@ import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
 import com.woowacourse.gongseek.comment.exception.CommentNullOrEmptyException;
 import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
+import com.woowacourse.gongseek.tag.exception.ExceededTagsException;
+import com.woowacourse.gongseek.tag.exception.TagNameLengthException;
+import com.woowacourse.gongseek.tag.exception.TagNameNullOrBlankException;
 import com.woowacourse.gongseek.vote.exception.InvalidVoteAmountException;
 import com.woowacourse.gongseek.vote.exception.InvalidVoteExpiryDateException;
 import com.woowacourse.gongseek.vote.exception.InvalidVoteItemCountException;
@@ -42,10 +47,11 @@ public enum ExceptionType {
             GithubUserProfileLoadFailException.class),
     EMPTY_TOKEN_EXCEPTION("1003", "토큰이 존재하지 않습니다.", EmptyTokenException.class),
     INVALID_TOKEN_TYPE_EXCEPTION("1004", "토큰 타입이 올바르지 않습니다.", InvalidTokenTypeException.class),
-    INVALID_TOKEN_EXCEPTION("1005", "토큰이 유효하지 않습니다.", InvalidTokenException.class),
+    INVALID_TOKEN_EXCEPTION("1005", "엑세스 토큰이 유효하지 않습니다.", InvalidAccessTokenException.class),
     HTTP_REQUEST_NULL_EXCEPTION("1006", "인증할 수 있는 사용자 데이터가 없습니다.", HttpRequestNullException.class),
     NOT_AUTHOR_EXCEPTION("1007", "작성자가 아니므로 권한이 없습니다.", NotAuthorException.class),
     NOT_MEMBER_EXCEPTION("1008", "회원이 아니므로 권한이 없습니다.", NotMemberException.class),
+    INVALID_REFRESH_TOKEN_EXCEPTION("1005", "리프레시 토큰이 유효하지 않습니다.", InvalidRefreshTokenException.class),
 
     MEMBER_NOT_FOUND_EXCEPTION("2001", "회원이 존재하지 않습니다.", MemberNotFoundException.class),
 
@@ -69,6 +75,11 @@ public enum ExceptionType {
     VOTE_ITEM_NOT_FOUND_EXCEPTION("5007", "투표 항목이 존재하지 않습니다.", VoteItemNotFoundException.class),
     VOTE_HISTORY_NOT_FOUND_EXCEPTION("5008", "투표 내역이 존재하지 않습니다.", VoteHistoryNotFoundException.class),
     INVALID_VOTE_ITEM_COUNT_EXCEPTION("5009", "투표 항목 수는 2이상 5이하여야 합니다.", InvalidVoteItemCountException.class),
+
+    TAG_NAME_NULL_OR_BLANK_EXCEPTION("6001", "해시태그 이름은 비어있을 수 없습니다.", TagNameNullOrBlankException.class),
+    TAG_NAME_LENGTH_EXCEPTION("6002", "해시태그 이름은 2자 이상 20자 이하입니다.", TagNameLengthException.class),
+    DUPLICATE_TAG_EXCEPTION("6003", "해시태그 이름은 중복될 수 없습니다.", DuplicateTagException.class),
+    EXCEEDED_TAGS_EXCEPTION("6004", "해시태그는 한 게시글 당 최대 5개입니다.", ExceededTagsException.class),
 
     UNHANDLED_EXCEPTION("0000", "알 수 없는 서버 에러가 발생했습니다."),
     METHOD_ARGUMENT_NOT_VALID_EXCEPTION("0001", "요청 데이터가 잘못되었습니다."),

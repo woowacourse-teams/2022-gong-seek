@@ -71,10 +71,10 @@ class ArticleControllerTest {
     @Test
     void 질문_게시물_생성_API_문서화() throws Exception {
         ArticleIdResponse response = new ArticleIdResponse(1L);
-        ArticleRequest request = new ArticleRequest("title", "content", "question", false);
+        ArticleRequest request = new ArticleRequest("title", "content", "question", List.of("Spring"), false);
 
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
         given(articleService.save(any(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(post("/api/articles")
@@ -93,6 +93,7 @@ class ArticleControllerTest {
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리"),
+                                fieldWithPath("tag.[]").type(JsonFieldType.ARRAY).description("해시태그"),
                                 fieldWithPath("isAnonymous").type(JsonFieldType.BOOLEAN).description("익명 여부")
                         ),
                         responseFields(
@@ -103,15 +104,18 @@ class ArticleControllerTest {
 
     @Test
     void 로그인한_사용자일때_기명_게시물_단건_조회_API_문서화() throws Exception {
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
         ArticleResponse response = new ArticleResponse(
                 "title",
+                List.of("SPRING", "JAVA"),
                 new AuthorDto("rennon", "avatar.com"),
                 "content",
                 false,
                 1,
                 false,
+                false,
+                0L,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
@@ -129,12 +133,15 @@ class ArticleControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("tag").type(JsonFieldType.ARRAY).description("해시태그"),
                                 fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
                                 fieldWithPath("hasVote").type(JsonFieldType.BOOLEAN).description("투표가 있으면 true"),
+                                fieldWithPath("isLike").type(JsonFieldType.BOOLEAN).description("추천 여부"),
+                                fieldWithPath("likeCount").type(JsonFieldType.NUMBER).description("추천 수"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
                         )
@@ -143,16 +150,19 @@ class ArticleControllerTest {
 
     @Test
     void 로그인한_사용자일때_익명_게시물_단건_조회_API_문서화() throws Exception {
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
         ArticleResponse response = new ArticleResponse(
                 "title",
+                List.of("SPRING", "JAVA"),
                 new AuthorDto("익명",
                         "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"),
                 "content",
                 false,
                 1,
                 false,
+                false,
+                0L,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
@@ -170,12 +180,15 @@ class ArticleControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("tag").type(JsonFieldType.ARRAY).description("해시태그"),
                                 fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
                                 fieldWithPath("hasVote").type(JsonFieldType.BOOLEAN).description("투표가 있으면 true"),
+                                fieldWithPath("isLike").type(JsonFieldType.BOOLEAN).description("추천 여부"),
+                                fieldWithPath("likeCount").type(JsonFieldType.NUMBER).description("추천 수"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
                         )
@@ -184,15 +197,18 @@ class ArticleControllerTest {
 
     @Test
     void 로그인_안한_사용자일때_기명_게시물_단건_조회_API_문서화() throws Exception {
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
         ArticleResponse response = new ArticleResponse(
                 "title",
+                List.of("SPRING", "JAVA"),
                 new AuthorDto("rennon", "avatar.com"),
                 "content",
                 false,
                 1,
                 false,
+                false,
+                0L,
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );
@@ -205,14 +221,20 @@ class ArticleControllerTest {
         results.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("article-find-one-not-login",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
                         responseFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                fieldWithPath("tag").type(JsonFieldType.ARRAY).description("해시태그"),
                                 fieldWithPath("author.name").type(JsonFieldType.STRING).description("이름"),
                                 fieldWithPath("author.avatarUrl").type(JsonFieldType.STRING).description("프로필"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("views").type(JsonFieldType.NUMBER).description("조회수"),
                                 fieldWithPath("isAuthor").type(JsonFieldType.BOOLEAN).description("작성자이면 true"),
                                 fieldWithPath("hasVote").type(JsonFieldType.BOOLEAN).description("투표가 있으면 true"),
+                                fieldWithPath("isLike").type(JsonFieldType.BOOLEAN).description("추천 여부"),
+                                fieldWithPath("likeCount").type(JsonFieldType.NUMBER).description("추천 수"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정 날짜"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성 날짜")
                         )
@@ -221,10 +243,9 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_수정_API_문서화() throws Exception {
-        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 바꿀께요", "내용 수정합니다~~~");
+        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 바꿀께요", "내용 수정합니다~~~", List.of("JAVA"));
         ArticleUpdateResponse articleUpdateResponse = new ArticleUpdateResponse(1L, Category.QUESTION.getValue());
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(articleService.update(any(), any(), any())).willReturn(articleUpdateResponse);
 
         ResultActions results = mockMvc.perform(put("/api/articles/{id}", 1L)
@@ -241,6 +262,7 @@ class ArticleControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("수정할 게시물 제목"),
+                                fieldWithPath("tag").type(JsonFieldType.ARRAY).description("수정할 게시물 해시태그"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("수정할 게시물 내용")
                         ),
                         responseFields(
@@ -252,8 +274,8 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_삭제_API_문서화() throws Exception {
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         doNothing().when(articleService).delete(any(), any());
 
         ResultActions results = mockMvc.perform(delete("/api/articles/{id}", 1L)
@@ -272,21 +294,22 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_전체_조회_문서화() throws Exception {
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
-        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목",
+        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
                 new AuthorDto("기론", "프로필 이미지 url"),
-                "내용입니다", Category.QUESTION.getValue(), 3, 2, LocalDateTime.now());
+                "내용입니다", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
 
-        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목2",
+        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목2", List.of("SPRING"),
                 new AuthorDto("기론2", "프로필2 이미지 url"),
-                "내용입니다22", Category.DISCUSSION.getValue(), 10, 5, LocalDateTime.now());
+                "내용입니다22", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
 
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
-        given(articleService.getAll(anyLong(), anyInt(), any(), any(), anyInt())).willReturn(response);
+
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
+        given(articleService.getAll(anyLong(), anyInt(), any(), any(), anyInt(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer token")
@@ -301,6 +324,9 @@ class ArticleControllerTest {
         results.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("article-get-all",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
                         requestParameters(
                                 parameterWithName("category").description("조회할 카테고리(all, discussion, question"),
                                 parameterWithName("sort").description("정렬 기준(latest-최신순, views-조회순)"),
@@ -311,6 +337,7 @@ class ArticleControllerTest {
                         responseFields(
                                 fieldWithPath("articles[].id").type(JsonFieldType.NUMBER).description("게시글 식별자"),
                                 fieldWithPath("articles[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("articles[].tag").type(JsonFieldType.ARRAY).description("게시글 해시태그"),
                                 fieldWithPath("articles[].author.name").type(JsonFieldType.STRING)
                                         .description("게시글 작성자 이름"),
                                 fieldWithPath("articles[].author.avatarUrl").type(JsonFieldType.STRING)
@@ -322,6 +349,8 @@ class ArticleControllerTest {
                                 fieldWithPath("articles[].createdAt").type(JsonFieldType.STRING)
                                         .description("게시글 생성 날짜"),
                                 fieldWithPath("articles[].views").type(JsonFieldType.NUMBER).description("게시글 조회 수"),
+                                fieldWithPath("articles[].isLike").type(JsonFieldType.BOOLEAN).description("추천 여부"),
+                                fieldWithPath("articles[].likeCount").type(JsonFieldType.NUMBER).description("추천 수"),
                                 fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN)
                                         .description("다음에 조회 할 게시글이 있으면 true")
                         )
@@ -330,20 +359,20 @@ class ArticleControllerTest {
 
     @Test
     void 게시물_검색_문서화() throws Exception {
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
-        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목",
+        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
                 new AuthorDto("작성자1", "작성자1 이미지 url"),
-                "내용", Category.QUESTION.getValue(), 3, 2, LocalDateTime.now());
-        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목",
+                "내용", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
+        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목", List.of("SPRING"),
                 new AuthorDto("작성자2", "작성자2 이미지 url"),
-                "내용", Category.DISCUSSION.getValue(), 10, 5, LocalDateTime.now());
+                "내용", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
-        given(jwtTokenProvider.getPayload(any())).willReturn("1");
-        given(articleService.search(anyLong(), anyInt(), anyString())).willReturn(response);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
+        given(articleService.search(anyLong(), anyInt(), anyString(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/search")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer token")
@@ -356,6 +385,9 @@ class ArticleControllerTest {
         results.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("article-search",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
                         requestParameters(
                                 parameterWithName("cursorId").description("시작은 null, 마지막으로 조회한 게시물 식별자").optional(),
                                 parameterWithName("pageSize").description("가져올 게시글 개수"),
@@ -364,6 +396,7 @@ class ArticleControllerTest {
                         responseFields(
                                 fieldWithPath("articles[].id").type(JsonFieldType.NUMBER).description("게시글 식별자"),
                                 fieldWithPath("articles[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("articles[].tag").type(JsonFieldType.ARRAY).description("게시글 해시태그"),
                                 fieldWithPath("articles[].author.name").type(JsonFieldType.STRING)
                                         .description("게시글 작성자 이름"),
                                 fieldWithPath("articles[].author.avatarUrl").type(JsonFieldType.STRING)
@@ -375,6 +408,8 @@ class ArticleControllerTest {
                                 fieldWithPath("articles[].createdAt").type(JsonFieldType.STRING)
                                         .description("게시글 생성 날짜"),
                                 fieldWithPath("articles[].views").type(JsonFieldType.NUMBER).description("게시글 조회 수"),
+                                fieldWithPath("articles[].isLike").type(JsonFieldType.BOOLEAN).description("추천 여부"),
+                                fieldWithPath("articles[].likeCount").type(JsonFieldType.NUMBER).description("추천 수"),
                                 fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN)
                                         .description("다음에 조회 할 게시글이 있으면 true")
                         )

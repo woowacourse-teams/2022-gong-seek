@@ -6,7 +6,7 @@ import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.슬로;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
+import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
@@ -27,7 +27,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
     @Test
     void 토론게시물에서_투표를_생성한다() {
         //given
-        TokenResponse tokenResponse = 로그인을_한다(슬로);
+        AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
         Long articleId = 토론_게시물을_등록한다(tokenResponse).getId();
 
         //when
@@ -45,7 +45,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    private ExtractableResponse<Response> 투표를_생성한다(TokenResponse tokenResponse, Long articleId,
+    private ExtractableResponse<Response> 투표를_생성한다(AccessTokenResponse tokenResponse, Long articleId,
                                                    VoteCreateRequest voteCreateRequest) {
         return RestAssured
                 .given().log().all()
@@ -62,7 +62,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
     @Test
     void 투표를_안한_사용자가_투표를_조회하면_선택한_투표_식별자는_null이_나온다() {
         //given
-        TokenResponse tokenResponse = 로그인을_한다(슬로);
+        AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
         Long articleId = 토론_게시물을_등록한다(tokenResponse).getId();
 
         투표를_생성한다(
@@ -83,7 +83,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    private ExtractableResponse<Response> 투표를_조회한다(TokenResponse tokenResponse, Long articleId) {
+    private ExtractableResponse<Response> 투표를_조회한다(AccessTokenResponse tokenResponse, Long articleId) {
         return RestAssured
                 .given().log().all()
                 .pathParam("articleId", articleId)
@@ -98,7 +98,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
     @Test
     void 투표를_한_사용자가_투표를_조회한다() {
         //given
-        TokenResponse tokenResponse = 로그인을_한다(슬로);
+        AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
         Long articleId = 토론_게시물을_등록한다(tokenResponse).getId();
 
         투표를_생성한다(
@@ -127,7 +127,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    private ExtractableResponse<Response> 투표를_한다(TokenResponse tokenResponse, Long articleId,
+    private ExtractableResponse<Response> 투표를_한다(AccessTokenResponse tokenResponse, Long articleId,
                                                  SelectVoteItemIdRequest request) {
         return RestAssured
                 .given().log().all()
@@ -144,7 +144,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
     @Test
     void 비회원이_투표를_하면_투표수가_안_오른다() {
         //given
-        TokenResponse tokenResponse = 로그인을_한다(슬로);
+        AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
         Long articleId = 토론_게시물을_등록한다(tokenResponse).getId();
 
         투표를_생성한다(
@@ -160,7 +160,8 @@ public class VoteAcceptanceTest extends AcceptanceTest {
                 .findFirst()
                 .get()
                 .getId();
-        ErrorResponse response = 투표를_한다(new TokenResponse(""), articleId, new SelectVoteItemIdRequest(vottedItemId)).as(
+        ErrorResponse response = 투표를_한다(new AccessTokenResponse(""), articleId,
+                new SelectVoteItemIdRequest(vottedItemId)).as(
                 ErrorResponse.class);
         assertAll(
                 () -> assertThat(response.getErrorCode()).isEqualTo("1004"),

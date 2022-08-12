@@ -103,7 +103,7 @@ class CommentServiceTest {
         CommentRequest request = new CommentRequest(CONTENT, false);
 
         assertThatThrownBy(() -> commentService.save(new GuestMember(), article.getId(), request))
-                .isInstanceOf(NotMemberException.class)
+                .isExactlyInstanceOf(NotMemberException.class)
                 .hasMessage("회원이 아니므로 권한이 없습니다.");
     }
 
@@ -112,7 +112,7 @@ class CommentServiceTest {
         CommentRequest request = new CommentRequest(CONTENT, true);
 
         assertThatThrownBy(() -> commentService.save(new GuestMember(), article.getId(), request))
-                .isInstanceOf(NotMemberException.class)
+                .isExactlyInstanceOf(NotMemberException.class)
                 .hasMessage("회원이 아니므로 권한이 없습니다.");
     }
 
@@ -121,7 +121,7 @@ class CommentServiceTest {
         CommentRequest request = new CommentRequest(CONTENT, false);
 
         assertThatThrownBy(() -> commentService.save(new LoginMember(-1L), article.getId(), request))
-                .isInstanceOf(MemberNotFoundException.class)
+                .isExactlyInstanceOf(MemberNotFoundException.class)
                 .hasMessageContaining("회원이 존재하지 않습니다.");
     }
 
@@ -130,7 +130,7 @@ class CommentServiceTest {
         CommentRequest request = new CommentRequest(CONTENT, true);
 
         assertThatThrownBy(() -> commentService.save(new LoginMember(member.getId()), -1L, request))
-                .isInstanceOf(ArticleNotFoundException.class)
+                .isExactlyInstanceOf(ArticleNotFoundException.class)
                 .hasMessageContaining("게시글이 존재하지 않습니다.");
     }
 
@@ -250,7 +250,7 @@ class CommentServiceTest {
         Member newMember = memberRepository.save(new Member("judy", "judyhithub", "avatarUrl"));
         assertThatThrownBy(() -> commentService.update(new LoginMember(newMember.getId()), comment.getId(),
                 new CommentUpdateRequest("update content")))
-                .isInstanceOf(NotAuthorException.class)
+                .isExactlyInstanceOf(NotAuthorException.class)
                 .hasMessageContaining("작성자가 아니므로 권한이 없습니다.");
     }
 
@@ -260,7 +260,7 @@ class CommentServiceTest {
         CommentUpdateRequest request = new CommentUpdateRequest(CONTENT);
 
         assertThatThrownBy(() -> commentService.update(new GuestMember(), comment.getId(), request))
-                .isInstanceOf(NotMemberException.class)
+                .isExactlyInstanceOf(NotMemberException.class)
                 .hasMessage("회원이 아니므로 권한이 없습니다.");
     }
 
@@ -270,7 +270,7 @@ class CommentServiceTest {
         CommentUpdateRequest request = new CommentUpdateRequest(CONTENT);
 
         assertThatThrownBy(() -> commentService.update(new GuestMember(), comment.getId(), request))
-                .isInstanceOf(NotMemberException.class)
+                .isExactlyInstanceOf(NotMemberException.class)
                 .hasMessage("회원이 아니므로 권한이 없습니다.");
     }
 
@@ -279,7 +279,7 @@ class CommentServiceTest {
         assertThatThrownBy(
                 () -> commentService.update(new LoginMember(member.getId()), -1L,
                         new CommentUpdateRequest("update content")))
-                .isInstanceOf(CommentNotFoundException.class)
+                .isExactlyInstanceOf(CommentNotFoundException.class)
                 .hasMessageContaining("댓글이 존재하지 않습니다.");
     }
 
@@ -313,7 +313,7 @@ class CommentServiceTest {
         Member newMember = memberRepository.save(new Member("judy", "judyhithub", "avatarUrl"));
 
         assertThatThrownBy(() -> commentService.delete(new LoginMember(newMember.getId()), comment.getId()))
-                .isInstanceOf(NotAuthorException.class)
+                .isExactlyInstanceOf(NotAuthorException.class)
                 .hasMessageContaining("작성자가 아니므로 권한이 없습니다.");
     }
 
@@ -323,7 +323,7 @@ class CommentServiceTest {
         Member newMember = memberRepository.save(new Member("judy", "judyhithub", "avatarUrl"));
 
         assertThatThrownBy(() -> commentService.delete(new LoginMember(newMember.getId()), comment.getId()))
-                .isInstanceOf(NotAuthorException.class)
+                .isExactlyInstanceOf(NotAuthorException.class)
                 .hasMessageContaining("작성자가 아니므로 권한이 없습니다.");
     }
 
@@ -332,7 +332,7 @@ class CommentServiceTest {
         Comment comment = commentRepository.save(new Comment(CONTENT, member, article, false));
 
         assertThatThrownBy(() -> commentService.delete(new GuestMember(), comment.getId()))
-                .isInstanceOf(NotMemberException.class)
+                .isExactlyInstanceOf(NotMemberException.class)
                 .hasMessage("회원이 아니므로 권한이 없습니다.");
     }
 
@@ -341,14 +341,14 @@ class CommentServiceTest {
         Comment comment = commentRepository.save(new Comment(CONTENT, member, article, true));
 
         assertThatThrownBy(() -> commentService.delete(new GuestMember(), comment.getId()))
-                .isInstanceOf(NotMemberException.class)
+                .isExactlyInstanceOf(NotMemberException.class)
                 .hasMessage("회원이 아니므로 권한이 없습니다.");
     }
 
     @Test
     void 댓글이_존재하지_않는_경우_삭제할_수_없다() {
         assertThatThrownBy(() -> commentService.delete(new LoginMember(member.getId()), -1L))
-                .isInstanceOf(CommentNotFoundException.class)
+                .isExactlyInstanceOf(CommentNotFoundException.class)
                 .hasMessageContaining("댓글이 존재하지 않습니다.");
     }
 
@@ -357,7 +357,7 @@ class CommentServiceTest {
         Comment comment = commentRepository.save(new Comment(CONTENT, member, article, true));
 
         assertThatThrownBy(() -> commentService.delete(new LoginMember(-1L), comment.getId()))
-                .isInstanceOf(MemberNotFoundException.class)
+                .isExactlyInstanceOf(MemberNotFoundException.class)
                 .hasMessageContaining("회원이 존재하지 않습니다.");
     }
 }
