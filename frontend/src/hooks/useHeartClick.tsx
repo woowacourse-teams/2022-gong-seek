@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 
@@ -23,14 +23,14 @@ const useHeartClick = ({
 		isError: postIsError,
 		error: postError,
 		isSuccess: postIsSuccess,
-	} = useMutation<unknown, AxiosError, string>(`like${articleId}`, postAddLikeArticle);
+	} = useMutation<AxiosResponse, AxiosError, string>(`like${articleId}`, postAddLikeArticle);
 	const {
 		mutate: deleteMutate,
 		isLoading: deleteIsLoading,
 		isError: deleteIsError,
 		error: deleteError,
 		isSuccess: deleteIsSuccess,
-	} = useMutation<unknown, AxiosError, string>(`unlike${articleId}`, deleteLikeArticle);
+	} = useMutation<AxiosResponse, AxiosError, string>(`unlike${articleId}`, deleteLikeArticle);
 
 	useEffect(() => {
 		if (postIsError) {
