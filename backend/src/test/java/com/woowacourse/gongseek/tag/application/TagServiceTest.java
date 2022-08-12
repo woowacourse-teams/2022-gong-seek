@@ -9,6 +9,7 @@ import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
+import com.woowacourse.gongseek.tag.presentation.dto.TagsResponse;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,6 +64,22 @@ class TagServiceTest {
         assertAll(
                 () -> assertThat(tags.get(0).getName().getValue()).isEqualTo("SPRING"),
                 () -> assertThat(tagRepository.findAll()).hasSize(1)
+        );
+    }
+
+    @Test
+    void 태그를_모두_조회한다() {
+        tagRepository.save(new Tag("SPRING"));
+        tagRepository.save(new Tag("Java"));
+        tagRepository.save(new Tag("React"));
+
+        TagsResponse response = tagService.getAll();
+
+        assertAll(
+                () -> assertThat(response.getTag()).hasSize(3),
+                () -> assertThat(response.getTag().get(0)).isEqualTo("SPRING"),
+                () -> assertThat(response.getTag().get(1)).isEqualTo("JAVA"),
+                () -> assertThat(response.getTag().get(2)).isEqualTo("REACT")
         );
     }
 }
