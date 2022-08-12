@@ -2,7 +2,6 @@ package com.woowacourse.gongseek.acceptance.support;
 
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -24,7 +23,8 @@ public class LikeFixtures {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 게시물_추천을_취소한다(AccessTokenResponse accessToken, ArticleIdResponse article) {
+    public static ExtractableResponse<Response> 게시물_추천을_취소한다(AccessTokenResponse accessToken,
+                                                             ArticleIdResponse article) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken.getAccessToken())
