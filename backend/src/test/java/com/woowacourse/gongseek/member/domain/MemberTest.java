@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.member.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +20,14 @@ class MemberTest {
         member.updateAvatarUrl(updatedAvatarUrl);
 
         assertThat(member.getAvatarUrl()).isEqualTo(updatedAvatarUrl);
+    }
 
+    @Test
+    void 이름을_수정한다() {
+        String updatedName = "기론";
+        Member member = new Member("홍길동", "123", "avatar.example");
+        member.updateName(updatedName);
+
+        assertThat(member.getName()).isEqualTo(updatedName);
     }
 }
