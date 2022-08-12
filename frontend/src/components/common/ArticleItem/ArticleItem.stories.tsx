@@ -29,7 +29,7 @@ DiscussionArticleItem.args = {
 		category: 'discussion',
 		commentCount: 10,
 		createdAt: '2022-02-07T10:02',
-		hashTag: ['리액트', '프론트엔드'],
+		tag: ['리액트', '프론트엔드'],
 		views: 10,
 	},
 };
@@ -48,7 +48,7 @@ ErrorArticleItem.args = {
 		category: 'discussion',
 		commentCount: 10,
 		createdAt: '2022-02-07T10:02',
-		hashTag: ['리액트', '프론트엔드'],
+		tag: ['리액트', '프론트엔드'],
 		views: 10,
 	},
 };

@@ -105,12 +105,12 @@ export const putArticle = (article: {
 	id: string;
 	title: string;
 	content: string;
-	hashTag: string[];
+	tag: string[];
 }) => {
 	const accessToken = localStorage.getItem('accessToken');
 	return axios.put<{ id: number; category: string }>(
 		`${HOME_URL}/api/articles/${article.id}`,
-		{ title: article.title, content: article.content, hashTag: article.hashTag },
+		{ title: article.title, content: article.content, tag: article.tag },
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',

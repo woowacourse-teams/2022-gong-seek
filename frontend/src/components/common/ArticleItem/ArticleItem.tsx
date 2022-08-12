@@ -14,7 +14,7 @@ export interface ArticleItemProps {
 		category: Category;
 		commentCount: number;
 		createdAt: string;
-		hashTag: string[];
+		tag: string[];
 		views: number;
 		isLike: boolean;
 		likeCount: number;
@@ -64,9 +64,9 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 				</S.RightFooterBox>
 			</S.FooterBox>
 			<S.HashTagListBox>
-				{article.hashTag &&
-					article.hashTag.length >= 1 &&
-					article.hashTag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}
+				{article.tag &&
+					article.tag.length >= 1 &&
+					article.tag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}
 			</S.HashTagListBox>
 		</S.Container>
 	);
