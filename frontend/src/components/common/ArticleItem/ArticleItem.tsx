@@ -47,6 +47,11 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 				<S.Views>조회 수 {article.views}</S.Views>
 			</S.ArticleInfoBox>
 			<S.Content>{exculdeSpecialWordConverter(article.content)}</S.Content>
+			<S.HashTagListBox>
+				{article.tag &&
+					article.tag.length >= 1 &&
+					article.tag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}
+			</S.HashTagListBox>
 			<S.FooterBox>
 				<S.ProfileBox>
 					<S.UserProfile src={article.author.avatarUrl} />
@@ -63,11 +68,6 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 					</S.HeartBox>
 				</S.RightFooterBox>
 			</S.FooterBox>
-			<S.HashTagListBox>
-				{article.tag &&
-					article.tag.length >= 1 &&
-					article.tag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}
-			</S.HashTagListBox>
 		</S.Container>
 	);
 };

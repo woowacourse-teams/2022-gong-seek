@@ -142,6 +142,8 @@ export const FillHeart = styled(AiFillHeart)`
 `;
 
 export const HashTagListBox = styled.section`
+	width: 100%;
+
 	display: flex;
 	flex-wrap: wrap;
 
@@ -149,8 +151,10 @@ export const HashTagListBox = styled.section`
 `;
 
 export const HashTagItem = styled.div`
+	font-size: ${({ theme }) => theme.size.SIZE_014};
+
 	background: transparent;
-	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_100};
+	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
 	border-radius: ${({ theme }) => theme.size.SIZE_004};
 
 	padding: ${({ theme }) => theme.size.SIZE_004};
