@@ -41,7 +41,7 @@ export const getUserComments = async () => {
 export const editUserInfo = ({ name }: { name: string }) => {
 	const accessToken = localStorage.getItem('accessToken');
 
-	return axios.put<{ name: string }, AxiosResponse<{ name: string }>>(
+	return axios.patch<{ name: string }, AxiosResponse<{ name: string }>>(
 		`${HOME_URL}/api/members/me`,
 		{ name },
 		{
