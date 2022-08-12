@@ -56,7 +56,7 @@ public class MemberControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void 로그인한_사용자일때_회원_조회_API_문서화() throws Exception {
+    void 마이페이지에서_회원_조회_API_문서화() throws Exception {
         MemberDto memberDto = new MemberDto("레넌", "https://avatars.githubusercontent.com/u/70756680?v=4");
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
@@ -80,7 +80,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    void 로그인한_사용자일때_회원_게시글_조회_API_문서화() throws Exception {
+    void 마이페이지에서_회원_게시글_조회_API_문서화() throws Exception {
         MyPageArticlesResponse myPageArticlesResponse = new MyPageArticlesResponse(
                 List.of(
                         new MyPageArticleResponse(1L, "title1", "question1", 10, LocalDateTime.now(),
@@ -115,7 +115,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    void 로그인한_사용자일때_회원_댓글_조회_API_문서화() throws Exception {
+    void 마이페이지에서_회원_댓글_조회_API_문서화() throws Exception {
         MyPageCommentsResponse myPageCommentsResponse = new MyPageCommentsResponse(
                 List.of(
                         new MyPageCommentResponse(1L, "댓글1", 1L, Category.QUESTION.getValue(), LocalDateTime.now(),
@@ -146,5 +146,5 @@ public class MemberControllerTest {
                                 fieldWithPath("comments[].updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
                         )
                 ));
-    }
+    }s
 }
