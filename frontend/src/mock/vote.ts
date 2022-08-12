@@ -3,10 +3,6 @@ import { rest } from 'msw';
 import { TVote } from '@/api/vote';
 import { HOME_URL } from '@/constants/url';
 
-const data = localStorage.getItem('mock-votes');
-
-// const mockVotes = data ? (JSON.parse(data) as TVote[]) : [];
-
 export const VoteHandler = [
 	rest.post<{ items: string[] }>(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
 		const data = localStorage.getItem('mock-votes');
