@@ -448,7 +448,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
-                () -> assertThat(response.isHasNext()).isTrue()
+                () -> assertThat(response.hasNext()).isTrue()
         );
     }
 
@@ -472,7 +472,7 @@ public class ArticleServiceTest {
         assertAll(
                 () -> assertThat(responses).hasSize(9),
                 () -> assertThat(responses.get(0).getId()).isEqualTo(9L),
-                () -> assertThat(response.isHasNext()).isFalse()
+                () -> assertThat(response.hasNext()).isFalse()
         );
     }
 
@@ -497,7 +497,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
-                () -> assertThat(response.isHasNext()).isFalse()
+                () -> assertThat(response.hasNext()).isFalse()
         );
     }
 
@@ -508,7 +508,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).isEmpty(),
-                () -> assertThat(articlePageResponse.isHasNext()).isFalse()
+                () -> assertThat(articlePageResponse.hasNext()).isFalse()
         );
     }
 
@@ -527,7 +527,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(10),
-                () -> assertThat(articlePageResponse.isHasNext()).isFalse()
+                () -> assertThat(articlePageResponse.hasNext()).isFalse()
         );
     }
 
@@ -548,14 +548,14 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(firstPageResponse.getArticles()).hasSize(10),
-                () -> assertThat(firstPageResponse.isHasNext()).isTrue(),
+                () -> assertThat(firstPageResponse.hasNext()).isTrue(),
                 () -> assertThat(secondPageResponse.getArticles()).hasSize(10),
-                () -> assertThat(secondPageResponse.isHasNext()).isFalse()
+                () -> assertThat(secondPageResponse.hasNext()).isFalse()
         );
     }
 
     @Test
-    void 이름으로_검색할_경우_익명_게시물을_제외하고_조회된다() {
+    void 이름으로_검색할_경우_작성자가_작성한_게시물이_조회된다() {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);

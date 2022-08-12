@@ -493,7 +493,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(secondResponse.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(secondArticles.isHasNext()).isFalse(),
+                () -> assertThat(secondArticles.hasNext()).isFalse(),
                 () -> assertThat(secondArticles.getArticles().get(9).getId()).isEqualTo(1L),
                 () -> assertThat(secondArticles.getArticles().get(0))
                         .usingRecursiveComparison()
@@ -538,7 +538,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(secondResponse.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(secondArticles.isHasNext()).isFalse(),
+                () -> assertThat(secondArticles.hasNext()).isFalse(),
                 () -> assertThat(secondArticles.getArticles().get(9).getViews()).isEqualTo(0),
                 () -> assertThat(secondArticles.getArticles().get(0))
                         .usingRecursiveComparison()
@@ -582,7 +582,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articlePageResponse.isHasNext()).isTrue(),
+                () -> assertThat(articlePageResponse.hasNext()).isTrue(),
                 () -> assertThat(articlePageResponse.getArticles().get(8).getCommentCount()).isEqualTo(0),
                 () -> assertThat(articlePageResponse.getArticles().get(0))
                         .usingRecursiveComparison()
@@ -623,7 +623,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articlePageResponse.isHasNext()).isTrue(),
+                () -> assertThat(articlePageResponse.hasNext()).isTrue(),
                 () -> assertThat(ids).isEqualTo(List.of(20L, 19L, 18L, 17L, 16L, 15L, 14L, 13L, 12L, 11L))
         );
     }
@@ -648,7 +648,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articlePageResponse.isHasNext()).isTrue(),
+                () -> assertThat(articlePageResponse.hasNext()).isTrue(),
                 () -> assertThat(ids.containsAll(List.of(6L, 7L, 8L, 9L, 10L))).isTrue()
         );
     }
@@ -671,7 +671,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articlePageResponse.isHasNext()).isFalse(),
+                () -> assertThat(articlePageResponse.hasNext()).isFalse(),
                 () -> assertThat(ids.containsAll(List.of(10L, 9L, 8L, 7L, 6L, 5L, 4L, 3L, 2L, 1L))).isTrue()
         );
     }
@@ -695,7 +695,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articlePageResponse.isHasNext()).isFalse(),
+                () -> assertThat(articlePageResponse.hasNext()).isFalse(),
                 () -> assertThat(ids.containsAll(List.of(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L))).isTrue()
         );
     }
@@ -732,9 +732,9 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(firstPage.isHasNext()).isTrue(),
+                () -> assertThat(firstPage.hasNext()).isTrue(),
                 () -> assertThat(firstPage.getArticles()).hasSize(4),
-                () -> assertThat(secondPage.isHasNext()).isFalse(),
+                () -> assertThat(secondPage.hasNext()).isFalse(),
                 () -> assertThat(secondPage.getArticles()).hasSize(4),
                 () -> firstPage.getArticles()
                         .forEach(article -> assertThat(article.getTitle()).isEqualTo("제목")),
