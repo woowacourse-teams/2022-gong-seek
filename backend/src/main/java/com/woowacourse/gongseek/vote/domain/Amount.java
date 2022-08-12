@@ -24,7 +24,7 @@ public class Amount {
 
     private void validatePositive(int value) {
         if (value < 0) {
-            throw new InvalidVoteAmountException();
+            throw new InvalidVoteAmountException(value);
         }
     }
 

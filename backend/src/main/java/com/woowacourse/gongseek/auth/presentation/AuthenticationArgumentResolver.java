@@ -2,7 +2,7 @@ package com.woowacourse.gongseek.auth.presentation;
 
 import static org.hibernate.validator.internal.metadata.core.ConstraintHelper.PAYLOAD;
 
-import com.woowacourse.gongseek.auth.exception.NoSuchAuthenticationDataException;
+import com.woowacourse.gongseek.auth.exception.HttpRequestNullException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
@@ -31,7 +31,7 @@ public class AuthenticationArgumentResolver implements HandlerMethodArgumentReso
 
     private void validateNullRequest(HttpServletRequest request) {
         if (Objects.isNull(request)) {
-            throw new NoSuchAuthenticationDataException();
+            throw new HttpRequestNullException();
         }
     }
 

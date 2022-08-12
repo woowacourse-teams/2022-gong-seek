@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.vote.domain;
 
 import com.woowacourse.gongseek.article.domain.Article;
-import com.woowacourse.gongseek.vote.exception.InvalidVoteExpiryAtException;
+import com.woowacourse.gongseek.vote.exception.InvalidVoteExpiryDateException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -56,13 +56,13 @@ public class Vote {
 
     private void validateNull(LocalDateTime expiryAt) {
         if (Objects.isNull(expiryAt)) {
-            throw new InvalidVoteExpiryAtException();
+            throw new InvalidVoteExpiryDateException();
         }
     }
 
     private void validateExpiryDate(LocalDateTime createdAt, LocalDateTime expiryAt) {
         if (createdAt.isAfter(expiryAt) || expiryAt.isAfter(createdAt.plusDays(MAX_VOTE_PERIOD))) {
-            throw new InvalidVoteExpiryAtException();
+            throw new InvalidVoteExpiryDateException();
         }
     }
 

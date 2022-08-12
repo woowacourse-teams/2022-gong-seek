@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
-import com.woowacourse.gongseek.common.exception.ErrorResponse;
+import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
@@ -64,8 +64,8 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+                () -> assertThat(response.getErrorCode()).isEqualTo("1008"),
+                () -> assertThat(response.getMessage()).isEqualTo("회원이 아니므로 권한이 없습니다.")
         );
     }
 
@@ -81,8 +81,8 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(response.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(response.getMessage()).isEqualTo("권한이 없습니다.")
+                () -> assertThat(response.getErrorCode()).isEqualTo("1008"),
+                () -> assertThat(response.getMessage()).isEqualTo("회원이 아니므로 권한이 없습니다.")
         );
     }
 
@@ -159,11 +159,10 @@ public class CommentAcceptanceTest extends AcceptanceTest {
         ErrorResponse errorResponse = response.as(ErrorResponse.class);
 
         //then
-
         assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value()),
                 () -> assertThat(errorResponse.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(errorResponse.getMessage()).isEqualTo("권한이 없습니다.")
+                () -> assertThat(errorResponse.getMessage()).contains("작성자가 아니므로 권한이 없습니다.")
         );
     }
 
@@ -183,9 +182,9 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value()),
                 () -> assertThat(errorResponse.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(errorResponse.getMessage()).isEqualTo("권한이 없습니다.")
+                () -> assertThat(errorResponse.getMessage()).contains("작성자가 아니므로 권한이 없습니다.")
         );
     }
 
@@ -235,9 +234,9 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value()),
                 () -> assertThat(errorResponse.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(errorResponse.getMessage()).isEqualTo("권한이 없습니다.")
+                () -> assertThat(errorResponse.getMessage()).contains("작성자가 아니므로 권한이 없습니다.")
         );
     }
 
@@ -257,9 +256,9 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value()),
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value()),
                 () -> assertThat(errorResponse.getErrorCode()).isEqualTo("1007"),
-                () -> assertThat(errorResponse.getMessage()).isEqualTo("권한이 없습니다.")
+                () -> assertThat(errorResponse.getMessage()).contains("작성자가 아니므로 권한이 없습니다.")
         );
     }
 }
