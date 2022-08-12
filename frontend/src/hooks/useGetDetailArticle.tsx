@@ -30,7 +30,7 @@ const useGetDetailArticle = (id: string) => {
 
 	useEffect(() => {
 		if (isSuccess) {
-			setTempArticle({ title: data.title, content: data.content, hashTag: data.hashtag });
+			setTempArticle({ title: data.title, content: data.content, tag: data.tag });
 		}
 	}, [isSuccess]);
 
