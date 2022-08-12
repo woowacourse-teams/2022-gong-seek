@@ -5,7 +5,7 @@ import { Category } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 import { dateTimeConverter, exculdeSpecialWordConverter } from '@/utils/converter';
 
-interface ArticleItemProps {
+export interface ArticleItemProps {
 	article: {
 		id: number;
 		title: string;
@@ -16,6 +16,7 @@ interface ArticleItemProps {
 		createdAt: string;
 		isLike: boolean;
 		likeCount: number;
+		views: number;
 	};
 	onClick: () => void;
 }
