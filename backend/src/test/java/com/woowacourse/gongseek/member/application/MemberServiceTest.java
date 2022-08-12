@@ -20,6 +20,8 @@ import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
+import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateRequest;
+import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
 import org.junit.jupiter.api.AfterEach;
@@ -128,6 +130,23 @@ class MemberServiceTest {
     @Test
     void 비회원은_작성한_댓글들을_조회할_수_없다() {
         assertThatThrownBy(() -> memberService.getComments(new GuestMember()))
+                .isExactlyInstanceOf(MemberNotFoundException.class)
+                .hasMessage("회원이 존재하지 않습니다.");
+    }
+
+    @Test
+    void 회원의_이름을_수정한다(){
+        MemberUpdateRequest request = new MemberUpdateRequest("홍길동");
+        MemberUpdateResponse response = memberService.update(new LoginMember(member.getId()), request);
+
+        assertThat(response.getName()).isEqualTo(request.getName());
+    }
+
+    @Test
+    void 권한이_없는_회원은_이름을_수정하면_예외가_발생한다(){
+        MemberUpdateRequest request = new MemberUpdateRequest("홍길동");
+
+        assertThatThrownBy(() -> memberService.update(new GuestMember(), request))
                 .isExactlyInstanceOf(MemberNotFoundException.class)
                 .hasMessage("회원이 존재하지 않습니다.");
     }
