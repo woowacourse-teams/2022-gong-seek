@@ -5,6 +5,10 @@ export const Container = styled.section`
 	flex-direction: column;
 
 	width: 100%;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		gap: ${({ theme }) => theme.size.SIZE_100};
+	}
 `;
 
 export const Title = styled.h2`
