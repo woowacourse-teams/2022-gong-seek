@@ -150,6 +150,6 @@ class MemberServiceTest {
 
         assertThatThrownBy(() -> memberService.update(new GuestMember(), request))
                 .isExactlyInstanceOf(MemberNotFoundException.class)
-                .hasMessage("회원이 존재하지 않습니다.");
+                .hasMessageContaining("회원이 존재하지 않습니다.");
     }
 }

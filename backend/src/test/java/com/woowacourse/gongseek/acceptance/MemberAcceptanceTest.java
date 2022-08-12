@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
-import com.woowacourse.gongseek.common.exception.ErrorResponse;
+import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
@@ -129,7 +129,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(updateResponse.getErrorCode()).isEqualTo("2001"),
-                () -> assertThat(updateResponse.getMessage()).isEqualTo("회원이 존재하지 않습니다.")
+                () -> assertThat(updateResponse.getMessage()).contains("회원이 존재하지 않습니다.")
         );
     }
 }
