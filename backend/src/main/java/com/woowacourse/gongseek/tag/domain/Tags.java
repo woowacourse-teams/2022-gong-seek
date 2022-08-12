@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 public class Tags {
 
-    private List<Tag> tags;
+    private final List<Tag> tags;
 
     public Tags(List<Tag> tags) {
         validateDuplicateTag(tags);

@@ -11,7 +11,8 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
-import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
+import com.woowacourse.gongseek.auth.exception.NotAuthorException;
+import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
@@ -62,7 +63,7 @@ public class ArticleService {
 
     private void validateGuest(AppMember appMember) {
         if (appMember.isGuest()) {
-            throw new NoAuthorizationException();
+            throw new NotMemberException();
         }
     }
 
@@ -83,7 +84,7 @@ public class ArticleService {
 
     private Member getMember(AppMember appMember) {
         return memberRepository.findById(appMember.getPayload())
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberNotFoundException(appMember.getPayload()));
     }
 
     public ArticleResponse getOne(AppMember appMember, Long id) {
@@ -100,7 +101,7 @@ public class ArticleService {
 
     private Article getArticle(Long id) {
         return articleRepository.findById(id)
-                .orElseThrow(ArticleNotFoundException::new);
+                .orElseThrow(() -> new ArticleNotFoundException(id));
     }
 
     private List<String> getTagNames(Article article) {
@@ -210,7 +211,7 @@ public class ArticleService {
 
     private void validateAuthor(Article article, Member member) {
         if (!isAuthor(article, member)) {
-            throw new NoAuthorizationException();
+            throw new NotAuthorException(article.getId(), member.getId());
         }
     }
 

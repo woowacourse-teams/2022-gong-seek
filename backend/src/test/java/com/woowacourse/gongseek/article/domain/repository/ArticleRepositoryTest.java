@@ -62,7 +62,7 @@ class ArticleRepositoryTest {
     void 게시글이_없으면_빈_값을_반환한다() {
         List<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "", 5);
 
-        assertThat(articles).hasSize(0);
+        assertThat(articles).isEmpty();
     }
 
     @Test

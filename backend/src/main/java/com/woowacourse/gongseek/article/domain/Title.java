@@ -34,7 +34,7 @@ public class Title {
 
     private void validateLength(String value) {
         if (value.length() > MAX_TITLE_LENGTH) {
-            throw new ArticleTitleTooLongException();
+            throw new ArticleTitleTooLongException(value.length());
         }
     }
 }

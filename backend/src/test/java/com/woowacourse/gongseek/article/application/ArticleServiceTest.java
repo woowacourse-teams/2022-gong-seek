@@ -15,7 +15,8 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
-import com.woowacourse.gongseek.auth.exception.NoAuthorizationException;
+import com.woowacourse.gongseek.auth.exception.NotAuthorException;
+import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
@@ -204,8 +205,8 @@ public class ArticleServiceTest {
                 List.of("Spring"), false);
 
         assertThatThrownBy(() -> articleService.save(new GuestMember(), articleRequest))
-                .isExactlyInstanceOf(NoAuthorizationException.class)
-                .hasMessage("권한이 없습니다.");
+                .isExactlyInstanceOf(NotMemberException.class)
+                .hasMessage("회원이 아니므로 권한이 없습니다.");
     }
 
     @Test
@@ -390,8 +391,8 @@ public class ArticleServiceTest {
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
 
         assertThatThrownBy(() -> articleService.update(noAuthorMember, request, savedArticle.getId()))
-                .isExactlyInstanceOf(NoAuthorizationException.class)
-                .hasMessage("권한이 없습니다.");
+                .isExactlyInstanceOf(NotAuthorException.class)
+                .hasMessageContaining("작성자가 아니므로 권한이 없습니다.");
     }
 
     @Test
@@ -403,8 +404,8 @@ public class ArticleServiceTest {
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
 
         assertThatThrownBy(() -> articleService.update(guestMember, request, savedArticle.getId()))
-                .isExactlyInstanceOf(NoAuthorizationException.class)
-                .hasMessage("권한이 없습니다.");
+                .isExactlyInstanceOf(NotMemberException.class)
+                .hasMessage("회원이 아니므로 권한이 없습니다.");
     }
 
     @Test
@@ -418,7 +419,7 @@ public class ArticleServiceTest {
 
         assertThatThrownBy(() -> articleService.getOne(loginMember, savedArticle.getId()))
                 .isExactlyInstanceOf(ArticleNotFoundException.class)
-                .hasMessage("게시글이 존재하지 않습니다.");
+                .hasMessageContaining("게시글이 존재하지 않습니다.");
     }
 
     @Test
@@ -432,7 +433,7 @@ public class ArticleServiceTest {
 
         assertThatThrownBy(() -> articleService.getOne(loginMember, savedArticle.getId()))
                 .isExactlyInstanceOf(ArticleNotFoundException.class)
-                .hasMessage("게시글이 존재하지 않습니다.");
+                .hasMessageContaining("게시글이 존재하지 않습니다.");
     }
 
     @Test
@@ -444,8 +445,8 @@ public class ArticleServiceTest {
         AppMember noAuthorMember = new LoginMember(noAuthor.getId());
 
         assertThatThrownBy(() -> articleService.delete(noAuthorMember, savedArticle.getId()))
-                .isExactlyInstanceOf(NoAuthorizationException.class)
-                .hasMessage("권한이 없습니다.");
+                .isExactlyInstanceOf(NotAuthorException.class)
+                .hasMessageContaining("작성자가 아니므로 권한이 없습니다.");
     }
 
     @Test
@@ -456,8 +457,8 @@ public class ArticleServiceTest {
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         assertThatThrownBy(() -> articleService.delete(guestMember, savedArticle.getId()))
-                .isExactlyInstanceOf(NoAuthorizationException.class)
-                .hasMessage("권한이 없습니다.");
+                .isExactlyInstanceOf(NotMemberException.class)
+                .hasMessage("회원이 아니므로 권한이 없습니다.");
     }
 
     @Test
