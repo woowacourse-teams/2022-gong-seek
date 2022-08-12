@@ -25,10 +25,10 @@ class ErrorBoundary extends Component<Props, State> {
 
 	componentDidUpdate(_, prevState: State) {
 		if (prevState.error !== this.state.error) {
-			if (this.state.error && this.state.error.errorCode === 1005) {
+			if (this.state.error && Number(this.state.error.errorCode) === 1005) {
 				window.location.href = '/check-login';
 			}
-			if (this.state.error && this.state.error.errorCode === 1008) {
+			if (this.state.error && Number(this.state.error.errorCode) === 1008) {
 				alert('다시 로그인 해주세요');
 				deleteRefreshCookie();
 				window.location.href = '/login';
