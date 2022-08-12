@@ -19,7 +19,7 @@ const usePostWritingArticles = ({
 	const { data, mutate, isError, isLoading, isSuccess, error } = useMutation<
 		AxiosResponse<{ id: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
-		{ title: string; category: string; content: string; hashTag: string[]; isAnonymous: boolean }
+		{ title: string; category: string; content: string; tag: string[]; isAnonymous: boolean }
 	>(postWritingArticle);
 	const content = useRef<Editor | null>(null);
 	const [title, setTitle] = useState<string>('');
@@ -65,7 +65,7 @@ const usePostWritingArticles = ({
 			title: title,
 			category: categoryOption,
 			content: content.current.getInstance().getMarkdown(),
-			hashTag: hashTags,
+			tag: hashTags,
 			isAnonymous,
 		});
 	};

@@ -11,10 +11,9 @@ export interface CommonArticleType {
 	commentCount: number;
 	createdAt: string;
 	views: number;
-	hashtag: string[];
+	tag: string[];
 	isLike: boolean;
 	likeCount: number;
-
 }
 
 export interface ArticleType extends CommonArticleType {

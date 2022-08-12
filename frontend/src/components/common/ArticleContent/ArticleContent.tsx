@@ -82,12 +82,13 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 						<div>{likeCount}</div>
 					</S.LikeContentBox>
 				</S.Footer>
+				<S.HashTagListBox>
+					<h2 hidden>hash tag가 있다면 보여지는 곳입니다</h2>
+					{article.tag &&
+						article.tag.length >= 1 &&
+						article.tag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}
+				</S.HashTagListBox>
 			</PageLayout>
-			<S.HashTagListBox>
-				<h2 hidden>hash tag가 있다면 보여지는 곳입니다</h2>
-				{article.hashtag.length >= 1 &&
-					article.hashtag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}
-			</S.HashTagListBox>
 		</S.Container>
 	);
 };

@@ -82,7 +82,7 @@ export const ArticleInfoBox = styled.div`
 `;
 
 export const Content = styled.div`
-	height: ${({ theme }) => theme.size.SIZE_032};
+	height: 40%;
 
 	font-size: ${({ theme }) => theme.size.SIZE_012};
 	line-height: ${({ theme }) => theme.size.SIZE_016};
@@ -160,7 +160,7 @@ export const HashTagListBox = styled.div`
 `;
 
 export const HashTagItem = styled.div`
-	font-size: ${({ theme }) => theme.size.SIZE_010};
+	font-size: ${({ theme }) => theme.size.SIZE_014};
 	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
 	border-radius: ${({ theme }) => theme.size.SIZE_004};
 
