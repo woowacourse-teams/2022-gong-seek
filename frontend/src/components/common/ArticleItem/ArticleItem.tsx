@@ -1,6 +1,6 @@
-import { useState } from 'react';
-
 import * as S from '@/components/common/ArticleItem/ArticleItem.styles';
+import Loading from '@/components/common/Loading/Loading';
+import useHeartClick from '@/hooks/useHeartClick';
 import { Category } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 import { dateTimeConverter, exculdeSpecialWordConverter } from '@/utils/converter';
@@ -16,16 +16,25 @@ export interface ArticleItemProps {
 		createdAt: string;
 		hashTag: string[];
 		views: number;
+		isLike: boolean;
+		likeCount: number;
 	};
 	onClick: () => void;
 }
 
 const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
-	const [isHeartClick, setIsHeartClick] = useState(false);
+	const {
+		deleteIsLoading,
+		onLikeButtonClick,
+		onUnlikeButtonClick,
+		postIsLoading,
+		isLike,
+		likeCount,
+	} = useHeartClick(String(article.id));
 
-	const onLikeButtonClick = () => {
-		setIsHeartClick(!isHeartClick);
-	};
+	if (deleteIsLoading || postIsLoading) {
+		return <Loading />;
+	}
 
 	return (
 		<S.Container onClick={onClick}>
@@ -45,12 +54,12 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 				</S.ProfileBox>
 				<S.RightFooterBox>
 					<S.HeartBox>
-						{isHeartClick ? (
-							<S.FillHeart onClick={onLikeButtonClick} />
+						{isLike ? (
+							<S.FillHeart onClick={onUnlikeButtonClick} />
 						) : (
 							<S.EmptyHeart onClick={onLikeButtonClick} />
 						)}
-						<div>10</div>
+						<div>{likeCount}</div>
 					</S.HeartBox>
 				</S.RightFooterBox>
 			</S.FooterBox>

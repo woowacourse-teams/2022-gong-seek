@@ -13,4 +13,9 @@ public class ApplicationException extends RuntimeException {
         this.errorCode = exceptionType.getErrorCode();
         this.message = exceptionType.getMessage();
     }
+
+    public ApplicationException(String optionalMessage) {
+        this.errorCode = exceptionType.getErrorCode();
+        this.message = exceptionType.getMessage() + optionalMessage;
+    }
 }

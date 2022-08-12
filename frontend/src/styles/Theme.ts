@@ -87,6 +87,7 @@ const zIndex = {
 	ARTICLE_ARROW_BUTTON: 103,
 	MENU_SLIDER_BACKGROUND: 104,
 	MENU_SLIDER_CONTENT: 105,
+	POPULAR_ARTICLES: 1,
 };
 
 export const theme = {

@@ -12,11 +12,13 @@ export interface CommonArticleType {
 	createdAt: string;
 	views: number;
 	hashtag: string[];
+	isLike: boolean;
+	likeCount: number;
+
 }
 
 export interface ArticleType extends CommonArticleType {
 	isAuthor: boolean;
-	likeCount: number;
 }
 
 export interface AllArticleResponse {

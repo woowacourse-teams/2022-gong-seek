@@ -35,7 +35,7 @@ export const CommentInputBox = styled.div`
 	margin-bottom: ${({ theme }) => theme.size.SIZE_030};
 `;
 
-export const CommentInput = styled.div`
+export const CommentInput = styled.div<{ disabled: boolean }>`
 	width: 90%;
 
 	border-style: none;
@@ -44,6 +44,8 @@ export const CommentInput = styled.div`
 	background-color: ${({ theme }) => theme.colors.GRAY_500};
 
 	padding: 0.5rem 0;
+
+	opacity: ${({ disabled }) => disabled && 0.5};
 `;
 
 export const CommentHeader = styled.div`
@@ -57,15 +59,15 @@ export const CommentHeader = styled.div`
 	margin-bottom: ${({ theme }) => theme.size.SIZE_020};
 `;
 
-export const CreateCommentButton = styled(AiFillPlusCircle)`
+export const CreateCommentButton = styled(AiFillPlusCircle)<{ disabled: boolean }>`
 	width: ${({ theme }) => theme.size.SIZE_024};
 	height: ${({ theme }) => theme.size.SIZE_024};
 
-	color: ${({ theme }) => theme.colors.PURPLE_500};
+	color: ${({ theme, disabled }) => (disabled ? theme.colors.GRAY_500 : theme.colors.PURPLE_500)};
 
 	&:hover,
 	&:active {
-		color: ${({ theme }) => theme.colors.PURPLE_400};
+		color: ${({ theme, disabled }) => !disabled && theme.colors.PURPLE_400};
 	}
 `;
 

@@ -16,7 +16,6 @@ import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
-import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,6 @@ public class CommentService {
 
     private static final String ANONYMOUS_NAME = "익명";
     private static final String ANONYMOUS_AVATAR_URL = "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png";
-    private static final AuthorDto ANONYMOUS_AUTHOR = new AuthorDto(ANONYMOUS_NAME, ANONYMOUS_AVATAR_URL);
 
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;

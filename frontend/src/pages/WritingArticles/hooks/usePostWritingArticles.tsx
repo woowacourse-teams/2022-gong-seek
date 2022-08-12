@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { postWritingArticle } from '@/api/article';
 import CustomError from '@/components/helper/CustomError';
+import { ErrorMessage } from '@/constants/ErrorMessage';
 import { CATEGORY } from '@/constants/categoryType';
 import { Editor } from '@toast-ui/react-editor';
 
@@ -17,7 +18,7 @@ const usePostWritingArticles = ({
 }) => {
 	const { data, mutate, isError, isLoading, isSuccess, error } = useMutation<
 		AxiosResponse<{ id: string }>,
-		AxiosError<{ errorCode: string; message: string }>,
+		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ title: string; category: string; content: string; hashTag: string[]; isAnonymous: boolean }
 	>(postWritingArticle);
 	const content = useRef<Editor | null>(null);
@@ -46,7 +47,13 @@ const usePostWritingArticles = ({
 
 	useEffect(() => {
 		if (isError) {
-			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
+			if (!error.response) {
+				return;
+			}
+			throw new CustomError(
+				error.response.data.errorCode,
+				ErrorMessage[error.response.data.errorCode],
+			);
 		}
 	}, []);
 

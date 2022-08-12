@@ -3,7 +3,6 @@ package com.woowacourse.gongseek.config;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationArgumentResolver;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationInterceptor;
-import com.woowacourse.gongseek.auth.presentation.AuthorizationInterceptor;
 import java.util.List;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -24,10 +23,7 @@ public class AuthenticationConfig implements WebMvcConfigurer {
         WebMvcConfigurer.super.addInterceptors(registry);
         registry.addInterceptor(new AuthenticationInterceptor(jwtTokenProvider))
                 .addPathPatterns("/**")
-                .excludePathPatterns("/api/auth/**");
-
-        registry.addInterceptor(new AuthorizationInterceptor(jwtTokenProvider))
-                .addPathPatterns("/**")
+                .excludePathPatterns("/docs/**")
                 .excludePathPatterns("/api/auth/**");
     }
 

@@ -13,6 +13,8 @@ export interface UserComment {
 	content: string;
 	createdAt: string;
 	updatedAt: string;
+	articleId: number;
+	category: string;
 }
 
 export interface UserCommentResponse {

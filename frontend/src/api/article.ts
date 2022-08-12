@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { HOME_URL } from '@/constants/url';
 import { AllArticleResponse, ArticleType, CommonArticleType } from '@/types/articleResponse';
+import { convertSort } from '@/utils/converter';
 
 export interface WritingArticles {
 	title: string;
@@ -28,8 +29,16 @@ export interface PopularArticles {
 }
 
 export const getPopularArticles = async () => {
+	const accessToken = localStorage.getItem('accessToken');
+
 	const result = await axios.get<PopularArticles>(
 		`${HOME_URL}/api/articles?category=all&sort=views&pageSize=10`,
+		{
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				Authorization: `Bearer ${accessToken}`,
+			},
+		},
 	);
 	return result.data;
 };
@@ -52,13 +61,21 @@ export const getAllArticle = async ({
 	cursorViews,
 }: {
 	category: string;
-	sort: string;
+	sort: '좋아요순' | '조회순' | '최신순';
 	cursorId: string;
 	cursorViews: string;
 }) => {
-	const currentSort = sort === '최신순' ? 'latest' : 'views';
+	const currentSort = convertSort(sort);
+	const accessToken = localStorage.getItem('accessToken');
+
 	const { data } = await axios.get<AllArticleResponse>(
 		`${HOME_URL}/api/articles?category=${category}&sort=${currentSort}&cursorId=${cursorId}&cursorViews=${cursorViews}&pageSize=5`,
+		{
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				Authorization: `Bearer ${accessToken}`,
+			},
+		},
 	);
 
 	return {

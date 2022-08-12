@@ -4,29 +4,36 @@ import { useMutation } from 'react-query';
 
 import { checkVoteItems } from '@/api/vote';
 import CustomError from '@/components/helper/CustomError';
+import { ErrorMessage } from '@/constants/ErrorMessage';
 import { queryClient } from '@/index';
 
-const usePostVoteItem = () => {
+const usePostVoteItem = (articleId: string) => {
 	const { isLoading, isError, error, mutate, isSuccess } = useMutation<
 		unknown,
-		AxiosError<{ errorCode: string; message: string }>,
-		{ articleId: string; voteId: string }
+		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
+		{ articleId: string; voteItemId: string }
 	>(checkVoteItems);
 
 	useEffect(() => {
 		if (isSuccess) {
-			queryClient.refetchQueries('vote');
+			queryClient.refetchQueries(['vote', `vote${articleId}`]);
 		}
 	}, [isSuccess]);
 
 	useEffect(() => {
 		if (isError) {
-			throw new CustomError(error.response?.data.errorCode, error.response?.data.message);
+			if (!error.response) {
+				return;
+			}
+			throw new CustomError(
+				error.response.data.errorCode,
+				ErrorMessage[error.response.data.errorCode],
+			);
 		}
 	}, [isError]);
 
-	const onChangeRadio = (name: string, idx: number) => {
-		mutate({ articleId: name, voteId: String(idx) });
+	const onChangeRadio = (articleId: string, idx: number) => {
+		mutate({ articleId, voteItemId: String(idx) });
 	};
 
 	return { onChangeRadio, isLoading };

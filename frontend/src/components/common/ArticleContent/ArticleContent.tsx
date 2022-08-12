@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as S from '@/components/common/ArticleContent/ArticleContent.styles';
@@ -6,6 +5,7 @@ import ToastUiViewer from '@/components/common/ArticleContent/ToastUiViewer/Toas
 import useDeleteArticleContent from '@/components/common/ArticleContent/hooks/useDeleteArticleContent';
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
+import useHeartClick from '@/hooks/useHeartClick';
 import { ArticleType } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 import { dateTimeConverter } from '@/utils/converter';
@@ -18,21 +18,23 @@ export interface ArticleContentProps {
 }
 
 const ArticleContent = ({ category, article, author, articleId }: ArticleContentProps) => {
-	const [isHeartClick, setIsHeartClick] = useState(false);
+	const {
+		deleteIsLoading,
+		onLikeButtonClick,
+		onUnlikeButtonClick,
+		postIsLoading,
+		isLike,
+		likeCount,
+	} = useHeartClick(String(article.id));
 	const { isLoading, handleDeleteArticle } = useDeleteArticleContent();
 	const navigate = useNavigate();
-
-	const onLikeButtonClick = () => {
-		setIsHeartClick(!isHeartClick);
-		// 좋아요 비동기 통신
-	};
 
 	const navigateUpdateArticle = () => {
 		const categoryName = category === '질문' ? 'question' : 'discussion';
 		navigate(`/articles/modify/${categoryName}/${articleId}`);
 	};
 
-	if (isLoading) {
+	if (isLoading || deleteIsLoading || postIsLoading) {
 		return <Loading />;
 	}
 
@@ -72,12 +74,12 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 						)}
 					</S.WritingOrderBox>
 					<S.LikeContentBox>
-						{isHeartClick ? (
-							<S.FillHeart onClick={onLikeButtonClick} />
+						{isLike ? (
+							<S.FillHeart onClick={onUnlikeButtonClick} />
 						) : (
 							<S.EmptyHeart onClick={onLikeButtonClick} />
 						)}
-						<div>{article.likeCount}</div>
+						<div>{likeCount}</div>
 					</S.LikeContentBox>
 				</S.Footer>
 			</PageLayout>
