@@ -13,8 +13,15 @@ import org.junit.jupiter.params.provider.ValueSource;
 class NameTest {
 
     @Test
-    void 태그_이름을_생성한다() {
+    void 태그_이름은_대문자로_생성된다() {
         Name name = new Name("Spring");
+
+        assertThat(name.getValue()).isEqualTo("SPRING");
+    }
+
+    @Test
+    void 태그_이름은_양끝_공백을_제거하고_생성된다() {
+        Name name = new Name("  Spring  ");
 
         assertThat(name.getValue()).isEqualTo("SPRING");
     }

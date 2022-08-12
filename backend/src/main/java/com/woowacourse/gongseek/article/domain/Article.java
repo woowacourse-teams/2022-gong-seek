@@ -1,6 +1,8 @@
 package com.woowacourse.gongseek.article.domain;
 
+import com.woowacourse.gongseek.article.domain.articletag.ArticleTags;
 import com.woowacourse.gongseek.member.domain.Member;
+import com.woowacourse.gongseek.tag.domain.Tags;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -53,6 +55,9 @@ public class Article {
     @Embedded
     private Views views;
 
+    @Embedded
+    private ArticleTags articleTags;
+
     @Column(nullable = false)
     private boolean isAnonymous;
 
@@ -64,8 +69,16 @@ public class Article {
     private LocalDateTime updatedAt;
 
     public Article(String title, String content, Category category, Member member, boolean isAnonymous) {
-        this(null, new Title(title), new Content(content), category, member, new Views(), isAnonymous,
-                LocalDateTime.now(), LocalDateTime.now());
+        this(
+                null,
+                new Title(title),
+                new Content(content),
+                category, member,
+                new Views(),
+                new ArticleTags(),
+                isAnonymous,
+                LocalDateTime.now(), LocalDateTime.now()
+        );
     }
 
     public boolean isAuthor(Member member) {
@@ -83,6 +96,15 @@ public class Article {
     public void update(String title, String content) {
         this.title = new Title(title);
         this.content = new Content(content);
+    }
+
+    public void addTag(Tags tags) {
+        articleTags.add(this, tags);
+    }
+
+    public void updateTag(Tags tags) {
+        articleTags.clear();
+        addTag(tags);
     }
 
     public boolean cannotCreateVote() {

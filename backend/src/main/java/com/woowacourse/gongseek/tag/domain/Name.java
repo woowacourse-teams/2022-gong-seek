@@ -23,7 +23,7 @@ public class Name {
     public Name(String value) {
         validateNullOrBlank(value);
         validateLength(value);
-        this.value = value.toUpperCase();
+        this.value = value.trim().toUpperCase();
     }
 
     private void validateNullOrBlank(String name) {

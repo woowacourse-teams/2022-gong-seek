@@ -36,6 +36,7 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
 @SpringBootTest
@@ -71,23 +72,35 @@ public class ArticleServiceTest {
         databaseCleaner.tableClear();
     }
 
+    @Transactional
     @Test
     void 회원이_기명_게시글을_저장한다() {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
 
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
+        Article foundArticle = articleRepository.findById(articleIdResponse.getId())
+                .orElse(null);
 
-        assertThat(articleIdResponse.getId()).isNotNull();
+        assertAll(
+                () -> assertThat(articleIdResponse.getId()).isNotNull(),
+                () -> assertThat(foundArticle.getArticleTags().getArticleTags()).hasSize(1)
+        );
     }
 
+    @Transactional
     @Test
     void 회원이_익명_게시글을_저장한다() {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true);
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
+        Article foundArticle = articleRepository.findById(articleIdResponse.getId())
+                .orElse(null);
 
-        assertThat(articleIdResponse.getId()).isNotNull();
+        assertAll(
+                () -> assertThat(articleIdResponse.getId()).isNotNull(),
+                () -> assertThat(foundArticle.getArticleTags().getArticleTags()).hasSize(1)
+        );
     }
 
     @Test
@@ -110,13 +123,19 @@ public class ArticleServiceTest {
                 .hasMessage("해시태그는 한 게시글 당 최대 5개입니다.");
     }
 
+    @Transactional
     @Test
     void 회원이_게시글에_해시태그를_달지_않고_저장한다() {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of(), true);
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
+        Article foundArticle = articleRepository.findById(articleIdResponse.getId())
+                .orElse(null);
 
-        assertThat(articleIdResponse.getId()).isNotNull();
+        assertAll(
+                () -> assertThat(articleIdResponse.getId()).isNotNull(),
+                () -> assertThat(foundArticle.getArticleTags().getArticleTags()).hasSize(0)
+        );
     }
 
     @Test
@@ -199,6 +218,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo"),
@@ -216,6 +236,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명"),
@@ -235,6 +256,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo"),
@@ -253,6 +275,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명"),
@@ -270,6 +293,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo"),
@@ -287,6 +311,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명"),
@@ -305,12 +330,14 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getViews()).isEqualTo(2),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull()
         );
     }
 
+    @Transactional
     @Test
     void 작성자인_회원이_기명_게시글을_수정한다() {
         AppMember loginMember = new LoginMember(member.getId());
@@ -325,6 +352,8 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(response.getTitle()).isEqualTo(request.getTitle()),
+                () -> assertThat(response.getTag()).hasSize(1),
+                () -> assertThat(response.getTag().get(0)).isEqualTo("JAVA"),
                 () -> assertThat(response.getContent()).isEqualTo(request.getContent()),
                 () -> assertThat(response.getAuthor().getName()).isEqualTo("slo")
         );
@@ -344,6 +373,8 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(response.getTitle()).isEqualTo(request.getTitle()),
+                () -> assertThat(response.getTag()).hasSize(1),
+                () -> assertThat(response.getTag().get(0)).isEqualTo("JAVA"),
                 () -> assertThat(response.getContent()).isEqualTo(request.getContent()),
                 () -> assertThat(response.getAuthor().getName()).isEqualTo("익명")
         );
