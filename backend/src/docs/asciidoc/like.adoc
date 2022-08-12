@@ -27,7 +27,6 @@ include::{snippets}/like-article/request-headers.adoc[]
 === Response
 
 include::{snippets}/like-article/http-response.adoc[]
-include::{snippets}/like-article/response-fields.adoc[]
 
 == 추천 취소
 
@@ -44,4 +43,3 @@ include::{snippets}/unlike-article/request-headers.adoc[]
 === Response
 
 include::{snippets}/unlike-article/http-response.adoc[]
-include::{snippets}/unlike-article/response-fields.adoc[]

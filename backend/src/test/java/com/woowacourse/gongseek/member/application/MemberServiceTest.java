@@ -24,6 +24,7 @@ import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateRequest;
 import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -87,7 +88,8 @@ class MemberServiceTest {
     @Test
     void 회원이_작성한_게시글들을_조회할_수_있다() {
         articleService.save(new LoginMember(member.getId()),
-                new ArticleRequest("cipherTitle", "cipherContent", Category.QUESTION.getValue(), true));
+                new ArticleRequest("cipherTitle", "cipherContent", Category.QUESTION.getValue(), List.of("SPRING"),
+                        true));
         articleRepository.save(new Article("title1", "content1", Category.QUESTION, member, false));
         articleRepository.save(new Article("title2", "content2", Category.QUESTION, member, false));
 

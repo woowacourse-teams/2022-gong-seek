@@ -1,7 +1,9 @@
 package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
+import com.woowacourse.gongseek.article.domain.articletag.ArticleTag;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
@@ -19,6 +21,10 @@ import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
+import com.woowacourse.gongseek.tag.domain.Name;
+import com.woowacourse.gongseek.tag.domain.Tag;
+import com.woowacourse.gongseek.tag.domain.Tags;
+import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +45,20 @@ public class ArticleService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final VoteRepository voteRepository;
+    private final TagRepository tagRepository;
+    private final ArticleTagRepository articleTagRepository;
     private final LikeRepository likeRepository;
     private final Encryptor encryptor;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
         Member member = getAuthor(appMember, articleRequest);
+
+        Tags tags = new Tags(getTags(articleRequest.getTag()));
+        List<Tag> foundTags = getTags(tags);
+
         Article article = articleRepository.save(articleRequest.toEntity(member));
+        foundTags.forEach(tag -> articleTagRepository.save(new ArticleTag(article, tag)));
 
         return new ArticleIdResponse(article);
     }
@@ -65,6 +78,23 @@ public class ArticleService {
         return getMember(appMember);
     }
 
+    public List<Tag> getTags(List<String> tag) {
+        return tag.stream()
+                .map(Tag::new)
+                .collect(Collectors.toList());
+    }
+
+    private List<Tag> getTags(Tags tags) {
+        return tags.getTagNames().stream()
+                .map(this::getOrCreateTagIfNotExist)
+                .collect(Collectors.toList());
+    }
+
+    private Tag getOrCreateTagIfNotExist(String name) {
+        return tagRepository.findByName(new Name(name))
+                .orElseGet(() -> tagRepository.save(new Tag(name)));
+    }
+
     private Member getMember(AppMember appMember) {
         return memberRepository.findById(appMember.getPayload())
                 .orElseThrow(MemberNotFoundException::new);
@@ -72,16 +102,27 @@ public class ArticleService {
 
     public ArticleResponse getOne(AppMember appMember, Long id) {
         Article article = getArticle(id);
+
+        List<String> tagNames = getTagNames(article);
+
         article.addViews();
+
         boolean hasVote = voteRepository.existsByArticleId(article.getId());
         LikeResponse likeResponse = new LikeResponse(isLike(article, appMember), getLikeCount(article));
 
-        return checkGuest(article, appMember, hasVote, likeResponse);
+        return checkGuest(article, tagNames, appMember, hasVote, likeResponse);
     }
 
     private Article getArticle(Long id) {
         return articleRepository.findById(id)
                 .orElseThrow(ArticleNotFoundException::new);
+    }
+
+    private List<String> getTagNames(Article article) {
+        List<ArticleTag> articleTags = articleTagRepository.findAllByArticleId(article.getId());
+        return articleTags.stream()
+                .map(articleTag -> articleTag.getTag().getName().getValue())
+                .collect(Collectors.toList());
     }
 
     private Long getLikeCount(Article article) {
@@ -92,20 +133,21 @@ public class ArticleService {
         return likeRepository.existsByArticleIdAndMemberId(article.getId(), appMember.getPayload());
     }
 
-    private ArticleResponse checkGuest(Article article, AppMember appMember, boolean hasVote,
+    private ArticleResponse checkGuest(Article article, List<String> tagNames, AppMember appMember, boolean hasVote,
                                        LikeResponse likeResponse) {
         if (appMember.isGuest()) {
-            return new ArticleResponse(article, false, hasVote, likeResponse);
+            return new ArticleResponse(article, tagNames, false, hasVote, likeResponse);
         }
-        return checkAuthor(article, getMember(appMember), hasVote, likeResponse);
+        return checkAuthor(article, tagNames, getMember(appMember), hasVote, likeResponse);
     }
 
-    private ArticleResponse checkAuthor(Article article, Member member, boolean hasVote, LikeResponse likeResponse) {
+    private ArticleResponse checkAuthor(Article article, List<String> tagNames, Member member, boolean hasVote,
+                                        LikeResponse likeResponse) {
         if (article.isAnonymous()) {
             String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
-            return new ArticleResponse(article, article.isAnonymousAuthor(cipherId), hasVote, likeResponse);
+            return new ArticleResponse(article, tagNames, article.isAnonymousAuthor(cipherId), hasVote, likeResponse);
         }
-        return new ArticleResponse(article, article.isAuthor(member), hasVote, likeResponse);
+        return new ArticleResponse(article, tagNames, article.isAuthor(member), hasVote, likeResponse);
     }
 
     @Transactional(readOnly = true)
@@ -121,9 +163,14 @@ public class ArticleService {
                                                       String sortType, int pageSize, AppMember appMember) {
         return articleRepository.findAllByPage(cursorId, cursorViews, category, sortType, pageSize)
                 .stream()
-                .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article),
-                        new LikeResponse(isLike(article, appMember), getLikeCount(article))))
+                .map(it -> getArticlePreviewResponse(it, appMember))
                 .collect(Collectors.toList());
+    }
+
+    private ArticlePreviewResponse getArticlePreviewResponse(Article article, AppMember appMember) {
+        List<String> tagNames = getTagNames(article);
+        return ArticlePreviewResponse.of(article, tagNames, getCommentCount(article),
+                new LikeResponse(isLike(article, appMember), getLikeCount(article)));
     }
 
     private int getCommentCount(Article article) {
@@ -152,14 +199,19 @@ public class ArticleService {
                                                       AppMember appMember) {
         return articleRepository.searchByContainingText(cursorId, pageSize, searchText)
                 .stream()
-                .map(article -> ArticlePreviewResponse.of(article, getCommentCount(article),
-                        new LikeResponse(isLike(article, appMember), getLikeCount(article))))
+                .map(it -> getArticlePreviewResponse(it, appMember))
                 .collect(Collectors.toList());
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
+        Tags tags = new Tags(getTags(articleUpdateRequest.getTag()));
+        List<Tag> foundTags = getTags(tags);
+
         Article article = checkAuthorization(appMember, id);
         article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent());
+
+        articleTagRepository.deleteAllByArticleId(article.getId());
+        foundTags.forEach(tag -> articleTagRepository.save(new ArticleTag(article, tag)));
 
         return new ArticleUpdateResponse(article);
     }
