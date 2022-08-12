@@ -44,7 +44,7 @@ class LikeControllerTest {
     @Test
     void 추천_API_문서화() throws Exception {
         LikeResponse likeResponse = new LikeResponse(true, 1L);
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
         ResultActions results = mockMvc.perform(post("/api/articles/{articleId}/like", 1L)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer Token")
@@ -63,7 +63,7 @@ class LikeControllerTest {
     @Test
     void 추천_취소_API_문서화() throws Exception {
         LikeResponse likeResponse = new LikeResponse(false, 0L);
-        given(jwtTokenProvider.validateToken(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
         ResultActions results = mockMvc.perform(delete("/api/articles/{articleId}/like", 1L)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer Token")
