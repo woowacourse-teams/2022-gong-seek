@@ -23,9 +23,7 @@ const VoteItem = ({
 	isExpired,
 }: VoteItemProps) => {
 	const progressivePercent = Math.floor((itemVotes / totalVotes) * 100);
-	const { onChangeRadio, isLoading } = usePostVoteItem(articleId);
-
-	if (isLoading) return <Loading />;
+	const { onChangeRadio } = usePostVoteItem(articleId);
 
 	return (
 		<S.Container>
