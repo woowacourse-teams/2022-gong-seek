@@ -34,6 +34,7 @@ DefaultVote.args = {
 			views: 11,
 			isLike: true,
 			likeCount: 10,
+			tag: ['aaaa', 'bbb', 'ccc'],
 		},
 		{
 			id: 2,
@@ -49,6 +50,7 @@ DefaultVote.args = {
 			views: 11,
 			isLike: true,
 			likeCount: 10,
+			tag: ['aaaa', 'bbb', 'ccc'],
 		},
 		{
 			id: 3,
@@ -64,6 +66,7 @@ DefaultVote.args = {
 			views: 11,
 			isLike: true,
 			likeCount: 10,
+			tag: ['aaaa', 'bbb', 'ccc'],
 		},
 		{
 			id: 4,
@@ -79,6 +82,7 @@ DefaultVote.args = {
 			views: 11,
 			isLike: true,
 			likeCount: 10,
+			tag: ['aaaa', 'bbb', 'ccc'],
 		},
 		{
 			id: 5,
@@ -94,6 +98,7 @@ DefaultVote.args = {
 			views: 11,
 			isLike: true,
 			likeCount: 10,
+			tag: ['aaaa', 'bbb', 'ccc'],
 		},
 	],
 };
