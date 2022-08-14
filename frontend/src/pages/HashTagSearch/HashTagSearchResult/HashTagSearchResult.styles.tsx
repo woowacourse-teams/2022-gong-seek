@@ -1,9 +1,15 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.section`
+	display: flex;
+	flex-direction: column;
+
 	width: 100%;
 	height: fit-content;
+
 	padding: ${({ theme }) => theme.size.SIZE_010};
+	justify-content: center;
+	align-items: center;
 `;
 
 export const EmptyMsg = styled.div`
