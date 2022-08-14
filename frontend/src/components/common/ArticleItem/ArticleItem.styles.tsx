@@ -156,6 +156,8 @@ export const HashTagListBox = styled.div`
 	display: flex;
 	gap: ${({ theme }) => theme.size.SIZE_004};
 
+	flex-wrap: wrap;
+
 	margin-top: ${({ theme }) => theme.size.SIZE_010};
 `;
 
