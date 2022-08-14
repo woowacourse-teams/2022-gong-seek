@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { HOME_URL } from '@/constants/url';
+import { CommonArticleType } from '@/types/articleResponse';
 import { SearchResultType } from '@/types/searchResponse';
 
 export const getSearchResult = async ({
@@ -27,4 +28,15 @@ export const getSearchResult = async ({
 		cursorId: String(data.articles[data.articles.length - 1].id),
 		target: target,
 	};
+};
+
+export const getArticleByHashTag = (hashTags: string[]) => {
+	const accessToken = localStorage.getItem('accessToken');
+	const tags = hashTags.join(',');
+	return axios.get<{ articles: CommonArticleType[] }>(`${HOME_URL}/articles=?tags=${tags}`, {
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+			Authorization: `Bearer ${accessToken}`,
+		},
+	});
 };
