@@ -47,14 +47,11 @@ const useHeartClick = ({
 
 	useEffect(() => {
 		if (deleteIsSuccess) {
-			console.log('delete-load');
-
 			setIsLike(false);
 			setLikeCount((prevLikeCount) => prevLikeCount - 1);
 		}
 
 		if (postIsSuccess) {
-			console.log('post-load');
 			setIsLike(true);
 			setLikeCount((prevLikeCount) => prevLikeCount + 1);
 		}
