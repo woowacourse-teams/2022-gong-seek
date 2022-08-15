@@ -15,7 +15,6 @@ const useHeartClick = ({
 }) => {
 	const [isLike, setIsLike] = useState(prevIsLike);
 	const [likeCount, setLikeCount] = useState(prevLikeCount);
-
 	const {
 		mutate: postMutate,
 		isLoading: postIsLoading,
@@ -32,6 +31,11 @@ const useHeartClick = ({
 	} = useMutation<AxiosResponse, AxiosError, string>(`unlike${articleId}`, deleteLikeArticle);
 
 	useEffect(() => {
+		setIsLike(prevIsLike);
+		setLikeCount(prevLikeCount);
+	}, [prevIsLike, prevLikeCount]);
+
+	useEffect(() => {
 		if (postIsError) {
 			throw new Error(postError.message);
 		}
@@ -43,15 +47,18 @@ const useHeartClick = ({
 
 	useEffect(() => {
 		if (deleteIsSuccess) {
+			console.log('delete-load');
+
 			setIsLike(false);
 			setLikeCount((prevLikeCount) => prevLikeCount - 1);
 		}
 
 		if (postIsSuccess) {
+			console.log('post-load');
 			setIsLike(true);
 			setLikeCount((prevLikeCount) => prevLikeCount + 1);
 		}
-	});
+	}, [postIsSuccess, deleteIsSuccess]);
 
 	const onLikeButtonClick = () => {
 		postMutate(articleId);
