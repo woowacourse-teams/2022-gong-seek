@@ -2,12 +2,13 @@ import axios from 'axios';
 
 import { HOME_URL } from '@/constants/url';
 
-export const getAllHashTag = () => {
+export const getAllHashTag = async () => {
 	const accessToken = localStorage.getItem('accessToken');
-	return axios.get<{ tags: string[] }>(`${HOME_URL}/api/tags`, {
+	const data = await axios.get<{ tags: string[] }>(`${HOME_URL}/api/tags`, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			Authorization: `Bearer ${accessToken}`,
 		},
 	});
+	return data.data;
 };
