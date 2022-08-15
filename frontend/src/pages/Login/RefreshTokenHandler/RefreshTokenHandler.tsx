@@ -1,17 +1,18 @@
 import { AxiosError } from 'axios';
+import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 
 import { getAccessTokenByRefreshToken } from '@/api/login';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useSnackBar from '@/hooks/useSnackBar';
-import { useEffect } from '@storybook/addons';
 
 const RefreshTokenHandler = () => {
 	const { data, isSuccess, isError, error } = useQuery<
 		{ accessToken: string },
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('getBack-accessToken', getAccessTokenByRefreshToken);
+
 	const { showSnackBar } = useSnackBar();
 
 	useEffect(() => {
@@ -33,8 +34,8 @@ const RefreshTokenHandler = () => {
 	useEffect(() => {
 		if (isSuccess) {
 			localStorage.setItem('accessToken', data.accessToken);
-			showSnackBar('재로그인 되었습니다');
 			location.href = '/';
+			showSnackBar('재로그인 되었습니다');
 		}
 	}, [isSuccess]);
 
