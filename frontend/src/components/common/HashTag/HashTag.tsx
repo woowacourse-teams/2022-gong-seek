@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import * as S from '@/components/common/HashTag/HashTag.styles';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
-import { validateHashTagInput } from '@/utils/validateInput';
+import { validatedHashTagInput } from '@/utils/validateInput';
 
 export interface HashTagProps {
 	hashTags: string[];
@@ -22,7 +22,7 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 			setHashInput('');
 			return;
 		}
-		if (!validateHashTagInput(hashTagInput)) {
+		if (!validatedHashTagInput(hashTagInput)) {
 			setErrorMsg('2글자 이상 20이하여야 합니다');
 			setHashInput('');
 			return;
