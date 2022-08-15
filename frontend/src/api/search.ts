@@ -30,13 +30,17 @@ export const getSearchResult = async ({
 	};
 };
 
-export const getArticleByHashTag = (hashTags: string[]) => {
+export const getArticleByHashTag = async (hashTags: string[]) => {
 	const accessToken = localStorage.getItem('accessToken');
 	const tags = hashTags.join(',');
-	return axios.get<{ articles: CommonArticleType[] }>(`${HOME_URL}/articles=?tags=${tags}`, {
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			Authorization: `Bearer ${accessToken}`,
+	const data = await axios.get<{ articles: CommonArticleType[] }>(
+		`${HOME_URL}/articles=?tags=${tags}`,
+		{
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				Authorization: `Bearer ${accessToken}`,
+			},
 		},
-	});
+	);
+	return data.data;
 };
