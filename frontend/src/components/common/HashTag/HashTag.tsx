@@ -13,7 +13,13 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 	const [hashTagInput, setHashInput] = useState<string>('');
 	const [errorMsg, setErrorMsg] = useState<string>('');
 
-	const checkIsDuplicateHashTag = () => hashTags.includes(hashTagInput);
+	const checkIsDuplicateHashTag = (hashtag: string) =>
+		hashTags.reduce((acc, cur) => {
+			if (cur.toLowerCase() === hashtag.toLowerCase()) {
+				acc = true;
+			}
+			return acc;
+		}, false);
 
 	const onHashTagEnterEventHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -22,17 +28,17 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 			setHashInput('');
 			return;
 		}
-		if (!validateHashTagInput(hashTagInput)) {
+		if (!validateHashTagInput(hashTagInput.trim())) {
 			setErrorMsg('2글자 이상 20이하여야 합니다');
 			setHashInput('');
 			return;
 		}
-		if (checkIsDuplicateHashTag()) {
+		if (checkIsDuplicateHashTag(hashTagInput.trim())) {
 			setErrorMsg('중복된 해시태그는 입력하실 수 없습니다');
 			setHashInput('');
 			return;
 		}
-		setHashTags([...hashTags, hashTagInput]);
+		setHashTags([...hashTags, hashTagInput.trim()]);
 		setErrorMsg('');
 		setHashInput('');
 	};
