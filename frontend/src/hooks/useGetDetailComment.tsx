@@ -11,7 +11,7 @@ const useGetDetailComment = (id: string) => {
 	const { data, isError, isSuccess, isLoading, isIdle, error } = useQuery<
 		{ comments: CommentType[] },
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
-	>('comments', () => getComments(id));
+	>('comments', () => getComments(id), { retry: false });
 
 	useEffect(() => {
 		if (isError) {
