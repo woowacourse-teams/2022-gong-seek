@@ -1,6 +1,7 @@
 import { FaPencilAlt, FaCheckSquare } from 'react-icons/fa';
 
 import Input from '@/components/common/Input/Input';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
@@ -54,4 +55,15 @@ export const ConfirmIcon = styled(FaCheckSquare)`
 
 export const EditUserNameInput = styled(Input)`
 	height: ${({ theme }) => theme.size.SIZE_016};
+`;
+
+export const ValidateMessage = styled.div<{ isValid: boolean }>`
+	color: ${({ isValid, theme }) => (isValid ? theme.colors.BLUE_500 : theme.colors.RED_500)};
+	font-size: ${({ theme }) => theme.size.SIZE_012};
+`;
+
+export const EditUserNameBox = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: ${({ theme }) => theme.size.SIZE_016};
 `;
