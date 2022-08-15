@@ -35,6 +35,7 @@ const Layout = styled.div`
 const Content = styled.main`
 	width: 100%;
 	padding-bottom: 7rem;
+	height: calc(100vh - 2 * ${({ theme }) => theme.size.SIZE_126});
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
 		width: calc(100% - ${({ theme }) => theme.size.SIZE_160} * 2);
