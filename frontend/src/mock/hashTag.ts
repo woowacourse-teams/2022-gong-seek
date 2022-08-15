@@ -22,7 +22,7 @@ export const HashTagHandler = [
 			}),
 		),
 	),
-	rest.get<{ articles: CommonArticleType[] }>(`${HOME_URL}/api/articles`, (req, res, ctx) => {
+	rest.get<{ articles: CommonArticleType[] }>(`${HOME_URL}/api/articles/tags`, (req, res, ctx) => {
 		res(
 			ctx.status(200),
 			ctx.json({
