@@ -77,7 +77,7 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 						minLength={2}
 						maxLength={20}
 						aria-label="해시태그를 입력하는 곳입니다"
-						placeholder="해시태그를 입력해주세요"
+						placeholder="해시태그를 입력 후 엔터를 눌러주세요"
 						value={hashTagInput}
 						onChange={(e) => {
 							setHashInput(e.target.value);
