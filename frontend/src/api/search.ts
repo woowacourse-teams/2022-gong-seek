@@ -30,11 +30,10 @@ export const getSearchResult = async ({
 	};
 };
 
-export const getArticleByHashTag = async (hashTags: string[]) => {
+export const getArticleByHashTag = async (hashTags: string) => {
 	const accessToken = localStorage.getItem('accessToken');
-	const tags = hashTags.join(',');
 	const data = await axios.get<{ articles: CommonArticleType[] }>(
-		`${HOME_URL}/articles=?tags=${tags}`,
+		`${HOME_URL}/api/articles?tags=${hashTags}`,
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',

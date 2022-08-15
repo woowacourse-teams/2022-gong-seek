@@ -8,10 +8,10 @@ import { ErrorMessage } from '@/constants/ErrorMessage';
 import { CommonArticleType } from '@/types/articleResponse';
 
 const useGetArticleByHashTag = () => {
-	const { data, isError, isLoading, error, mutate } = useMutation<
+	const { data, isError, isLoading, isSuccess, error, mutate } = useMutation<
 		{ articles: CommonArticleType[] },
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
-		string[]
+		string
 	>(['search-result'], getArticleByHashTag);
 
 	useEffect(() => {
@@ -26,7 +26,7 @@ const useGetArticleByHashTag = () => {
 		}
 	}, [isError]);
 
-	return { data, isLoading, mutate };
+	return { data, isLoading, isSuccess, mutate };
 };
 
 export default useGetArticleByHashTag;
