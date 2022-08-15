@@ -18,7 +18,6 @@ export interface ArticleItemProps {
 		views: number;
 		isLike: boolean;
 		likeCount: number;
-		views: number;
 	};
 	onClick: () => void;
 }
