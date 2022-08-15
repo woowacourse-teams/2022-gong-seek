@@ -17,8 +17,8 @@ export default {
 
 const Template: Story<HashTagSearchResultProps> = (args) => <HashTagSearchResult {...args} />;
 
-export const DefaultVote = Template.bind({});
-DefaultVote.args = {
+export const DefaultHashTagResult = Template.bind({});
+DefaultHashTagResult.args = {
 	articles: [
 		{
 			id: 1,
