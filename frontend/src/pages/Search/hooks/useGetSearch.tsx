@@ -13,21 +13,30 @@ const useGetSearch = (target: string) => {
 		useInfiniteQuery<
 			InfiniteSearchResultType,
 			AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
-		>('search-result', () => getSearchResult({ target, cursorId }), {
-			getNextPageParam: (lastPage) => {
-				const { hasNext, articles } = lastPage;
+		>(
+			'search-result',
+			({
+				pageParam = {
+					target,
+					cursorId,
+				},
+			}) => getSearchResult(pageParam),
+			{
+				getNextPageParam: (lastPage) => {
+					const { hasNext, articles, cursorId, target } = lastPage;
 
-				if (hasNext && articles.length >= 1) {
-					const lastCursorId = articles[articles.length - 1].id;
-					return {
-						articles,
-						hasNext,
-						lastCursorId,
-					};
-				}
-				return undefined;
+					if (hasNext) {
+						return {
+							articles,
+							hasNext,
+							cursorId,
+							target,
+						};
+					}
+					return;
+				},
 			},
-		});
+		);
 
 	useEffect(() => {
 		if (isError) {

@@ -12,8 +12,10 @@ import CategorySelector from '@/pages/CategorySelector/CategorySelector';
 import DiscussionDetail from '@/pages/DiscussionDetail';
 import ErrorDetail from '@/pages/ErrorDetail';
 import Home from '@/pages/Home';
+import InquirePage from '@/pages/Inquire';
 import Login from '@/pages/Login';
 import LoginController from '@/pages/Login/LoginController/LoginController';
+import RefreshTokenHandler from '@/pages/Login/RefreshTokenHandler/RefreshTokenHandler';
 import MyPage from '@/pages/MyPage';
 import NotFound from '@/pages/NotFound';
 import Search from '@/pages/Search';
@@ -50,6 +52,7 @@ const App = () => {
 				<Content>
 					<Routes>
 						<Route path="/callback" element={<LoginController />} />
+						<Route path="/check-login" element={<RefreshTokenHandler />} />
 						<Route path="/category" element={<CategorySelector />} />
 						<Route element={<PrivateRouter isAuthenticated={isLogin} />}>
 							<Route path="/article/:category" element={<WritingArticles />} />
@@ -65,9 +68,9 @@ const App = () => {
 						<Route path="/articles/modify/:category/:id" element={<UpdateWriting />} />
 						<Route path="/search-result" element={<Search />} />
 						<Route path="/articles/discussion/:id" element={<DiscussionDetail />} />
-						<Route path="/articles/discussion/:id" element={<DiscussionDetail />} />
 						<Route path="/" element={<Home />} />
 						<Route path="/*" element={<NotFound />} />
+						<Route path="/inquire" element={<InquirePage />} />
 					</Routes>
 				</Content>
 			</ErrorBoundary>

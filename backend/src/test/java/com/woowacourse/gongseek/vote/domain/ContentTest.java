@@ -13,7 +13,7 @@ class ContentTest {
     @Test
     void 투표내용이_null_이면_예외를_발생한다() {
         assertThatThrownBy(() -> new Content(null))
-                .isInstanceOf(VoteItemNullOrEmptyException.class)
+                .isExactlyInstanceOf(VoteItemNullOrEmptyException.class)
                 .hasMessage("투표 항목 내용은 비어있을 수 없습니다.");
     }
 
@@ -21,7 +21,7 @@ class ContentTest {
     @ValueSource(strings = {"", " "})
     void 투표내용이_비어있는_경우_예외를_발생한다(String content) {
         assertThatThrownBy(() -> new Content(content))
-                .isInstanceOf(VoteItemNullOrEmptyException.class)
+                .isExactlyInstanceOf(VoteItemNullOrEmptyException.class)
                 .hasMessage("투표 항목 내용은 비어있을 수 없습니다.");
     }
 
@@ -29,7 +29,7 @@ class ContentTest {
     void 투표내용이_500자를_초과하면_예외를_발생한다() {
         String content = "a".repeat(501);
         assertThatThrownBy(() -> new Content(content))
-                .isInstanceOf(VoteItemTooLongException.class)
-                .hasMessage("투표 항목 내용은 500자를 초과할 수 없습니다.");
+                .isExactlyInstanceOf(VoteItemTooLongException.class)
+                .hasMessageContaining("투표 항목 내용은 500자를 초과할 수 없습니다.");
     }
 }

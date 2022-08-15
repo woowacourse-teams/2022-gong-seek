@@ -28,8 +28,4 @@ public class VoteHistory {
     public VoteHistory(Long memberId, Long voteId, Long voteItemId) {
         this(null, memberId, voteId, voteItemId);
     }
-
-    public boolean isSelectSameVoteItem(Long voteItemId) {
-        return this.voteItemId.equals(voteItemId);
-    }
 }

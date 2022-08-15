@@ -20,7 +20,7 @@ const usePostWritingArticles = ({
 	const { data, mutate, isError, isLoading, isSuccess, error } = useMutation<
 		AxiosResponse<{ id: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
-		{ title: string; category: string; content: string; isAnonymous: boolean }
+		{ title: string; category: string; content: string; tag: string[]; isAnonymous: boolean }
 	>(postWritingArticle);
 	const content = useRef<Editor | null>(null);
 	const [title, setTitle] = useState('');
@@ -59,13 +59,7 @@ const usePostWritingArticles = ({
 		}
 	}, [isError]);
 
-	const handleSubmitButtonClick = ({
-		title,
-		categoryOption,
-	}: {
-		title: string;
-		categoryOption: string;
-	}) => {
+	const handleSubmitButtonClick = (categoryOption: string) => {
 		if (content.current === null) {
 			return;
 		}
@@ -81,9 +75,10 @@ const usePostWritingArticles = ({
 		}
 		setIsValidTitleInput(true);
 		mutate({
-			title,
+			title: title,
 			category: categoryOption,
 			content: content.current.getInstance().getMarkdown(),
+			tag: hashTags,
 			isAnonymous,
 		});
 	};
@@ -96,6 +91,8 @@ const usePostWritingArticles = ({
 		titleInputRef,
 		isValidTitleInput,
 		setTitle,
+		hashTags,
+		setHashTags,
 		categoryOption,
 		setCategoryOption,
 	};

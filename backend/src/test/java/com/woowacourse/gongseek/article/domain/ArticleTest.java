@@ -12,7 +12,7 @@ class ArticleTest {
     private static final Member member = new Member("slo", "hanull", "avatar.com");
 
     @Test
-    void 게시물을_생성한다() {
+    void 게시글을_생성한다() {
         Article article = new Article("title", "content", Category.QUESTION, member, false);
 
         assertAll(
@@ -38,7 +38,7 @@ class ArticleTest {
     }
 
     @Test
-    void 익명게시글일때_작성자인지_확인한다() {
+    void 익명_게시글일때_작성자인지_확인한다() {
         String cipherId = "cipherId";
         Member member = new Member("익명", cipherId, "anonymousAvatarUrl");
         Article article = new Article("제목", "내용", Category.QUESTION, member, true);
@@ -47,7 +47,7 @@ class ArticleTest {
     }
 
     @Test
-    void 게시물의_제목과_내용을_수정한다() {
+    void 게시글의_제목과_내용을_수정한다() {
         Article article = new Article("제목", "내용", Category.QUESTION, member, false);
         String updatedTitle = "updatedTitle";
         String updatedContent = "수정된 내용입니다~~";

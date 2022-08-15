@@ -3,6 +3,7 @@ package com.woowacourse.gongseek.article.domain;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+import com.woowacourse.gongseek.article.exception.ArticleCategoryNotFoundException;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -13,7 +14,7 @@ class CategoryTest {
         String category = "juri";
 
         assertThatThrownBy(() -> Category.from(category))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isExactlyInstanceOf(ArticleCategoryNotFoundException.class)
                 .hasMessage("존재하지 않는 카테고리입니다.");
     }
 

@@ -27,4 +27,7 @@ DefaultComment.args = {
 	closeModal: () => {
 		console.log('portal창 닫기');
 	},
+	articleId: '1',
+	commentId: '1',
+	modalType: 'register',
 };

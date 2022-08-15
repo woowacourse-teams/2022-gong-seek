@@ -20,8 +20,11 @@ import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
+import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateRequest;
+import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,27 +81,28 @@ class MemberServiceTest {
     @Test
     void 비회원은_회원_정보를_조회할_수_없다() {
         assertThatThrownBy(() -> memberService.getOne(new GuestMember()))
-                .isInstanceOf(MemberNotFoundException.class)
-                .hasMessage("회원이 존재하지 않습니다.");
+                .isExactlyInstanceOf(MemberNotFoundException.class)
+                .hasMessageContaining("회원이 존재하지 않습니다.");
     }
 
     @Test
     void 회원이_작성한_게시글들을_조회할_수_있다() {
         articleService.save(new LoginMember(member.getId()),
-                new ArticleRequest("cipherTitle", "cipherContent", Category.QUESTION.getValue(), true));
+                new ArticleRequest("cipherTitle", "cipherContent", Category.QUESTION.getValue(), List.of("SPRING"),
+                        true));
         articleRepository.save(new Article("title1", "content1", Category.QUESTION, member, false));
         articleRepository.save(new Article("title2", "content2", Category.QUESTION, member, false));
 
         MyPageArticlesResponse response = memberService.getArticles(new LoginMember(member.getId()));
 
-        assertThat(response.getArticles()).size().isEqualTo(3);
+        assertThat(response.getArticles()).hasSize(3);
     }
 
     @Test
     void 비회원은_작성한_게시글들을_조회할_수_없다() {
         assertThatThrownBy(() -> memberService.getArticles(new GuestMember()))
-                .isInstanceOf(MemberNotFoundException.class)
-                .hasMessage("회원이 존재하지 않습니다.");
+                .isExactlyInstanceOf(MemberNotFoundException.class)
+                .hasMessageContaining("회원이 존재하지 않습니다.");
     }
 
     @Test
@@ -122,13 +126,30 @@ class MemberServiceTest {
 
         MyPageCommentsResponse response = memberService.getComments(new LoginMember(member.getId()));
 
-        assertThat(response.getComments()).size().isEqualTo(3);
+        assertThat(response.getComments()).hasSize(3);
     }
 
     @Test
     void 비회원은_작성한_댓글들을_조회할_수_없다() {
         assertThatThrownBy(() -> memberService.getComments(new GuestMember()))
-                .isInstanceOf(MemberNotFoundException.class)
-                .hasMessage("회원이 존재하지 않습니다.");
+                .isExactlyInstanceOf(MemberNotFoundException.class)
+                .hasMessageContaining("회원이 존재하지 않습니다.");
+    }
+
+    @Test
+    void 회원의_이름을_수정한다() {
+        MemberUpdateRequest request = new MemberUpdateRequest("홍길동");
+        MemberUpdateResponse response = memberService.update(new LoginMember(member.getId()), request);
+
+        assertThat(response.getName()).isEqualTo(request.getName());
+    }
+
+    @Test
+    void 권한이_없는_회원은_이름을_수정하면_예외가_발생한다() {
+        MemberUpdateRequest request = new MemberUpdateRequest("홍길동");
+
+        assertThatThrownBy(() -> memberService.update(new GuestMember(), request))
+                .isExactlyInstanceOf(MemberNotFoundException.class)
+                .hasMessageContaining("회원이 존재하지 않습니다.");
     }
 }
