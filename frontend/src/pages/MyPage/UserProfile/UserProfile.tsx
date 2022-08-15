@@ -26,7 +26,7 @@ const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 		if (isSuccess) {
 			queryClient.invalidateQueries('user-info');
 		}
-	});
+	}, [isSuccess]);
 
 	if (isLoading) return <Loading />;
 
