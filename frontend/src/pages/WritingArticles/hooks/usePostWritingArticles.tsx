@@ -26,6 +26,7 @@ const usePostWritingArticles = ({
 	const [title, setTitle] = useState('');
 	const [categoryOption, setCategoryOption] = useState(category ? category : '');
 	const [isValidTitleInput, setIsValidTitleInput] = useState(true);
+	const [hashTags, setHashTags] = useState<string[]>([]);
 	const titleInputRef = useRef<HTMLInputElement>(null);
 
 	const navigate = useNavigate();

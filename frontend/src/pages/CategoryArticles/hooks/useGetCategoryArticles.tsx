@@ -36,6 +36,7 @@ const useGetCategoryArticles = (category: string) => {
 				}
 				return;
 			},
+			retry: false,
 		},
 	);
 
