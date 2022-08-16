@@ -81,7 +81,7 @@ const CommentInputModal = ({
 				placeholder={placeholder}
 			></S.CommentContent>
 			<S.SubmitBox>
-				<AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />
+				{modalType === 'register' && <AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />}
 				<S.CommentPostButton onClick={onClickCommentPostButton}>
 					{modalStatus[modalType].buttonText}
 				</S.CommentPostButton>

@@ -59,14 +59,16 @@ const UpdateWriting = () => {
 			<S.Content>
 				<ToastUiEditor initContent={tempArticle.content} ref={content} />
 			</S.Content>
-			<S.SubmitButton
-				type="button"
-				onClick={() => {
-					handleUpdateButtonClick(id);
-				}}
-			>
-				수정하기
-			</S.SubmitButton>
+			<S.UpdateSubmitBox>
+				<S.UpdateSubmitButton
+					type="button"
+					onClick={() => {
+						handleUpdateButtonClick(id);
+					}}
+				>
+					수정하기
+				</S.UpdateSubmitButton>
+			</S.UpdateSubmitBox>
 		</S.Container>
 	);
 };
