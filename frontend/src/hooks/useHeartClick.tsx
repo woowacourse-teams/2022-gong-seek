@@ -50,12 +50,14 @@ const useHeartClick = ({
 			setIsLike(false);
 			setLikeCount((prevLikeCount) => prevLikeCount - 1);
 		}
+	}, [deleteIsSuccess]);
 
+	useEffect(() => {
 		if (postIsSuccess) {
 			setIsLike(true);
 			setLikeCount((prevLikeCount) => prevLikeCount + 1);
 		}
-	}, [postIsSuccess, deleteIsSuccess]);
+	}, [postIsSuccess]);
 
 	const onLikeButtonClick = () => {
 		postMutate(articleId);
