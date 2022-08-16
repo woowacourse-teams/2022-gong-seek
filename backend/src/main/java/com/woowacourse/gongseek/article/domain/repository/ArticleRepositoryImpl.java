@@ -81,7 +81,8 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     public List<Article> searchByAuthor(Long cursorId, int pageSize, String author) {
         return queryFactory
                 .selectFrom(article)
-                .where(article.member.name.eq(author),
+                .where(
+                        article.member.name.value.eq(author),
                         isOverArticleId(cursorId)
                 )
                 .limit(pageSize + 1)

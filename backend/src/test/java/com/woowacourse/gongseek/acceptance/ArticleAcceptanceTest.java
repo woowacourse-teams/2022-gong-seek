@@ -1,8 +1,9 @@
 package com.woowacourse.gongseek.acceptance;
 
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물_전체를_조회한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_검색한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_처음_검색한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_유저이름으로_검색한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_제목과_내용으로_검색한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_제목과_내용으로_처음_검색한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.기명으로_게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_게시물을_삭제한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_게시물을_수정한다;
@@ -726,8 +727,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //when
         int pageSize = 4;
         String searchText = "커스텀";
-        ArticlePageResponse firstPage = 게시물을_처음_검색한다(pageSize, searchText);
-        ArticlePageResponse secondPage = 게시물을_검색한다(firstPage.getArticles().get(pageSize - 1).getId(), pageSize,
+        ArticlePageResponse firstPage = 게시물을_제목과_내용으로_처음_검색한다(pageSize, searchText);
+        ArticlePageResponse secondPage = 게시물을_제목과_내용으로_검색한다(firstPage.getArticles().get(pageSize - 1).getId(), pageSize,
                 searchText);
 
         //then
@@ -740,6 +741,31 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .forEach(article -> assertThat(article.getTitle()).isEqualTo("제목")),
                 () -> secondPage.getArticles()
                         .forEach(article -> assertThat(article.getContent()).isEqualTo("내용"))
+        );
+    }
+
+    @Test
+    void 유저_이름을_이용하여_게시물을_검색한다() {
+        //given
+        AccessTokenResponse tokenResponse = 로그인을_한다(주디);
+        특정_게시물을_등록한다(tokenResponse,
+                new ArticleRequest("커스텀 예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), List.of("Spring"), false));
+        특정_게시물을_등록한다(tokenResponse,
+                new ArticleRequest("커스텀예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), List.of("Spring"), false));
+        특정_게시물을_등록한다(tokenResponse,
+                new ArticleRequest("예외를 커스텀하려면?", "내용", Category.QUESTION.getValue(), List.of("Spring"), true));
+        특정_게시물을_등록한다(tokenResponse,
+                new ArticleRequest("예외를커스텀하려면?", "내용", Category.QUESTION.getValue(), List.of("Spring"), true));
+
+        //when
+        Long cursorId = null;
+        int pageSize = 4;
+        String author = 주디.getName();
+        ArticlePageResponse pageResponse = 게시물을_유저이름으로_검색한다(cursorId, pageSize, author);
+
+        assertAll(
+                () -> assertThat(pageResponse.hasNext()).isFalse(),
+                () -> assertThat(pageResponse.getArticles()).hasSize(2)
         );
     }
 }

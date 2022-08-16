@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
@@ -555,7 +554,7 @@ public class ArticleServiceTest {
     @Test
     void 공백으로_게시글을_검색한_경우_빈_값이_나온다() {
         AppMember loginMember = new LoginMember(member.getId());
-        ArticlePageResponse articlePageResponse = articleService.search(null, 1, " ", loginMember);
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, 1, " ", loginMember);
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).isEmpty(),
@@ -574,7 +573,7 @@ public class ArticleServiceTest {
                             false));
         }
 
-        ArticlePageResponse articlePageResponse = articleService.search(null, 10, "질문", loginMember);
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, 10, "질문", loginMember);
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(10),
@@ -593,8 +592,8 @@ public class ArticleServiceTest {
                             false));
         }
 
-        ArticlePageResponse firstPageResponse = articleService.search(null, 10, "질문", loginMember);
-        ArticlePageResponse secondPageResponse = articleService.search(
+        ArticlePageResponse firstPageResponse = articleService.searchByText(null, 10, "질문", loginMember);
+        ArticlePageResponse secondPageResponse = articleService.searchByText(
                 firstPageResponse.getArticles().get(9).getId(), 10, "질문", loginMember);
 
         assertAll(
@@ -606,20 +605,25 @@ public class ArticleServiceTest {
     }
 
     @Test
-    @Disabled
     void 이름으로_검색할_경우_작성자가_작성한_게시물이_조회된다() {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
-                List.of("Spring"), false);
+                List.of("Spring"), true);
         for (int i = 0; i < 5; i++) {
             articleService.save(loginMember, articleRequest);
         }
-        articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), List.of("Spring"), true);
+        articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), List.of("Spring"),
+                false);
+        for (int i = 0; i < 5; i++) {
+            articleService.save(loginMember, articleRequest);
+        }
+        Member newMember = memberRepository.save(new Member("slow", "slow", "avatarUrl"));
+        loginMember = new LoginMember(newMember.getId());
         for (int i = 0; i < 5; i++) {
             articleService.save(loginMember, articleRequest);
         }
 
-        ArticlePageResponse pageResponse = articleService.search(null, 10, member.getName(), loginMember);
+        ArticlePageResponse pageResponse = articleService.searchByAuthor(null, 15, this.member.getName(), loginMember);
 
         assertThat(pageResponse.getArticles()).hasSize(5);
     }

@@ -156,21 +156,38 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticlePageResponse search(Long cursorId, int pageSize, String searchText,
-                                      AppMember appMember) {
+    public ArticlePageResponse searchByText(Long cursorId, int pageSize, String searchText, AppMember appMember) {
         if (searchText.isBlank()) {
             return new ArticlePageResponse(new ArrayList<>(), false);
         }
-        List<ArticlePreviewResponse> articles = searchByText(cursorId, pageSize, searchText, appMember);
+        List<ArticlePreviewResponse> articles = searchByContainingText(cursorId, pageSize, searchText, appMember);
 
         return getArticlePageResponse(articles, pageSize);
     }
 
-    private List<ArticlePreviewResponse> searchByText(Long cursorId, int pageSize, String searchText,
-                                                      AppMember appMember) {
+    private List<ArticlePreviewResponse> searchByContainingText(Long cursorId, int pageSize, String searchText,
+                                                                AppMember appMember) {
         return articleRepository.searchByContainingText(cursorId, pageSize, searchText)
                 .stream()
                 .map(it -> getArticlePreviewResponse(it, appMember))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public ArticlePageResponse searchByAuthor(Long cursorId, int pageSize, String authorName, AppMember appMember) {
+        if (authorName.isBlank()) {
+            return new ArticlePageResponse(new ArrayList<>(), false);
+        }
+        List<ArticlePreviewResponse> articles = searchByAuthorName(cursorId, pageSize, authorName, appMember);
+
+        return getArticlePageResponse(articles, pageSize);
+    }
+
+    private List<ArticlePreviewResponse> searchByAuthorName(Long cursorId, int pageSize, String authorName,
+                                                            AppMember loginMember) {
+        return articleRepository.searchByAuthor(cursorId, pageSize, authorName)
+                .stream()
+                .map(it -> getArticlePreviewResponse(it, loginMember))
                 .collect(Collectors.toList());
     }
 
