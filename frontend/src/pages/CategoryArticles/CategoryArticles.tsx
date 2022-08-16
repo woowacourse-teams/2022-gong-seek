@@ -16,6 +16,10 @@ const CategoryArticles = () => {
 		throw new Error('카테고리를 찾을 수 없습니다');
 	}
 
+	if (category !== 'discussion' && category !== 'question') {
+		navigate('/*');
+	}
+
 	const { data, fetchNextPage, sortIndex, setSortIndex, isLoading } =
 		useGetCategoryArticles(category);
 

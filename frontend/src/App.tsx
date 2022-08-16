@@ -64,14 +64,14 @@ const App = () => {
 						<Route element={<PublicRouter isAuthenticated={isLogin} />}>
 							<Route path="/login" element={<Login />} />
 						</Route>
-						<Route path="/articles/question/:id" element={<ErrorDetail />} />
 						<Route path="/articles/:category" element={<CategoryArticles />} />
+						<Route path="/articles/question/:id" element={<ErrorDetail />} />
+						<Route path="/articles/discussion/:id" element={<DiscussionDetail />} />
 						<Route path="/articles/modify/:category/:id" element={<UpdateWriting />} />
 						<Route path="/search-result" element={<Search />} />
-						<Route path="/articles/discussion/:id" element={<DiscussionDetail />} />
-						<Route path="/" element={<Home />} />
-						<Route path="/*" element={<NotFound />} />
 						<Route path="/inquire" element={<InquirePage />} />
+						<Route path="/*" element={<NotFound />} />
+						<Route path="/" element={<Home />} />
 					</Routes>
 				</Content>
 			</ErrorBoundary>
