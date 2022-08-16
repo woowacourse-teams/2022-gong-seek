@@ -59,6 +59,11 @@ export const TitleInput = styled.input`
 	}
 `;
 
+export const TitleInputErrorMsgBox = styled.div`
+	color: ${({ theme }) => theme.colors.RED_500};
+	font-size: ${({ theme }) => theme.size.SIZE_012};
+`;
+
 export const HashTagInput = styled.input`
 	width: 100%;
 

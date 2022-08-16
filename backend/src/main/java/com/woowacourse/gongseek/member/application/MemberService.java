@@ -9,6 +9,8 @@ import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
+import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateRequest;
+import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticleResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentResponse;
@@ -78,5 +80,12 @@ public class MemberService {
         return comments.stream()
                 .map(MyPageCommentResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public MemberUpdateResponse update(AppMember appMember, MemberUpdateRequest request) {
+        Member member = getMember(appMember);
+        member.updateName(request.getName());
+        return new MemberUpdateResponse(member.getName());
     }
 }
