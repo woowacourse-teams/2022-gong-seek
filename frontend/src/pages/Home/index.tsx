@@ -46,7 +46,11 @@ const Home = () => {
 						토론
 					</S.CategoryTitle>
 				</S.CategoryTitleBox>
-				<SortDropdown sortIndex={sortIndex} setSortIndex={setSortIndex} />
+				<SortDropdown
+					sortList={['최신순', '조회순', '좋아요순']}
+					sortIndex={sortIndex}
+					setSortIndex={setSortIndex}
+				/>
 			</S.CategoryTitleContainer>
 			{data?.pages.length ? (
 				<InfiniteScrollObserver

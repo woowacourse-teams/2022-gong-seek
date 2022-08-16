@@ -29,7 +29,11 @@ const CategoryArticles = () => {
 				<S.CategoryArticlesTitle category={category}>
 					{category === 'discussion' ? '토론' : '질문'}
 				</S.CategoryArticlesTitle>
-				<SortDropdown sortIndex={sortIndex} setSortIndex={setSortIndex} />
+				<SortDropdown
+					sortList={['최신순', '조회순', '좋아요순']}
+					sortIndex={sortIndex}
+					setSortIndex={setSortIndex}
+				/>
 			</S.TitleBox>
 			{data?.pages.length ? (
 				<InfiniteScrollObserver
