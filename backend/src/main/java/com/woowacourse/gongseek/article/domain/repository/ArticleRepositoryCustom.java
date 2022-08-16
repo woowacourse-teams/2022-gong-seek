@@ -8,4 +8,6 @@ public interface ArticleRepositoryCustom {
     List<Article> findAllByPage(Long cursorId, Integer views, String category, String sortType, int pageSize);
 
     List<Article> searchByContainingText(Long cursorId, int pageSize, String searchText);
+
+    List<Article> searchByAuthor(Long cursorId, int pageSize, String author);
 }

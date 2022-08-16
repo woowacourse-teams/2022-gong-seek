@@ -11,7 +11,6 @@ import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -157,12 +156,11 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    @Disabled
     void 유저_이름을_이용하여_게시글을_검색한다() {
         articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
 
-        List<Article> articles = articleRepository.searchByContainingText(null, 3, member.getName());
+        List<Article> articles = articleRepository.searchByAuthor(null, 2, member.getName());
 
         assertThat(articles).hasSize(2);
     }
