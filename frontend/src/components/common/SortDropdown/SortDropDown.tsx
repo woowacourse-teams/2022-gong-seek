@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import * as S from '@/pages/CategoryArticles/SortDropdown/SortDropdown.styles';
+import * as S from '@/components/common/SortDropdown/SortDropdown.styles';
 
 const SortList = ['최신순', '조회순', '좋아요순'];
 
