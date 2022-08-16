@@ -146,7 +146,7 @@ public class ArticleFixtures {
                 .when()
                 .param("pageSize", pageSize)
                 .param("text", text)
-                .get("/api/articles/searchText")
+                .get("/api/articles/search/text")
                 .then().log().all()
                 .extract()
                 .as(ArticlePageResponse.class);
@@ -160,7 +160,7 @@ public class ArticleFixtures {
                 .param("cursorId", cursorId)
                 .param("pageSize", pageSize)
                 .param("text", text)
-                .get("/api/articles/searchText")
+                .get("/api/articles/search/text")
                 .then().log().all()
                 .extract()
                 .as(ArticlePageResponse.class);
@@ -174,7 +174,7 @@ public class ArticleFixtures {
                 .param("cursorId", cursorId)
                 .param("pageSize", pageSize)
                 .param("author", author)
-                .get("/api/articles/searchAuthor")
+                .get("/api/articles/search/author")
                 .then().log().all()
                 .extract()
                 .as(ArticlePageResponse.class);

@@ -374,7 +374,7 @@ class ArticleControllerTest {
         given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
         given(articleService.searchByText(anyLong(), anyInt(), anyString(), any())).willReturn(response);
 
-        ResultActions results = mockMvc.perform(get("/api/articles/searchText")
+        ResultActions results = mockMvc.perform(get("/api/articles/search/text")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                 .param("cursorId", "1")
                 .param("pageSize", "10")
@@ -430,7 +430,7 @@ class ArticleControllerTest {
         given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
         given(articleService.searchByAuthor(anyLong(), anyInt(), anyString(), any())).willReturn(response);
 
-        ResultActions results = mockMvc.perform(get("/api/articles/searchAuthor")
+        ResultActions results = mockMvc.perform(get("/api/articles/search/author")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                 .param("cursorId", "1")
                 .param("pageSize", "10")

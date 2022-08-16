@@ -74,7 +74,7 @@ public class ArticleController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/searchText")
+    @GetMapping("/search/text")
     public ResponseEntity<ArticlePageResponse> searchByText(
             @RequestParam(required = false) Long cursorId,
             @RequestParam Integer pageSize,
@@ -85,7 +85,7 @@ public class ArticleController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/searchAuthor")
+    @GetMapping("/search/author")
     public ResponseEntity<ArticlePageResponse> searchByAuthor(
             @RequestParam(required = false) Long cursorId,
             @RequestParam Integer pageSize,
