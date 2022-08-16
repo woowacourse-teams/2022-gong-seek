@@ -4,4 +4,11 @@
             <pattern>${LOG_PATTERN}</pattern>
         </encoder>
     </appender>
+
+    <appender name="CONSOLE-DB" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>utf8</charset>
+            <Pattern>${DB_PATTERN}</Pattern>
+        </encoder>
+    </appender>
 </included>
