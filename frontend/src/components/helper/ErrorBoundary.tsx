@@ -33,6 +33,9 @@ class ErrorBoundary extends Component<Props, State> {
 				deleteRefreshCookie();
 				window.location.href = '/login';
 			}
+			if (this.state.error && Number(this.state.error.errorCode) === 3001) {
+				window.location.href = '/*';
+			}
 		}
 
 		if (this.state.error !== null && prevState.error !== null) {
