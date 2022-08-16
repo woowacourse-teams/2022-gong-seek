@@ -13,10 +13,12 @@ import lombok.NoArgsConstructor;
 public class Name {
 
     private static final int MIN_NAME_LENGTH = 1;
+
     private String value;
 
     public Name(String value){
         validateNullOrEmpty(value);
+        this.value = value;
     }
 
     private void validateNullOrEmpty(String value) {
