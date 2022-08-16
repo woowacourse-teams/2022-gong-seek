@@ -68,7 +68,7 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 						) : (
 							<S.EmptyHeart onClick={onLikeButtonClick} />
 						)}
-						<div>{likeCount}</div>
+						<div aria-label="좋아요 수가 표기 되는 곳입니다">{likeCount}</div>
 					</S.HeartBox>
 				</S.RightFooterBox>
 			</S.FooterBox>
