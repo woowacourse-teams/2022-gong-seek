@@ -5,6 +5,7 @@ export const searchState = atom({
 	default: {
 		isSearchOpen: false,
 		isSearching: false,
+		searchIndex: '',
 		target: '',
 	},
 });
