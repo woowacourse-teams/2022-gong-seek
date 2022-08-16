@@ -31,7 +31,10 @@ describe('검색이 작동되는지에 대해서 테스트 한다', () => {
 	);
 
 	test('검색한 검색어가 포함된 결과들을 조회 할 수 있다', async () => {
-		const { result, waitFor } = renderHook(() => useGetSearch('hi'), { wrapper });
+		const { result, waitFor } = renderHook(
+			() => useGetSearch({ target: 'hi', searchIndex: '게시물' }),
+			{ wrapper },
+		);
 		await waitFor(() => result.current.isSuccess, { interval: 100 });
 		if (typeof result.current.data === 'undefined') {
 			return;
