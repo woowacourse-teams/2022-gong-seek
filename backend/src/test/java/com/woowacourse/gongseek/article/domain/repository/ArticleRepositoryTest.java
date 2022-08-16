@@ -9,6 +9,7 @@ import com.woowacourse.gongseek.config.JpaAuditingConfig;
 import com.woowacourse.gongseek.config.QuerydslConfig;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
@@ -247,6 +248,25 @@ class ArticleRepositoryTest {
         assertAll(
                 () -> assertThat(tagRepository.findAll()).hasSize(3),
                 () -> assertThat(secondFoundArticle.getArticleTags().getValue()).hasSize(1)
+        );
+    }
+
+    @Test
+    void 특정_해시태그로_저장되어_있는_게시글이_있는지_확인한다() {
+        Article article = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+        List<Tag> tags = List.of(new Tag("spring"), new Tag("java"));
+        tagRepository.saveAll(tags);
+        article.addTag(new Tags(tags));
+
+        boolean firstResult = articleRepository.existsByTagName(new Name("SPRING"));
+        boolean secondResult = articleRepository.existsByTagName(new Name("JAVA"));
+        boolean thirdResult = articleRepository.existsByTagName(new Name("REACT"));
+
+        assertAll(
+                () -> assertThat(firstResult).isTrue(),
+                () -> assertThat(secondResult).isTrue(),
+                () -> assertThat(thirdResult).isFalse()
         );
     }
 }

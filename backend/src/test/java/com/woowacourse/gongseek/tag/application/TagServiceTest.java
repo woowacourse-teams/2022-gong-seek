@@ -3,9 +3,11 @@ package com.woowacourse.gongseek.tag.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
@@ -23,6 +25,9 @@ class TagServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private ArticleRepository articleRepository;
 
     @Autowired
     private TagRepository tagRepository;
@@ -81,5 +86,33 @@ class TagServiceTest {
                 () -> assertThat(response.getTag().get(1)).isEqualTo("JAVA"),
                 () -> assertThat(response.getTag().get(2)).isEqualTo("REACT")
         );
+    }
+
+    @Test
+    void 태그를_삭제한다() {
+        tagRepository.save(new Tag("SPRING"));
+        tagRepository.save(new Tag("Java"));
+        tagRepository.save(new Tag("React"));
+
+        tagService.delete("SPRING");
+
+        TagsResponse response = tagService.getAll();
+
+        assertAll(
+                () -> assertThat(response.getTag()).hasSize(2),
+                () -> assertThat(response.getTag().get(0)).isEqualTo("JAVA"),
+                () -> assertThat(response.getTag().get(1)).isEqualTo("REACT")
+        );
+    }
+
+    @Test
+    void 태그를_삭제하면_ArticleTag도_삭제된다() {
+        tagRepository.save(new Tag("SPRING"));
+        tagRepository.save(new Tag("Java"));
+        tagRepository.save(new Tag("React"));
+
+        tagService.delete("SPRING");
+
+        assertThat(articleRepository.existsByTagName(new Name("SPRING"))).isFalse();
     }
 }

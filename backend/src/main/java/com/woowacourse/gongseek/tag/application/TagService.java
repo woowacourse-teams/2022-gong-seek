@@ -12,13 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 @Service
 public class TagService {
 
     private final TagRepository tagRepository;
 
-    @Transactional
     public Tags getOrCreateTags(Tags tags) {
         List<Tag> foundTags = tags.getTagNames().stream()
                 .map(this::getOrCreateTagIfNotExist)
@@ -31,8 +30,13 @@ public class TagService {
                 .orElseGet(() -> tagRepository.save(new Tag(name)));
     }
 
+    @Transactional(readOnly = true)
     public TagsResponse getAll() {
         List<Tag> tags = tagRepository.findAll();
         return TagsResponse.of(tags);
+    }
+
+    public void delete(String name) {
+        tagRepository.deleteByName(new Name(name));
     }
 }

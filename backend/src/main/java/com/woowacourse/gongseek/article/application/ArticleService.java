@@ -21,6 +21,7 @@ import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.tag.application.TagService;
+import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.ArrayList;
@@ -50,8 +51,7 @@ public class ArticleService {
         validateGuest(appMember);
         Member member = getAuthor(appMember, articleRequest);
 
-        Tags tags = Tags.from(articleRequest.getTag());
-        Tags foundTags = tagService.getOrCreateTags(tags);
+        Tags foundTags = tagService.getOrCreateTags(Tags.from(articleRequest.getTag()));
 
         Article article = articleRepository.save(articleRequest.toEntity(member));
         article.addTag(foundTags);
@@ -211,5 +211,10 @@ public class ArticleService {
     public void delete(AppMember appMember, Long id) {
         Article article = checkAuthorization(appMember, id);
         articleRepository.delete(article);
+
+        List<String> tagNames = article.getTagNames();
+        tagNames.stream()
+                .filter(tagName -> !articleRepository.existsByTagName(new Name(tagName)))
+                .forEach(tagService::delete);
     }
 }

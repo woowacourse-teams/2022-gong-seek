@@ -24,6 +24,7 @@ import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.exception.ExceededTagsException;
@@ -456,6 +457,26 @@ public class ArticleServiceTest {
         assertThatThrownBy(() -> articleService.delete(guestMember, savedArticle.getId()))
                 .isExactlyInstanceOf(NotMemberException.class)
                 .hasMessage("회원이 아니므로 권한이 없습니다.");
+    }
+
+    @Test
+    void 회원이_게시글을_삭제했을_때_해당_태그로_작성된_게시글이_없으면_태그도_삭제한다() {
+        AppMember loginMember = new LoginMember(member.getId());
+        ArticleRequest firstArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring", "Java"), false);
+        ArticleRequest secondArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Java"), false);
+        ArticleIdResponse firstSavedArticle = articleService.save(loginMember, firstArticleRequest);
+        articleService.save(loginMember, secondArticleRequest);
+
+        articleService.delete(loginMember, firstSavedArticle.getId());
+
+        assertAll(
+                () -> assertThat(articleRepository.existsByTagName(new Name("SPRING"))).isFalse(),
+                () -> assertThat(articleRepository.existsByTagName(new Name("JAVA"))).isTrue(),
+                () -> assertThat(tagRepository.findByName(new Name("SPRING"))).isEmpty(),
+                () -> assertThat(tagRepository.findByName(new Name("JAVA"))).isNotEmpty()
+        );
     }
 
     @Test

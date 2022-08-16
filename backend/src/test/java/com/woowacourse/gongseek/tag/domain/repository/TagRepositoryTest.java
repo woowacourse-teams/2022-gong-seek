@@ -49,4 +49,16 @@ class TagRepositoryTest {
 
         assertThat(tags).hasSize(3);
     }
+
+    @Test
+    void 태그를_삭제한다() {
+        tagRepository.save(new Tag("Spring"));
+        tagRepository.save(new Tag("Java"));
+        tagRepository.save(new Tag("React"));
+
+        tagRepository.deleteByName(new Name("SPRING"));
+        List<Tag> tags = tagRepository.findAll();
+
+        assertThat(tags).hasSize(2);
+    }
 }
