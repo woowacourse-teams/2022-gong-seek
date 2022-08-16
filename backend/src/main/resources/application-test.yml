@@ -20,12 +20,6 @@ spring:
         show_sql: true
     database-platform: org.hibernate.dialect.MySQL57Dialect
 
-logging:
-  level.org:
-    hibernate.type:
-      descriptor:
-        sql.BasicBinder: TRACE
-
 security:
   oauth2:
     client-id: clientId
