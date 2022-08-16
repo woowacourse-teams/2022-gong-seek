@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.gongseek.config.JpaAuditingConfig;
 import com.woowacourse.gongseek.config.QuerydslConfig;
-import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ class TagRepositoryTest {
         Tag tag = new Tag("Spring");
         Tag savedTag = tagRepository.save(tag);
 
-        Tag foundTag = tagRepository.findByName(new Name("Spring"))
+        Tag foundTag = tagRepository.findByNameIgnoreCase("Spring")
                 .orElse(null);
 
         assertThat(savedTag).isSameAs(foundTag);
@@ -56,9 +55,20 @@ class TagRepositoryTest {
         tagRepository.save(new Tag("Java"));
         tagRepository.save(new Tag("React"));
 
-        tagRepository.deleteByName(new Name("SPRING"));
+        tagRepository.deleteByName("SPRING");
         List<Tag> tags = tagRepository.findAll();
 
         assertThat(tags).hasSize(2);
     }
+
+//    @Test
+//    void 해당하는_태그들을_조회한다() {
+//        tagRepository.save(new Tag("Spring"));
+//        tagRepository.save(new Tag("Java"));
+//        tagRepository.save(new Tag("React"));
+//
+//        List<Tag> tags = tagRepository.findByNameIgnoreCaseIn(List.of("SPRING", "java"));
+//
+//        assertThat(tags).hasSize(2);
+//    }
 }

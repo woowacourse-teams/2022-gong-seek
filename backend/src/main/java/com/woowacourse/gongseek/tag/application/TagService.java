@@ -1,10 +1,10 @@
 package com.woowacourse.gongseek.tag.application;
 
-import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.presentation.dto.TagsResponse;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class TagService {
     }
 
     private Tag getOrCreateTagIfNotExist(String name) {
-        return tagRepository.findByName(new Name(name))
+        return tagRepository.findByNameIgnoreCase(name)
                 .orElseGet(() -> tagRepository.save(new Tag(name)));
     }
 
@@ -37,6 +37,13 @@ public class TagService {
     }
 
     public void delete(String name) {
-        tagRepository.deleteByName(new Name(name));
+        tagRepository.deleteByName(name);
+    }
+
+    public List<String> extract(String tagsText) {
+        List<String> tagNames = Arrays.asList(tagsText.split(","));
+        return tagNames.stream()
+                .map(String::toUpperCase)
+                .collect(Collectors.toList());
     }
 }

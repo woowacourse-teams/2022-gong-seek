@@ -10,6 +10,7 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlesByTagResponse;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
@@ -21,7 +22,6 @@ import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.tag.application.TagService;
-import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.ArrayList;
@@ -214,7 +214,17 @@ public class ArticleService {
 
         List<String> tagNames = article.getTagNames();
         tagNames.stream()
-                .filter(tagName -> !articleRepository.existsByTagName(new Name(tagName)))
+                .filter(tagName -> !articleRepository.existsByTagName(tagName))
                 .forEach(tagService::delete);
+    }
+
+    @Transactional(readOnly = true)
+    public ArticlesByTagResponse getAllByTag(String tagsText, AppMember appMember) {
+        List<String> tagNames = tagService.extract(tagsText);
+        List<Article> articles = articleRepository.findAllByTagNameIn(tagNames);
+        List<ArticlePreviewResponse> responses = articles.stream()
+                .map(article -> getArticlePreviewResponse(article, appMember))
+                .collect(Collectors.toList());
+        return new ArticlesByTagResponse(responses);
     }
 }

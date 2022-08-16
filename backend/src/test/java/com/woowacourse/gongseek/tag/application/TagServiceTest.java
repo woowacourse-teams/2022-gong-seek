@@ -7,7 +7,6 @@ import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
-import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
@@ -55,7 +54,7 @@ class TagServiceTest {
         Tags tags = tagService.getOrCreateTags(new Tags(List.of(new Tag("SPRING"))));
 
         assertAll(
-                () -> assertThat(tags.getTags().get(0).getName().getValue()).isEqualTo("SPRING"),
+                () -> assertThat(tags.getTags().get(0).getName()).isEqualTo("SPRING"),
                 () -> assertThat(tagRepository.findAll()).hasSize(1)
         );
     }
@@ -67,7 +66,7 @@ class TagServiceTest {
         Tags tags = tagService.getOrCreateTags(new Tags(List.of(new Tag("SPRING"))));
 
         assertAll(
-                () -> assertThat(tags.getTags().get(0).getName().getValue()).isEqualTo("SPRING"),
+                () -> assertThat(tags.getTags().get(0).getName()).isEqualTo("SPRING"),
                 () -> assertThat(tagRepository.findAll()).hasSize(1)
         );
     }
@@ -113,6 +112,6 @@ class TagServiceTest {
 
         tagService.delete("SPRING");
 
-        assertThat(articleRepository.existsByTagName(new Name("SPRING"))).isFalse();
+        assertThat(articleRepository.existsByTagName("SPRING")).isFalse();
     }
 }

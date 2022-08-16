@@ -37,13 +37,15 @@ public class ArticleFixtures {
         return 특정_게시물을_등록한다(tokenResponse, request).as(ArticleIdResponse.class);
     }
 
-    public static ExtractableResponse<Response> 기명으로_게시물을_등록한다(AccessTokenResponse tokenResponse, Category category) {
-        ArticleRequest request = new ArticleRequest("title", "content", category.getValue(), List.of("Spring"), false);
+    public static ExtractableResponse<Response> 기명으로_게시물을_등록한다(AccessTokenResponse tokenResponse, Category category,
+                                                               List<String> tags) {
+        ArticleRequest request = new ArticleRequest("title", "content", category.getValue(), tags, false);
         return 특정_게시물을_등록한다(tokenResponse, request);
     }
 
-    public static ExtractableResponse<Response> 익명으로_게시물을_등록한다(AccessTokenResponse tokenResponse, Category category) {
-        ArticleRequest request = new ArticleRequest("title", "content", category.getValue(), List.of("Spring"), true);
+    public static ExtractableResponse<Response> 익명으로_게시물을_등록한다(AccessTokenResponse tokenResponse, Category category,
+                                                               List<String> tags) {
+        ArticleRequest request = new ArticleRequest("title", "content", category.getValue(), tags, true);
         return 특정_게시물을_등록한다(tokenResponse, request);
     }
 
@@ -55,7 +57,7 @@ public class ArticleFixtures {
 
     public static void 조회수가_있는_게시물_5개를_생성한다(AccessTokenResponse tokenResponse, int count, Category category) {
         for (int i = 0; i < 5; i++) {
-            ArticleIdResponse response = 기명으로_게시물을_등록한다(tokenResponse, category)
+            ArticleIdResponse response = 기명으로_게시물을_등록한다(tokenResponse, category, List.of("Spring"))
                     .as(ArticleIdResponse.class);
             for (int j = 0; j < count; j++) {
                 로그인을_하지_않고_게시물을_조회한다(response);
@@ -164,5 +166,17 @@ public class ArticleFixtures {
                 .then().log().all()
                 .extract()
                 .as(ArticlePageResponse.class);
+    }
+
+    public static ExtractableResponse<Response> 로그인_후_해시태그로_게시글들을_조회한다(AccessTokenResponse tokenResponse,
+                                                                       String parameterValues) {
+        return RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .param("tagsText", parameterValues)
+                .when()
+                .get("/api/articles/tags")
+                .then().log().all()
+                .extract();
     }
 }

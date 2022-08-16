@@ -25,6 +25,7 @@ import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
@@ -69,8 +70,8 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     void 회원이_작성한_익명_기명_게시글을_모두_조회한다() {
         // given
         AccessTokenResponse tokenResponse = 로그인을_한다(레넌);
-        기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
-        익명으로_게시물을_등록한다(tokenResponse, Category.DISCUSSION);
+        기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION, List.of("Spring"));
+        익명으로_게시물을_등록한다(tokenResponse, Category.DISCUSSION, List.of("Spring"));
 
         // when
         ExtractableResponse<Response> response = 내가_작성한_게시글들을_조회한다(tokenResponse);

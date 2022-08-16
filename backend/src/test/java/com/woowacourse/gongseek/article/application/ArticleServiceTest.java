@@ -15,6 +15,7 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlesByTagResponse;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
@@ -24,8 +25,8 @@ import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
-import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tag;
+import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
 import java.util.ArrayList;
@@ -149,7 +150,7 @@ public class ArticleServiceTest {
         List<Tag> tags = tagRepository.findAll();
         assertAll(
                 () -> assertThat(tags).hasSize(1),
-                () -> assertThat(tags.get(0).getName().getValue()).isEqualTo("SPRING")
+                () -> assertThat(tags.get(0).getName()).isEqualTo("SPRING")
         );
     }
 
@@ -472,10 +473,10 @@ public class ArticleServiceTest {
         articleService.delete(loginMember, firstSavedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleRepository.existsByTagName(new Name("SPRING"))).isFalse(),
-                () -> assertThat(articleRepository.existsByTagName(new Name("JAVA"))).isTrue(),
-                () -> assertThat(tagRepository.findByName(new Name("SPRING"))).isEmpty(),
-                () -> assertThat(tagRepository.findByName(new Name("JAVA"))).isNotEmpty()
+                () -> assertThat(articleRepository.existsByTagName("SPRING")).isFalse(),
+                () -> assertThat(articleRepository.existsByTagName("JAVA")).isTrue(),
+                () -> assertThat(tagRepository.findByNameIgnoreCase("SPRING")).isEmpty(),
+                () -> assertThat(tagRepository.findByNameIgnoreCase("JAVA")).isNotEmpty()
         );
     }
 
@@ -601,6 +602,39 @@ public class ArticleServiceTest {
                 () -> assertThat(firstPageResponse.isHasNext()).isTrue(),
                 () -> assertThat(secondPageResponse.getArticles()).hasSize(10),
                 () -> assertThat(secondPageResponse.isHasNext()).isFalse()
+        );
+    }
+
+    @Transactional
+    @Test
+    void 해시태그로_게시글들을_조회할_수_있다() {
+        AppMember loginMember = new LoginMember(member.getId());
+
+        Tag spring = tagRepository.save(new Tag("SPRING"));
+        Tag java = tagRepository.save(new Tag("JAVA"));
+        Tag react = tagRepository.save(new Tag("REACT"));
+
+        Article firstArticle = articleRepository.save(new Article("제목1", "내용1", Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(new Article("제목2", "내용2", Category.QUESTION, member, false));
+        Article thirdArticle = articleRepository.save(new Article("제목3", "내용3", Category.QUESTION, member, false));
+        articleRepository.save(new Article("제목1", "내용1", Category.QUESTION, member, false));
+
+        firstArticle.addTag(new Tags(List.of(spring)));
+        secondArticle.addTag(new Tags(List.of(java)));
+        thirdArticle.addTag(new Tags(List.of(react)));
+
+        ArticlesByTagResponse firstResponse = articleService.getAllByTag("spring,java,react", loginMember);
+        ArticlesByTagResponse secondResponse = articleService.getAllByTag("spring", loginMember);
+        ArticlesByTagResponse thirdResponse = articleService.getAllByTag("java", loginMember);
+        ArticlesByTagResponse fourthResponse = articleService.getAllByTag("react", loginMember);
+        ArticlesByTagResponse fifthResponse = articleService.getAllByTag("", loginMember);
+
+        assertAll(
+                () -> assertThat(firstResponse.getArticles()).hasSize(3),
+                () -> assertThat(secondResponse.getArticles()).hasSize(1),
+                () -> assertThat(thirdResponse.getArticles()).hasSize(1),
+                () -> assertThat(fourthResponse.getArticles()).hasSize(1),
+                () -> assertThat(fifthResponse.getArticles()).hasSize(0)
         );
     }
 }

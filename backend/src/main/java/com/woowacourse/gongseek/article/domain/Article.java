@@ -128,7 +128,7 @@ public class Article {
 
     public List<String> getTagNames() {
         return this.articleTags.getValue().stream()
-                .map(articleTag -> articleTag.getTag().getName().getValue())
+                .map(articleTag -> articleTag.getTag().getName())
                 .collect(Collectors.toList());
     }
 }

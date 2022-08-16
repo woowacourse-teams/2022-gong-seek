@@ -13,6 +13,7 @@ import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.tag.presentation.dto.TagsResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
@@ -23,7 +24,7 @@ public class TagAcceptanceTest extends AcceptanceTest {
     void 로그인한_회원이_모든_해시태그를_조회한다() {
         // given
         AccessTokenResponse tokenResponse = 로그인을_한다(주디);
-        기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
+        기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION, List.of("Spring"));
 
         // when
         ExtractableResponse<Response> response = 모든_해시태그를_조회한다(tokenResponse);
@@ -41,7 +42,7 @@ public class TagAcceptanceTest extends AcceptanceTest {
     void 로그인_안한_회원이_모든_해시태그를_조회한다() {
         // given
         AccessTokenResponse tokenResponse = 로그인을_한다(주디);
-        기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
+        기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION, List.of("Spring"));
 
         // when
         ExtractableResponse<Response> response = 모든_해시태그를_조회한다(new AccessTokenResponse(null));
@@ -59,8 +60,8 @@ public class TagAcceptanceTest extends AcceptanceTest {
     void 같은_해시태그로_게시물을_등록해도_해시태그는_증가하지_않는다() {
         // given
         AccessTokenResponse tokenResponse = 로그인을_한다(레넌);
-        기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
-        기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
+        기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION, List.of("Spring"));
+        기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION, List.of("Spring"));
 
         // when
         ExtractableResponse<Response> response = 모든_해시태그를_조회한다(tokenResponse);

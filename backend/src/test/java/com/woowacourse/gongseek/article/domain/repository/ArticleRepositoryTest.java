@@ -9,7 +9,6 @@ import com.woowacourse.gongseek.config.JpaAuditingConfig;
 import com.woowacourse.gongseek.config.QuerydslConfig;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
-import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
@@ -259,14 +258,49 @@ class ArticleRepositoryTest {
         tagRepository.saveAll(tags);
         article.addTag(new Tags(tags));
 
-        boolean firstResult = articleRepository.existsByTagName(new Name("SPRING"));
-        boolean secondResult = articleRepository.existsByTagName(new Name("JAVA"));
-        boolean thirdResult = articleRepository.existsByTagName(new Name("REACT"));
+        boolean firstResult = articleRepository.existsByTagName("SPRING");
+        boolean secondResult = articleRepository.existsByTagName("JAVA");
+        boolean thirdResult = articleRepository.existsByTagName("REACT");
 
         assertAll(
                 () -> assertThat(firstResult).isTrue(),
                 () -> assertThat(secondResult).isTrue(),
                 () -> assertThat(thirdResult).isFalse()
         );
+    }
+
+    @Test
+    void 태그_이름으로_게시글들을_조회한다() {
+        Article firstArticle = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
+        List<Tag> firstTags = List.of(new Tag("spring"), new Tag("java"));
+        List<Tag> secondTags = List.of(new Tag("react"), new Tag("html"));
+        tagRepository.saveAll(firstTags);
+        tagRepository.saveAll(secondTags);
+        firstArticle.addTag(new Tags(firstTags));
+        secondArticle.addTag(new Tags(secondTags));
+
+        List<Article> articles = articleRepository.findAllByTagNameIn(
+                List.of("SPRING", "JAVA", "REACT", "HTML"));
+
+        assertThat(articles).hasSize(2);
+    }
+
+    @Test
+    void 태그_이름으로_같은_태그의_게시글들을_조회한다() {
+        Article firstArticle = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
+        List<Tag> tags = List.of(new Tag("spring"), new Tag("java"));
+        tagRepository.saveAll(tags);
+        firstArticle.addTag(new Tags(tags));
+        secondArticle.addTag(new Tags(tags));
+
+        List<Article> articles = articleRepository.findAllByTagNameIn(List.of("SPRING"));
+
+        assertThat(articles).hasSize(2);
     }
 }
