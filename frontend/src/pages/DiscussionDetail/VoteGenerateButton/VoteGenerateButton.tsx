@@ -13,9 +13,17 @@ const VoteGenerateButton = styled.button`
 	margin-top: ${({ theme }) => theme.size.SIZE_026};
 	padding: ${({ theme }) => theme.size.SIZE_008} 0;
 
+	cursor: pointer;
+
 	&:hover,
 	&:active {
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
+	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: 30%;
+		margin-top: ${({ theme }) => theme.size.SIZE_040};
+		padding: ${({ theme }) => theme.size.SIZE_012} 0;
 	}
 `;
 
