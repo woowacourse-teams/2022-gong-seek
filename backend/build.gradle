@@ -94,20 +94,18 @@ asciidoctor {
 task copyDocument(type: Copy) {
     dependsOn asciidoctor
     from file("${asciidoctor.outputDir}")
-    into file("build/resources/main/static")
-}
-
-task copyToSrcDocument(type: Copy) {
-    dependsOn asciidoctor
-    from file("build/docs/asciidoc/static")
-    into file("src/main/resources/static/docs")
+    into file("build/resources/main/static/docs")
 }
 
 bootJar {
-    dependsOn asciidoctor
+    dependsOn copyDocument
 }
 
-build {
+jar{
+    dependsOn bootJar
+}
+
+bootJarMainClassName{
     dependsOn copyDocument
 }
 
@@ -140,6 +138,7 @@ jacoco {
 }
 
 jacocoTestReport {
+    dependsOn copyDocument
     reports {
         xml.enabled true
         csv.enabled false
