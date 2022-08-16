@@ -3,7 +3,7 @@ package com.woowacourse.gongseek.tag.domain;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
-import com.woowacourse.gongseek.tag.exception.ExceededTagsException;
+import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +22,7 @@ class TagsTest {
                 List.of(new Tag("Spring"), new Tag("java"), new Tag("c++"),
                         new Tag("react"), new Tag("backend"), new Tag("infra"))
         ))
-                .isInstanceOf(ExceededTagsException.class)
+                .isInstanceOf(ExceededTagSizeException.class)
                 .hasMessage("해시태그는 한 게시글 당 최대 5개입니다.");
     }
 }

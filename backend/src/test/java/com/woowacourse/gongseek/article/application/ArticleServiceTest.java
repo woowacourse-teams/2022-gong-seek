@@ -27,7 +27,7 @@ import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
-import com.woowacourse.gongseek.tag.exception.ExceededTagsException;
+import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -119,7 +119,7 @@ public class ArticleServiceTest {
                 List.of("aa", "bb", "cc", "dd", "ee", "ff"), true);
 
         assertThatThrownBy(() -> articleService.save(new LoginMember(member.getId()), articleRequest))
-                .isInstanceOf(ExceededTagsException.class)
+                .isInstanceOf(ExceededTagSizeException.class)
                 .hasMessage("해시태그는 한 게시글 당 최대 5개입니다.");
     }
 

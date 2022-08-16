@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.tag.domain;
 
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
-import com.woowacourse.gongseek.tag.exception.ExceededTagsException;
+import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -38,7 +38,7 @@ public class Tags {
 
     private void validateLength(List<Tag> tags) {
         if (tags.size() > MAX_TAGS_SIZE) {
-            throw new ExceededTagsException();
+            throw new ExceededTagSizeException();
         }
     }
 

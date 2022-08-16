@@ -19,7 +19,7 @@ import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
 import com.woowacourse.gongseek.comment.exception.CommentNullOrEmptyException;
 import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
-import com.woowacourse.gongseek.tag.exception.ExceededTagsException;
+import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
 import com.woowacourse.gongseek.tag.exception.TagNameLengthException;
 import com.woowacourse.gongseek.tag.exception.TagNameNullOrBlankException;
 import com.woowacourse.gongseek.vote.exception.InvalidVoteAmountException;
@@ -77,7 +77,7 @@ public enum ExceptionType {
     TAG_NAME_NULL_OR_BLANK_EXCEPTION("6001", "해시태그 이름은 비어있을 수 없습니다.", TagNameNullOrBlankException.class),
     TAG_NAME_LENGTH_EXCEPTION("6002", "해시태그 이름은 2자 이상 20자 이하입니다.", TagNameLengthException.class),
     DUPLICATE_TAG_EXCEPTION("6003", "해시태그 이름은 중복될 수 없습니다.", DuplicateTagException.class),
-    EXCEEDED_TAGS_EXCEPTION("6004", "해시태그는 한 게시글 당 최대 5개입니다.", ExceededTagsException.class),
+    EXCEEDED_TAGS_EXCEPTION("6004", "해시태그는 한 게시글 당 최대 5개입니다.", ExceededTagSizeException.class),
 
     UNHANDLED_EXCEPTION("0000", "알 수 없는 서버 에러가 발생했습니다."),
     METHOD_ARGUMENT_NOT_VALID_EXCEPTION("0001", "요청 데이터가 잘못되었습니다."),
