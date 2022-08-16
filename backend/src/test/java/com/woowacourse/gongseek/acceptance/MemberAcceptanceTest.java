@@ -132,4 +132,20 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(updateResponse.getMessage()).contains("회원이 존재하지 않습니다.")
         );
     }
+
+    @Test
+    void 회원이_이름을_빈값으로_수정히면_예외가_발생한다() {
+        //given
+        AccessTokenResponse tokenResponse = 로그인을_한다(기론);
+
+        //when
+        ExtractableResponse<Response> response = 이름을_수정한다(tokenResponse, "");
+        ErrorResponse errorResponse = response.as(ErrorResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(errorResponse.getErrorCode()).isEqualTo("0001"),
+                () -> assertThat(errorResponse.getMessage()).contains("수정할 이름의 길이는 1이상이어야 합니다.")
+        );
+    }
 }

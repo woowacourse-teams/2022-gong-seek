@@ -2,6 +2,7 @@ package com.woowacourse.gongseek.member.domain;
 
 import com.woowacourse.gongseek.member.exception.NameNullOrEmptyException;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,6 +15,7 @@ public class Name {
 
     private static final int MIN_NAME_LENGTH = 1;
 
+    @Column(name = "name", nullable = false)
     private String value;
 
     public Name(String value){
@@ -26,5 +28,4 @@ public class Name {
             throw new NameNullOrEmptyException();
         }
     }
-
 }
