@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 
-import MenuSlider from '@/components/common/MenuSlider/MenuSlider';
 import * as S from '@/components/layout/TabBar/TabBar.styles';
+import { menuSliderState } from '@/store/menuSliderState';
 
 const TabBar = () => {
 	const navigate = useNavigate();
-	const [isMenuSliderOpen, setIsMenuSliderOpen] = useState(false);
+	const [sliderState, setSliderState] = useRecoilState(menuSliderState);
 
 	return (
 		<>
@@ -23,11 +23,10 @@ const TabBar = () => {
 				/>
 				<S.MenuLink
 					onClick={() => {
-						setIsMenuSliderOpen(true);
+						setSliderState({ isOpen: true });
 					}}
 				/>
 			</S.Section>
-			{isMenuSliderOpen && <MenuSlider closeSlider={() => setIsMenuSliderOpen(false)} />}
 		</>
 	);
 };
