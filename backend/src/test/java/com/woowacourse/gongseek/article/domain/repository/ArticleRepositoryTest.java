@@ -215,12 +215,11 @@ class ArticleRepositoryTest {
         testEntityManager.flush();
         testEntityManager.clear();
 
-        Article foundArticle = articleRepository.findById(article.getId())
-                .orElse(null);
+        Article foundArticle = articleRepository.findById(article.getId()).get();
 
         assertAll(
                 () -> assertThat(tagRepository.findAll()).hasSize(2),
-                () -> assertThat(foundArticle.getArticleTags().getArticleTags()).hasSize(2)
+                () -> assertThat(foundArticle.getArticleTags().getValue()).hasSize(2)
         );
     }
 
@@ -235,8 +234,7 @@ class ArticleRepositoryTest {
         testEntityManager.flush();
         testEntityManager.clear();
 
-        Article firstFoundArticle = articleRepository.findById(article.getId())
-                .orElse(null);
+        Article firstFoundArticle = articleRepository.findById(article.getId()).get();
         Tag updatedTag = new Tag("backend");
         tagRepository.save(updatedTag);
         firstFoundArticle.updateTag(new Tags(List.of(updatedTag)));
@@ -244,12 +242,11 @@ class ArticleRepositoryTest {
         testEntityManager.flush();
         testEntityManager.clear();
 
-        Article secondFoundArticle = articleRepository.findById(article.getId())
-                .orElse(null);
+        Article secondFoundArticle = articleRepository.findById(article.getId()).get();
 
         assertAll(
                 () -> assertThat(tagRepository.findAll()).hasSize(3),
-                () -> assertThat(secondFoundArticle.getArticleTags().getArticleTags()).hasSize(1)
+                () -> assertThat(secondFoundArticle.getArticleTags().getValue()).hasSize(1)
         );
     }
 }

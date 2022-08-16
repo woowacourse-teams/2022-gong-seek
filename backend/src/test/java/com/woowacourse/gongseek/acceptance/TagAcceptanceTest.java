@@ -62,9 +62,11 @@ public class TagAcceptanceTest extends AcceptanceTest {
         기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
         기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
 
+        // when
         ExtractableResponse<Response> response = 모든_해시태그를_조회한다(tokenResponse);
         TagsResponse 해시태그 = response.as(TagsResponse.class);
 
+        // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(해시태그.getTag()).hasSize(1)

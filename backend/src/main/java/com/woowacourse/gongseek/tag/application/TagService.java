@@ -18,10 +18,12 @@ public class TagService {
 
     private final TagRepository tagRepository;
 
-    public List<Tag> getOrCreateTags(Tags tags) {
-        return tags.getTagNames().stream()
+    @Transactional
+    public Tags getOrCreateTags(Tags tags) {
+        List<Tag> foundTags = tags.getTagNames().stream()
                 .map(this::getOrCreateTagIfNotExist)
                 .collect(Collectors.toList());
+        return new Tags(foundTags);
     }
 
     private Tag getOrCreateTagIfNotExist(String name) {

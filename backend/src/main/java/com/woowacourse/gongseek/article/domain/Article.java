@@ -4,6 +4,8 @@ import com.woowacourse.gongseek.article.domain.articletag.ArticleTags;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -77,7 +79,8 @@ public class Article {
                 new Views(),
                 new ArticleTags(),
                 isAnonymous,
-                LocalDateTime.now(), LocalDateTime.now()
+                LocalDateTime.now(),
+                LocalDateTime.now()
         );
     }
 
@@ -121,5 +124,11 @@ public class Article {
 
     public int getViews() {
         return views.getValue();
+    }
+
+    public List<String> getTagNames() {
+        return this.articleTags.getValue().stream()
+                .map(articleTag -> articleTag.getTag().getName().getValue())
+                .collect(Collectors.toList());
     }
 }

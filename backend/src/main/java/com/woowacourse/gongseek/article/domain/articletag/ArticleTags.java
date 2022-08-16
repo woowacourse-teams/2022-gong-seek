@@ -14,18 +14,18 @@ import lombok.Getter;
 public class ArticleTags {
 
     @OneToMany(mappedBy = "article", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<ArticleTag> articleTags;
+    private List<ArticleTag> value;
 
     public ArticleTags() {
-        this.articleTags = new ArrayList<>();
+        this.value = new ArrayList<>();
     }
 
     public void add(Article article, Tags tags) {
         tags.getTags()
-                .forEach(tag -> articleTags.add(new ArticleTag(article, tag)));
+                .forEach(tag -> value.add(new ArticleTag(article, tag)));
     }
 
     public void clear() {
-        articleTags.clear();
+        value.clear();
     }
 }

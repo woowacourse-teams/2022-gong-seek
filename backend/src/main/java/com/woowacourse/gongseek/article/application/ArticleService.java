@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
-import com.woowacourse.gongseek.article.domain.articletag.ArticleTags;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
@@ -22,7 +21,6 @@ import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.tag.application.TagService;
-import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.ArrayList;
@@ -52,11 +50,11 @@ public class ArticleService {
         validateGuest(appMember);
         Member member = getAuthor(appMember, articleRequest);
 
-        Tags tags = new Tags(getTags(articleRequest.getTag()));
-        List<Tag> foundTags = tagService.getOrCreateTags(tags);
+        Tags tags = Tags.from(articleRequest.getTag());
+        Tags foundTags = tagService.getOrCreateTags(tags);
 
         Article article = articleRepository.save(articleRequest.toEntity(member));
-        article.addTag(new Tags(foundTags));
+        article.addTag(foundTags);
 
         return new ArticleIdResponse(article);
     }
@@ -76,12 +74,6 @@ public class ArticleService {
         return getMember(appMember);
     }
 
-    public List<Tag> getTags(List<String> tag) {
-        return tag.stream()
-                .map(Tag::new)
-                .collect(Collectors.toList());
-    }
-
     private Member getMember(AppMember appMember) {
         return memberRepository.findById(appMember.getPayload())
                 .orElseThrow(() -> new MemberNotFoundException(appMember.getPayload()));
@@ -89,7 +81,7 @@ public class ArticleService {
 
     public ArticleResponse getOne(AppMember appMember, Long id) {
         Article article = getArticle(id);
-        List<String> tagNames = getTagNames(article);
+        List<String> tagNames = article.getTagNames();
 
         article.addViews();
 
@@ -102,13 +94,6 @@ public class ArticleService {
     private Article getArticle(Long id) {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException(id));
-    }
-
-    private List<String> getTagNames(Article article) {
-        ArticleTags articleTags = article.getArticleTags();
-        return articleTags.getArticleTags().stream()
-                .map(articleTag -> articleTag.getTag().getName().getValue())
-                .collect(Collectors.toList());
     }
 
     private Long getLikeCount(Article article) {
@@ -154,7 +139,7 @@ public class ArticleService {
     }
 
     private ArticlePreviewResponse getArticlePreviewResponse(Article article, AppMember appMember) {
-        List<String> tagNames = getTagNames(article);
+        List<String> tagNames = article.getTagNames();
         return ArticlePreviewResponse.of(article, tagNames, getCommentCount(article),
                 new LikeResponse(isLike(article, appMember), getLikeCount(article)));
     }
@@ -190,13 +175,13 @@ public class ArticleService {
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
-        Tags tags = new Tags(getTags(articleUpdateRequest.getTag()));
-        List<Tag> foundTags = tagService.getOrCreateTags(tags);
+        Tags tags = Tags.from(articleUpdateRequest.getTag());
+        Tags foundTags = tagService.getOrCreateTags(tags);
 
         Article article = checkAuthorization(appMember, id);
         article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent());
 
-        article.updateTag(new Tags(foundTags));
+        article.updateTag(foundTags);
 
         return new ArticleUpdateResponse(article);
     }

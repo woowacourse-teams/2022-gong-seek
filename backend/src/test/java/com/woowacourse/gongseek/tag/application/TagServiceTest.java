@@ -47,10 +47,10 @@ class TagServiceTest {
 
     @Test
     void 태그가_존재하지_않으면_태그를_생성한다() {
-        List<Tag> tags = tagService.getOrCreateTags(new Tags(List.of(new Tag("SPRING"))));
+        Tags tags = tagService.getOrCreateTags(new Tags(List.of(new Tag("SPRING"))));
 
         assertAll(
-                () -> assertThat(tags.get(0).getName().getValue()).isEqualTo("SPRING"),
+                () -> assertThat(tags.getTags().get(0).getName().getValue()).isEqualTo("SPRING"),
                 () -> assertThat(tagRepository.findAll()).hasSize(1)
         );
     }
@@ -59,10 +59,10 @@ class TagServiceTest {
     void 태그가_이미_존재하면_태그를_찾아온다() {
         tagRepository.save(new Tag("SPRING"));
 
-        List<Tag> tags = tagService.getOrCreateTags(new Tags(List.of(new Tag("SPRING"))));
+        Tags tags = tagService.getOrCreateTags(new Tags(List.of(new Tag("SPRING"))));
 
         assertAll(
-                () -> assertThat(tags.get(0).getName().getValue()).isEqualTo("SPRING"),
+                () -> assertThat(tags.getTags().get(0).getName().getValue()).isEqualTo("SPRING"),
                 () -> assertThat(tagRepository.findAll()).hasSize(1)
         );
     }

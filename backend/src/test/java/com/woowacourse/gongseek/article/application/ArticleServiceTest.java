@@ -80,12 +80,11 @@ public class ArticleServiceTest {
                 List.of("Spring"), false);
 
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
-        Article foundArticle = articleRepository.findById(articleIdResponse.getId())
-                .orElse(null);
+        Article foundArticle = articleRepository.findById(articleIdResponse.getId()).get();
 
         assertAll(
                 () -> assertThat(articleIdResponse.getId()).isNotNull(),
-                () -> assertThat(foundArticle.getArticleTags().getArticleTags()).hasSize(1)
+                () -> assertThat(foundArticle.getArticleTags().getValue()).hasSize(1)
         );
     }
 
@@ -95,12 +94,11 @@ public class ArticleServiceTest {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true);
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
-        Article foundArticle = articleRepository.findById(articleIdResponse.getId())
-                .orElse(null);
+        Article foundArticle = articleRepository.findById(articleIdResponse.getId()).get();
 
         assertAll(
                 () -> assertThat(articleIdResponse.getId()).isNotNull(),
-                () -> assertThat(foundArticle.getArticleTags().getArticleTags()).hasSize(1)
+                () -> assertThat(foundArticle.getArticleTags().getValue()).hasSize(1)
         );
     }
 
@@ -130,12 +128,11 @@ public class ArticleServiceTest {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of(), true);
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
-        Article foundArticle = articleRepository.findById(articleIdResponse.getId())
-                .orElse(null);
+        Article foundArticle = articleRepository.findById(articleIdResponse.getId()).get();
 
         assertAll(
                 () -> assertThat(articleIdResponse.getId()).isNotNull(),
-                () -> assertThat(foundArticle.getArticleTags().getArticleTags()).hasSize(0)
+                () -> assertThat(foundArticle.getArticleTags().getValue()).hasSize(0)
         );
     }
 
