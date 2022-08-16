@@ -6,13 +6,15 @@ export const RadioButton = styled.input`
 	margin: 0;
 `;
 
-export const Title = styled.h2`
+export const Title = styled.h2<{ isVoted: boolean }>`
 	display: flex;
 
 	gap: ${({ theme }) => theme.size.SIZE_004};
 	align-items: center;
 
 	font-size: ${({ theme }) => theme.size.SIZE_014};
+
+	color: ${({ isVoted, theme }) => isVoted && theme.colors.BLUE_500};
 `;
 
 export const TitleBox = styled.div`

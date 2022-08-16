@@ -6,9 +6,11 @@ import VoteItem from '@/pages/Discussion/VoteItem/VoteItem';
 import useGetVote from '@/pages/Discussion/hooks/useGetVote';
 
 const Vote = ({ articleId }: { articleId: string }) => {
-	const { data, isLoading, totalCount } = useGetVote(articleId);
+	const { data, isLoading, totalCount, isEmptyVote } = useGetVote(articleId);
 
 	if (isLoading) return <Loading />;
+
+	if (isEmptyVote) return null;
 
 	return (
 		<S.Container>
@@ -24,6 +26,7 @@ const Vote = ({ articleId }: { articleId: string }) => {
 					data.voteItems.map((datum, idx) => (
 						<VoteItem
 							voteItemId={datum.id}
+							isVoted={data.votedItemId === datum.id}
 							key={datum.id}
 							title={datum.content}
 							totalVotes={totalCount}
