@@ -47,8 +47,10 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 			</S.ArticleItemTitle>
 			<S.ArticleInfoBox>
 				<S.ArticleTimeStamp>{dateTimeConverter(article.createdAt)}</S.ArticleTimeStamp>
-				<S.CommentCount>댓글 수 {article.commentCount}</S.CommentCount>
-				<S.Views>조회 수 {article.views}</S.Views>
+				<S.ArticleInfoSubBox>
+					<S.CommentCount>댓글 수 {article.commentCount}</S.CommentCount>
+					<S.Views>조회 수 {article.views}</S.Views>
+				</S.ArticleInfoSubBox>
 			</S.ArticleInfoBox>
 			<S.Content>{exculdeSpecialWordConverter(article.content)}</S.Content>
 			<S.HashTagListBox>
