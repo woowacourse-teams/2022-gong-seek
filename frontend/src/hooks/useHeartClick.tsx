@@ -59,12 +59,12 @@ const useHeartClick = ({
 		}
 	}, [postIsSuccess]);
 
-	const onLikeButtonClick = (e: React.MouseEvent<HTMLDivElement>) => {
+	const onLikeButtonClick = (e: React.MouseEvent<SVGElement>) => {
 		e.stopPropagation();
 		postMutate(articleId);
 	};
 
-	const onUnlikeButtonClick = (e: React.MouseEvent<HTMLDivElement>) => {
+	const onUnlikeButtonClick = (e: React.MouseEvent<SVGElement>) => {
 		e.stopPropagation();
 		deleteMutate(articleId);
 	};
