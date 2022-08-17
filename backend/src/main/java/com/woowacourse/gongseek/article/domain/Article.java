@@ -5,7 +5,6 @@ import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -127,8 +126,6 @@ public class Article {
     }
 
     public List<String> getTagNames() {
-        return this.articleTags.getValue().stream()
-                .map(articleTag -> articleTag.getTag().getName())
-                .collect(Collectors.toList());
+        return this.articleTags.getTagNames();
     }
 }

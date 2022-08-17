@@ -24,6 +24,7 @@ import com.woowacourse.gongseek.tag.application.TagService;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -228,17 +229,17 @@ public class ArticleService {
         Article article = checkAuthorization(appMember, id);
         articleRepository.delete(article);
 
-        List<String> tagNames = article.getTagNames();
-        tagNames.stream()
+        List<String> deletedTagNames = article.getTagNames().stream()
                 .filter(tagName -> !articleRepository.existsByTagName(tagName))
-                .forEach(tagService::delete);
+                .collect(Collectors.toList());
+        for (String deletedTagName : deletedTagNames) {
+            tagService.delete(deletedTagName);
+        }
     }
 
     @Transactional(readOnly = true)
     public ArticlePageResponse searchByTag(Long cursorId, int pageSize, String tagsText, AppMember appMember) {
-        List<String> tagNames = tagService.extract(tagsText);
-
-        List<ArticlePreviewResponse> articles = searchByTagName(cursorId, pageSize, tagNames, appMember);
+        List<ArticlePreviewResponse> articles = searchByTagName(cursorId, pageSize, extract(tagsText), appMember);
         return getArticlePageResponse(articles, pageSize);
     }
 
@@ -248,5 +249,9 @@ public class ArticleService {
                 .stream()
                 .map(article -> getArticlePreviewResponse(article, appMember))
                 .collect(Collectors.toList());
+    }
+
+    private List<String> extract(String tagsText) {
+        return Arrays.asList(tagsText.split(","));
     }
 }
