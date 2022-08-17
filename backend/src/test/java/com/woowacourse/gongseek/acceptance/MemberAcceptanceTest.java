@@ -2,7 +2,7 @@ package com.woowacourse.gongseek.acceptance;
 
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.기명으로_게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.익명으로_게시물을_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시물을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시물을_기명으로_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.기명으로_댓글을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.익명으로_댓글을_등록한다;
@@ -52,7 +52,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     void 회원이_작성한_기명_게시글들을_조회한다() {
         // given
         AccessTokenResponse tokenResponse = 로그인을_한다(레넌);
-        토론_게시물을_등록한다(tokenResponse);
+        토론_게시물을_기명으로_등록한다(tokenResponse);
 
         // when
         ExtractableResponse<Response> response = 내가_작성한_게시글들을_조회한다(tokenResponse);
@@ -87,7 +87,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     void 회원이_작성한_익명_기명_댓글들을_조회한다() {
         // given
         AccessTokenResponse tokenResponse = 로그인을_한다(레넌);
-        ArticleIdResponse 게시글번호 = 토론_게시물을_등록한다(tokenResponse);
+        ArticleIdResponse 게시글번호 = 토론_게시물을_기명으로_등록한다(tokenResponse);
         기명으로_댓글을_등록한다(tokenResponse, 게시글번호);
         익명으로_댓글을_등록한다(tokenResponse, 게시글번호);
 
@@ -130,6 +130,22 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         assertAll(
                 () -> assertThat(updateResponse.getErrorCode()).isEqualTo("2001"),
                 () -> assertThat(updateResponse.getMessage()).contains("회원이 존재하지 않습니다.")
+        );
+    }
+
+    @Test
+    void 회원이_이름을_빈값으로_수정히면_예외가_발생한다() {
+        //given
+        AccessTokenResponse tokenResponse = 로그인을_한다(기론);
+
+        //when
+        ExtractableResponse<Response> response = 이름을_수정한다(tokenResponse, "");
+        ErrorResponse errorResponse = response.as(ErrorResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(errorResponse.getErrorCode()).isEqualTo("0001"),
+                () -> assertThat(errorResponse.getMessage()).contains("수정할 이름의 길이는 1이상이어야 합니다.")
         );
     }
 }

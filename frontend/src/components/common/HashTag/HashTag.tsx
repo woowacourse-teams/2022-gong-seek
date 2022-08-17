@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import * as S from '@/components/common/HashTag/HashTag.styles';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
-import { validateHashTagInput } from '@/utils/validateInput';
+import { validatedHashTagInput } from '@/utils/validateInput';
 
 export interface HashTagProps {
 	hashTags: string[];

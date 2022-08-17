@@ -24,9 +24,10 @@ import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
-import com.woowacourse.gongseek.tag.exception.ExceededTagsException;
+import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -37,6 +38,7 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
 @SpringBootTest
@@ -72,23 +74,33 @@ public class ArticleServiceTest {
         databaseCleaner.tableClear();
     }
 
+    @Transactional
     @Test
     void 회원이_기명_게시글을_저장한다() {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
 
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
+        Article foundArticle = articleRepository.findById(articleIdResponse.getId()).get();
 
-        assertThat(articleIdResponse.getId()).isNotNull();
+        assertAll(
+                () -> assertThat(articleIdResponse.getId()).isNotNull(),
+                () -> assertThat(foundArticle.getArticleTags().getValue()).hasSize(1)
+        );
     }
 
+    @Transactional
     @Test
     void 회원이_익명_게시글을_저장한다() {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true);
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
+        Article foundArticle = articleRepository.findById(articleIdResponse.getId()).get();
 
-        assertThat(articleIdResponse.getId()).isNotNull();
+        assertAll(
+                () -> assertThat(articleIdResponse.getId()).isNotNull(),
+                () -> assertThat(foundArticle.getArticleTags().getValue()).hasSize(1)
+        );
     }
 
     @Test
@@ -107,17 +119,22 @@ public class ArticleServiceTest {
                 List.of("aa", "bb", "cc", "dd", "ee", "ff"), true);
 
         assertThatThrownBy(() -> articleService.save(new LoginMember(member.getId()), articleRequest))
-                .isInstanceOf(ExceededTagsException.class)
+                .isInstanceOf(ExceededTagSizeException.class)
                 .hasMessage("해시태그는 한 게시글 당 최대 5개입니다.");
     }
 
+    @Transactional
     @Test
     void 회원이_게시글에_해시태그를_달지_않고_저장한다() {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of(), true);
         ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
+        Article foundArticle = articleRepository.findById(articleIdResponse.getId()).get();
 
-        assertThat(articleIdResponse.getId()).isNotNull();
+        assertAll(
+                () -> assertThat(articleIdResponse.getId()).isNotNull(),
+                () -> assertThat(foundArticle.getArticleTags().getValue()).isEmpty()
+        );
     }
 
     @Test
@@ -200,6 +217,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo"),
@@ -217,6 +235,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명"),
@@ -236,6 +255,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo"),
@@ -254,6 +274,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명"),
@@ -271,6 +292,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo"),
@@ -288,6 +310,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명"),
@@ -306,12 +329,14 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getViews()).isEqualTo(2),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull()
         );
     }
 
+    @Transactional
     @Test
     void 작성자인_회원이_기명_게시글을_수정한다() {
         AppMember loginMember = new LoginMember(member.getId());
@@ -326,6 +351,8 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(response.getTitle()).isEqualTo(request.getTitle()),
+                () -> assertThat(response.getTag()).hasSize(1),
+                () -> assertThat(response.getTag().get(0)).isEqualTo("JAVA"),
                 () -> assertThat(response.getContent()).isEqualTo(request.getContent()),
                 () -> assertThat(response.getAuthor().getName()).isEqualTo("slo")
         );
@@ -345,6 +372,8 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(response.getTitle()).isEqualTo(request.getTitle()),
+                () -> assertThat(response.getTag()).hasSize(1),
+                () -> assertThat(response.getTag().get(0)).isEqualTo("JAVA"),
                 () -> assertThat(response.getContent()).isEqualTo(request.getContent()),
                 () -> assertThat(response.getAuthor().getName()).isEqualTo("익명")
         );
@@ -431,6 +460,26 @@ public class ArticleServiceTest {
     }
 
     @Test
+    void 회원이_게시글을_삭제했을_때_해당_태그로_작성된_게시글이_없으면_태그도_삭제한다() {
+        AppMember loginMember = new LoginMember(member.getId());
+        ArticleRequest firstArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring", "Java"), false);
+        ArticleRequest secondArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Java"), false);
+        ArticleIdResponse firstSavedArticle = articleService.save(loginMember, firstArticleRequest);
+        articleService.save(loginMember, secondArticleRequest);
+
+        articleService.delete(loginMember, firstSavedArticle.getId());
+
+        assertAll(
+                () -> assertThat(articleRepository.existsByTagName(new Name("SPRING"))).isFalse(),
+                () -> assertThat(articleRepository.existsByTagName(new Name("JAVA"))).isTrue(),
+                () -> assertThat(tagRepository.findByName(new Name("SPRING"))).isEmpty(),
+                () -> assertThat(tagRepository.findByName(new Name("JAVA"))).isNotEmpty()
+        );
+    }
+
+    @Test
     void 페이지가_10개씩_조회된다() {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
@@ -449,7 +498,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
-                () -> assertThat(response.isHasNext()).isEqualTo(true)
+                () -> assertThat(response.hasNext()).isTrue()
         );
     }
 
@@ -473,7 +522,7 @@ public class ArticleServiceTest {
         assertAll(
                 () -> assertThat(responses).hasSize(9),
                 () -> assertThat(responses.get(0).getId()).isEqualTo(9L),
-                () -> assertThat(response.isHasNext()).isEqualTo(false)
+                () -> assertThat(response.hasNext()).isFalse()
         );
     }
 
@@ -498,18 +547,18 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
-                () -> assertThat(response.isHasNext()).isEqualTo(false)
+                () -> assertThat(response.hasNext()).isFalse()
         );
     }
 
     @Test
     void 공백으로_게시글을_검색한_경우_빈_값이_나온다() {
         AppMember loginMember = new LoginMember(member.getId());
-        ArticlePageResponse articlePageResponse = articleService.search(null, 1, " ", loginMember);
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, 1, " ", loginMember);
 
         assertAll(
-                () -> assertThat(articlePageResponse.getArticles()).hasSize(0),
-                () -> assertThat(articlePageResponse.isHasNext()).isFalse()
+                () -> assertThat(articlePageResponse.getArticles()).isEmpty(),
+                () -> assertThat(articlePageResponse.hasNext()).isFalse()
         );
     }
 
@@ -524,11 +573,11 @@ public class ArticleServiceTest {
                             false));
         }
 
-        ArticlePageResponse articlePageResponse = articleService.search(null, 10, "질문", loginMember);
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, 10, "질문", loginMember);
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(10),
-                () -> assertThat(articlePageResponse.isHasNext()).isFalse()
+                () -> assertThat(articlePageResponse.hasNext()).isFalse()
         );
     }
 
@@ -543,15 +592,39 @@ public class ArticleServiceTest {
                             false));
         }
 
-        ArticlePageResponse firstPageResponse = articleService.search(null, 10, "질문", loginMember);
-        ArticlePageResponse secondPageResponse = articleService.search(
+        ArticlePageResponse firstPageResponse = articleService.searchByText(null, 10, "질문", loginMember);
+        ArticlePageResponse secondPageResponse = articleService.searchByText(
                 firstPageResponse.getArticles().get(9).getId(), 10, "질문", loginMember);
 
         assertAll(
                 () -> assertThat(firstPageResponse.getArticles()).hasSize(10),
-                () -> assertThat(firstPageResponse.isHasNext()).isTrue(),
+                () -> assertThat(firstPageResponse.hasNext()).isTrue(),
                 () -> assertThat(secondPageResponse.getArticles()).hasSize(10),
-                () -> assertThat(secondPageResponse.isHasNext()).isFalse()
+                () -> assertThat(secondPageResponse.hasNext()).isFalse()
         );
+    }
+
+    @Test
+    void 이름으로_검색할_경우_작성자가_작성한_게시물이_조회된다() {
+        AppMember loginMember = new LoginMember(member.getId());
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true);
+        for (int i = 0; i < 5; i++) {
+            articleService.save(loginMember, articleRequest);
+        }
+        articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), List.of("Spring"),
+                false);
+        for (int i = 0; i < 5; i++) {
+            articleService.save(loginMember, articleRequest);
+        }
+        Member newMember = memberRepository.save(new Member("slow", "slow", "avatarUrl"));
+        loginMember = new LoginMember(newMember.getId());
+        for (int i = 0; i < 5; i++) {
+            articleService.save(loginMember, articleRequest);
+        }
+
+        ArticlePageResponse pageResponse = articleService.searchByAuthor(null, 15, this.member.getName(), loginMember);
+
+        assertThat(pageResponse.getArticles()).hasSize(5);
     }
 }

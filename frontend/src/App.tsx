@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
+import MenuSlider from '@/components/common/MenuSlider/MenuSlider';
 import SnackBar from '@/components/common/SnackBar/SnackBar';
 import ErrorBoundary from '@/components/helper/ErrorBoundary';
 import PrivateRouter from '@/components/helper/PrivateRouter';
@@ -23,6 +24,7 @@ import UpdateWriting from '@/pages/UpdateWriting';
 import VoteDeadlineGenerator from '@/pages/VoteDeadlineGenerator';
 import VoteGenerator from '@/pages/VoteGenerator';
 import WritingArticles from '@/pages/WritingArticles';
+import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
 import styled from '@emotion/styled';
 
@@ -34,6 +36,7 @@ const Layout = styled.div`
 
 const Content = styled.main`
 	width: 100%;
+	min-height: calc(100vh - 2 * ${({ theme }) => theme.size.SIZE_126});
 	padding-bottom: 7rem;
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
@@ -43,8 +46,21 @@ const Content = styled.main`
 	}
 `;
 
+const Dimmer = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	background-color: ${({ theme }) => theme.colors.GRAY_500};
+
+	z-index: ${({ theme }) => theme.zIndex.MENU_SLIDER_BACKGROUND};
+`;
+
 const App = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
+	const [sliderState, setSliderState] = useRecoilState(menuSliderState);
 	return (
 		<Layout>
 			<Header />
@@ -63,19 +79,21 @@ const App = () => {
 						<Route element={<PublicRouter isAuthenticated={isLogin} />}>
 							<Route path="/login" element={<Login />} />
 						</Route>
-						<Route path="/articles/question/:id" element={<ErrorDetail />} />
 						<Route path="/articles/:category" element={<CategoryArticles />} />
+						<Route path="/articles/question/:id" element={<ErrorDetail />} />
+						<Route path="/articles/discussion/:id" element={<DiscussionDetail />} />
 						<Route path="/articles/modify/:category/:id" element={<UpdateWriting />} />
 						<Route path="/search-result" element={<Search />} />
-						<Route path="/articles/discussion/:id" element={<DiscussionDetail />} />
-						<Route path="/" element={<Home />} />
-						<Route path="/*" element={<NotFound />} />
 						<Route path="/inquire" element={<InquirePage />} />
+						<Route path="/*" element={<NotFound />} />
+						<Route path="/" element={<Home />} />
 					</Routes>
 				</Content>
 			</ErrorBoundary>
 			<TabBar />
 			<SnackBar />
+			{sliderState.isOpen && <Dimmer onClick={() => setSliderState({ isOpen: false })} />}
+			{sliderState.isOpen && <MenuSlider closeSlider={() => setSliderState({ isOpen: false })} />}
 		</Layout>
 	);
 };

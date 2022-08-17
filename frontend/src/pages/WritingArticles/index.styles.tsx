@@ -11,7 +11,7 @@ export const Container = styled.div`
 	align-items: center;
 
 	width: 100%;
-	height: 100%;
+	min-height: 100%;
 
 	margin-bottom: ${({ theme }) => theme.size.SIZE_040};
 `;
@@ -57,6 +57,11 @@ export const TitleInput = styled.input`
 	&:focus {
 		outline: none;
 	}
+`;
+
+export const TitleInputErrorMsgBox = styled.div`
+	color: ${({ theme }) => theme.colors.RED_500};
+	font-size: ${({ theme }) => theme.size.SIZE_012};
 `;
 
 export const HashTagInput = styled.input`
@@ -148,6 +153,47 @@ export const SubmitButton = styled.button`
 	background-color: ${({ theme }) => theme.colors.PURPLE_500};
 
 	padding: ${({ theme }) => theme.size.SIZE_004};
+
+	cursor: pointer;
+
+	&:hover,
+	&:active {
+		background-color: ${({ theme }) => theme.colors.PURPLE_400};
+	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: ${({ theme }) => theme.size.SIZE_100};
+		height: ${({ theme }) => theme.size.SIZE_040};
+
+		font-size: ${({ theme }) => theme.size.SIZE_016};
+	}
+`;
+
+export const UpdateSubmitBox = styled.div`
+	display: flex;
+
+	width: 100%;
+	justify-content: center;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		justify-content: flex-end;
+	}
+`;
+
+export const UpdateSubmitButton = styled.button`
+	width: 90%;
+	height: fit-content;
+
+	border-radius: ${({ theme }) => theme.size.SIZE_010};
+	border-color: transparent;
+
+	font-size: 0.8rem;
+
+	color: ${({ theme }) => theme.colors.WHITE};
+	background-color: ${({ theme }) => theme.colors.PURPLE_500};
+
+	padding: ${({ theme }) => theme.size.SIZE_004};
+	margin-top: ${({ theme }) => theme.size.SIZE_020};
 
 	cursor: pointer;
 

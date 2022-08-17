@@ -14,7 +14,7 @@ const useGetSearch = (target: string) => {
 			InfiniteSearchResultType,
 			AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 		>(
-			'search-result',
+			['search-result', target],
 			({
 				pageParam = {
 					target,
@@ -35,6 +35,7 @@ const useGetSearch = (target: string) => {
 					}
 					return;
 				},
+				retry: 1,
 			},
 		);
 

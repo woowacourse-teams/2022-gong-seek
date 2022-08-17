@@ -68,6 +68,8 @@ dependencies {
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:4.4.0'
+
+    implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
 }
 
 tasks.named('test') {
@@ -94,20 +96,18 @@ asciidoctor {
 task copyDocument(type: Copy) {
     dependsOn asciidoctor
     from file("${asciidoctor.outputDir}")
-    into file("build/resources/main/static")
-}
-
-task copyToSrcDocument(type: Copy) {
-    dependsOn asciidoctor
-    from file("build/docs/asciidoc/static")
-    into file("src/main/resources/static/docs")
+    into file("build/resources/main/static/docs")
 }
 
 bootJar {
-    dependsOn asciidoctor
+    dependsOn copyDocument
 }
 
-build {
+jar {
+    dependsOn bootJar
+}
+
+bootJarMainClassName {
     dependsOn copyDocument
 }
 
@@ -140,6 +140,7 @@ jacoco {
 }
 
 jacocoTestReport {
+    dependsOn copyDocument
     reports {
         xml.enabled true
         csv.enabled false
