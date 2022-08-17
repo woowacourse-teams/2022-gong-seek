@@ -13,7 +13,7 @@ import lombok.Getter;
 @Embeddable
 public class ArticleTags {
 
-    @OneToMany(mappedBy = "article", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "article", orphanRemoval = true, cascade = {CascadeType.PERSIST})
     private List<ArticleTag> value;
 
     public ArticleTags() {

@@ -60,15 +60,4 @@ class TagRepositoryTest {
 
         assertThat(tags).hasSize(2);
     }
-
-//    @Test
-//    void 해당하는_태그들을_조회한다() {
-//        tagRepository.save(new Tag("Spring"));
-//        tagRepository.save(new Tag("Java"));
-//        tagRepository.save(new Tag("React"));
-//
-//        List<Tag> tags = tagRepository.findByNameIgnoreCaseIn(List.of("SPRING", "java"));
-//
-//        assertThat(tags).hasSize(2);
-//    }
 }
