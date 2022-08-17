@@ -28,7 +28,7 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 			setHashInput('');
 			return;
 		}
-		if (!validateHashTagInput(hashTagInput.trim())) {
+		if (!validatedHashTagInput(hashTagInput.trim())) {
 			setErrorMsg('2글자 이상 20이하여야 합니다');
 			setHashInput('');
 			return;
