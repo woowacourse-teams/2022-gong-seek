@@ -39,7 +39,7 @@ export const DeadlineInput = styled.input`
 	}
 
 	:invalid + span::after {
-		content: '유효하지 않은 입력입니다.';
+		content: '만료기간은 다음날부터 7일뒤까지로 설정해주세요';
 		color: ${({ theme }) => theme.colors.RED_500};
 		font-size: ${({ theme }) => theme.size.SIZE_012};
 	}
