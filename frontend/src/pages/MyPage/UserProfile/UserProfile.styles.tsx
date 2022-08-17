@@ -38,6 +38,12 @@ export const UserNameBox = styled.div`
 	align-items: center;
 `;
 
+export const UserNameContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: ${({ theme }) => theme.size.SIZE_012};
+`;
+
 export const EditIcon = styled(FaPencilAlt)`
 	cursor: pointer;
 
@@ -57,7 +63,7 @@ export const ConfirmButton = styled.button<{ disabled: boolean }>`
 	background-color: ${({ disabled, theme }) =>
 		disabled ? theme.colors.GRAY_500 : theme.colors.PURPLE_500};
 	pointer-events: ${({ disabled }) => disabled && 'none'};
-	font-size: ${({ theme }) => theme.size.SIZE_012};
+	font-size: ${({ theme }) => theme.size.SIZE_010};
 	padding: ${({ theme }) => theme.size.SIZE_006};
 	:hover,
 	:active {
@@ -76,6 +82,6 @@ export const ValidateMessage = styled.div<{ isValid: boolean }>`
 
 export const EditUserNameBox = styled.div`
 	display: flex;
-	flex-direction: column;
+
 	gap: ${({ theme }) => theme.size.SIZE_016};
 `;
