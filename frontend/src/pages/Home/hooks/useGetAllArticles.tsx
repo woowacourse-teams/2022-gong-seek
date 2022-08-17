@@ -38,6 +38,7 @@ const useGetAllArticles = () => {
 				return;
 			},
 			retry: false,
+			refetchOnWindowFocus: false,
 		},
 	);
 

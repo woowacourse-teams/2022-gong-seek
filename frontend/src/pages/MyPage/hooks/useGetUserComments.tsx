@@ -11,7 +11,7 @@ const useGetUserComments = () => {
 	const { data, isSuccess, isLoading, isIdle, isError, error } = useQuery<
 		UserCommentResponse,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
-	>('user-comments', getUserComments, { retry: false });
+	>('user-comments', getUserComments, { retry: 1, refetchOnWindowFocus: false });
 
 	useEffect(() => {
 		if (isError) {

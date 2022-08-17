@@ -36,6 +36,7 @@ const useGetSearch = (target: string) => {
 					return;
 				},
 				retry: 1,
+				refetchOnWindowFocus: false,
 			},
 		);
 
