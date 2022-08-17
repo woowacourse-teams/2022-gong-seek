@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.acceptance;
 
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_게시물을_조회한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시물을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시물을_기명으로_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.LikeFixtures.게시물_추천을_취소한다;
 import static com.woowacourse.gongseek.acceptance.support.LikeFixtures.게시물을_추천한다;
@@ -25,7 +25,7 @@ public class LikeAcceptanceTest extends AcceptanceTest {
     void 로그인_후_게시물을_추천한다() {
         //given
         AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
-        ArticleIdResponse 게시물 = 토론_게시물을_등록한다(엑세스토큰);
+        ArticleIdResponse 게시물 = 토론_게시물을_기명으로_등록한다(엑세스토큰);
 
         //when
         ExtractableResponse<Response> response = 게시물을_추천한다(엑세스토큰, 게시물);
@@ -38,7 +38,7 @@ public class LikeAcceptanceTest extends AcceptanceTest {
     void 로그인_후_게시물_추천을_취소한다() {
         //given
         AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
-        ArticleIdResponse 게시물 = 토론_게시물을_등록한다(엑세스토큰);
+        ArticleIdResponse 게시물 = 토론_게시물을_기명으로_등록한다(엑세스토큰);
 
         //when
         게시물을_추천한다(엑세스토큰, 게시물);
@@ -52,7 +52,7 @@ public class LikeAcceptanceTest extends AcceptanceTest {
     void 게시물을_추천하면_추천수가_올라간다() {
         //given
         AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
-        ArticleIdResponse 게시물 = 토론_게시물을_등록한다(엑세스토큰);
+        ArticleIdResponse 게시물 = 토론_게시물을_기명으로_등록한다(엑세스토큰);
 
         //when
         게시물을_추천한다(엑세스토큰, 게시물);
@@ -70,7 +70,7 @@ public class LikeAcceptanceTest extends AcceptanceTest {
     void 게시물_추천을_취소하면_추천수가_내려간다() {
         //given
         AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
-        ArticleIdResponse 게시물 = 토론_게시물을_등록한다(엑세스토큰);
+        ArticleIdResponse 게시물 = 토론_게시물을_기명으로_등록한다(엑세스토큰);
         게시물을_추천한다(엑세스토큰, 게시물);
         게시물을_추천한다(로그인을_한다(슬로), 게시물);
 
@@ -89,7 +89,7 @@ public class LikeAcceptanceTest extends AcceptanceTest {
     void 게시물_추천은_한_번만_할_수_있다() {
         //given
         AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
-        ArticleIdResponse 게시물 = 토론_게시물을_등록한다(엑세스토큰);
+        ArticleIdResponse 게시물 = 토론_게시물을_기명으로_등록한다(엑세스토큰);
 
         //when
         게시물을_추천한다(엑세스토큰, 게시물);
@@ -107,7 +107,7 @@ public class LikeAcceptanceTest extends AcceptanceTest {
     void 게시물_추천_취소는_한_번만_할_수_있다() {
         //given
         AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
-        ArticleIdResponse 게시물 = 토론_게시물을_등록한다(엑세스토큰);
+        ArticleIdResponse 게시물 = 토론_게시물을_기명으로_등록한다(엑세스토큰);
 
         //when
         게시물을_추천한다(엑세스토큰, 게시물);
