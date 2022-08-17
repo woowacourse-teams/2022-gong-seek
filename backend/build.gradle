@@ -103,11 +103,11 @@ bootJar {
     dependsOn copyDocument
 }
 
-jar{
+jar {
     dependsOn bootJar
 }
 
-bootJarMainClassName{
+bootJarMainClassName {
     dependsOn copyDocument
 }
 

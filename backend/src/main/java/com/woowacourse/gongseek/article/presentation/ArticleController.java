@@ -75,14 +75,25 @@ public class ArticleController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<ArticlePageResponse> search(
+    @GetMapping("/search/text")
+    public ResponseEntity<ArticlePageResponse> searchByText(
             @RequestParam(required = false) Long cursorId,
             @RequestParam Integer pageSize,
-            @RequestParam String searchText,
+            @RequestParam(required = false) String text,
             @AuthenticationPrinciple AppMember appMember
     ) {
-        ArticlePageResponse response = articleService.search(cursorId, pageSize, searchText, appMember);
+        ArticlePageResponse response = articleService.searchByText(cursorId, pageSize, text, appMember);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/search/author")
+    public ResponseEntity<ArticlePageResponse> searchByAuthor(
+            @RequestParam(required = false) Long cursorId,
+            @RequestParam Integer pageSize,
+            @RequestParam(required = false) String author,
+            @AuthenticationPrinciple AppMember appMember
+    ) {
+        ArticlePageResponse response = articleService.searchByAuthor(cursorId, pageSize, author, appMember);
         return ResponseEntity.ok(response);
     }
 
