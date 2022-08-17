@@ -15,7 +15,7 @@ export const getUserSearchResult = async ({
 	searchIndex: string;
 }) => {
 	const { data } = await axios.get<SearchResultType>(
-		`${HOME_URL}/api/articles/author?author=${target}&cursorId=${cursorId}&pageSize=5`,
+		`${HOME_URL}/api/articles/search/author?author=${target}&cursorId=${cursorId}&pageSize=5`,
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
