@@ -1,16 +1,17 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { postLogin } from '@/api/login';
 
 const LoginController = () => {
 	const [searchParams] = useSearchParams();
+	const navigate = useNavigate();
 
 	const code = searchParams.get('code');
 	if (code === null) {
-		throw new Error('코드가 존재하지 않습니다.');
+		navigate('/');
 	}
 	const { data, isError, isSuccess, error, mutate } = useMutation<
 		AxiosResponse<{ accessToken: string }>,
