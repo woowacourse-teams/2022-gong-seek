@@ -49,14 +49,15 @@ const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 					<S.UserName>{name}</S.UserName>
 				)}
 				{isEdit ? (
-					<S.ConfirmIcon
-						size={20}
+					<S.ConfirmButton
 						disabled={!isValidInput}
 						onClick={() => {
 							onClickConfirmButton({ name: editedName });
 							setIsEdit(false);
 						}}
-					/>
+					>
+						수정하기
+					</S.ConfirmButton>
 				) : (
 					<S.EditIcon onClick={onClickEditIcon} />
 				)}

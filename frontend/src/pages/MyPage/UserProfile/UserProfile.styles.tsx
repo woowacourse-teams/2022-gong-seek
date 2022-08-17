@@ -47,15 +47,21 @@ export const EditIcon = styled(FaPencilAlt)`
 	}
 `;
 
-export const ConfirmIcon = styled(FaCheckSquare)<{ disabled: boolean }>`
+export const ConfirmButton = styled.button<{ disabled: boolean }>`
 	cursor: pointer;
 
-	color: ${({ disabled, theme }) => disabled && theme.colors.GRAY_500};
-	pointer-events: ${({ disabled }) => disabled && 'none'};
+	border-radius: ${({ theme }) => theme.size.SIZE_008};
+	border-color: transparent;
+	color: ${({ theme }) => theme.colors.WHITE};
 
+	background-color: ${({ disabled, theme }) =>
+		disabled ? theme.colors.GRAY_500 : theme.colors.PURPLE_500};
+	pointer-events: ${({ disabled }) => disabled && 'none'};
+	font-size: ${({ theme }) => theme.size.SIZE_012};
+	padding: ${({ theme }) => theme.size.SIZE_006};
 	:hover,
 	:active {
-		color: ${({ theme }) => theme.colors.PURPLE_400};
+		background-color: ${({ theme }) => theme.colors.PURPLE_400};
 	}
 `;
 
