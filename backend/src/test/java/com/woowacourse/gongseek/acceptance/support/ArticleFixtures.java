@@ -196,8 +196,9 @@ public class ArticleFixtures {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 로그인_후_해시태그로_게시글들을_검색한다(AccessTokenResponse tokenResponse, Long cursorId, int pageSize,
-                                                                 String parameterValues) {
+    public static ExtractableResponse<Response> 로그인_후_해시태그로_게시글들을_검색한다(AccessTokenResponse tokenResponse, Long cursorId,
+                                                                       int pageSize,
+                                                                       String parameterValues) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
