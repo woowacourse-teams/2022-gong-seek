@@ -18,14 +18,7 @@ export interface ArticleContentProps {
 }
 
 const ArticleContent = ({ category, article, author, articleId }: ArticleContentProps) => {
-	const {
-		deleteIsLoading,
-		onLikeButtonClick,
-		onUnlikeButtonClick,
-		postIsLoading,
-		isLike,
-		likeCount,
-	} = useHeartClick({
+	const { onLikeButtonClick, onUnlikeButtonClick, isLike, likeCount } = useHeartClick({
 		prevIsLike: article.isLike,
 		prevLikeCount: article.likeCount,
 		articleId,
@@ -38,7 +31,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 		navigate(`/articles/modify/${categoryName}/${articleId}`);
 	};
 
-	if (isLoading || deleteIsLoading || postIsLoading) {
+	if (isLoading) {
 		return <Loading />;
 	}
 
