@@ -130,3 +130,20 @@ include::{snippets}/article-search/request-parameters.adoc[]
 
 include::{snippets}/article-search/http-response.adoc[]
 include::{snippets}/article-search/response-fields.adoc[]
+
+== 해시태그로 게시물 조회
+
+`GET /api/articles/tags`
+
+== Request
+
+include::{snippets}/articles-get-by-tag/http-request.adoc[]
+
+=== Header
+
+include::{snippets}/articles-get-by-tag/request-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/articles-get-by-tag/http-response.adoc[]
+include::{snippets}/articles-get-by-tag/response-body.adoc[]

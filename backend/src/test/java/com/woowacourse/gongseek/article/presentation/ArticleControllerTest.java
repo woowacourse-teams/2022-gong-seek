@@ -31,6 +31,7 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlesByTagResponse;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.config.RestDocsConfig;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
@@ -468,6 +469,59 @@ class ArticleControllerTest {
                                 fieldWithPath("articles[].likeCount").type(JsonFieldType.NUMBER).description("추천 수"),
                                 fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN)
                                         .description("다음에 조회 할 게시글이 있으면 true")
+                        )
+                ));
+    }
+
+    @Test
+    void 해시태그로_게시글_조회_문서화() throws Exception {
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+
+        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
+                new AuthorDto("작성자1", "작성자1 이미지 url"),
+                "내용", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
+        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목", List.of("SPRING", "JAVA"),
+                new AuthorDto("작성자2", "작성자2 이미지 url"),
+                "내용", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
+        ArticlesByTagResponse response = new ArticlesByTagResponse(
+                List.of(articlePreviewResponse1, articlePreviewResponse2));
+
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
+        given(articleService.getAllByTag(anyString(), any())).willReturn(response);
+
+        ResultActions results = mockMvc.perform(get("/api/articles/tags")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
+                .param("tagsText", "spring")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .characterEncoding("UTF-8"));
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("articles-get-by-tag",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
+                        requestParameters(
+                                parameterWithName("tagsText").description("해시태그 파라미터")
+                        ),
+                        responseFields(
+                                fieldWithPath("articles[].id").type(JsonFieldType.NUMBER).description("게시글 식별자"),
+                                fieldWithPath("articles[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("articles[].tag").type(JsonFieldType.ARRAY).description("게시글 해시태그"),
+                                fieldWithPath("articles[].author.name").type(JsonFieldType.STRING)
+                                        .description("게시글 작성자 이름"),
+                                fieldWithPath("articles[].author.avatarUrl").type(JsonFieldType.STRING)
+                                        .description("게시글 작성자 프로필 이미지"),
+                                fieldWithPath("articles[].content").type(JsonFieldType.STRING).description("게시글 내용"),
+                                fieldWithPath("articles[].category").type(JsonFieldType.STRING).description("게시글 종류"),
+                                fieldWithPath("articles[].commentCount").type(JsonFieldType.NUMBER)
+                                        .description("게시글 댓글 개수"),
+                                fieldWithPath("articles[].createdAt").type(JsonFieldType.STRING)
+                                        .description("게시글 생성 날짜"),
+                                fieldWithPath("articles[].views").type(JsonFieldType.NUMBER).description("게시글 조회 수"),
+                                fieldWithPath("articles[].isLike").type(JsonFieldType.BOOLEAN).description("추천 여부"),
+                                fieldWithPath("articles[].likeCount").type(JsonFieldType.NUMBER).description("추천 수")
                         )
                 ));
     }
