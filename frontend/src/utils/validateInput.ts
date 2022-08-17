@@ -6,3 +6,4 @@ export const validatedTitleInput = (titleInput: string) =>
 export const validatedHashTagInput = (targetInput: string) =>
 	targetInput.length >= 2 && targetInput.length <= 20;
 
+export const validatedEditInput = (targetInput: string) => targetInput.length >= 1;

@@ -18,7 +18,7 @@ public class Name {
     @Column(name = "name", nullable = false)
     private String value;
 
-    public Name(String value){
+    public Name(String value) {
         validateNullOrEmpty(value);
         this.value = value;
     }

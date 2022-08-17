@@ -6,11 +6,9 @@ import VoteItem from '@/pages/Discussion/VoteItem/VoteItem';
 import useGetVote from '@/pages/Discussion/hooks/useGetVote';
 
 const Vote = ({ articleId }: { articleId: string }) => {
-	const { data, isLoading, totalCount, isEmptyVote } = useGetVote(articleId);
+	const { data, isLoading, totalCount } = useGetVote(articleId);
 
 	if (isLoading) return <Loading />;
-
-	if (isEmptyVote) return null;
 
 	return (
 		<S.Container>

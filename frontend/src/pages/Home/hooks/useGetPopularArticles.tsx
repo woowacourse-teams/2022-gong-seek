@@ -15,7 +15,7 @@ const useGetPopularArticles = () => {
 	const { data, error, isSuccess, isError, isLoading, isIdle } = useQuery<
 		PopularArticles,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
-	>('popular-articles', getPopularArticles, { retry: false, refetchOnWindowFocus: false });
+	>('popular-articles', getPopularArticles, { retry: 1, refetchOnWindowFocus: false });
 
 	useEffect(() => {
 		if (isSuccess) {

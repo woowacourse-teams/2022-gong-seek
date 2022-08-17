@@ -34,19 +34,25 @@ export const UserName = styled.div`
 export const UserNameBox = styled.div`
 	display: flex;
 	gap: ${({ theme }) => theme.size.SIZE_016};
-	cursor: pointer;
 
 	align-items: center;
 `;
 
 export const EditIcon = styled(FaPencilAlt)`
+	cursor: pointer;
+
 	:hover,
 	:active {
 		color: ${({ theme }) => theme.colors.PURPLE_400};
 	}
 `;
 
-export const ConfirmIcon = styled(FaCheckSquare)`
+export const ConfirmIcon = styled(FaCheckSquare)<{ disabled: boolean }>`
+	cursor: pointer;
+
+	color: ${({ disabled, theme }) => disabled && theme.colors.GRAY_500};
+	pointer-events: ${({ disabled }) => disabled && 'none'};
+
 	:hover,
 	:active {
 		color: ${({ theme }) => theme.colors.PURPLE_400};
