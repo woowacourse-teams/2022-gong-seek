@@ -11,8 +11,9 @@ export const getSearchResult = async ({
 	cursorId: string;
 }) => {
 	const accessToken = localStorage.getItem('accessToken');
+	const encodedTarget = encodeURIComponent(target);
 	const { data } = await axios.get<SearchResultType>(
-		`${HOME_URL}/api/articles/search?searchText=${target}&cursorId=${cursorId}&pageSize=5`,
+		`${HOME_URL}/api/articles/search?searchText=${encodedTarget}&cursorId=${cursorId}&pageSize=5`,
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
