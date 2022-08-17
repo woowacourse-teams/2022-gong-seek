@@ -5,6 +5,7 @@ import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
+import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -39,6 +40,7 @@ public class VoteService {
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
     private final VoteHistoryRepository voteHistoryRepository;
+    private final Encryptor encryptor;
 
     public VoteCreateResponse create(AppMember appMember, Long articleId, VoteCreateRequest voteCreateRequest) {
         Member member = getMember(appMember);
@@ -64,9 +66,17 @@ public class VoteService {
     }
 
     private void validateAuthor(Member member, Article article) {
-        if (!article.isAuthor(member)) {
+        if (!isAuthor(article, member)) {
             throw new NotAuthorException(article.getId(), member.getId());
         }
+    }
+
+    private boolean isAuthor(Article article, Member member) {
+        if (article.isAnonymous()) {
+            String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
+            return article.isAnonymousAuthor(cipherId);
+        }
+        return article.isAuthor(member);
     }
 
     private void validateCategory(Article article) {

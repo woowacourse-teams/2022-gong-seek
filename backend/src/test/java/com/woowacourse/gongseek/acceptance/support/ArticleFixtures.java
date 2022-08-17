@@ -31,9 +31,15 @@ public class ArticleFixtures {
                 .extract();
     }
 
-    public static ArticleIdResponse 토론_게시물을_등록한다(AccessTokenResponse tokenResponse) {
+    public static ArticleIdResponse 토론_게시물을_기명으로_등록한다(AccessTokenResponse tokenResponse) {
         ArticleRequest request = new ArticleRequest("title", "content", Category.DISCUSSION.getValue(),
                 List.of("Spring"), false);
+        return 특정_게시물을_등록한다(tokenResponse, request).as(ArticleIdResponse.class);
+    }
+
+    public static ArticleIdResponse 토론_게시물을_익명으로_등록한다(AccessTokenResponse tokenResponse) {
+        ArticleRequest request = new ArticleRequest("title", "content", Category.DISCUSSION.getValue(),
+                List.of("Spring"), true);
         return 특정_게시물을_등록한다(tokenResponse, request).as(ArticleIdResponse.class);
     }
 
