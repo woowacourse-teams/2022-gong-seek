@@ -7,7 +7,6 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlesByTagResponse;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import javax.validation.Valid;
@@ -97,11 +96,13 @@ public class ArticleController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/tags")
-    public ResponseEntity<ArticlesByTagResponse> getAllByTag(
+    @GetMapping("/search/tags")
+    public ResponseEntity<ArticlePageResponse> searchByTag(
+            @RequestParam(required = false) Long cursorId,
+            @RequestParam Integer pageSize,
             @RequestParam String tagsText,
             @AuthenticationPrinciple AppMember appMember
     ) {
-        return ResponseEntity.ok(articleService.getAllByTag(tagsText, appMember));
+        return ResponseEntity.ok(articleService.searchByTag(cursorId, pageSize, tagsText, appMember));
     }
 }

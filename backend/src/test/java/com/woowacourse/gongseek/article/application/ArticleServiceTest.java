@@ -15,7 +15,6 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlesByTagResponse;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
@@ -26,7 +25,6 @@ import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.tag.domain.Tag;
-import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
 import java.util.ArrayList;
@@ -629,36 +627,45 @@ public class ArticleServiceTest {
         assertThat(pageResponse.getArticles()).hasSize(5);
     }
 
-    @Transactional
     @Test
-    void 해시태그로_게시글들을_조회할_수_있다() {
+    void 태그_한개로_검색할_경우_태그로_작성한_게시글들이_조회된다() {
         AppMember loginMember = new LoginMember(member.getId());
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true);
+        for (int i = 0; i < 15; i++) {
+            articleService.save(loginMember, articleRequest);
+        }
 
-        Tag spring = tagRepository.save(new Tag("SPRING"));
-        Tag java = tagRepository.save(new Tag("JAVA"));
-        Tag react = tagRepository.save(new Tag("REACT"));
-
-        Article firstArticle = articleRepository.save(new Article("제목1", "내용1", Category.QUESTION, member, false));
-        Article secondArticle = articleRepository.save(new Article("제목2", "내용2", Category.QUESTION, member, false));
-        Article thirdArticle = articleRepository.save(new Article("제목3", "내용3", Category.QUESTION, member, false));
-        articleRepository.save(new Article("제목1", "내용1", Category.QUESTION, member, false));
-
-        firstArticle.addTag(new Tags(List.of(spring)));
-        secondArticle.addTag(new Tags(List.of(java)));
-        thirdArticle.addTag(new Tags(List.of(react)));
-
-        ArticlesByTagResponse firstResponse = articleService.getAllByTag("spring,java,react", loginMember);
-        ArticlesByTagResponse secondResponse = articleService.getAllByTag("spring", loginMember);
-        ArticlesByTagResponse thirdResponse = articleService.getAllByTag("java", loginMember);
-        ArticlesByTagResponse fourthResponse = articleService.getAllByTag("react", loginMember);
-        ArticlesByTagResponse fifthResponse = articleService.getAllByTag("", loginMember);
+        ArticlePageResponse pageResponse = articleService.searchByTag(null, 15, "spring",
+                loginMember);
 
         assertAll(
-                () -> assertThat(firstResponse.getArticles()).hasSize(3),
-                () -> assertThat(secondResponse.getArticles()).hasSize(1),
-                () -> assertThat(thirdResponse.getArticles()).hasSize(1),
-                () -> assertThat(fourthResponse.getArticles()).hasSize(1),
-                () -> assertThat(fifthResponse.getArticles()).hasSize(0)
+                () -> assertThat(pageResponse.getArticles()).hasSize(15),
+                () -> assertThat(pageResponse.hasNext()).isFalse()
+        );
+    }
+
+    @Test
+    void 태그_여러개로_검색할_경우_태그로_작성한_게시글들이_조회된다() {
+        AppMember loginMember = new LoginMember(member.getId());
+        ArticleRequest firstArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true);
+        for (int i = 0; i < 5; i++) {
+            articleService.save(loginMember, firstArticleRequest);
+        }
+
+        ArticleRequest secondArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("java"), true);
+        for (int i = 0; i < 5; i++) {
+            articleService.save(loginMember, secondArticleRequest);
+        }
+
+        ArticlePageResponse pageResponse = articleService.searchByTag(5L, 2, "spring,java",
+                loginMember);
+
+        assertAll(
+                () -> assertThat(pageResponse.getArticles()).hasSize(2),
+                () -> assertThat(pageResponse.hasNext()).isTrue()
         );
     }
 }

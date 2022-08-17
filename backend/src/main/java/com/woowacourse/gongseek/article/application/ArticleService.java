@@ -10,7 +10,6 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlesByTagResponse;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
@@ -236,12 +235,18 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticlesByTagResponse getAllByTag(String tagsText, AppMember appMember) {
+    public ArticlePageResponse searchByTag(Long cursorId, int pageSize, String tagsText, AppMember appMember) {
         List<String> tagNames = tagService.extract(tagsText);
-        List<Article> articles = articleRepository.findAllByTagNameIn(tagNames);
-        List<ArticlePreviewResponse> responses = articles.stream()
+
+        List<ArticlePreviewResponse> articles = searchByTagName(cursorId, pageSize, tagNames, appMember);
+        return getArticlePageResponse(articles, pageSize);
+    }
+
+    private List<ArticlePreviewResponse> searchByTagName(Long cursorId, int pageSize, List<String> tagNames,
+                                                         AppMember appMember) {
+        return articleRepository.searchByTag(cursorId, pageSize, tagNames)
+                .stream()
                 .map(article -> getArticlePreviewResponse(article, appMember))
                 .collect(Collectors.toList());
-        return new ArticlesByTagResponse(responses);
     }
 }

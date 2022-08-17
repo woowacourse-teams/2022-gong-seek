@@ -31,7 +31,6 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlesByTagResponse;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.config.RestDocsConfig;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
@@ -483,26 +482,30 @@ class ArticleControllerTest {
         ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목", List.of("SPRING", "JAVA"),
                 new AuthorDto("작성자2", "작성자2 이미지 url"),
                 "내용", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
-        ArticlesByTagResponse response = new ArticlesByTagResponse(
-                List.of(articlePreviewResponse1, articlePreviewResponse2));
+        ArticlePageResponse response = new ArticlePageResponse(
+                List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
-        given(articleService.getAllByTag(anyString(), any())).willReturn(response);
+        given(articleService.searchByTag(anyLong(), anyInt(), anyString(), any())).willReturn(response);
 
-        ResultActions results = mockMvc.perform(get("/api/articles/tags")
+        ResultActions results = mockMvc.perform(get("/api/articles/search/tags")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer token")
+                .param("cursorId", "1")
+                .param("pageSize", "10")
                 .param("tagsText", "spring")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .characterEncoding("UTF-8"));
 
         results.andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("articles-get-by-tag",
+                .andDo(document("articles-search-by-tag",
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
                         ),
                         requestParameters(
+                                parameterWithName("cursorId").description("시작은 null, 마지막으로 조회한 게시물 식별자").optional(),
+                                parameterWithName("pageSize").description("가져올 게시글 개수"),
                                 parameterWithName("tagsText").description("해시태그 파라미터")
                         ),
                         responseFields(
@@ -521,7 +524,9 @@ class ArticleControllerTest {
                                         .description("게시글 생성 날짜"),
                                 fieldWithPath("articles[].views").type(JsonFieldType.NUMBER).description("게시글 조회 수"),
                                 fieldWithPath("articles[].isLike").type(JsonFieldType.BOOLEAN).description("추천 여부"),
-                                fieldWithPath("articles[].likeCount").type(JsonFieldType.NUMBER).description("추천 수")
+                                fieldWithPath("articles[].likeCount").type(JsonFieldType.NUMBER).description("추천 수"),
+                                fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN)
+                                        .description("다음에 조회 할 게시글이 있으면 true")
                         )
                 ));
     }

@@ -146,4 +146,4 @@ include::{snippets}/articles-get-by-tag/request-parameters.adoc[]
 === Response
 
 include::{snippets}/articles-get-by-tag/http-response.adoc[]
-include::{snippets}/articles-get-by-tag/response-body.adoc[]
+include::{snippets}/articles-get-by-tag/response-fields.adoc[]

@@ -11,7 +11,4 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
 
     @Query("SELECT case WHEN (count(at) > 0) THEN true ELSE false END FROM ArticleTag at WHERE at.tag.name = :name")
     boolean existsByTagName(String name);
-
-    @Query("SELECT DISTINCT at.article FROM ArticleTag at WHERE at.tag.name IN :names")
-    List<Article> findAllByTagNameIn(List<String> names);
 }
