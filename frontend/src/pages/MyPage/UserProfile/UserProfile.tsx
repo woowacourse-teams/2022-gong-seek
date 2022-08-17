@@ -51,8 +51,10 @@ const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 				{isEdit ? (
 					<S.ConfirmIcon
 						size={20}
+						disabled={!isValidInput}
 						onClick={() => {
 							onClickConfirmButton({ name: editedName });
+							setIsEdit(false);
 						}}
 					/>
 				) : (

@@ -8,6 +8,7 @@ import { putArticle } from '@/api/article';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { articleState } from '@/store/articleState';
+import { validatedTitleInput } from '@/utils/validateInput';
 import { Editor } from '@toast-ui/react-editor';
 
 const usePostUpdateWritingArticle = () => {
@@ -18,6 +19,9 @@ const usePostUpdateWritingArticle = () => {
 	const content = useRef<Editor | null>(null);
 	const [title, setTitle] = useState<string>(tempArticle.title);
 	const [hashTag, setHashTag] = useState<string[]>(tempArticle.tag);
+
+	const [isValidTitleInput, setIsValidTitleInput] = useState(true);
+	const titleInputRef = useRef<HTMLInputElement>(null);
 
 	const { data, isError, isSuccess, isLoading, error, mutate } = useMutation<
 		AxiosResponse<{ id: number; category: string }>,
@@ -47,6 +51,15 @@ const usePostUpdateWritingArticle = () => {
 		if (content.current === null) {
 			return;
 		}
+		if (!validatedTitleInput(title)) {
+			setIsValidTitleInput(false);
+
+			if (titleInputRef.current !== null) {
+				titleInputRef.current.focus();
+			}
+			return;
+		}
+		setIsValidTitleInput(true);
 		mutate({ title, content: content.current.getInstance().getMarkdown(), id, tag: hashTag });
 	};
 
@@ -58,6 +71,8 @@ const usePostUpdateWritingArticle = () => {
 		content,
 		hashTag,
 		setHashTag,
+		titleInputRef,
+		isValidTitleInput,
 		handleUpdateButtonClick,
 	};
 };
