@@ -47,7 +47,7 @@ public class Member {
         this.name = new Name(value);
     }
 
-    public String getName(){
+    public String getName() {
         return name.getValue();
     }
 }

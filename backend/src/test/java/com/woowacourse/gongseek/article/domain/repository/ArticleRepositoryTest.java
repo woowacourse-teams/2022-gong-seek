@@ -163,7 +163,17 @@ class ArticleRepositoryTest {
     void 게시글이_없을_때_검색하면_빈_값을_반환한다() {
         List<Article> articles = articleRepository.searchByContainingText(null, 5, "empty");
 
-        assertThat(articles).hasSize(0);
+        assertThat(articles).isEmpty();
+    }
+
+    @Test
+    void 유저_이름을_이용하여_게시글을_검색한다() {
+        articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+
+        List<Article> articles = articleRepository.searchByAuthor(null, 2, member.getName());
+
+        assertThat(articles).hasSize(2);
     }
 
     @Test
@@ -202,7 +212,7 @@ class ArticleRepositoryTest {
 
         articleRepository.deleteById(article.getId());
 
-        assertThat(articleRepository.findAll()).hasSize(0);
+        assertThat(articleRepository.findAll()).isEmpty();
     }
 
     @Test
