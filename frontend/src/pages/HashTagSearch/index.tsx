@@ -3,23 +3,16 @@ import { useEffect, useState } from 'react';
 import HashTagSearchBox from '@/pages/HashTagSearch/HashTagSearchBox/HashTagSearchBox';
 import HashTagSearchResult from '@/pages/HashTagSearch/HashTagSearchResult/HashTagSearchResult';
 import useGetAllHashTags from '@/pages/HashTagSearch/hooks/useGetAllHashTags';
-import useGetArticleByHashTag from '@/pages/HashTagSearch/hooks/useGetArticleByHashTag';
 import * as S from '@/pages/HashTagSearch/index.styles';
 
 const HashTagSearch = () => {
 	const [targetHashTags, setTargetHashTags] = useState<{ name: string; isChecked: boolean }[]>([]);
+	const [selectedHashTags, setSelectedHashTags] = useState<string[]>([]);
 	const {
 		data: tagsOption,
 		isSuccess: isTagsOptionSuccess,
 		isLoading: isTagsOptionLoading,
 	} = useGetAllHashTags();
-
-	const {
-		data: articles,
-		isSuccess: isArticlesSuccess,
-		isLoading: isArticleLoading,
-		mutate,
-	} = useGetArticleByHashTag();
 
 	useEffect(() => {
 		if (isTagsOptionSuccess && tagsOption && tagsOption?.tags.length >= 1) {
@@ -33,16 +26,7 @@ const HashTagSearch = () => {
 	}, [isTagsOptionSuccess]);
 
 	useEffect(() => {
-		const selectedHashTagList = targetHashTags.map((item) => {
-			if (item.isChecked) {
-				return item.name;
-			}
-			return;
-		});
-		if (selectedHashTagList && selectedHashTagList.length >= 1) {
-			const tags = selectedHashTagList.join(',');
-			mutate(tags);
-		}
+		setSelectedHashTags(targetHashTags.map((item) => (item.isChecked ? item.name : '')));
 	}, [targetHashTags]);
 
 	return (
@@ -57,9 +41,8 @@ const HashTagSearch = () => {
 			</S.HashTagSearchBoxContainer>
 
 			<S.HashTagSearchResultContainer>
-				{isArticleLoading && <S.EmptyMsg>게시글 조회 중</S.EmptyMsg>}
-				{isArticlesSuccess && articles ? (
-					<HashTagSearchResult articles={articles?.articles} />
+				{selectedHashTags && selectedHashTags.length >= 1 ? (
+					<HashTagSearchResult hashTags={selectedHashTags} />
 				) : (
 					<S.EmptyMsg>해시태그를 눌러주세요</S.EmptyMsg>
 				)}
