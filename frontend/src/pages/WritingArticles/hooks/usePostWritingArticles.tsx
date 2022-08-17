@@ -21,7 +21,7 @@ const usePostWritingArticles = ({
 		AxiosResponse<{ id: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ title: string; category: string; content: string; tag: string[]; isAnonymous: boolean }
-	>(postWritingArticle);
+	>(postWritingArticle, { retry: 1 });
 	const content = useRef<Editor | null>(null);
 	const [title, setTitle] = useState('');
 	const [categoryOption, setCategoryOption] = useState(category ? category : '');
