@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 
 import { deleteLikeArticle, postAddLikeArticle } from '@/api/like';
@@ -59,11 +59,13 @@ const useHeartClick = ({
 		}
 	}, [postIsSuccess]);
 
-	const onLikeButtonClick = () => {
+	const onLikeButtonClick = (e: React.MouseEvent<HTMLDivElement>) => {
+		e.stopPropagation();
 		postMutate(articleId);
 	};
 
-	const onUnlikeButtonClick = () => {
+	const onUnlikeButtonClick = (e: React.MouseEvent<HTMLDivElement>) => {
+		e.stopPropagation();
 		deleteMutate(articleId);
 	};
 
