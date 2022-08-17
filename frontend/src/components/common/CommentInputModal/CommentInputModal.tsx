@@ -34,7 +34,7 @@ const CommentInputModal = ({
 	placeholder,
 }: CommentInputModalProps) => {
 	const commentModal = document.getElementById('comment-portal');
-	const [comment, setComment] = useState('');
+	const [comment, setComment] = useState(placeholder);
 	const [isAnonymous, setIsAnonymous] = useState(false);
 
 	const {
@@ -78,10 +78,9 @@ const CommentInputModal = ({
 				aria-label="댓글을 입력해주세요"
 				value={comment}
 				onChange={(e) => setComment(e.target.value)}
-				placeholder={placeholder}
 			></S.CommentContent>
 			<S.SubmitBox>
-				<AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />
+				{modalType === 'register' && <AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />}
 				<S.CommentPostButton onClick={onClickCommentPostButton}>
 					{modalStatus[modalType].buttonText}
 				</S.CommentPostButton>

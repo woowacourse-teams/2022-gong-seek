@@ -9,6 +9,10 @@ import com.woowacourse.gongseek.config.JpaAuditingConfig;
 import com.woowacourse.gongseek.config.QuerydslConfig;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.tag.domain.Name;
+import com.woowacourse.gongseek.tag.domain.Tag;
+import com.woowacourse.gongseek.tag.domain.Tags;
+import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +21,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -34,6 +39,12 @@ class ArticleRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
+
+    @Autowired
+    private TestEntityManager testEntityManager;
 
     @BeforeEach
     void setUp() {
@@ -152,7 +163,17 @@ class ArticleRepositoryTest {
     void 게시글이_없을_때_검색하면_빈_값을_반환한다() {
         List<Article> articles = articleRepository.searchByContainingText(null, 5, "empty");
 
-        assertThat(articles).hasSize(0);
+        assertThat(articles).isEmpty();
+    }
+
+    @Test
+    void 유저_이름을_이용하여_게시글을_검색한다() {
+        articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+
+        List<Article> articles = articleRepository.searchByAuthor(null, 2, member.getName());
+
+        assertThat(articles).hasSize(2);
     }
 
     @Test
@@ -181,6 +202,81 @@ class ArticleRepositoryTest {
         assertAll(
                 () -> assertThat(article.getTitle()).isEqualTo("수정 제목"),
                 () -> assertThat(article.getContent()).isEqualTo("내용 바꿉니다.")
+        );
+    }
+
+    @Test
+    void 회원이_작성한_게시글들을_삭제할_수_있다() {
+        Article article = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+
+        articleRepository.deleteById(article.getId());
+
+        assertThat(articleRepository.findAll()).isEmpty();
+    }
+
+    @Test
+    void 회원은_게시글에_해시태그를_추가할_수_있다() {
+        Article article = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+        List<Tag> tags = List.of(new Tag("spring"), new Tag("java"));
+        tagRepository.saveAll(tags);
+        article.addTag(new Tags(tags));
+
+        testEntityManager.flush();
+        testEntityManager.clear();
+
+        Article foundArticle = articleRepository.findById(article.getId()).get();
+
+        assertAll(
+                () -> assertThat(tagRepository.findAll()).hasSize(2),
+                () -> assertThat(foundArticle.getArticleTags().getValue()).hasSize(2)
+        );
+    }
+
+    @Test
+    void 회원은_게시글에_해시태그를_수정할_수_있다() {
+        Article article = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+        List<Tag> tags = List.of(new Tag("spring"), new Tag("java"));
+        tagRepository.saveAll(tags);
+        article.addTag(new Tags(tags));
+
+        testEntityManager.flush();
+        testEntityManager.clear();
+
+        Article firstFoundArticle = articleRepository.findById(article.getId()).get();
+        Tag updatedTag = new Tag("backend");
+        tagRepository.save(updatedTag);
+        firstFoundArticle.updateTag(new Tags(List.of(updatedTag)));
+
+        testEntityManager.flush();
+        testEntityManager.clear();
+
+        Article secondFoundArticle = articleRepository.findById(article.getId()).get();
+
+        assertAll(
+                () -> assertThat(tagRepository.findAll()).hasSize(3),
+                () -> assertThat(secondFoundArticle.getArticleTags().getValue()).hasSize(1)
+        );
+    }
+
+    @Test
+    void 특정_해시태그로_저장되어_있는_게시글이_있는지_확인한다() {
+        Article article = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+        List<Tag> tags = List.of(new Tag("spring"), new Tag("java"));
+        tagRepository.saveAll(tags);
+        article.addTag(new Tags(tags));
+
+        boolean firstResult = articleRepository.existsByTagName(new Name("SPRING"));
+        boolean secondResult = articleRepository.existsByTagName(new Name("JAVA"));
+        boolean thirdResult = articleRepository.existsByTagName(new Name("REACT"));
+
+        assertAll(
+                () -> assertThat(firstResult).isTrue(),
+                () -> assertThat(secondResult).isTrue(),
+                () -> assertThat(thirdResult).isFalse()
         );
     }
 }

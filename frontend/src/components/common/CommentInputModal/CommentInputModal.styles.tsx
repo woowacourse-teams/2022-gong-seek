@@ -87,6 +87,10 @@ export const CommentPostButton = styled.button`
 	&:active {
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
 	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: ${({ theme }) => theme.size.SIZE_160};
+	}
 `;
 
 export const SubmitBox = styled.div`
@@ -99,7 +103,10 @@ export const SubmitBox = styled.div`
 	width: 80%;
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
-		margin-left: auto;
-		width: max-content;
+		width: 100%;
+		display: flex;
+		justify-content: flex-end;
+		padding-right: ${({ theme }) => theme.size.SIZE_260};
+		gap: ${({ theme }) => theme.size.SIZE_016};
 	}
 `;

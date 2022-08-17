@@ -76,4 +76,17 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         return title.contains(text)
                 .or(content.contains(text));
     }
+
+    @Override
+    public List<Article> searchByAuthor(Long cursorId, int pageSize, String author) {
+        return queryFactory
+                .selectFrom(article)
+                .where(
+                        article.member.name.value.eq(author),
+                        isOverArticleId(cursorId)
+                )
+                .limit(pageSize + 1)
+                .orderBy(article.id.desc())
+                .fetch();
+    }
 }

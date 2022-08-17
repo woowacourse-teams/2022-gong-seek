@@ -12,6 +12,7 @@ const RefreshTokenHandler = () => {
 		{ accessToken: string },
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('getBack-accessToken', getAccessTokenByRefreshToken);
+
 	const { showSnackBar } = useSnackBar();
 
 	useEffect(() => {
@@ -33,8 +34,8 @@ const RefreshTokenHandler = () => {
 	useEffect(() => {
 		if (isSuccess) {
 			localStorage.setItem('accessToken', data.accessToken);
-			showSnackBar('재로그인 되었습니다');
 			location.href = '/';
+			showSnackBar('재로그인 되었습니다');
 		}
 	}, [isSuccess]);
 

@@ -3,6 +3,7 @@
     <timestamp key="BY_DATE" datePattern="yyyy-MM-dd"/>
     <property name="LOG_PATTERN"
               value="[%d{yyyy-MM-dd HH:mm:ss}:%-4relative] %green([%thread]) %highlight(%-5level) %boldWhite([%C.%M:%yellow(%L)]) - %msg%n"/>
+    <property name="DB_PATTERN" value="%green(    > %msg%n)"/>
     <property name="LOG_LOCATION" value="./logs"/>
     <property name="BACKUP_LOCATION" value="./logs"/>
     <property name="DEBUG_LOCATION" value="debug"/>
@@ -12,38 +13,57 @@
     <property name="MAX_FILE_SIZE" value="100MB"/>
     <property name="MAX_HISTORY" value="14"/>
 
-    <springProfile name="local">
+    <springProfile name="test, local">
         <include resource="logging/console-appender.xml"/>
-        <root level="info">
+        <logger name="com.woowacourse.gongseek" level="DEBUG">
             <appender-ref ref="CONSOLE"/>
-        </root>
-    </springProfile>
-
-    <springProfile name="prod">
-        <include resource="logging/console-appender.xml"/>
-        <include resource="logging/file-info-appender.xml"/>
-        <include resource="logging/file-warn-appender.xml"/>
-        <include resource="logging/file-error-appender.xml"/>
-        <root level="info">
+        </logger>
+        <logger name="org.springframework.boot" level="INFO">
             <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="FILE-INFO"/>
-            <appender-ref ref="FILE-WARN"/>
-            <appender-ref ref="FILE-ERROR"/>
-        </root>
+        </logger>
+        <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
+            <appender-ref ref="CONSOLE-DB"/>
+        </logger>
+        <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="TRACE" additivity="false">
+            <appender-ref ref="CONSOLE-DB"/>
+        </logger>
     </springProfile>
 
     <springProfile name="dev">
-        <include resource="logging/console-appender.xml"/>
         <include resource="logging/file-debug-appender.xml"/>
         <include resource="logging/file-info-appender.xml"/>
         <include resource="logging/file-warn-appender.xml"/>
         <include resource="logging/file-error-appender.xml"/>
-        <root level="debug">
-            <appender-ref ref="CONSOLE"/>
+        <logger name="com.woowacourse.gongseek" level="DEBUG">
             <appender-ref ref="FILE-DEBUG"/>
             <appender-ref ref="FILE-INFO"/>
             <appender-ref ref="FILE-WARN"/>
             <appender-ref ref="FILE-ERROR"/>
-        </root>
+        </logger>
+        <logger name="org.springframework.boot" level="INFO">
+            <appender-ref ref="FILE-INFO"/>
+            <appender-ref ref="FILE-WARN"/>
+            <appender-ref ref="FILE-ERROR"/>
+        </logger>
     </springProfile>
+
+    <springProfile name="prod">
+        <include resource="logging/file-info-appender.xml"/>
+        <include resource="logging/file-warn-appender.xml"/>
+        <include resource="logging/file-error-appender.xml"/>
+        <logger name="com.woowacourse.gongseek" level="INFO">
+            <appender-ref ref="FILE-INFO"/>
+            <appender-ref ref="FILE-WARN"/>
+            <appender-ref ref="FILE-ERROR"/>
+        </logger>
+        <logger name="org.springframework.boot" level="INFO">
+            <appender-ref ref="FILE-INFO"/>
+            <appender-ref ref="FILE-WARN"/>
+            <appender-ref ref="FILE-ERROR"/>
+        </logger>
+    </springProfile>
+
 </configuration>

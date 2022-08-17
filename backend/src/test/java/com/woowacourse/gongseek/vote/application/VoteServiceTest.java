@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.common.DatabaseCleaner;
@@ -32,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+@SuppressWarnings("NonAsciiCharacters")
 @SpringBootTest
 class VoteServiceTest {
 
@@ -81,6 +83,18 @@ class VoteServiceTest {
         );
 
         assertThat(voteCreateResponse.getArticleId()).isEqualTo(discussionArticle.getId());
+    }
+
+    @Test
+    void 게시물의_작성자가_아닌_사용자가_투표를_생성하면_예외가_발생한다() {
+        LoginMember member = new LoginMember(
+                memberRepository.save(new Member("jurl", "jurlring", "avatarUrl")).getId());
+        VoteCreateRequest voteCreateRequest = new VoteCreateRequest(Set.of("Dto 최고다.", "VO 최고다"),
+                LocalDateTime.now().plusDays(5));
+
+        assertThatThrownBy(() -> voteService.create(member, discussionArticle.getId(), voteCreateRequest))
+                .isExactlyInstanceOf(NotAuthorException.class)
+                .hasMessageContaining("작성자가 아니므로 권한이 없습니다.");
     }
 
     @Test
