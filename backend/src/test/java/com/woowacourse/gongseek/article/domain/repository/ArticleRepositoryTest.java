@@ -7,6 +7,8 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.config.JpaAuditingConfig;
 import com.woowacourse.gongseek.config.QuerydslConfig;
+import com.woowacourse.gongseek.like.domain.Like;
+import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.tag.domain.Name;
@@ -23,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 
 @SuppressWarnings("NonAsciiCharacters")
 @Import({JpaAuditingConfig.class, QuerydslConfig.class})
@@ -42,6 +46,9 @@ class ArticleRepositoryTest {
 
     @Autowired
     private TagRepository tagRepository;
+
+    @Autowired
+    private LikeRepository likeRepository;
 
     @Autowired
     private TestEntityManager testEntityManager;
@@ -278,5 +285,51 @@ class ArticleRepositoryTest {
                 () -> assertThat(secondResult).isTrue(),
                 () -> assertThat(thirdResult).isFalse()
         );
+    }
+
+    @Test
+    void 게시글을_추천순으로_조회하고_다음_데이터가_존재하지_않는다() {
+        Article firstArticle = articleRepository.save(
+                new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(
+                new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        Article thirdArticle = articleRepository.save(
+                new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+
+        likeRepository.save(new Like(firstArticle, member));
+        Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
+        likeRepository.save(new Like(firstArticle, newMember));
+        likeRepository.save(new Like(secondArticle, member));
+
+        Slice<Article> articles = articleRepository.findAllByLikes(null, null, Category.QUESTION.getValue(),
+                PageRequest.ofSize(5));
+
+        assertAll(
+                () -> assertThat(articles.getContent()).isEqualTo(List.of(firstArticle, secondArticle, thirdArticle)),
+                () -> assertThat(articles.hasNext()).isFalse()
+        );
+    }
+
+    @Test
+    void 게시글을_추천순으로_조회하고_다음_데이터가_존재한다() {
+        Article firstArticle = articleRepository.save(
+                new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(
+                new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+
+        likeRepository.save(new Like(firstArticle, member));
+        Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
+        likeRepository.save(new Like(firstArticle, newMember));
+        likeRepository.save(new Like(secondArticle, member));
+
+        Slice<Article> articles = articleRepository.findAllByLikes(null, null, Category.QUESTION.getValue(),
+                PageRequest.ofSize(2));
+
+        assertAll(
+                () -> assertThat(articles.getContent()).isEqualTo(List.of(firstArticle, secondArticle)),
+                () -> assertThat(articles.hasNext()).isTrue()
+        );
+
     }
 }

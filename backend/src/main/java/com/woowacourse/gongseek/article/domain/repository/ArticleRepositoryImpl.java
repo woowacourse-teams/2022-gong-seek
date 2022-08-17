@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
 import static com.woowacourse.gongseek.article.domain.QArticle.article;
+import static com.woowacourse.gongseek.like.domain.QLike.like;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -11,6 +12,9 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 @RequiredArgsConstructor
 public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
@@ -54,6 +58,41 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     private BooleanExpression categoryEquals(String category) {
         return "all".equals(category) ? null : article.category.eq(Category.from(category));
+    }
+
+    @Override
+    public Slice<Article> findAllByLikes(Long cursorId, Integer cursorLikes, String category, Pageable pageable) {
+
+        List<Article> fetch = queryFactory
+                .select(article)
+                .from(like)
+                .rightJoin(like.article, article)
+                .where(
+                        cursorIdAndLikes(cursorId, cursorLikes),
+                        categoryEquals(category)
+                )
+                .groupBy(article)
+                .limit(pageable.getPageSize() + 1)
+                .orderBy(like.count().desc(), article.id.desc())
+                .fetch();
+
+        boolean hasNext = false;
+
+        if (fetch.size() == pageable.getPageSize() + 1) {
+            fetch.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+        return new SliceImpl<>(fetch, pageable, hasNext);
+    }
+
+
+    private BooleanExpression cursorIdAndLikes(Long cursorId, Integer likes) {
+        if (cursorId == null || likes == null) {
+            return null;
+        }
+        return like.count().eq((long) likes)
+                .and(article.id.lt(cursorId))
+                .or(like.count().lt(likes));
     }
 
     @Override

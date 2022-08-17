@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.acceptance;
 
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물_전체를_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물_전체를_추천순으로_조회한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_유저이름으로_검색한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_제목과_내용으로_검색한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물을_제목과_내용으로_처음_검색한다;
@@ -12,10 +13,12 @@ import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인을_하지_않고_게시물을_조회한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.익명으로_게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.조회수가_있는_게시물_5개를_생성한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.특정_게시물을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.해시태그_없이_게시글을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.기명으로_댓글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.LikeFixtures.게시물을_추천한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.슬로;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
@@ -37,6 +40,7 @@ import io.restassured.response.Response;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
@@ -766,6 +770,38 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         assertAll(
                 () -> assertThat(pageResponse.hasNext()).isFalse(),
                 () -> assertThat(pageResponse.getArticles()).hasSize(2)
+        );
+    }
+
+
+    @Disabled
+    @Test
+    void 토론_게시물을_추천순으로_조회한다() {
+        //given
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        ArticleIdResponse 게시물1 = 토론_게시물을_등록한다(엑세스토큰);
+        게시물을_추천한다(엑세스토큰, 게시물1);
+        게시물을_추천한다(로그인을_한다(슬로), 게시물1);
+
+        ArticleIdResponse 게시물2 = 토론_게시물을_등록한다(엑세스토큰);
+        게시물을_추천한다(엑세스토큰, 게시물2);
+
+        ArticleIdResponse 게시물3 = 토론_게시물을_등록한다(엑세스토큰);
+        //when
+
+        ExtractableResponse<Response> response = 게시물_전체를_추천순으로_조회한다(Category.DISCUSSION.getValue(), null,
+                null);
+        ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
+
+        List<Long> ids = articlePageResponse.getArticles().stream()
+                .map(ArticlePreviewResponse::getId)
+                .collect(Collectors.toList());
+
+        //then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(articlePageResponse.hasNext()).isFalse(),
+                () -> assertThat(ids.containsAll(List.of(1L, 2L, 3L))).isTrue()
         );
     }
 }
