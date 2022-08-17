@@ -13,7 +13,7 @@ export const getSearchResult = async ({
 }) => {
 	const accessToken = localStorage.getItem('accessToken');
 	const { data } = await axios.get<SearchResultType>(
-		`${HOME_URL}/api/articles/search?searchText=${target}&cursorId=${cursorId}&pageSize=5`,
+		`${HOME_URL}/api/articles/search?searchText=${target}&cursorId=${cursorId}&pageSize=6`,
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
@@ -30,10 +30,16 @@ export const getSearchResult = async ({
 	};
 };
 
-export const getArticleByHashTag = async (hashTags: string) => {
+export const getArticleByHashTag = async ({
+	hashTags,
+	cursorId = '',
+}: {
+	hashTags: string;
+	cursorId: string;
+}) => {
 	const accessToken = localStorage.getItem('accessToken');
-	const data = await axios.get<{ articles: CommonArticleType[] }>(
-		`${HOME_URL}/api/articles/tags?tagsText=${hashTags}`,
+	const { data } = await axios.get<SearchResultType>(
+		`${HOME_URL}/api/articles/tags?tagsText=${hashTags}&cursorId=${cursorId}&pageSize=6`,
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
@@ -41,5 +47,10 @@ export const getArticleByHashTag = async (hashTags: string) => {
 			},
 		},
 	);
-	return data.data;
+	return {
+		articles: data.articles,
+		hasNext: data.hasNext,
+		cursorId: String(data.articles[data.articles.length - 1].id),
+		hashTags: hashTags,
+	};
 };
