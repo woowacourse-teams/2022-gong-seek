@@ -114,22 +114,39 @@ include::{snippets}/article-get-all/request-parameters.adoc[]
 include::{snippets}/article-get-all/http-response.adoc[]
 include::{snippets}/article-get-all/response-fields.adoc[]
 
-== 게시물 검색
+== 제목이나 내용으로 게시물 검색
 
-`GET /api/articles/search`
+`GET /api/articles/search/text`
 
 === Request
 
-include::{snippets}/article-search/http-request.adoc[]
+include::{snippets}/article-search-text/http-request.adoc[]
 
 ==== Header
 
-include::{snippets}/article-search/request-parameters.adoc[]
+include::{snippets}/article-search-text/request-parameters.adoc[]
 
 === Response
 
-include::{snippets}/article-search/http-response.adoc[]
-include::{snippets}/article-search/response-fields.adoc[]
+include::{snippets}/article-search-text/http-response.adoc[]
+include::{snippets}/article-search-text/response-fields.adoc[]
+
+== 작성자 이름으로 게시물 검색
+
+`GET /api/articles/search/author`
+
+=== Request
+
+include::{snippets}/article-search-author/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/article-search-author/request-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/article-search-author/http-response.adoc[]
+include::{snippets}/article-search-author/response-fields.adoc[]
 
 == 해시태그로 게시물 조회
 
@@ -137,13 +154,13 @@ include::{snippets}/article-search/response-fields.adoc[]
 
 == Request
 
-include::{snippets}/articles-get-by-tag/http-request.adoc[]
+include::{snippets}/articles-search-by-tag/http-request.adoc[]
 
 === Header
 
-include::{snippets}/articles-get-by-tag/request-parameters.adoc[]
+include::{snippets}/articles-search-by-tag/request-parameters.adoc[]
 
 === Response
 
-include::{snippets}/articles-get-by-tag/http-response.adoc[]
-include::{snippets}/articles-get-by-tag/response-fields.adoc[]
+include::{snippets}/articles-search-by-tag/http-response.adoc[]
+include::{snippets}/articles-search-by-tag/response-fields.adoc[]
