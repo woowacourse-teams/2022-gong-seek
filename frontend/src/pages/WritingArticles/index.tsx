@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { postImage } from '@/api/image';
