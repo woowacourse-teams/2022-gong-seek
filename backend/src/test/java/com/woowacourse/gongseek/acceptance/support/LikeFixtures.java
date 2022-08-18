@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 @SuppressWarnings("NonAsciiCharacters")
 public class LikeFixtures {
 
-    public static ExtractableResponse<Response> 게시물을_추천한다(AccessTokenResponse accessToken,
+    public static ExtractableResponse<Response> 게시글을_추천한다(AccessTokenResponse accessToken,
                                                           ArticleIdResponse article) {
         return RestAssured
                 .given().log().all()
@@ -23,7 +23,7 @@ public class LikeFixtures {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 게시물_추천을_취소한다(AccessTokenResponse accessToken,
+    public static ExtractableResponse<Response> 게시글_추천을_취소한다(AccessTokenResponse accessToken,
                                                              ArticleIdResponse article) {
         return RestAssured
                 .given().log().all()

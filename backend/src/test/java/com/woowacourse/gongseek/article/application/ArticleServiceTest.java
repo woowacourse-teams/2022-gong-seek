@@ -25,7 +25,6 @@ import com.woowacourse.gongseek.like.application.LikeService;
 import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
-import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
@@ -40,9 +39,7 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -141,7 +138,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articleIdResponse.getId()).isNotNull(),
-                () -> assertThat(foundArticle.getArticleTags().getValue()).isEmpty()
+                () -> assertThat(foundArticle.getArticleTags().getValue()).hasSize(0)
         );
     }
 
@@ -157,7 +154,7 @@ public class ArticleServiceTest {
         List<Tag> tags = tagRepository.findAll();
         assertAll(
                 () -> assertThat(tags).hasSize(1),
-                () -> assertThat(tags.get(0).getName().getValue()).isEqualTo("SPRING")
+                () -> assertThat(tags.get(0).getName()).isEqualTo("SPRING")
         );
     }
 
@@ -480,10 +477,10 @@ public class ArticleServiceTest {
         articleService.delete(loginMember, firstSavedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleRepository.existsByTagName(new Name("SPRING"))).isFalse(),
-                () -> assertThat(articleRepository.existsByTagName(new Name("JAVA"))).isTrue(),
-                () -> assertThat(tagRepository.findByName(new Name("SPRING"))).isEmpty(),
-                () -> assertThat(tagRepository.findByName(new Name("JAVA"))).isNotEmpty()
+                () -> assertThat(articleRepository.existsArticleByTagName("SPRING")).isFalse(),
+                () -> assertThat(articleRepository.existsArticleByTagName("JAVA")).isTrue(),
+                () -> assertThat(tagRepository.findByNameIgnoreCase("SPRING")).isEmpty(),
+                () -> assertThat(tagRepository.findByNameIgnoreCase("JAVA")).isNotEmpty()
         );
     }
 
@@ -506,7 +503,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
-                () -> assertThat(response.hasNext()).isTrue()
+                () -> assertThat(response.hasNext()).isEqualTo(true)
         );
     }
 
@@ -613,7 +610,7 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 이름으로_검색할_경우_작성자가_작성한_게시물이_조회된다() {
+    void 이름으로_검색할_경우_작성자가_작성한_게시글이_조회된다() {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true);
@@ -653,7 +650,8 @@ public class ArticleServiceTest {
         likeService.likeArticle(new LoginMember(newMember.getId()), 3L);
         likeService.likeArticle(new LoginMember(member.getId()), 3L);
 
-        ArticlePageResponse articlePageResponse = articleService.getAllByLikes(null, null, Category.QUESTION.getValue(), Pageable.ofSize(3), new LoginMember(member.getId()));
+        ArticlePageResponse articlePageResponse = articleService.getAllByLikes(null, null, Category.QUESTION.getValue(),
+                Pageable.ofSize(3), new LoginMember(member.getId()));
         List<Long> collect = articlePageResponse.getArticles()
                 .stream()
                 .map(ArticlePreviewResponse::getId)
@@ -663,6 +661,24 @@ public class ArticleServiceTest {
                 () -> assertThat(articlePageResponse.hasNext()).isTrue(),
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(3),
                 () -> assertThat(collect).containsExactly(3L, 2L, 1L)
+        );
+    }
+
+    @Test
+    void 태그_한개로_검색할_경우_태그로_작성한_게시글들이_조회된다() {
+        AppMember loginMember = new LoginMember(member.getId());
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true);
+        for (int i = 0; i < 15; i++) {
+            articleService.save(loginMember, articleRequest);
+        }
+
+        ArticlePageResponse pageResponse = articleService.searchByTag(null, 15, "spring",
+                loginMember);
+
+        assertAll(
+                () -> assertThat(pageResponse.getArticles()).hasSize(15),
+                () -> assertThat(pageResponse.hasNext()).isFalse()
         );
     }
 
@@ -694,6 +710,31 @@ public class ArticleServiceTest {
                 () -> assertThat(articlePageResponse.hasNext()).isTrue(),
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(2),
                 () -> assertThat(collect).containsExactly(1L, 10L)
+        );
+    }
+
+    @Test
+    void 태그_여러개로_검색할_경우_태그로_작성한_게시글들이_조회된다() {
+        AppMember loginMember = new LoginMember(member.getId());
+        ArticleRequest firstArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!",
+                Category.QUESTION.getValue(),
+                List.of("Spring"), true);
+        for (int i = 0; i < 5; i++) {
+            articleService.save(loginMember, firstArticleRequest);
+        }
+        ArticleRequest secondArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!",
+                Category.QUESTION.getValue(),
+                List.of("java"), true);
+        for (int i = 0; i < 5; i++) {
+            articleService.save(loginMember, secondArticleRequest);
+        }
+
+        ArticlePageResponse pageResponse = articleService.searchByTag(5L, 2, "spring,java",
+                loginMember);
+
+        assertAll(
+                () -> assertThat(pageResponse.getArticles()).hasSize(2),
+                () -> assertThat(pageResponse.hasNext()).isTrue()
         );
     }
 }

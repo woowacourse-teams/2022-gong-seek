@@ -14,6 +14,7 @@ export interface UserComment {
 	createdAt: string;
 	updatedAt: string;
 	articleId: number;
+	articleTitle: string;
 	category: string;
 }
 

@@ -17,7 +17,7 @@ class TagTest {
     void 태그를_생성한다() {
         Tag tag = new Tag("Spring");
 
-        assertThat(tag.getName().getValue()).isEqualTo("SPRING");
+        assertThat(tag.getName()).isEqualTo("SPRING");
     }
 
     @ParameterizedTest
@@ -35,7 +35,7 @@ class TagTest {
         String name = "A".repeat(length);
         Tag tag = new Tag(name);
 
-        assertThat(tag.getName().getValue()).isEqualTo(name);
+        assertThat(tag.getName()).isEqualTo(name);
     }
 
     @ParameterizedTest

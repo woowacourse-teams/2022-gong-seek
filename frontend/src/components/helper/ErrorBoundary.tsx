@@ -25,6 +25,9 @@ class ErrorBoundary extends Component<Props, State> {
 
 	componentDidUpdate(_: never, prevState: State) {
 		if (prevState.error !== this.state.error) {
+			if (this.state.error && Number(this.state.error.errorCode) === 1004) {
+				window.location.href = '/check-login';
+			}
 			if (this.state.error && Number(this.state.error.errorCode) === 1005) {
 				window.location.href = '/check-login';
 			}

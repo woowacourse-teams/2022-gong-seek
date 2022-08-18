@@ -14,4 +14,6 @@ public interface ArticleRepositoryCustom {
     List<Article> searchByContainingText(Long cursorId, int pageSize, String searchText);
 
     List<Article> searchByAuthor(Long cursorId, int pageSize, String author);
+
+    List<Article> searchByTag(Long cursorId, int pageSize, List<String> tagNames);
 }

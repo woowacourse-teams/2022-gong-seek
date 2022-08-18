@@ -8,7 +8,7 @@ export const Container = styled.div`
 	flex-direction: column;
 
 	width: 90%;
-	height: ${({ theme }) => theme.size.SIZE_126};
+	height: fit-content;
 
 	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
 	border-radius: ${({ theme }) => theme.size.SIZE_004};
@@ -34,8 +34,13 @@ export const CategoryName = styled.div<{ isQuestion: boolean }>`
 	padding: ${({ theme }) => theme.size.SIZE_004};
 `;
 
+export const ArticleTitleBox = styled.div`
+	display: flex;
+	align-items: center;
+`;
+
 export const ArticleTitle = styled.div`
-	height: ${({ theme }) => theme.size.SIZE_050};
+	width: 80%;
 	font-size: ${({ theme }) => theme.size.SIZE_016};
 
 	overflow: hidden;
@@ -43,7 +48,7 @@ export const ArticleTitle = styled.div`
 	white-space: nowrap;
 	text-overflow: ellipsis;
 
-	padding: ${({ theme }) => theme.size.SIZE_002};
+	margin-left: ${({ theme }) => theme.size.SIZE_008};
 `;
 
 export const ArticleSubInfo = styled.div`

@@ -11,10 +11,10 @@ import com.woowacourse.gongseek.like.domain.Like;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
-import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -276,9 +276,9 @@ class ArticleRepositoryTest {
         tagRepository.saveAll(tags);
         article.addTag(new Tags(tags));
 
-        boolean firstResult = articleRepository.existsByTagName(new Name("SPRING"));
-        boolean secondResult = articleRepository.existsByTagName(new Name("JAVA"));
-        boolean thirdResult = articleRepository.existsByTagName(new Name("REACT"));
+        boolean firstResult = articleRepository.existsArticleByTagName("SPRING");
+        boolean secondResult = articleRepository.existsArticleByTagName("java");
+        boolean thirdResult = articleRepository.existsArticleByTagName("REACT");
 
         assertAll(
                 () -> assertThat(firstResult).isTrue(),
@@ -330,6 +330,61 @@ class ArticleRepositoryTest {
                 () -> assertThat(articles.getContent()).isEqualTo(List.of(firstArticle, secondArticle)),
                 () -> assertThat(articles.hasNext()).isTrue()
         );
+    }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"spring", "SPring", "SPRING", "java", "JAVA", "jaVA"})
+    void 태그_이름_하나로_검색한다(String tag) {
+        Article firstArticle = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
+        List<Tag> tags = List.of(new Tag("spring"), new Tag("java"));
+        tagRepository.saveAll(tags);
+        firstArticle.addTag(new Tags(tags));
+        secondArticle.addTag(new Tags(tags));
+
+        List<Article> articles = articleRepository.searchByTag(null, 2, List.of(tag));
+
+        assertThat(articles).hasSize(2);
+    }
+
+    @Test
+    void tagsText가_비어있으면_빈_리스트가_나온다() {
+        Article firstArticle = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
+        List<Tag> tags = List.of(new Tag("spring"), new Tag("java"));
+        tagRepository.saveAll(tags);
+        firstArticle.addTag(new Tags(tags));
+        secondArticle.addTag(new Tags(tags));
+
+        List<Article> articles = articleRepository.searchByTag(null, 2, new ArrayList<>());
+
+        assertThat(articles).hasSize(0);
+    }
+
+    @Test
+    void 태그_이름_여러개로_검색한다() {
+        Article firstArticle = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
+        Article thirdArticle = articleRepository.save(
+                new Article("title3", "content3", Category.DISCUSSION, member, false));
+        List<Tag> firstTags = List.of(new Tag("spring"), new Tag("java"));
+        List<Tag> secondTags = List.of(new Tag("spring"));
+        List<Tag> thirdTags = List.of(new Tag("java"));
+        tagRepository.saveAll(firstTags);
+        tagRepository.saveAll(secondTags);
+        tagRepository.saveAll(thirdTags);
+        firstArticle.addTag(new Tags(firstTags));
+        secondArticle.addTag(new Tags(secondTags));
+        thirdArticle.addTag(new Tags(thirdTags));
+
+        List<Article> articles = articleRepository.searchByTag(null, 2, List.of("spring", "java"));
+
+        assertThat(articles).hasSize(3);
     }
 }

@@ -12,7 +12,7 @@ endif::[]
 ---
 = 기본 API
 
-== 게시물 생성
+== 게시글 생성
 
 `POST /api/articles`
 
@@ -33,7 +33,7 @@ include::{snippets}/article-create/request-fields.adoc[]
 include::{snippets}/article-create/http-response.adoc[]
 include::{snippets}/article-create/response-fields.adoc[]
 
-== 게시물 단건 조회
+== 게시글 단건 조회
 
 `GET /api/articles/1`
 
@@ -49,17 +49,17 @@ include::{snippets}/article-find-one-not-login/http-request.adoc[]
 
 === Response
 
-==== 기명 게시물 조회
+==== 기명 게시글 조회
 
 include::{snippets}/article-find-one-login/http-response.adoc[]
 
-==== 익명 게시물 조회
+==== 익명 게시글 조회
 
 include::{snippets}/article-find-one-anonymous-login/http-response.adoc[]
 
 include::{snippets}/article-find-one-login/response-fields.adoc[]
 
-== 게시물 수정
+== 게시글 수정
 
 `PUT /api/articles/1`
 
@@ -81,7 +81,7 @@ include::{snippets}/article-update/request-fields.adoc[]
 include::{snippets}/article-create/http-response.adoc[]
 include::{snippets}/article-create/response-fields.adoc[]
 
-== 게시물 삭제
+== 게시글 삭제
 
 `DELETE /api/articles/1`
 
@@ -97,7 +97,7 @@ include::{snippets}/article-delete/request-headers.adoc[]
 
 include::{snippets}/article-delete/http-response.adoc[]
 
-== 게시물 전체 조회
+== 게시글 전체 조회
 
 `GET /api/articles`
 
@@ -114,7 +114,7 @@ include::{snippets}/article-get-all/request-parameters.adoc[]
 include::{snippets}/article-get-all/http-response.adoc[]
 include::{snippets}/article-get-all/response-fields.adoc[]
 
-== 게시물 추천수 조회
+<<<<<<< HEAD == 게시물 추천수 조회
 
 `GET /api/articles/likes`
 
@@ -131,19 +131,53 @@ include::{snippets}/article-get-all-likes/request-parameters.adoc[]
 include::{snippets}/article-get-all-likes/http-response.adoc[]
 include::{snippets}/article-get-all-likes/response-fields.adoc[]
 
-== 게시물 검색
+== 제목이나 내용으로 게시글 검색
 
-`GET /api/articles/search`
+`GET /api/articles/search/text`
 
 === Request
 
-include::{snippets}/article-search/http-request.adoc[]
+include::{snippets}/article-search-text/http-request.adoc[]
 
 ==== Header
 
-include::{snippets}/article-search/request-parameters.adoc[]
+include::{snippets}/article-search-text/request-parameters.adoc[]
 
 === Response
 
-include::{snippets}/article-search/http-response.adoc[]
-include::{snippets}/article-search/response-fields.adoc[]
+include::{snippets}/article-search-text/http-response.adoc[]
+include::{snippets}/article-search-text/response-fields.adoc[]
+
+== 작성자 이름으로 게시물 검색
+
+`GET /api/articles/search/author`
+
+=== Request
+
+include::{snippets}/article-search-author/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/article-search-author/request-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/article-search-author/http-response.adoc[]
+include::{snippets}/article-search-author/response-fields.adoc[]
+
+== 해시태그로 게시물 조회
+
+`GET /api/articles/tags`
+
+== Request
+
+include::{snippets}/articles-search-by-tag/http-request.adoc[]
+
+=== Header
+
+include::{snippets}/articles-search-by-tag/request-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/articles-search-by-tag/http-response.adoc[]
+include::{snippets}/articles-search-by-tag/response-fields.adoc[]
