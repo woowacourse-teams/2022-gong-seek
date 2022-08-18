@@ -11,11 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 public class UploadImageFile {
 
-    private final String originalFileName;
     private final String storedFileName;
 
-    private UploadImageFile(String originalFileName, String storedFileName) {
-        this.originalFileName = originalFileName;
+    private UploadImageFile(String storedFileName) {
         this.storedFileName = storedFileName;
     }
 
@@ -26,7 +24,7 @@ public class UploadImageFile {
         String originalFilename = StringUtils.cleanPath(imageFile.getOriginalFilename());
         String storeFileName = createStoreFileName(originalFilename);
 
-        return new UploadImageFile(originalFilename, storeFileName);
+        return new UploadImageFile(storeFileName);
     }
 
     private static void validateEmptyFile(MultipartFile imageFile) {
