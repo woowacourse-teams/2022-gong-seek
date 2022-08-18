@@ -16,7 +16,7 @@ const usePostVoteItem = (articleId: string) => {
 
 	useEffect(() => {
 		if (isSuccess) {
-			queryClient.refetchQueries(['vote', `vote${articleId}`]);
+			queryClient.invalidateQueries(`vote${articleId}`);
 		}
 	}, [isSuccess]);
 
@@ -36,7 +36,7 @@ const usePostVoteItem = (articleId: string) => {
 		mutate({ articleId, voteItemId: String(idx) });
 	};
 
-	return { onChangeRadio };
+	return { onChangeRadio, isLoading, isSuccess };
 };
 
 export default usePostVoteItem;

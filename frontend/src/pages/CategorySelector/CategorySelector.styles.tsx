@@ -12,10 +12,6 @@ export const Container = styled.div`
 
 	width: 100%;
 	height: 100%;
-
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
-		margin-top: ${({ theme }) => theme.size.SIZE_160};
-	}
 `;
 
 export const CategoryButtonBox = styled.div`

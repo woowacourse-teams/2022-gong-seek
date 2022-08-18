@@ -42,7 +42,7 @@ export const HashTagForm = styled.form`
 `;
 
 export const HastTagInput = styled.input`
-	width: 50%;
+	width: 60%;
 	overflow: auto;
 
 	border: none;

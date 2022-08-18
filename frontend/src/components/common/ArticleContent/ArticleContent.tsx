@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as S from '@/components/common/ArticleContent/ArticleContent.styles';
@@ -6,6 +7,7 @@ import useDeleteArticleContent from '@/components/common/ArticleContent/hooks/us
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import useHeartClick from '@/hooks/useHeartClick';
+import { queryClient } from '@/index';
 import { ArticleType } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 import { dateTimeConverter } from '@/utils/converter';
@@ -25,7 +27,11 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 		postIsLoading,
 		isLike,
 		likeCount,
-	} = useHeartClick(String(article.id));
+	} = useHeartClick({
+		prevIsLike: article.isLike,
+		prevLikeCount: article.likeCount,
+		articleId,
+	});
 	const { isLoading, handleDeleteArticle } = useDeleteArticleContent();
 	const navigate = useNavigate();
 

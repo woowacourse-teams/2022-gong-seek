@@ -11,6 +11,7 @@ export interface VoteItemProps {
 	colorIdx: number;
 	articleId: string;
 	isExpired: boolean;
+	isVoted: boolean;
 }
 
 const VoteItem = ({
@@ -21,6 +22,7 @@ const VoteItem = ({
 	colorIdx,
 	articleId,
 	isExpired,
+	isVoted,
 }: VoteItemProps) => {
 	const progressivePercent = Math.floor((itemVotes / totalVotes) * 100);
 	const { onChangeRadio } = usePostVoteItem(articleId);
@@ -35,8 +37,9 @@ const VoteItem = ({
 						onChangeRadio(articleId, voteItemId);
 					}}
 					disabled={isExpired}
+					checked={isVoted}
 				/>
-				<S.Title>
+				<S.Title isVoted={isVoted}>
 					<p>{title}</p>
 					<S.ItemVotes>{`(${itemVotes}표)`}</S.ItemVotes>
 				</S.Title>

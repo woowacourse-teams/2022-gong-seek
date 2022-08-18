@@ -12,7 +12,7 @@ const useDeleteComment = () => {
 		unknown,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ commentId: string }
-	>(deleteComments);
+	>(deleteComments, { retry: 1 });
 
 	const onDeleteButtonClick = (id: number) => {
 		if (confirm('정말로 삭제하시겠습니까?')) {

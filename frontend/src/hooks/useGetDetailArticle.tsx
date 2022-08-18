@@ -13,7 +13,10 @@ const useGetDetailArticle = (id: string) => {
 	const { data, isError, isSuccess, isLoading, error, isIdle } = useQuery<
 		ArticleType,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
-	>(['detail-article', `article${id}`], () => getDetailArticle(id));
+	>(['detail-article', `article${id}`], () => getDetailArticle(id), {
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
 	const setTempArticle = useSetRecoilState(articleState);
 
 	useEffect(() => {

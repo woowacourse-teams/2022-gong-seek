@@ -14,6 +14,7 @@ export interface CommonArticleType {
 	tag: string[];
 	isLike: boolean;
 	likeCount: number;
+	hasVote: boolean;
 }
 
 export interface ArticleType extends CommonArticleType {

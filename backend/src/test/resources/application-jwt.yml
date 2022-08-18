@@ -1,8 +1,0 @@
-security:
-  jwt:
-    access:
-      secret-key: cfffcbf11d4e08310059705c923d1db7fad82fd77307cc9590410e43c8190bcdd08878b1fd1f87ed6941775ef85f1708c1d7a2a211df2e26e8f3e948e226a12c
-      expire-length: 1800000
-    refresh:
-      secret-key: cfffcbf11d4e08310059705c923d1db7fad82fd77307cc9590410e43c8190bcdd08878b1fd1f87ed6941775ef85f1708c1d7a2a211df2e26e8f3e948e226a12c
-      expire-length: 1800000

@@ -8,6 +8,7 @@ import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateRequest;
 import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +41,7 @@ public class MemberController {
 
     @PatchMapping
     public ResponseEntity<MemberUpdateResponse> update(@AuthenticationPrinciple AppMember appMember,
-                                                       @RequestBody MemberUpdateRequest updateRequest) {
+                                                       @Valid @RequestBody MemberUpdateRequest updateRequest) {
         return ResponseEntity.ok(memberService.update(appMember, updateRequest));
     }
 }

@@ -1,0 +1,45 @@
+spring:
+  test:
+    database:
+      replace: none
+
+  h2.console:
+    enabled: true
+    path: /h2-console
+  datasource:
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+
+security:
+  oauth2:
+    client-id: clientId
+    client-secret: clientSecret
+  encryption:
+    algorithm: MD5
+  jwt:
+    access:
+      secret-key: cfffcbf11d4e08310059705c923d1db7fad82fd77307cc9590410e43c8190bcdd08878b1fd1f87ed6941775ef85f1708c1d7a2a211df2e26e8f3e948e226a12c
+      expire-length: 1800000
+    refresh:
+      secret-key: cfffcbf11d4e08310059705c923d1db7fad82fd77307cc9590410e43c8190bcdd08878b1fd1f87ed6941775ef85f1708c1d7a2a211df2e26e8f3e948e226a12c
+      expire-length: 1800000
+
+
+github:
+  url:
+    base: http://localhost:8888/api/auth
+    profile: http://localhost:8888/api/auth/user
+    redirect: https://127.0.0.1/callback
+
+server:
+  port: 8888

@@ -19,7 +19,6 @@ export const postLogin = (code: string) =>
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
-				'Access-Control-Allow-Credentials': true,
 			},
 			withCredentials: true,
 		},

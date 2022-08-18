@@ -8,4 +8,10 @@ export interface SearchResultType {
 export interface InfiniteSearchResultType extends SearchResultType {
 	cursorId: string;
 	target: string;
+	searchIndex: string;
+}
+
+export interface InfiniteHashTagSearchResultType extends SearchResultType {
+	cursorId: string;
+	hashTags: string;
 }

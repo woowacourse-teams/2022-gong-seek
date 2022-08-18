@@ -37,30 +37,30 @@ export const Container = styled.div`
 	}
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
-		height: ${({ theme }) => theme.size.SIZE_300};
-		width: ${({ theme }) => theme.size.SIZE_260};
+		height: ${({ theme }) => theme.size.SIZE_220};
+		width: ${({ theme }) => theme.size.SIZE_300};
 	}
 `;
 
 export const ArticleItemTitle = styled.h2`
 	display: flex;
-
-	gap: ${({ theme }) => theme.size.SIZE_010};
-
-	height: ${({ theme }) => theme.size.SIZE_040};
+	width: 100%;
+	height: ${({ theme }) => theme.size.SIZE_080};
 
 	font-size: ${({ theme }) => theme.size.SIZE_016};
-	font-weight: 600;
-
 	overflow: hidden;
 	text-overflow: ellipsis;
+	white-space: pre-wrap;
+	line-height: 2;
+	word-break: break-all;
 
-	white-space: normal;
-	line-height: 1.2;
-	word-wrap: break-word;
 	&:hover,
 	&:active {
 		text-decoration: underline;
+	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		line-height: 1.5;
 	}
 `;
 
@@ -75,26 +75,16 @@ export const CommentCount = styled.div`
 `;
 
 export const ArticleInfoBox = styled.div`
+	width: 100%;
 	display: flex;
 	justify-content: space-between;
 
 	margin-top: ${({ theme }) => theme.size.SIZE_008};
 `;
 
-export const Content = styled.div`
-	height: 40%;
-
-	font-size: ${({ theme }) => theme.size.SIZE_012};
-	line-height: ${({ theme }) => theme.size.SIZE_016};
-	text-overflow: ellipsis;
-	overflow: hidden;
-
-	margin-top: ${({ theme }) => theme.size.SIZE_016};
-
-	&:hover,
-	&:active {
-		text-decoration: underline;
-	}
+export const ArticleInfoSubBox = styled.div`
+	display: flex;
+	gap: ${({ theme }) => theme.size.SIZE_010};
 `;
 
 export const UserProfile = styled.img`
@@ -140,7 +130,8 @@ export const HeartBox = styled.div`
 `;
 
 export const ArticleTimeStamp = styled.div`
-	font-size: ${({ theme }) => theme.size.SIZE_012};
+	font-size: ${({ theme }) => theme.size.SIZE_010};
+	font-weight: 400;
 `;
 
 export const RightFooterBox = styled.div`
@@ -154,15 +145,29 @@ export const RightFooterBox = styled.div`
 
 export const HashTagListBox = styled.div`
 	display: flex;
+	height: 70%;
 	gap: ${({ theme }) => theme.size.SIZE_004};
 
-	margin-top: ${({ theme }) => theme.size.SIZE_010};
+	flex-wrap: nowrap;
+	overflow: hidden;
+
+	margin: ${({ theme }) => theme.size.SIZE_020} 0;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		flex-wrap: wrap;
+	}
 `;
 
 export const HashTagItem = styled.div`
+	height: fit-content;
+
+	max-width: ${({ theme }) => theme.size.SIZE_110};
 	font-size: ${({ theme }) => theme.size.SIZE_014};
 	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
 	border-radius: ${({ theme }) => theme.size.SIZE_004};
 
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 	padding: ${({ theme }) => theme.size.SIZE_004};
 `;

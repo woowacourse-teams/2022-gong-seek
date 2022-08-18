@@ -1,9 +1,12 @@
+import { useEffect } from 'react';
+
 import * as S from '@/components/common/ArticleItem/ArticleItem.styles';
 import Loading from '@/components/common/Loading/Loading';
 import useHeartClick from '@/hooks/useHeartClick';
+import { queryClient } from '@/index';
 import { Category } from '@/types/articleResponse';
 import { Author } from '@/types/author';
-import { dateTimeConverter, exculdeSpecialWordConverter } from '@/utils/converter';
+import { dateTimeConverter } from '@/utils/converter';
 
 export interface ArticleItemProps {
 	article: {
@@ -15,10 +18,8 @@ export interface ArticleItemProps {
 		commentCount: number;
 		createdAt: string;
 		tag: string[];
-		views: number;
 		isLike: boolean;
 		likeCount: number;
-		views: number;
 	};
 	onClick: () => void;
 }
@@ -31,7 +32,11 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 		postIsLoading,
 		isLike,
 		likeCount,
-	} = useHeartClick(String(article.id));
+	} = useHeartClick({
+		prevIsLike: article.isLike,
+		prevLikeCount: article.likeCount,
+		articleId: String(article.id),
+	});
 
 	if (deleteIsLoading || postIsLoading) {
 		return <Loading />;
@@ -44,10 +49,11 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 			</S.ArticleItemTitle>
 			<S.ArticleInfoBox>
 				<S.ArticleTimeStamp>{dateTimeConverter(article.createdAt)}</S.ArticleTimeStamp>
-				<S.CommentCount>댓글 수 {article.commentCount}</S.CommentCount>
-				<S.Views>조회 수 {article.views}</S.Views>
+				<S.ArticleInfoSubBox>
+					<S.CommentCount>댓글 수 {article.commentCount}</S.CommentCount>
+					<S.Views>조회 수 {article.views}</S.Views>
+				</S.ArticleInfoSubBox>
 			</S.ArticleInfoBox>
-			<S.Content>{exculdeSpecialWordConverter(article.content)}</S.Content>
 			<S.HashTagListBox>
 				{article.tag &&
 					article.tag.length >= 1 &&
@@ -65,7 +71,7 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 						) : (
 							<S.EmptyHeart onClick={onLikeButtonClick} />
 						)}
-						<div>{likeCount}</div>
+						<div aria-label="좋아요 수가 표기 되는 곳입니다">{likeCount}</div>
 					</S.HeartBox>
 				</S.RightFooterBox>
 			</S.FooterBox>
