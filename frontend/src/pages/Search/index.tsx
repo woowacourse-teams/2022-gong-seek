@@ -9,13 +9,13 @@ import { validatedSearchInput } from '@/utils/validateInput';
 const Search = () => {
 	const [searchInputState, setSearchInputState] = useRecoilState(searchState);
 	const [validSearch, setValidSearch] = useState(false);
-	const { isSearchOpen, isSearching, target } = searchInputState;
+	const { isSearching, target, searchIndex } = searchInputState;
 
 	useEffect(() => {
-		setSearchInputState({ isSearchOpen: true, isSearching, target });
+		setSearchInputState({ isSearchOpen: true, isSearching, target, searchIndex });
 
 		return () => {
-			setSearchInputState({ isSearchOpen: false, isSearching: false, target: '' });
+			setSearchInputState({ isSearchOpen: false, isSearching: false, target: '', searchIndex: '' });
 		};
 	}, []);
 
@@ -31,7 +31,7 @@ const Search = () => {
 	return (
 		<S.Container>
 			{validSearch ? (
-				<SearchResult target={target} />
+				<SearchResult target={target} searchIndex={searchIndex} />
 			) : (
 				<S.EmptyResultBox>
 					<S.EmptyMessage>검색어를 입력해주세요</S.EmptyMessage>
