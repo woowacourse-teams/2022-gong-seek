@@ -31,10 +31,6 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 		navigate(`/articles/modify/${categoryName}/${articleId}`);
 	};
 
-	if (isLoading) {
-		return <Loading />;
-	}
-
 	return (
 		<S.Container>
 			<S.Header>
