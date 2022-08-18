@@ -1,10 +1,10 @@
 package com.woowacourse.gongseek.acceptance;
 
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시글_전체를_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시글_전체를_추천순으로_조회한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시글을_유저이름으로_검색한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시글을_제목과_내용으로_검색한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시글을_제목과_내용으로_처음_검색한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시물_전체를_추천순으로_조회한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.기명으로_게시글을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_게시글을_삭제한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_게시글을_수정한다;
@@ -902,20 +902,20 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 토론_게시물을_추천순으로_조회할때_다음_게시물이_있고_페이지의_크기만큼_조회한다() {
+    void 토론_게시글을_추천순으로_조회할때_다음_게시글이_있고_페이지의_크기만큼_조회한다() {
         //given
         AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
-        ArticleIdResponse 게시물1 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
-        게시글을_추천한다(엑세스토큰, 게시물1);
-        게시글을_추천한다(로그인을_한다(슬로), 게시물1);
+        ArticleIdResponse 게시글1 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
+        게시글을_추천한다(엑세스토큰, 게시글1);
+        게시글을_추천한다(로그인을_한다(슬로), 게시글1);
 
-        ArticleIdResponse 게시물2 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
-        게시글을_추천한다(엑세스토큰, 게시물2);
+        ArticleIdResponse 게시글2 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
+        게시글을_추천한다(엑세스토큰, 게시글2);
 
-        ArticleIdResponse 게시물3 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
+        토론_게시글을_기명으로_등록한다(엑세스토큰);
         //when
 
-        ExtractableResponse<Response> response = 게시물_전체를_추천순으로_조회한다(Category.DISCUSSION.getValue(), null,
+        ExtractableResponse<Response> response = 게시글_전체를_추천순으로_조회한다(Category.DISCUSSION.getValue(), null,
                 null, 2);
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
 
@@ -932,20 +932,20 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 토론_게시물을_추천순으로_조회하고_다음_게시글이_없으면_hasNext는_false이고_게시글_개수만큼_조회한다() {
+    void 토론_게시글을_추천순으로_조회하고_다음_게시글이_없으면_hasNext는_false이고_게시글_개수만큼_조회한다() {
         //given
         AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
-        ArticleIdResponse 게시물1 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
-        게시글을_추천한다(엑세스토큰, 게시물1);
-        게시글을_추천한다(로그인을_한다(슬로), 게시물1);
+        ArticleIdResponse 게시글1 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
+        게시글을_추천한다(엑세스토큰, 게시글1);
+        게시글을_추천한다(로그인을_한다(슬로), 게시글1);
 
-        ArticleIdResponse 게시물2 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
-        게시글을_추천한다(엑세스토큰, 게시물2);
+        ArticleIdResponse 게시글2 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
+        게시글을_추천한다(엑세스토큰, 게시글2);
 
-        ArticleIdResponse 게시물3 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
+        토론_게시글을_기명으로_등록한다(엑세스토큰);
         //when
 
-        ExtractableResponse<Response> response = 게시물_전체를_추천순으로_조회한다(Category.DISCUSSION.getValue(), null,
+        ExtractableResponse<Response> response = 게시글_전체를_추천순으로_조회한다(Category.DISCUSSION.getValue(), null,
                 null, 5);
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
 
@@ -962,28 +962,28 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 토론_게시물을_추천순으로_조회하고_다음_페이지의_게시글을_조회한다() {
+    void 토론_게시글을_추천순으로_조회하고_다음_페이지의_게시글을_조회한다() {
         //given
         AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
-        ArticleIdResponse 게시물1 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
-        게시글을_추천한다(엑세스토큰, 게시물1);
-        게시글을_추천한다(로그인을_한다(슬로), 게시물1);
+        ArticleIdResponse 게시글1 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
+        게시글을_추천한다(엑세스토큰, 게시글1);
+        게시글을_추천한다(로그인을_한다(슬로), 게시글1);
 
-        ArticleIdResponse 게시물2 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
-        게시글을_추천한다(엑세스토큰, 게시물2);
+        ArticleIdResponse 게시글2 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
+        게시글을_추천한다(엑세스토큰, 게시글2);
 
-        ArticleIdResponse 게시물3 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
+        ArticleIdResponse 게시글3 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
 
         //when
-        ArticlePageResponse response = 게시물_전체를_추천순으로_조회한다(Category.DISCUSSION.getValue(), null, null, 2).as(
+        ArticlePageResponse response = 게시글_전체를_추천순으로_조회한다(Category.DISCUSSION.getValue(), null, null, 2).as(
                 ArticlePageResponse.class);
-        ArticlePageResponse articlePageResponse = 게시물_전체를_추천순으로_조회한다(Category.DISCUSSION.getValue(), 게시물2.getId(),
+        ArticlePageResponse articlePageResponse = 게시글_전체를_추천순으로_조회한다(Category.DISCUSSION.getValue(), 게시글2.getId(),
                 response.getArticles().get(1).getLikeCount(), 2).as(ArticlePageResponse.class);
 
         //then
         assertAll(
                 () -> assertThat(articlePageResponse.hasNext()).isFalse(),
-                () -> assertThat(articlePageResponse.getArticles().get(0).getId()).isEqualTo(게시물3.getId())
+                () -> assertThat(articlePageResponse.getArticles().get(0).getId()).isEqualTo(게시글3.getId())
         );
     }
 }

@@ -106,7 +106,7 @@ public class ArticleFixtures {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> 게시물_전체를_추천순으로_조회한다(String category, Long cursorId,
+    public static ExtractableResponse<Response> 게시글_전체를_추천순으로_조회한다(String category, Long cursorId,
                                                                    Long cursorLikes, int size) {
         return RestAssured
                 .given().log().all()

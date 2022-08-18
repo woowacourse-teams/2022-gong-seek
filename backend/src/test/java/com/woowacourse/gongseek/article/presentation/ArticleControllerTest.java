@@ -467,7 +467,7 @@ class ArticleControllerTest {
     }
 
     @Test
-    void 게시물_추천수_전체_조회_문서화() throws Exception {
+    void 게시글_추천수_전체_조회_문서화() throws Exception {
         ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
                 new AuthorDto("기론", "프로필 이미지 url"),
                 "내용입니다", Category.QUESTION.getValue(), 3, 2, false, 2L, LocalDateTime.now());
@@ -560,7 +560,7 @@ class ArticleControllerTest {
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
                         ),
                         requestParameters(
-                                parameterWithName("cursorId").description("시작은 null, 마지막으로 조회한 게시물 식별자").optional(),
+                                parameterWithName("cursorId").description("시작은 null, 마지막으로 조회한 게시글 식별자").optional(),
                                 parameterWithName("pageSize").description("가져올 게시글 개수"),
                                 parameterWithName("tagsText").description("해시태그 파라미터")
                         ),
