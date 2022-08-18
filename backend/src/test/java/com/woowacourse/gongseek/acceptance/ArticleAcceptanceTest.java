@@ -8,12 +8,14 @@ import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.기명
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_게시글을_삭제한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_게시글을_수정한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_게시글을_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_해시태그로_게시글들을_검색한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인을_하지_않고_게시글을_수정한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인을_하지_않고_게시글을_조회한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.익명으로_게시글을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.조회수가_있는_게시글_5개를_생성한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.특정_게시글을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.해시태그_없이_게시글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.해시태그로_게시글들을_검색한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.기명으로_댓글을_등록한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
@@ -38,6 +40,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.http.HttpStatus;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -768,6 +772,129 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(pageResponse.getArticles()).hasSize(2),
                 () -> assertThat(pageResponse.getArticles().get(1).getTitle()).isEqualTo("커스텀 예외를 처리하는 방법"),
                 () -> assertThat(pageResponse.getArticles().get(0).getTitle()).isEqualTo("커스텀예외를 처리하는 방법")
+        );
+    }
+
+    @Test
+    void 하나의_해시태그로_게시글들을_검색한다() {
+        //given
+        AccessTokenResponse tokenResponse = 로그인을_한다(레넌);
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("커스텀 예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), List.of("Spring", "Java"),
+                        false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("커스텀예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), List.of("JAVA", "SPRING"),
+                        false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("예외를 커스텀하려면?", "내용", Category.QUESTION.getValue(), List.of("Spring"), false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("예외를커스텀하려면?", "내용", Category.QUESTION.getValue(), List.of("Spring"), false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외 어떻게 커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), List.of("REACT"), false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외 어떻게커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), List.of("REACT", "SpRIng"),
+                        false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외는 이렇게 커스텀 하면 됩니다.", Category.DISCUSSION.getValue(),
+                        List.of("Spring", "Exception"),
+                        false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외는 이렇게 커스텀하면 됩니다.", Category.DISCUSSION.getValue(), List.of("Spring"),
+                        false));
+
+        //when
+        Long cursorId = null;
+        int pageSize = 4;
+        ExtractableResponse<Response> response = 해시태그로_게시글들을_검색한다(cursorId, pageSize, "spring");
+        ArticlePageResponse articlesResponse = response.as(ArticlePageResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(articlesResponse.getArticles()).hasSize(4),
+                () -> assertThat(articlesResponse.hasNext()).isTrue()
+        );
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"'spring,react', 8", "'java,react', 4", "'exception,react', 3", "'exception, hi', 1", "'', 0"})
+    void 여러개의_해시태그로_게시글들을_조회한다(String tags, int expected) {
+        //given
+        AccessTokenResponse tokenResponse = 로그인을_한다(레넌);
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("커스텀 예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), List.of("Spring", "Java"),
+                        false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("커스텀예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), List.of("JAVA", "SPRING"),
+                        false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("예외를 커스텀하려면?", "내용", Category.QUESTION.getValue(), List.of("Spring"), false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("예외를커스텀하려면?", "내용", Category.QUESTION.getValue(), List.of("Spring"), false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외 어떻게 커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), List.of("REACT"), false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외 어떻게커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), List.of("REACT", "SpRIng"),
+                        false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외는 이렇게 커스텀 하면 됩니다.", Category.DISCUSSION.getValue(),
+                        List.of("Spring", "Exception"),
+                        false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외는 이렇게 커스텀하면 됩니다.", Category.DISCUSSION.getValue(), List.of("Spring"),
+                        false));
+
+        //when
+        Long cursorId = null;
+        int pageSize = 8;
+        ExtractableResponse<Response> response = 해시태그로_게시글들을_검색한다(cursorId, pageSize, tags);
+        ArticlePageResponse articlesResponse = response.as(ArticlePageResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(articlesResponse.getArticles()).hasSize(expected)
+        );
+    }
+
+    @Test
+    void 로그인_한후_해시태그로_게시글들을_검색한다() {
+        //given
+        AccessTokenResponse tokenResponse = 로그인을_한다(레넌);
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("커스텀 예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), List.of("Spring", "Java"),
+                        false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("커스텀예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), List.of("JAVA", "SPRING"),
+                        false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("예외를 커스텀하려면?", "내용", Category.QUESTION.getValue(), List.of("Spring"), false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("예외를커스텀하려면?", "내용", Category.QUESTION.getValue(), List.of("Spring"), false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외 어떻게 커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), List.of("REACT"), false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외 어떻게커스텀하죠 ㅠㅠ", Category.QUESTION.getValue(), List.of("REACT", "SpRIng"),
+                        false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외는 이렇게 커스텀 하면 됩니다.", Category.DISCUSSION.getValue(),
+                        List.of("Spring", "Exception"),
+                        false));
+        특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("제목", "예외는 이렇게 커스텀하면 됩니다.", Category.DISCUSSION.getValue(), List.of("Spring"),
+                        false));
+
+        //when
+        Long cursorId = null;
+        int pageSize = 4;
+        ExtractableResponse<Response> response = 로그인_후_해시태그로_게시글들을_검색한다(tokenResponse, cursorId, pageSize, "spring");
+        ArticlePageResponse articlesResponse = response.as(ArticlePageResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(articlesResponse.getArticles()).hasSize(4),
+                () -> assertThat(articlesResponse.hasNext()).isTrue()
         );
     }
 }

@@ -471,4 +471,63 @@ class ArticleControllerTest {
                         )
                 ));
     }
+
+    @Test
+    void 해시태그로_게시글_조회_문서화() throws Exception {
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+
+        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
+                new AuthorDto("작성자1", "작성자1 이미지 url"),
+                "내용", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
+        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목", List.of("SPRING", "JAVA"),
+                new AuthorDto("작성자2", "작성자2 이미지 url"),
+                "내용", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
+        ArticlePageResponse response = new ArticlePageResponse(
+                List.of(articlePreviewResponse1, articlePreviewResponse2), false);
+
+        given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
+        given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
+        given(articleService.searchByTag(anyLong(), anyInt(), anyString(), any())).willReturn(response);
+
+        ResultActions results = mockMvc.perform(get("/api/articles/search/tags")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer token")
+                .param("cursorId", "1")
+                .param("pageSize", "10")
+                .param("tagsText", "spring")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .characterEncoding("UTF-8"));
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("articles-search-by-tag",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
+                        ),
+                        requestParameters(
+                                parameterWithName("cursorId").description("시작은 null, 마지막으로 조회한 게시물 식별자").optional(),
+                                parameterWithName("pageSize").description("가져올 게시글 개수"),
+                                parameterWithName("tagsText").description("해시태그 파라미터")
+                        ),
+                        responseFields(
+                                fieldWithPath("articles[].id").type(JsonFieldType.NUMBER).description("게시글 식별자"),
+                                fieldWithPath("articles[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+                                fieldWithPath("articles[].tag").type(JsonFieldType.ARRAY).description("게시글 해시태그"),
+                                fieldWithPath("articles[].author.name").type(JsonFieldType.STRING)
+                                        .description("게시글 작성자 이름"),
+                                fieldWithPath("articles[].author.avatarUrl").type(JsonFieldType.STRING)
+                                        .description("게시글 작성자 프로필 이미지"),
+                                fieldWithPath("articles[].content").type(JsonFieldType.STRING).description("게시글 내용"),
+                                fieldWithPath("articles[].category").type(JsonFieldType.STRING).description("게시글 종류"),
+                                fieldWithPath("articles[].commentCount").type(JsonFieldType.NUMBER)
+                                        .description("게시글 댓글 개수"),
+                                fieldWithPath("articles[].createdAt").type(JsonFieldType.STRING)
+                                        .description("게시글 생성 날짜"),
+                                fieldWithPath("articles[].views").type(JsonFieldType.NUMBER).description("게시글 조회 수"),
+                                fieldWithPath("articles[].isLike").type(JsonFieldType.BOOLEAN).description("추천 여부"),
+                                fieldWithPath("articles[].likeCount").type(JsonFieldType.NUMBER).description("추천 수"),
+                                fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN)
+                                        .description("다음에 조회 할 게시글이 있으면 true")
+                        )
+                ));
+    }
 }

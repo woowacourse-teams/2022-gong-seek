@@ -185,4 +185,33 @@ public class ArticleFixtures {
                 .extract()
                 .as(ArticlePageResponse.class);
     }
+
+    public static ExtractableResponse<Response> 해시태그로_게시글들을_검색한다(Long cursorId, int pageSize,
+                                                                 String parameterValues) {
+        return RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
+                .param("cursorId", cursorId)
+                .param("pageSize", pageSize)
+                .param("tagsText", parameterValues)
+                .when()
+                .get("/api/articles/search/tags")
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> 로그인_후_해시태그로_게시글들을_검색한다(AccessTokenResponse tokenResponse, Long cursorId,
+                                                                       int pageSize,
+                                                                       String parameterValues) {
+        return RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .param("cursorId", cursorId)
+                .param("pageSize", pageSize)
+                .param("tagsText", parameterValues)
+                .when()
+                .get("/api/articles/search/tags")
+                .then().log().all()
+                .extract();
+    }
 }
