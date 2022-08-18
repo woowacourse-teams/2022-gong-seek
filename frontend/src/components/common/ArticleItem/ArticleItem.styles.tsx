@@ -75,10 +75,16 @@ export const CommentCount = styled.div`
 `;
 
 export const ArticleInfoBox = styled.div`
+	width: 100%;
 	display: flex;
 	justify-content: space-between;
 
 	margin-top: ${({ theme }) => theme.size.SIZE_008};
+`;
+
+export const ArticleInfoSubBox = styled.div`
+	display: flex;
+	gap: ${({ theme }) => theme.size.SIZE_010};
 `;
 
 export const Content = styled.div`
@@ -140,7 +146,8 @@ export const HeartBox = styled.div`
 `;
 
 export const ArticleTimeStamp = styled.div`
-	font-size: ${({ theme }) => theme.size.SIZE_012};
+	font-size: ${({ theme }) => theme.size.SIZE_010};
+	font-weight: 400;
 `;
 
 export const RightFooterBox = styled.div`

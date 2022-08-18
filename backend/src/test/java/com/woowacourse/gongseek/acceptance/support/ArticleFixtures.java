@@ -31,9 +31,15 @@ public class ArticleFixtures {
                 .extract();
     }
 
-    public static ArticleIdResponse 토론_게시물을_등록한다(AccessTokenResponse tokenResponse) {
+    public static ArticleIdResponse 토론_게시물을_기명으로_등록한다(AccessTokenResponse tokenResponse) {
         ArticleRequest request = new ArticleRequest("title", "content", Category.DISCUSSION.getValue(),
                 List.of("Spring"), false);
+        return 특정_게시물을_등록한다(tokenResponse, request).as(ArticleIdResponse.class);
+    }
+
+    public static ArticleIdResponse 토론_게시물을_익명으로_등록한다(AccessTokenResponse tokenResponse) {
+        ArticleRequest request = new ArticleRequest("title", "content", Category.DISCUSSION.getValue(),
+                List.of("Spring"), true);
         return 특정_게시물을_등록한다(tokenResponse, request).as(ArticleIdResponse.class);
     }
 
@@ -139,28 +145,42 @@ public class ArticleFixtures {
                 .extract();
     }
 
-    public static ArticlePageResponse 게시물을_처음_검색한다(int pageSize, String searchText) {
+    public static ArticlePageResponse 게시물을_제목과_내용으로_처음_검색한다(int pageSize, String text) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
                 .when()
                 .param("pageSize", pageSize)
-                .param("searchText", searchText)
-                .get("/api/articles/search")
+                .param("text", text)
+                .get("/api/articles/search/text")
                 .then().log().all()
                 .extract()
                 .as(ArticlePageResponse.class);
     }
 
-    public static ArticlePageResponse 게시물을_검색한다(long cursorId, int pageSize, String searchText) {
+    public static ArticlePageResponse 게시물을_제목과_내용으로_검색한다(long cursorId, int pageSize, String text) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
                 .when()
                 .param("cursorId", cursorId)
                 .param("pageSize", pageSize)
-                .param("searchText", searchText)
-                .get("/api/articles/search")
+                .param("text", text)
+                .get("/api/articles/search/text")
+                .then().log().all()
+                .extract()
+                .as(ArticlePageResponse.class);
+    }
+
+    public static ArticlePageResponse 게시물을_유저이름으로_검색한다(Long cursorId, int pageSize, String author) {
+        return RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
+                .when()
+                .param("cursorId", cursorId)
+                .param("pageSize", pageSize)
+                .param("author", author)
+                .get("/api/articles/search/author")
                 .then().log().all()
                 .extract()
                 .as(ArticlePageResponse.class);

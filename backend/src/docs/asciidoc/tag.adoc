@@ -1,0 +1,29 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Tag
+---
+= 기본 API
+
+== 해시태그 조회
+
+`GET /api/tags`
+
+=== Request
+
+include::{snippets}/tag-find-all-login/http-request.adoc[]
+==== Header
+
+include::{snippets}/tag-find-all-login/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/tag-find-all-login/http-response.adoc[]
+include::{snippets}/tag-find-all-login/response-fields.adoc[]

@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
     Optional<Tag> findByName(Name name);
+
+    void deleteByName(Name name);
 }

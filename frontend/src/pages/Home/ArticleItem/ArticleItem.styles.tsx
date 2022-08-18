@@ -1,3 +1,4 @@
+import { AiOutlineHeart } from 'react-icons/ai';
 import { FaRegCommentDots } from 'react-icons/fa';
 
 import styled from '@emotion/styled';
@@ -55,6 +56,56 @@ export const UserImg = styled.img`
 `;
 
 export const UserName = styled.span`
+	width: ${({ theme }) => theme.size.SIZE_100};
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: normal;
+
+	font-size: ${({ theme }) => theme.size.SIZE_012};
+
+	color: ${({ theme }) => theme.colors.BLACK_600};
+`;
+
+export const SubInfoBox = styled.div`
+	display: flex;
+	margin-top: ${({ theme }) => theme.size.SIZE_004};
+
+	gap: ${({ theme }) => theme.size.SIZE_010};
+`;
+
+export const ViewsBox = styled.div`
+	display: flex;
+
+	align-items: center;
+	gap: ${({ theme }) => theme.size.SIZE_006};
+`;
+
+export const ViewsIcon = styled.div`
+	font-size: ${({ theme }) => theme.size.SIZE_012};
+
+	color: ${({ theme }) => theme.colors.BLACK_600};
+`;
+
+export const ViewsCount = styled.div`
+	font-size: ${({ theme }) => theme.size.SIZE_012};
+
+	color: ${({ theme }) => theme.colors.BLACK_600};
+`;
+
+export const LikeBox = styled.div`
+	display: flex;
+
+	align-items: center;
+	gap: ${({ theme }) => theme.size.SIZE_006};
+`;
+
+export const LikeIcon = styled(AiOutlineHeart)`
+	font-size: ${({ theme }) => theme.size.SIZE_016};
+
+	color: ${({ theme }) => theme.colors.BLACK_600};
+`;
+
+export const LikeCount = styled.div`
 	font-size: ${({ theme }) => theme.size.SIZE_012};
 
 	color: ${({ theme }) => theme.colors.BLACK_600};

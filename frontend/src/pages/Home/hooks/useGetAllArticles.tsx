@@ -37,7 +37,7 @@ const useGetAllArticles = () => {
 				}
 				return;
 			},
-			retry: false,
+			retry: 1,
 		},
 	);
 
