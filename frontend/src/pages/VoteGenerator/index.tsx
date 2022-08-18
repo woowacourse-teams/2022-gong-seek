@@ -24,6 +24,11 @@ const VoteGenerator = () => {
 		navigate(`/votes-deadline`, { state: { articleId, items: options } });
 	};
 
+	const onClickDeleteOptionButton = (id: number) => {
+		const filteredOptions = options.filter((_, idx) => idx !== id);
+		setOptions(filteredOptions);
+	};
+
 	return (
 		<S.Container>
 			<S.AddOptionForm onSubmit={onSubmitAddOption}>
@@ -46,7 +51,9 @@ const VoteGenerator = () => {
 
 				<S.Content>
 					{options.map((option, idx) => (
-						<AddedOption key={idx}>{option}</AddedOption>
+						<AddedOption key={idx} onClick={() => onClickDeleteOptionButton(idx)}>
+							{option}
+						</AddedOption>
 					))}
 				</S.Content>
 				<S.SubmitButton>등록하기</S.SubmitButton>
