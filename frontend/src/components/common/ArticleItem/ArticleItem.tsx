@@ -1,9 +1,12 @@
+import { useEffect } from 'react';
+
 import * as S from '@/components/common/ArticleItem/ArticleItem.styles';
 import Loading from '@/components/common/Loading/Loading';
 import useHeartClick from '@/hooks/useHeartClick';
+import { queryClient } from '@/index';
 import { Category } from '@/types/articleResponse';
 import { Author } from '@/types/author';
-import { dateTimeConverter, exculdeSpecialWordConverter } from '@/utils/converter';
+import { dateTimeConverter } from '@/utils/converter';
 
 export interface ArticleItemProps {
 	article: {
@@ -15,7 +18,6 @@ export interface ArticleItemProps {
 		commentCount: number;
 		createdAt: string;
 		tag: string[];
-		views: number;
 		isLike: boolean;
 		likeCount: number;
 	};
@@ -52,7 +54,6 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 					<S.Views>조회 수 {article.views}</S.Views>
 				</S.ArticleInfoSubBox>
 			</S.ArticleInfoBox>
-			<S.Content>{exculdeSpecialWordConverter(article.content)}</S.Content>
 			<S.HashTagListBox>
 				{article.tag &&
 					article.tag.length >= 1 &&

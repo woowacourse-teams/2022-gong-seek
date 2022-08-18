@@ -1,6 +1,9 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
 import static com.woowacourse.gongseek.article.domain.QArticle.article;
+import static com.woowacourse.gongseek.article.domain.articletag.QArticleTag.articleTag;
+import static com.woowacourse.gongseek.like.domain.QLike.like;
+import static com.woowacourse.gongseek.tag.domain.QTag.tag;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -10,7 +13,11 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 @RequiredArgsConstructor
 public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
@@ -57,6 +64,38 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
+    public Slice<Article> findAllByLikes(Long cursorId, Long cursorLikes, String category, Pageable pageable) {
+
+        List<Article> fetch = queryFactory
+                .select(article)
+                .from(like)
+                .rightJoin(like.article, article)
+                .where(categoryEquals(category))
+                .groupBy(article)
+                .having(cursorIdAndLikes(cursorId, cursorLikes))
+                .limit(pageable.getPageSize() + 1)
+                .orderBy(like.count().desc(), article.id.desc())
+                .fetch();
+
+        boolean hasNext = false;
+
+        if (fetch.size() == pageable.getPageSize() + 1) {
+            fetch.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+        return new SliceImpl<>(fetch, pageable, hasNext);
+    }
+
+    private BooleanExpression cursorIdAndLikes(Long cursorId, Long likes) {
+        if (cursorId == null || likes == null) {
+            return null;
+        }
+        return like.count().eq(likes)
+                .and(article.id.lt(cursorId))
+                .or(like.count().lt(likes));
+    }
+
+    @Override
     public List<Article> searchByContainingText(Long cursorId, int pageSize, String searchText) {
         return queryFactory
                 .selectFrom(article)
@@ -88,5 +127,28 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .limit(pageSize + 1)
                 .orderBy(article.id.desc())
                 .fetch();
+    }
+
+    @Override
+    public List<Article> searchByTag(Long cursorId, int pageSize, List<String> tagNames) {
+        return queryFactory
+                .select(article)
+                .from(articleTag)
+                .where(
+                        articleTag.tag.name.in(getUpperTagNames(tagNames)),
+                        isOverArticleId(cursorId)
+                )
+                .join(articleTag.article, article)
+                .join(articleTag.tag, tag)
+                .distinct()
+                .limit(pageSize + 1)
+                .orderBy(articleTag.article.id.desc())
+                .fetch();
+    }
+
+    private List<String> getUpperTagNames(List<String> tagNames) {
+        return tagNames.stream()
+                .map(String::toUpperCase)
+                .collect(Collectors.toList());
     }
 }

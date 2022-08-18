@@ -1,13 +1,23 @@
 import { setupWorker } from 'msw';
 
-import { ArticleHandler } from '@/mock/article';
-import { CommentHandler } from '@/mock/comment';
-import { LoginHandler } from '@/mock/index';
-import { VoteHandler } from '@/mock/vote';
+import {
+	LoginHandler,
+	ArticleHandler,
+	CommentHandler,
+	MyPageHandler,
+	SearchHandler,
+	HashTagHandler,
+	LikeHandler,
+	VoteHandler,
+} from '@/mock/index';
 
 export const worker = setupWorker(
 	...LoginHandler,
-	...VoteHandler,
 	...ArticleHandler,
 	...CommentHandler,
+	...MyPageHandler,
+	...SearchHandler,
+	...HashTagHandler,
+	...LikeHandler,
+	...VoteHandler,
 );

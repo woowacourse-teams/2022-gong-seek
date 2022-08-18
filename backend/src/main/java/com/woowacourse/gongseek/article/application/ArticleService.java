@@ -21,13 +21,15 @@ import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.tag.application.TagService;
-import com.woowacourse.gongseek.tag.domain.Name;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -229,9 +231,38 @@ public class ArticleService {
         Article article = checkAuthorization(appMember, id);
         articleRepository.delete(article);
 
-        List<String> tagNames = article.getTagNames();
-        tagNames.stream()
-                .filter(tagName -> !articleRepository.existsByTagName(new Name(tagName)))
-                .forEach(tagService::delete);
+        List<String> deletedTagNames = article.getTagNames().stream()
+                .filter(tagName -> !articleRepository.existsArticleByTagName(tagName))
+                .collect(Collectors.toList());
+        tagService.delete(deletedTagNames);
+    }
+
+    @Transactional(readOnly = true)
+    public ArticlePageResponse searchByTag(Long cursorId, int pageSize, String tagsText, AppMember appMember) {
+        List<ArticlePreviewResponse> articles = searchByTagName(cursorId, pageSize, extract(tagsText), appMember);
+        return getArticlePageResponse(articles, pageSize);
+    }
+
+    private List<ArticlePreviewResponse> searchByTagName(Long cursorId, int pageSize, List<String> tagNames,
+                                                         AppMember appMember) {
+        return articleRepository.searchByTag(cursorId, pageSize, tagNames)
+                .stream()
+                .map(article -> getArticlePreviewResponse(article, appMember))
+                .collect(Collectors.toList());
+    }
+
+    private List<String> extract(String tagsText) {
+        return Arrays.asList(tagsText.split(","));
+    }
+
+    @Transactional(readOnly = true)
+    public ArticlePageResponse getAllByLikes(Long cursorId, Long likes, String category, Pageable pageable,
+                                             AppMember appMember) {
+        Slice<Article> articles = articleRepository.findAllByLikes(cursorId, likes, category, pageable);
+        List<ArticlePreviewResponse> response = articles.getContent().stream()
+                .map(it -> getArticlePreviewResponse(it, appMember))
+                .collect(Collectors.toList());
+
+        return new ArticlePageResponse(response, articles.hasNext());
     }
 }

@@ -7,13 +7,13 @@ import Loading from '@/components/common/Loading/Loading';
 import * as S from '@/pages/Search/SearchResult/SearchResult.styles';
 import useGetSearch from '@/pages/Search/hooks/useGetSearch';
 
-const SearchResult = ({ target }: { target: string }) => {
-	const { data, isLoading, isIdle, refetch, fetchNextPage } = useGetSearch(target);
+const SearchResult = ({ target, searchIndex }: { target: string; searchIndex: string }) => {
+	const { data, isLoading, isIdle, refetch, fetchNextPage } = useGetSearch({ target, searchIndex });
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		refetch();
-	}, [target]);
+	}, [target, searchIndex]);
 
 	if (isLoading || isIdle) {
 		return <Loading />;

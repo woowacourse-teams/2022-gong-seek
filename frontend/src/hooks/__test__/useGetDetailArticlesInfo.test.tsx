@@ -40,7 +40,7 @@ describe('글들에 대한 상세 정보를 제대로 가져오는지에 대해�
 		}
 
 		const { data } = result.current;
-		expect(data.id).toEqual('1');
+		expect(data.id).toEqual(1);
 	});
 
 	test('게시글의 댓글에 대해서 조회할 수 있다', async () => {

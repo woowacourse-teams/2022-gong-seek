@@ -39,6 +39,7 @@ github:
   url:
     base: http://localhost:8888/api/auth
     profile: http://localhost:8888/api/auth/user
+    redirect: https://127.0.0.1/callback
 
 server:
   port: 8888

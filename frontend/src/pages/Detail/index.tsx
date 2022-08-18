@@ -15,9 +15,10 @@ interface DetailProps {
 	article: ArticleType;
 	commentList: CommentType[];
 	articleId: string;
+	category: string;
 }
 
-const Detail = ({ children, article, commentList, articleId }: DetailProps) => {
+const Detail = ({ children, article, commentList, articleId, category }: DetailProps) => {
 	const [isCommentOpen, setIsCommentOpen] = useState(false);
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const navigate = useNavigate();
@@ -43,7 +44,7 @@ const Detail = ({ children, article, commentList, articleId }: DetailProps) => {
 			<ArticleContent
 				article={article}
 				author={article.author}
-				category={children ? '토론' : '질문'}
+				category={category}
 				articleId={articleId}
 			/>
 			{children}
@@ -68,8 +69,7 @@ const Detail = ({ children, article, commentList, articleId }: DetailProps) => {
 						<div>{commentList.length || 0}개</div>
 					</S.CommentTotal>
 				</S.CommentHeader>
-				{commentList &&
-					commentList.length > 0 &&
+				{commentList && commentList.length > 0 ? (
 					commentList.map((item) => (
 						<Comment
 							key={item.id}
@@ -80,7 +80,10 @@ const Detail = ({ children, article, commentList, articleId }: DetailProps) => {
 							createdAt={item.createdAt}
 							isAuthor={item.isAuthor}
 						/>
-					))}
+					))
+				) : (
+					<div>첫 번째 댓글을 달아주세요!</div>
+				)}
 			</S.CommentSection>
 			{isCommentOpen && (
 				<>

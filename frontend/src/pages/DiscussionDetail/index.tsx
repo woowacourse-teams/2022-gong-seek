@@ -1,37 +1,49 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from 'react-router-dom';
 
-import Detail from "@/pages/Detail";
-import Vote from "@/pages/Discussion/Vote/Vote";
-
-import Loading from "@/components/common/Loading/Loading";
-
-import useGetDetailArticle from "@/hooks/useGetDetailArticle";
-import useGetDetailComment from "@/hooks/useGetDetailComment";
-
+import Loading from '@/components/common/Loading/Loading';
+import useGetDetailArticle from '@/hooks/useGetDetailArticle';
+import useGetDetailComment from '@/hooks/useGetDetailComment';
+import Detail from '@/pages/Detail';
+import Vote from '@/pages/Discussion/Vote/Vote';
+import VoteGenerateButton from '@/pages/DiscussionDetail/VoteGenerateButton/VoteGenerateButton';
 
 const DiscussionDetail = () => {
-  const { id } = useParams();
+	const { id } = useParams();
+	const navigate = useNavigate();
 
-  if (typeof id === 'undefined') {
+	if (typeof id === 'undefined') {
 		throw new Error('id 값을 받아오지 못했습니다');
-  }
-  
-  const { data: articleData, isLoading: isArticleLoading } = useGetDetailArticle(id);
-  const { data: commentData, isLoading: isCommentLoading } = useGetDetailComment(id);
-
-  if (isCommentLoading || isArticleLoading) {
-		return <Loading />
 	}
 
-  return (
-    <>
-      {typeof articleData !== 'undefined' && typeof commentData !== 'undefined' && (
-        <Detail article={articleData} commentList={commentData.comments} articleId={id}>
-            <Vote articleId={id}/>
-        </Detail>
-      )}
-    </>
-  )
-}
+	const { data: articleData, isLoading: isArticleLoading } = useGetDetailArticle(id);
+	const { data: commentData, isLoading: isCommentLoading } = useGetDetailComment(id);
+
+	const onClickVoteGenerateButton = () => {
+		navigate(`/votes/${id}`);
+	};
+
+	if (isCommentLoading || isArticleLoading) {
+		return <Loading />;
+	}
+
+	return (
+		<>
+			{typeof articleData !== 'undefined' && typeof commentData !== 'undefined' && (
+				<Detail
+					article={articleData}
+					commentList={commentData.comments}
+					articleId={id}
+					category="토론"
+				>
+					{articleData.hasVote ? (
+						<Vote articleId={id} />
+					) : articleData.isAuthor ? (
+						<VoteGenerateButton onClick={onClickVoteGenerateButton}>투표 만들기</VoteGenerateButton>
+					) : null}
+				</Detail>
+			)}
+		</>
+	);
+};
 
 export default DiscussionDetail;

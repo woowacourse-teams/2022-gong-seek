@@ -11,6 +11,7 @@ import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -74,6 +75,18 @@ public class ArticleController {
         return ResponseEntity.ok(response);
     }
 
+
+    @GetMapping("/likes")
+    public ResponseEntity<ArticlePageResponse> getAllByLikes(
+            @RequestParam String category,
+            @RequestParam(required = false) Long cursorId,
+            @RequestParam(required = false) Long cursorLikes,
+            Pageable pageable,
+            @AuthenticationPrinciple AppMember appMember
+    ) {
+        return ResponseEntity.ok(articleService.getAllByLikes(cursorId, cursorLikes, category, pageable, appMember));
+    }
+
     @GetMapping("/search/text")
     public ResponseEntity<ArticlePageResponse> searchByText(
             @RequestParam(required = false) Long cursorId,
@@ -94,5 +107,15 @@ public class ArticleController {
     ) {
         ArticlePageResponse response = articleService.searchByAuthor(cursorId, pageSize, author, appMember);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/search/tags")
+    public ResponseEntity<ArticlePageResponse> searchByTag(
+            @RequestParam(required = false) Long cursorId,
+            @RequestParam Integer pageSize,
+            @RequestParam String tagsText,
+            @AuthenticationPrinciple AppMember appMember
+    ) {
+        return ResponseEntity.ok(articleService.searchByTag(cursorId, pageSize, tagsText, appMember));
     }
 }

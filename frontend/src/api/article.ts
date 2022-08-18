@@ -69,7 +69,7 @@ export const getAllArticle = async ({
 	const accessToken = localStorage.getItem('accessToken');
 
 	const { data } = await axios.get<AllArticleResponse>(
-		`${HOME_URL}/api/articles?category=${category}&sort=${currentSort}&cursorId=${cursorId}&cursorViews=${cursorViews}&pageSize=5`,
+		`${HOME_URL}/api/articles?category=${category}&sort=${currentSort}&cursorId=${cursorId}&cursorViews=${cursorViews}&pageSize=6`,
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',

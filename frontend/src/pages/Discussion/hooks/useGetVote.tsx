@@ -10,9 +10,11 @@ const useVote = (articleId: string) => {
 	const { data, isLoading, isError, isSuccess, error } = useQuery<
 		TVote,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
-	>(['vote', `vote${articleId}`], () => getVoteItems(articleId), { retry: false });
+	>(['vote', `vote${articleId}`], () => getVoteItems(articleId), {
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
 	const [totalCount, setTotalCount] = useState(0);
-	const [isEmptyVote, setIsEmptyVote] = useState(false);
 
 	useEffect(() => {
 		if (isSuccess) {
@@ -25,10 +27,6 @@ const useVote = (articleId: string) => {
 			if (!error.response) {
 				return;
 			}
-			if (Number(error.response.data.errorCode) === 5004) {
-				setIsEmptyVote(true);
-				return;
-			}
 			throw new CustomError(
 				error.response.data.errorCode,
 				ErrorMessage[error.response.data.errorCode],
@@ -36,7 +34,7 @@ const useVote = (articleId: string) => {
 		}
 	}, [isError]);
 
-	return { data, isLoading, totalCount, isEmptyVote };
+	return { data, isLoading, totalCount, isSuccess };
 };
 
 export default useVote;

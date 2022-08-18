@@ -1,14 +1,8 @@
 import { rest } from 'msw';
 import type { PathParams } from 'msw';
 
-import { WritingArticles } from '@/api/article';
 import { HOME_URL } from '@/constants/url';
 import mockArticle from '@/mock/data/articles.json';
-import mockData from '@/mock/data/detailArticle.json';
-
-interface WritingArticlesWithId extends WritingArticles {
-	id: number;
-}
 
 export const ArticleHandler = [
 	rest.post<{ title: string; content: string; category: string }, never, { id: number }>(
@@ -25,24 +19,13 @@ export const ArticleHandler = [
 		if (typeof id !== 'string') {
 			return;
 		}
-		const filteredArticles = mockData.detailArticle;
-		return res(
-			ctx.status(200),
-			ctx.json({
-				id: id,
-				title: filteredArticles.title,
-				content: filteredArticles.content,
-				isAuthor: true,
-				views: 1,
-				createdAt: '2022-07-12T13:04',
-				updatedAt: '2022-07-29T16:43',
-				author: {
-					name: 'sming',
-					avatarUrl:
-						'https://avatars.githubusercontent.com/u/85891751?s=400&u=1d8557f04298a05f8a8bbceb9817b8a0089d63f8&v=4',
-				},
-			}),
-		);
+		const filteredArticles = mockArticle.articles.find((article) => String(article.id) === id);
+
+		if (typeof filteredArticles === 'undefined') {
+			throw new Error('글을 찾지 못했습니다.');
+		}
+
+		return res(ctx.status(200), ctx.json(filteredArticles));
 	}),
 
 	rest.get(`${HOME_URL}/api/articles`, (req, res, ctx) => {
@@ -60,8 +43,9 @@ export const ArticleHandler = [
 				content: article.content,
 				category: category,
 				createdAt: article.createdAt,
-				updatedAt: article.updatedAt,
 				views: article.views,
+				isLike: article.isLike,
+				likeCount: article.likeCount,
 			}))
 			.slice(0, Number(size));
 

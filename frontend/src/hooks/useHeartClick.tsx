@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 
 import { deleteLikeArticle, postAddLikeArticle } from '@/api/like';
@@ -21,14 +21,18 @@ const useHeartClick = ({
 		isError: postIsError,
 		error: postError,
 		isSuccess: postIsSuccess,
-	} = useMutation<AxiosResponse, AxiosError, string>(`like${articleId}`, postAddLikeArticle);
+	} = useMutation<AxiosResponse, AxiosError, string>(`like${articleId}`, postAddLikeArticle, {
+		retry: 1,
+	});
 	const {
 		mutate: deleteMutate,
 		isLoading: deleteIsLoading,
 		isError: deleteIsError,
 		error: deleteError,
 		isSuccess: deleteIsSuccess,
-	} = useMutation<AxiosResponse, AxiosError, string>(`unlike${articleId}`, deleteLikeArticle);
+	} = useMutation<AxiosResponse, AxiosError, string>(`unlike${articleId}`, deleteLikeArticle, {
+		retry: 1,
+	});
 
 	useEffect(() => {
 		setIsLike(prevIsLike);
@@ -59,11 +63,13 @@ const useHeartClick = ({
 		}
 	}, [postIsSuccess]);
 
-	const onLikeButtonClick = () => {
+	const onLikeButtonClick = (e: React.MouseEvent<SVGElement>) => {
+		e.stopPropagation();
 		postMutate(articleId);
 	};
 
-	const onUnlikeButtonClick = () => {
+	const onUnlikeButtonClick = (e: React.MouseEvent<SVGElement>) => {
+		e.stopPropagation();
 		deleteMutate(articleId);
 	};
 
@@ -74,6 +80,8 @@ const useHeartClick = ({
 		onUnlikeButtonClick,
 		isLike,
 		likeCount,
+		postIsSuccess,
+		deleteIsSuccess,
 	};
 };
 

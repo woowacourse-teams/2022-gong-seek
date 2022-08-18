@@ -8,7 +8,7 @@ import { ErrorMessage } from '@/constants/ErrorMessage';
 import { queryClient } from '@/index';
 
 const usePostVoteItem = (articleId: string) => {
-	const { isLoading, isError, error, mutate, isSuccess } = useMutation<
+	const { isError, error, mutate, isSuccess } = useMutation<
 		unknown,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ articleId: string; voteItemId: string }
@@ -16,7 +16,7 @@ const usePostVoteItem = (articleId: string) => {
 
 	useEffect(() => {
 		if (isSuccess) {
-			queryClient.refetchQueries(['vote', `vote${articleId}`]);
+			queryClient.invalidateQueries(`vote${articleId}`);
 		}
 	}, [isSuccess]);
 
@@ -36,7 +36,7 @@ const usePostVoteItem = (articleId: string) => {
 		mutate({ articleId, voteItemId: String(idx) });
 	};
 
-	return { onChangeRadio, isLoading };
+	return { onChangeRadio, isLoading, isSuccess };
 };
 
 export default usePostVoteItem;
