@@ -84,7 +84,7 @@ class VoteControllerTest {
                                         .description("투표 종료 날짜(최대 생성일로부터 일주일까지 가능)")
                         ),
                         responseFields(
-                                fieldWithPath("articleId").type(JsonFieldType.NUMBER).description("게시물 식별자")
+                                fieldWithPath("articleId").type(JsonFieldType.NUMBER).description("게시글 식별자")
                         )
                 ));
     }

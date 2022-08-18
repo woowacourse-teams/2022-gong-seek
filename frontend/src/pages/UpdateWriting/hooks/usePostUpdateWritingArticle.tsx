@@ -27,7 +27,7 @@ const usePostUpdateWritingArticle = () => {
 		AxiosResponse<{ id: number; category: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ title: string; content: string; id: string; tag: string[] }
-	>(putArticle);
+	>(putArticle, { retry: 1 });
 
 	useEffect(() => {
 		if (isSuccess) {

@@ -86,7 +86,7 @@ class VoteServiceTest {
     }
 
     @Test
-    void 게시물의_작성자가_아닌_사용자가_투표를_생성하면_예외가_발생한다() {
+    void 게시글의_작성자가_아닌_사용자가_투표를_생성하면_예외가_발생한다() {
         LoginMember member = new LoginMember(
                 memberRepository.save(new Member("jurl", "jurlring", "avatarUrl")).getId());
         VoteCreateRequest voteCreateRequest = new VoteCreateRequest(Set.of("Dto 최고다.", "VO 최고다"),
@@ -98,13 +98,13 @@ class VoteServiceTest {
     }
 
     @Test
-    void 질문게시물에서_투표를_생성하면_예외가_발생한다() {
+    void 질문게시글에서_투표를_생성하면_예외가_발생한다() {
         Article article = articleRepository.save(new Article("토론입니당", "내용입니다..", Category.QUESTION, member, false));
 
         assertThatThrownBy(() -> voteService.create(new LoginMember(member.getId()), article.getId(),
                 new VoteCreateRequest(Set.of("Dto 최고다.", "VO 최고다"), LocalDateTime.now().plusDays(5)))
         ).isExactlyInstanceOf(UnavailableArticleException.class)
-                .hasMessageContaining("토론 게시물만 투표를 생성할 수 있습니다.");
+                .hasMessageContaining("토론 게시글만 투표를 생성할 수 있습니다.");
     }
 
     @Test
