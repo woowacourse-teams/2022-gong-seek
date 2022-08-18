@@ -23,7 +23,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 		prevLikeCount: article.likeCount,
 		articleId,
 	});
-	const { isLoading, handleDeleteArticle } = useDeleteArticleContent();
+	const { handleDeleteArticle } = useDeleteArticleContent();
 	const navigate = useNavigate();
 
 	const navigateUpdateArticle = () => {
