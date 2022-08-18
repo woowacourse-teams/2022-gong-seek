@@ -765,7 +765,9 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         assertAll(
                 () -> assertThat(pageResponse.hasNext()).isFalse(),
-                () -> assertThat(pageResponse.getArticles()).hasSize(2)
+                () -> assertThat(pageResponse.getArticles()).hasSize(2),
+                () -> assertThat(pageResponse.getArticles().get(1).getTitle()).isEqualTo("커스텀 예외를 처리하는 방법"),
+                () -> assertThat(pageResponse.getArticles().get(0).getTitle()).isEqualTo("커스텀예외를 처리하는 방법")
         );
     }
 }
