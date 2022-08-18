@@ -14,7 +14,6 @@ import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
-import com.woowacourse.gongseek.like.domain.Likes;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
 import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import com.woowacourse.gongseek.member.application.Encryptor;
@@ -29,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -234,5 +235,16 @@ public class ArticleService {
         tagNames.stream()
                 .filter(tagName -> !articleRepository.existsByTagName(new Name(tagName)))
                 .forEach(tagService::delete);
+    }
+
+    @Transactional(readOnly = true)
+    public ArticlePageResponse getAllByLikes(Long cursorId, Long likes, String category, Pageable pageable,
+                                             AppMember appMember) {
+        Slice<Article> articles = articleRepository.findAllByLikes(cursorId, likes, category, pageable);
+        List<ArticlePreviewResponse> collect = articles.getContent().stream()
+                .map(it -> getArticlePreviewResponse(it, appMember))
+                .collect(Collectors.toList());
+
+        return new ArticlePageResponse(collect, articles.hasNext());
     }
 }

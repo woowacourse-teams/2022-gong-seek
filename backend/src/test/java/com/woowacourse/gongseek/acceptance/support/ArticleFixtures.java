@@ -101,16 +101,16 @@ public class ArticleFixtures {
     }
 
     public static ExtractableResponse<Response> 게시물_전체를_추천순으로_조회한다(String category, Long cursorId,
-                                                                   Integer cursorLikes) {
+                                                                   Long likes, int size) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
                 .when()
                 .param("category", category)
                 .param("cursorId", cursorId)
-                .param("cursorLikes", cursorLikes)
-                .param("pageSize", 10)
-                .get("/api/articles")
+                .param("likes", likes)
+                .param("size", size)
+                .get("/api/articles/likes")
                 .then().log().all()
                 .extract();
     }

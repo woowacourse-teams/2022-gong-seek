@@ -61,17 +61,15 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public Slice<Article> findAllByLikes(Long cursorId, Integer cursorLikes, String category, Pageable pageable) {
+    public Slice<Article> findAllByLikes(Long cursorId, Long cursorLikes, String category, Pageable pageable) {
 
         List<Article> fetch = queryFactory
                 .select(article)
                 .from(like)
                 .rightJoin(like.article, article)
-                .where(
-                        cursorIdAndLikes(cursorId, cursorLikes),
-                        categoryEquals(category)
-                )
+                .where(categoryEquals(category))
                 .groupBy(article)
+                .having(cursorIdAndLikes(cursorId, cursorLikes))
                 .limit(pageable.getPageSize() + 1)
                 .orderBy(like.count().desc(), article.id.desc())
                 .fetch();
@@ -85,12 +83,11 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         return new SliceImpl<>(fetch, pageable, hasNext);
     }
 
-
-    private BooleanExpression cursorIdAndLikes(Long cursorId, Integer likes) {
+    private BooleanExpression cursorIdAndLikes(Long cursorId, Long likes) {
         if (cursorId == null || likes == null) {
             return null;
         }
-        return like.count().eq((long) likes)
+        return like.count().eq(likes)
                 .and(article.id.lt(cursorId))
                 .or(like.count().lt(likes));
     }

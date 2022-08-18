@@ -34,13 +34,13 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
+import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
@@ -773,10 +773,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         );
     }
 
-
-    @Disabled
     @Test
-    void 토론_게시물을_추천순으로_조회한다() {
+    void 토론_게시물을_추천순으로_조회할때_다음_게시물이_있고_페이지의_크기만큼_조회한다() {
         //given
         AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
         ArticleIdResponse 게시물1 = 토론_게시물을_등록한다(엑세스토큰);
@@ -790,7 +788,37 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //when
 
         ExtractableResponse<Response> response = 게시물_전체를_추천순으로_조회한다(Category.DISCUSSION.getValue(), null,
-                null);
+                null, 2);
+        ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
+
+        List<Long> ids = articlePageResponse.getArticles().stream()
+                .map(ArticlePreviewResponse::getId)
+                .collect(Collectors.toList());
+
+        //then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(articlePageResponse.hasNext()).isTrue(),
+                () -> assertThat(ids.containsAll(List.of(1L, 2L))).isTrue()
+        );
+    }
+
+    @Test
+    void 토론_게시물을_추천순으로_조회하고_다음_게시글이_없으면_hasNext는_false이고_게시글_개수만큼_조회한다() {
+        //given
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        ArticleIdResponse 게시물1 = 토론_게시물을_등록한다(엑세스토큰);
+        게시물을_추천한다(엑세스토큰, 게시물1);
+        게시물을_추천한다(로그인을_한다(슬로), 게시물1);
+
+        ArticleIdResponse 게시물2 = 토론_게시물을_등록한다(엑세스토큰);
+        게시물을_추천한다(엑세스토큰, 게시물2);
+
+        ArticleIdResponse 게시물3 = 토론_게시물을_등록한다(엑세스토큰);
+        //when
+
+        ExtractableResponse<Response> response = 게시물_전체를_추천순으로_조회한다(Category.DISCUSSION.getValue(), null,
+                null, 5);
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
 
         List<Long> ids = articlePageResponse.getArticles().stream()
@@ -802,6 +830,32 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(articlePageResponse.hasNext()).isFalse(),
                 () -> assertThat(ids.containsAll(List.of(1L, 2L, 3L))).isTrue()
+        );
+    }
+
+    @Test
+    void 토론_게시물을_추천순으로_조회하고_다음_페이지의_게시글을_조회한다() {
+        //given
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        ArticleIdResponse 게시물1 = 토론_게시물을_등록한다(엑세스토큰);
+        게시물을_추천한다(엑세스토큰, 게시물1);
+        게시물을_추천한다(로그인을_한다(슬로), 게시물1);
+
+        ArticleIdResponse 게시물2 = 토론_게시물을_등록한다(엑세스토큰);
+        게시물을_추천한다(엑세스토큰, 게시물2);
+
+        ArticleIdResponse 게시물3 = 토론_게시물을_등록한다(엑세스토큰);
+
+        //when
+        ArticlePageResponse response = 게시물_전체를_추천순으로_조회한다(Category.DISCUSSION.getValue(), null, null, 2).as(
+                ArticlePageResponse.class);
+        ArticlePageResponse articlePageResponse = 게시물_전체를_추천순으로_조회한다(Category.DISCUSSION.getValue(), 게시물2.getId(),
+                response.getArticles().get(1).getLikeCount(), 2).as(ArticlePageResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(articlePageResponse.hasNext()).isFalse(),
+                () -> assertThat(articlePageResponse.getArticles().get(0).getId()).isEqualTo(게시물3.getId())
         );
     }
 }

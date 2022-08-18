@@ -20,7 +20,7 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping
-    public ResponseEntity<LikeResponse> likeArticle(
+    public ResponseEntity<Void> likeArticle(
             @PathVariable Long articleId,
             @AuthenticationPrinciple AppMember appMember
     ) {
@@ -29,7 +29,7 @@ public class LikeController {
     }
 
     @DeleteMapping
-    public ResponseEntity<LikeResponse> unlikeArticle(
+    public ResponseEntity<Void> unlikeArticle(
             @PathVariable Long articleId,
             @AuthenticationPrinciple AppMember appMember
     ) {

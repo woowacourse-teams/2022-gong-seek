@@ -11,6 +11,7 @@ import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -72,6 +73,18 @@ public class ArticleController {
                 appMember);
 
         return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping("/likes")
+    public ResponseEntity<ArticlePageResponse> getAllByLikes(
+            @RequestParam String category,
+            @RequestParam(required = false) Long cursorId,
+            @RequestParam(required = false) Long likes,
+            Pageable pageable,
+            @AuthenticationPrinciple AppMember appMember
+    ) {
+        return ResponseEntity.ok(articleService.getAllByLikes(cursorId, likes, category, pageable, appMember));
     }
 
     @GetMapping("/search/text")
