@@ -406,6 +406,29 @@ public class ArticleServiceTest {
     }
 
     @Test
+    void 회원이_게시글을_수정했을_때_해당_태그로_작성된_게시글이_없으면_태그도_삭제한다() {
+        AppMember loginMember = new LoginMember(member.getId());
+        ArticleRequest firstArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring", "Java"), false);
+        ArticleRequest secondArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Java"), false);
+        ArticleIdResponse firstSavedArticle = articleService.save(loginMember, firstArticleRequest);
+        articleService.save(loginMember, secondArticleRequest);
+
+        articleService.update(loginMember, new ArticleUpdateRequest("하이", "하이", List.of("JAVA", "backend")),
+                firstSavedArticle.getId());
+
+        assertAll(
+                () -> assertThat(articleRepository.existsArticleByTagName("SPRING")).isFalse(),
+                () -> assertThat(articleRepository.existsArticleByTagName("JAVA")).isTrue(),
+                () -> assertThat(articleRepository.existsArticleByTagName("BACKEND")).isTrue(),
+                () -> assertThat(tagRepository.findByNameIgnoreCase("SPRING")).isEmpty(),
+                () -> assertThat(tagRepository.findByNameIgnoreCase("JAVA")).isNotEmpty(),
+                () -> assertThat(tagRepository.findByNameIgnoreCase("BACKEND")).isNotEmpty()
+        );
+    }
+
+    @Test
     void 작성자인_회원이_기명_게시글을_삭제한다() {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),

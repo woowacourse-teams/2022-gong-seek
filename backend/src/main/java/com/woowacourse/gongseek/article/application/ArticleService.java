@@ -192,15 +192,30 @@ public class ArticleService {
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
-        Tags tags = Tags.from(articleUpdateRequest.getTag());
-        Tags foundTags = tagService.getOrCreateTags(tags);
-
         Article article = checkAuthorization(appMember, id);
+        List<String> existingTagNames = article.getTagNames();
+        List<String> updatedTagNames = articleUpdateRequest.getTag();
+        Tags tags = Tags.from(updatedTagNames);
+        Tags foundTags = tagService.getOrCreateTags(tags);
         article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent());
-
         article.updateTag(foundTags);
+        deleteUnusedTags(existingTagNames, updatedTagNames);
 
         return new ArticleUpdateResponse(article);
+    }
+
+    private void deleteUnusedTags(List<String> existingTagNames, List<String> updatedTagNames) {
+        for (String updatedTagName : updatedTagNames) {
+            existingTagNames.remove(updatedTagName);
+        }
+        List<String> deletedTagNames = getDeletedTagNames(existingTagNames);
+        tagService.delete(deletedTagNames);
+    }
+
+    private List<String> getDeletedTagNames(List<String> tagNames) {
+        return tagNames.stream()
+                .filter(tagName -> !articleRepository.existsArticleByTagName(tagName))
+                .collect(Collectors.toList());
     }
 
     private Article checkAuthorization(AppMember appMember, Long id) {
@@ -229,9 +244,7 @@ public class ArticleService {
         Article article = checkAuthorization(appMember, id);
         articleRepository.delete(article);
 
-        List<String> deletedTagNames = article.getTagNames().stream()
-                .filter(tagName -> !articleRepository.existsArticleByTagName(tagName))
-                .collect(Collectors.toList());
+        List<String> deletedTagNames = getDeletedTagNames(article.getTagNames());
         tagService.delete(deletedTagNames);
     }
 
