@@ -30,7 +30,7 @@ include::{snippets}/member-get-one/request-headers.adoc[]
 include::{snippets}/member-get-one/http-response.adoc[]
 include::{snippets}/member-get-one/response-fields.adoc[]
 
-== 게시글 조회
+== 나의 게시글 조회
 
 `GET /api/members/me/articles`
 
@@ -48,7 +48,7 @@ include::{snippets}/member-get-articles/request-headers.adoc[]
 include::{snippets}/member-get-articles/http-response.adoc[]
 include::{snippets}/member-get-articles/response-fields.adoc[]
 
-== 댓글 조회
+== 나의 댓글 조회
 
 `GET /api/members/me/comments`
 

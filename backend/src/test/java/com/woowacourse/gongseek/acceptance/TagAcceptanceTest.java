@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.기명으로_게시물을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.기명으로_게시글을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.TagFixtures.모든_해시태그를_조회한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
@@ -23,7 +23,7 @@ public class TagAcceptanceTest extends AcceptanceTest {
     void 로그인한_회원이_모든_해시태그를_조회한다() {
         // given
         AccessTokenResponse tokenResponse = 로그인을_한다(주디);
-        기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
+        기명으로_게시글을_등록한다(tokenResponse, Category.QUESTION);
 
         // when
         ExtractableResponse<Response> response = 모든_해시태그를_조회한다(tokenResponse);
@@ -41,7 +41,7 @@ public class TagAcceptanceTest extends AcceptanceTest {
     void 로그인_안한_회원이_모든_해시태그를_조회한다() {
         // given
         AccessTokenResponse tokenResponse = 로그인을_한다(주디);
-        기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
+        기명으로_게시글을_등록한다(tokenResponse, Category.QUESTION);
 
         // when
         ExtractableResponse<Response> response = 모든_해시태그를_조회한다(new AccessTokenResponse(null));
@@ -56,11 +56,11 @@ public class TagAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 같은_해시태그로_게시물을_등록해도_해시태그는_증가하지_않는다() {
+    void 같은_해시태그로_게시글을_등록해도_해시태그는_증가하지_않는다() {
         // given
         AccessTokenResponse tokenResponse = 로그인을_한다(레넌);
-        기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
-        기명으로_게시물을_등록한다(tokenResponse, Category.QUESTION);
+        기명으로_게시글을_등록한다(tokenResponse, Category.QUESTION);
+        기명으로_게시글을_등록한다(tokenResponse, Category.QUESTION);
 
         // when
         ExtractableResponse<Response> response = 모든_해시태그를_조회한다(tokenResponse);

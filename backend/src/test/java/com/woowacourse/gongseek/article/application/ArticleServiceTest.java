@@ -605,7 +605,7 @@ public class ArticleServiceTest {
     }
 
     @Test
-    void 이름으로_검색할_경우_작성자가_작성한_게시물이_조회된다() {
+    void 이름으로_검색할_경우_작성자가_작성한_게시글이_조회된다() {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true);
