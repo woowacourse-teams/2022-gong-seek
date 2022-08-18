@@ -15,9 +15,9 @@ const HashTagSearch = () => {
 	} = useGetAllHashTags();
 
 	useEffect(() => {
-		if (isTagsOptionSuccess && tagsOption && tagsOption?.tags.length >= 1) {
+		if (isTagsOptionSuccess && tagsOption && tagsOption?.tag.length >= 1) {
 			setTargetHashTags(
-				tagsOption.tags.map((item) => ({
+				tagsOption.tag.map((item) => ({
 					name: item,
 					isChecked: false,
 				})),
@@ -26,7 +26,7 @@ const HashTagSearch = () => {
 	}, [isTagsOptionSuccess]);
 
 	useEffect(() => {
-		setSelectedHashTags(targetHashTags.map((item) => (item.isChecked ? item.name : '')));
+		setSelectedHashTags(targetHashTags.filter((item) => item.isChecked).map((item) => item.name));
 	}, [targetHashTags]);
 
 	return (

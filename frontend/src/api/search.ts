@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 import { HOME_URL } from '@/constants/url';
-import { CommonArticleType } from '@/types/articleResponse';
 import { SearchResultType } from '@/types/searchResponse';
 
 export const getUserSearchResult = async ({
@@ -17,7 +16,7 @@ export const getUserSearchResult = async ({
 }) => {
 	const encodedTarget = encodeURIComponent(target);
 	const { data } = await axios.get<SearchResultType>(
-		`${HOME_URL}/api/articles/search/author?author=${encodedTarget}&cursorId=${cursorId}&pageSize=5`,
+		`${HOME_URL}/api/articles/search?searchText=${encodedTarget}&cursorId=${cursorId}&pageSize=6`,
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
@@ -45,9 +44,10 @@ export const getArticleSearchResult = async ({
 	cursorId: string;
 	searchIndex: string;
 }) => {
-	const encodedTarget = encodeURIComponent(target);
+	const accessToken = localStorage.getItem('accessToken');
+	const encodedTarget = encodeURIComponent(hashTags);
 	const { data } = await axios.get<SearchResultType>(
-		`${HOME_URL}/api/articles/search/text?text=${encodedTarget}&cursorId=${cursorId}&pageSize=6`,
+		`${HOME_URL}/api/articles/search/tags?tagsText=${encodedTarget}&cursorId=${cursorId}&pageSize=6`,
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',

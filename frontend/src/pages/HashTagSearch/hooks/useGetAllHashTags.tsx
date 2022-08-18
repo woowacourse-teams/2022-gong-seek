@@ -8,7 +8,7 @@ import { ErrorMessage } from '@/constants/ErrorMessage';
 
 const useGetAllHashTags = () => {
 	const { data, isLoading, isError, isSuccess, error } = useQuery<
-		{ tags: string[] },
+		{ tag: string[] },
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('all-hash-tag', getAllHashTag);
 
