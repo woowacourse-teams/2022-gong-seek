@@ -1,13 +1,15 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Loading from '@/components/common/Loading/Loading';
 import useGetDetailArticle from '@/hooks/useGetDetailArticle';
 import useGetDetailComment from '@/hooks/useGetDetailComment';
 import Detail from '@/pages/Detail';
 import Vote from '@/pages/Discussion/Vote/Vote';
+import VoteGenerateButton from '@/pages/DiscussionDetail/VoteGenerateButton/VoteGenerateButton';
 
 const DiscussionDetail = () => {
 	const { id } = useParams();
+	const navigate = useNavigate();
 
 	if (typeof id === 'undefined') {
 		throw new Error('id 값을 받아오지 못했습니다');
@@ -15,6 +17,10 @@ const DiscussionDetail = () => {
 
 	const { data: articleData, isLoading: isArticleLoading } = useGetDetailArticle(id);
 	const { data: commentData, isLoading: isCommentLoading } = useGetDetailComment(id);
+
+	const onClickVoteGenerateButton = () => {
+		navigate(`/votes/${id}`);
+	};
 
 	if (isCommentLoading || isArticleLoading) {
 		return <Loading />;
@@ -24,7 +30,11 @@ const DiscussionDetail = () => {
 		<>
 			{typeof articleData !== 'undefined' && typeof commentData !== 'undefined' && (
 				<Detail article={articleData} commentList={commentData.comments} articleId={id}>
-					{articleData.hasVote && <Vote articleId={id} />}
+					{articleData.hasVote ? (
+						<Vote articleId={id} />
+					) : articleData.isAuthor ? (
+						<VoteGenerateButton onClick={onClickVoteGenerateButton}>투표 만들기</VoteGenerateButton>
+					) : null}
 				</Detail>
 			)}
 		</>
