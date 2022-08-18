@@ -12,6 +12,11 @@ export const Container = styled.section`
 	align-items: center;
 `;
 
+export const Title = styled.div`
+	width: 100%;
+	margin: ${({ theme }) => theme.size.SIZE_030} 0;
+`;
+
 export const EmptyMsg = styled.div`
 	font-size: ${({ theme }) => theme.size.SIZE_016};
 `;

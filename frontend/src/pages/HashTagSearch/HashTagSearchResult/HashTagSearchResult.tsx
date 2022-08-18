@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
@@ -13,7 +12,8 @@ export interface HashTagSearchResultProps {
 
 const HashTagSearchResult = ({ hashTags }: HashTagSearchResultProps) => {
 	const navigate = useNavigate();
-	const { data, isLoading, refetch, fetchNextPage } = useGetArticleByHashTag(hashTags);
+
+	const { data, isLoading, fetchNextPage } = useGetArticleByHashTag(hashTags);
 
 	if (isLoading) {
 		return <Loading />;
@@ -21,13 +21,13 @@ const HashTagSearchResult = ({ hashTags }: HashTagSearchResultProps) => {
 
 	return (
 		<S.Container>
-			<h2>검색 결과</h2>
-			{data && data.pages[0].articles.length > 1 ? (
+			<S.Title>검색 결과</S.Title>
+			{data && data.pages[0].articles.length >= 1 ? (
 				<InfiniteScrollObserver
 					hasNext={data.pages[data.pages.length - 1].hasNext}
 					fetchNextPage={fetchNextPage}
 				>
-					<>
+					<S.SearchResult>
 						{data.pages.map(({ articles }) =>
 							articles.map((article) => (
 								<ArticleItem
@@ -37,7 +37,7 @@ const HashTagSearchResult = ({ hashTags }: HashTagSearchResultProps) => {
 								/>
 							)),
 						)}
-					</>
+					</S.SearchResult>
 				</InfiniteScrollObserver>
 			) : (
 				<S.EmptyMsg>검색 결과가 존재하지 않습니다</S.EmptyMsg>
