@@ -15,7 +15,6 @@ export interface ArticleItemProps {
 		commentCount: number;
 		createdAt: string;
 		tag: string[];
-		views: number;
 		isLike: boolean;
 		likeCount: number;
 	};
