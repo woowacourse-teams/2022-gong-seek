@@ -9,17 +9,20 @@ import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useLocationState from '@/hooks/useLocationState';
 import * as S from '@/pages/VoteDeadlineGenerator/index.styles';
+import { afterWeekGenerator, tomorrowGenerator } from '@/utils/dateGenerator';
 
 const VoteDeadlineGenerator = () => {
 	const dateRef = useRef<HTMLInputElement>(null);
 	const timeRef = useRef<HTMLInputElement>(null);
 	const { articleId, items } = useLocationState<{ articleId: string; items: string[] }>();
 	const navigate = useNavigate();
-	const { isLoading, mutate, isError, data, error, isSuccess } = useMutation<
+	const { isLoading, mutate, isError, error, isSuccess } = useMutation<
 		AxiosResponse<{ articleId: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ articleId: string; items: string[]; expiryDate: string }
 	>(registerVoteItems);
+	const tomorrow = tomorrowGenerator();
+	const afterWeek = afterWeekGenerator();
 
 	useEffect(() => {
 		if (isSuccess) {
@@ -56,7 +59,7 @@ const VoteDeadlineGenerator = () => {
 		<S.Container onSubmit={handleSubmitVoteDeadlineForm}>
 			<S.VoteDeadlineLabel>마감 기한을 설정해주세요.</S.VoteDeadlineLabel>
 			<S.VoteDeadlineInputBox>
-				<S.DeadlineInput type="date" required min="2022-08-02" ref={dateRef} />
+				<S.DeadlineInput type="date" required min={tomorrow} max={afterWeek} ref={dateRef} />
 				<S.ValidateMessage></S.ValidateMessage>
 				<br />
 				<S.DeadlineInput type="time" required ref={timeRef} />
