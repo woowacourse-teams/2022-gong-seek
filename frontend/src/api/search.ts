@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 import { HOME_URL } from '@/constants/url';
-import { CommonArticleType } from '@/types/articleResponse';
 import { SearchResultType } from '@/types/searchResponse';
 
 export const getSearchResult = async ({
@@ -14,7 +13,7 @@ export const getSearchResult = async ({
 	const accessToken = localStorage.getItem('accessToken');
 	const encodedTarget = encodeURIComponent(target);
 	const { data } = await axios.get<SearchResultType>(
-		`${HOME_URL}/api/articles/search?searchText=${target}&cursorId=${cursorId}&pageSize=6`,
+		`${HOME_URL}/api/articles/search?searchText=${encodedTarget}&cursorId=${cursorId}&pageSize=6`,
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
@@ -39,8 +38,9 @@ export const getArticleByHashTag = async ({
 	cursorId: string;
 }) => {
 	const accessToken = localStorage.getItem('accessToken');
+	const encodedTarget = encodeURIComponent(hashTags);
 	const { data } = await axios.get<SearchResultType>(
-		`${HOME_URL}/api/articles/search/tags?tagsText=${hashTags}&cursorId=${cursorId}&pageSize=6`,
+		`${HOME_URL}/api/articles/search/tags?tagsText=${encodedTarget}&cursorId=${cursorId}&pageSize=6`,
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
