@@ -68,8 +68,7 @@ const Detail = ({ children, article, commentList, articleId }: DetailProps) => {
 						<div>{commentList.length || 0}개</div>
 					</S.CommentTotal>
 				</S.CommentHeader>
-				{commentList &&
-					commentList.length > 0 &&
+				{commentList && commentList.length > 0 ? (
 					commentList.map((item) => (
 						<Comment
 							key={item.id}
@@ -80,7 +79,10 @@ const Detail = ({ children, article, commentList, articleId }: DetailProps) => {
 							createdAt={item.createdAt}
 							isAuthor={item.isAuthor}
 						/>
-					))}
+					))
+				) : (
+					<div>첫 번째 댓글을 달아주세요!</div>
+				)}
 			</S.CommentSection>
 			{isCommentOpen && (
 				<>

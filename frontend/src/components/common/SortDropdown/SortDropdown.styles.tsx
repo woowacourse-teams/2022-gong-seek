@@ -40,13 +40,14 @@ export const DropdownBox = styled.ul`
 	border-bottom-left-radius: ${({ theme }) => theme.size.SIZE_006};
 	border-bottom-right-radius: ${({ theme }) => theme.size.SIZE_006};
 
-	box-shadow: 0 8px 24px ${({ theme }) => theme.boxShadows.secondary};
+	box-shadow: 0 ${({ theme }) => theme.size.SIZE_008} ${({ theme }) => theme.size.SIZE_024}
+		${({ theme }) => theme.boxShadows.secondary};
 `;
 
 export const DropdownItem = styled.li<{ idx: number }>`
 	text-align: center;
 
-	border-bottom: 1px solid ${({ theme }) => theme.colors.GRAY_500};
+	border-bottom: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
 
 	color: ${({ theme }) => theme.colors.BLACK_600};
 	background-color: ${({ theme }) => theme.colors.WHITE};
@@ -75,6 +76,10 @@ export const Container = styled.div`
 	flex-direction: column;
 
 	font-size: ${({ theme }) => theme.size.SIZE_012};
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		font-size: ${({ theme }) => theme.size.SIZE_014};
+	}
 `;
 
 export const ArrowDown = styled(MdOutlineKeyboardArrowDown)``;

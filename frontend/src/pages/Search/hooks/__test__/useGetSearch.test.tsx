@@ -30,14 +30,33 @@ describe('검색이 작동되는지에 대해서 테스트 한다', () => {
 		</React.StrictMode>
 	);
 
-	test('검색한 검색어가 포함된 결과들을 조회 할 수 있다', async () => {
-		const { result, waitFor } = renderHook(() => useGetSearch('hi'), { wrapper });
+	test('검색어가 포함된 결과들을 조회 할 수 있다', async () => {
+		const target = 'hi';
+		const { result, waitFor } = renderHook(
+			() => useGetSearch({ target: target, searchIndex: '게시물' }),
+			{ wrapper },
+		);
 		await waitFor(() => result.current.isSuccess, { interval: 100 });
 		if (typeof result.current.data === 'undefined') {
 			return;
 		}
 
 		const { data } = result.current;
-		expect(data.pages[0].articles[0].title.includes('hi')).toEqual(true);
+		expect(data.pages[0].articles[0].title.includes(target)).toEqual(true);
+	});
+
+	test('유저 이름이 포함된 결과들을 조회 할 수 있다', async () => {
+		const target = 'sally';
+		const { result, waitFor } = renderHook(
+			() => useGetSearch({ target: target, searchIndex: '유저' }),
+			{ wrapper },
+		);
+		await waitFor(() => result.current.isSuccess, { interval: 100 });
+		if (typeof result.current.data === 'undefined') {
+			return;
+		}
+
+		const { data } = result.current;
+		expect(data.pages[0].articles[0].author.name).toEqual(target);
 	});
 });

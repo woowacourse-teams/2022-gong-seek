@@ -2,13 +2,22 @@ import { BiSearchAlt } from 'react-icons/bi';
 
 import styled from '@emotion/styled';
 
-export const Container = styled.form`
+export const Container = styled.div`
+	display: flex;
+	width: 100%;
+
+	align-items: center;
+
+	justify-content: space-between;
+`;
+
+export const SearchBarBox = styled.form<{ isSearchOpen: boolean }>`
 	display: flex;
 
 	justify-content: center;
 	align-items: center;
 
-	width: 100%;
+	width: ${(props) => (props.isSearchOpen ? '75%' : '100%')};
 	height: fit-content;
 
 	border-radius: 1rem;
@@ -19,6 +28,10 @@ export const Container = styled.form`
 	&:active,
 	&:hover {
 		border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.PURPLE_500};
+	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: 80%;
 	}
 `;
 
@@ -46,7 +59,12 @@ export const SearchButton = styled(BiSearchAlt)`
 
 	color: ${({ theme }) => theme.colors.PURPLE_500};
 
-	&:hover {
+	&:hover,
+	&:active {
 		color: ${({ theme }) => theme.colors.PURPLE_400};
+	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		font-size: ${({ theme }) => theme.size.SIZE_030};
 	}
 `;
