@@ -29,7 +29,12 @@ const DiscussionDetail = () => {
 	return (
 		<>
 			{typeof articleData !== 'undefined' && typeof commentData !== 'undefined' && (
-				<Detail article={articleData} commentList={commentData.comments} articleId={id}>
+				<Detail
+					article={articleData}
+					commentList={commentData.comments}
+					articleId={id}
+					category="토론"
+				>
 					{articleData.hasVote ? (
 						<Vote articleId={id} />
 					) : articleData.isAuthor ? (

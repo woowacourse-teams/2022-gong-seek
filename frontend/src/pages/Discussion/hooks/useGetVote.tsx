@@ -34,7 +34,7 @@ const useVote = (articleId: string) => {
 		}
 	}, [isError]);
 
-	return { data, isLoading, totalCount };
+	return { data, isLoading, totalCount, isSuccess };
 };
 
 export default useVote;

@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import Detail from '@/pages/Detail/index';
 import useGetDetailArticle from '@/hooks/useGetDetailArticle';
 import useGetDetailComment from '@/hooks/useGetDetailComment';
+import Detail from '@/pages/Detail/index';
 
 const ErrorDetail = () => {
 	const { id } = useParams();
@@ -22,7 +22,12 @@ const ErrorDetail = () => {
 	return (
 		<div>
 			{typeof articleData !== 'undefined' && typeof commentData !== 'undefined' && (
-				<Detail article={articleData} commentList={commentData.comments} articleId={id} />
+				<Detail
+					article={articleData}
+					commentList={commentData.comments}
+					articleId={id}
+					category="질문"
+				/>
 			)}
 		</div>
 	);
