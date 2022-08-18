@@ -6,7 +6,6 @@ import mockArticle from '@/mock/data/articles.json';
 export const LikeHandler = [
 	rest.post(`${HOME_URL}/api/articles/:articleId/like`, (req, res, ctx) => {
 		const { articleId } = req.params;
-
 		const filteredArticles = mockArticle.articles.find(
 			(article) => String(article.id) === articleId,
 		);
@@ -32,7 +31,7 @@ export const LikeHandler = [
 			throw new Error('글을 찾지 못했습니다.');
 		}
 
-		filteredArticles.isLike = true;
+		filteredArticles.isLike = false;
 		filteredArticles.likeCount -= 1;
 
 		return res(ctx.status(201), ctx.json({ isLike: false, likeCount: filteredArticles.likeCount }));
