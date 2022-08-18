@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
 import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 import Loading from '@/components/common/Loading/Loading';
-import SortDropdown from '@/pages/CategoryArticles/SortDropdown/SortDropDown';
+import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
 import PopularArticle from '@/pages/Home//PopularArticle/PopularArticle';
 import useGetAllArticles from '@/pages/Home/hooks/useGetAllArticles';
 import * as S from '@/pages/Home/index.styles';
@@ -46,7 +46,11 @@ const Home = () => {
 						토론
 					</S.CategoryTitle>
 				</S.CategoryTitleBox>
-				<SortDropdown sortIndex={sortIndex} setSortIndex={setSortIndex} />
+				<SortDropdown
+					sortList={['최신순', '조회순', '좋아요순']}
+					sortIndex={sortIndex}
+					setSortIndex={setSortIndex}
+				/>
 			</S.CategoryTitleContainer>
 			{data?.pages.length ? (
 				<InfiniteScrollObserver

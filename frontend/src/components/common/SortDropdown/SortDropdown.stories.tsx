@@ -1,11 +1,9 @@
-import SortDropdown, {
-	SortPropDownProps,
-} from '@/pages/CategoryArticles/SortDropdown/SortDropDown';
+import SortDropdown, { SortPropDownProps } from '@/components/common/SortDropdown/SortDropDown';
 import { action } from '@storybook/addon-actions';
 import { Meta, Story } from '@storybook/react';
 
 export default {
-	title: 'components/SortDropdown',
+	title: 'components/common/SortDropdown',
 	component: SortDropdown,
 	decorators: [
 		(Story) => (
