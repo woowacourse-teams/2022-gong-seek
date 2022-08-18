@@ -1,5 +1,6 @@
 <configuration>
     <springProfile name="prod, dev">
+        <property name="LOG_PATH" value="./logs"/>
         <include resource="logging/file-access-appender.xml"/>
         <appender-ref ref="FILE-ACCESS"/>
     </springProfile>
