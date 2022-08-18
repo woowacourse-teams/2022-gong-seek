@@ -23,7 +23,6 @@ export const getUserSearchResult = async ({
 			},
 		},
 	);
-	console.log('2.유저검색 url');
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
@@ -53,7 +52,7 @@ export const getArticleSearchResult = async ({
 			},
 		},
 	);
-	console.log('게시글 검색');
+
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
@@ -75,11 +74,10 @@ export const getSearchResult = async ({
 	const accessToken = localStorage.getItem('accessToken');
 
 	if (searchIndex === '유저') {
-		console.log('1. 유저일때', searchIndex, target);
 		const data = await getUserSearchResult({ accessToken, target, searchIndex, cursorId });
 		return data;
 	}
-	console.log('게시물', searchIndex);
+
 	const data = await getArticleSearchResult({ accessToken, target, searchIndex, cursorId });
 	return data;
 };

@@ -12,7 +12,7 @@ export const SearchHandler = [
 		if (typeof author === 'undefined') {
 			return;
 		}
-		console.log('3유저', author);
+
 		return res(
 			ctx.status(200),
 			ctx.json({
@@ -69,7 +69,6 @@ export const SearchHandler = [
 		if (typeof searchText === 'undefined') {
 			return;
 		}
-		console.log('text', searchText);
 		return res(
 			ctx.status(200),
 			ctx.json({
@@ -81,7 +80,7 @@ export const SearchHandler = [
 							name: `sally`,
 							avatarUrl: '작성자1 이미지 url',
 						},
-						content: '내용',
+						content: `${searchText}`,
 						category: 'question',
 						commentCount: 3,
 						views: 2,
@@ -94,7 +93,7 @@ export const SearchHandler = [
 							name: `sally`,
 							avatarUrl: '작성자1 이미지 url',
 						},
-						content: '내용',
+						content: `${searchText}`,
 						category: 'question',
 						commentCount: 3,
 						views: 2,
@@ -107,7 +106,7 @@ export const SearchHandler = [
 							name: `author`,
 							avatarUrl: '작성자1 이미지 url',
 						},
-						content: '내용',
+						content: `${searchText}`,
 						category: 'question',
 						commentCount: 3,
 						views: 2,
