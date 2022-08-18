@@ -1,1 +1,1 @@
-export const HOME_URL = 'https://back.gongseek.site';
+export const HOME_URL = process.env.HOME_URL;
