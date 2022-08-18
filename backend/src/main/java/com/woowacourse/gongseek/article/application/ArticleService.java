@@ -28,6 +28,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -251,5 +253,16 @@ public class ArticleService {
 
     private List<String> extract(String tagsText) {
         return Arrays.asList(tagsText.split(","));
+    }
+
+    @Transactional(readOnly = true)
+    public ArticlePageResponse getAllByLikes(Long cursorId, Long likes, String category, Pageable pageable,
+                                             AppMember appMember) {
+        Slice<Article> articles = articleRepository.findAllByLikes(cursorId, likes, category, pageable);
+        List<ArticlePreviewResponse> response = articles.getContent().stream()
+                .map(it -> getArticlePreviewResponse(it, appMember))
+                .collect(Collectors.toList());
+
+        return new ArticlePageResponse(response, articles.hasNext());
     }
 }
