@@ -5,7 +5,5 @@
 /dist
 /coverage
 .env
-.env.development
-.env.production
 
 .vscode
