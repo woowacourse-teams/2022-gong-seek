@@ -653,7 +653,6 @@ public class ArticleServiceTest {
         for (int i = 0; i < 5; i++) {
             articleService.save(loginMember, firstArticleRequest);
         }
-
         ArticleRequest secondArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("java"), true);
         for (int i = 0; i < 5; i++) {
