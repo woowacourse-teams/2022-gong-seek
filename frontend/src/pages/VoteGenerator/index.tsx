@@ -13,7 +13,9 @@ const VoteGenerator = () => {
 
 	const onSubmitAddOption = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
+		if (input.length === 0) {
+			return;
+		}
 		setOptions((prevoptions) => prevoptions.concat(input));
 		setInput('');
 	};

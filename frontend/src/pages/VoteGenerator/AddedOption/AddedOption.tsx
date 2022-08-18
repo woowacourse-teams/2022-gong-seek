@@ -34,6 +34,9 @@ const Trash = styled(BsFillTrashFill)`
 	:hover {
 		color: ${({ theme }) => theme.colors.RED_500};
 	}
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		font-size: ${({ theme }) => theme.size.SIZE_020};
+	}
 `;
 
 export default AddedOption;
