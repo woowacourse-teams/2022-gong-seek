@@ -28,8 +28,15 @@ import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
+import com.woowacourse.gongseek.vote.application.VoteService;
+import com.woowacourse.gongseek.vote.domain.Vote;
+import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
+import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
+import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,6 +61,12 @@ public class ArticleServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private VoteService voteService;
+
+    @Autowired
+    private VoteHistoryRepository voteHistoryRepository;
 
     @Autowired
     private TagRepository tagRepository;
@@ -758,6 +771,27 @@ public class ArticleServiceTest {
         assertAll(
                 () -> assertThat(pageResponse.getArticles()).hasSize(2),
                 () -> assertThat(pageResponse.hasNext()).isTrue()
+        );
+    }
+
+    @Test
+    void 투표중인_토론게시글을_삭제한다() {
+        Article article = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
+
+        Vote vote = new Vote(article, LocalDateTime.now().plusDays(3));
+
+        LoginMember loginMember = new LoginMember(member.getId());
+        voteService.create(loginMember, article.getId(),
+                new VoteCreateRequest(Set.of("A번", "B번", "C번"), LocalDateTime.now().plusDays(4)));
+
+        voteService.doVote(article.getId(), loginMember, new SelectVoteItemIdRequest(1L));
+        articleService.delete(loginMember, article.getId());
+
+        assertAll(
+                () -> assertThat(voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(),
+                        loginMember.getPayload())).isEmpty(),
+                () -> assertThat(articleRepository.findById(article.getId())).isEmpty()
         );
     }
 }

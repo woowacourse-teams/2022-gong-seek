@@ -16,6 +16,8 @@ import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.vote.domain.Vote;
+import com.woowacourse.gongseek.vote.domain.VoteItem;
+import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -56,6 +58,9 @@ class ArticleRepositoryTest {
 
     @Autowired
     private VoteRepository voteRepository;
+
+    @Autowired
+    private VoteItemRepository voteItemRepository;
 
     @Autowired
     private TestEntityManager testEntityManager;
@@ -396,13 +401,28 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    void 투표가_있는_토론게시글을_삭제하면_투표도_삭제된다(){
+    void 투표가_있는_토론게시글을_삭제한다(){
         Article article = articleRepository.save(
                 new Article("title2", "content2", Category.DISCUSSION, member, false));
 
         voteRepository.save(new Vote(article, LocalDateTime.now().plusDays(3)));
 
         assertThat(voteRepository.findByArticleId(article.getId())).isNotEmpty();
+        articleRepository.deleteById(article.getId());
+
+        assertThat(voteRepository.findByArticleId(article.getId())).isEmpty();
+    }
+
+    @Test
+    void 투표중인_토론게시글을_삭제한다(){
+        Article article = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
+
+        Vote vote = new Vote(article, LocalDateTime.now().plusDays(3));
+        voteRepository.save(vote);
+        voteItemRepository.saveAll(
+                List.of(new VoteItem("A번", vote), new VoteItem("B번", vote), new VoteItem("C번", vote)));
+
         articleRepository.deleteById(article.getId());
 
         assertThat(voteRepository.findByArticleId(article.getId())).isEmpty();
