@@ -11,7 +11,7 @@ const useGetUserArticles = () => {
 	const { data, isSuccess, isLoading, isError, isIdle, error } = useQuery<
 		UserArticlesResponse,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
-	>('user-articles', getUserArticles, { retry: false });
+	>('user-articles', getUserArticles, { retry: 1, refetchOnWindowFocus: false });
 
 	useEffect(() => {
 		if (isError) {

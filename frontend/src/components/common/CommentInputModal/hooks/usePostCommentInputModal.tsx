@@ -14,7 +14,7 @@ const usePostCommentInputModal = (closeModal: CommentInputModalProps['closeModal
 		unknown,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ content: string; id: string; isAnonymous: boolean }
-	>(postComments);
+	>(postComments, { retry: 1 });
 
 	useEffect(() => {
 		if (isError) {
