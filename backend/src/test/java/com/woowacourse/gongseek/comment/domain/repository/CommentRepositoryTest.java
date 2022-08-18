@@ -52,7 +52,7 @@ class CommentRepositoryTest {
     }
 
     @Test
-    void 게시물_아이디로_댓글을_조회한다() {
+    void 게시글_아이디로_댓글을_조회한다() {
         Comment comment = new Comment("content", member, article, false);
         commentRepository.save(comment);
 

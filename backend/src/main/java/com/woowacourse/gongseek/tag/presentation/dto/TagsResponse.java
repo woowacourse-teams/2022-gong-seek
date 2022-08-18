@@ -17,7 +17,7 @@ public class TagsResponse {
 
     public static TagsResponse of(List<Tag> tags) {
         List<String> tagNames = tags.stream()
-                .map(tag -> tag.getName().getValue())
+                .map(Tag::getName)
                 .collect(Collectors.toList());
         return new TagsResponse(tagNames);
     }

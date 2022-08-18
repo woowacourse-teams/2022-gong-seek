@@ -4,6 +4,7 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
@@ -13,7 +14,7 @@ import lombok.Getter;
 @Embeddable
 public class ArticleTags {
 
-    @OneToMany(mappedBy = "article", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "article", orphanRemoval = true, cascade = CascadeType.PERSIST)
     private List<ArticleTag> value;
 
     public ArticleTags() {
@@ -27,5 +28,11 @@ public class ArticleTags {
 
     public void clear() {
         value.clear();
+    }
+
+    public List<String> getTagNames() {
+        return value.stream()
+                .map(articleTag -> articleTag.getTag().getName())
+                .collect(Collectors.toList());
     }
 }

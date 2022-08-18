@@ -38,6 +38,7 @@ const useGetSearch = ({ target, searchIndex }: { target: string; searchIndex: st
 					return;
 				},
 				retry: 1,
+				refetchOnWindowFocus: false,
 			},
 		);
 

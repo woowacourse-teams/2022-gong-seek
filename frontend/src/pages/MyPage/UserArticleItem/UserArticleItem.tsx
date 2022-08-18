@@ -16,8 +16,11 @@ const UserArticleItem = ({ article }: { article: UserArticleItemType }) => {
 				navigate(`/articles/${category}/${id}`);
 			}}
 		>
-			<S.CategoryName isQuestion={category === 'question'}>{한글_카테고리}</S.CategoryName>
-			<S.ArticleTitle>{title}</S.ArticleTitle>
+			<S.ArticleTitleBox>
+				<S.CategoryName isQuestion={category === 'question'}>{한글_카테고리}</S.CategoryName>
+				<S.ArticleTitle>{title}</S.ArticleTitle>
+			</S.ArticleTitleBox>
+
 			<S.ArticleSubInfo>
 				<S.ArticleTime>
 					{updatedAt.length !== 0 ? dateTimeConverter(updatedAt) : dateTimeConverter(createdAt)}

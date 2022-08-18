@@ -3,7 +3,7 @@ import { ReactNode, useState } from 'react';
 import * as S from '@/pages/MyPage/UserItemBox/UserItemBox.styles';
 
 const UserItemBox = ({ children, subTitle }: { children: ReactNode; subTitle: string }) => {
-	const [isContainerOpen, setIsContainerOpen] = useState(false);
+	const [isContainerOpen, setIsContainerOpen] = useState(true);
 
 	return (
 		<S.Container>

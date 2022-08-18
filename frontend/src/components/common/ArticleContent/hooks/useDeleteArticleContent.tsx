@@ -14,7 +14,7 @@ const useDeleteArticleContent = () => {
 		unknown,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		string
-	>(deleteArticle);
+	>(deleteArticle, { retry: 1 });
 	const navigate = useNavigate();
 
 	useEffect(() => {
