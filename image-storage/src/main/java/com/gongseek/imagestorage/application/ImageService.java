@@ -36,4 +36,3 @@ public class ImageService {
         return directory + uploadImageFile.getStoredFileName();
     }
 }
-
