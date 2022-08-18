@@ -2,11 +2,11 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { postImage } from '@/api/image';
 import AnonymouseCheckBox from '@/components/common/AnonymousCheckBox/AnonymouseCheckBox';
 import HashTag from '@/components/common/HashTag/HashTag';
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
-import { HOME_URL } from '@/constants/url';
 import ToastUiEditor from '@/pages/WritingArticles/ToastUiEditor/ToastUiEditor';
 import usePostWritingArticles from '@/pages/WritingArticles/hooks/usePostWritingArticles';
 import * as S from '@/pages/WritingArticles/index.styles';
@@ -35,16 +35,8 @@ const WritingArticles = () => {
 			content.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
 				(async () => {
 					const formData = new FormData();
-					const accessToken = localStorage.getItem('accessToken');
-					formData.append('image', blob);
-
-					const url = await axios.post(`https://images.gongseek.site/api/images/upload`, formData, {
-						headers: {
-							'Access-Control-Allow-Origin': '*',
-							Authorization: `Bearer ${accessToken}`,
-						},
-					});
-
+					formData.append('imageFile', blob);
+					const url = await postImage(formData);
 					callback(url, 'alt-text');
 				})();
 			});
