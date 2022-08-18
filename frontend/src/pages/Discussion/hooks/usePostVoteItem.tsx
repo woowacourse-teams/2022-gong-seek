@@ -8,7 +8,7 @@ import { ErrorMessage } from '@/constants/ErrorMessage';
 import { queryClient } from '@/index';
 
 const usePostVoteItem = (articleId: string) => {
-	const { isLoading, isError, error, mutate, isSuccess } = useMutation<
+	const { isError, error, mutate, isSuccess } = useMutation<
 		unknown,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ articleId: string; voteItemId: string }
