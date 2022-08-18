@@ -471,8 +471,8 @@ public class ArticleServiceTest {
         articleService.delete(loginMember, firstSavedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleRepository.existsByTagName("SPRING")).isFalse(),
-                () -> assertThat(articleRepository.existsByTagName("JAVA")).isTrue(),
+                () -> assertThat(articleRepository.existsArticleByTagName("SPRING")).isFalse(),
+                () -> assertThat(articleRepository.existsArticleByTagName("JAVA")).isTrue(),
                 () -> assertThat(tagRepository.findByNameIgnoreCase("SPRING")).isEmpty(),
                 () -> assertThat(tagRepository.findByNameIgnoreCase("JAVA")).isNotEmpty()
         );

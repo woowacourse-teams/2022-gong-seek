@@ -51,7 +51,6 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         return isOverArticleId(cursorId);
     }
 
-
     private BooleanExpression isOverArticleId(Long cursorId) {
         return cursorId == null ? null : article.id.lt(cursorId);
     }

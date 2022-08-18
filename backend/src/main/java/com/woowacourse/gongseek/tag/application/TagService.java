@@ -35,7 +35,7 @@ public class TagService {
         return TagsResponse.of(tags);
     }
 
-    public void delete(String name) {
-        tagRepository.deleteByNameIgnoreCase(name);
+    public void delete(List<String> names) {
+        tagRepository.deleteByNameIgnoreCaseIn(names);
     }
 }

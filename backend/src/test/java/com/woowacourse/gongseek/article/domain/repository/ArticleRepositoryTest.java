@@ -269,9 +269,9 @@ class ArticleRepositoryTest {
         tagRepository.saveAll(tags);
         article.addTag(new Tags(tags));
 
-        boolean firstResult = articleRepository.existsByTagName("SPRING");
-        boolean secondResult = articleRepository.existsByTagName("JAVA");
-        boolean thirdResult = articleRepository.existsByTagName("REACT");
+        boolean firstResult = articleRepository.existsArticleByTagName("SPRING");
+        boolean secondResult = articleRepository.existsArticleByTagName("java");
+        boolean thirdResult = articleRepository.existsArticleByTagName("REACT");
 
         assertAll(
                 () -> assertThat(firstResult).isTrue(),

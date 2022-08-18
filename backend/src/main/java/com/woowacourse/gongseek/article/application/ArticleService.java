@@ -230,11 +230,9 @@ public class ArticleService {
         articleRepository.delete(article);
 
         List<String> deletedTagNames = article.getTagNames().stream()
-                .filter(tagName -> !articleRepository.existsByTagName(tagName))
+                .filter(tagName -> !articleRepository.existsArticleByTagName(tagName))
                 .collect(Collectors.toList());
-        for (String deletedTagName : deletedTagNames) {
-            tagService.delete(deletedTagName);
-        }
+        tagService.delete(deletedTagNames);
     }
 
     @Transactional(readOnly = true)
