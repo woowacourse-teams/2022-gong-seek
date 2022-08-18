@@ -205,9 +205,7 @@ public class ArticleService {
     }
 
     private void deleteUnusedTags(List<String> existingTagNames, List<String> updatedTagNames) {
-        for (String updatedTagName : updatedTagNames) {
-            existingTagNames.remove(updatedTagName);
-        }
+        existingTagNames.removeAll(updatedTagNames);
         List<String> deletedTagNames = getDeletedTagNames(existingTagNames);
         tagService.delete(deletedTagNames);
     }
