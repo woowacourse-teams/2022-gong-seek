@@ -26,7 +26,7 @@ const HashTagSearch = () => {
 	}, [isTagsOptionSuccess]);
 
 	useEffect(() => {
-		setSelectedHashTags(targetHashTags.map((item) => (item.isChecked ? item.name : '')));
+		setSelectedHashTags(targetHashTags.filter((item) => item.isChecked).map((item) => item.name));
 	}, [targetHashTags]);
 
 	return (
