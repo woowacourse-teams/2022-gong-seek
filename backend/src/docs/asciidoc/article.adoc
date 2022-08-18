@@ -114,6 +114,23 @@ include::{snippets}/article-get-all/request-parameters.adoc[]
 include::{snippets}/article-get-all/http-response.adoc[]
 include::{snippets}/article-get-all/response-fields.adoc[]
 
+== 게시글 전체 추천순으로 조회
+
+`GET /api/articles/likes`
+
+=== Request
+
+include::{snippets}/article-get-all-likes/http-request.adoc[]
+
+=== Header
+
+include::{snippets}/article-get-all-likes/request-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/article-get-all-likes/http-response.adoc[]
+include::{snippets}/article-get-all-likes/response-fields.adoc[]
+
 == 제목이나 내용으로 게시글 검색
 
 `GET /api/articles/search/text`
@@ -131,7 +148,7 @@ include::{snippets}/article-search-text/request-parameters.adoc[]
 include::{snippets}/article-search-text/http-response.adoc[]
 include::{snippets}/article-search-text/response-fields.adoc[]
 
-== 작성자 이름으로 게시물 검색
+== 작성자 이름으로 게시글 검색
 
 `GET /api/articles/search/author`
 
@@ -148,7 +165,7 @@ include::{snippets}/article-search-author/request-parameters.adoc[]
 include::{snippets}/article-search-author/http-response.adoc[]
 include::{snippets}/article-search-author/response-fields.adoc[]
 
-== 해시태그로 게시물 조회
+== 해시태그로 게시글 조회
 
 `GET /api/articles/tags`
 

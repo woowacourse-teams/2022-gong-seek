@@ -3,7 +3,6 @@ package com.woowacourse.gongseek.like.presentation;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.like.application.LikeService;
-import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +19,7 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping
-    public ResponseEntity<LikeResponse> likeArticle(
+    public ResponseEntity<Void> likeArticle(
             @PathVariable Long articleId,
             @AuthenticationPrinciple AppMember appMember
     ) {
@@ -29,7 +28,7 @@ public class LikeController {
     }
 
     @DeleteMapping
-    public ResponseEntity<LikeResponse> unlikeArticle(
+    public ResponseEntity<Void> unlikeArticle(
             @PathVariable Long articleId,
             @AuthenticationPrinciple AppMember appMember
     ) {
