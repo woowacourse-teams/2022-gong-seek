@@ -31,8 +31,15 @@ describe('useHeartClick 테스트', () => {
 	);
 
 	test('좋아요를 클릭할시 좋아요가 하나 증가한다.', async () => {
-		const { result, waitFor } = renderHook(() => useHeartClick('1'), { wrapper });
-		result.current.onLikeButtonClick();
+		const { result, waitFor } = renderHook(
+			() => useHeartClick({ prevIsLike: false, prevLikeCount: 0, articleId: '1' }),
+			{ wrapper },
+		);
+		result.current.onLikeButtonClick({
+			stopPropagation: () => {
+				console.log('이벤트 버블링 방지');
+			},
+		} as React.MouseEvent<SVGElement, MouseEvent>);
 
 		await waitFor(() => result.current.postIsSuccess, { interval: 100 });
 
@@ -41,9 +48,16 @@ describe('useHeartClick 테스트', () => {
 	});
 
 	test('좋아요 상태에서 한번 더 클릭할시 좋아요가 취소된다.', async () => {
-		const { result, waitFor } = renderHook(() => useHeartClick('1'), { wrapper });
+		const { result, waitFor } = renderHook(
+			() => useHeartClick({ prevIsLike: true, prevLikeCount: 1, articleId: '1' }),
+			{ wrapper },
+		);
 
-		result.current.onUnlikeButtonClick();
+		result.current.onUnlikeButtonClick({
+			stopPropagation: () => {
+				console.log('이벤트 버블링 방지');
+			},
+		} as React.MouseEvent<SVGElement, MouseEvent>);
 
 		await waitFor(() => result.current.deleteIsSuccess, { interval: 100 });
 

@@ -80,6 +80,8 @@ const useHeartClick = ({
 		onUnlikeButtonClick,
 		isLike,
 		likeCount,
+		postIsSuccess,
+		deleteIsSuccess,
 	};
 };
 
