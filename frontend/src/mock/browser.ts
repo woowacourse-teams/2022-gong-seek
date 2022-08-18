@@ -7,9 +7,9 @@ import {
 	MyPageHandler,
 	SearchHandler,
 	HashTagHandler,
+	LikeHandler,
+	VoteHandler,
 } from '@/mock/index';
-
-// import { VoteHandler } from '@/mock/vote';
 
 export const worker = setupWorker(
 	...LoginHandler,
@@ -18,4 +18,6 @@ export const worker = setupWorker(
 	...MyPageHandler,
 	...SearchHandler,
 	...HashTagHandler,
+	...LikeHandler,
+	...VoteHandler,
 );

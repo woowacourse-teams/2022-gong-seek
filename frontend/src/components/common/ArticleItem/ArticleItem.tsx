@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
+
 import * as S from '@/components/common/ArticleItem/ArticleItem.styles';
 import Loading from '@/components/common/Loading/Loading';
 import useHeartClick from '@/hooks/useHeartClick';
+import { queryClient } from '@/index';
 import { Category } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 import { dateTimeConverter } from '@/utils/converter';
