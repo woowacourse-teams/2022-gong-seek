@@ -205,6 +205,13 @@ public class ArticleService {
     }
 
     private void deleteUnusedTags(List<String> existingTagNames, List<String> updatedTagNames) {
+        existingTagNames = existingTagNames.stream()
+                .map(String::toUpperCase)
+                .collect(Collectors.toList());
+        updatedTagNames = updatedTagNames.stream()
+                .map(String::toUpperCase)
+                .collect(Collectors.toList());
+
         existingTagNames.removeAll(updatedTagNames);
         List<String> deletedTagNames = getDeletedTagNames(existingTagNames);
         tagService.delete(deletedTagNames);
