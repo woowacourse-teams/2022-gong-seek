@@ -41,7 +41,7 @@ class LikeServiceTest {
     }
 
     @Test
-    void 게시물을_추천한다() {
+    void 게시글을_추천한다() {
         Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
         Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
 
@@ -49,7 +49,7 @@ class LikeServiceTest {
     }
 
     @Test
-    void 비회원인_경우_게시물을_추천할_수_없다() {
+    void 비회원인_경우_게시글을_추천할_수_없다() {
         Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
         Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
 
@@ -59,7 +59,7 @@ class LikeServiceTest {
     }
 
     @Test
-    void 게시물이_존재하지_않은_경우_게시물을_추천할_수_없다() {
+    void 게시글이_존재하지_않은_경우_게시글을_추천할_수_없다() {
         Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
 
         assertThatThrownBy(() -> likeService.likeArticle(new LoginMember(member.getId()), -1L))
@@ -68,7 +68,7 @@ class LikeServiceTest {
     }
 
     @Test
-    void 존재하지_않는_회원은_게시물을_추천할_수_없다() {
+    void 존재하지_않는_회원은_게시글을_추천할_수_없다() {
         Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
         Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
 
@@ -78,7 +78,7 @@ class LikeServiceTest {
     }
 
     @Test
-    void 게시물_추천을_취소한다() {
+    void 게시글_추천을_취소한다() {
         Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
         Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
         LoginMember appMember = new LoginMember(member.getId());
@@ -88,7 +88,7 @@ class LikeServiceTest {
     }
 
     @Test
-    void 비회원인_경우_게시물_추천을_취소할_수_없다() {
+    void 비회원인_경우_게시글_추천을_취소할_수_없다() {
         Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
         Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
 
@@ -98,7 +98,7 @@ class LikeServiceTest {
     }
 
     @Test
-    void 게시물이_존재하지_않은_경우_게시물_추천을_취소할_수_없다() {
+    void 게시글이_존재하지_않은_경우_게시글_추천을_취소할_수_없다() {
         Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
 
         assertThatThrownBy(() -> likeService.unlikeArticle(new LoginMember(member.getId()), -1L))
@@ -107,7 +107,7 @@ class LikeServiceTest {
     }
 
     @Test
-    void 존재하지_않는_회원은_게시물_추천을_취소할_수_없다() {
+    void 존재하지_않는_회원은_게시글_추천을_취소할_수_없다() {
         Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
         Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
 

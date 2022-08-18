@@ -13,7 +13,13 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 	const [hashTagInput, setHashInput] = useState<string>('');
 	const [errorMsg, setErrorMsg] = useState<string>('');
 
-	const checkIsDuplicateHashTag = () => hashTags.includes(hashTagInput);
+	const checkIsDuplicateHashTag = (hashtag: string) =>
+		hashTags.reduce((acc, cur) => {
+			if (cur.toLowerCase() === hashtag.toLowerCase()) {
+				acc = true;
+			}
+			return acc;
+		}, false);
 
 	const onHashTagEnterEventHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -22,17 +28,17 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 			setHashInput('');
 			return;
 		}
-		if (!validatedHashTagInput(hashTagInput)) {
+		if (!validatedHashTagInput(hashTagInput.trim())) {
 			setErrorMsg('2글자 이상 20이하여야 합니다');
 			setHashInput('');
 			return;
 		}
-		if (checkIsDuplicateHashTag()) {
+		if (checkIsDuplicateHashTag(hashTagInput.trim())) {
 			setErrorMsg('중복된 해시태그는 입력하실 수 없습니다');
 			setHashInput('');
 			return;
 		}
-		setHashTags([...hashTags, hashTagInput]);
+		setHashTags([...hashTags, hashTagInput.trim()]);
 		setErrorMsg('');
 		setHashInput('');
 	};
@@ -71,7 +77,7 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 						minLength={2}
 						maxLength={20}
 						aria-label="해시태그를 입력하는 곳입니다"
-						placeholder="해시태그를 입력해주세요"
+						placeholder="해시태그를 입력 후 엔터를 눌러주세요"
 						value={hashTagInput}
 						onChange={(e) => {
 							setHashInput(e.target.value);

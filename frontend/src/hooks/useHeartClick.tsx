@@ -21,14 +21,18 @@ const useHeartClick = ({
 		isError: postIsError,
 		error: postError,
 		isSuccess: postIsSuccess,
-	} = useMutation<AxiosResponse, AxiosError, string>(`like${articleId}`, postAddLikeArticle);
+	} = useMutation<AxiosResponse, AxiosError, string>(`like${articleId}`, postAddLikeArticle, {
+		retry: 1,
+	});
 	const {
 		mutate: deleteMutate,
 		isLoading: deleteIsLoading,
 		isError: deleteIsError,
 		error: deleteError,
 		isSuccess: deleteIsSuccess,
-	} = useMutation<AxiosResponse, AxiosError, string>(`unlike${articleId}`, deleteLikeArticle);
+	} = useMutation<AxiosResponse, AxiosError, string>(`unlike${articleId}`, deleteLikeArticle, {
+		retry: 1,
+	});
 
 	useEffect(() => {
 		setIsLike(prevIsLike);

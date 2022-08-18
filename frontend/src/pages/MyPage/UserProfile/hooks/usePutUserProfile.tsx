@@ -11,7 +11,7 @@ const usePutUserProfile = () => {
 		AxiosResponse<{ name: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ name: string }
-	>(editUserInfo);
+	>(editUserInfo, { retry: 1 });
 
 	useEffect(() => {
 		if (isError) {

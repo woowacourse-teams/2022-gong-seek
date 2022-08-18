@@ -12,6 +12,7 @@ import CategoryArticles from '@/pages/CategoryArticles/CategoryArticles';
 import CategorySelector from '@/pages/CategorySelector/CategorySelector';
 import DiscussionDetail from '@/pages/DiscussionDetail';
 import ErrorDetail from '@/pages/ErrorDetail';
+import HashTagSearch from '@/pages/HashTagSearch';
 import Home from '@/pages/Home';
 import InquirePage from '@/pages/Inquire';
 import Login from '@/pages/Login';
@@ -84,6 +85,7 @@ const App = () => {
 						<Route path="/articles/discussion/:id" element={<DiscussionDetail />} />
 						<Route path="/articles/modify/:category/:id" element={<UpdateWriting />} />
 						<Route path="/search-result" element={<Search />} />
+						<Route path="/hash-tag" element={<HashTagSearch />} />
 						<Route path="/inquire" element={<InquirePage />} />
 						<Route path="/*" element={<NotFound />} />
 						<Route path="/" element={<Home />} />

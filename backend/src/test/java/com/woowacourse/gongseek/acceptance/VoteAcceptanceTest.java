@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시물을_기명으로_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시물을_익명으로_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시글을_기명으로_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시글을_익명으로_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.VoteFixtures.투표를_생성한다;
 import static com.woowacourse.gongseek.acceptance.support.VoteFixtures.투표를_조회한다;
@@ -27,10 +27,10 @@ import org.springframework.http.HttpStatus;
 public class VoteAcceptanceTest extends AcceptanceTest {
 
     @Test
-    void 토론게시물에서_기명으로_투표를_생성한다() {
+    void 토론게시글에서_기명으로_투표를_생성한다() {
         //given
         AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
-        Long articleId = 토론_게시물을_기명으로_등록한다(tokenResponse).getId();
+        Long articleId = 토론_게시글을_기명으로_등록한다(tokenResponse).getId();
 
         //when
         ExtractableResponse<Response> response = 투표를_생성한다(
@@ -48,10 +48,10 @@ public class VoteAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 토론게시물에서_익명으로_투표를_생성한다() {
+    void 토론게시글에서_익명으로_투표를_생성한다() {
         //given
         AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
-        Long articleId = 토론_게시물을_익명으로_등록한다(tokenResponse).getId();
+        Long articleId = 토론_게시글을_익명으로_등록한다(tokenResponse).getId();
 
         //when
         ExtractableResponse<Response> response = 투표를_생성한다(
@@ -72,7 +72,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
     void 투표를_안한_사용자가_투표를_조회하면_선택한_투표_식별자는_null이_나온다() {
         //given
         AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
-        Long articleId = 토론_게시물을_기명으로_등록한다(tokenResponse).getId();
+        Long articleId = 토론_게시글을_기명으로_등록한다(tokenResponse).getId();
 
         투표를_생성한다(
                 tokenResponse, articleId,
@@ -96,7 +96,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
     void 투표를_한_사용자가_투표를_조회한다() {
         //given
         AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
-        Long articleId = 토론_게시물을_기명으로_등록한다(tokenResponse).getId();
+        Long articleId = 토론_게시글을_기명으로_등록한다(tokenResponse).getId();
 
         투표를_생성한다(
                 tokenResponse,
@@ -128,7 +128,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
     void 비회원이_투표를_하면_투표수가_안_오른다() {
         //given
         AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
-        Long articleId = 토론_게시물을_기명으로_등록한다(tokenResponse).getId();
+        Long articleId = 토론_게시글을_기명으로_등록한다(tokenResponse).getId();
 
         투표를_생성한다(
                 tokenResponse,
