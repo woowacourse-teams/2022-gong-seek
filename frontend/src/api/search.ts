@@ -39,7 +39,7 @@ export const getArticleByHashTag = async ({
 }) => {
 	const accessToken = localStorage.getItem('accessToken');
 	const { data } = await axios.get<SearchResultType>(
-		`${HOME_URL}/api/articles/tags?tagsText=${hashTags}&cursorId=${cursorId}&pageSize=6`,
+		`${HOME_URL}/api/articles/search/tags?tagsText=${hashTags}&cursorId=${cursorId}&pageSize=6`,
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
