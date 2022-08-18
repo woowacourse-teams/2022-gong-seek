@@ -1,6 +1,8 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
 import static com.woowacourse.gongseek.article.domain.QArticle.article;
+import static com.woowacourse.gongseek.article.domain.articletag.QArticleTag.articleTag;
+import static com.woowacourse.gongseek.tag.domain.QTag.tag;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -10,6 +12,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -75,5 +78,41 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         StringExpression content = Expressions.stringTemplate("replace({0},' ','')", article.content.value).lower();
         return title.contains(text)
                 .or(content.contains(text));
+    }
+
+    @Override
+    public List<Article> searchByAuthor(Long cursorId, int pageSize, String author) {
+        return queryFactory
+                .selectFrom(article)
+                .where(
+                        article.member.name.value.eq(author),
+                        isOverArticleId(cursorId)
+                )
+                .limit(pageSize + 1)
+                .orderBy(article.id.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<Article> searchByTag(Long cursorId, int pageSize, List<String> tagNames) {
+        return queryFactory
+                .select(article)
+                .from(articleTag)
+                .where(
+                        articleTag.tag.name.in(getUpperTagNames(tagNames)),
+                        isOverArticleId(cursorId)
+                )
+                .join(articleTag.article, article)
+                .join(articleTag.tag, tag)
+                .distinct()
+                .limit(pageSize + 1)
+                .orderBy(articleTag.article.id.desc())
+                .fetch();
+    }
+
+    private List<String> getUpperTagNames(List<String> tagNames) {
+        return tagNames.stream()
+                .map(String::toUpperCase)
+                .collect(Collectors.toList());
     }
 }

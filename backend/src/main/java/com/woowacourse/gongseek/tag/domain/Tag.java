@@ -1,6 +1,9 @@
 package com.woowacourse.gongseek.tag.domain;
 
-import javax.persistence.Embedded;
+import com.woowacourse.gongseek.tag.exception.TagNameLengthException;
+import com.woowacourse.gongseek.tag.exception.TagNameNullOrBlankException;
+import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,10 +24,24 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Embedded
-    private Name name;
+    @Column(name = "name", nullable = false, length = MAX_NAME_LENGTH)
+    private String name;
 
     public Tag(String name) {
-        this.name = new Name(name);
+        validateNullOrBlank(name);
+        validateLength(name);
+        this.name = name.trim().toUpperCase();
+    }
+
+    private void validateNullOrBlank(String name) {
+        if (Objects.isNull(name) || name.isBlank()) {
+            throw new TagNameNullOrBlankException();
+        }
+    }
+
+    private void validateLength(String name) {
+        if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH) {
+            throw new TagNameLengthException();
+        }
     }
 }

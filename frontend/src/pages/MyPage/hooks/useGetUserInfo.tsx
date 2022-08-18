@@ -11,7 +11,7 @@ const useGetUserInfo = () => {
 	const { data, isSuccess, isError, isLoading, isIdle, error } = useQuery<
 		Author,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
-	>('user-info', getUserInfo);
+	>('user-info', getUserInfo, { retry: 1, refetchOnWindowFocus: false });
 
 	useEffect(() => {
 		if (isError) {

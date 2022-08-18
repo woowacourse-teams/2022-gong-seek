@@ -1,8 +1,8 @@
 == 공식의 공식 애플리케이션 API 문서
 
-- link:/docs/article.html[게시물 관련 API]
+- link:/docs/article.html[게시글 관련 API]
 - link:/docs/auth.html[로그인 관련 API]
 - link:/docs/comment.html[댓글 관련 API]
 - link:/docs/member.html[회원 관련 API]
 - link:/docs/vote.html[투표 관련 API]
-
+- link:/docs/like.html[추천 관련 API]

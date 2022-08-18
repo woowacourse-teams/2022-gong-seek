@@ -86,4 +86,16 @@ export const MyPageHandler = [
 			}),
 		),
 	),
+
+	rest.put<{ name: string }>(`${HOME_URL}/api/members/me`, (req, res, ctx) => {
+		const { name } = req.body;
+
+		res(
+			ctx.status(200),
+			ctx.json({
+				name,
+				avatarUrl: 'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg',
+			}),
+		);
+	}),
 ];

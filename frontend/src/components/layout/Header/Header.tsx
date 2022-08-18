@@ -49,18 +49,15 @@ const Header = () => {
 			</S.HeaderSection>
 			<S.NavBar>
 				{isLogin ? (
-					<>
-						<S.NavBarItem to="/my-page">마이페이지</S.NavBarItem>
-						<S.LogOutItem onClick={onLogOutClick}>로그아웃</S.LogOutItem>
-					</>
+					<S.LogOutItem onClick={onLogOutClick}>로그아웃</S.LogOutItem>
 				) : (
 					<S.NavBarItem to="/login">로그인</S.NavBarItem>
 				)}
-
 				<S.NavBarItem to="/category">글 쓰러 가기</S.NavBarItem>
 				<S.NavBarItem to="/articles/question">질문 카테고리</S.NavBarItem>
 				<S.NavBarItem to="/articles/discussion">토론 카테고리</S.NavBarItem>
 				<S.NavBarItem to="/hash-tag">해시태그로 검색하기</S.NavBarItem>
+				{isLogin && <S.NavBarItem to="/my-page">마이페이지</S.NavBarItem>}
 				<S.NavBarItem to="/inquire">문의하기</S.NavBarItem>
 			</S.NavBar>
 		</S.Container>

@@ -27,77 +27,67 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 	}
 
 	return reactDom.createPortal(
-		<S.Container>
-			<S.MenuBox>
-				<S.Header>
-					<S.BackButtonBox onClick={closeSlider}>
-						<S.BackButton />
-					</S.BackButtonBox>
-				</S.Header>
-				<S.LinkBox>
-					{isLogin && (
-						<S.LinkItem
-							onClick={() => {
-								onLogoutClick();
-								closeSlider();
-							}}
-						>
-							로그 아웃
-						</S.LinkItem>
-					)}
-					{!isLogin && (
-						<S.LinkItem
-							onClick={() => {
-								navigate('/login');
-								closeSlider();
-							}}
-						>
-							로그인
-						</S.LinkItem>
-					)}
+		<S.MenuBox>
+			<S.Header>
+				<S.BackButtonBox onClick={closeSlider}>
+					<S.BackButton />
+				</S.BackButtonBox>
+			</S.Header>
+			<S.LinkBox>
+				{isLogin && (
 					<S.LinkItem
 						onClick={() => {
-							navigate('/category');
+							onLogoutClick();
 							closeSlider();
 						}}
 					>
-						글 쓰러 가기
+						로그 아웃
 					</S.LinkItem>
+				)}
+				{!isLogin && (
 					<S.LinkItem
 						onClick={() => {
-							navigate('/articles/question');
+							navigate('/login');
 							closeSlider();
 						}}
 					>
-						질문 카테고리
+						로그인
 					</S.LinkItem>
-					<S.LinkItem
-						onClick={() => {
-							navigate('/articles/discussion');
-							closeSlider();
-						}}
-					>
-						토론 카테고리
-					</S.LinkItem>
-					<S.LinkItem
-						onClick={() => {
-							navigate('/hash-tag');
-							closeSlider();
-						}}
-					>
-						해시태그로 검색하기
-					</S.LinkItem>
-					<S.LinkItem
-						onClick={() => {
-							navigate('/inquire');
-							closeSlider();
-						}}
-					>
-						문의하기
-					</S.LinkItem>
-				</S.LinkBox>
-			</S.MenuBox>
-		</S.Container>,
+				)}
+				<S.LinkItem
+					onClick={() => {
+						navigate('/category');
+						closeSlider();
+					}}
+				>
+					글 쓰러 가기
+				</S.LinkItem>
+				<S.LinkItem
+					onClick={() => {
+						navigate('/articles/question');
+						closeSlider();
+					}}
+				>
+					질문 카테고리
+				</S.LinkItem>
+				<S.LinkItem
+					onClick={() => {
+						navigate('/articles/discussion');
+						closeSlider();
+					}}
+				>
+					토론 카테고리
+				</S.LinkItem>
+				<S.LinkItem
+					onClick={() => {
+						navigate('/inquire');
+						closeSlider();
+					}}
+				>
+					문의하기
+				</S.LinkItem>
+			</S.LinkBox>
+		</S.MenuBox>,
 		menuSlider,
 	);
 };

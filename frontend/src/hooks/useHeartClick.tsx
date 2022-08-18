@@ -1,33 +1,43 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 
 import { deleteLikeArticle, postAddLikeArticle } from '@/api/like';
-import { queryClient } from '@/index';
 
-const useHeartClick = (articleId: string) => {
+const useHeartClick = ({
+	prevIsLike,
+	prevLikeCount,
+	articleId,
+}: {
+	prevIsLike: boolean;
+	prevLikeCount: number;
+	articleId: string;
+}) => {
+	const [isLike, setIsLike] = useState(prevIsLike);
+	const [likeCount, setLikeCount] = useState(prevLikeCount);
 	const {
-		data: postData,
 		mutate: postMutate,
 		isLoading: postIsLoading,
 		isError: postIsError,
 		error: postError,
 		isSuccess: postIsSuccess,
-	} = useMutation<AxiosResponse<{ isLike: boolean; likeCount: number }>, AxiosError, string>(
-		`like${articleId}`,
-		postAddLikeArticle,
-	);
+	} = useMutation<AxiosResponse, AxiosError, string>(`like${articleId}`, postAddLikeArticle, {
+		retry: 1,
+	});
 	const {
-		data: deleteData,
 		mutate: deleteMutate,
 		isLoading: deleteIsLoading,
 		isError: deleteIsError,
 		error: deleteError,
 		isSuccess: deleteIsSuccess,
-	} = useMutation<AxiosResponse<{ isLike: boolean; likeCount: number }>, AxiosError, string>(
-		`unlike${articleId}`,
-		deleteLikeArticle,
-	);
+	} = useMutation<AxiosResponse, AxiosError, string>(`unlike${articleId}`, deleteLikeArticle, {
+		retry: 1,
+	});
+
+	useEffect(() => {
+		setIsLike(prevIsLike);
+		setLikeCount(prevLikeCount);
+	}, [prevIsLike, prevLikeCount]);
 
 	useEffect(() => {
 		if (postIsError) {
@@ -40,16 +50,26 @@ const useHeartClick = (articleId: string) => {
 	}, [postIsError, deleteIsError]);
 
 	useEffect(() => {
-		if (deleteIsSuccess || postIsSuccess) {
-			queryClient.invalidateQueries('all-articles');
+		if (deleteIsSuccess) {
+			setIsLike(false);
+			setLikeCount((prevLikeCount) => prevLikeCount - 1);
 		}
-	});
+	}, [deleteIsSuccess]);
 
-	const onLikeButtonClick = () => {
+	useEffect(() => {
+		if (postIsSuccess) {
+			setIsLike(true);
+			setLikeCount((prevLikeCount) => prevLikeCount + 1);
+		}
+	}, [postIsSuccess]);
+
+	const onLikeButtonClick = (e: React.MouseEvent<HTMLDivElement>) => {
+		e.stopPropagation();
 		postMutate(articleId);
 	};
 
-	const onUnlikeButtonClick = () => {
+	const onUnlikeButtonClick = (e: React.MouseEvent<HTMLDivElement>) => {
+		e.stopPropagation();
 		deleteMutate(articleId);
 	};
 
@@ -58,8 +78,8 @@ const useHeartClick = (articleId: string) => {
 		deleteIsLoading,
 		onLikeButtonClick,
 		onUnlikeButtonClick,
-		isLike: postData?.data.isLike || deleteData?.data.isLike,
-		likeCount: postData?.data.likeCount || deleteData?.data.likeCount,
+		isLike,
+		likeCount,
 	};
 };
 

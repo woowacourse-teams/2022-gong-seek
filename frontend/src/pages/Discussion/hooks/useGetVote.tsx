@@ -10,7 +10,10 @@ const useVote = (articleId: string) => {
 	const { data, isLoading, isError, isSuccess, error } = useQuery<
 		TVote,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
-	>(['vote', `vote${articleId}`], () => getVoteItems(articleId));
+	>(['vote', `vote${articleId}`], () => getVoteItems(articleId), {
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
 	const [totalCount, setTotalCount] = useState(0);
 
 	useEffect(() => {
