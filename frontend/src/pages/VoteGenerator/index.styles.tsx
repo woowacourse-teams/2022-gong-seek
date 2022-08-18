@@ -24,9 +24,13 @@ export const ContentForm = styled.form`
 
 	flex-direction: column;
 	align-items: center;
-
 	width: 100%;
 	height: 100%;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: 60%;
+		margin-top: ${({ theme }) => theme.size.SIZE_050};
+	}
 `;
 
 export const OptionInputBox = styled.div`
@@ -36,6 +40,10 @@ export const OptionInputBox = styled.div`
 	align-items: center;
 
 	width: 90%;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: 50%;
+	}
 `;
 
 export const Content = styled.div`
@@ -61,12 +69,19 @@ export const SubmitButton = styled.button`
 	background-color: ${({ theme }) => theme.colors.PURPLE_500};
 
 	padding: ${({ theme }) => theme.size.SIZE_004};
-	margin-top: auto;
+	margin-top: ${({ theme }) => theme.size.SIZE_040};
+
 	cursor: pointer;
 
 	&:hover,
 	&:active {
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
+	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: 40%;
+		padding: ${({ theme }) => theme.size.SIZE_008};
+		font-size: ${({ theme }) => theme.size.SIZE_014};
 	}
 `;
 
@@ -94,7 +109,7 @@ export const AddButtonWrapper = styled.button`
 `;
 
 export const RegisteredOptionTitle = styled.h2`
-	font-size: ${({ theme }) => theme.size.SIZE_024};
+	font-size: ${({ theme }) => theme.size.SIZE_018};
 	margin-right: auto;
 	padding-left: 10%;
 	margin-top: ${({ theme }) => theme.size.SIZE_024};

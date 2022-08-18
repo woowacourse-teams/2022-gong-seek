@@ -12,6 +12,7 @@ const useGetLoginURL = () => {
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('github-url', getGithubURL, {
 		enabled: false,
+		retry: false,
 	});
 	const [pageLoading, setPageLoading] = useState(false);
 

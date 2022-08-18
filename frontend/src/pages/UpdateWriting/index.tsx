@@ -23,6 +23,8 @@ const UpdateWriting = () => {
 		content,
 		hashTag,
 		setHashTag,
+		titleInputRef,
+		isValidTitleInput,
 		handleUpdateButtonClick,
 	} = usePostWritingArticle();
 
@@ -39,8 +41,12 @@ const UpdateWriting = () => {
 						placeholder="제목을 입력해주세요"
 						value={title}
 						onChange={(e) => setTitle(e.target.value)}
+						ref={titleInputRef}
 					/>
 				</PageLayout>
+				{!isValidTitleInput && (
+					<S.TitleInputErrorMsgBox>제목은 1글자 이상 500자 이하여야 합니다</S.TitleInputErrorMsgBox>
+				)}
 				<PageLayout width="100%" height="fit-content">
 					<S.CategorySelectorBox>
 						<S.CategorySelector name="writing" required value={category} disabled>
@@ -59,14 +65,16 @@ const UpdateWriting = () => {
 			<S.Content>
 				<ToastUiEditor initContent={tempArticle.content} ref={content} />
 			</S.Content>
-			<S.SubmitButton
-				type="button"
-				onClick={() => {
-					handleUpdateButtonClick(id);
-				}}
-			>
-				수정하기
-			</S.SubmitButton>
+			<S.UpdateSubmitBox>
+				<S.UpdateSubmitButton
+					type="button"
+					onClick={() => {
+						handleUpdateButtonClick(id);
+					}}
+				>
+					수정하기
+				</S.UpdateSubmitButton>
+			</S.UpdateSubmitBox>
 		</S.Container>
 	);
 };

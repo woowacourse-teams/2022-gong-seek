@@ -15,7 +15,6 @@ public class MemberDto {
     private String avatarUrl;
 
     public MemberDto(Member member) {
-        this.name = member.getName();
-        this.avatarUrl = member.getAvatarUrl();
+        this(member.getName(), member.getAvatarUrl());
     }
 }

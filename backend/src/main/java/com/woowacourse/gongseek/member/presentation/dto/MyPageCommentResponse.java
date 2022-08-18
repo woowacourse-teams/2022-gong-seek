@@ -21,6 +21,8 @@ public class MyPageCommentResponse {
 
     private String category;
 
+    private String articleTitle;
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
@@ -33,6 +35,7 @@ public class MyPageCommentResponse {
                 comment.getContent(),
                 comment.getArticle().getId(),
                 comment.getArticle().getCategory().getValue(),
+                comment.getArticle().getTitle(),
                 comment.getCreatedAt(),
                 comment.getUpdatedAt()
         );
