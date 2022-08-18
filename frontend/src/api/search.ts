@@ -44,8 +44,7 @@ export const getArticleSearchResult = async ({
 	cursorId: string;
 	searchIndex: string;
 }) => {
-	const accessToken = localStorage.getItem('accessToken');
-	const encodedTarget = encodeURIComponent(hashTags);
+	const encodedTarget = encodeURIComponent(target);
 	const { data } = await axios.get<SearchResultType>(
 		`${HOME_URL}/api/articles/search/tags?tagsText=${encodedTarget}&cursorId=${cursorId}&pageSize=6`,
 		{
