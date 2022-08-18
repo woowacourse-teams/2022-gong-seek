@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
@@ -14,6 +15,9 @@ import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
+import com.woowacourse.gongseek.vote.domain.Vote;
+import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,6 +53,9 @@ class ArticleRepositoryTest {
 
     @Autowired
     private LikeRepository likeRepository;
+
+    @Autowired
+    private VoteRepository voteRepository;
 
     @Autowired
     private TestEntityManager testEntityManager;
@@ -386,5 +393,18 @@ class ArticleRepositoryTest {
         List<Article> articles = articleRepository.searchByTag(null, 2, List.of("spring", "java"));
 
         assertThat(articles).hasSize(3);
+    }
+
+    @Test
+    void 투표가_있는_토론게시글을_삭제하면_투표도_삭제된다(){
+        Article article = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
+
+        voteRepository.save(new Vote(article, LocalDateTime.now().plusDays(3)));
+
+        assertThat(voteRepository.findByArticleId(article.getId())).isNotEmpty();
+        articleRepository.deleteById(article.getId());
+
+        assertThat(voteRepository.findByArticleId(article.getId())).isEmpty();
     }
 }
