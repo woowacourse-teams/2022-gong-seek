@@ -33,7 +33,7 @@ const HashTagSearchResult = ({ hashTags }: HashTagSearchResultProps) => {
 								<ArticleItem
 									key={article.id}
 									article={article}
-									onClick={() => navigate(`articles/${article.category}/${article.id}`)}
+									onClick={() => navigate(`/articles/${article.category}/${article.id}`)}
 								/>
 							)),
 						)}
