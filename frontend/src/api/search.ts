@@ -14,8 +14,9 @@ export const getUserSearchResult = async ({
 	cursorId: string;
 	searchIndex: string;
 }) => {
+	const encodedTarget = encodeURIComponent(target);
 	const { data } = await axios.get<SearchResultType>(
-		`${HOME_URL}/api/articles/search/author?author=${target}&cursorId=${cursorId}&pageSize=5`,
+		`${HOME_URL}/api/articles/search/author?author=${encodedTarget}&cursorId=${cursorId}&pageSize=5`,
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
@@ -43,8 +44,9 @@ export const getArticleSearchResult = async ({
 	cursorId: string;
 	searchIndex: string;
 }) => {
+	const encodedTarget = encodeURIComponent(target);
 	const { data } = await axios.get<SearchResultType>(
-		`${HOME_URL}/api/articles/search/text?text=${target}&cursorId=${cursorId}&pageSize=5`,
+		`${HOME_URL}/api/articles/search/text?text=${encodedTarget}&cursorId=${cursorId}&pageSize=5`,
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
