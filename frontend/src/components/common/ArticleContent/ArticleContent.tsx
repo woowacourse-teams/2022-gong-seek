@@ -20,29 +20,18 @@ export interface ArticleContentProps {
 }
 
 const ArticleContent = ({ category, article, author, articleId }: ArticleContentProps) => {
-	const {
-		deleteIsLoading,
-		onLikeButtonClick,
-		onUnlikeButtonClick,
-		postIsLoading,
-		isLike,
-		likeCount,
-	} = useHeartClick({
+	const { onLikeButtonClick, onUnlikeButtonClick, isLike, likeCount } = useHeartClick({
 		prevIsLike: article.isLike,
 		prevLikeCount: article.likeCount,
 		articleId,
 	});
-	const { isLoading, handleDeleteArticle } = useDeleteArticleContent();
+	const { handleDeleteArticle } = useDeleteArticleContent();
 	const navigate = useNavigate();
 
 	const navigateUpdateArticle = () => {
 		const categoryName = category === '질문' ? 'question' : 'discussion';
 		navigate(`/articles/modify/${categoryName}/${articleId}`);
 	};
-
-	if (isLoading || deleteIsLoading || postIsLoading) {
-		return <Loading />;
-	}
 
 	return (
 		<S.Container>
