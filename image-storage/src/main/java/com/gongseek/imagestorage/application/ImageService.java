@@ -12,19 +12,19 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class ImageService {
 
-    private final String directory;
+    private final String directoryPath;
     private final String serverPath;
 
-    public ImageService(@Value("${file.image-dir}") String directory,
+    public ImageService(@Value("${file.image-dir}") String directoryPath,
                         @Value("${file.server-path}") String serverPath) {
-        this.directory = directory;
+        this.directoryPath = directoryPath;
         this.serverPath = serverPath;
     }
 
     public ImageUrlResponse upload(MultipartFile inputImageFile) {
         try {
             String imageFullPath = getFullPath(inputImageFile);
-            inputImageFile.transferTo(new File(imageFullPath));
+            inputImageFile.transferTo(new File(directoryPath + imageFullPath));
             return new ImageUrlResponse(serverPath + imageFullPath);
         } catch (IOException e) {
             throw new ImageUploadFailException();
@@ -33,6 +33,6 @@ public class ImageService {
 
     private String getFullPath(MultipartFile inputImageFile) {
         UploadImageFile uploadImageFile = UploadImageFile.from(inputImageFile);
-        return directory + uploadImageFile.getStoredFileName();
+        return uploadImageFile.getStoredFileName();
     }
 }
