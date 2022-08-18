@@ -34,32 +34,33 @@ const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 			<S.UserProfile src={avatarUrl} />
 			<S.UserNameBox>
 				{isEdit ? (
-					<S.EditUserNameBox>
-						<S.EditUserNameInput
-							value={editedName}
-							onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-								setEditedName(e.target.value);
-							}}
-						/>
+					<S.UserNameContainer>
+						<S.EditUserNameBox>
+							<S.EditUserNameInput
+								value={editedName}
+								onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+									setEditedName(e.target.value);
+								}}
+							/>
+							<S.ConfirmButton
+								disabled={!isValidInput}
+								onClick={() => {
+									onClickConfirmButton({ name: editedName });
+									setIsEdit(false);
+								}}
+							>
+								수정
+							</S.ConfirmButton>
+						</S.EditUserNameBox>
+
 						<S.ValidateMessage isValid={isValidInput}>
 							{isValidInput ? '유효한 입력입니다.' : '다시 입력해주세요'}
 						</S.ValidateMessage>
-					</S.EditUserNameBox>
+					</S.UserNameContainer>
 				) : (
 					<S.UserName>{name}</S.UserName>
 				)}
-				{isEdit ? (
-					<S.ConfirmIcon
-						size={20}
-						disabled={!isValidInput}
-						onClick={() => {
-							onClickConfirmButton({ name: editedName });
-							setIsEdit(false);
-						}}
-					/>
-				) : (
-					<S.EditIcon onClick={onClickEditIcon} />
-				)}
+				{!isEdit && <S.EditIcon onClick={onClickEditIcon} />}
 			</S.UserNameBox>
 		</S.Container>
 	);
