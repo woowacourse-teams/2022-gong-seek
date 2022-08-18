@@ -17,7 +17,6 @@ const useHeartClick = ({
 	const [likeCount, setLikeCount] = useState(prevLikeCount);
 	const {
 		mutate: postMutate,
-		isLoading: postIsLoading,
 		isError: postIsError,
 		error: postError,
 		isSuccess: postIsSuccess,
@@ -26,7 +25,6 @@ const useHeartClick = ({
 	});
 	const {
 		mutate: deleteMutate,
-		isLoading: deleteIsLoading,
 		isError: deleteIsError,
 		error: deleteError,
 		isSuccess: deleteIsSuccess,
@@ -74,8 +72,6 @@ const useHeartClick = ({
 	};
 
 	return {
-		postIsLoading,
-		deleteIsLoading,
 		onLikeButtonClick,
 		onUnlikeButtonClick,
 		isLike,

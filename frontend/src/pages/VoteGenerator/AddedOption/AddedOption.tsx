@@ -1,7 +1,20 @@
+import React from 'react';
+import { BsFillTrashFill } from 'react-icons/bs';
+
 import styled from '@emotion/styled';
 
-const AddedOption = styled.div`
-	width: 70%;
+const AddedOption = ({ children, onClick }: { children: React.ReactNode; onClick: () => void }) => (
+	<OptionBox>
+		<p>{children}</p>
+		<Trash onClick={onClick} />
+	</OptionBox>
+);
+
+const OptionBox = styled.div`
+	width: 80%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 	height: ${({ theme }) => theme.size.SIZE_040};
 
 	border-radius: ${({ theme }) => theme.size.SIZE_006};
@@ -10,12 +23,19 @@ const AddedOption = styled.div`
 	line-height: ${({ theme }) => theme.size.SIZE_040};
 
 	box-shadow: 1px 1px 4px ${({ theme }) => theme.boxShadows.primary};
+	padding: 0 ${({ theme }) => theme.size.SIZE_012};
+`;
 
-	padding-left: ${({ theme }) => theme.size.SIZE_012};
-	text-align: center;
+const Trash = styled(BsFillTrashFill)`
+	font-size: ${({ theme }) => theme.size.SIZE_016};
+
+	cursor: pointer;
+
+	:hover {
+		color: ${({ theme }) => theme.colors.RED_500};
+	}
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
-		width: 42%;
-		margin-top: ${({ theme }) => theme.size.SIZE_016};
+		font-size: ${({ theme }) => theme.size.SIZE_020};
 	}
 `;
 

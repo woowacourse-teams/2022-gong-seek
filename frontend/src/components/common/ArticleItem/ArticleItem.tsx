@@ -25,22 +25,11 @@ export interface ArticleItemProps {
 }
 
 const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
-	const {
-		deleteIsLoading,
-		onLikeButtonClick,
-		onUnlikeButtonClick,
-		postIsLoading,
-		isLike,
-		likeCount,
-	} = useHeartClick({
+	const { onLikeButtonClick, onUnlikeButtonClick, isLike, likeCount } = useHeartClick({
 		prevIsLike: article.isLike,
 		prevLikeCount: article.likeCount,
 		articleId: String(article.id),
 	});
-
-	if (deleteIsLoading || postIsLoading) {
-		return <Loading />;
-	}
 
 	return (
 		<S.Container onClick={onClick}>
