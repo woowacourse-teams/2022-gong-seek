@@ -41,7 +41,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 							closeSlider();
 						}}
 					>
-						로그 아웃
+						로그아웃
 					</S.LinkItem>
 				)}
 				{!isLogin && (
@@ -77,6 +77,14 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 					}}
 				>
 					토론 카테고리
+				</S.LinkItem>
+				<S.LinkItem
+					onClick={() => {
+						navigate('/hash-tag');
+						closeSlider();
+					}}
+				>
+					해시태그로 검색하기
 				</S.LinkItem>
 				<S.LinkItem
 					onClick={() => {
