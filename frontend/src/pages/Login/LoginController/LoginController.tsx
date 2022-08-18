@@ -4,13 +4,16 @@ import { useMutation } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { postLogin } from '@/api/login';
+import useSnackBar from '@/hooks/useSnackBar';
 
 const LoginController = () => {
 	const [searchParams] = useSearchParams();
+	const { showSnackBar } = useSnackBar();
 	const navigate = useNavigate();
 
 	const code = searchParams.get('code');
 	if (code === null) {
+		showSnackBar('깃허브 로그인에 동의해주세요.');
 		navigate('/');
 	}
 	const { data, isError, isSuccess, error, mutate } = useMutation<
