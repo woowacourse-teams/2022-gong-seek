@@ -36,6 +36,6 @@ public class TagService {
     }
 
     public void delete(String name) {
-        tagRepository.deleteByName(name);
+        tagRepository.deleteByNameIgnoreCase(name);
     }
 }

@@ -55,7 +55,7 @@ class TagRepositoryTest {
         tagRepository.save(new Tag("Java"));
         tagRepository.save(new Tag("React"));
 
-        tagRepository.deleteByName("SPRING");
+        tagRepository.deleteByNameIgnoreCase("SPRING");
         List<Tag> tags = tagRepository.findAll();
 
         assertThat(tags).hasSize(2);

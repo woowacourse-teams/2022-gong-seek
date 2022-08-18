@@ -15,6 +15,8 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -87,13 +89,14 @@ class TagServiceTest {
         );
     }
 
-    @Test
-    void 태그를_삭제한다() {
+    @ParameterizedTest
+    @ValueSource(strings = {"SPRING", "spring", "Spring"})
+    void 대소문자_상관없이_태그를_삭제한다(String name) {
         tagRepository.save(new Tag("SPRING"));
         tagRepository.save(new Tag("Java"));
         tagRepository.save(new Tag("React"));
 
-        tagService.delete("SPRING");
+        tagService.delete(name);
 
         TagsResponse response = tagService.getAll();
 
