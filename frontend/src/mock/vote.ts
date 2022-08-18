@@ -5,11 +5,15 @@
 
 // const data = localStorage.getItem('mock-votes');
 
-// const mockVotes = data ? (JSON.parse(data) as TVote) : {
-// 	articleId: '0',
-// 	voteItems: [],
+// const mockVotes = data ? (JSON.parse(data) as TVote[]) : [];
 
-// }
+export const VoteHandler = [
+	rest.post<{ items: string[] }>(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
+		const data = localStorage.getItem('mock-votes');
+		const mockVotes = data ? (JSON.parse(data) as TVote[]) : [];
+
+		const { articleId } = req.params;
+		const { items } = req.body;
 
 // export const VoteHandler = [
 // 	rest.post<{ items: string[] }>(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
@@ -34,25 +38,28 @@
 // 			),
 // 		);
 
-// 		return res(
-// 			ctx.status(201),
-// 			ctx.json({
-// 				articleId,
-// 			}),
-// 		);
-// 	}),
+	rest.get(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
+		const { articleId } = req.params;
+		const data = localStorage.getItem('mock-votes');
+		const mockVotes = data ? (JSON.parse(data) as TVote[]) : [];
 
-// 	rest.get(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
-// 		const { articleId } = req.params;
-
-// 		const vote = mockVotes.find((mockVote) => mockVote.articleId === articleId);
+		const vote = mockVotes.find((mockVote) => mockVote.articleId === articleId);
+		if (typeof vote === 'undefined') {
+			throw new Error('투표를 찾지 못하였습니다');
+		}
 
 // 		if (typeof vote === 'undefined') {
 // 			throw new Error('투표를 찾지 못하였습니다');
 // 		}
 
-// 		return res(ctx.status(200), ctx.json([...vote.options]));
-// 	}),
+	rest.post<{ votedItemId: string }>(
+		`${HOME_URL}/api/articles/:articleId/votes/do`,
+		(req, res, ctx) => {
+			const data = localStorage.getItem('mock-votes');
+			const mockVotes = data ? (JSON.parse(data) as TVote[]) : [];
+
+			const { articleId } = req.params;
+			const { votedItemId } = req.body;
 
 // 	rest.post(`${HOME_URL}/api/articles/:articleId/votes/:voteId`, (req, res, ctx) => {
 // 		const { voteId, articleId } = req.params;
