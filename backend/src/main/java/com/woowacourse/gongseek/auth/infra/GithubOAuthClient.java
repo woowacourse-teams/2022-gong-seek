@@ -21,15 +21,15 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class GithubOAuthClient implements OAuthClient {
 
-    private static final String REDIRECT_URL = "https://gongseek.site/callback";
     private static final String LOGIN_URL_SUFFIX = "/login/oauth/authorize?client_id=%s&redirect_uri=%s";
     private static final String GITHUB_ACCESS_URL_SUFFIX = "/login/oauth/access_token";
     private static final String TOKEN = "token ";
 
-    private final String baseUrl;
-    private final String profileUrl;
     private final String clientId;
     private final String clientSecret;
+    private final String baseUrl;
+    private final String profileUrl;
+    private final String redirectUrl;
     private final ObjectMapper objectMapper;
     private final RestTemplate restTemplate;
 
@@ -38,6 +38,7 @@ public class GithubOAuthClient implements OAuthClient {
             @Value("${security.oauth2.client-secret}") String clientSecret,
             @Value("${github.url.base}") String baseUrl,
             @Value("${github.url.profile}") String profileUrl,
+            @Value("${github.url.redirect}") String redirectUrl,
             ObjectMapper objectMapper,
             RestTemplate restTemplate
     ) {
@@ -45,13 +46,14 @@ public class GithubOAuthClient implements OAuthClient {
         this.clientSecret = clientSecret;
         this.baseUrl = baseUrl;
         this.profileUrl = profileUrl;
+        this.redirectUrl = redirectUrl;
         this.objectMapper = objectMapper;
         this.restTemplate = restTemplate;
     }
 
     @Override
     public String getRedirectUrl() {
-        return String.format(baseUrl + LOGIN_URL_SUFFIX, clientId, REDIRECT_URL);
+        return String.format((baseUrl + LOGIN_URL_SUFFIX), clientId, redirectUrl);
     }
 
     @Override
