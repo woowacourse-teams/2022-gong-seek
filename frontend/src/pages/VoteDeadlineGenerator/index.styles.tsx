@@ -6,6 +6,11 @@ export const Container = styled.form`
 	justify-content: center;
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_056};
+
+	:invalid button {
+		pointer-events: none;
+		background-color: ${({ theme }) => theme.colors.GRAY_500};
+	}
 `;
 
 export const VoteDeadlineLabel = styled.label`

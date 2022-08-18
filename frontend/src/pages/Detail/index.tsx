@@ -15,9 +15,10 @@ interface DetailProps {
 	article: ArticleType;
 	commentList: CommentType[];
 	articleId: string;
+	category: string;
 }
 
-const Detail = ({ children, article, commentList, articleId }: DetailProps) => {
+const Detail = ({ children, article, commentList, articleId, category }: DetailProps) => {
 	const [isCommentOpen, setIsCommentOpen] = useState(false);
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const navigate = useNavigate();
@@ -43,7 +44,7 @@ const Detail = ({ children, article, commentList, articleId }: DetailProps) => {
 			<ArticleContent
 				article={article}
 				author={article.author}
-				category={children ? '토론' : '질문'}
+				category={category}
 				articleId={articleId}
 			/>
 			{children}
