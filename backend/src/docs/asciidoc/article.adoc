@@ -114,6 +114,23 @@ include::{snippets}/article-get-all/request-parameters.adoc[]
 include::{snippets}/article-get-all/http-response.adoc[]
 include::{snippets}/article-get-all/response-fields.adoc[]
 
+== 게시물 추천수 조회
+
+`GET /api/articles/likes`
+
+=== Request
+
+include::{snippets}/article-get-all-likes/http-request.adoc[]
+
+=== Header
+
+include::{snippets}/article-get-all-likes/request-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/article-get-all-likes/http-response.adoc[]
+include::{snippets}/article-get-all-likes/response-fields.adoc[]
+
 == 게시물 검색
 
 `GET /api/articles/search`

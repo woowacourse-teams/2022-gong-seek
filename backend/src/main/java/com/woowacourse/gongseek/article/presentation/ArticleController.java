@@ -80,11 +80,11 @@ public class ArticleController {
     public ResponseEntity<ArticlePageResponse> getAllByLikes(
             @RequestParam String category,
             @RequestParam(required = false) Long cursorId,
-            @RequestParam(required = false) Long likes,
+            @RequestParam(required = false) Long cursorLikes,
             Pageable pageable,
             @AuthenticationPrinciple AppMember appMember
     ) {
-        return ResponseEntity.ok(articleService.getAllByLikes(cursorId, likes, category, pageable, appMember));
+        return ResponseEntity.ok(articleService.getAllByLikes(cursorId, cursorLikes, category, pageable, appMember));
     }
 
     @GetMapping("/search/text")
