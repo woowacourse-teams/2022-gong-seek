@@ -259,10 +259,10 @@ public class ArticleService {
     public ArticlePageResponse getAllByLikes(Long cursorId, Long likes, String category, Pageable pageable,
                                              AppMember appMember) {
         Slice<Article> articles = articleRepository.findAllByLikes(cursorId, likes, category, pageable);
-        List<ArticlePreviewResponse> collect = articles.getContent().stream()
+        List<ArticlePreviewResponse> response = articles.getContent().stream()
                 .map(it -> getArticlePreviewResponse(it, appMember))
                 .collect(Collectors.toList());
 
-        return new ArticlePageResponse(collect, articles.hasNext());
+        return new ArticlePageResponse(response, articles.hasNext());
     }
 }
