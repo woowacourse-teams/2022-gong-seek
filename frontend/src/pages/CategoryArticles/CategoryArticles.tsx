@@ -3,8 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
 import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 import Loading from '@/components/common/Loading/Loading';
+import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
 import * as S from '@/pages/CategoryArticles/CategoryArticles.styles';
-import SortDropdown from '@/pages/CategoryArticles/SortDropdown/SortDropDown';
 import useGetCategoryArticles from '@/pages/CategoryArticles/hooks/useGetCategoryArticles';
 
 const CategoryArticles = () => {
@@ -33,7 +33,11 @@ const CategoryArticles = () => {
 				<S.CategoryArticlesTitle category={category}>
 					{category === 'discussion' ? '토론' : '질문'}
 				</S.CategoryArticlesTitle>
-				<SortDropdown sortIndex={sortIndex} setSortIndex={setSortIndex} />
+				<SortDropdown
+					sortList={['최신순', '조회순', '좋아요순']}
+					sortIndex={sortIndex}
+					setSortIndex={setSortIndex}
+				/>
 			</S.TitleBox>
 			{data?.pages.length ? (
 				<InfiniteScrollObserver

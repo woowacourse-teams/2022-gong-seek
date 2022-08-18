@@ -1,15 +1,14 @@
 import { useState } from 'react';
 
-import * as S from '@/pages/CategoryArticles/SortDropdown/SortDropdown.styles';
-
-const SortList = ['최신순', '조회순', '좋아요순'];
+import * as S from '@/components/common/SortDropdown/SortDropdown.styles';
 
 export interface SortPropDownProps {
+	sortList: string[];
 	sortIndex: string;
 	setSortIndex: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const SortDropdown = ({ sortIndex, setSortIndex }: SortPropDownProps) => {
+const SortDropdown = ({ sortList, sortIndex, setSortIndex }: SortPropDownProps) => {
 	const [onDropdown, setOnDropdown] = useState(false);
 
 	const onClickDropdownItem = (sort: string) => {
@@ -30,7 +29,7 @@ const SortDropdown = ({ sortIndex, setSortIndex }: SortPropDownProps) => {
 
 			{onDropdown && (
 				<S.DropdownBox>
-					{SortList.map((sort, idx) => (
+					{sortList.map((sort, idx) => (
 						<S.DropdownItem key={idx} idx={idx} onClick={() => onClickDropdownItem(sort)}>
 							{sort}
 						</S.DropdownItem>
