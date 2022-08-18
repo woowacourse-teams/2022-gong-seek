@@ -42,8 +42,8 @@ public class UploadImageFile {
     }
 
     private static String createStoreFileName(String originalFilename) {
-        String uuid = UUID.randomUUID().toString();
+        String newFilename = UUID.randomUUID().toString();
         String imageType = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-        return uuid + "." + imageType;
+        return newFilename + "." + imageType;
     }
 }
