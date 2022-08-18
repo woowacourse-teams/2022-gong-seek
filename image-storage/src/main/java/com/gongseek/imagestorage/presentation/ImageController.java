@@ -1,6 +1,7 @@
 package com.gongseek.imagestorage.presentation;
 
 import com.gongseek.imagestorage.application.ImageService;
+import com.gongseek.imagestorage.application.dto.ImageUrlResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,7 @@ public class ImageController {
     private final ImageService imageService;
 
     @PostMapping("/api/images/upload")
-    public ResponseEntity<String> uploadImage(@RequestPart MultipartFile imageFile) {
-        return ResponseEntity.ok(imageService.upload(imageFile).toString());
+    public ResponseEntity<ImageUrlResponse> uploadImage(@RequestPart MultipartFile imageFile) {
+        return ResponseEntity.ok(imageService.upload(imageFile));
     }
 }
