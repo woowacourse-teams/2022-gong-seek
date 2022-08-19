@@ -40,10 +40,6 @@ public class VoteItem {
         this(null, new Content(content), new Amount(), vote);
     }
 
-    public void decreaseAmount() {
-        amount = amount.decrease();
-    }
-
     public void increaseAmount() {
         amount = amount.increase();
     }

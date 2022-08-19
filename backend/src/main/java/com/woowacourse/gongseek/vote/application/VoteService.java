@@ -116,23 +116,14 @@ public class VoteService {
         Member member = getMember(appMember);
         VoteItem selectedVoteItem = getVoteItem(selectVoteItemIdRequest.getVoteItemId());
 
-        voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(), member.getId())
-                .ifPresentOrElse(
-                        voteHistory -> updateVoteHistory(vote.getId(), member.getId(), selectedVoteItem, voteHistory),
-                        () -> saveVoteHistory(vote, member, selectedVoteItem)
-                );
+        voteHistoryRepository.deleteByVoteIdAndMemberId(vote.getId(), member.getId());
+        saveVoteHistory(vote, member, selectedVoteItem);
     }
+
 
     private VoteItem getVoteItem(Long voteItemId) {
         return voteItemRepository.findById(voteItemId)
                 .orElseThrow(() -> new VoteItemNotFoundException(voteItemId));
-    }
-
-    private void updateVoteHistory(Long voteId, Long memberId, VoteItem selectedVoteItem, VoteHistory voteHistory) {
-        VoteItem originVoteItem = getVoteItem(voteHistory.getVoteItemId());
-        originVoteItem.decreaseAmount();
-        voteHistoryRepository.updateHistory(selectedVoteItem.getId(), memberId, voteId);
-        selectedVoteItem.increaseAmount();
     }
 
     private void saveVoteHistory(Vote vote, Member member, VoteItem selectedVoteItem) {

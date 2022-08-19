@@ -8,6 +8,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,10 +21,13 @@ public class VoteHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Long memberId;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Long voteId;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Long voteItemId;
 
     public VoteHistory(Long memberId, Long voteId, Long voteItemId) {

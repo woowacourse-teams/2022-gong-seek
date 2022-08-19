@@ -11,7 +11,9 @@ public interface VoteHistoryRepository extends JpaRepository<VoteHistory, Long> 
 
     Optional<VoteHistory> findByVoteIdAndMemberId(Long voteId, Long memberId);
 
-    @Modifying
+    void deleteByVoteIdAndMemberId(Long voteId, Long memberId);
+
+    @Modifying(clearAutomatically = true)
     @Query("update VoteHistory set voteItemId = :voteItemId where memberId = :memberId and voteId = :voteId")
     void updateHistory(@Param("voteItemId") Long voteItemId,
                        @Param("memberId") Long memberId,
