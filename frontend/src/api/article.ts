@@ -59,6 +59,28 @@ export const getAllArticle = async ({
 	sort,
 	cursorId,
 	cursorViews,
+	cursorLikes,
+}: {
+	category: string;
+	sort: '좋아요순' | '조회순' | '최신순';
+	cursorId: string;
+	cursorViews: string;
+	cursorLikes: string;
+}) => {
+	if (sort === '좋아요순') {
+		const data = await getAllArticlesByLikes({ category, cursorId, cursorLikes });
+		return data;
+	}
+
+	const data = getAllArticleByViewsOrLatest({ category, sort, cursorId, cursorViews });
+	return data;
+};
+
+export const getAllArticleByViewsOrLatest = async ({
+	category,
+	sort,
+	cursorId,
+	cursorViews,
 }: {
 	category: string;
 	sort: '좋아요순' | '조회순' | '최신순';
@@ -83,6 +105,35 @@ export const getAllArticle = async ({
 		hasNext: data.hasNext,
 		cursorId: String(data.articles[data.articles.length - 1]?.id),
 		cursorViews: String(data.articles[data.articles.length - 1]?.views),
+	};
+};
+
+export const getAllArticlesByLikes = async ({
+	category,
+	cursorId,
+	cursorLikes,
+}: {
+	category: string;
+	cursorId: string;
+	cursorLikes: string;
+}) => {
+	const accessToken = localStorage.getItem('accessToken');
+
+	const { data } = await axios.get<AllArticleResponse>(
+		`${HOME_URL}/api/articles/likes?category=${category}&cursorId=${cursorId}&cursorLikes=${cursorLikes}&size=6`,
+		{
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				Authorization: `Bearer ${accessToken}`,
+			},
+		},
+	);
+
+	return {
+		articles: data.articles,
+		hasNext: data.hasNext,
+		cursorId: String(data.articles[data.articles.length - 1]?.id),
+		cursorLikes: String(data.articles[data.articles.length - 1]?.likeCount),
 	};
 };
 

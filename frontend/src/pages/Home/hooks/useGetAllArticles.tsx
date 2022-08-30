@@ -22,17 +22,19 @@ const useGetAllArticles = () => {
 				sort: sortIndex,
 				cursorId: '',
 				cursorViews: '',
+				cursorLikes: '',
 			},
 		}) => getAllArticle(pageParam),
 		{
 			getNextPageParam: (lastPage) => {
-				const { hasNext, cursorId, cursorViews } = lastPage;
+				const { hasNext, cursorId, cursorViews, cursorLikes } = lastPage;
 				if (hasNext) {
 					return {
 						category: currentCategory,
 						sort: sortIndex,
 						cursorId,
 						cursorViews,
+						cursorLikes,
 					};
 				}
 				return;
