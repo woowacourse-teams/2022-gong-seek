@@ -108,7 +108,7 @@ public class VoteService {
         if (Objects.isNull(voteHistory)) {
             return null;
         }
-        return voteHistory.getVoteItemId();
+        return voteHistory.getVoteItem().getId();
     }
 
     public void doVote(Long articleId, AppMember appMember, SelectVoteItemIdRequest selectVoteItemIdRequest) {
@@ -123,7 +123,7 @@ public class VoteService {
     private void deleteIfOriginVoteExists(Vote vote, Member member) {
         voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(), member.getId()).ifPresent(
                 voteHistory-> {
-                    voteItemRepository.findById(voteHistory.getVoteItemId()).ifPresent(VoteItem::decreaseAmount);
+                    voteItemRepository.findById(voteHistory.getVoteItem().getId()).ifPresent(VoteItem::decreaseAmount);
                     voteHistoryRepository.deleteByVoteIdAndMemberId(vote.getId(), member.getId());
                 }
         );
@@ -136,6 +136,6 @@ public class VoteService {
 
     private void saveVoteHistory(Vote vote, Member member, VoteItem selectedVoteItem) {
         selectedVoteItem.increaseAmount();
-        voteHistoryRepository.save(new VoteHistory(member.getId(), vote.getId(), selectedVoteItem.getId()));
+        voteHistoryRepository.save(new VoteHistory(member, vote, selectedVoteItem));
     }
 }

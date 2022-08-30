@@ -248,11 +248,6 @@ public class ArticleService {
 
     public void delete(AppMember appMember, Long id) {
         Article article = checkAuthorization(appMember, id);
-
-        voteRepository.findByArticleId(article.getId())
-                .ifPresent(
-                        vote -> voteHistoryRepository.deleteByVoteIdAndMemberId(vote.getId(), appMember.getPayload())
-                );
         articleRepository.delete(article);
 
         List<String> deletedTagNames = getDeletedTagNames(article.getTagNames());
