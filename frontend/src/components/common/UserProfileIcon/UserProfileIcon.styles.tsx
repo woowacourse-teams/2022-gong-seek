@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 
 export const UserProfile = styled.img`
-	width: ${({ theme }) => theme.size.SIZE_040};
-	height: ${({ theme }) => theme.size.SIZE_040};
+	width: ${({ theme }) => theme.size.SIZE_035};
+	height: ${({ theme }) => theme.size.SIZE_035};
 
 	border-radius: 50%;
 

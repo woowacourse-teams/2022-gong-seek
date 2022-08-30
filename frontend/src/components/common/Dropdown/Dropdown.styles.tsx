@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 export const Container = styled.div`
 	position: absolute;
 	top: ${({ theme }) => theme.size.SIZE_056};
-	transform: translate(-50%);
+	transform: translate(-35%);
 	border-radius: ${({ theme }) => theme.size.SIZE_008};
 
 	background-color: ${({ theme }) => theme.colors.WHITE};
@@ -11,8 +11,8 @@ export const Container = styled.div`
 `;
 
 export const DropdownItem = styled.div`
-	width: ${({ theme }) => theme.size.SIZE_080};
-
+	width: ${({ theme }) => theme.size.SIZE_060};
+	font-size: ${({ theme }) => theme.size.SIZE_012};
 	padding: ${({ theme }) => theme.size.SIZE_016};
 	border-radius: ${({ theme }) => theme.size.SIZE_008};
 
