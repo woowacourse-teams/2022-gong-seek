@@ -31,6 +31,7 @@ import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
 import com.woowacourse.gongseek.vote.application.VoteService;
 import com.woowacourse.gongseek.vote.domain.Vote;
 import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
+import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import java.time.LocalDateTime;
@@ -64,6 +65,9 @@ public class ArticleServiceTest {
 
     @Autowired
     private VoteService voteService;
+
+    @Autowired
+    private VoteItemRepository voteItemRepository;
 
     @Autowired
     private VoteHistoryRepository voteHistoryRepository;
@@ -787,11 +791,11 @@ public class ArticleServiceTest {
 
         voteService.doVote(article.getId(), loginMember, new SelectVoteItemIdRequest(1L));
         articleService.delete(loginMember, article.getId());
-
         assertAll(
                 () -> assertThat(voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(),
                         loginMember.getPayload())).isEmpty(),
-                () -> assertThat(articleRepository.findById(article.getId())).isEmpty()
+                () -> assertThat(articleRepository.findById(article.getId())).isEmpty(),
+                () -> assertThat(voteItemRepository.findAll()).isEmpty()
         );
     }
 }
