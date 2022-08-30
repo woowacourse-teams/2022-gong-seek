@@ -1,7 +1,6 @@
-import Dropdown from '../Dropdown/Dropdown';
-import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
+import Dropdown from '@/components/common/Dropdown/Dropdown';
 import Loading from '@/components/common/Loading/Loading';
 import * as S from '@/components/common/UserProfileIcon/UserProfileIcon.styles';
 import useGetUserInfo from '@/pages/MyPage/hooks/useGetUserInfo';
