@@ -1,3 +1,4 @@
+import { dropdownState } from './store/dropdownState';
 import { Routes, Route } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
@@ -62,8 +63,14 @@ const Dimmer = styled.div`
 const App = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const [sliderState, setSliderState] = useRecoilState(menuSliderState);
+	const [dropdown, setDropdown] = useRecoilState(dropdownState);
+
 	return (
-		<Layout>
+		<Layout
+			onClick={() => {
+				dropdown.isOpen && setDropdown({ isOpen: false });
+			}}
+		>
 			<Header />
 			<ErrorBoundary enable={false}>
 				<Content>
