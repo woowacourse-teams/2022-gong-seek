@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> runtimeException(Exception e) {
-        log.error(String.format("UnHandled Exception : %s", e));
+        log.error(String.format("UnHandled Exception : %s\n" + "Message : %s", e, e.getMessage()));
         String message = ExceptionType.UNHANDLED_EXCEPTION.getMessage();
         String errorCode = ExceptionType.UNHANDLED_EXCEPTION.getErrorCode();
         return ResponseEntity.internalServerError().body(new ErrorResponse(errorCode, message));
