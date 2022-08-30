@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.vote.domain;
 
 import com.woowacourse.gongseek.member.domain.Member;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,14 +27,17 @@ public class VoteHistory {
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
+    @Column(nullable = false)
     private Member member;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
+    @Column(nullable = false)
     private Vote vote;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
+    @Column(nullable = false)
     private VoteItem voteItem;
 
     public VoteHistory(Member member, Vote vote, VoteItem voteItem) {

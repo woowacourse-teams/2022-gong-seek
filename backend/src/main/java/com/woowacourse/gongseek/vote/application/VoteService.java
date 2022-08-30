@@ -116,14 +116,14 @@ public class VoteService {
         Member member = getMember(appMember);
         VoteItem selectedVoteItem = getVoteItem(selectVoteItemIdRequest.getVoteItemId());
 
-        deleteIfOriginVoteExists(vote, member);
+        deleteOriginVoteIfExist(vote, member);
         saveVoteHistory(vote, member, selectedVoteItem);
     }
 
-    private void deleteIfOriginVoteExists(Vote vote, Member member) {
+    private void deleteOriginVoteIfExist(Vote vote, Member member) {
         voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(), member.getId()).ifPresent(
                 voteHistory-> {
-                    voteItemRepository.findById(voteHistory.getVoteItem().getId()).ifPresent(VoteItem::decreaseAmount);
+                    voteHistory.getVoteItem().decreaseAmount();
                     voteHistoryRepository.deleteByVoteIdAndMemberId(vote.getId(), member.getId());
                 }
         );
