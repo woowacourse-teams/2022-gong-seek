@@ -13,9 +13,5 @@ public interface VoteHistoryRepository extends JpaRepository<VoteHistory, Long> 
 
     void deleteByVoteIdAndMemberId(Long voteId, Long memberId);
 
-    @Modifying(clearAutomatically = true)
-    @Query("update VoteHistory set voteItemId = :voteItemId where memberId = :memberId and voteId = :voteId")
-    void updateHistory(@Param("voteItemId") Long voteItemId,
-                       @Param("memberId") Long memberId,
-                       @Param("voteId") Long voteId);
+    boolean existsByVoteIdAndMemberId(Long voteId, Long memberId);
 }

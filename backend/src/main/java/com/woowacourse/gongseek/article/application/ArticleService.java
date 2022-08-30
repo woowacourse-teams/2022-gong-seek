@@ -22,6 +22,7 @@ import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.tag.application.TagService;
 import com.woowacourse.gongseek.tag.domain.Tags;
+import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +46,7 @@ public class ArticleService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final VoteRepository voteRepository;
+    private final VoteHistoryRepository voteHistoryRepository;
     private final TagService tagService;
     private final LikeRepository likeRepository;
     private final Encryptor encryptor;
@@ -246,6 +248,11 @@ public class ArticleService {
 
     public void delete(AppMember appMember, Long id) {
         Article article = checkAuthorization(appMember, id);
+
+        voteRepository.findByArticleId(article.getId())
+                .ifPresent(
+                        vote -> voteHistoryRepository.deleteByVoteIdAndMemberId(vote.getId(), appMember.getPayload())
+                );
         articleRepository.delete(article);
 
         List<String> deletedTagNames = getDeletedTagNames(article.getTagNames());

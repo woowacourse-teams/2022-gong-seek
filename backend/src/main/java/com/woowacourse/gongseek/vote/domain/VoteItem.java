@@ -43,4 +43,8 @@ public class VoteItem {
     public void increaseAmount() {
         amount = amount.increase();
     }
+
+    public void decreaseAmount() {
+        amount = amount.decrease();
+    }
 }
