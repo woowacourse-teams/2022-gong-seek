@@ -121,12 +121,13 @@ public class VoteService {
     }
 
     private void deleteOriginVoteIfExist(Vote vote, Member member) {
-        voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(), member.getId()).ifPresent(
-                voteHistory-> {
-                    voteHistory.getVoteItem().decreaseAmount();
-                    voteHistoryRepository.deleteByVoteIdAndMemberId(vote.getId(), member.getId());
-                }
-        );
+        voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(), member.getId())
+                .ifPresent(this::deleteVoteHistory);
+    }
+
+    private void deleteVoteHistory(VoteHistory voteHistory) {
+        voteHistory.getVoteItem().decreaseAmount();
+        voteHistoryRepository.delete(voteHistory);
     }
 
     private VoteItem getVoteItem(Long voteItemId) {

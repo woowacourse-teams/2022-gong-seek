@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -27,17 +28,17 @@ public class VoteHistory {
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private Member member;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private Vote vote;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private VoteItem voteItem;
 
     public VoteHistory(Member member, Vote vote, VoteItem voteItem) {
