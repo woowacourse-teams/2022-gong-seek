@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { HOME_URL } from '@/constants/url';
-import { AllArticleResponse, ArticleType, CommonArticleType } from '@/types/articleResponse';
+import { AllArticleResponse, ArticleType } from '@/types/articleResponse';
 import { convertSort } from '@/utils/converter';
 
 export interface WritingArticles {
@@ -9,9 +9,6 @@ export interface WritingArticles {
 	content: string;
 	category: string;
 }
-
-type Category = 'question' | 'discussion' | 'total';
-type Sort = 'latest' | 'views';
 
 export const postWritingArticle = (article: WritingArticles) => {
 	const accessToken = localStorage.getItem('accessToken');
@@ -59,14 +56,39 @@ export const getAllArticle = async ({
 	sort,
 	cursorId,
 	cursorViews,
+	cursorLikes,
 }: {
 	category: string;
 	sort: '좋아요순' | '조회순' | '최신순';
 	cursorId: string;
 	cursorViews: string;
+	cursorLikes: string;
+}) => {
+	const accessToken = localStorage.getItem('accessToken');
+
+	if (sort === '좋아요순') {
+		const data = await getAllArticlesByLikes({ category, cursorId, cursorLikes, accessToken });
+		return data;
+	}
+
+	const data = getAllArticleByViewsOrLatest({ category, sort, cursorId, cursorViews, accessToken });
+	return data;
+};
+
+export const getAllArticleByViewsOrLatest = async ({
+	category,
+	sort,
+	cursorId,
+	cursorViews,
+	accessToken,
+}: {
+	category: string;
+	sort: '좋아요순' | '조회순' | '최신순';
+	cursorId: string;
+	cursorViews: string;
+	accessToken: string | null;
 }) => {
 	const currentSort = convertSort(sort);
-	const accessToken = localStorage.getItem('accessToken');
 
 	const { data } = await axios.get<AllArticleResponse>(
 		`${HOME_URL}/api/articles?category=${category}&sort=${currentSort}&cursorId=${cursorId}&cursorViews=${cursorViews}&pageSize=6`,
@@ -83,6 +105,35 @@ export const getAllArticle = async ({
 		hasNext: data.hasNext,
 		cursorId: String(data.articles[data.articles.length - 1]?.id),
 		cursorViews: String(data.articles[data.articles.length - 1]?.views),
+	};
+};
+
+export const getAllArticlesByLikes = async ({
+	category,
+	cursorId,
+	cursorLikes,
+	accessToken,
+}: {
+	category: string;
+	cursorId: string;
+	cursorLikes: string;
+	accessToken: string | null;
+}) => {
+	const { data } = await axios.get<AllArticleResponse>(
+		`${HOME_URL}/api/articles/likes?category=${category}&cursorId=${cursorId}&cursorLikes=${cursorLikes}&size=6`,
+		{
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				Authorization: `Bearer ${accessToken}`,
+			},
+		},
+	);
+
+	return {
+		articles: data.articles,
+		hasNext: data.hasNext,
+		cursorId: String(data.articles[data.articles.length - 1]?.id),
+		cursorLikes: String(data.articles[data.articles.length - 1]?.likeCount),
 	};
 };
 

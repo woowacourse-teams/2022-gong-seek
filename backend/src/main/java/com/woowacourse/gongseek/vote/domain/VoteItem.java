@@ -12,6 +12,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,6 +31,7 @@ public class VoteItem {
     @Embedded
     private Amount amount;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vote_id", nullable = false)
     private Vote vote;
@@ -37,11 +40,11 @@ public class VoteItem {
         this(null, new Content(content), new Amount(), vote);
     }
 
-    public void decreaseAmount() {
-        amount = amount.decrease();
-    }
-
     public void increaseAmount() {
         amount = amount.increase();
+    }
+
+    public void decreaseAmount() {
+        amount = amount.decrease();
     }
 }

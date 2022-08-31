@@ -106,6 +106,21 @@ public class ArticleFixtures {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> 게시글_전체를_추천순으로_조회한다(String category, Long cursorId,
+                                                                   Long cursorLikes, int size) {
+        return RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
+                .when()
+                .param("category", category)
+                .param("cursorId", cursorId)
+                .param("cursorLikes", cursorLikes)
+                .param("size", size)
+                .get("/api/articles/likes")
+                .then().log().all()
+                .extract();
+    }
+
 
     public static ExtractableResponse<Response> 로그인_후_게시글을_수정한다(AccessTokenResponse tokenResponse,
                                                                 ArticleIdResponse articleIdResponse) {

@@ -60,10 +60,9 @@ const VoteDeadlineGenerator = () => {
 			<S.VoteDeadlineLabel>마감 기한을 설정해주세요.</S.VoteDeadlineLabel>
 			<S.VoteDeadlineInputBox>
 				<S.DeadlineInput type="date" required min={tomorrow} max={afterWeek} ref={dateRef} />
-				<S.ValidateMessage></S.ValidateMessage>
 				<br />
 				<S.DeadlineInput type="time" required ref={timeRef} />
-				<S.ValidateMessage></S.ValidateMessage>
+				<S.ValidateMessage>{`투표 마감기간은 ${tomorrow}에서 ${afterWeek}까지 설정할수 있습니다.`}</S.ValidateMessage>
 			</S.VoteDeadlineInputBox>
 			<S.SubmitButton>등록하기</S.SubmitButton>
 		</S.Container>

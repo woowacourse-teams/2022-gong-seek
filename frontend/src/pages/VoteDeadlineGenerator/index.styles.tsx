@@ -34,25 +34,17 @@ export const DeadlineInput = styled.input`
 	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	padding: ${({ theme }) => theme.size.SIZE_006} ${({ theme }) => theme.size.SIZE_004};
 	border-color: ${({ theme }) => theme.colors.PURPLE_500};
+	color: ${({ theme }) => theme.colors.BLACK_400};
+	font-size: ${({ theme }) => theme.size.SIZE_012};
 	::-webkit-datetime-edit-text {
 		color: ${({ theme }) => theme.colors.BLUE_500};
-	}
-
-	:invalid + span::after {
-		content: '유효하지 않은 입력입니다.';
-		color: ${({ theme }) => theme.colors.RED_500};
-		font-size: ${({ theme }) => theme.size.SIZE_012};
-	}
-
-	:valid + span::after {
-		content: '등록이 가능합니다.';
-		color: ${({ theme }) => theme.colors.BLUE_500};
-		font-size: ${({ theme }) => theme.size.SIZE_012};
 	}
 `;
 
 export const ValidateMessage = styled.span`
+	margin-top: ${({ theme }) => theme.size.SIZE_012};
 	margin-right: auto;
+	line-height: 140%;
 `;
 
 export const SubmitButton = styled.button`

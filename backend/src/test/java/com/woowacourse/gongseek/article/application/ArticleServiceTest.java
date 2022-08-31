@@ -21,14 +21,24 @@ import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.common.DatabaseCleaner;
+import com.woowacourse.gongseek.like.application.LikeService;
 import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
+import com.woowacourse.gongseek.vote.application.VoteService;
+import com.woowacourse.gongseek.vote.domain.Vote;
+import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
+import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
+import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
+import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +47,7 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -53,7 +64,19 @@ public class ArticleServiceTest {
     private MemberRepository memberRepository;
 
     @Autowired
+    private VoteService voteService;
+
+    @Autowired
+    private VoteItemRepository voteItemRepository;
+
+    @Autowired
+    private VoteHistoryRepository voteHistoryRepository;
+
+    @Autowired
     private TagRepository tagRepository;
+
+    @Autowired
+    private LikeService likeService;
 
     @Autowired
     private Encryptor encryptor;
@@ -406,6 +429,29 @@ public class ArticleServiceTest {
     }
 
     @Test
+    void 회원이_게시글을_수정했을_때_해당_태그로_작성된_게시글이_없으면_태그도_삭제한다() {
+        AppMember loginMember = new LoginMember(member.getId());
+        ArticleRequest firstArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring", "Java"), false);
+        ArticleRequest secondArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Java"), false);
+        ArticleIdResponse firstSavedArticle = articleService.save(loginMember, firstArticleRequest);
+        articleService.save(loginMember, secondArticleRequest);
+
+        articleService.update(loginMember, new ArticleUpdateRequest("하이", "하이", List.of("JAVA", "backend")),
+                firstSavedArticle.getId());
+
+        assertAll(
+                () -> assertThat(articleRepository.existsArticleByTagName("SPRING")).isFalse(),
+                () -> assertThat(articleRepository.existsArticleByTagName("JAVA")).isTrue(),
+                () -> assertThat(articleRepository.existsArticleByTagName("BACKEND")).isTrue(),
+                () -> assertThat(tagRepository.findByNameIgnoreCase("SPRING")).isEmpty(),
+                () -> assertThat(tagRepository.findByNameIgnoreCase("JAVA")).isNotEmpty(),
+                () -> assertThat(tagRepository.findByNameIgnoreCase("BACKEND")).isNotEmpty()
+        );
+    }
+
+    @Test
     void 작성자인_회원이_기명_게시글을_삭제한다() {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
@@ -628,6 +674,37 @@ public class ArticleServiceTest {
     }
 
     @Test
+    void 추천순으로_게시글이_조회된다() {
+        List<Article> articles = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            articles.add(new Article("질문합니다.", "내용입니다~!", Category.QUESTION, member, false));
+        }
+        articleRepository.saveAll(articles);
+
+        Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
+        likeService.likeArticle(new LoginMember(member.getId()), 1L);
+
+        likeService.likeArticle(new LoginMember(member.getId()), 2L);
+        likeService.likeArticle(new LoginMember(newMember.getId()), 2L);
+
+        likeService.likeArticle(new LoginMember(newMember.getId()), 3L);
+        likeService.likeArticle(new LoginMember(member.getId()), 3L);
+
+        ArticlePageResponse articlePageResponse = articleService.getAllByLikes(null, null, Category.QUESTION.getValue(),
+                Pageable.ofSize(3), new LoginMember(member.getId()));
+        List<Long> collect = articlePageResponse.getArticles()
+                .stream()
+                .map(ArticlePreviewResponse::getId)
+                .collect(Collectors.toList());
+
+        assertAll(
+                () -> assertThat(articlePageResponse.hasNext()).isTrue(),
+                () -> assertThat(articlePageResponse.getArticles()).hasSize(3),
+                () -> assertThat(collect).containsExactly(3L, 2L, 1L)
+        );
+    }
+
+    @Test
     void 태그_한개로_검색할_경우_태그로_작성한_게시글들이_조회된다() {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
@@ -646,14 +723,47 @@ public class ArticleServiceTest {
     }
 
     @Test
+    void 다음_페이지를_조회할때도_추천순으로_게시글을_조회한다() {
+        List<Article> articles = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            articles.add(new Article("질문합니다.", "내용입니다~!", Category.QUESTION, member, false));
+        }
+        articleRepository.saveAll(articles);
+
+        Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
+        likeService.likeArticle(new LoginMember(member.getId()), 1L);
+
+        likeService.likeArticle(new LoginMember(member.getId()), 2L);
+        likeService.likeArticle(new LoginMember(newMember.getId()), 2L);
+
+        likeService.likeArticle(new LoginMember(newMember.getId()), 3L);
+        likeService.likeArticle(new LoginMember(member.getId()), 3L);
+
+        ArticlePageResponse articlePageResponse = articleService.getAllByLikes(2L, 2L, Category.QUESTION.getValue(),
+                Pageable.ofSize(2), new LoginMember(member.getId()));
+        List<Long> collect = articlePageResponse.getArticles()
+                .stream()
+                .map(ArticlePreviewResponse::getId)
+                .collect(Collectors.toList());
+
+        assertAll(
+                () -> assertThat(articlePageResponse.hasNext()).isTrue(),
+                () -> assertThat(articlePageResponse.getArticles()).hasSize(2),
+                () -> assertThat(collect).containsExactly(1L, 10L)
+        );
+    }
+
+    @Test
     void 태그_여러개로_검색할_경우_태그로_작성한_게시글들이_조회된다() {
         AppMember loginMember = new LoginMember(member.getId());
-        ArticleRequest firstArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+        ArticleRequest firstArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!",
+                Category.QUESTION.getValue(),
                 List.of("Spring"), true);
         for (int i = 0; i < 5; i++) {
             articleService.save(loginMember, firstArticleRequest);
         }
-        ArticleRequest secondArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+        ArticleRequest secondArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!",
+                Category.QUESTION.getValue(),
                 List.of("java"), true);
         for (int i = 0; i < 5; i++) {
             articleService.save(loginMember, secondArticleRequest);
@@ -665,6 +775,27 @@ public class ArticleServiceTest {
         assertAll(
                 () -> assertThat(pageResponse.getArticles()).hasSize(2),
                 () -> assertThat(pageResponse.hasNext()).isTrue()
+        );
+    }
+
+    @Test
+    void 투표중인_토론게시글을_삭제한다() {
+        Article article = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
+
+        Vote vote = new Vote(article, LocalDateTime.now().plusDays(3));
+
+        LoginMember loginMember = new LoginMember(member.getId());
+        voteService.create(loginMember, article.getId(),
+                new VoteCreateRequest(Set.of("A번", "B번", "C번"), LocalDateTime.now().plusDays(4)));
+
+        voteService.doVote(article.getId(), loginMember, new SelectVoteItemIdRequest(1L));
+        articleService.delete(loginMember, article.getId());
+        assertAll(
+                () -> assertThat(voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(),
+                        loginMember.getPayload())).isEmpty(),
+                () -> assertThat(articleRepository.findById(article.getId())).isEmpty(),
+                () -> assertThat(voteItemRepository.findAll()).isEmpty()
         );
     }
 }
