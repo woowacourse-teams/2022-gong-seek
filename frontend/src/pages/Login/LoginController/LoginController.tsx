@@ -28,7 +28,7 @@ const LoginController = () => {
 
 	useEffect(() => {
 		if (isSuccess) {
-			localStorage.setItem('accessToken', data.data.accessToken);
+			localStorage.setItem('gongseekAccessToken', data.data.accessToken);
 			window.location.href = '/';
 		}
 		if (isError) {

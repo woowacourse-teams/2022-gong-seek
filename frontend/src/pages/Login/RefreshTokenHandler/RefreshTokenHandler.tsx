@@ -16,7 +16,7 @@ const RefreshTokenHandler = () => {
 	const { showSnackBar } = useSnackBar();
 
 	useEffect(() => {
-		localStorage.removeItem('accessToken');
+		localStorage.removeItem('gongseekAccessToken');
 	}, []);
 
 	useEffect(() => {
@@ -33,7 +33,7 @@ const RefreshTokenHandler = () => {
 
 	useEffect(() => {
 		if (isSuccess) {
-			localStorage.setItem('accessToken', data.accessToken);
+			localStorage.setItem('gongseekAccessToken', data.accessToken);
 			location.href = '/';
 			showSnackBar('재로그인 되었습니다');
 		}

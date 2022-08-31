@@ -12,7 +12,7 @@ export const postComments = ({
 	id: string;
 	isAnonymous: boolean;
 }) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 	return axios.post(
 		`${HOME_URL}/api/articles/${id}/comments`,
 		{ content, isAnonymous },
@@ -26,7 +26,7 @@ export const postComments = ({
 };
 
 export const getComments = async (id: string) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 
 	const { data } = await axios.get<{ comments: CommentType[] }>(
 		`${HOME_URL}/api/articles/${id}/comments`,
@@ -41,7 +41,7 @@ export const getComments = async (id: string) => {
 };
 
 export const putComments = ({ content, commentId }: { content: string; commentId: string }) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 
 	return axios.put(
 		`${HOME_URL}/api/articles/comments/${commentId}`,
@@ -56,7 +56,7 @@ export const putComments = ({ content, commentId }: { content: string; commentId
 };
 
 export const deleteComments = ({ commentId }: { commentId: string }) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 
 	return axios.delete(`${HOME_URL}/api/articles/comments/${commentId}`, {
 		headers: {

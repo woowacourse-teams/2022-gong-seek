@@ -13,7 +13,7 @@ const Header = () => {
 
 	const onLogOutClick = () => {
 		if (window.confirm('정말로 로그아웃을 하시겠습니까?')) {
-			localStorage.removeItem('accessToken');
+			localStorage.removeItem('gongseekAccessToken');
 			window.location.href = '/';
 			return;
 		}

@@ -16,7 +16,7 @@ export interface TVote {
 }
 
 export const getVoteItems = async (articleId: string) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 
 	const { data } = await axios.get<TVote>(`${HOME_URL}/api/articles/${articleId}/votes`, {
 		headers: {
@@ -37,7 +37,7 @@ export const registerVoteItems = ({
 	items: string[];
 	expiryDate: string;
 }) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 
 	return axios.post<{ articleId: string }>(
 		`${HOME_URL}/api/articles/${articleId}/votes`,
@@ -58,7 +58,7 @@ export const checkVoteItems = ({
 	articleId: string;
 	voteItemId: string;
 }) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 
 	return axios.post(
 		`${HOME_URL}/api/articles/${articleId}/votes/do`,

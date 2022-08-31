@@ -11,7 +11,7 @@ export interface WritingArticles {
 }
 
 export const postWritingArticle = (article: WritingArticles) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 	return axios.post(`${HOME_URL}/api/articles`, article, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
@@ -26,7 +26,7 @@ export interface PopularArticles {
 }
 
 export const getPopularArticles = async () => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 
 	const result = await axios.get<PopularArticles>(
 		`${HOME_URL}/api/articles?category=all&sort=views&pageSize=10`,
@@ -41,7 +41,7 @@ export const getPopularArticles = async () => {
 };
 
 export const getDetailArticle = async (id: string) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 	const { data } = await axios.get<ArticleType>(`${HOME_URL}/api/articles/${id}`, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
@@ -64,7 +64,7 @@ export const getAllArticle = async ({
 	cursorViews: string;
 	cursorLikes: string;
 }) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 
 	if (sort === '좋아요순') {
 		const data = await getAllArticlesByLikes({ category, cursorId, cursorLikes, accessToken });
@@ -138,7 +138,7 @@ export const getAllArticlesByLikes = async ({
 };
 
 export const postArticle = (article: { id: string; title: string; content: string }) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 
 	return axios.post<{ id: number; category: string }>(
 		`${HOME_URL}/api/articles/${article.id}`,
@@ -158,7 +158,7 @@ export const putArticle = (article: {
 	content: string;
 	tag: string[];
 }) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 	return axios.put<{ id: number; category: string }>(
 		`${HOME_URL}/api/articles/${article.id}`,
 		{ title: article.title, content: article.content, tag: article.tag },
@@ -172,7 +172,7 @@ export const putArticle = (article: {
 };
 
 export const deleteArticle = (id: string) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 	return axios.delete<never, unknown, unknown>(`${HOME_URL}/api/articles/${id}`, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',

@@ -71,7 +71,7 @@ export const getArticleByHashTag = async ({
 	hashTags: string;
 	cursorId: string;
 }) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 	const encodedTarget = encodeURIComponent(hashTags);
 	const { data } = await axios.get<SearchResultType>(
 		`${HOME_URL}/api/articles/search/tags?tagsText=${encodedTarget}&cursorId=${cursorId}&pageSize=6`,
@@ -99,7 +99,7 @@ export const getSearchResult = async ({
 	searchIndex: string;
 	cursorId: string;
 }) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem('gongseekAccessToken');
 
 	if (searchIndex === '유저') {
 		const data = await getUserSearchResult({ accessToken, target, searchIndex, cursorId });
