@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import Loading from '@/components/common/Loading/Loading';
+import gongseek from '@/assets/gongseek.png';
 import { UserProfile } from '@/components/common/UserProfileIcon/UserProfileIcon.styles';
 import * as S from '@/components/layout/TabBar/TabBar.styles';
 import useGetUserInfo from '@/pages/MyPage/hooks/useGetUserInfo';
@@ -15,8 +15,6 @@ const TabBar = () => {
 	const [sliderState, setSliderState] = useRecoilState(menuSliderState);
 	const { data, isLoading } = useGetUserInfo();
 
-	if (isLoading) return <Loading />;
-
 	return (
 		<>
 			<S.Section>
@@ -26,7 +24,15 @@ const TabBar = () => {
 					}}
 				/>
 				{isLogin ? (
-					<UserProfile src={data?.avatarUrl} onClick={() => navigate('/my-page')} />
+					isLoading ? (
+						<UserProfile src={gongseek} />
+					) : (
+						<UserProfile
+							src={data?.avatarUrl}
+							alt={gongseek}
+							onClick={() => navigate('/my-page')}
+						/>
+					)
 				) : (
 					<S.UserCircleLink
 						onClick={() => {
