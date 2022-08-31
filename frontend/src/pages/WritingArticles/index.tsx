@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { postImage } from '@/api/image';
+import { postImageUrlConverter } from '@/api/image';
 import AnonymouseCheckBox from '@/components/common/AnonymousCheckBox/AnonymouseCheckBox';
 import HashTag from '@/components/common/HashTag/HashTag';
 import Loading from '@/components/common/Loading/Loading';
@@ -35,7 +35,7 @@ const WritingArticles = () => {
 				(async () => {
 					const formData = new FormData();
 					formData.append('imageFile', blob);
-					const url = await postImage(formData);
+					const url = await postImageUrlConverter(formData);
 					callback(url, 'alt-text');
 				})();
 			});

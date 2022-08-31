@@ -31,8 +31,10 @@ export const HashTagItem = styled.button<{ isChecked: boolean }>`
 
 	padding: ${({ theme }) => theme.size.SIZE_004};
 
-	color: ${({ isChecked, theme }) =>
-		isChecked ? theme.colors.PURPLE_500 : theme.colors.BLACK_500};
+	background-color: ${({ isChecked, theme }) =>
+		isChecked ? theme.colors.PURPLE_500 : 'transparent'};
+
+	color: ${({ isChecked, theme }) => (isChecked ? theme.colors.WHITE : theme.colors.BLACK_500)};
 
 	&:hover,
 	&:active {

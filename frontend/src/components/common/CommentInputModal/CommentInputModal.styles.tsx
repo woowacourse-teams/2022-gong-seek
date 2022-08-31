@@ -47,6 +47,14 @@ export const CommentContainer = styled.div`
 	z-index: 110;
 
 	animation: ${showSlider} 0.2s ease-in-out;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: 60vw;
+		height: 50vh;
+		margin: 0 auto;
+		left: 0;
+		right: 0;
+	}
 `;
 
 export const CommentTitle = styled.h2`
@@ -58,6 +66,10 @@ export const CommentTitle = styled.h2`
 	font-size: ${({ theme }) => theme.size.SIZE_020};
 
 	margin-bottom: ${({ theme }) => theme.size.SIZE_016};
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		margin-top: ${({ theme }) => theme.size.SIZE_020};
+	}
 `;
 
 export const CommentContent = styled.textarea`
@@ -108,5 +120,7 @@ export const SubmitBox = styled.div`
 		justify-content: flex-end;
 		padding-right: ${({ theme }) => theme.size.SIZE_260};
 		gap: ${({ theme }) => theme.size.SIZE_016};
+
+		margin-bottom: ${({ theme }) => theme.size.SIZE_020};
 	}
 `;

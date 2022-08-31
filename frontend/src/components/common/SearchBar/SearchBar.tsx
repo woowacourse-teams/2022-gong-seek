@@ -20,7 +20,7 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 
 	const onSubmitSearchTarget = () => {
 		if (!validatedSearchInput(searchInput)) {
-			showSnackBar('검색어는 최소 2글자 이상이여야 합니다!');
+			showSnackBar('검색어는 2글자 이상 200글자 이하이여야 합니다');
 			return;
 		}
 		setSearchInputState({
@@ -48,6 +48,8 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 					onChange={(e) => {
 						onChangeInputValue(e);
 					}}
+					minLength={2}
+					maxLength={200}
 				/>
 				<S.SearchButtonBox disabled={isValid} onClick={onSubmitSearchTarget}>
 					<S.SearchButton />
