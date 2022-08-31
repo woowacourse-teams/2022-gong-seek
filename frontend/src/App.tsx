@@ -1,4 +1,3 @@
-import { dropdownState } from './store/dropdownState';
 import { Routes, Route } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
@@ -26,6 +25,7 @@ import UpdateWriting from '@/pages/UpdateWriting';
 import VoteDeadlineGenerator from '@/pages/VoteDeadlineGenerator';
 import VoteGenerator from '@/pages/VoteGenerator';
 import WritingArticles from '@/pages/WritingArticles';
+import { dropdownState } from '@/store/dropdownState';
 import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
 import styled from '@emotion/styled';
