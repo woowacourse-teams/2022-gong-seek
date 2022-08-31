@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
@@ -16,6 +15,10 @@ import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.vote.domain.Vote;
+import com.woowacourse.gongseek.vote.domain.VoteHistory;
+import com.woowacourse.gongseek.vote.domain.VoteItem;
+import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
+import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -56,6 +59,12 @@ class ArticleRepositoryTest {
 
     @Autowired
     private VoteRepository voteRepository;
+
+    @Autowired
+    private VoteHistoryRepository voteHistoryRepository;
+
+    @Autowired
+    private VoteItemRepository voteItemRepository;
 
     @Autowired
     private TestEntityManager testEntityManager;
@@ -396,7 +405,7 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    void 투표가_있는_토론게시글을_삭제하면_투표도_삭제된다(){
+    void 투표가_있는_토론게시글을_삭제한다() {
         Article article = articleRepository.save(
                 new Article("title2", "content2", Category.DISCUSSION, member, false));
 
@@ -406,5 +415,26 @@ class ArticleRepositoryTest {
         articleRepository.deleteById(article.getId());
 
         assertThat(voteRepository.findByArticleId(article.getId())).isEmpty();
+    }
+
+    @Test
+    void 투표중인_토론게시글을_삭제한다() {
+        Article article = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
+
+        Vote vote = new Vote(article, LocalDateTime.now().plusDays(3));
+        voteRepository.save(vote);
+        VoteItem firstVoteItem = new VoteItem("A번", vote);
+        VoteItem secondVoteItem = new VoteItem("B번", vote);
+        VoteItem thirdVoteItem = new VoteItem("C번", vote);
+        voteItemRepository.saveAll(List.of(firstVoteItem, secondVoteItem, thirdVoteItem));
+
+        voteHistoryRepository.save(new VoteHistory(member, vote, firstVoteItem));
+        articleRepository.deleteById(article.getId());
+
+        assertAll(
+                () -> assertThat(voteRepository.findByArticleId(article.getId())).isEmpty(),
+                () -> assertThat(voteHistoryRepository.findAll()).isEmpty()
+        );
     }
 }

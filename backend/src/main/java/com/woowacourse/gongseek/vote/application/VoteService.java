@@ -108,7 +108,7 @@ public class VoteService {
         if (Objects.isNull(voteHistory)) {
             return null;
         }
-        return voteHistory.getVoteItemId();
+        return voteHistory.getVoteItem().getId();
     }
 
     public void doVote(Long articleId, AppMember appMember, SelectVoteItemIdRequest selectVoteItemIdRequest) {
@@ -116,11 +116,18 @@ public class VoteService {
         Member member = getMember(appMember);
         VoteItem selectedVoteItem = getVoteItem(selectVoteItemIdRequest.getVoteItemId());
 
+        deleteOriginVoteIfExist(vote, member);
+        saveVoteHistory(vote, member, selectedVoteItem);
+    }
+
+    private void deleteOriginVoteIfExist(Vote vote, Member member) {
         voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(), member.getId())
-                .ifPresentOrElse(
-                        voteHistory -> updateVoteHistory(vote.getId(), member.getId(), selectedVoteItem, voteHistory),
-                        () -> saveVoteHistory(vote, member, selectedVoteItem)
-                );
+                .ifPresent(this::deleteVoteHistory);
+    }
+
+    private void deleteVoteHistory(VoteHistory voteHistory) {
+        voteHistory.getVoteItem().decreaseAmount();
+        voteHistoryRepository.delete(voteHistory);
     }
 
     private VoteItem getVoteItem(Long voteItemId) {
@@ -128,15 +135,8 @@ public class VoteService {
                 .orElseThrow(() -> new VoteItemNotFoundException(voteItemId));
     }
 
-    private void updateVoteHistory(Long voteId, Long memberId, VoteItem selectedVoteItem, VoteHistory voteHistory) {
-        VoteItem originVoteItem = getVoteItem(voteHistory.getVoteItemId());
-        originVoteItem.decreaseAmount();
-        voteHistoryRepository.updateHistory(selectedVoteItem.getId(), memberId, voteId);
-        selectedVoteItem.increaseAmount();
-    }
-
     private void saveVoteHistory(Vote vote, Member member, VoteItem selectedVoteItem) {
         selectedVoteItem.increaseAmount();
-        voteHistoryRepository.save(new VoteHistory(member.getId(), vote.getId(), selectedVoteItem.getId()));
+        voteHistoryRepository.save(new VoteHistory(member, vote, selectedVoteItem));
     }
 }
