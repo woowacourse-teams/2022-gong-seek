@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { postImageUrlConverter } from '@/api/image';
 import AnonymouseCheckBox from '@/components/common/AnonymousCheckBox/AnonymouseCheckBox';
 import HashTag from '@/components/common/HashTag/HashTag';
 import Loading from '@/components/common/Loading/Loading';
@@ -26,6 +27,20 @@ const WritingArticles = () => {
 		hashTags,
 		setHashTags,
 	} = usePostWritingArticles({ category, isAnonymous });
+
+	useEffect(() => {
+		if (content.current) {
+			content.current.getInstance().removeHook('addImageBlobHook');
+			content.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
+				(async () => {
+					const formData = new FormData();
+					formData.append('imageFile', blob);
+					const url = await postImageUrlConverter(formData);
+					callback(url, 'alt-text');
+				})();
+			});
+		}
+	}, [content]);
 
 	if (isLoading) return <Loading />;
 

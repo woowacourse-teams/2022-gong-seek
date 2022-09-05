@@ -21,6 +21,9 @@ import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.해시
 import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.기명으로_댓글을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.LikeFixtures.게시글을_추천한다;
+import static com.woowacourse.gongseek.acceptance.support.VoteFixtures.투표를_생성한다;
+import static com.woowacourse.gongseek.acceptance.support.VoteFixtures.투표를_한다;
+import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.기론;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.슬로;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
@@ -37,10 +40,13 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
+import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
+import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -985,5 +991,37 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(articlePageResponse.hasNext()).isFalse(),
                 () -> assertThat(articlePageResponse.getArticles().get(0).getId()).isEqualTo(게시글3.getId())
         );
+    }
+
+    @Test
+    void 투표가_있는_토론_게시글을_삭제할_수_있다() {
+        // given
+        AccessTokenResponse tokenResponse = 로그인을_한다(기론);
+        ArticleIdResponse articleIdResponse = 기명으로_게시글을_등록한다(tokenResponse, Category.DISCUSSION).as(
+                ArticleIdResponse.class);
+        투표를_생성한다(tokenResponse, articleIdResponse.getId(),
+                new VoteCreateRequest(Set.of("1번 주제", "2번 주제"), LocalDateTime.now().plusDays(7)));
+
+        // when
+        ExtractableResponse<Response> response = 로그인_후_게시글을_삭제한다(tokenResponse, articleIdResponse);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    void 투표가_있고_투표를_한_토론_게시글을_삭제할_수_있다() {
+        // given
+        AccessTokenResponse tokenResponse = 로그인을_한다(기론);
+        ArticleIdResponse articleIdResponse = 기명으로_게시글을_등록한다(tokenResponse, Category.DISCUSSION).as(
+                ArticleIdResponse.class);
+        투표를_생성한다(tokenResponse, articleIdResponse.getId(),
+                new VoteCreateRequest(Set.of("1번 주제", "2번 주제"), LocalDateTime.now().plusDays(7)));
+        투표를_한다(tokenResponse, articleIdResponse.getId(), new SelectVoteItemIdRequest(1L));
+        // when
+        ExtractableResponse<Response> response = 로그인_후_게시글을_삭제한다(tokenResponse, articleIdResponse);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 }

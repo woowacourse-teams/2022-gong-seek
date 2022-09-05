@@ -14,6 +14,13 @@ import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
+import com.woowacourse.gongseek.vote.domain.Vote;
+import com.woowacourse.gongseek.vote.domain.VoteHistory;
+import com.woowacourse.gongseek.vote.domain.VoteItem;
+import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
+import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
+import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,6 +56,15 @@ class ArticleRepositoryTest {
 
     @Autowired
     private LikeRepository likeRepository;
+
+    @Autowired
+    private VoteRepository voteRepository;
+
+    @Autowired
+    private VoteHistoryRepository voteHistoryRepository;
+
+    @Autowired
+    private VoteItemRepository voteItemRepository;
 
     @Autowired
     private TestEntityManager testEntityManager;
@@ -393,5 +409,39 @@ class ArticleRepositoryTest {
         Slice<Article> articles = articleRepository.searchByTag(null, List.of("spring", "java"), PageRequest.ofSize(3));
 
         assertThat(articles.getContent()).hasSize(3);
+    }
+
+    @Test
+    void 투표가_있는_토론게시글을_삭제한다() {
+        Article article = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
+
+        voteRepository.save(new Vote(article, LocalDateTime.now().plusDays(3)));
+
+        assertThat(voteRepository.findByArticleId(article.getId())).isNotEmpty();
+        articleRepository.deleteById(article.getId());
+
+        assertThat(voteRepository.findByArticleId(article.getId())).isEmpty();
+    }
+
+    @Test
+    void 투표중인_토론게시글을_삭제한다() {
+        Article article = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
+
+        Vote vote = new Vote(article, LocalDateTime.now().plusDays(3));
+        voteRepository.save(vote);
+        VoteItem firstVoteItem = new VoteItem("A번", vote);
+        VoteItem secondVoteItem = new VoteItem("B번", vote);
+        VoteItem thirdVoteItem = new VoteItem("C번", vote);
+        voteItemRepository.saveAll(List.of(firstVoteItem, secondVoteItem, thirdVoteItem));
+
+        voteHistoryRepository.save(new VoteHistory(member, vote, firstVoteItem));
+        articleRepository.deleteById(article.getId());
+
+        assertAll(
+                () -> assertThat(voteRepository.findByArticleId(article.getId())).isEmpty(),
+                () -> assertThat(voteHistoryRepository.findAll()).isEmpty()
+        );
     }
 }

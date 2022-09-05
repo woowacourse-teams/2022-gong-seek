@@ -1,4 +1,6 @@
 <configuration>
+    <timestamp key="BY_DATE" datePattern="yyyy-MM-dd"/>
+
     <springProfile name="prod, dev">
         <property name="LOG_PATH" value="./logs"/>
         <include resource="logging/file-access-appender.xml"/>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import * as S from '@/components/common/SearchBar/SearchBar.styles';
@@ -11,6 +11,7 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 	const [searchInput, setSearchInput] = useState('');
 	const [searchIndex, setSearchIndex] = useState('게시물');
 	const [searchInputState, setSearchInputState] = useRecoilState(searchState);
+	const searchInputRef = useRef<HTMLInputElement>(null);
 
 	const { showSnackBar } = useSnackBar();
 
@@ -20,7 +21,7 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 
 	const onSubmitSearchTarget = () => {
 		if (!validatedSearchInput(searchInput)) {
-			showSnackBar('검색어는 최소 2글자 이상이여야 합니다!');
+			showSnackBar('검색어는 2글자 이상 200글자 이하이여야 합니다');
 			return;
 		}
 		setSearchInputState({
@@ -30,6 +31,12 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 			searchIndex: searchIndex,
 		});
 	};
+
+	useEffect(() => {
+		if (searchInputState.isSearchOpen && searchInputRef.current !== null) {
+			searchInputRef.current.focus();
+		}
+	}, [searchInputState]);
 
 	return (
 		<S.Container>
@@ -45,9 +52,12 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 					type="text"
 					readOnly={isValid}
 					value={searchInput}
+					ref={searchInputRef}
 					onChange={(e) => {
 						onChangeInputValue(e);
 					}}
+					minLength={2}
+					maxLength={200}
 				/>
 				<S.SearchButtonBox disabled={isValid} onClick={onSubmitSearchTarget}>
 					<S.SearchButton />

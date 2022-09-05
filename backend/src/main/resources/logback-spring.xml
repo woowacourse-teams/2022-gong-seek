@@ -15,13 +15,10 @@
 
     <springProfile name="test, local">
         <include resource="logging/console-appender.xml"/>
-        <logger name="com.woowacourse.gongseek" level="DEBUG">
+        <logger name="com.woowacourse.gongseek" level="INFO">
             <appender-ref ref="CONSOLE"/>
         </logger>
         <logger name="org.springframework.boot" level="INFO">
-            <appender-ref ref="CONSOLE"/>
-        </logger>
-        <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
             <appender-ref ref="CONSOLE"/>
         </logger>
         <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
@@ -32,25 +29,7 @@
         </logger>
     </springProfile>
 
-    <springProfile name="dev">
-        <include resource="logging/file-debug-appender.xml"/>
-        <include resource="logging/file-info-appender.xml"/>
-        <include resource="logging/file-warn-appender.xml"/>
-        <include resource="logging/file-error-appender.xml"/>
-        <logger name="com.woowacourse.gongseek" level="DEBUG">
-            <appender-ref ref="FILE-DEBUG"/>
-            <appender-ref ref="FILE-INFO"/>
-            <appender-ref ref="FILE-WARN"/>
-            <appender-ref ref="FILE-ERROR"/>
-        </logger>
-        <logger name="org.springframework.boot" level="INFO">
-            <appender-ref ref="FILE-INFO"/>
-            <appender-ref ref="FILE-WARN"/>
-            <appender-ref ref="FILE-ERROR"/>
-        </logger>
-    </springProfile>
-
-    <springProfile name="prod">
+    <springProfile name="prod, dev">
         <include resource="logging/file-info-appender.xml"/>
         <include resource="logging/file-warn-appender.xml"/>
         <include resource="logging/file-error-appender.xml"/>

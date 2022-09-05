@@ -10,7 +10,7 @@ import useSnackBar from '@/hooks/useSnackBar';
 
 const useDeleteArticleContent = () => {
 	const { showSnackBar } = useSnackBar();
-	const { isSuccess, isError, isLoading, error, mutate } = useMutation<
+	const { isSuccess, isError, error, mutate } = useMutation<
 		unknown,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		string
@@ -43,7 +43,7 @@ const useDeleteArticleContent = () => {
 		}
 	};
 
-	return { isLoading, handleDeleteArticle };
+	return { handleDeleteArticle };
 };
 
 export default useDeleteArticleContent;

@@ -22,7 +22,7 @@ const usePostWritingArticles = ({
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ title: string; category: string; content: string; tag: string[]; isAnonymous: boolean }
 	>(postWritingArticle, { retry: 1 });
-  
+
 	const content = useRef<Editor | null>(null);
 	const [title, setTitle] = useState('');
 	const [categoryOption, setCategoryOption] = useState(category ? category : '');
@@ -38,15 +38,15 @@ const usePostWritingArticles = ({
 	}
 
 	useEffect(() => {
-		if (isSuccess && category === CATEGORY.discussion) {
+		if (isSuccess && categoryOption === CATEGORY.discussion) {
 			if (confirm('글 등록이 완료되었습니다. 투표를 등록하시겠습니까?')) {
 				navigate(`/votes/${data.data.id}`);
 				return;
 			}
-			navigate(`/articles/${category}/${data.data.id}`);
+			navigate(`/articles/${categoryOption}/${data.data.id}`);
 		}
-		if (isSuccess && category === CATEGORY.question) {
-			navigate(`/articles/${category}/${data.data.id}`);
+		if (isSuccess && categoryOption === CATEGORY.question) {
+			navigate(`/articles/${categoryOption}/${data.data.id}`);
 		}
 	}, [isSuccess]);
 

@@ -22,6 +22,7 @@ import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.tag.application.TagService;
 import com.woowacourse.gongseek.tag.domain.Tags;
+import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +46,7 @@ public class ArticleService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final VoteRepository voteRepository;
+    private final VoteHistoryRepository voteHistoryRepository;
     private final TagService tagService;
     private final LikeRepository likeRepository;
     private final Encryptor encryptor;
@@ -170,15 +172,32 @@ public class ArticleService {
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
-        Tags tags = Tags.from(articleUpdateRequest.getTag());
-        Tags foundTags = tagService.getOrCreateTags(tags);
-
         Article article = checkAuthorization(appMember, id);
+        List<String> existingTagNames = article.getTagNames();
+        List<String> updatedTagNames = articleUpdateRequest.getTag();
+        Tags tags = Tags.from(updatedTagNames);
+        Tags foundTags = tagService.getOrCreateTags(tags);
         article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent());
-
         article.updateTag(foundTags);
+        deleteUnusedTags(existingTagNames, updatedTagNames);
 
         return new ArticleUpdateResponse(article);
+    }
+
+    private void deleteUnusedTags(List<String> existingTagNames, List<String> updatedTagNames) {
+        updatedTagNames = updatedTagNames.stream()
+                .map(String::toUpperCase)
+                .collect(Collectors.toList());
+
+        existingTagNames.removeAll(updatedTagNames);
+        List<String> deletedTagNames = getDeletedTagNames(existingTagNames);
+        tagService.delete(deletedTagNames);
+    }
+
+    private List<String> getDeletedTagNames(List<String> tagNames) {
+        return tagNames.stream()
+                .filter(tagName -> !articleRepository.existsArticleByTagName(tagName))
+                .collect(Collectors.toList());
     }
 
     private Article checkAuthorization(AppMember appMember, Long id) {
@@ -207,9 +226,7 @@ public class ArticleService {
         Article article = checkAuthorization(appMember, id);
         articleRepository.delete(article);
 
-        List<String> deletedTagNames = article.getTagNames().stream()
-                .filter(tagName -> !articleRepository.existsArticleByTagName(tagName))
-                .collect(Collectors.toList());
+        List<String> deletedTagNames = getDeletedTagNames(article.getTagNames());
         tagService.delete(deletedTagNames);
     }
 
