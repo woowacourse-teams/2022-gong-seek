@@ -732,10 +732,10 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         false));
 
         //when
-        int pageSize = 4;
+        int size = 4;
         String searchText = "커스텀";
-        ArticlePageResponse firstPage = 게시글을_제목과_내용으로_처음_검색한다(pageSize, searchText);
-        ArticlePageResponse secondPage = 게시글을_제목과_내용으로_검색한다(firstPage.getArticles().get(pageSize - 1).getId(), pageSize,
+        ArticlePageResponse firstPage = 게시글을_제목과_내용으로_처음_검색한다(size, searchText);
+        ArticlePageResponse secondPage = 게시글을_제목과_내용으로_검색한다(firstPage.getArticles().get(size - 1).getId(), size,
                 searchText);
 
         //then
@@ -766,9 +766,9 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         //when
         Long cursorId = null;
-        int pageSize = 4;
+        int size = 4;
         String author = 주디.getName();
-        ArticlePageResponse pageResponse = 게시글을_유저이름으로_검색한다(cursorId, pageSize, author);
+        ArticlePageResponse pageResponse = 게시글을_유저이름으로_검색한다(cursorId, size, author);
 
         assertAll(
                 () -> assertThat(pageResponse.hasNext()).isFalse(),
@@ -807,8 +807,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         //when
         Long cursorId = null;
-        int pageSize = 4;
-        ExtractableResponse<Response> response = 해시태그로_게시글들을_검색한다(cursorId, pageSize, "spring");
+        int size = 4;
+        ExtractableResponse<Response> response = 해시태그로_게시글들을_검색한다(cursorId, size, "spring");
         ArticlePageResponse articlesResponse = response.as(ArticlePageResponse.class);
 
         //then
@@ -849,8 +849,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         //when
         Long cursorId = null;
-        int pageSize = 8;
-        ExtractableResponse<Response> response = 해시태그로_게시글들을_검색한다(cursorId, pageSize, tags);
+        int size = 8;
+        ExtractableResponse<Response> response = 해시태그로_게시글들을_검색한다(cursorId, size, tags);
         ArticlePageResponse articlesResponse = response.as(ArticlePageResponse.class);
 
         //then
@@ -889,8 +889,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         //when
         Long cursorId = null;
-        int pageSize = 4;
-        ExtractableResponse<Response> response = 로그인_후_해시태그로_게시글들을_검색한다(tokenResponse, cursorId, pageSize, "spring");
+        int size = 4;
+        ExtractableResponse<Response> response = 로그인_후_해시태그로_게시글들을_검색한다(tokenResponse, cursorId, size, "spring");
         ArticlePageResponse articlesResponse = response.as(ArticlePageResponse.class);
 
         //then

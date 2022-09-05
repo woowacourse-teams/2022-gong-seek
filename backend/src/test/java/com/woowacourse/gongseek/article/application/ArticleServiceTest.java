@@ -39,6 +39,7 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -497,7 +498,7 @@ public class ArticleServiceTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(null, 0, Category.QUESTION.getValue(), "latest", 10,
+        ArticlePageResponse response = articleService.getAll(null, 0, Category.QUESTION.getValue(), "latest", PageRequest.ofSize(10),
                 loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
@@ -520,7 +521,7 @@ public class ArticleServiceTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(10L, 0, Category.QUESTION.getValue(), "latest", 10,
+        ArticlePageResponse response = articleService.getAll(10L, 0, Category.QUESTION.getValue(), "latest", PageRequest.ofSize(10),
                 loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
@@ -547,7 +548,7 @@ public class ArticleServiceTest {
         articleRepository.saveAll(articles);
 
         ArticlePageResponse response = articleService.getAll(null, cursorViews, Category.QUESTION.getValue(),
-                "latest", 10, loginMember);
+                "latest", PageRequest.ofSize(10), loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
         assertAll(
@@ -559,7 +560,7 @@ public class ArticleServiceTest {
     @Test
     void 공백으로_게시글을_검색한_경우_빈_값이_나온다() {
         AppMember loginMember = new LoginMember(member.getId());
-        ArticlePageResponse articlePageResponse = articleService.searchByText(null, 1, " ", loginMember);
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, PageRequest.ofSize(1), " ", loginMember);
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).isEmpty(),
@@ -578,7 +579,7 @@ public class ArticleServiceTest {
                             false));
         }
 
-        ArticlePageResponse articlePageResponse = articleService.searchByText(null, 10, "질문", loginMember);
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, PageRequest.ofSize(10), "질문", loginMember);
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(10),
@@ -597,9 +598,9 @@ public class ArticleServiceTest {
                             false));
         }
 
-        ArticlePageResponse firstPageResponse = articleService.searchByText(null, 10, "질문", loginMember);
+        ArticlePageResponse firstPageResponse = articleService.searchByText(null, PageRequest.ofSize(10), "질문", loginMember);
         ArticlePageResponse secondPageResponse = articleService.searchByText(
-                firstPageResponse.getArticles().get(9).getId(), 10, "질문", loginMember);
+                firstPageResponse.getArticles().get(9).getId(), PageRequest.ofSize(10), "질문", loginMember);
 
         assertAll(
                 () -> assertThat(firstPageResponse.getArticles()).hasSize(10),
@@ -628,7 +629,7 @@ public class ArticleServiceTest {
             articleService.save(loginMember, articleRequest);
         }
 
-        ArticlePageResponse pageResponse = articleService.searchByAuthor(null, 15, this.member.getName(), loginMember);
+        ArticlePageResponse pageResponse = articleService.searchByAuthor(null, PageRequest.ofSize(15), this.member.getName(), loginMember);
 
         assertThat(pageResponse.getArticles()).hasSize(5);
     }
@@ -673,7 +674,7 @@ public class ArticleServiceTest {
             articleService.save(loginMember, articleRequest);
         }
 
-        ArticlePageResponse pageResponse = articleService.searchByTag(null, 15, "spring",
+        ArticlePageResponse pageResponse = articleService.searchByTag(null, PageRequest.ofSize(15), "spring",
                 loginMember);
 
         assertAll(
@@ -729,7 +730,7 @@ public class ArticleServiceTest {
             articleService.save(loginMember, secondArticleRequest);
         }
 
-        ArticlePageResponse pageResponse = articleService.searchByTag(5L, 2, "spring,java",
+        ArticlePageResponse pageResponse = articleService.searchByTag(5L, PageRequest.ofSize(2), "spring,java",
                 loginMember);
 
         assertAll(
