@@ -31,5 +31,4 @@ public class GithubProfileResponse {
             name = githubId;
         }
     }
-
 }
