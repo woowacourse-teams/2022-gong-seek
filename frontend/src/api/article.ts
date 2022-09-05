@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { HOME_URL } from '@/constants/url';
+import { HOME_URL } from '@/constants/apiUrl';
 import { AllArticleResponse, ArticleType } from '@/types/articleResponse';
 import { convertSort } from '@/utils/converter';
 

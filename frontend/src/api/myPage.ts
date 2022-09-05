@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { HOME_URL } from '@/constants/url';
+import { HOME_URL } from '@/constants/apiUrl';
 import { UserArticlesResponse } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 import { UserCommentResponse } from '@/types/commentResponse';
