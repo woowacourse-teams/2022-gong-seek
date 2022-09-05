@@ -1,5 +1,6 @@
 package com.woowacourse.gongseek.member.domain;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -30,9 +31,17 @@ public class Member {
     private String avatarUrl;
 
     public Member(String name, String githubId, String avatarUrl) {
+        name = replaceEmptyNameWithGithubId(name, githubId);
         this.name = new Name(name);
         this.githubId = githubId;
         this.avatarUrl = avatarUrl;
+    }
+
+    private String replaceEmptyNameWithGithubId(String name, String githubId) {
+        if (Objects.isNull(name)) {
+            name = githubId;
+        }
+        return name;
     }
 
     public boolean isAnonymous(String cipherId) {
