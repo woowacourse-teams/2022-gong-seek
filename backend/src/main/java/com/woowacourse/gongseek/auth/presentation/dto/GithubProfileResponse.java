@@ -2,6 +2,7 @@ package com.woowacourse.gongseek.auth.presentation.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.member.domain.Member;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +22,14 @@ public class GithubProfileResponse {
     private String avatarUrl;
 
     public Member toMember() {
+        replaceEmptyNameWithGithubId();
         return new Member(name, githubId, avatarUrl);
     }
+
+    private void replaceEmptyNameWithGithubId() {
+        if (Objects.isNull(name)) {
+            name = githubId;
+        }
+    }
+
 }

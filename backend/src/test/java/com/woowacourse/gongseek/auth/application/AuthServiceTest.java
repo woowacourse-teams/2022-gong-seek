@@ -78,6 +78,18 @@ class AuthServiceTest {
     }
 
     @Test
+    void 유저의_이름이_null이면_깃허브_아이디로_대체된다() {
+        GithubProfileResponse profileResponse = new GithubProfileResponse(
+                주디.getGithubId(), null, 주디.getAvatarUrl());
+        given(githubOAuthClient.getMemberProfile(주디.getCode())).willReturn(profileResponse);
+
+        authService.generateToken(new OAuthCodeRequest(주디.getCode()));
+
+        Member actual = memberRepository.findByGithubId(주디.getGithubId()).get();
+        assertThat(actual.getName()).isEqualTo(주디.getGithubId());
+    }
+
+    @Test
     void 리프레시토큰이_유효하면_토큰을_재발급한다() {
         GithubProfileResponse profileResponse = new GithubProfileResponse(
                 기론.getGithubId(), 기론.getName(), 기론.getAvatarUrl());
