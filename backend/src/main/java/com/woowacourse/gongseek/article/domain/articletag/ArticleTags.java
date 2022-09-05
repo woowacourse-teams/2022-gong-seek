@@ -6,16 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
 import lombok.Getter;
-import org.hibernate.annotations.BatchSize;
 
 @Getter
 @Embeddable
 public class ArticleTags {
 
     @OneToMany(mappedBy = "article", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @Column(name = "article_tags")
     private List<ArticleTag> value;
 
     public ArticleTags() {
