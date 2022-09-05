@@ -1,0 +1,4 @@
+[submodule "backend/src/main/resources/secret"]
+	path = backend/src/main/resources/secret
+	url = https://github.com/gong-seek/secret.git
+	branch = main
