@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 
 import * as S from '@/components/layout/TabBar/TabBar.styles';
+import { URL } from '@/constants/url';
 import { menuSliderState } from '@/store/menuSliderState';
 
 const TabBar = () => {
@@ -13,12 +14,12 @@ const TabBar = () => {
 			<S.Section>
 				<S.PostingLink
 					onClick={() => {
-						navigate('/category');
+						navigate(URL.CATEGORY_SELECTOR);
 					}}
 				/>
 				<S.UserCircleLink
 					onClick={() => {
-						navigate('/my-page');
+						navigate(URL.MY_PAGE);
 					}}
 				/>
 				<S.MenuLink
