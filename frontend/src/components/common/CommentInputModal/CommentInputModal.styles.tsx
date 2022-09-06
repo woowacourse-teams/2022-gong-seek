@@ -78,7 +78,6 @@ export const CommentContentBox = styled.div`
 	width: 90%;
 	height: 80%;
 	overflow: hidden;
-	border: 1px solid red;
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
 		height: 40vh;
