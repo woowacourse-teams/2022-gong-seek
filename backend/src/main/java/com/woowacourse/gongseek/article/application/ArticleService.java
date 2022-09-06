@@ -111,7 +111,7 @@ public class ArticleService {
     private ArticleResponse checkGuest(Article article, List<String> tagNames, AppMember appMember, boolean hasVote,
                                        LikeResponse likeResponse) {
         if (appMember.isGuest()) {
-            return new ArticleResponse(article, tagNames, false, hasVote, likeResponse);
+            return ArticleResponse.of(article, tagNames, false, hasVote, likeResponse);
         }
         return checkAuthor(article, tagNames, getMember(appMember), hasVote, likeResponse);
     }
@@ -120,9 +120,9 @@ public class ArticleService {
                                         LikeResponse likeResponse) {
         if (article.isAnonymous()) {
             String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
-            return new ArticleResponse(article, tagNames, article.isAnonymousAuthor(cipherId), hasVote, likeResponse);
+            return ArticleResponse.of(article, tagNames, article.isAnonymousAuthor(cipherId), hasVote, likeResponse);
         }
-        return new ArticleResponse(article, tagNames, article.isAuthor(member), hasVote, likeResponse);
+        return ArticleResponse.of(article, tagNames, article.isAuthor(member), hasVote, likeResponse);
     }
 
     @Transactional(readOnly = true)
