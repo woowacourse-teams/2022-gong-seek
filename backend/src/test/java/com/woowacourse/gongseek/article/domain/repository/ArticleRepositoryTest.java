@@ -84,7 +84,8 @@ class ArticleRepositoryTest {
 
     @Test
     void 게시글이_없으면_빈_값을_반환한다() {
-        List<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "", 5);
+        Slice<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "",
+                PageRequest.ofSize(5));
 
         assertThat(articles).isEmpty();
     }
@@ -94,9 +95,10 @@ class ArticleRepositoryTest {
         for (int i = 0; i < 5; i++) {
             articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         }
-        List<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "views", 5);
+        Slice<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "views",
+                PageRequest.ofSize(5));
 
-        assertThat(articles).hasSize(5);
+        assertThat(articles.getContent()).hasSize(5);
     }
 
     @ParameterizedTest
@@ -105,9 +107,9 @@ class ArticleRepositoryTest {
         articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         articleRepository.save(new Article(TITLE, CONTENT, Category.DISCUSSION, member, false));
 
-        List<Article> articles = articleRepository.findAllByPage(null, 0, category, "views", 5);
+        Slice<Article> articles = articleRepository.findAllByPage(null, 0, category, "views", PageRequest.ofSize(5));
 
-        assertThat(articles).hasSize(expectedSize);
+        assertThat(articles.getContent()).hasSize(expectedSize);
     }
 
     @Test
@@ -119,9 +121,10 @@ class ArticleRepositoryTest {
         firstArticle.addViews();
         secondArticle.addViews();
 
-        List<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "views", 10);
+        Slice<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "views",
+                PageRequest.ofSize(10));
 
-        assertThat(articles).isEqualTo(List.of(firstArticle, secondArticle, thirdArticle));
+        assertThat(articles.getContent()).isEqualTo(List.of(firstArticle, secondArticle, thirdArticle));
     }
 
     @Test
@@ -130,9 +133,10 @@ class ArticleRepositoryTest {
         Article secondArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         Article firstArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
 
-        List<Article> articles = articleRepository.findAllByPage(null, null, Category.QUESTION.getValue(), "latest", 3);
+        Slice<Article> articles = articleRepository.findAllByPage(null, null, Category.QUESTION.getValue(), "latest",
+                PageRequest.ofSize(3));
 
-        assertThat(articles).isEqualTo(List.of(firstArticle, secondArticle, thirdArticle));
+        assertThat(articles.getContent()).isEqualTo(List.of(firstArticle, secondArticle, thirdArticle));
     }
 
     @ParameterizedTest
@@ -155,9 +159,9 @@ class ArticleRepositoryTest {
                 new Article("this is wooteco", "wow", Category.QUESTION, member, false));
         articleRepository.save(new Article("i am judy", "hello", Category.QUESTION, member, false));
 
-        List<Article> articles = articleRepository.searchByContainingText(null, 2, searchText);
+        Slice<Article> articles = articleRepository.searchByContainingText(null, searchText, PageRequest.ofSize(2));
 
-        assertThat(articles).containsExactly(article);
+        assertThat(articles.getContent()).containsExactly(article);
     }
 
     @ParameterizedTest
@@ -167,9 +171,9 @@ class ArticleRepositoryTest {
                 new Article("this is wooteco", "wow", Category.QUESTION, member, false));
         articleRepository.save(new Article("i am 주디", "hello", Category.QUESTION, member, false));
 
-        List<Article> articles = articleRepository.searchByContainingText(null, 2, searchText);
+        Slice<Article> articles = articleRepository.searchByContainingText(null, searchText, PageRequest.ofSize(2));
 
-        assertThat(articles).containsExactly(article);
+        assertThat(articles.getContent()).containsExactly(article);
     }
 
     @Test
@@ -177,14 +181,14 @@ class ArticleRepositoryTest {
         for (int i = 0; i < 5; i++) {
             articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         }
-        List<Article> articles = articleRepository.searchByContainingText(null, 5, "title");
+        Slice<Article> articles = articleRepository.searchByContainingText(null, "title", PageRequest.ofSize(5));
 
         assertThat(articles).hasSize(5);
     }
 
     @Test
     void 게시글이_없을_때_검색하면_빈_값을_반환한다() {
-        List<Article> articles = articleRepository.searchByContainingText(null, 5, "empty");
+        Slice<Article> articles = articleRepository.searchByContainingText(null, "empty", PageRequest.ofSize(5));
 
         assertThat(articles).isEmpty();
     }
@@ -194,9 +198,9 @@ class ArticleRepositoryTest {
         articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
 
-        List<Article> articles = articleRepository.searchByAuthor(null, 2, member.getName());
+        Slice<Article> articles = articleRepository.searchByAuthor(null, member.getName(), PageRequest.ofSize(2));
 
-        assertThat(articles).hasSize(2);
+        assertThat(articles.getContent()).hasSize(2);
     }
 
     @Test
@@ -360,9 +364,9 @@ class ArticleRepositoryTest {
         firstArticle.addTag(new Tags(tags));
         secondArticle.addTag(new Tags(tags));
 
-        List<Article> articles = articleRepository.searchByTag(null, 2, List.of(tag));
+        Slice<Article> articles = articleRepository.searchByTag(null, List.of(tag), PageRequest.ofSize(2));
 
-        assertThat(articles).hasSize(2);
+        assertThat(articles.getContent()).hasSize(2);
     }
 
     @Test
@@ -376,9 +380,12 @@ class ArticleRepositoryTest {
         firstArticle.addTag(new Tags(tags));
         secondArticle.addTag(new Tags(tags));
 
-        List<Article> articles = articleRepository.searchByTag(null, 2, new ArrayList<>());
+        Slice<Article> articles = articleRepository.searchByTag(null, new ArrayList<>(), PageRequest.ofSize(2));
 
-        assertThat(articles).hasSize(0);
+        assertAll(
+                () -> assertThat(articles.getContent()).hasSize(0),
+                () -> assertThat(articles.hasNext()).isFalse()
+        );
     }
 
     @Test
@@ -399,9 +406,9 @@ class ArticleRepositoryTest {
         secondArticle.addTag(new Tags(secondTags));
         thirdArticle.addTag(new Tags(thirdTags));
 
-        List<Article> articles = articleRepository.searchByTag(null, 2, List.of("spring", "java"));
+        Slice<Article> articles = articleRepository.searchByTag(null, List.of("spring", "java"), PageRequest.ofSize(3));
 
-        assertThat(articles).hasSize(3);
+        assertThat(articles.getContent()).hasSize(3);
     }
 
     @Test
