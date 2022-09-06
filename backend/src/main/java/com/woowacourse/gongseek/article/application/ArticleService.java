@@ -42,7 +42,7 @@ public class ArticleService {
     private static final String ANONYMOUS_NAME = "익명";
 
     private final ArticleRepository articleRepository;
-    private final ArticleTempService articleTempService;
+    private final TempArticleService tempArticleService;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final VoteRepository voteRepository;
@@ -59,7 +59,7 @@ public class ArticleService {
         Article article = articleRepository.save(articleRequest.toEntity(member));
         article.addTag(foundTags);
 
-        articleTempService.delete(articleRequest.getArticleTempId());
+        tempArticleService.delete(articleRequest.getArticleTempId());
         return new ArticleIdResponse(article);
     }
 
