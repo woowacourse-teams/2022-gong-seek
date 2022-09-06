@@ -24,6 +24,7 @@ const VoteDeadlineGenerator = () => {
 		time: '',
 	});
 	const [isToday, setIsToday] = useState(false);
+	const [isExpireDate, setIsExpireDate] = useState(false);
 	const today = todayGenerator();
 	const afterWeek = afterWeekGenerator();
 
@@ -68,7 +69,12 @@ const VoteDeadlineGenerator = () => {
 			setIsToday(true);
 			return;
 		}
+		if (deadlineDate.date === afterWeek) {
+			setIsExpireDate(true);
+			return;
+		}
 		setIsToday(false);
+		setIsExpireDate(false);
 	}, [deadlineDate]);
 
 	if (isLoading) return <Loading />;
@@ -92,6 +98,7 @@ const VoteDeadlineGenerator = () => {
 					name="time"
 					required
 					min={isToday ? currentTimeGenerator() : undefined}
+					max={isExpireDate ? '23:59' : undefined}
 					value={deadlineDate.time}
 					onChange={onChangeDeadlineDate}
 				/>
