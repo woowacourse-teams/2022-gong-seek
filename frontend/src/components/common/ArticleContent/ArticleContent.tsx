@@ -1,13 +1,10 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as S from '@/components/common/ArticleContent/ArticleContent.styles';
 import ToastUiViewer from '@/components/common/ArticleContent/ToastUiViewer/ToastUiViewer';
 import useDeleteArticleContent from '@/components/common/ArticleContent/hooks/useDeleteArticleContent';
-import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import useHeartClick from '@/hooks/useHeartClick';
-import { queryClient } from '@/index';
 import { ArticleType } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 import { dateTimeConverter } from '@/utils/converter';
