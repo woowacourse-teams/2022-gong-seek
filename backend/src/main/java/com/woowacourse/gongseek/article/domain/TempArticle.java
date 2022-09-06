@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.article.domain;
 
-import com.woowacourse.gongseek.article.presentation.dto.ArticleTempRequest;
+import com.woowacourse.gongseek.article.presentation.dto.TempArticleRequest;
 import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import org.springframework.data.annotation.CreatedDate;
 @AllArgsConstructor
 @Getter
 @Entity
-public class ArticleTemp {
+public class TempArticle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,7 +60,7 @@ public class ArticleTemp {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    public ArticleTemp(String title, String content, Category category, Member member, List<String> tags,
+    public TempArticle(String title, String content, Category category, Member member, List<String> tags,
                        boolean isAnonymous) {
         this(
                 null,
@@ -74,7 +74,7 @@ public class ArticleTemp {
         );
     }
 
-    public void update(ArticleTempRequest updateRequest) {
+    public void update(TempArticleRequest updateRequest) {
         this.title = new Title(updateRequest.getTitle());
         this.content = new Content(updateRequest.getContent());
         this.category = Category.from(updateRequest.getCategory());

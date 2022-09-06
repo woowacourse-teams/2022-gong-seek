@@ -3,11 +3,11 @@ package com.woowacourse.gongseek.article.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.gongseek.article.domain.ArticleTemp;
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.article.domain.repository.ArticleTempRepository;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleTempIdResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleTempRequest;
+import com.woowacourse.gongseek.article.domain.TempArticle;
+import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
+import com.woowacourse.gongseek.article.presentation.dto.TempArticleIdResponse;
+import com.woowacourse.gongseek.article.presentation.dto.TempArticleRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
@@ -21,13 +21,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-class ArticleTempServiceTest {
+class TempArticleServiceTest {
 
     @Autowired
-    private ArticleTempService articleTempService;
+    private TempArticleService tempArticleService;
 
     @Autowired
-    private ArticleTempRepository articleTempRepository;
+    private TempArticleRepository tempArticleRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -50,36 +50,36 @@ class ArticleTempServiceTest {
     @Transactional
     @Test
     void 임시_게시글을_저장한다() {
-        final ArticleTempRequest request = new ArticleTempRequest("title", "content", Category.QUESTION.getValue(),
+        final TempArticleRequest request = new TempArticleRequest("title", "content", Category.QUESTION.getValue(),
                 List.of("spring"), false);
 
-        final ArticleTempIdResponse articleTempIdResponse = articleTempService.createOrUpdate(
+        final TempArticleIdResponse tempArticleIdResponse = tempArticleService.createOrUpdate(
                 new LoginMember(member.getId()),
                 request);
 
-        assertThat(articleTempIdResponse.getId()).isNotNull();
+        assertThat(tempArticleIdResponse.getId()).isNotNull();
     }
 
     @Transactional
     @Test
     void 임시_게시글을_업데이트한다() {
         final LoginMember loginMember = new LoginMember(member.getId());
-        final ArticleTempRequest createRequest = new ArticleTempRequest("title", "content",
+        final TempArticleRequest createRequest = new TempArticleRequest("title", "content",
                 Category.QUESTION.getValue(),
                 List.of("spring"), false);
-        final ArticleTempIdResponse savedId = articleTempService.createOrUpdate(loginMember, createRequest);
-        final ArticleTempRequest updateRequest = new ArticleTempRequest(savedId.getId(), "updateTitle", "updateContent",
+        final TempArticleIdResponse savedId = tempArticleService.createOrUpdate(loginMember, createRequest);
+        final TempArticleRequest updateRequest = new TempArticleRequest(savedId.getId(), "updateTitle", "updateContent",
                 Category.QUESTION.getValue(),
                 List.of("updateSpring"), false);
 
-        final ArticleTempIdResponse updatedId = articleTempService.createOrUpdate(loginMember, updateRequest);
-        final ArticleTemp articleTemp = articleTempRepository.findById(updatedId.getId()).get();
+        final TempArticleIdResponse updatedId = tempArticleService.createOrUpdate(loginMember, updateRequest);
+        final TempArticle tempArticle = tempArticleRepository.findById(updatedId.getId()).get();
 
         assertAll(
                 () -> assertThat(savedId.getId()).isEqualTo(updatedId.getId()),
-                () -> assertThat(articleTemp.getTitle().getValue()).isEqualTo("updateTitle"),
-                () -> assertThat(articleTemp.getContent().getValue()).isEqualTo("updateContent"),
-                () -> assertThat(articleTemp.getTags().get(0)).isEqualTo("updateSpring")
+                () -> assertThat(tempArticle.getTitle().getValue()).isEqualTo("updateTitle"),
+                () -> assertThat(tempArticle.getContent().getValue()).isEqualTo("updateContent"),
+                () -> assertThat(tempArticle.getTags().get(0)).isEqualTo("updateSpring")
         );
     }
 }

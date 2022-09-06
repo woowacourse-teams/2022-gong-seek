@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
-import com.woowacourse.gongseek.article.domain.ArticleTemp;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
-import com.woowacourse.gongseek.article.domain.repository.ArticleTempRepository;
+import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
@@ -54,7 +54,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
 @SpringBootTest
-public class ArticleServiceTest {
+public class TempArticleTest {
 
     @Autowired
     private ArticleService articleService;
@@ -63,7 +63,7 @@ public class ArticleServiceTest {
     private ArticleRepository articleRepository;
 
     @Autowired
-    private ArticleTempRepository articleTempRepository;
+    private TempArticleRepository tempArticleRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -807,13 +807,13 @@ public class ArticleServiceTest {
     @Transactional
     @Test
     void 게시글을_생성하면_임시_게시글은_삭제된다() {
-        final ArticleTemp articleTemp = articleTempRepository.save(
-                new ArticleTemp("title", "content", Category.DISCUSSION, member, List.of("spring"), false));
+        final TempArticle tempArticle = tempArticleRepository.save(
+                new TempArticle("title", "content", Category.DISCUSSION, member, List.of("spring"), false));
         final ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
-                List.of("Spring"), true, articleTemp.getId());
+                List.of("Spring"), true, tempArticle.getId());
 
         articleService.save(new LoginMember(member.getId()), articleRequest);
 
-        assertThat(articleTempRepository.existsById(articleTemp.getId())).isFalse();
+        assertThat(tempArticleRepository.existsById(tempArticle.getId())).isFalse();
     }
 }

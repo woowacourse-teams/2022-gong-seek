@@ -1,8 +1,8 @@
 package com.woowacourse.gongseek.article.presentation.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.woowacourse.gongseek.article.domain.ArticleTemp;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.member.domain.Member;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
@@ -16,7 +16,7 @@ import org.hibernate.validator.constraints.Length;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class ArticleTempRequest {
+public class TempArticleRequest {
 
     private Long id;
 
@@ -35,11 +35,11 @@ public class ArticleTempRequest {
     @JsonProperty("isAnonymous")
     private Boolean isAnonymous;
 
-    public ArticleTempRequest(String title, String content, String category, List<String> tags, boolean isAnonymous) {
+    public TempArticleRequest(String title, String content, String category, List<String> tags, boolean isAnonymous) {
         this(null, title, content, category, tags, isAnonymous);
     }
 
-    public ArticleTemp toEntity(Member member) {
-        return new ArticleTemp(title, content, Category.from(category), member, tags, isAnonymous);
+    public TempArticle toEntity(Member member) {
+        return new TempArticle(title, content, Category.from(category), member, tags, isAnonymous);
     }
 }

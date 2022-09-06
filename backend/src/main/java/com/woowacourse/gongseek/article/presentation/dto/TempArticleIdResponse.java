@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class ArticleTempIdResponse {
+public class TempArticleIdResponse {
 
     private Long id;
 }

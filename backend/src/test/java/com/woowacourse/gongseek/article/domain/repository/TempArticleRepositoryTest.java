@@ -2,7 +2,7 @@ package com.woowacourse.gongseek.article.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.woowacourse.gongseek.article.domain.ArticleTemp;
+import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.config.JpaAuditingConfig;
 import com.woowacourse.gongseek.config.QuerydslConfig;
@@ -16,22 +16,22 @@ import org.springframework.context.annotation.Import;
 
 @Import({JpaAuditingConfig.class, QuerydslConfig.class})
 @DataJpaTest
-class ArticleTempRepositoryTest {
+class TempArticleRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
-    private ArticleTempRepository articleTempRepository;
+    private TempArticleRepository tempArticleRepository;
 
     @Test
     void 임시_게시글을_저장한다() {
         final Member member = memberRepository.save(new Member("slow", "hanull", "avatarUrl"));
-        final ArticleTemp articleTemp = new ArticleTemp("title", "content", Category.DISCUSSION,
+        final TempArticle tempArticle = new TempArticle("title", "content", Category.DISCUSSION,
                 member, List.of("spring"), false);
 
-        final ArticleTemp savedArticleTemp = articleTempRepository.save(articleTemp);
+        final TempArticle savedTempArticle = tempArticleRepository.save(tempArticle);
 
-        assertThat(savedArticleTemp).isEqualTo(articleTemp);
+        assertThat(savedTempArticle).isEqualTo(tempArticle);
     }
 }
