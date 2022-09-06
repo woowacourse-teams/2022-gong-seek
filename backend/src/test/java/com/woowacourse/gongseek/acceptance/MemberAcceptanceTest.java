@@ -1,15 +1,15 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixtures.기명으로_게시글을_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixtures.익명으로_게시글을_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixtures.토론_게시글을_기명으로_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixtures.로그인을_한다;
-import static com.woowacourse.gongseek.acceptance.support.fixtures.CommentFixtures.기명으로_댓글을_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.fixtures.CommentFixtures.익명으로_댓글을_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.fixtures.MemberFixtures.내_정보를_조회한다;
-import static com.woowacourse.gongseek.acceptance.support.fixtures.MemberFixtures.내가_작성한_게시글들을_조회한다;
-import static com.woowacourse.gongseek.acceptance.support.fixtures.MemberFixtures.내가_작성한_댓글들을_조회한다;
-import static com.woowacourse.gongseek.acceptance.support.fixtures.MemberFixtures.이름을_수정한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.기명으로_게시글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.익명으로_게시글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.토론_게시글을_기명으로_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixture.로그인을_한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.CommentFixture.기명으로_댓글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.CommentFixture.익명으로_댓글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.MemberFixture.내_정보를_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.MemberFixture.내가_작성한_게시글들을_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.MemberFixture.내가_작성한_댓글들을_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.MemberFixture.이름을_수정한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.기론;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
 import static org.assertj.core.api.Assertions.assertThat;

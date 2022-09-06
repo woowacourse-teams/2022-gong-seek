@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class AuthFixtures {
+public class AuthFixture {
 
     public static AccessTokenResponse 로그인을_한다(GithubClientFixtures client) {
         return RestAssured

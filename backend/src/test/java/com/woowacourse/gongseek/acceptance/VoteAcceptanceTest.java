@@ -1,11 +1,11 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixtures.토론_게시글을_기명으로_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixtures.토론_게시글을_익명으로_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixtures.로그인을_한다;
-import static com.woowacourse.gongseek.acceptance.support.fixtures.VoteFixtures.투표를_생성한다;
-import static com.woowacourse.gongseek.acceptance.support.fixtures.VoteFixtures.투표를_조회한다;
-import static com.woowacourse.gongseek.acceptance.support.fixtures.VoteFixtures.투표를_한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.토론_게시글을_기명으로_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.토론_게시글을_익명으로_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixture.로그인을_한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.VoteFixture.투표를_생성한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.VoteFixture.투표를_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.VoteFixture.투표를_한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.슬로;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;

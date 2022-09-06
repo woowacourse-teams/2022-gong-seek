@@ -10,7 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class VoteFixtures {
+public class VoteFixture {
 
     public static ExtractableResponse<Response> 투표를_생성한다(AccessTokenResponse tokenResponse, Long articleId,
                                                          VoteCreateRequest voteCreateRequest) {

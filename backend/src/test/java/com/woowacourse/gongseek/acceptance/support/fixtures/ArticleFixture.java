@@ -16,7 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class ArticleFixtures {
+public class ArticleFixture {
 
     public static ExtractableResponse<Response> 특정_게시글을_등록한다(AccessTokenResponse tokenResponse,
                                                              ArticleRequest articleRequest) {

@@ -8,7 +8,7 @@ import io.restassured.response.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-public class MemberFixtures {
+public class MemberFixture {
 
     public static ExtractableResponse<Response> 내_정보를_조회한다(AccessTokenResponse tokenResponse) {
         return RestAssured

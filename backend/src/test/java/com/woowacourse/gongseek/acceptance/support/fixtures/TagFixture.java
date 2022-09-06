@@ -6,7 +6,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpHeaders;
 
-public class TagFixtures {
+public class TagFixture {
 
     public static ExtractableResponse<Response> 모든_해시태그를_조회한다(AccessTokenResponse tokenResponse) {
         return RestAssured

@@ -9,7 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class LikeFixtures {
+public class LikeFixture {
 
     public static ExtractableResponse<Response> 게시글을_추천한다(AccessTokenResponse accessToken,
                                                           ArticleIdResponse article) {

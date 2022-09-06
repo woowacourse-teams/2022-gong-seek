@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixtures.로그인_URL을_얻는다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixture.로그인_URL을_얻는다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.기론;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
