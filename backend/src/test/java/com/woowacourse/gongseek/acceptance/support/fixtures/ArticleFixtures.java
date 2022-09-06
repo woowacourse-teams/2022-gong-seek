@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.acceptance.support;
+package com.woowacourse.gongseek.acceptance.support.fixtures;
 
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;

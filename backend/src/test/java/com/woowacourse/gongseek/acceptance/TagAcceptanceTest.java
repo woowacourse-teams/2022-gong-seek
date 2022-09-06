@@ -1,8 +1,8 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.기명으로_게시글을_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
-import static com.woowacourse.gongseek.acceptance.support.TagFixtures.모든_해시태그를_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixtures.기명으로_게시글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixtures.로그인을_한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.TagFixtures.모든_해시태그를_조회한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
 import static org.assertj.core.api.Assertions.assertThat;

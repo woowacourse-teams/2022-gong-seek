@@ -1,10 +1,10 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_게시글을_조회한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시글을_기명으로_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
-import static com.woowacourse.gongseek.acceptance.support.LikeFixtures.게시글_추천을_취소한다;
-import static com.woowacourse.gongseek.acceptance.support.LikeFixtures.게시글을_추천한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixtures.로그인_후_게시글을_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixtures.토론_게시글을_기명으로_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixtures.로그인을_한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.LikeFixtures.게시글_추천을_취소한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.LikeFixtures.게시글을_추천한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.슬로;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
 import static org.assertj.core.api.Assertions.assertThat;

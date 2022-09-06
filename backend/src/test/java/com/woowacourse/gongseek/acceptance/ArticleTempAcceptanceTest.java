@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixtures.로그인을_한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.슬로;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,7 +19,7 @@ import org.springframework.http.MediaType;
 public class ArticleTempAcceptanceTest extends AcceptanceTest {
 
     @Test
-    void 로그인을_하고_게시글_임시서장을_할_수_있다() {
+    void 슬로가_로그인을_하고_게시글_임시서장을_할_수_있다() {
         final AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
 
         final ArticleRequest request = new ArticleRequest("title", "content", Category.DISCUSSION.getValue(),
@@ -36,5 +36,17 @@ public class ArticleTempAcceptanceTest extends AcceptanceTest {
                 .extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    void 슬로가_로그인을_하고_전체_임시_게시글을_조회할_수_있다() {
+        final AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
+
+        final ArticleRequest request1 = new ArticleRequest("title", "content", Category.DISCUSSION.getValue(),
+                List.of("Spring"), false);
+        final ArticleRequest request2 = new ArticleRequest("title2", "content2", Category.QUESTION.getValue(),
+                List.of("Spring2"), false);
+
+
     }
 }

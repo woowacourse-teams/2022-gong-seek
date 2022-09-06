@@ -1,12 +1,12 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시글을_기명으로_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
-import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.기명으로_댓글을_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.댓글을_삭제한다;
-import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.댓글을_수정한다;
-import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.댓글을_조회한다;
-import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.익명으로_댓글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixtures.토론_게시글을_기명으로_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixtures.로그인을_한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.CommentFixtures.기명으로_댓글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.CommentFixtures.댓글을_삭제한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.CommentFixtures.댓글을_수정한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.CommentFixtures.댓글을_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.CommentFixtures.익명으로_댓글을_등록한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.슬로;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
 import static org.assertj.core.api.Assertions.assertThat;
