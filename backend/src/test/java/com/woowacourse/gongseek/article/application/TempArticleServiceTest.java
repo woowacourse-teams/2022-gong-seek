@@ -8,6 +8,7 @@ import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleRequest;
+import com.woowacourse.gongseek.article.presentation.dto.TempArticlesResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
@@ -54,8 +55,7 @@ class TempArticleServiceTest {
                 List.of("spring"), false);
 
         final TempArticleIdResponse tempArticleIdResponse = tempArticleService.createOrUpdate(
-                new LoginMember(member.getId()),
-                request);
+                new LoginMember(member.getId()), request);
 
         assertThat(tempArticleIdResponse.getId()).isNotNull();
     }
@@ -65,12 +65,10 @@ class TempArticleServiceTest {
     void 임시_게시글을_업데이트한다() {
         final LoginMember loginMember = new LoginMember(member.getId());
         final TempArticleRequest createRequest = new TempArticleRequest("title", "content",
-                Category.QUESTION.getValue(),
-                List.of("spring"), false);
+                Category.QUESTION.getValue(), List.of("spring"), false);
         final TempArticleIdResponse savedId = tempArticleService.createOrUpdate(loginMember, createRequest);
         final TempArticleRequest updateRequest = new TempArticleRequest(savedId.getId(), "updateTitle", "updateContent",
-                Category.QUESTION.getValue(),
-                List.of("updateSpring"), false);
+                Category.QUESTION.getValue(), List.of("updateSpring"), false);
 
         final TempArticleIdResponse updatedId = tempArticleService.createOrUpdate(loginMember, updateRequest);
         final TempArticle tempArticle = tempArticleRepository.findById(updatedId.getId()).get();
@@ -81,5 +79,25 @@ class TempArticleServiceTest {
                 () -> assertThat(tempArticle.getContent().getValue()).isEqualTo("updateContent"),
                 () -> assertThat(tempArticle.getTags().get(0)).isEqualTo("updateSpring")
         );
+    }
+
+    @Test
+    void 전체_임시_게시글을_조회한다() {
+        final LoginMember loginMember = new LoginMember(member.getId());
+        final TempArticleRequest request1 = new TempArticleRequest("title", "content", Category.QUESTION.getValue(),
+                List.of("spring"), false);
+        final TempArticleRequest request2 = new TempArticleRequest("title2", "content2", Category.QUESTION.getValue(),
+                List.of("spring2"), false);
+        tempArticleService.createOrUpdate(loginMember, request1);
+        tempArticleService.createOrUpdate(loginMember, request2);
+
+        final TempArticlesResponse tempArticles = tempArticleService.getAll(loginMember);
+
+        assertAll(
+                () -> assertThat(tempArticles.getValues()).hasSize(2),
+                () -> assertThat(tempArticles.getValues().get(0).getTitle()).isEqualTo("title"),
+                () -> assertThat(tempArticles.getValues().get(1).getTitle()).isEqualTo("title2")
+        );
+
     }
 }

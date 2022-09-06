@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
-import com.woowacourse.gongseek.article.presentation.dto.TempArticleResponse;
+import com.woowacourse.gongseek.article.presentation.dto.TempArticlesResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -49,11 +49,13 @@ public class TempArticleAcceptanceTest extends AcceptanceTest {
                 .get("/api/temp-articles")
                 .then().log().all()
                 .extract();
-        final TempArticleResponse tempArticleResponse = response.as(TempArticleResponse.class);
+        final TempArticlesResponse tempArticlesResponse = response.as(TempArticlesResponse.class);
 
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(tempArticleResponse.getTitle())
+                () -> assertThat(tempArticlesResponse.getValues()).hasSize(2),
+                () -> assertThat(tempArticlesResponse.getValues().get(0).getTitle()).isEqualTo("title"),
+                () -> assertThat(tempArticlesResponse.getValues().get(1).getTitle()).isEqualTo("title2")
         );
     }
 }
