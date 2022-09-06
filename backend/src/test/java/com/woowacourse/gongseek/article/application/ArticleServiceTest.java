@@ -54,7 +54,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
 @SpringBootTest
-public class TempArticleTest {
+public class ArticleServiceTest {
 
     @Autowired
     private ArticleService articleService;
