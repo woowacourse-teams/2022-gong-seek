@@ -5,8 +5,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
+import com.woowacourse.gongseek.article.domain.ArticleTemp;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.ArticleTempRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
@@ -59,6 +61,9 @@ public class ArticleServiceTest {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private ArticleTempRepository articleTempRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -797,5 +802,18 @@ public class ArticleServiceTest {
                 () -> assertThat(articleRepository.findById(article.getId())).isEmpty(),
                 () -> assertThat(voteItemRepository.findAll()).isEmpty()
         );
+    }
+
+    @Transactional
+    @Test
+    void 게시글을_생성하면_임시_게시글은_삭제된다() {
+        final ArticleTemp articleTemp = articleTempRepository.save(
+                new ArticleTemp("title", "content", Category.DISCUSSION, member, List.of("spring"), false));
+        final ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true, articleTemp.getId());
+
+        articleService.save(new LoginMember(member.getId()), articleRequest);
+
+        assertThat(articleTempRepository.existsById(articleTemp.getId())).isFalse();
     }
 }
