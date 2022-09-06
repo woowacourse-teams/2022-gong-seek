@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 
 import * as S from '@/components/common/ArticleContent/ArticleContent.styles';
-import ToastUiViewer from '@/components/common/ArticleContent/ToastUiViewer/ToastUiViewer';
 import useDeleteArticleContent from '@/components/common/ArticleContent/hooks/useDeleteArticleContent';
+import ToastUiViewer from '@/components/common/ToastUiViewer/ToastUiViewer';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import useHeartClick from '@/hooks/useHeartClick';
 import { ArticleType } from '@/types/articleResponse';
