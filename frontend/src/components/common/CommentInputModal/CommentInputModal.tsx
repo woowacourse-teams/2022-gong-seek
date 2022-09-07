@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import reactDom from 'react-dom';
 
+import { postImageUrlConverter } from '@/api/image';
 import AnonymouseCheckBox from '@/components/common/AnonymousCheckBox/AnonymouseCheckBox';
 import * as S from '@/components/common/CommentInputModal/CommentInputModal.styles';
 import usePostCommentInputModal from '@/components/common/CommentInputModal/hooks/usePostCommentInputModal';
@@ -57,6 +58,20 @@ const CommentInputModal = ({
 			queryClient.refetchQueries('comments');
 		}
 	});
+
+	useEffect(() => {
+		if (commentContent.current) {
+			commentContent.current.getInstance().removeHook('addImageBlobHook');
+			commentContent.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
+				(async () => {
+					const formData = new FormData();
+					formData.append('imageFile', blob);
+					const url = await postImageUrlConverter(formData);
+					callback(url, 'alt-text');
+				})();
+			});
+		}
+	}, [commentContent]);
 
 	if (commentModal === null) {
 		throw new Error('모달을 찾지 못하였습니다.');
