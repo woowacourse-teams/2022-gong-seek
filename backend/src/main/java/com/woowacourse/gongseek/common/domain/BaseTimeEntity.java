@@ -7,8 +7,8 @@ import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-@MappedSuperclass
 @Getter
+@MappedSuperclass
 public abstract class BaseTimeEntity {
 
     @CreatedDate
