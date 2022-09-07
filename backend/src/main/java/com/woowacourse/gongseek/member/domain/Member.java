@@ -16,6 +16,9 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Member {
 
+    private static final String ANONYMOUS_NAME = "익명";
+    private static final String ANONYMOUS_AVATAR_URL = "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,16 +47,16 @@ public class Member {
         return name;
     }
 
-    public boolean isAnonymous(String cipherId) {
-        return githubId.equals(cipherId);
-    }
-
     public void updateAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
 
     public void updateName(String value) {
         this.name = new Name(value);
+    }
+
+    public static Member createAnonymous() {
+        return new Member(ANONYMOUS_NAME, "githubId", ANONYMOUS_AVATAR_URL);
     }
 
     public String getName() {

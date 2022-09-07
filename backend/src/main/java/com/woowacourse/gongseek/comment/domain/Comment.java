@@ -61,11 +61,14 @@ public class Comment extends BaseTimeEntity {
         return this.member.equals(member);
     }
 
-    public boolean isAnonymousAuthor(String cipherId) {
-        return member.isAnonymous(cipherId);
-    }
-
     public String getContent() {
         return content.getValue();
+    }
+
+    public Member getMember() {
+        if (isAnonymous) {
+            return Member.createAnonymous();
+        }
+        return member;
     }
 }

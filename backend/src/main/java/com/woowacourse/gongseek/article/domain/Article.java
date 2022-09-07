@@ -73,11 +73,7 @@ public class Article extends BaseTimeEntity {
     }
 
     public boolean isAuthor(Member member) {
-        return member.equals(this.getMember());
-    }
-
-    public boolean isAnonymousAuthor(String cipherId) {
-        return member.isAnonymous(cipherId);
+        return this.member.equals(member);
     }
 
     public void addViews() {
@@ -108,6 +104,13 @@ public class Article extends BaseTimeEntity {
 
     public String getContent() {
         return content.getValue();
+    }
+
+    public Member getMember() {
+        if (isAnonymous) {
+            return Member.createAnonymous();
+        }
+        return member;
     }
 
     public int getViews() {
