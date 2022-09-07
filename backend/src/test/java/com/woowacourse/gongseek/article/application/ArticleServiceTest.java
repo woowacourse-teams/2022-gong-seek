@@ -491,8 +491,7 @@ public class ArticleServiceTest {
         articleRepository.saveAll(articles);
 
         ArticlePageResponse response = articleService.getAll(null, 0, Category.QUESTION.getValue(), "latest",
-                PageRequest.ofSize(10),
-                loginMember);
+                PageRequest.ofSize(10), loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
         assertAll(
@@ -515,8 +514,7 @@ public class ArticleServiceTest {
         articleRepository.saveAll(articles);
 
         ArticlePageResponse response = articleService.getAll(10L, 0, Category.QUESTION.getValue(), "latest",
-                PageRequest.ofSize(10),
-                loginMember);
+                PageRequest.ofSize(10), loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
         assertAll(
