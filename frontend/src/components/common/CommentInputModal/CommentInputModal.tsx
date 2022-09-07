@@ -6,7 +6,9 @@ import * as S from '@/components/common/CommentInputModal/CommentInputModal.styl
 import usePostCommentInputModal from '@/components/common/CommentInputModal/hooks/usePostCommentInputModal';
 import usePutCommentInputModal from '@/components/common/CommentInputModal/hooks/usePutCommentInputModal';
 import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
+import useSnackBar from '@/hooks/useSnackBar';
 import { queryClient } from '@/index';
+import { validatedCommentInput } from '@/utils/validateInput';
 import { Editor } from '@toast-ui/react-editor';
 
 export interface CommentInputModalProps {
@@ -38,7 +40,7 @@ const CommentInputModal = ({
 	const commentModal = document.getElementById('comment-portal');
 	const [isAnonymous, setIsAnonymous] = useState(false);
 	const commentContent = useRef<Editor | null>(null);
-
+	const { showSnackBar } = useSnackBar();
 	const {
 		isLoading: postIsLoading,
 		mutate: postMutate,
@@ -64,14 +66,19 @@ const CommentInputModal = ({
 		if (commentContent.current == null) {
 			return;
 		}
-		if (modalType === 'register') {
-			postMutate({
-				content: commentContent.current.getInstance().getMarkdown(),
-				id: articleId,
-				isAnonymous,
-			});
+		if (!validatedCommentInput(commentContent.current.getInstance().getMarkdown())) {
+			showSnackBar('댓글은 1자 이상, 10000자 이하로 작성해주세요');
 			return;
 		}
+		if (commentContent.current)
+			if (modalType === 'register') {
+				postMutate({
+					content: commentContent.current.getInstance().getMarkdown(),
+					id: articleId,
+					isAnonymous,
+				});
+				return;
+			}
 		if (typeof commentId === 'undefined') {
 			throw new Error('댓글을 찾지 못하였습니다');
 		}
