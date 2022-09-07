@@ -1,5 +1,6 @@
 package com.woowacourse.gongseek.auth.utils;
 
+import org.springframework.boot.web.server.Cookie.SameSite;
 import org.springframework.http.ResponseCookie;
 
 public class CookieUtils {
@@ -12,7 +13,7 @@ public class CookieUtils {
                 .path("/")
                 .maxAge(MAX_AGE)
                 .secure(true)
-                .sameSite("${cookie.samesite}")
+                .sameSite(SameSite.NONE.attributeValue())
                 .build();
     }
 }
