@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.config;
 
 import ch.qos.logback.access.servlet.TeeFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,12 +12,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    @Value("${cors.url.service}")
+    private String serviceUrl;
+
+    @Value("${cors.url.local}")
+    private String localUrl;
+
     public static final String ALLOWED_METHOD_NAMES = "GET,HEAD,POST,PUT,DELETE,TRACE,OPTIONS,PATCH";
 
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("${cors.url.service}", "${cors.url.local}")
+                .allowedOrigins(serviceUrl, localUrl)
                 .allowCredentials(true)
                 .allowedMethods(ALLOWED_METHOD_NAMES.split(","))
                 .exposedHeaders("*");

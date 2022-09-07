@@ -41,5 +41,10 @@ github:
     profile: http://localhost:8888/api/auth/user
     redirect: https://127.0.0.1/callback
 
+cors:
+  url:
+    service: https://gongseek.site
+    local:
+
 server:
   port: 8888
