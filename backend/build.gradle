@@ -161,3 +161,13 @@ sonarqube {
         // jacoco 플러그인의 결과 파일
     }
 }
+
+processResources.dependsOn('copySecret')
+
+task copySecret(type: Copy) {
+    from 'src/main/resources/secret/application-prod.yml'
+    into 'src/main/resources'
+
+    from 'src/main/resources/secret/application-dev.yml'
+    into 'src/main/resources'
+}
