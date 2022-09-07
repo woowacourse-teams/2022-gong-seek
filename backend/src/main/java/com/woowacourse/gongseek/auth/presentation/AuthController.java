@@ -9,6 +9,7 @@ import com.woowacourse.gongseek.auth.utils.CookieUtils;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+
+    @Value("${cookie.samesite}")
+    private final String sameSite;
 
     @GetMapping("/github")
     public ResponseEntity<OAuthLoginUrlResponse> transferLoginUrl() {
