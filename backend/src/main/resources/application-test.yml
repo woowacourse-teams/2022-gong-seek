@@ -17,7 +17,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        show_sql: true
+        show_sql: false
     database-platform: org.hibernate.dialect.MySQL57Dialect
 
 security:
