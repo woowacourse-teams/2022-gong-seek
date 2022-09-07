@@ -27,9 +27,6 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @Value("${cookie.samesite}")
-    private final String sameSite;
-
     @GetMapping("/github")
     public ResponseEntity<OAuthLoginUrlResponse> transferLoginUrl() {
         return ResponseEntity.ok(authService.getLoginUrl());
