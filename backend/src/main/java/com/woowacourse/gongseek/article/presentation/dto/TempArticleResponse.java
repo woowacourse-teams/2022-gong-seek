@@ -12,10 +12,11 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TempArticleResponse {
 
+    private long id;
     private String title;
     private LocalDateTime createAt;
 
     public static TempArticleResponse from(TempArticle tempArticle) {
-        return new TempArticleResponse(tempArticle.getTitle().getValue(), tempArticle.getCreatedAt());
+        return new TempArticleResponse(tempArticle.getId(), tempArticle.getTitle().getValue(), tempArticle.getCreatedAt());
     }
 }

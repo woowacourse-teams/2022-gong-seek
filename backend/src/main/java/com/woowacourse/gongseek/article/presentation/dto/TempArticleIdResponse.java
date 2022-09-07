@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TempArticleIdResponse {
 
-    private Long id;
+    private long id;
 }

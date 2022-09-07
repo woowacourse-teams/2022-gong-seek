@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
+import com.woowacourse.gongseek.article.presentation.dto.TempArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticlesResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import io.restassured.RestAssured;
@@ -38,10 +39,14 @@ public class TempArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 슬로가_로그인을_하고_전체_임시_게시글을_조회할_수_있다() {
         final AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
-        임시_게시물을_등록한다(tokenResponse,
-                new ArticleRequest("title", "content", Category.DISCUSSION.getValue(), List.of("Spring"), false));
-        임시_게시물을_등록한다(tokenResponse,
-                new ArticleRequest("title2", "content2", Category.QUESTION.getValue(), List.of("Spring2"), false));
+        final long responseId1 = 임시_게시물을_등록한다(tokenResponse,
+                new ArticleRequest("title", "content", Category.DISCUSSION.getValue(), List.of("Spring"), false))
+                .as(TempArticleIdResponse.class)
+                .getId();
+        final long responseId2 = 임시_게시물을_등록한다(tokenResponse,
+                new ArticleRequest("title2", "content2", Category.QUESTION.getValue(), List.of("Spring2"), false))
+                .as(TempArticleIdResponse.class)
+                .getId();
 
         final ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
@@ -54,7 +59,9 @@ public class TempArticleAcceptanceTest extends AcceptanceTest {
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(tempArticlesResponse.getValues()).hasSize(2),
+                () -> assertThat(tempArticlesResponse.getValues().get(0).getId()).isEqualTo(responseId1),
                 () -> assertThat(tempArticlesResponse.getValues().get(0).getTitle()).isEqualTo("title"),
+                () -> assertThat(tempArticlesResponse.getValues().get(1).getId()).isEqualTo(responseId2),
                 () -> assertThat(tempArticlesResponse.getValues().get(1).getTitle()).isEqualTo("title2")
         );
     }
