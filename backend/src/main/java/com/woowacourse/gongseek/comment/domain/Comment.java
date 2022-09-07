@@ -2,8 +2,8 @@ package com.woowacourse.gongseek.comment.domain;
 
 
 import com.woowacourse.gongseek.article.domain.Article;
+import com.woowacourse.gongseek.common.domain.BaseTimeEntity;
 import com.woowacourse.gongseek.member.domain.Member;
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -19,15 +19,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Comment {
+public class Comment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,13 +45,6 @@ public class Comment {
 
     @Column(nullable = false)
     private boolean isAnonymous;
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
 
     public Comment(String content, Member member, Article article, boolean isAnonymous) {
         this.content = new Content(content);

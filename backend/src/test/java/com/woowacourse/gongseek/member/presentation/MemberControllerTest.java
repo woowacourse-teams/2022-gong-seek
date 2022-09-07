@@ -87,10 +87,10 @@ public class MemberControllerTest {
     void 마이페이지에서_회원_게시글_조회_API_문서화() throws Exception {
         MyPageArticlesResponse myPageArticlesResponse = new MyPageArticlesResponse(
                 List.of(
-                        new MyPageArticleResponse(1L, "title1", "question1", 10, LocalDateTime.now(),
-                                LocalDateTime.now(), 100),
-                        new MyPageArticleResponse(1L, "title2", "question2", 20, LocalDateTime.now(),
-                                LocalDateTime.now(), 200))
+                        new MyPageArticleResponse(1L, "title1", "question", 10, 100, LocalDateTime.now(),
+                                LocalDateTime.now()),
+                        new MyPageArticleResponse(1L, "title2", "discussion", 20, 100, LocalDateTime.now(),
+                                LocalDateTime.now()))
         );
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(memberService.getArticles(new LoginMember(any()))).willReturn(myPageArticlesResponse);
@@ -110,9 +110,9 @@ public class MemberControllerTest {
                                 fieldWithPath("articles[].title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("articles[].category").type(JsonFieldType.STRING).description("카테고리"),
                                 fieldWithPath("articles[].commentCount").type(JsonFieldType.NUMBER).description("댓글 수"),
+                                fieldWithPath("articles[].views").type(JsonFieldType.NUMBER).description("조회 수"),
                                 fieldWithPath("articles[].createdAt").type(JsonFieldType.STRING).description("생성 날짜"),
-                                fieldWithPath("articles[].updatedAt").type(JsonFieldType.STRING).description("수정 날짜"),
-                                fieldWithPath("articles[].views").type(JsonFieldType.NUMBER).description("조회 수")
+                                fieldWithPath("articles[].updatedAt").type(JsonFieldType.STRING).description("수정 날짜")
                         )
                 ));
     }
