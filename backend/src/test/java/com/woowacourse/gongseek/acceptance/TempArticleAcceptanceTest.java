@@ -28,12 +28,12 @@ public class TempArticleAcceptanceTest extends AcceptanceTest {
                 List.of("Spring"), false);
 
         final ExtractableResponse<Response> response = 임시_게시물을_등록한다(tokenResponse, request);
+        final TempArticleIdResponse responseId = response.as(TempArticleIdResponse.class);
 
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-        /**
-         * todo
-         * 임시 게시물 id값을 확인한다.
-         */
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
+                () -> assertThat(responseId).isNotNull()
+        );
     }
 
     @Test
