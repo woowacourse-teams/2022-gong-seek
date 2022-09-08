@@ -25,6 +25,7 @@ import UpdateWriting from '@/pages/UpdateWriting';
 import VoteDeadlineGenerator from '@/pages/VoteDeadlineGenerator';
 import VoteGenerator from '@/pages/VoteGenerator';
 import WritingArticles from '@/pages/WritingArticles';
+import { dropdownState } from '@/store/dropdownState';
 import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
 import styled from '@emotion/styled';
@@ -62,8 +63,14 @@ const Dimmer = styled.div`
 const App = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const [sliderState, setSliderState] = useRecoilState(menuSliderState);
+	const [dropdown, setDropdown] = useRecoilState(dropdownState);
+
 	return (
-		<Layout>
+		<Layout
+			onClick={() => {
+				dropdown.isOpen && setDropdown({ isOpen: false });
+			}}
+		>
 			<Header />
 			<ErrorBoundary enable={false}>
 				<Content>
