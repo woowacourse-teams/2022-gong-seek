@@ -1,4 +1,4 @@
-import ToastUiEditor from '@/pages/WritingArticles/ToastUiEditor/ToastUiEditor';
+import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
 import { Meta, Story } from '@storybook/react';
 
 export default {

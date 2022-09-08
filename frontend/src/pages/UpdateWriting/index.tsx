@@ -2,9 +2,9 @@ import { useParams } from 'react-router-dom';
 
 import HashTag from '@/components/common/HashTag/HashTag';
 import Loading from '@/components/common/Loading/Loading';
+import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import usePostWritingArticle from '@/pages/UpdateWriting/hooks/usePostUpdateWritingArticle';
-import ToastUiEditor from '@/pages/WritingArticles/ToastUiEditor/ToastUiEditor';
 import * as S from '@/pages/WritingArticles/index.styles';
 
 const UpdateWriting = () => {

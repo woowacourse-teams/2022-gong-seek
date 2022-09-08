@@ -1,11 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import reactDom from 'react-dom';
 
+import { postImageUrlConverter } from '@/api/image';
 import AnonymouseCheckBox from '@/components/common/AnonymousCheckBox/AnonymouseCheckBox';
 import * as S from '@/components/common/CommentInputModal/CommentInputModal.styles';
 import usePostCommentInputModal from '@/components/common/CommentInputModal/hooks/usePostCommentInputModal';
 import usePutCommentInputModal from '@/components/common/CommentInputModal/hooks/usePutCommentInputModal';
+import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
+import useSnackBar from '@/hooks/useSnackBar';
 import { queryClient } from '@/index';
+import { validatedCommentInput } from '@/utils/validateInput';
+import { Editor } from '@toast-ui/react-editor';
 
 export interface CommentInputModalProps {
 	closeModal: () => void;
@@ -31,12 +36,12 @@ const CommentInputModal = ({
 	articleId,
 	modalType,
 	commentId,
-	placeholder,
+	placeholder = '',
 }: CommentInputModalProps) => {
 	const commentModal = document.getElementById('comment-portal');
-	const [comment, setComment] = useState(placeholder);
 	const [isAnonymous, setIsAnonymous] = useState(false);
-
+	const commentContent = useRef<Editor | null>(null);
+	const { showSnackBar } = useSnackBar();
 	const {
 		isLoading: postIsLoading,
 		mutate: postMutate,
@@ -54,19 +59,45 @@ const CommentInputModal = ({
 		}
 	});
 
+	useEffect(() => {
+		if (commentContent.current) {
+			commentContent.current.getInstance().removeHook('addImageBlobHook');
+			commentContent.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
+				(async () => {
+					const formData = new FormData();
+					formData.append('imageFile', blob);
+					const url = await postImageUrlConverter(formData);
+					callback(url, 'alt-text');
+				})();
+			});
+		}
+	}, [commentContent]);
+
 	if (commentModal === null) {
 		throw new Error('모달을 찾지 못하였습니다.');
 	}
 
 	const onClickCommentPostButton = () => {
-		if (modalType === 'register') {
-			postMutate({ content: comment, id: articleId, isAnonymous });
+		if (commentContent.current == null) {
 			return;
 		}
+		if (!validatedCommentInput(commentContent.current.getInstance().getMarkdown())) {
+			showSnackBar('댓글은 1자 이상, 10000자 이하로 작성해주세요');
+			return;
+		}
+		if (commentContent.current)
+			if (modalType === 'register') {
+				postMutate({
+					content: commentContent.current.getInstance().getMarkdown(),
+					id: articleId,
+					isAnonymous,
+				});
+				return;
+			}
 		if (typeof commentId === 'undefined') {
 			throw new Error('댓글을 찾지 못하였습니다');
 		}
-		putMutate({ content: comment, commentId });
+		putMutate({ content: commentContent.current.getInstance().getMarkdown(), commentId });
 	};
 
 	if (putIsLoading || postIsLoading) return <div>로딩중...</div>;
@@ -74,11 +105,9 @@ const CommentInputModal = ({
 	return reactDom.createPortal(
 		<S.CommentContainer>
 			<S.CommentTitle>{modalStatus[modalType].title}</S.CommentTitle>
-			<S.CommentContent
-				aria-label="댓글을 입력해주세요"
-				value={comment}
-				onChange={(e) => setComment(e.target.value)}
-			></S.CommentContent>
+			<S.CommentContentBox>
+				<ToastUiEditor initContent={placeholder} ref={commentContent} />
+			</S.CommentContentBox>
 			<S.SubmitBox>
 				{modalType === 'register' && <AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />}
 				<S.CommentPostButton onClick={onClickCommentPostButton}>
