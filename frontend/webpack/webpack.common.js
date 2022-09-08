@@ -30,15 +30,21 @@ module.exports = {
 				use: {
 					loader: 'babel-loader',
 				},
+				generator: {
+					filename: '[name].[contenthash].js',
+				},
 			},
 			{
 				test: /\.css$/,
 				use: ['style-loader', 'css-loader'],
+				generator: {
+					filename: '[name].[contenthash].css',
+				},
 			},
 			{
 				test: /\.(png|svg|jpeg|jpg)$/,
 				exclude: /node_modules/,
-				use: 'file-loader',
+				type: 'asset/resource',
 			},
 		],
 	},
@@ -49,4 +55,7 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin(),
 	],
+	optimization: {
+		minimize: true,
+	},
 };
