@@ -3,6 +3,7 @@ const common = require('./webpack.common');
 const path = require('path');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
+const WebpackBundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 dotenv.config({
 	path: path.join(__dirname, './.env.development'),
@@ -10,15 +11,19 @@ dotenv.config({
 
 module.exports = merge(common, {
 	mode: 'development',
-	devtool: 'inline-source-map',
-	devServer: {
-		historyApiFallback: true,
-		port: 3000,
-		hot: true,
-	},
+	devtool: 'source-map',
 	plugins: [
 		new webpack.DefinePlugin({
 			'process.env': JSON.stringify(process.env),
 		}),
+		new WebpackBundleAnalyzer({
+			analyzerMode: 'static',
+			openAnalyzer: false,
+			generateStatsFile: true,
+			statsFilename: 'bundle-report.json',
+		}),
 	],
+	optimization: {
+		minimize: true,
+	},
 });
