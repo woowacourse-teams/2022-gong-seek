@@ -1,36 +1,30 @@
-import { useRef } from 'react';
+import React, { Suspense, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
-import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 import Loading from '@/components/common/Loading/Loading';
 import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
-import PopularArticle from '@/pages/Home/PopularArticle/PopularArticle';
 import useGetAllArticles from '@/pages/Home/hooks/useGetAllArticles';
 import * as S from '@/pages/Home/index.styles';
+
+const InfiniteScrollObserver = React.lazy(
+	() => import('@/components/common/InfiniteScrollObserver/InfiniteScrollObserver'),
+);
+const ArticleItem = React.lazy(() => import('@/components/common/ArticleItem/ArticleItem'));
+const PopularArticle = React.lazy(() => import('@/pages/Home/PopularArticle/PopularArticle'));
 
 const Home = () => {
 	const endFlag = useRef<HTMLDivElement>(null);
 	const navigate = useNavigate();
 
-	const {
-		data,
-		isLoading,
-		currentCategory,
-		setCurrentCategory,
-		sortIndex,
-		setSortIndex,
-		fetchNextPage,
-	} = useGetAllArticles();
-
-	if (isLoading) {
-		return <Loading />;
-	}
+	const { data, currentCategory, setCurrentCategory, sortIndex, setSortIndex, fetchNextPage } =
+		useGetAllArticles();
 
 	return (
 		<S.Container ref={endFlag}>
 			<S.PopularArticleTitle>오늘의 인기글</S.PopularArticleTitle>
-			<PopularArticle />
+			<Suspense fallback={<Loading />}>
+				<PopularArticle />
+			</Suspense>
 			<S.CategoryTitleContainer>
 				<S.CategoryTitleBox>
 					<S.CategoryTitle
@@ -52,28 +46,30 @@ const Home = () => {
 					setSortIndex={setSortIndex}
 				/>
 			</S.CategoryTitleContainer>
-			{data?.pages.length ? (
-				<InfiniteScrollObserver
-					hasNext={data.pages[data.pages.length - 1].hasNext}
-					fetchNextPage={fetchNextPage}
-				>
-					<S.ArticleItemList>
-						{data.pages.map(({ articles }) =>
-							articles.map((item) => (
-								<ArticleItem
-									key={item.id}
-									article={item}
-									onClick={() => {
-										navigate(`/articles/${currentCategory}/${item.id}`);
-									}}
-								/>
-							)),
-						)}
-					</S.ArticleItemList>
-				</InfiniteScrollObserver>
-			) : (
-				<S.EmptyText>텅 비었어요..!</S.EmptyText>
-			)}
+			<Suspense fallback={<Loading />}>
+				{data?.pages.length ? (
+					<InfiniteScrollObserver
+						hasNext={data.pages[data.pages.length - 1].hasNext}
+						fetchNextPage={fetchNextPage}
+					>
+						<S.ArticleItemList>
+							{data.pages.map(({ articles }) =>
+								articles.map((item) => (
+									<ArticleItem
+										key={item.id}
+										article={item}
+										onClick={() => {
+											navigate(`/articles/${currentCategory}/${item.id}`);
+										}}
+									/>
+								)),
+							)}
+						</S.ArticleItemList>
+					</InfiniteScrollObserver>
+				) : (
+					<S.EmptyText>게시물이 존재하지 않습니다</S.EmptyText>
+				)}
+			</Suspense>
 		</S.Container>
 	);
 };
