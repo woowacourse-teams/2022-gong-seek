@@ -3,19 +3,20 @@ import { Routes, Route } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Loading from '@/components/common/Loading/Loading';
-import MenuSlider from '@/components/common/MenuSlider/MenuSlider';
 import SnackBar from '@/components/common/SnackBar/SnackBar';
 import ErrorBoundary from '@/components/helper/ErrorBoundary';
 import PrivateRouter from '@/components/helper/PrivateRouter';
 import PublicRouter from '@/components/helper/PublicRouter';
 import Header from '@/components/layout/Header/Header';
 import TabBar from '@/components/layout/TabBar/TabBar';
-import Home from '@/pages/Home';
 import { dropdownState } from '@/store/dropdownState';
 import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
 import styled from '@emotion/styled';
 
+const MenuSlider = React.lazy(() => import('@/components/common/MenuSlider/MenuSlider'));
+
+const Home = React.lazy(() => import('@/pages/Home'));
 const CategoryArticles = React.lazy(() => import('@/pages/CategoryArticles/CategoryArticles'));
 const CategorySelector = React.lazy(() => import('@/pages/CategorySelector/CategorySelector'));
 const DiscussionDetail = React.lazy(() => import('@/pages/DiscussionDetail'));
@@ -109,7 +110,11 @@ const App = () => {
 			<TabBar />
 			<SnackBar />
 			{sliderState.isOpen && <Dimmer onClick={() => setSliderState({ isOpen: false })} />}
-			{sliderState.isOpen && <MenuSlider closeSlider={() => setSliderState({ isOpen: false })} />}
+			{sliderState.isOpen && (
+				<Suspense fallback={<Loading />}>
+					<MenuSlider closeSlider={() => setSliderState({ isOpen: false })} />
+				</Suspense>
+			)}
 		</Layout>
 	);
 };
