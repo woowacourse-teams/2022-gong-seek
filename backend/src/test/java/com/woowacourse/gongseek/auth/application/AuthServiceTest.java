@@ -9,6 +9,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.gongseek.auth.exception.InvalidRefreshTokenException;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
+import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
@@ -94,10 +95,11 @@ class AuthServiceTest {
         GithubProfileResponse profileResponse = new GithubProfileResponse(
                 기론.getGithubId(), 기론.getName(), 기론.getAvatarUrl());
         given(githubOAuthClient.getMemberProfile(기론.getCode())).willReturn(profileResponse);
-        memberRepository.save(new Member(기론.getGithubId(), 기론.getName(), "previous avatar url"));
+        Member giron = memberRepository.save(
+                new Member(기론.getGithubId(), 기론.getName(), "previous avatar url"));
         TokenResponse tokenResponse = authService.generateToken(new OAuthCodeRequest(기론.getCode()));
 
-        TokenResponse renewToken = authService.renewToken(tokenResponse.getRefreshToken());
+        TokenResponse renewToken = authService.renewToken(new LoginMember(giron.getId()), tokenResponse.getRefreshToken());
 
         assertAll(
                 () -> assertThat(renewToken.getRefreshToken()).isNotNull(),
@@ -107,7 +109,10 @@ class AuthServiceTest {
 
     @Test
     void 유효하지않는_리프레시토큰이_들어오면_예외를_발생한다() {
-        assertThatThrownBy(() -> authService.renewToken("invalid-refresh-token"))
+        Member giron = memberRepository.save(
+                new Member(기론.getGithubId(), 기론.getName(), "previous avatar url"));
+
+        assertThatThrownBy(() -> authService.renewToken(new LoginMember(giron.getId()), "invalid-refresh-token"))
                 .isExactlyInstanceOf(InvalidRefreshTokenException.class)
                 .hasMessage("리프레시 토큰이 유효하지 않습니다.");
     }

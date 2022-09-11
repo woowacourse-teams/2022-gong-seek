@@ -2,6 +2,7 @@ package com.woowacourse.gongseek.auth.presentation;
 
 import com.woowacourse.gongseek.auth.application.AuthService;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
+import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
@@ -44,10 +45,11 @@ public class AuthController {
 
     @GetMapping("/refresh")
     public ResponseEntity<AccessTokenResponse> renew(
+            @AuthenticationPrinciple AppMember appMember,
             @CookieValue(value = "refreshToken", required = false) String refreshToken,
             HttpServletResponse httpServletResponse
     ) {
-        TokenResponse tokenResponse = authService.renewToken(refreshToken);
+        TokenResponse tokenResponse = authService.renewToken(appMember, refreshToken);
         ResponseCookie newCookie = CookieUtils.create(tokenResponse.getRefreshToken());
         httpServletResponse.setHeader(HttpHeaders.SET_COOKIE, newCookie.toString());
 

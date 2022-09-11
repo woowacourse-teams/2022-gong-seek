@@ -72,6 +72,15 @@ public class JwtTokenProvider implements TokenProvider {
         }
     }
 
+    public boolean isValidOnlyClaims(String token) {
+        try {
+            getClaimsJws(token, accessTokenProperty.getTokenSecretKey()).getBody();
+            return true;
+        } catch (JwtException | IllegalArgumentException exception) {
+            return false;
+        }
+    }
+
     @Override
     public boolean isValidRefreshToken(String token) {
         try {

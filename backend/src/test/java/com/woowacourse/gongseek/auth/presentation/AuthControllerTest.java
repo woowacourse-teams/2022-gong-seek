@@ -98,7 +98,7 @@ class AuthControllerTest {
 
     @Test
     void 토큰_재발급_API_문서화() throws Exception {
-        given(authService.renewToken(any())).willReturn(
+        given(authService.renewToken(any(), any())).willReturn(
                 TokenResponse.builder()
                         .refreshToken("new-refreshToken")
                         .accessToken("new-accessToken")
