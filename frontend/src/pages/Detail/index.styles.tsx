@@ -1,5 +1,4 @@
-import { AiFillPlusCircle } from 'react-icons/ai';
-import { BiCommentDetail } from 'react-icons/bi';
+import { AiFillPlusCircle, AiOutlineComment } from 'react-icons/ai';
 
 import styled from '@emotion/styled';
 
@@ -75,9 +74,9 @@ export const CommentTitle = styled.h2`
 	font-size: ${({ theme }) => theme.size.SIZE_016};
 `;
 
-export const CommentIcon = styled(BiCommentDetail)`
-	width: ${({ theme }) => theme.size.SIZE_024};
-	height: ${({ theme }) => theme.size.SIZE_024};
+export const CommentIcon = styled(AiOutlineComment)`
+	font-size: ${({ theme }) => theme.size.SIZE_024};
+	margin-top: -${({ theme }) => theme.size.SIZE_006};
 `;
 
 export const CommentTotal = styled.div`

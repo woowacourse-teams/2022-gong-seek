@@ -1,4 +1,4 @@
-import { BiCommentDetail } from 'react-icons/bi';
+import { AiOutlineMessage } from 'react-icons/ai';
 
 import styled from '@emotion/styled';
 
@@ -71,7 +71,10 @@ export const CommentBox = styled.div`
 
 	gap: ${({ theme }) => theme.size.SIZE_006};
 `;
-export const CommentIcon = styled(BiCommentDetail)``;
+export const CommentIcon = styled(AiOutlineMessage)`
+	font-size: ${({ theme }) => theme.size.SIZE_020};
+	margin-top: -${({ theme }) => theme.size.SIZE_006};
+`;
 export const CommentCount = styled.div`
 	font-size: ${({ theme }) => theme.size.SIZE_014};
 `;

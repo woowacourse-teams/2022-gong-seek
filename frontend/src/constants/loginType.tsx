@@ -1,9 +1,9 @@
-import { RiGithubFill } from 'react-icons/ri';
+import { AiOutlineGithub } from 'react-icons/ai';
 
 export const LOGIN_TYPE = {
 	github: {
 		color: '#141619',
 		fontcolor: '#ffffff',
-		icon: <RiGithubFill />,
+		icon: <AiOutlineGithub />,
 	},
 } as const;

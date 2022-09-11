@@ -1,7 +1,6 @@
-import { FaPencilAlt, FaCheckSquare } from 'react-icons/fa';
+import { AiFillEdit } from 'react-icons/ai';
 
 import Input from '@/components/common/Input/Input';
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
@@ -44,7 +43,7 @@ export const UserNameContainer = styled.div`
 	gap: ${({ theme }) => theme.size.SIZE_012};
 `;
 
-export const EditIcon = styled(FaPencilAlt)`
+export const EditIcon = styled(AiFillEdit)`
 	cursor: pointer;
 
 	:hover,

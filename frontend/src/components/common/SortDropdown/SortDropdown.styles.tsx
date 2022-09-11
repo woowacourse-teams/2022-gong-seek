@@ -1,4 +1,4 @@
-import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import { AiOutlineDown } from 'react-icons/ai';
 
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -82,4 +82,4 @@ export const Container = styled.div`
 	}
 `;
 
-export const ArrowDown = styled(MdOutlineKeyboardArrowDown)``;
+export const ArrowDown = styled(AiOutlineDown)``;

@@ -5,7 +5,7 @@ import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
 import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 import Loading from '@/components/common/Loading/Loading';
 import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
-import PopularArticle from '@/pages/Home//PopularArticle/PopularArticle';
+import PopularArticle from '@/pages/Home/PopularArticle/PopularArticle';
 import useGetAllArticles from '@/pages/Home/hooks/useGetAllArticles';
 import * as S from '@/pages/Home/index.styles';
 
