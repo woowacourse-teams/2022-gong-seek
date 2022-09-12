@@ -308,7 +308,7 @@ class ArticleControllerTest {
 
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
-        given(articleService.getAll(anyLong(), anyInt(), any(), any(), anyInt(), any())).willReturn(response);
+        given(articleService.getAll(anyLong(), anyInt(), any(), any(), any(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer token")
@@ -316,7 +316,7 @@ class ArticleControllerTest {
                 .param("sort", "latest")
                 .param("cursorId", "1")
                 .param("cursorViews", "0")
-                .param("pageSize", "10")
+                .param("size", "10")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .characterEncoding("UTF-8"));
 
@@ -331,7 +331,7 @@ class ArticleControllerTest {
                                 parameterWithName("sort").description("정렬 기준(latest-최신순, views-조회순)"),
                                 parameterWithName("cursorId").description("시작은 null, 마지막으로 조회한 게시글 식별자").optional(),
                                 parameterWithName("cursorViews").description("마지막으로 조회한 게시글 조회수").optional(),
-                                parameterWithName("pageSize").description("가져올 게시글 개수")
+                                parameterWithName("size").description("가져올 게시글 개수")
                         ),
                         responseFields(
                                 fieldWithPath("articles[].id").type(JsonFieldType.NUMBER).description("게시글 식별자"),
@@ -369,12 +369,12 @@ class ArticleControllerTest {
 
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
-        given(articleService.searchByText(anyLong(), anyInt(), anyString(), any())).willReturn(response);
+        given(articleService.searchByText(anyLong(), any(), anyString(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/search/text")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                 .param("cursorId", "1")
-                .param("pageSize", "10")
+                .param("size", "10")
                 .param("text", "제목")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .characterEncoding("UTF-8"));
@@ -387,7 +387,7 @@ class ArticleControllerTest {
                         ),
                         requestParameters(
                                 parameterWithName("cursorId").description("시작은 null, 마지막으로 조회한 게시글 식별자").optional(),
-                                parameterWithName("pageSize").description("가져올 게시글 개수"),
+                                parameterWithName("size").description("가져올 게시글 개수"),
                                 parameterWithName("text").description("검색할 Text(제목, 내용)")
                         ),
                         responseFields(
@@ -423,12 +423,12 @@ class ArticleControllerTest {
 
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
-        given(articleService.searchByAuthor(anyLong(), anyInt(), anyString(), any())).willReturn(response);
+        given(articleService.searchByAuthor(anyLong(), any(), any(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/search/author")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                 .param("cursorId", "1")
-                .param("pageSize", "10")
+                .param("size", "10")
                 .param("author", "작성자")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .characterEncoding("UTF-8"));
@@ -441,7 +441,7 @@ class ArticleControllerTest {
                         ),
                         requestParameters(
                                 parameterWithName("cursorId").description("시작은 null, 마지막으로 조회한 게시글 식별자").optional(),
-                                parameterWithName("pageSize").description("가져올 게시글 개수"),
+                                parameterWithName("size").description("가져올 게시글 개수"),
                                 parameterWithName("author").description("작성자 이름")
                         ),
                         responseFields(
@@ -544,12 +544,12 @@ class ArticleControllerTest {
 
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
-        given(articleService.searchByTag(anyLong(), anyInt(), anyString(), any())).willReturn(response);
+        given(articleService.searchByTag(anyLong(), any(), anyString(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles/search/tags")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                 .param("cursorId", "1")
-                .param("pageSize", "10")
+                .param("size", "10")
                 .param("tagsText", "spring")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .characterEncoding("UTF-8"));
@@ -562,7 +562,7 @@ class ArticleControllerTest {
                         ),
                         requestParameters(
                                 parameterWithName("cursorId").description("시작은 null, 마지막으로 조회한 게시글 식별자").optional(),
-                                parameterWithName("pageSize").description("가져올 게시글 개수"),
+                                parameterWithName("size").description("가져올 게시글 개수"),
                                 parameterWithName("tagsText").description("해시태그 파라미터")
                         ),
                         responseFields(

@@ -100,7 +100,7 @@ public class ArticleFixture {
                 .param("sort", sort)
                 .param("cursorId", cursorId)
                 .param("cursorViews", cursorViews)
-                .param("pageSize", 10)
+                .param("size", 10)
                 .get("/api/articles")
                 .then().log().all()
                 .extract();
@@ -160,12 +160,12 @@ public class ArticleFixture {
                 .extract();
     }
 
-    public static ArticlePageResponse 게시글을_제목과_내용으로_처음_검색한다(int pageSize, String text) {
+    public static ArticlePageResponse 게시글을_제목과_내용으로_처음_검색한다(int size, String text) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
                 .when()
-                .param("pageSize", pageSize)
+                .param("size", size)
                 .param("text", text)
                 .get("/api/articles/search/text")
                 .then().log().all()
@@ -173,13 +173,13 @@ public class ArticleFixture {
                 .as(ArticlePageResponse.class);
     }
 
-    public static ArticlePageResponse 게시글을_제목과_내용으로_검색한다(long cursorId, int pageSize, String text) {
+    public static ArticlePageResponse 게시글을_제목과_내용으로_검색한다(long cursorId, int size, String text) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
                 .when()
                 .param("cursorId", cursorId)
-                .param("pageSize", pageSize)
+                .param("size", size)
                 .param("text", text)
                 .get("/api/articles/search/text")
                 .then().log().all()
@@ -187,13 +187,13 @@ public class ArticleFixture {
                 .as(ArticlePageResponse.class);
     }
 
-    public static ArticlePageResponse 게시글을_유저이름으로_검색한다(Long cursorId, int pageSize, String author) {
+    public static ArticlePageResponse 게시글을_유저이름으로_검색한다(Long cursorId, int size, String author) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
                 .when()
                 .param("cursorId", cursorId)
-                .param("pageSize", pageSize)
+                .param("size", size)
                 .param("author", author)
                 .get("/api/articles/search/author")
                 .then().log().all()
@@ -201,13 +201,13 @@ public class ArticleFixture {
                 .as(ArticlePageResponse.class);
     }
 
-    public static ExtractableResponse<Response> 해시태그로_게시글들을_검색한다(Long cursorId, int pageSize,
+    public static ExtractableResponse<Response> 해시태그로_게시글들을_검색한다(Long cursorId, int size,
                                                                  String parameterValues) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
                 .param("cursorId", cursorId)
-                .param("pageSize", pageSize)
+                .param("size", size)
                 .param("tagsText", parameterValues)
                 .when()
                 .get("/api/articles/search/tags")
@@ -216,13 +216,13 @@ public class ArticleFixture {
     }
 
     public static ExtractableResponse<Response> 로그인_후_해시태그로_게시글들을_검색한다(AccessTokenResponse tokenResponse, Long cursorId,
-                                                                       int pageSize,
+                                                                       int size,
                                                                        String parameterValues) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
                 .param("cursorId", cursorId)
-                .param("pageSize", pageSize)
+                .param("size", size)
                 .param("tagsText", parameterValues)
                 .when()
                 .get("/api/articles/search/tags")

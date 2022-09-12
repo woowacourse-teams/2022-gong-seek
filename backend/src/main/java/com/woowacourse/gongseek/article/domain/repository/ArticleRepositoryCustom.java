@@ -7,13 +7,13 @@ import org.springframework.data.domain.Slice;
 
 public interface ArticleRepositoryCustom {
 
-    List<Article> findAllByPage(Long cursorId, Integer views, String category, String sortType, int pageSize);
+    Slice<Article> findAllByPage(Long cursorId, Integer views, String category, String sortType, Pageable pageable);
 
     Slice<Article> findAllByLikes(Long cursorId, Long likes, String category, Pageable pageable);
 
-    List<Article> searchByContainingText(Long cursorId, int pageSize, String searchText);
+    Slice<Article> searchByContainingText(Long cursorId, String searchText, Pageable pageable);
 
-    List<Article> searchByAuthor(Long cursorId, int pageSize, String author);
+    Slice<Article> searchByAuthor(Long cursorId, String author, Pageable pageable);
 
-    List<Article> searchByTag(Long cursorId, int pageSize, List<String> tagNames);
+    Slice<Article> searchByTag(Long cursorId, List<String> tagNames, Pageable pageable);
 }

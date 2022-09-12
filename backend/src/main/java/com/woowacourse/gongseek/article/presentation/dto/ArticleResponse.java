@@ -9,10 +9,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
@@ -44,32 +46,20 @@ public class ArticleResponse {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime updatedAt;
 
-    public ArticleResponse(Article article, List<String> tag, AuthorDto authorDto, boolean isAuthor,
-                           boolean hasVote, LikeResponse likeResponse) {
-        this(
-                article.getTitle(),
-                tag,
-                authorDto,
-                article.getContent(),
-                isAuthor,
-                article.getViews(),
-                hasVote,
-                likeResponse.getIsLike(),
-                likeResponse.getLikeCount(),
-                article.getCreatedAt(),
-                article.getUpdatedAt()
-        );
-    }
-
-    public ArticleResponse(Article article, List<String> tag, boolean isAuthor, boolean hasVote,
-                           LikeResponse likeResponse) {
-        this(
-                article,
-                tag,
-                new AuthorDto(article.getMember()),
-                isAuthor,
-                hasVote,
-                likeResponse
-        );
+    public static ArticleResponse of(Article article, List<String> tag, boolean isAuthor, boolean hasVote,
+                                     LikeResponse likeResponse) {
+        return new ArticleResponseBuilder()
+                .title(article.getTitle())
+                .tag(tag)
+                .author(new AuthorDto(article.getMember()))
+                .content(article.getContent())
+                .isAuthor(isAuthor)
+                .views(article.getViews())
+                .hasVote(hasVote)
+                .isLike(likeResponse.getIsLike())
+                .likeCount(likeResponse.getLikeCount())
+                .createdAt(article.getCreatedAt())
+                .updatedAt(article.getUpdatedAt())
+                .build();
     }
 }
