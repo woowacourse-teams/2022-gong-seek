@@ -7,8 +7,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
+import com.woowacourse.gongseek.article.presentation.dto.TempArticleDetailResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleIdResponse;
+import com.woowacourse.gongseek.article.presentation.dto.TempArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticlesResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import io.restassured.RestAssured;
@@ -24,7 +25,7 @@ public class TempArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 슬로가_로그인을_하고_게시글_임시서장을_할_수_있다() {
         final AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
-        final ArticleRequest request = new ArticleRequest("title", "content", Category.DISCUSSION.getValue(),
+        final TempArticleRequest request = new TempArticleRequest("title", "content", Category.DISCUSSION.getValue(),
                 List.of("Spring"), false);
 
         final ExtractableResponse<Response> response = 임시_게시물을_등록한다(tokenResponse, request);
@@ -40,11 +41,11 @@ public class TempArticleAcceptanceTest extends AcceptanceTest {
     void 슬로가_로그인을_하고_전체_임시_게시글을_조회할_수_있다() {
         final AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
         final long responseId1 = 임시_게시물을_등록한다(tokenResponse,
-                new ArticleRequest("title", "content", Category.DISCUSSION.getValue(), List.of("Spring"), false))
+                new TempArticleRequest("title", "content", Category.DISCUSSION.getValue(), List.of("Spring"), false))
                 .as(TempArticleIdResponse.class)
                 .getId();
         final long responseId2 = 임시_게시물을_등록한다(tokenResponse,
-                new ArticleRequest("title2", "content2", Category.QUESTION.getValue(), List.of("Spring2"), false))
+                new TempArticleRequest("title2", "content2", Category.QUESTION.getValue(), List.of("Spring2"), false))
                 .as(TempArticleIdResponse.class)
                 .getId();
 
@@ -63,6 +64,32 @@ public class TempArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(tempArticlesResponse.getValues().get(0).getTitle()).isEqualTo("title"),
                 () -> assertThat(tempArticlesResponse.getValues().get(1).getId()).isEqualTo(responseId2),
                 () -> assertThat(tempArticlesResponse.getValues().get(1).getTitle()).isEqualTo("title2")
+        );
+    }
+
+    @Test
+    void 슬로가_로그인을_하고_단건_임시_게시글을_조회할_수_있다() {
+        final AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
+        final long tempArticleId = 임시_게시물을_등록한다(tokenResponse,
+                new TempArticleRequest("title", "content", Category.DISCUSSION.getValue(), List.of("spring"), false))
+                .as(TempArticleIdResponse.class)
+                .getId();
+
+        final ExtractableResponse<Response> response = RestAssured.given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .when()
+                .get("/api/temp-articles/{tempArticleId}", tempArticleId)
+                .then().log().all()
+                .extract();
+        final TempArticleDetailResponse articleDetailResponse = response.as(TempArticleDetailResponse.class);
+
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(articleDetailResponse.getTitle()).isEqualTo("title"),
+                () -> assertThat(articleDetailResponse.getContent()).isEqualTo("content"),
+                () -> assertThat(articleDetailResponse.getCategory()).isEqualTo("discussion"),
+                () -> assertThat(articleDetailResponse.getTags().get(0)).isEqualTo("spring"),
+                () -> assertThat(articleDetailResponse.getIsAnonymous()).isFalse()
         );
     }
 }

@@ -2,10 +2,13 @@ package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
+import com.woowacourse.gongseek.article.exception.TempArticleNotFoundException;
+import com.woowacourse.gongseek.article.presentation.dto.TempArticleDetailResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticlesResponse;
+import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.member.domain.Member;
@@ -78,5 +81,15 @@ public class TempArticleService {
         return new TempArticlesResponse(tempArticles.stream()
                 .map(TempArticleResponse::from)
                 .collect(Collectors.toList()));
+    }
+
+    public TempArticleDetailResponse getOne(AppMember appMember, Long tempArticleId) {
+        final Member member = getMember(appMember.getPayload());
+        final TempArticle tempArticle = tempArticleRepository.findById(tempArticleId)
+                .orElseThrow(() -> new TempArticleNotFoundException(tempArticleId));
+        if (tempArticle.isAuthor(member)) {
+            return TempArticleDetailResponse.from(tempArticle);
+        }
+        throw new NotAuthorException(tempArticleId, member.getId());
     }
 }

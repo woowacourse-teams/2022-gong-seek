@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
+import com.woowacourse.gongseek.article.presentation.dto.TempArticleDetailResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticlesResponse;
@@ -63,41 +64,57 @@ class TempArticleServiceTest {
     @Transactional
     @Test
     void 임시_게시글을_업데이트한다() {
-        final LoginMember loginMember = new LoginMember(member.getId());
-        final TempArticleRequest createRequest = new TempArticleRequest("title", "content",
-                Category.QUESTION.getValue(), List.of("spring"), false);
-        final TempArticleIdResponse savedId = tempArticleService.createOrUpdate(loginMember, createRequest);
-        final TempArticleRequest updateRequest = new TempArticleRequest(savedId.getId(), "updateTitle", "updateContent",
+        final TempArticle saveTempArticle = tempArticleRepository.save(
+                new TempArticle("title", "content", Category.QUESTION, member, List.of("spring"), false));
+        final TempArticleRequest updateRequest = new TempArticleRequest(saveTempArticle.getId(), "updateTitle",
+                "updateContent",
                 Category.QUESTION.getValue(), List.of("updateSpring"), false);
 
-        final TempArticleIdResponse updatedId = tempArticleService.createOrUpdate(loginMember, updateRequest);
+        final TempArticleIdResponse updatedId = tempArticleService.createOrUpdate(new LoginMember(member.getId()),
+                updateRequest);
         final TempArticle tempArticle = tempArticleRepository.findById(updatedId.getId()).get();
 
         assertAll(
-                () -> assertThat(savedId.getId()).isEqualTo(updatedId.getId()),
+                () -> assertThat(updatedId.getId()).isEqualTo(saveTempArticle.getId()),
                 () -> assertThat(tempArticle.getTitle().getValue()).isEqualTo("updateTitle"),
                 () -> assertThat(tempArticle.getContent().getValue()).isEqualTo("updateContent"),
-                () -> assertThat(tempArticle.getTags().get(0)).isEqualTo("updateSpring")
+                () -> assertThat(tempArticle.getTempTags().get(0)).isEqualTo("updateSpring")
         );
     }
 
     @Test
     void 전체_임시_게시글을_조회한다() {
-        final LoginMember loginMember = new LoginMember(member.getId());
-        final TempArticleRequest request1 = new TempArticleRequest("title", "content", Category.QUESTION.getValue(),
-                List.of("spring"), false);
-        final TempArticleRequest request2 = new TempArticleRequest("title2", "content2", Category.QUESTION.getValue(),
-                List.of("spring2"), false);
-        tempArticleService.createOrUpdate(loginMember, request1);
-        tempArticleService.createOrUpdate(loginMember, request2);
+        tempArticleRepository.save(
+                new TempArticle("title", "content", Category.QUESTION, member, List.of("spring"), false));
+        tempArticleRepository.save(
+                new TempArticle("title2", "content2", Category.QUESTION, member, List.of("spring2"), false));
 
-        final TempArticlesResponse tempArticles = tempArticleService.getAll(loginMember);
+        final TempArticlesResponse tempArticles = tempArticleService.getAll(new LoginMember(member.getId()));
 
         assertAll(
                 () -> assertThat(tempArticles.getValues()).hasSize(2),
                 () -> assertThat(tempArticles.getValues().get(0).getTitle()).isEqualTo("title"),
                 () -> assertThat(tempArticles.getValues().get(1).getTitle()).isEqualTo("title2")
         );
+    }
 
+    @Transactional
+    @Test
+    void 단건_임시_게시물을_조회한다() {
+        final TempArticle tempArticle = tempArticleRepository.save(
+                new TempArticle("title", "content", Category.QUESTION, member, List.of("spring"), false));
+
+        final TempArticleDetailResponse tempArticleDetailResponse = tempArticleService.getOne(
+                new LoginMember(member.getId()),
+                tempArticle.getId());
+
+        assertAll(
+                () -> assertThat(tempArticleDetailResponse.getId()).isEqualTo(tempArticle.getId()),
+                () -> assertThat(tempArticleDetailResponse.getTitle()).isEqualTo("title"),
+                () -> assertThat(tempArticleDetailResponse.getContent()).isEqualTo("content"),
+                () -> assertThat(tempArticleDetailResponse.getCategory()).isEqualTo("question"),
+                () -> assertThat(tempArticleDetailResponse.getTags()).containsOnly("spring"),
+                () -> assertThat(tempArticleDetailResponse.getIsAnonymous()).isFalse()
+        );
     }
 }

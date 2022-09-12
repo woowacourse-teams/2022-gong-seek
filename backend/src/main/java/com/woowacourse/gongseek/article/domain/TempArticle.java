@@ -5,6 +5,7 @@ import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
@@ -51,7 +52,9 @@ public class TempArticle {
     private Member member;
 
     @ElementCollection
-    private List<String> tags = new ArrayList<>();
+    @CollectionTable(name = "temp_tag", joinColumns = @JoinColumn(name = "temp_article_id"))
+    @Column(name = "temp_tag_name")
+    private List<String> tempTags = new ArrayList<>();
 
     @Column(nullable = false)
     private boolean isAnonymous;
@@ -60,7 +63,7 @@ public class TempArticle {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    public TempArticle(String title, String content, Category category, Member member, List<String> tags,
+    public TempArticle(String title, String content, Category category, Member member, List<String> tempTags,
                        boolean isAnonymous) {
         this(
                 null,
@@ -68,7 +71,7 @@ public class TempArticle {
                 new Content(content),
                 category,
                 member,
-                tags,
+                tempTags,
                 isAnonymous,
                 LocalDateTime.now()
         );
@@ -78,8 +81,12 @@ public class TempArticle {
         this.title = new Title(updateRequest.getTitle());
         this.content = new Content(updateRequest.getContent());
         this.category = Category.from(updateRequest.getCategory());
-        this.tags = updateRequest.getTags();
+        this.tempTags = updateRequest.getTags();
         this.isAnonymous = updateRequest.getIsAnonymous();
         this.createdAt = LocalDateTime.now();
+    }
+
+    public boolean isAuthor(Member member) {
+        return this.member.equals(member);
     }
 }
