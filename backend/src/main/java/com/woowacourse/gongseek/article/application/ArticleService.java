@@ -59,7 +59,7 @@ public class ArticleService {
         Article article = articleRepository.save(articleRequest.toEntity(member));
         article.addTag(foundTags);
 
-        tempArticleService.delete(articleRequest.getArticleTempId());
+        tempArticleService.delete(articleRequest.getArticleTempId(), appMember);
         return new ArticleIdResponse(article);
     }
 

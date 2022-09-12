@@ -92,4 +92,22 @@ public class TempArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(articleDetailResponse.getIsAnonymous()).isFalse()
         );
     }
+
+    @Test
+    void 슬로가_로그인을_하고_저장된_임시_게시글을_삭제할_수_있다() {
+        final AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
+        final long tempArticleId = 임시_게시물을_등록한다(tokenResponse,
+                new TempArticleRequest("title", "content", Category.DISCUSSION.getValue(), List.of("spring"), false))
+                .as(TempArticleIdResponse.class)
+                .getId();
+
+        final ExtractableResponse<Response> response = RestAssured.given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .when()
+                .delete("/api/temp-articles/{tempArticleId}", tempArticleId)
+                .then().log().all()
+                .extract();
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
 }

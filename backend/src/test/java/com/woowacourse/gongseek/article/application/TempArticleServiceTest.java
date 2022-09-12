@@ -1,11 +1,13 @@
 package com.woowacourse.gongseek.article.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
+import com.woowacourse.gongseek.article.exception.TempArticleNotFoundException;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleDetailResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleRequest;
@@ -116,5 +118,18 @@ class TempArticleServiceTest {
                 () -> assertThat(tempArticleDetailResponse.getTags()).containsOnly("spring"),
                 () -> assertThat(tempArticleDetailResponse.getIsAnonymous()).isFalse()
         );
+    }
+
+    @Transactional
+    @Test
+    void 임시_게시물을_삭제한다() {
+        final TempArticle tempArticle = tempArticleRepository.save(
+                new TempArticle("title", "content", Category.QUESTION, member, List.of("spring"), false));
+
+        tempArticleService.delete(tempArticle.getId(), new LoginMember(member.getId()));
+
+        assertThatThrownBy(() -> tempArticleService.getOne(new LoginMember(member.getId()), tempArticle.getId()))
+                .isExactlyInstanceOf(TempArticleNotFoundException.class)
+                .hasMessageContaining("임시 게시글이 존재하지 않습니다.");
     }
 }

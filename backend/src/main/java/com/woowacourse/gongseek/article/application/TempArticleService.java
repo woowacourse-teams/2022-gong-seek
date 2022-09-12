@@ -69,9 +69,14 @@ public class TempArticleService {
         return new TempArticleIdResponse(tempArticle.getId());
     }
 
-    public void delete(Long articleTempId) {
-        if (isExistArticleTemp(articleTempId)) {
-            tempArticleRepository.delete(getArticleTemp(articleTempId));
+    public void delete(Long articleTempId, AppMember appMember) {
+        if (!isExistArticleTemp(articleTempId)) {
+            return;
+        }
+        final Member member = getMember(appMember.getPayload());
+        final TempArticle articleTemp = getArticleTemp(articleTempId);
+        if (articleTemp.isAuthor(member)) {
+            tempArticleRepository.delete(articleTemp);
         }
     }
 

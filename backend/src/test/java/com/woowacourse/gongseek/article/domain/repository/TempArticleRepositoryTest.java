@@ -70,4 +70,14 @@ class TempArticleRepositoryTest {
 
         assertThat(foundTempArticle).isEqualTo(tempArticle);
     }
+
+    @Test
+    void 임시_게시글을_삭제한다() {
+        final TempArticle tempArticle = tempArticleRepository.save(
+                new TempArticle("title", "content", Category.DISCUSSION, member, List.of("spring"), false));
+
+        tempArticleRepository.delete(tempArticle);
+
+        assertThat(tempArticleRepository.findById(tempArticle.getId())).isEmpty();
+    }
 }
