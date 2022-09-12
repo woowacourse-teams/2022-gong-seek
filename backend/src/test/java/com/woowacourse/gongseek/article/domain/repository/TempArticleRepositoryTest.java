@@ -10,6 +10,7 @@ import com.woowacourse.gongseek.config.QuerydslConfig;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -25,9 +26,15 @@ class TempArticleRepositoryTest {
     @Autowired
     private TempArticleRepository tempArticleRepository;
 
+    private Member member;
+
+    @BeforeEach
+    public void setUp() {
+        member = memberRepository.save(new Member("slow", "hanull", "avatarUrl"));
+    }
+
     @Test
     void 임시_게시글을_저장한다() {
-        final Member member = memberRepository.save(new Member("slow", "hanull", "avatarUrl"));
         final TempArticle tempArticle = new TempArticle("title", "content", Category.DISCUSSION,
                 member, List.of("spring"), false);
 
@@ -38,7 +45,6 @@ class TempArticleRepositoryTest {
 
     @Test
     void 전체_임시_게시글을_조회한다() {
-        final Member member = memberRepository.save(new Member("slow", "hanull", "avatarUrl"));
         final TempArticle request1 = new TempArticle("title", "content", Category.DISCUSSION, member, List.of("spring"),
                 false);
         final TempArticle request2 = new TempArticle("title2", "content2", Category.QUESTION, member,
@@ -52,5 +58,16 @@ class TempArticleRepositoryTest {
                 () -> assertThat(tempArticles).hasSize(2),
                 () -> assertThat(tempArticles).isEqualTo(List.of(request1, request2))
         );
+    }
+
+    @Test
+    void 단건_임시_게시글을_조회한다() {
+        final TempArticle tempArticle = tempArticleRepository.save(
+                new TempArticle("title", "content", Category.DISCUSSION, member, List.of("spring"), false));
+
+        final TempArticle foundTempArticle = tempArticleRepository.findById(tempArticle.getId())
+                .get();
+
+        assertThat(foundTempArticle).isEqualTo(tempArticle);
     }
 }
