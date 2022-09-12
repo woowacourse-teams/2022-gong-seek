@@ -10,9 +10,13 @@ dotenv.config({
 
 module.exports = merge(common, {
 	mode: 'production',
+	devtool: 'source-map',
 	plugins: [
 		new webpack.DefinePlugin({
 			'process.env': JSON.stringify(process.env),
 		}),
 	],
+	optimization: {
+		minimize: true,
+	},
 });
