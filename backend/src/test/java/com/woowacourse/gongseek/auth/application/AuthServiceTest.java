@@ -13,7 +13,6 @@ import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
-import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -21,8 +20,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
+@Transactional
 @SpringBootTest
 class AuthServiceTest {
 
@@ -34,14 +35,14 @@ class AuthServiceTest {
 
     @MockBean
     private OAuthClient githubOAuthClient;
-
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
-
-    @AfterEach
-    void tearDown() {
-        databaseCleaner.tableClear();
-    }
+//
+//    @Autowired
+//    private DatabaseCleaner databaseCleaner;
+//
+//    @AfterEach
+//    void tearDown() {
+//        databaseCleaner.tableClear();
+//    }
 
     @Test
     void 리다이렉트_URL_을_반환한다() {

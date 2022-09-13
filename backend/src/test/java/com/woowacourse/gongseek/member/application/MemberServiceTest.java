@@ -15,7 +15,6 @@ import com.woowacourse.gongseek.comment.application.CommentService;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
-import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -25,7 +24,6 @@ import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +50,9 @@ class MemberServiceTest {
 
     @Autowired
     private CommentService commentService;
-
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
+//
+//    @Autowired
+//    private DatabaseCleaner databaseCleaner;
 
     private Member member;
 
@@ -62,11 +60,11 @@ class MemberServiceTest {
     void setUp() {
         member = memberRepository.save(new Member("rennon", "brorae", "avatar.com"));
     }
-
-    @AfterEach
-    void tearDown() {
-        databaseCleaner.tableClear();
-    }
+//
+//    @AfterEach
+//    void tearDown() {
+//        databaseCleaner.tableClear();
+//    }
 
     @Test
     void 회원은_회원_정보를_조회한다() {

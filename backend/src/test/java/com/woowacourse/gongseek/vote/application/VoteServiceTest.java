@@ -10,7 +10,7 @@ import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
-import com.woowacourse.gongseek.common.DatabaseCleaner;
+
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -51,9 +51,9 @@ class VoteServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
-
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
+//
+//    @Autowired
+//    private DatabaseCleaner databaseCleaner;
 
     private Member member;
     private Article discussionArticle;
@@ -68,11 +68,11 @@ class VoteServiceTest {
         Vote vote = voteRepository.save(new Vote(discussionArticle, LocalDateTime.now().plusDays(7)));
         voteItems = voteItemRepository.saveAll(List.of(new VoteItem("content1", vote), new VoteItem("content2", vote)));
     }
-
-    @AfterEach
-    void tearDown() {
-        databaseCleaner.tableClear();
-    }
+//
+//    @AfterEach
+//    void tearDown() {
+//        databaseCleaner.tableClear();
+//    }
 
     @Test
     void 투표를_생성한다() {

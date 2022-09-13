@@ -48,10 +48,10 @@ public class AuthService {
 
     private TokenResponse getTokenResponse(Member member) {
         String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(member.getId()));
-        String refreshToken = jwtTokenProvider.createRefreshToken(String.valueOf(member.getId()));
+        RefreshToken refreshToken = refreshTokenRepository.save(RefreshToken.create(member));
         return TokenResponse.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                .refreshToken(refreshToken.getValue())
                 .build();
     }
 
