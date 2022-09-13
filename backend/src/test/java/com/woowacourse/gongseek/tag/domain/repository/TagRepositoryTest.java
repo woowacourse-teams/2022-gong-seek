@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.gongseek.config.JpaAuditingConfig;
 import com.woowacourse.gongseek.config.QuerydslConfig;
+import com.woowacourse.gongseek.support.RepositoryTest;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -12,8 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 @SuppressWarnings("NonAsciiCharacters")
-@Import({JpaAuditingConfig.class, QuerydslConfig.class})
-@DataJpaTest
+@RepositoryTest
 class TagRepositoryTest {
 
     @Autowired

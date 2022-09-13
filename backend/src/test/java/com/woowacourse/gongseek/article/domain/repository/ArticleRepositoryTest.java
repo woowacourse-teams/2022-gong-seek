@@ -11,6 +11,7 @@ import com.woowacourse.gongseek.like.domain.Like;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.support.RepositoryTest;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
@@ -36,8 +37,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 
 @SuppressWarnings("NonAsciiCharacters")
-@Import({JpaAuditingConfig.class, QuerydslConfig.class})
-@DataJpaTest
+@RepositoryTest
 class ArticleRepositoryTest {
 
     private static final String TITLE = "title";

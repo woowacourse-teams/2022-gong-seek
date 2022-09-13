@@ -10,14 +10,14 @@ import com.woowacourse.gongseek.config.QuerydslConfig;
 import com.woowacourse.gongseek.like.domain.Like;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.support.RepositoryTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 @SuppressWarnings("NonAsciiCharacters")
-@Import({JpaAuditingConfig.class, QuerydslConfig.class})
-@DataJpaTest
+@RepositoryTest
 class LikeRepositoryTest {
 
     @Autowired
