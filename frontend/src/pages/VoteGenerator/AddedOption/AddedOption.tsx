@@ -1,5 +1,5 @@
 import React from 'react';
-import { BsFillTrashFill } from 'react-icons/bs';
+import { AiFillDelete } from 'react-icons/ai';
 
 import styled from '@emotion/styled';
 
@@ -28,7 +28,7 @@ const OptionBox = styled.div`
 	overflow: scroll;
 `;
 
-const Trash = styled(BsFillTrashFill)`
+const Trash = styled(AiFillDelete)`
 	font-size: ${({ theme }) => theme.size.SIZE_016};
 
 	cursor: pointer;

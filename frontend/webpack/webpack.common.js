@@ -8,12 +8,8 @@ module.exports = {
 		path: path.join(__dirname, '../dist'),
 		filename: '[name].bundle.js',
 		publicPath: '/',
+		clean: true,
 	},
-	devServer: {
-		historyApiFallback: true,
-		port: 3000,
-	},
-	mode: 'development',
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, '/src'),
@@ -21,7 +17,12 @@ module.exports = {
 		modules: ['node_modules'],
 		extensions: ['.js', '.jsx', '.ts', '.tsx'],
 	},
-	devtool: 'inline-source-map',
+	devServer: {
+		historyApiFallback: true,
+		port: 3000,
+		hot: true,
+	},
+	devtool: 'source-map',
 	module: {
 		rules: [
 			{
@@ -30,15 +31,21 @@ module.exports = {
 				use: {
 					loader: 'babel-loader',
 				},
+				generator: {
+					filename: '[name].[contenthash].js',
+				},
 			},
 			{
 				test: /\.css$/,
 				use: ['style-loader', 'css-loader'],
+				generator: {
+					filename: '[name].[contenthash].css',
+				},
 			},
 			{
 				test: /\.(png|svg|jpeg|jpg)$/,
 				exclude: /node_modules/,
-				use: 'file-loader',
+				type: 'asset/resource',
 			},
 		],
 	},
@@ -49,4 +56,7 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin(),
 	],
+	optimization: {
+		minimize: true,
+	},
 };

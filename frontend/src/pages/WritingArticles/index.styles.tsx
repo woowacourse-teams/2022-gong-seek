@@ -1,4 +1,4 @@
-import { IoIosArrowDown } from 'react-icons/io';
+import { AiOutlineDown } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 
 import styled from '@emotion/styled';
@@ -99,7 +99,7 @@ export const CategorySelectorBox = styled.div`
 	width: 100%;
 `;
 
-export const SelectorButton = styled(IoIosArrowDown)`
+export const SelectorButton = styled(AiOutlineDown)`
 	position: relative;
 
 	right: ${({ theme }) => theme.size.SIZE_004};

@@ -1,31 +1,6 @@
-import { IoIosArrowBack } from 'react-icons/io';
+import { AiOutlineLeft } from 'react-icons/ai';
 
-import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-
-const arrowDownAnimation = keyframes`
-    0%{
-        transform: rotate(90deg);
-    }
-    50%{
-        transform: rotate(0);
-    }
-    100%{
-        transform: rotate(-90deg);
-    }
-`;
-
-const arrowUpAnimation = keyframes`
-    0%{
-        transform: rotate(-90deg);
-    }
-    50%{
-        transform: rotate(0);
-    }
-    100%{
-        transform: rotate(90deg);
-    }
-`;
 
 export const Container = styled.div`
 	display: flex;
@@ -70,7 +45,7 @@ export const DropDownButton = styled.button`
 	background-color: transparent;
 `;
 
-export const DropDownImg = styled(IoIosArrowBack)<{ isopen: string }>`
+export const DropDownImg = styled(AiOutlineLeft)<{ isopen: string }>`
 	font-size: ${({ theme }) => theme.size.SIZE_018};
 	color: ${({ theme }) => theme.colors.WHITE};
 	transform: ${(props) => (props.isopen === 'true' ? 'rotate(90deg)' : 'rotate(-90deg)')};
