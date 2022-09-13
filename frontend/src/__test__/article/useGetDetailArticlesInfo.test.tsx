@@ -4,8 +4,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
-import useGetDetailArticle from '@/hooks/useGetDetailArticle';
-import useGetDetailComment from '@/hooks/useGetDetailComment';
+import useGetDetailArticle from '@/hooks/article/useGetDetailArticle';
+import useGetDetailComment from '@/hooks/comment/useGetDetailComment';
 import { CommentHandler } from '@/mock';
 import { ArticleHandler } from '@/mock/article';
 import { theme } from '@/styles/Theme';

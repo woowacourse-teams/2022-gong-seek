@@ -4,9 +4,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 
 import { registerVoteItems } from '@/api/vote';
+import useVote from '@/hooks/vote/useGetVote';
 import { VoteHandler } from '@/mock';
-import useGetCategoryArticles from '@/pages/CategoryArticles/hooks/useGetCategoryArticles';
-import useVote from '@/pages/Discussion/hooks/useGetVote';
 import { theme } from '@/styles/Theme';
 import { ThemeProvider } from '@emotion/react';
 import { renderHook } from '@testing-library/react-hooks';

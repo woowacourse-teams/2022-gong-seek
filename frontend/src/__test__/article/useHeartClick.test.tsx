@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
-import useHeartClick from '@/hooks/useHeartClick';
+import useHeartClick from '@/hooks/article/useHeartClick';
 import { LikeHandler } from '@/mock';
 import { theme } from '@/styles/Theme';
 import { ThemeProvider } from '@emotion/react';
