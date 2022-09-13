@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { deleteArticle } from '@/api/article';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
-import useSnackBar from '@/hooks/useSnackBar';
+import useSnackBar from '@/hooks/common/useSnackBar';
 
 const useDeleteArticleContent = () => {
 	const { showSnackBar } = useSnackBar();

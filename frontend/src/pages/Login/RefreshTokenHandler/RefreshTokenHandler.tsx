@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 import { getAccessTokenByRefreshToken } from '@/api/login';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
-import useSnackBar from '@/hooks/useSnackBar';
+import useSnackBar from '@/hooks/common/useSnackBar';
 
 const RefreshTokenHandler = () => {
 	const { data, isSuccess, isError, error } = useQuery<

@@ -6,7 +6,7 @@ import { postComments } from '@/api/comments';
 import { CommentInputModalProps } from '@/components/common/CommentInputModal/CommentInputModal';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
-import useSnackBar from '@/hooks/useSnackBar';
+import useSnackBar from '@/hooks/common/useSnackBar';
 
 const usePostCommentInputModal = (closeModal: CommentInputModalProps['closeModal']) => {
 	const { showSnackBar } = useSnackBar();

@@ -4,10 +4,10 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
+import useGetUserArticles from '@/hooks/user/useGetUserArticles';
+import useGetUserComments from '@/hooks/user/useGetUserComments';
+import useGetUserInfo from '@/hooks/user/useGetUserInfo';
 import { MyPageHandler } from '@/mock';
-import useGetUserArticles from '@/pages/MyPage/hooks/useGetUserArticles';
-import useGetUserComments from '@/pages/MyPage/hooks/useGetUserComments';
-import useGetUserInfo from '@/pages/MyPage/hooks/useGetUserInfo';
 import { theme } from '@/styles/Theme';
 import { ThemeProvider } from '@emotion/react';
 import { renderHook } from '@testing-library/react-hooks';

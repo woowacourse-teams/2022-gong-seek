@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
 import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 import Loading from '@/components/common/Loading/Loading';
+import useGetArticleByHashTag from '@/hooks/hashTag/useGetArticleByHashTag';
 import * as S from '@/pages/HashTagSearch/HashTagSearchResult/HashTagSearchResult.styles';
-import useGetArticleByHashTag from '@/pages/HashTagSearch/hooks/useGetArticleByHashTag';
 
 export interface HashTagSearchResultProps {
 	hashTags: string[];

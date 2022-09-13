@@ -4,8 +4,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
+import useGetSearch from '@/hooks/search/useGetSearch';
 import { SearchHandler } from '@/mock';
-import useGetSearch from '@/pages/Search/hooks/useGetSearch';
 import { theme } from '@/styles/Theme';
 import { ThemeProvider } from '@emotion/react';
 import { renderHook } from '@testing-library/react-hooks';

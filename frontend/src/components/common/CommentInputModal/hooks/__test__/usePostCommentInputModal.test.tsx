@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
-import usePostCommentInputModal from '@/components/common/CommentInputModal/hooks/usePostCommentInputModal';
+import usePostCommentInputModal from '@/hooks/comment/usePostCommentInputModal';
 import { CommentHandler } from '@/mock/comment';
 import { theme } from '@/styles/Theme';
 import { ThemeProvider } from '@emotion/react';
