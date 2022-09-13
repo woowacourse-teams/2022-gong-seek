@@ -1,4 +1,4 @@
-import { IoIosArrowBack } from 'react-icons/io';
+import { AiOutlineLeft } from 'react-icons/ai';
 
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -57,7 +57,7 @@ export const BackButtonBox = styled.button`
 	cursor: pointer;
 `;
 
-export const BackButton = styled(IoIosArrowBack)`
+export const BackButton = styled(AiOutlineLeft)`
 	font-size: ${({ theme }) => theme.size.SIZE_024};
 
 	&:hover,
