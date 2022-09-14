@@ -76,7 +76,7 @@ public class TempArticle {
         this.content = tempArticle.getContent();
         this.category = tempArticle.getCategory();
         this.tempTags = new TempTags(tempArticle.getTempTags());
-        this.isAnonymous = tempArticle.isAnonymous();
+        this.isAnonymous = tempArticle.isAnonymous;
         this.createdAt = LocalDateTime.now();
     }
 

@@ -1,10 +1,7 @@
 package com.woowacourse.gongseek.article.presentation.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.member.domain.Member;
-import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -32,9 +29,7 @@ public class TempArticleRequest {
 
     private List<String> tags;
 
-    @NotNull
-    @JsonProperty("isAnonymous")
-    private Boolean isAnonymous;
+    private boolean isAnonymous;
 
     public TempArticleRequest(String title, String content, String category, List<String> tags, boolean isAnonymous) {
         this(null, title, content, category, tags, isAnonymous);
