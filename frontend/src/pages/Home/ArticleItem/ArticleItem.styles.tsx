@@ -1,5 +1,4 @@
-import { AiOutlineHeart } from 'react-icons/ai';
-import { FaRegCommentDots } from 'react-icons/fa';
+import { AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai';
 
 import styled from '@emotion/styled';
 
@@ -124,7 +123,7 @@ export const CommentCount = styled.span`
 	color: ${({ theme }) => theme.colors.BLACK_600};
 `;
 
-export const CommentIcon = styled(FaRegCommentDots)`
+export const CommentIcon = styled(AiOutlineMessage)`
 	font-size: ${({ theme }) => theme.size.SIZE_016};
 
 	color: ${({ theme }) => theme.colors.BLACK_600};

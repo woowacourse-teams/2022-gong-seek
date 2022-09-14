@@ -29,7 +29,7 @@ export const ArticleHandler = [
 	}),
 
 	rest.get(`${HOME_URL}/api/articles`, (req, res, ctx) => {
-		const size = req.url.searchParams.get('pageSize');
+		const size = req.url.searchParams.get('size');
 		const category = req.url.searchParams.get('category');
 
 		if (category === null || size === null) {

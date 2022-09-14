@@ -1,9 +1,9 @@
 package com.woowacourse.gongseek.article.domain;
 
 import com.woowacourse.gongseek.article.domain.articletag.ArticleTags;
+import com.woowacourse.gongseek.common.domain.BaseTimeEntity;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.tag.domain.Tags;
-import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -23,8 +23,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EntityListeners(AuditingEntityListener.class)
@@ -32,7 +30,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @AllArgsConstructor
 @Getter
 @Entity
-public class Article {
+public class Article extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,13 +60,6 @@ public class Article {
     @Column(nullable = false)
     private boolean isAnonymous;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-
     public Article(String title, String content, Category category, Member member, boolean isAnonymous) {
         this(
                 null,
@@ -77,9 +68,7 @@ public class Article {
                 category, member,
                 new Views(),
                 new ArticleTags(),
-                isAnonymous,
-                LocalDateTime.now(),
-                LocalDateTime.now()
+                isAnonymous
         );
     }
 

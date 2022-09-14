@@ -17,11 +17,6 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### YML ###
-src/main/resources/application-local.yml
-src/main/resources/application-dev.yml
-src/main/resources/application-prod.yml
-
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -40,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+application-dev.yml
+application-prod.yml

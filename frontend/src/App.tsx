@@ -1,34 +1,42 @@
+import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import MenuSlider from '@/components/common/MenuSlider/MenuSlider';
+import Loading from '@/components/common/Loading/Loading';
 import SnackBar from '@/components/common/SnackBar/SnackBar';
 import ErrorBoundary from '@/components/helper/ErrorBoundary';
 import PrivateRouter from '@/components/helper/PrivateRouter';
 import PublicRouter from '@/components/helper/PublicRouter';
 import Header from '@/components/layout/Header/Header';
 import TabBar from '@/components/layout/TabBar/TabBar';
+
 import { URL } from '@/constants/url';
-import CategoryArticles from '@/pages/CategoryArticles/CategoryArticles';
-import CategorySelector from '@/pages/CategorySelector/CategorySelector';
-import DiscussionDetail from '@/pages/DiscussionDetail';
-import ErrorDetail from '@/pages/ErrorDetail';
-import HashTagSearch from '@/pages/HashTagSearch';
-import Home from '@/pages/Home';
-import InquirePage from '@/pages/Inquire';
-import Login from '@/pages/Login';
-import LoginController from '@/pages/Login/LoginController/LoginController';
-import RefreshTokenHandler from '@/pages/Login/RefreshTokenHandler/RefreshTokenHandler';
-import MyPage from '@/pages/MyPage';
-import NotFound from '@/pages/NotFound';
-import Search from '@/pages/Search';
-import UpdateWriting from '@/pages/UpdateWriting';
-import VoteDeadlineGenerator from '@/pages/VoteDeadlineGenerator';
-import VoteGenerator from '@/pages/VoteGenerator';
-import WritingArticles from '@/pages/WritingArticles';
+import { dropdownState } from '@/store/dropdownState';
 import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
 import styled from '@emotion/styled';
+
+const MenuSlider = React.lazy(() => import('@/components/common/MenuSlider/MenuSlider'));
+
+const Home = React.lazy(() => import('@/pages/Home'));
+const CategoryArticles = React.lazy(() => import('@/pages/CategoryArticles/CategoryArticles'));
+const CategorySelector = React.lazy(() => import('@/pages/CategorySelector/CategorySelector'));
+const DiscussionDetail = React.lazy(() => import('@/pages/DiscussionDetail'));
+const ErrorDetail = React.lazy(() => import('@/pages/ErrorDetail'));
+const HashTagSearch = React.lazy(() => import('@/pages/HashTagSearch'));
+const InquirePage = React.lazy(() => import('@/pages/Inquire'));
+const Login = React.lazy(() => import('@/pages/Login'));
+const LoginController = React.lazy(() => import('@/pages/Login/LoginController/LoginController'));
+const RefreshTokenHandler = React.lazy(
+	() => import('@/pages/Login/RefreshTokenHandler/RefreshTokenHandler'),
+);
+const MyPage = React.lazy(() => import('@/pages/MyPage'));
+const NotFound = React.lazy(() => import('@/pages/NotFound'));
+const Search = React.lazy(() => import('@/pages/Search'));
+const UpdateWriting = React.lazy(() => import('@/pages/UpdateWriting'));
+const VoteDeadlineGenerator = React.lazy(() => import('@/pages/VoteDeadlineGenerator'));
+const VoteGenerator = React.lazy(() => import('@/pages/VoteGenerator'));
+const WritingArticles = React.lazy(() => import('@/pages/WritingArticles'));
 
 const Layout = styled.div`
 	position: relative;
@@ -63,11 +71,18 @@ const Dimmer = styled.div`
 const App = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const [sliderState, setSliderState] = useRecoilState(menuSliderState);
+	const [dropdown, setDropdown] = useRecoilState(dropdownState);
+
 	return (
-		<Layout>
+		<Layout
+			onClick={() => {
+				dropdown.isOpen && setDropdown({ isOpen: false });
+			}}
+		>
 			<Header />
 			<ErrorBoundary enable={false}>
 				<Content>
+        <Suspense fallback={<Loading />}>
 					<Routes>
 						<Route path={URL.LOGIN_CONTROLLER} element={<LoginController />} />
 						<Route path={URL.REFRESH_TOKEN_HANDLER} element={<RefreshTokenHandler />} />
@@ -91,12 +106,17 @@ const App = () => {
 						<Route path={URL.NOT_FOUND} element={<NotFound />} />
 						<Route path={URL.HOME} element={<Home />} />
 					</Routes>
+          </Suspense>
 				</Content>
 			</ErrorBoundary>
 			<TabBar />
 			<SnackBar />
 			{sliderState.isOpen && <Dimmer onClick={() => setSliderState({ isOpen: false })} />}
-			{sliderState.isOpen && <MenuSlider closeSlider={() => setSliderState({ isOpen: false })} />}
+			{sliderState.isOpen && (
+				<Suspense fallback={<Loading />}>
+					<MenuSlider closeSlider={() => setSliderState({ isOpen: false })} />
+				</Suspense>
+			)}
 		</Layout>
 	);
 };

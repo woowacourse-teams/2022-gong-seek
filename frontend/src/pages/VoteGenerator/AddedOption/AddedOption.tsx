@@ -1,11 +1,11 @@
 import React from 'react';
-import { BsFillTrashFill } from 'react-icons/bs';
+import { AiFillDelete } from 'react-icons/ai';
 
 import styled from '@emotion/styled';
 
 const AddedOption = ({ children, onClick }: { children: React.ReactNode; onClick: () => void }) => (
 	<OptionBox>
-		<p>{children}</p>
+		<div>{children}</div>
 		<Trash onClick={onClick} />
 	</OptionBox>
 );
@@ -24,9 +24,11 @@ const OptionBox = styled.div`
 
 	box-shadow: 1px 1px 4px ${({ theme }) => theme.boxShadows.primary};
 	padding: 0 ${({ theme }) => theme.size.SIZE_012};
+
+	overflow: scroll;
 `;
 
-const Trash = styled(BsFillTrashFill)`
+const Trash = styled(AiFillDelete)`
 	font-size: ${({ theme }) => theme.size.SIZE_016};
 
 	cursor: pointer;

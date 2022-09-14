@@ -1,5 +1,4 @@
-import { FaRegCommentDots } from 'react-icons/fa';
-import { MdArrowBackIosNew } from 'react-icons/md';
+import { AiOutlineMessage, AiOutlineLeft } from 'react-icons/ai';
 
 import { articleColors } from '@/styles/Theme';
 import styled from '@emotion/styled';
@@ -63,7 +62,7 @@ export const RightBackgroundArticle = styled.div<{ colorKey: keyof typeof articl
 	z-index: ${({ theme }) => theme.zIndex.ARTICLE_BACKGROUND_CONTENT};
 `;
 
-export const LeftArrowButton = styled(MdArrowBackIosNew)`
+export const LeftArrowButton = styled(AiOutlineLeft)`
 	position: absolute;
 
 	left: ${({ theme }) => theme.size.SIZE_002};
@@ -83,7 +82,7 @@ export const LeftArrowButton = styled(MdArrowBackIosNew)`
 	}
 `;
 
-export const RightArrowButton = styled(MdArrowBackIosNew)`
+export const RightArrowButton = styled(AiOutlineLeft)`
 	position: absolute;
 
 	right: ${({ theme }) => theme.size.SIZE_002};
@@ -177,7 +176,7 @@ export const CommentCount = styled.span`
 	color: ${({ theme }) => theme.colors.BLACK_600};
 `;
 
-export const CommentIcon = styled(FaRegCommentDots)`
+export const CommentIcon = styled(AiOutlineMessage)`
 	font-size: ${({ theme }) => theme.size.SIZE_016};
 
 	color: ${({ theme }) => theme.colors.BLACK_600};
