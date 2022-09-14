@@ -55,7 +55,7 @@ public class TempArticleService {
 
     private TempArticleIdResponse update(TempArticleRequest request) {
         final TempArticle tempArticle = getTempArticle(request.getId());
-        tempArticle.update(request.toEntity(tempArticle.getMember()));
+        tempArticle.update(request.toTempArticle(tempArticle.getMember()));
         return new TempArticleIdResponse(tempArticle.getId());
     }
 
@@ -65,7 +65,7 @@ public class TempArticleService {
     }
 
     private TempArticleIdResponse create(TempArticleRequest request, Member member) {
-        final TempArticle tempArticle = tempArticleRepository.save(request.toEntity(member));
+        final TempArticle tempArticle = tempArticleRepository.save(request.toTempArticle(member));
         return new TempArticleIdResponse(tempArticle.getId());
     }
 

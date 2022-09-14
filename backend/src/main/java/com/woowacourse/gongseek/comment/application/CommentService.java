@@ -41,7 +41,7 @@ public class CommentService {
         Member member = getAuthor(appMember, commentRequest);
         Article article = getArticle(articleId);
 
-        commentRepository.save(commentRequest.toEntity(member, article));
+        commentRepository.save(commentRequest.toComment(member, article));
     }
 
     private void validateGuest(AppMember appMember) {

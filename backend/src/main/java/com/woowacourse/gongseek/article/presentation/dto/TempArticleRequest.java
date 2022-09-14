@@ -1,10 +1,13 @@
 package com.woowacourse.gongseek.article.presentation.dto;
 
+import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.Content;
 import com.woowacourse.gongseek.article.domain.TempArticle;
+import com.woowacourse.gongseek.article.domain.TempTags;
+import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.member.domain.Member;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,7 +38,14 @@ public class TempArticleRequest {
         this(null, title, content, category, tags, isAnonymous);
     }
 
-    public TempArticle toEntity(Member member) {
-        return new TempArticle(title, content, category, member, tags, isAnonymous);
+    public TempArticle toTempArticle(Member member) {
+        return TempArticle.builder()
+                .title(new Title(title))
+                .content(new Content(content))
+                .category(Category.from(category))
+                .member(member)
+                .tempTags(new TempTags(tags))
+                .isAnonymous(isAnonymous)
+                .build();
     }
 }

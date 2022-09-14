@@ -3,6 +3,10 @@ package com.woowacourse.gongseek.article.presentation.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.Content;
+import com.woowacourse.gongseek.article.domain.Title;
+import com.woowacourse.gongseek.article.domain.Views;
+import com.woowacourse.gongseek.article.domain.articletag.ArticleTags;
 import com.woowacourse.gongseek.member.domain.Member;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
@@ -39,7 +43,15 @@ public class ArticleRequest {
         this(title, content, category, tag, isAnonymous, null);
     }
 
-    public Article toEntity(Member member) {
-        return new Article(title, content, Category.from(category), member, isAnonymous);
+    public Article toArticle(Member member) {
+        return Article.builder()
+                .title(new Title(title))
+                .content(new Content(content))
+                .category(Category.from(category))
+                .member(member)
+                .views(new Views())
+                .articleTags(new ArticleTags())
+                .isAnonymous(isAnonymous)
+                .build();
     }
 }

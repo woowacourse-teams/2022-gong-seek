@@ -19,7 +19,7 @@ public class CommentRequest {
 
     private Boolean isAnonymous;
 
-    public Comment toEntity(Member member, Article article) {
+    public Comment toComment(Member member, Article article) {
         return new Comment(content, member, article, isAnonymous);
     }
 }

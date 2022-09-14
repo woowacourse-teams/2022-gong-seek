@@ -56,7 +56,7 @@ public class ArticleService {
 
         Tags foundTags = tagService.getOrCreateTags(Tags.from(articleRequest.getTag()));
 
-        Article article = articleRepository.save(articleRequest.toEntity(member));
+        Article article = articleRepository.save(articleRequest.toArticle(member));
         article.addTag(foundTags);
 
         tempArticleService.delete(articleRequest.getTempArticleId(), appMember);
