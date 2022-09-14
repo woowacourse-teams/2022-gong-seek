@@ -121,6 +121,8 @@ class AuthControllerTest {
                 .andDo(document("renew-token",
                                 requestHeaders(
                                         headerWithName(HttpHeaders.COOKIE).description("기존의 리프레시 토큰")
+                                ), requestHeaders(
+                                        headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
                                 ),
                                 responseHeaders(
                                         headerWithName(HttpHeaders.SET_COOKIE).description("갱신된 리프레시 토큰")
