@@ -30,7 +30,7 @@ public class TempArticleService {
     @Transactional
     public TempArticleIdResponse createOrUpdate(AppMember appMember, TempArticleRequest tempArticleRequest) {
         validateGuest(appMember);
-        final Member member = getMember(appMember.getPayload());
+        Member member = getMember(appMember.getPayload());
 
         if (isExistTempArticle(tempArticleRequest.getId())) {
             return update(tempArticleRequest);
@@ -54,7 +54,7 @@ public class TempArticleService {
     }
 
     private TempArticleIdResponse update(TempArticleRequest request) {
-        final TempArticle tempArticle = getTempArticle(request.getId());
+        TempArticle tempArticle = getTempArticle(request.getId());
         tempArticle.update(request.toTempArticle(tempArticle.getMember()));
         return new TempArticleIdResponse(tempArticle.getId());
     }
@@ -65,7 +65,7 @@ public class TempArticleService {
     }
 
     private TempArticleIdResponse create(TempArticleRequest request, Member member) {
-        final TempArticle tempArticle = tempArticleRepository.save(request.toTempArticle(member));
+        TempArticle tempArticle = tempArticleRepository.save(request.toTempArticle(member));
         return new TempArticleIdResponse(tempArticle.getId());
     }
 
@@ -73,8 +73,8 @@ public class TempArticleService {
         if (!isExistTempArticle(tempArticleId)) {
             throw new TempArticleNotFoundException(tempArticleId);
         }
-        final Member member = getMember(appMember.getPayload());
-        final TempArticle tempArticle = getTempArticle(tempArticleId, member.getId());
+        Member member = getMember(appMember.getPayload());
+        TempArticle tempArticle = getTempArticle(tempArticleId, member.getId());
 
         return TempArticleDetailResponse.from(tempArticle);
     }
@@ -89,15 +89,15 @@ public class TempArticleService {
         if (!isExistTempArticle(tempArticleId)) {
             return;
         }
-        final Member member = getMember(appMember.getPayload());
-        final TempArticle articleTemp = getTempArticle(tempArticleId, member.getId());
+        Member member = getMember(appMember.getPayload());
+        TempArticle articleTemp = getTempArticle(tempArticleId, member.getId());
 
         tempArticleRepository.delete(articleTemp);
     }
 
     public TempArticlesResponse getAll(AppMember appMember) {
-        final Member member = getMember(appMember.getPayload());
-        final List<TempArticle> tempArticles = tempArticleRepository.findAllByMemberId(member.getId());
+        Member member = getMember(appMember.getPayload());
+        List<TempArticle> tempArticles = tempArticleRepository.findAllByMemberId(member.getId());
         return new TempArticlesResponse(tempArticles.stream()
                 .map(TempArticleResponse::from)
                 .collect(Collectors.toList()));

@@ -7,9 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TempArticleRepository extends JpaRepository<TempArticle, Long> {
 
-    List<TempArticle> findAllByMemberId(final Long id);
+    List<TempArticle> findAllByMemberId(Long id);
 
-    Optional<TempArticle> findByIdAndMemberId(final Long tempArticleId, final Long memberId);
-
-    boolean existsByIdAndMemberId(final Long tempArticleId, final Long memberId);
+    Optional<TempArticle> findByIdAndMemberId(Long tempArticleId, Long memberId);
 }
