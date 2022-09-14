@@ -5,7 +5,7 @@ on:
     branches:
       - '*'
     paths:
-      - front/**
+      - frontend/**
 
 jobs:
   build:
