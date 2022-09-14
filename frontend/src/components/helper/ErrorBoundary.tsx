@@ -24,25 +24,38 @@ class ErrorBoundary extends Component<Props, State> {
 	}
 
 	componentDidUpdate(_: never, prevState: State) {
-		if (prevState.error !== this.state.error) {
-			if (this.state.error && Number(this.state.error.errorCode) === 1004) {
-				window.location.href = URL.REFRESH_TOKEN_HANDLER;
-			}
-			if (this.state.error && Number(this.state.error.errorCode) === 1005) {
-				window.location.href = URL.REFRESH_TOKEN_HANDLER;
-			}
-			if (this.state.error && Number(this.state.error.errorCode) === 1008) {
+		if (prevState.error !== this.state.error && this.state.error) {
+			if (
+				Number(this.state.error.errorCode) === 1001 ||
+				Number(this.state.error.errorCode) === 1002 ||
+				Number(this.state.error.errorCode) === 1003 ||
+				Number(this.state.error.errorCode) === 1006 ||
+				Number(this.state.error.errorCode) === 1009 ||
+				Number(this.state.error.errorCode) === 2001
+			) {
 				alert('다시 로그인 해주세요');
 				window.location.href = URL.LOGIN;
+				return;
 			}
-			if (this.state.error && Number(this.state.error.errorCode) === 3001) {
-				window.location.href = '/*';
+			if (
+				Number(this.state.error.errorCode) === 1004 ||
+				Number(this.state.error.errorCode) === 1005
+			) {
+				window.location.href = URL.REFRESH_TOKEN_HANDLER;
+				return;
 			}
+			if (Number(this.state.error.errorCode) === 3001) {
+				window.location.href = URL.HOME;
+				return;
+			}
+			localStorage.removeItem('accessToken');
 		}
 
 		if (this.state.error !== null && prevState.error !== null) {
 			this.reset();
+			return;
 		}
+		window.location.href = URL.HOME;
 	}
 
 	static getDerivedStateFromError(error: Error) {
