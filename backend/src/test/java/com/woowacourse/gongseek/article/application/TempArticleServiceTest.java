@@ -8,9 +8,9 @@ import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.exception.TempArticleNotFoundException;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleDetailResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleIdResponse;
-import com.woowacourse.gongseek.article.presentation.dto.TempArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticlesResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.common.DatabaseCleaner;
@@ -54,7 +54,7 @@ class TempArticleServiceTest {
     @Transactional
     @Test
     void 임시_게시글을_저장한다() {
-        final TempArticleRequest request = new TempArticleRequest("title", "content", Category.QUESTION.getValue(),
+        final ArticleRequest request = new ArticleRequest("title", "content", Category.QUESTION.getValue(),
                 List.of("spring"), false);
 
         final TempArticleIdResponse tempArticleIdResponse = tempArticleService.createOrUpdate(
@@ -68,9 +68,8 @@ class TempArticleServiceTest {
     void 임시_게시글을_업데이트한다() {
         final TempArticle saveTempArticle = tempArticleRepository.save(
                 new TempArticle("title", "content", Category.QUESTION.getValue(), member, List.of("spring"), false));
-        final TempArticleRequest updateRequest = new TempArticleRequest(saveTempArticle.getId(), "updateTitle",
-                "updateContent",
-                Category.QUESTION.getValue(), List.of("updateSpring"), false);
+        final ArticleRequest updateRequest = new ArticleRequest("updateTitle", "updateContent",
+                Category.QUESTION.getValue(), List.of("updateSpring"), false, saveTempArticle.getId());
 
         final TempArticleIdResponse updatedId = tempArticleService.createOrUpdate(new LoginMember(member.getId()),
                 updateRequest);

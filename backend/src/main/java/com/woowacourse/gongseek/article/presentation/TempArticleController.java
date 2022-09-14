@@ -1,9 +1,9 @@
 package com.woowacourse.gongseek.article.presentation;
 
 import com.woowacourse.gongseek.article.application.TempArticleService;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleDetailResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleIdResponse;
-import com.woowacourse.gongseek.article.presentation.dto.TempArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticlesResponse;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
@@ -28,7 +28,7 @@ public class TempArticleController {
 
     @PostMapping
     public ResponseEntity<TempArticleIdResponse> create(@AuthenticationPrinciple AppMember appMember,
-                                                        @Valid @RequestBody TempArticleRequest tempArticleRequest) {
+                                                        @Valid @RequestBody ArticleRequest tempArticleRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(tempArticleService.createOrUpdate(appMember, tempArticleRequest));
     }

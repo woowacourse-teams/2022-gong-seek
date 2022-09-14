@@ -3,9 +3,9 @@ package com.woowacourse.gongseek.article.application;
 import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.exception.TempArticleNotFoundException;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleDetailResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleIdResponse;
-import com.woowacourse.gongseek.article.presentation.dto.TempArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticlesResponse;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
@@ -28,11 +28,11 @@ public class TempArticleService {
     private final TempArticleRepository tempArticleRepository;
 
     @Transactional
-    public TempArticleIdResponse createOrUpdate(AppMember appMember, TempArticleRequest tempArticleRequest) {
+    public TempArticleIdResponse createOrUpdate(AppMember appMember, ArticleRequest tempArticleRequest) {
         validateGuest(appMember);
         Member member = getMember(appMember.getPayload());
 
-        if (isExistTempArticle(tempArticleRequest.getId())) {
+        if (isExistTempArticle(tempArticleRequest.getTempArticleId())) {
             return update(tempArticleRequest);
         }
         return create(tempArticleRequest, member);
@@ -53,8 +53,8 @@ public class TempArticleService {
         return articleTempId != null && tempArticleRepository.existsById(articleTempId);
     }
 
-    private TempArticleIdResponse update(TempArticleRequest request) {
-        TempArticle tempArticle = getTempArticle(request.getId());
+    private TempArticleIdResponse update(ArticleRequest request) {
+        TempArticle tempArticle = getTempArticle(request.getTempArticleId());
         tempArticle.update(request.toTempArticle(tempArticle.getMember()));
         return new TempArticleIdResponse(tempArticle.getId());
     }
@@ -64,7 +64,7 @@ public class TempArticleService {
                 .orElseThrow(() -> new TempArticleNotFoundException(tempArticleId));
     }
 
-    private TempArticleIdResponse create(TempArticleRequest request, Member member) {
+    private TempArticleIdResponse create(ArticleRequest request, Member member) {
         TempArticle tempArticle = tempArticleRepository.save(request.toTempArticle(member));
         return new TempArticleIdResponse(tempArticle.getId());
     }

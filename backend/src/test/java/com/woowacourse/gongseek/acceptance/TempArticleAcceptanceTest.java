@@ -7,9 +7,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleDetailResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleIdResponse;
-import com.woowacourse.gongseek.article.presentation.dto.TempArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticlesResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import io.restassured.RestAssured;
@@ -25,7 +25,7 @@ public class TempArticleAcceptanceTest extends AcceptanceTest {
     @Test
     void 슬로가_로그인을_하고_게시글_임시서장을_할_수_있다() {
         final AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
-        final TempArticleRequest request = new TempArticleRequest("title", "content", Category.DISCUSSION.getValue(),
+        final ArticleRequest request = new ArticleRequest("title", "content", Category.DISCUSSION.getValue(),
                 List.of("Spring"), false);
 
         final ExtractableResponse<Response> response = 임시_게시물을_등록한다(tokenResponse, request);
@@ -41,11 +41,11 @@ public class TempArticleAcceptanceTest extends AcceptanceTest {
     void 슬로가_로그인을_하고_전체_임시_게시글을_조회할_수_있다() {
         final AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
         final long responseId1 = 임시_게시물을_등록한다(tokenResponse,
-                new TempArticleRequest("title", "content", Category.DISCUSSION.getValue(), List.of("Spring"), false))
+                new ArticleRequest("title", "content", Category.DISCUSSION.getValue(), List.of("Spring"), false))
                 .as(TempArticleIdResponse.class)
                 .getId();
         final long responseId2 = 임시_게시물을_등록한다(tokenResponse,
-                new TempArticleRequest("title2", "content2", Category.QUESTION.getValue(), List.of("Spring2"), false))
+                new ArticleRequest("title2", "content2", Category.QUESTION.getValue(), List.of("Spring2"), false))
                 .as(TempArticleIdResponse.class)
                 .getId();
 
@@ -71,7 +71,7 @@ public class TempArticleAcceptanceTest extends AcceptanceTest {
     void 슬로가_로그인을_하고_단건_임시_게시글을_조회할_수_있다() {
         final AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
         final long tempArticleId = 임시_게시물을_등록한다(tokenResponse,
-                new TempArticleRequest("title", "content", Category.DISCUSSION.getValue(), List.of("spring"), false))
+                new ArticleRequest("title", "content", Category.DISCUSSION.getValue(), List.of("spring"), false))
                 .as(TempArticleIdResponse.class)
                 .getId();
 
@@ -97,7 +97,7 @@ public class TempArticleAcceptanceTest extends AcceptanceTest {
     void 슬로가_로그인을_하고_저장된_임시_게시글을_삭제할_수_있다() {
         final AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
         final long tempArticleId = 임시_게시물을_등록한다(tokenResponse,
-                new TempArticleRequest("title", "content", Category.DISCUSSION.getValue(), List.of("spring"), false))
+                new ArticleRequest("title", "content", Category.DISCUSSION.getValue(), List.of("spring"), false))
                 .as(TempArticleIdResponse.class)
                 .getId();
 

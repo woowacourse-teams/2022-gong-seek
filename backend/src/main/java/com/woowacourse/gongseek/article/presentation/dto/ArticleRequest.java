@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.Content;
+import com.woowacourse.gongseek.article.domain.TempArticle;
+import com.woowacourse.gongseek.article.domain.TempTags;
 import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.Views;
 import com.woowacourse.gongseek.article.domain.articletag.ArticleTags;
@@ -51,6 +53,18 @@ public class ArticleRequest {
                 .member(member)
                 .views(new Views())
                 .articleTags(new ArticleTags())
+                .isAnonymous(isAnonymous)
+                .build();
+    }
+
+    public TempArticle toTempArticle(Member member) {
+        return TempArticle.builder()
+                .id(tempArticleId)
+                .title(new Title(title))
+                .content(new Content(content))
+                .category(Category.from(category))
+                .member(member)
+                .tempTags(new TempTags(tag))
                 .isAnonymous(isAnonymous)
                 .build();
     }
