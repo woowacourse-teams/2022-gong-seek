@@ -8,15 +8,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 public class Member {
 
+    private static final Long ANONYMOUS_ID = 0L;
     private static final String ANONYMOUS_NAME = "익명";
+    private static final String ANONYMOUS_GITHUB_ID = "githubId";
     private static final String ANONYMOUS_AVATAR_URL = "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png";
 
     @Id
@@ -55,8 +59,11 @@ public class Member {
         this.name = new Name(value);
     }
 
-    public static Member createAnonymous() {
-        return new Member(ANONYMOUS_NAME, "githubId", ANONYMOUS_AVATAR_URL);
+    public Member getMemberOrAnonymous(boolean isAnonymous) {
+        if (isAnonymous) {
+            return new Member(this.getId(), new Name(ANONYMOUS_NAME), ANONYMOUS_GITHUB_ID, ANONYMOUS_AVATAR_URL);
+        }
+        return this;
     }
 
     public String getName() {

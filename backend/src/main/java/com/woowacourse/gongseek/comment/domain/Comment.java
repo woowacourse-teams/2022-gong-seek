@@ -66,9 +66,6 @@ public class Comment extends BaseTimeEntity {
     }
 
     public Member getMember() {
-        if (isAnonymous) {
-            return Member.createAnonymous();
-        }
-        return member;
+        return member.getMemberOrAnonymous(isAnonymous);
     }
 }

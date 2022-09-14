@@ -65,7 +65,8 @@ public class Article extends BaseTimeEntity {
                 null,
                 new Title(title),
                 new Content(content),
-                category, member,
+                category,
+                member,
                 new Views(),
                 new ArticleTags(),
                 isAnonymous
@@ -107,10 +108,7 @@ public class Article extends BaseTimeEntity {
     }
 
     public Member getMember() {
-        if (isAnonymous) {
-            return Member.createAnonymous();
-        }
-        return member;
+        return member.getMemberOrAnonymous(isAnonymous);
     }
 
     public int getViews() {
