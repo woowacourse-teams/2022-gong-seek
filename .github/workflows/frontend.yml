@@ -1,0 +1,31 @@
+name: gongseek frontend CI
+
+on:
+  pull_request:
+    branches:
+      - '*'
+    paths:
+      - front/**
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Install node packages
+        run: yarn install
+
+      - name: Test
+        run: yarn test
+
+      - name: Build
+        run: yarn build
