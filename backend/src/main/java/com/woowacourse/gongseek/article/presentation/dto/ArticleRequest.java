@@ -33,7 +33,7 @@ public class ArticleRequest {
     @JsonProperty("isAnonymous")
     private Boolean isAnonymous;
 
-    private Long articleTempId;
+    private Long tempArticleId;
 
     public ArticleRequest(String title, String content, String category, List<String> tag, Boolean isAnonymous) {
         this(title, content, category, tag, isAnonymous, null);
