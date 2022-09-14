@@ -11,7 +11,7 @@ export const Section = styled.section`
 	justify-content: space-between;
 	align-items: center;
 
-	width: 100%;
+	width: 100vw;
 	height: ${({ theme }) => theme.size.SIZE_056};
 
 	border-radius: ${({ theme }) => theme.size.SIZE_010} ${({ theme }) => theme.size.SIZE_010} 0 0;
