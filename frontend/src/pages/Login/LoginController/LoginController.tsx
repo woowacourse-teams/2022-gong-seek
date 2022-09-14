@@ -27,7 +27,7 @@ const LoginController = () => {
 		if (code) {
 			mutate(code);
 		}
-	}, []);
+	}, [code]);
 
 	useEffect(() => {
 		if (isSuccess) {
