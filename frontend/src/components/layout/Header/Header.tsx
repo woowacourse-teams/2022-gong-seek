@@ -45,14 +45,17 @@ const Header = () => {
 			</S.HeaderSection>
 			<S.NavBar>
 				<S.NavBarItem to={URL.CATEGORY_SELECTOR}>글 쓰러 가기</S.NavBarItem>
-				<S.NavBarItem to="/articles/question">질문 카테고리</S.NavBarItem>
-				<S.NavBarItem to="/articles/discussion">토론 카테고리</S.NavBarItem>
+				<S.NavBarItem to={URL.CATEGORY_QUESTION}>질문 카테고리</S.NavBarItem>
+				<S.NavBarItem to={URL.CATEGORY_DISCUSSION}>토론 카테고리</S.NavBarItem>
 				<S.NavBarItem to={URL.HASH_TAG_SEARCH}>해시태그로 검색하기</S.NavBarItem>
 				<S.NavBarItem to={URL.INQUIRE}>문의하기</S.NavBarItem>
 				{isLogin ? (
 					<UserProfileIcon />
 				) : (
-					<S.NavBarItem to={URL.LOGIN} css={{ marginLeft: 'auto', marginRight: theme.size.SIZE_160 }}>
+					<S.NavBarItem
+						to={URL.LOGIN}
+						css={{ marginLeft: 'auto', marginRight: theme.size.SIZE_160 }}
+					>
 						로그인
 					</S.NavBarItem>
 				)}
