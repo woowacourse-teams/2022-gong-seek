@@ -9,6 +9,10 @@ export const Container = styled.div`
 	width: 85%;
 
 	margin: ${({ theme }) => theme.size.SIZE_020} auto;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: 100%;
+	}
 `;
 
 export const CategoryArticlesTitle = styled.h2<{ category: string }>`
