@@ -38,15 +38,6 @@ class ArticleTest {
     }
 
     @Test
-    void 익명_게시글일때_작성자인지_확인한다() {
-        String cipherId = "cipherId";
-        Member member = new Member("익명", cipherId, "anonymousAvatarUrl");
-        Article article = new Article("제목", "내용", Category.QUESTION, member, true);
-
-        assertThat(article.isAnonymousAuthor(cipherId)).isTrue();
-    }
-
-    @Test
     void 게시글의_제목과_내용을_수정한다() {
         Article article = new Article("제목", "내용", Category.QUESTION, member, false);
         String updatedTitle = "updatedTitle";
