@@ -145,7 +145,7 @@ export const NavBarItem = styled(Link)`
 
 export const ProfileIconBox = styled.div`
 	width: fit-content;
-	padding: ${({ theme }) => theme.size.SIZE_016} 0;
+	margin: ${({ theme }) => theme.size.SIZE_004} ${({ theme }) => theme.size.SIZE_160} 0 auto;
 `;
 
 export const LoginIn = styled(Link)`
@@ -155,7 +155,9 @@ export const LoginIn = styled(Link)`
 	background-color: transparent;
 	color: ${({ theme }) => theme.colors.BLACK_600};
 
-	padding: ${({ theme }) => theme.size.SIZE_016} 0;
+	margin: 0 ${({ theme }) => theme.size.SIZE_160} 0 auto;
+
+	padding: ${({ theme }) => theme.size.SIZE_016};
 
 	&:hover,
 	&:active {

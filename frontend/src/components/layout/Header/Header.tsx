@@ -56,9 +56,7 @@ const Header = () => {
 						<UserProfileIcon />
 					</S.ProfileIconBox>
 				) : (
-					<S.LoginIn to={URL.LOGIN} css={{ marginLeft: 'auto', marginRight: theme.size.SIZE_160 }}>
-						로그인
-					</S.LoginIn>
+					<S.LoginIn to={URL.LOGIN}>로그인</S.LoginIn>
 				)}
 			</S.NavBar>
 		</S.Container>
