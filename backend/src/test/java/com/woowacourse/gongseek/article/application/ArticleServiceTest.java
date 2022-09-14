@@ -20,6 +20,7 @@ import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.support.DatabaseCleaner;
 import com.woowacourse.gongseek.like.application.LikeService;
 import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
@@ -80,9 +81,9 @@ public class ArticleServiceTest {
 
     @Autowired
     private Encryptor encryptor;
-//
-//    @Autowired
-//    private DatabaseCleaner databaseCleaner;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
     private Member member;
 
@@ -90,11 +91,11 @@ public class ArticleServiceTest {
     void setUp() {
         member = memberRepository.save(new Member("slo", "hanull", "avatar.com"));
     }
-//
-//    @AfterEach
-//    void tearDown() {
-//        databaseCleaner.tableClear();
-//    }
+
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.tableClear();
+    }
 
     @Transactional
     @Test

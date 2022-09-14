@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.support.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.tag.domain.Tag;
@@ -13,6 +14,7 @@ import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.presentation.dto.TagsResponse;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,9 +38,9 @@ class TagServiceTest {
 
     @Autowired
     private TagService tagService;
-//
-//    @Autowired
-//    private DatabaseCleaner databaseCleaner;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
     private Member member;
 
@@ -47,10 +49,10 @@ class TagServiceTest {
         member = memberRepository.save(new Member("slo", "hanull", "avatar.com"));
     }
 
-//    @AfterEach
-//    void tearDown() {
-//        databaseCleaner.tableClear();
-//    }
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.tableClear();
+    }
 
     @Test
     void 태그가_존재하지_않으면_태그를_생성한다() {

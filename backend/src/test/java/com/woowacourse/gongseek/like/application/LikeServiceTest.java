@@ -10,6 +10,7 @@ import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.support.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -31,13 +32,13 @@ class LikeServiceTest {
     @Autowired
     private ArticleRepository articleRepository;
 
-//    @Autowired
-//    private DatabaseCleaner databaseCleaner;
-//
-//    @AfterEach
-//    void tearDown() {
-//        databaseCleaner.tableClear();
-//    }
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
+
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.tableClear();
+    }
 
     @Test
     void 게시글을_추천한다() {

@@ -18,6 +18,7 @@ import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentUpdateRequest;
+import com.woowacourse.gongseek.support.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -53,19 +54,19 @@ class CommentServiceTest {
     @Autowired
     private CommentRepository commentRepository;
 
-//    @Autowired
-//    private DatabaseCleaner databaseCleaner;
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
     @BeforeEach
     void setUp() {
         memberRepository.save(member);
         articleRepository.save(article);
     }
-//
-//    @AfterEach
-//    void tearDown() {
-//        databaseCleaner.tableClear();
-//    }
+
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.tableClear();
+    }
 
     @Test
     void 회원이_기명_댓글을_생성한다() {

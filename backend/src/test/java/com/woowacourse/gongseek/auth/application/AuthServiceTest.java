@@ -15,15 +15,15 @@ import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.support.DatabaseCleaner;
+import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
-@Transactional
 @SpringBootTest
 class AuthServiceTest {
 
@@ -35,14 +35,14 @@ class AuthServiceTest {
 
     @MockBean
     private OAuthClient githubOAuthClient;
-//
-//    @Autowired
-//    private DatabaseCleaner databaseCleaner;
-//
-//    @AfterEach
-//    void tearDown() {
-//        databaseCleaner.tableClear();
-//    }
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
+
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.tableClear();
+    }
 
     @Test
     void 리다이렉트_URL_을_반환한다() {
@@ -96,12 +96,10 @@ class AuthServiceTest {
         GithubProfileResponse profileResponse = new GithubProfileResponse(
                 기론.getGithubId(), 기론.getName(), 기론.getAvatarUrl());
         given(githubOAuthClient.getMemberProfile(기론.getCode())).willReturn(profileResponse);
-        Member giron = memberRepository.save(
-                new Member(기론.getGithubId(), 기론.getName(), "previous avatar url"));
+
         TokenResponse tokenResponse = authService.generateToken(new OAuthCodeRequest(기론.getCode()));
 
-        TokenResponse renewToken = authService.renewToken(new LoginMember(giron.getId()), tokenResponse.getRefreshToken());
-
+        TokenResponse renewToken = authService.renewToken(tokenResponse.getRefreshToken());
         assertAll(
                 () -> assertThat(renewToken.getRefreshToken()).isNotNull(),
                 () -> assertThat(renewToken.getAccessToken()).isNotNull()
@@ -113,7 +111,7 @@ class AuthServiceTest {
         Member giron = memberRepository.save(
                 new Member(기론.getGithubId(), 기론.getName(), "previous avatar url"));
 
-        assertThatThrownBy(() -> authService.renewToken(new LoginMember(giron.getId()), "invalid-refresh-token"))
+        assertThatThrownBy(() -> authService.renewToken(UUID.randomUUID()))
                 .isExactlyInstanceOf(InvalidRefreshTokenException.class)
                 .hasMessage("리프레시 토큰이 유효하지 않습니다.");
     }
