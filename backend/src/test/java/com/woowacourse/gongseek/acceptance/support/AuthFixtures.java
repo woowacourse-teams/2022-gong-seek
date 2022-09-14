@@ -5,6 +5,9 @@ import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.support.GithubClientFixtures;
 import io.restassured.RestAssured;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -33,5 +36,29 @@ public class AuthFixtures {
                 .statusCode(HttpStatus.OK.value())
                 .extract()
                 .as(OAuthLoginUrlResponse.class);
+    }
+
+    public static ExtractableResponse<Response> 로그인을_하여_상태를_반환한다(GithubClientFixtures client) {
+        return RestAssured
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new OAuthCodeRequest(client.getCode()))
+                .when()
+                .post("/api/auth/login")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> 토큰을_재발급한다(String refreshToken, String accessToken) {
+        return RestAssured
+                .given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .cookie("refreshToken", refreshToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("/api/auth/refresh")
+                .then().log().all()
+                .extract();
     }
 }
