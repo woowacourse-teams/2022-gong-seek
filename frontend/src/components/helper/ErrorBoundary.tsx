@@ -2,7 +2,6 @@ import { Component } from 'react';
 
 import CustomError from '@/components/helper/CustomError';
 import { URL } from '@/constants/url';
-import { deleteRefreshCookie } from '@/utils/deleteRefreshCookie';
 
 type Props = {
 	fallback?: React.ReactNode;
@@ -34,7 +33,6 @@ class ErrorBoundary extends Component<Props, State> {
 			}
 			if (this.state.error && Number(this.state.error.errorCode) === 1008) {
 				alert('다시 로그인 해주세요');
-				deleteRefreshCookie();
 				window.location.href = URL.LOGIN;
 			}
 			if (this.state.error && Number(this.state.error.errorCode) === 3001) {
