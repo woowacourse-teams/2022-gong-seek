@@ -5,6 +5,7 @@ import gongseek from '@/assets/gongseek.png';
 import UserProfileIcon from '@/components/common/UserProfileIcon/UserProfileIcon';
 import { UserProfile } from '@/components/common/UserProfileIcon/UserProfileIcon.styles';
 import * as S from '@/components/layout/TabBar/TabBar.styles';
+import { URL } from '@/constants/url';
 import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
 
@@ -19,7 +20,7 @@ const TabBar = () => {
 			<S.Section>
 				<S.PostingLink
 					onClick={() => {
-						navigate('/category');
+						navigate(URL.CATEGORY_SELECTOR);
 					}}
 				/>
 				{isLogin ? (
@@ -32,7 +33,6 @@ const TabBar = () => {
 						}}
 					/>
 				)}
-
 				<S.MenuLink
 					onClick={() => {
 						setSliderState({ isOpen: true });

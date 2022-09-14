@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 import type { PathParams } from 'msw';
 
-import { HOME_URL } from '@/constants/url';
+import { HOME_URL } from '@/constants/apiUrl';
 import mockArticle from '@/mock/data/articles.json';
 
 export const ArticleHandler = [
