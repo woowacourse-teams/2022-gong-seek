@@ -2,11 +2,12 @@ package com.woowacourse.gongseek.auth.domain.repository;
 
 import com.woowacourse.gongseek.auth.domain.RefreshToken;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
+public interface RefreshTokenRepository extends JpaRepository<RefreshToken, UUID> {
 
-    Optional<RefreshToken> findByValueAndMemberId(String refreshToken, Long memberId);
+    //Optional<RefreshToken> findByToken(UUID refreshToken);
 
-    void deleteByMemberId(Long memberId);
+    void deleteAllByMemberId(Long memberId);
 }

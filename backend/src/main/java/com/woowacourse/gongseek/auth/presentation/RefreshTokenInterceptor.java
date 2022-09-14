@@ -1,7 +1,5 @@
 package com.woowacourse.gongseek.auth.presentation;
 
-import static org.hibernate.validator.internal.metadata.core.ConstraintHelper.PAYLOAD;
-
 import com.woowacourse.gongseek.auth.exception.InvalidAccessTokenException;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.utils.TokenExtractor;

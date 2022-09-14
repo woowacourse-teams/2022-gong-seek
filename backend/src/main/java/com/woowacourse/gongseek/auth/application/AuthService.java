@@ -3,13 +3,12 @@ package com.woowacourse.gongseek.auth.application;
 import com.woowacourse.gongseek.auth.domain.RefreshToken;
 import com.woowacourse.gongseek.auth.domain.repository.RefreshTokenRepository;
 import com.woowacourse.gongseek.auth.exception.InvalidRefreshTokenException;
-import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
-import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,32 +47,30 @@ public class AuthService {
 
     private TokenResponse getTokenResponse(Member member) {
         String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(member.getId()));
-        RefreshToken refreshToken = refreshTokenRepository.save(RefreshToken.create(member));
+        RefreshToken refreshToken = refreshTokenRepository.save(RefreshToken.create(member.getId()));
         return TokenResponse.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken.getValue())
+                .refreshToken(refreshToken.getId())
                 .build();
     }
 
-    public TokenResponse renewToken(AppMember appMember, String refreshToken) {
-        Member member = memberRepository.findById(appMember.getPayload())
-                .orElseThrow(() -> new MemberNotFoundException(appMember.getPayload()));
-
-        RefreshToken token = refreshTokenRepository.findByValueAndMemberId(refreshToken, member.getId())
-                .orElseThrow(() -> {
-                    refreshTokenRepository.deleteByMemberId(member.getId());
-                    throw new InvalidRefreshTokenException();
-                });
-        validateExpiryDate(token);
-        refreshTokenRepository.deleteById(token.getId());
-        refreshTokenRepository.save(RefreshToken.create(member));
-
-        return getTokenResponse(member);
-    }
-
-    private void validateExpiryDate(RefreshToken token) {
-        if (token.isExpired()) {
+    //uuid 사용 이유, jwt는 길어서 대역폭이 크다. jwt에는 유저 id의 정보가 들어있다. 혹시나 하는 마음에 아예 일반 문자열인 UUID - 리프레시는 엑세스 토큰을 위한 토큰이므로 정보따위 필요 없다.
+    public TokenResponse renewToken(UUID requestToken) {
+        RefreshToken refreshToken = refreshTokenRepository.findById(requestToken)
+                .orElseThrow(InvalidRefreshTokenException::new);
+        //이미 발급되었으면 탈취당함.
+        if (refreshToken.isIssue() || refreshToken.isExpired()) {
+            refreshTokenRepository.deleteAllByMemberId(refreshToken.getMemberId());
+            System.out.println("refreshToken = " + refreshToken);
             throw new InvalidRefreshTokenException();
         }
+        refreshToken.used();
+
+        RefreshToken newRefreshToken = refreshTokenRepository.save(RefreshToken.create(refreshToken.getMemberId()));
+        String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(refreshToken.getMemberId()));
+        return TokenResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(newRefreshToken.getId())
+                .build();
     }
 }

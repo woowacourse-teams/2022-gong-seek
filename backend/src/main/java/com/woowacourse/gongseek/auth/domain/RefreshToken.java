@@ -1,50 +1,56 @@
 package com.woowacourse.gongseek.auth.domain;
 
-import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 public class RefreshToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "uuid2")
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID id;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private Member member;
-
-    private String value;
+    private Long memberId;
 
     private LocalDateTime expiryDate;
 
-    private RefreshToken(Member member, String value, LocalDateTime expiryDate) {
-        this(null, member, value, expiryDate);
+    private boolean issue;
+
+    private RefreshToken(Long memberId, LocalDateTime expiryDate, boolean issue) {
+        this.memberId = memberId;
+        this.expiryDate = expiryDate;
+        this.issue = issue;
     }
 
-    public static RefreshToken create(Member member){
-        return new RefreshToken(member, UUID.randomUUID().toString(), LocalDateTime.now().plusDays(7));
+    public static RefreshToken create(Long memberId) {
+        return new RefreshToken(memberId, LocalDateTime.now().plusDays(7), false);
+    }
+
+    public void used() {
+        this.issue = true;
     }
 
     public boolean isExpired() {
         return LocalDateTime.now().isAfter(expiryDate);
+    }
+
+    @Override
+    public String toString() {
+        return "RefreshToken{" +
+                "id=" + id +
+                ", memberId=" + memberId +
+                ", expiryDate=" + expiryDate +
+                ", issue=" + issue +
+                '}';
     }
 }
