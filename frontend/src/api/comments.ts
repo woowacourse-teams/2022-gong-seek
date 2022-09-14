@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { HOME_URL } from '@/constants/url';
+import { HOME_URL } from '@/constants/apiUrl';
 import { CommentType } from '@/types/commentResponse';
 
 export const postComments = ({

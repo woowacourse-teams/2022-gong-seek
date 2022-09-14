@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Input from '@/components/common/Input/Input';
+import { URL } from '@/constants/url';
 import AddedOption from '@/pages/VoteGenerator/AddedOption/AddedOption';
 import * as S from '@/pages/VoteGenerator/index.styles';
 
@@ -23,7 +24,7 @@ const VoteGenerator = () => {
 	const onSubmitVoteForm = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		navigate(`/votes-deadline`, { state: { articleId, items: options } });
+		navigate(URL.VOTE_DEADLINE_GENERATOR, { state: { articleId, items: options } });
 	};
 
 	const onClickDeleteOptionButton = (id: number) => {
