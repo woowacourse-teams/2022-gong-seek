@@ -54,14 +54,14 @@ public class TempArticleService {
     }
 
     private TempArticleIdResponse update(TempArticleRequest tempArticleRequest) {
-        final TempArticle tempArticle = getArticleTemp(tempArticleRequest.getId());
+        final TempArticle tempArticle = getTempArticle(tempArticleRequest.getId());
         tempArticle.update(tempArticleRequest);
         return new TempArticleIdResponse(tempArticle.getId());
     }
 
-    private TempArticle getArticleTemp(Long articleTempId) {
-        return tempArticleRepository.findById(articleTempId)
-                .get();
+    private TempArticle getTempArticle(Long tempArticleId) {
+        return tempArticleRepository.findById(tempArticleId)
+                .orElseThrow(() -> new TempArticleNotFoundException(tempArticleId));
     }
 
     private TempArticleIdResponse create(TempArticleRequest tempArticleRequest, Member member) {
@@ -75,7 +75,7 @@ public class TempArticleService {
             return;
         }
         final Member member = getMember(appMember.getPayload());
-        final TempArticle articleTemp = getArticleTemp(articleTempId);
+        final TempArticle articleTemp = getTempArticle(articleTempId);
         if (articleTemp.isAuthor(member)) {
             tempArticleRepository.delete(articleTemp);
         }
@@ -91,8 +91,7 @@ public class TempArticleService {
 
     public TempArticleDetailResponse getOne(AppMember appMember, Long tempArticleId) {
         final Member member = getMember(appMember.getPayload());
-        final TempArticle tempArticle = tempArticleRepository.findById(tempArticleId)
-                .orElseThrow(() -> new TempArticleNotFoundException(tempArticleId));
+        final TempArticle tempArticle = getTempArticle(tempArticleId);
         if (tempArticle.isAuthor(member)) {
             return TempArticleDetailResponse.from(tempArticle);
         }

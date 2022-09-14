@@ -120,6 +120,13 @@ class TempArticleServiceTest {
         );
     }
 
+    @Test
+    void 임시_게시물_조회_시_없다면_예외를_발생한다() {
+        assertThatThrownBy(() -> tempArticleService.getOne(new LoginMember(member.getId()), 1L))
+                .isInstanceOf(TempArticleNotFoundException.class)
+                .hasMessageContaining("임시 게시글이 존재하지 않습니다.");
+    }
+
     @Transactional
     @Test
     void 임시_게시물을_삭제한다() {
