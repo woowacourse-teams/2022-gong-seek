@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 
 import * as S from '@/components/common/SearchBar/SearchBar.styles';
 import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
-import useSnackBar from '@/hooks/useSnackBar';
+import useSnackBar from '@/hooks/common/useSnackBar';
 import { searchState } from '@/store/searchState';
 import { validatedSearchInput } from '@/utils/validateInput';
 

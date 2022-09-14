@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { HOME_URL } from '@/constants/url';
+import { HOME_URL } from '@/constants/apiUrl';
 
 export const getAllHashTag = async () => {
 	const accessToken = localStorage.getItem('accessToken');

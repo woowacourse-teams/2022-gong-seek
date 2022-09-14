@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
+import useGetAllHashTags from '@/hooks/hashTag/useGetAllHashTags';
 import HashTagSearchBox from '@/pages/HashTagSearch/HashTagSearchBox/HashTagSearchBox';
 import HashTagSearchResult from '@/pages/HashTagSearch/HashTagSearchResult/HashTagSearchResult';
-import useGetAllHashTags from '@/pages/HashTagSearch/hooks/useGetAllHashTags';
 import * as S from '@/pages/HashTagSearch/index.styles';
 
 const HashTagSearch = () => {

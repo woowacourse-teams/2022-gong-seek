@@ -1,9 +1,8 @@
 import Loading from '@/components/common/Loading/Loading';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import { mobileTitleSecondary } from '@/constants/titleType';
+import useGetLoginURL from '@/hooks/login/useGetLoginURL';
 import LoginButton from '@/pages/Login/LoginButton/LoginButton';
-import useGetLoginURL from '@/pages/Login/hooks/useGetLoginURL';
-
 import * as S from '@/pages/Login/index.styles';
 
 const Login = () => {

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Loading from '@/components/common/Loading/Loading';
 import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
-import useGetAllArticles from '@/pages/Home/hooks/useGetAllArticles';
+import useGetAllArticles from '@/hooks/article/useGetAllArticles';
 import * as S from '@/pages/Home/index.styles';
 
 const InfiniteScrollObserver = React.lazy(

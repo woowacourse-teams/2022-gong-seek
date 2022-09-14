@@ -1,11 +1,11 @@
 import Loading from '@/components/common/Loading/Loading';
+import useGetUserArticles from '@/hooks/user/useGetUserArticles';
+import useGetUserComments from '@/hooks/user/useGetUserComments';
+import useGetUserInfo from '@/hooks/user/useGetUserInfo';
 import UserArticleItem from '@/pages/MyPage/UserArticleItem/UserArticleItem';
 import UserCommentBox from '@/pages/MyPage/UserCommentBox/UserCommentBox';
 import UserItemBox from '@/pages/MyPage/UserItemBox/UserItemBox';
 import UserProfile from '@/pages/MyPage/UserProfile/UserProfile';
-import useGetUserArticles from '@/pages/MyPage/hooks/useGetUserArticles';
-import useGetUserComments from '@/pages/MyPage/hooks/useGetUserComments';
-import useGetUserInfo from '@/pages/MyPage/hooks/useGetUserInfo';
 import * as S from '@/pages/MyPage/index.styles';
 
 const MyPage = () => {

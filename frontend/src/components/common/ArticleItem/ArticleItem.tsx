@@ -1,9 +1,5 @@
-import { useEffect } from 'react';
-
 import * as S from '@/components/common/ArticleItem/ArticleItem.styles';
-import Loading from '@/components/common/Loading/Loading';
-import useHeartClick from '@/hooks/useHeartClick';
-import { queryClient } from '@/index';
+import useHeartClick from '@/hooks/article/useHeartClick';
 import { Category } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 import { dateTimeConverter } from '@/utils/converter';
@@ -20,6 +16,7 @@ export interface ArticleItemProps {
 		tag: string[];
 		isLike: boolean;
 		likeCount: number;
+		views: number;
 	};
 	onClick: () => void;
 }
