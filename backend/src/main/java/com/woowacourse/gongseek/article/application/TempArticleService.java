@@ -53,9 +53,9 @@ public class TempArticleService {
         return articleTempId != null && tempArticleRepository.existsById(articleTempId);
     }
 
-    private TempArticleIdResponse update(TempArticleRequest tempArticleRequest) {
-        final TempArticle tempArticle = getTempArticle(tempArticleRequest.getId());
-        tempArticle.update(tempArticleRequest);
+    private TempArticleIdResponse update(TempArticleRequest request) {
+        final TempArticle tempArticle = getTempArticle(request.getId());
+        tempArticle.update(request.toEntity(tempArticle.getMember()));
         return new TempArticleIdResponse(tempArticle.getId());
     }
 
@@ -64,8 +64,8 @@ public class TempArticleService {
                 .orElseThrow(() -> new TempArticleNotFoundException(tempArticleId));
     }
 
-    private TempArticleIdResponse create(TempArticleRequest tempArticleRequest, Member member) {
-        final TempArticle tempArticle = tempArticleRepository.save(tempArticleRequest.toEntity(member));
+    private TempArticleIdResponse create(TempArticleRequest request, Member member) {
+        final TempArticle tempArticle = tempArticleRepository.save(request.toEntity(member));
         return new TempArticleIdResponse(tempArticle.getId());
     }
 

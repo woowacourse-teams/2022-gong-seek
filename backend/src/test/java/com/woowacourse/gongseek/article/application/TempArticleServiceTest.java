@@ -67,7 +67,7 @@ class TempArticleServiceTest {
     @Test
     void 임시_게시글을_업데이트한다() {
         final TempArticle saveTempArticle = tempArticleRepository.save(
-                new TempArticle("title", "content", Category.QUESTION, member, List.of("spring"), false));
+                new TempArticle("title", "content", Category.QUESTION.getValue(), member, List.of("spring"), false));
         final TempArticleRequest updateRequest = new TempArticleRequest(saveTempArticle.getId(), "updateTitle",
                 "updateContent",
                 Category.QUESTION.getValue(), List.of("updateSpring"), false);
@@ -87,9 +87,9 @@ class TempArticleServiceTest {
     @Test
     void 전체_임시_게시글을_조회한다() {
         tempArticleRepository.save(
-                new TempArticle("title", "content", Category.QUESTION, member, List.of("spring"), false));
+                new TempArticle("title", "content", Category.QUESTION.getValue(), member, List.of("spring"), false));
         tempArticleRepository.save(
-                new TempArticle("title2", "content2", Category.QUESTION, member, List.of("spring2"), false));
+                new TempArticle("title2", "content2", Category.QUESTION.getValue(), member, List.of("spring2"), false));
 
         final TempArticlesResponse tempArticles = tempArticleService.getAll(new LoginMember(member.getId()));
 
@@ -104,7 +104,7 @@ class TempArticleServiceTest {
     @Test
     void 단건_임시_게시물을_조회한다() {
         final TempArticle tempArticle = tempArticleRepository.save(
-                new TempArticle("title", "content", Category.QUESTION, member, List.of("spring"), false));
+                new TempArticle("title", "content", Category.QUESTION.getValue(), member, List.of("spring"), false));
 
         final TempArticleDetailResponse tempArticleDetailResponse = tempArticleService.getOne(
                 new LoginMember(member.getId()),
@@ -131,7 +131,7 @@ class TempArticleServiceTest {
     @Test
     void 임시_게시물을_삭제한다() {
         final TempArticle tempArticle = tempArticleRepository.save(
-                new TempArticle("title", "content", Category.QUESTION, member, List.of("spring"), false));
+                new TempArticle("title", "content", Category.QUESTION.getValue(), member, List.of("spring"), false));
 
         tempArticleService.delete(tempArticle.getId(), new LoginMember(member.getId()));
 

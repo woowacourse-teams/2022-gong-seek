@@ -1,6 +1,5 @@
 package com.woowacourse.gongseek.article.domain;
 
-import com.woowacourse.gongseek.article.presentation.dto.TempArticleRequest;
 import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -58,13 +57,13 @@ public class TempArticle {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    public TempArticle(String title, String content, Category category, Member member, List<String> tempTags,
+    public TempArticle(String title, String content, String category, Member member, List<String> tempTags,
                        boolean isAnonymous) {
         this(
                 null,
                 new Title(title),
                 new Content(content),
-                category,
+                Category.from(category),
                 member,
                 new TempTags(tempTags),
                 isAnonymous,
@@ -72,12 +71,12 @@ public class TempArticle {
         );
     }
 
-    public void update(TempArticleRequest updateRequest) {
-        this.title = new Title(updateRequest.getTitle());
-        this.content = new Content(updateRequest.getContent());
-        this.category = Category.from(updateRequest.getCategory());
-        this.tempTags = new TempTags(updateRequest.getTags());
-        this.isAnonymous = updateRequest.getIsAnonymous();
+    public void update(TempArticle tempArticle) {
+        this.title = tempArticle.getTitle();
+        this.content = tempArticle.getContent();
+        this.category = tempArticle.getCategory();
+        this.tempTags = new TempTags(tempArticle.getTempTags());
+        this.isAnonymous = tempArticle.isAnonymous();
         this.createdAt = LocalDateTime.now();
     }
 

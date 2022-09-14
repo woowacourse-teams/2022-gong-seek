@@ -35,7 +35,7 @@ class TempArticleRepositoryTest {
 
     @Test
     void 임시_게시글을_저장한다() {
-        final TempArticle tempArticle = new TempArticle("title", "content", Category.DISCUSSION,
+        final TempArticle tempArticle = new TempArticle("title", "content", Category.DISCUSSION.getValue(),
                 member, List.of("spring"), false);
 
         final TempArticle savedTempArticle = tempArticleRepository.save(tempArticle);
@@ -45,9 +45,9 @@ class TempArticleRepositoryTest {
 
     @Test
     void 전체_임시_게시글을_조회한다() {
-        final TempArticle request1 = new TempArticle("title", "content", Category.DISCUSSION, member, List.of("spring"),
-                false);
-        final TempArticle request2 = new TempArticle("title2", "content2", Category.QUESTION, member,
+        final TempArticle request1 = new TempArticle("title", "content", Category.DISCUSSION.getValue(), member,
+                List.of("spring"), false);
+        final TempArticle request2 = new TempArticle("title2", "content2", Category.QUESTION.getValue(), member,
                 List.of("spring2"), false);
         tempArticleRepository.save(request1);
         tempArticleRepository.save(request2);
@@ -63,7 +63,7 @@ class TempArticleRepositoryTest {
     @Test
     void 단건_임시_게시글을_조회한다() {
         final TempArticle tempArticle = tempArticleRepository.save(
-                new TempArticle("title", "content", Category.DISCUSSION, member, List.of("spring"), false));
+                new TempArticle("title", "content", Category.DISCUSSION.getValue(), member, List.of("spring"), false));
 
         final TempArticle foundTempArticle = tempArticleRepository.findById(tempArticle.getId())
                 .get();
@@ -74,7 +74,7 @@ class TempArticleRepositoryTest {
     @Test
     void 임시_게시글을_삭제한다() {
         final TempArticle tempArticle = tempArticleRepository.save(
-                new TempArticle("title", "content", Category.DISCUSSION, member, List.of("spring"), false));
+                new TempArticle("title", "content", Category.DISCUSSION.getValue(), member, List.of("spring"), false));
 
         tempArticleRepository.delete(tempArticle);
 

@@ -41,6 +41,6 @@ public class TempArticleRequest {
     }
 
     public TempArticle toEntity(Member member) {
-        return new TempArticle(title, content, Category.from(category), member, tags, isAnonymous);
+        return new TempArticle(title, content, category, member, tags, isAnonymous);
     }
 }

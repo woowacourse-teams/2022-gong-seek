@@ -543,7 +543,8 @@ public class ArticleServiceTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(null, 0, Category.QUESTION.getValue(), "latest", PageRequest.ofSize(10),
+        ArticlePageResponse response = articleService.getAll(null, 0, Category.QUESTION.getValue(), "latest",
+                PageRequest.ofSize(10),
                 loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
@@ -566,7 +567,8 @@ public class ArticleServiceTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(10L, 0, Category.QUESTION.getValue(), "latest", PageRequest.ofSize(10),
+        ArticlePageResponse response = articleService.getAll(10L, 0, Category.QUESTION.getValue(), "latest",
+                PageRequest.ofSize(10),
                 loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
@@ -605,7 +607,8 @@ public class ArticleServiceTest {
     @Test
     void 공백으로_게시글을_검색한_경우_빈_값이_나온다() {
         AppMember loginMember = new LoginMember(member.getId());
-        ArticlePageResponse articlePageResponse = articleService.searchByText(null, PageRequest.ofSize(1), " ", loginMember);
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, PageRequest.ofSize(1), " ",
+                loginMember);
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).isEmpty(),
@@ -624,7 +627,8 @@ public class ArticleServiceTest {
                             false));
         }
 
-        ArticlePageResponse articlePageResponse = articleService.searchByText(null, PageRequest.ofSize(10), "질문", loginMember);
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, PageRequest.ofSize(10), "질문",
+                loginMember);
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(10),
@@ -643,7 +647,8 @@ public class ArticleServiceTest {
                             false));
         }
 
-        ArticlePageResponse firstPageResponse = articleService.searchByText(null, PageRequest.ofSize(10), "질문", loginMember);
+        ArticlePageResponse firstPageResponse = articleService.searchByText(null, PageRequest.ofSize(10), "질문",
+                loginMember);
         ArticlePageResponse secondPageResponse = articleService.searchByText(
                 firstPageResponse.getArticles().get(9).getId(), PageRequest.ofSize(10), "질문", loginMember);
 
@@ -674,7 +679,8 @@ public class ArticleServiceTest {
             articleService.save(loginMember, articleRequest);
         }
 
-        ArticlePageResponse pageResponse = articleService.searchByAuthor(null, PageRequest.ofSize(15), this.member.getName(), loginMember);
+        ArticlePageResponse pageResponse = articleService.searchByAuthor(null, PageRequest.ofSize(15),
+                this.member.getName(), loginMember);
 
         assertThat(pageResponse.getArticles()).hasSize(5);
     }
@@ -809,7 +815,7 @@ public class ArticleServiceTest {
     @Test
     void 게시글을_생성하면_임시_게시글은_삭제된다() {
         final TempArticle tempArticle = tempArticleRepository.save(
-                new TempArticle("title", "content", Category.DISCUSSION, member, List.of("spring"), false));
+                new TempArticle("title", "content", Category.DISCUSSION.getValue(), member, List.of("spring"), false));
         final ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true, tempArticle.getId());
 
