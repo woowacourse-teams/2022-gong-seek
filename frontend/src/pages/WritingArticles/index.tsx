@@ -7,7 +7,7 @@ import HashTag from '@/components/common/HashTag/HashTag';
 import Loading from '@/components/common/Loading/Loading';
 import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
-import usePostWritingArticles from '@/pages/WritingArticles/hooks/usePostWritingArticles';
+import usePostWritingArticles from '@/hooks/article/usePostWritingArticles';
 import * as S from '@/pages/WritingArticles/index.styles';
 
 const WritingArticles = () => {

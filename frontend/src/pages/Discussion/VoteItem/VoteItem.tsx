@@ -1,6 +1,5 @@
-import Loading from '@/components/common/Loading/Loading';
+import usePostVoteItem from '@/hooks/vote/usePostVoteItem';
 import * as S from '@/pages/Discussion/VoteItem/VoteItem.styles';
-import usePostVoteItem from '@/pages/Discussion/hooks/usePostVoteItem';
 import { convertIdxToVoteColorKey } from '@/utils/converter';
 
 export interface VoteItemProps {

@@ -5,8 +5,8 @@ import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/I
 import Loading from '@/components/common/Loading/Loading';
 import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
 import { URL } from '@/constants/url';
+import useGetCategoryArticles from '@/hooks/article/useGetCategoryArticles';
 import * as S from '@/pages/CategoryArticles/CategoryArticles.styles';
-import useGetCategoryArticles from '@/pages/CategoryArticles/hooks/useGetCategoryArticles';
 
 const CategoryArticles = () => {
 	const navigate = useNavigate();
