@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 import { URL } from '@/constants/url';
-import useSnackBar from '@/hooks/useSnackBar';
+import useSnackBar from '@/hooks/common/useSnackBar';
 
 const PrivateRouter = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
 	const { showSnackBar } = useSnackBar();

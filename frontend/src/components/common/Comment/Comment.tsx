@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
 import * as S from '@/components/common/Comment/Comment.styles';
-import useDeleteComment from '@/components/common/Comment/hooks/useDeleteComment';
 import CommentInputModal from '@/components/common/CommentInputModal/CommentInputModal';
 import Loading from '@/components/common/Loading/Loading';
 import ToastUiViewer from '@/components/common/ToastUiViewer/ToastUiViewer';
+import useDeleteComment from '@/hooks/comment/useDeleteComment';
 import { CommentType } from '@/types/commentResponse';
 import { dateTimeConverter } from '@/utils/converter';
 

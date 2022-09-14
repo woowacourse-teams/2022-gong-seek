@@ -1,7 +1,7 @@
 import Loading from '@/components/common/Loading/Loading';
+import useGetPopularArticles from '@/hooks/article/useGetPopularArticles';
 import ArticleItem from '@/pages/Home/ArticleItem/ArticleItem';
 import * as S from '@/pages/Home/PopularArticle/PopularArticle.styles';
-import useGetPopularArticles from '@/pages/Home/hooks/useGetPopularArticles';
 import { convertIdxToArticleColorKey } from '@/utils/converter';
 
 const PopularArticle = () => {
