@@ -132,6 +132,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .selectFrom(article)
                 .where(
                         article.member.name.value.eq(author),
+                        article.isAnonymous.eq(false),
                         isOverArticleId(cursorId)
                 )
                 .limit(pageable.getPageSize() + 1)
