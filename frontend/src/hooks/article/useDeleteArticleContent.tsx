@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { deleteArticle } from '@/api/article';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import { URL } from '@/constants/url';
 import useSnackBar from '@/hooks/common/useSnackBar';
 
 const useDeleteArticleContent = () => {
@@ -20,7 +21,7 @@ const useDeleteArticleContent = () => {
 	useEffect(() => {
 		if (isSuccess) {
 			showSnackBar('게시글이 삭제 되었습니다');
-			navigate('/');
+			navigate(URL.HOME);
 		}
 	}, [isSuccess]);
 

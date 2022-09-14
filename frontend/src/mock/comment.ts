@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-import { HOME_URL } from '@/constants/url';
+import { HOME_URL } from '@/constants/apiUrl';
 import mockData from '@/mock/data/comment.json';
 import { CommentType } from '@/types/commentResponse';
 
