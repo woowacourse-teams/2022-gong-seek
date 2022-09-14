@@ -81,10 +81,6 @@ public class TempArticle {
         this.createdAt = LocalDateTime.now();
     }
 
-    public boolean isAuthor(Member member) {
-        return this.member.equals(member);
-    }
-
     public List<String> getTempTags() {
         return tempTags.toResponse();
     }
