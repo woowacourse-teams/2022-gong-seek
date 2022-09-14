@@ -2,9 +2,9 @@ package com.woowacourse.gongseek.auth.infra;
 
 import com.woowacourse.gongseek.auth.application.TokenProvider;
 import com.woowacourse.gongseek.auth.config.AccessTokenProperty;
-import com.woowacourse.gongseek.auth.config.RefreshTokenProperty;
 import com.woowacourse.gongseek.auth.config.TokenProperty;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 public class JwtTokenProvider implements TokenProvider {
 
     private final AccessTokenProperty accessTokenProperty;
-    private final RefreshTokenProperty refreshTokenProperty;
 
     @Override
     public String createAccessToken(String payload) {
@@ -40,21 +39,8 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public String createRefreshToken(String payload) {
-        Claims claims = Jwts.claims().setSubject(payload);
-        return generateToken(claims, refreshTokenProperty);
-    }
-
-    @Override
     public String getAccessTokenPayload(String token) {
         return getClaimsJws(token, accessTokenProperty.getTokenSecretKey())
-                .getBody()
-                .getSubject();
-    }
-
-    @Override
-    public String getRefreshTokenPayload(String token) {
-        return getClaimsJws(token, refreshTokenProperty.getTokenSecretKey())
                 .getBody()
                 .getSubject();
     }
@@ -76,20 +62,9 @@ public class JwtTokenProvider implements TokenProvider {
         try {
             getClaimsJws(token, accessTokenProperty.getTokenSecretKey()).getBody();
             return true;
+        } catch (ExpiredJwtException e) {
+            return true;
         } catch (JwtException | IllegalArgumentException exception) {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean isValidRefreshToken(String token) {
-        try {
-            Jws<Claims> claims = getClaimsJws(token, refreshTokenProperty.getTokenSecretKey());
-
-            return !claims.getBody()
-                    .getExpiration()
-                    .before(new Date());
-        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
     }

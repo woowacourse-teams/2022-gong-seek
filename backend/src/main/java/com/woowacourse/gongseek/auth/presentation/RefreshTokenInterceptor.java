@@ -27,8 +27,6 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
 
         String accessToken = TokenExtractor.extract(request.getHeader(HttpHeaders.AUTHORIZATION));
         validateAccessToken(accessToken);
-        String payload = jwtTokenProvider.getAccessTokenPayload(accessToken);
-        request.setAttribute(PAYLOAD, payload);
         return true;
     }
 
