@@ -16,30 +16,28 @@ const TabBar = () => {
 	const [sliderState, setSliderState] = useRecoilState(menuSliderState);
 
 	return (
-		<>
-			<S.Section>
-				<S.PostingLink
+		<S.Section>
+			<S.PostingLink
+				onClick={() => {
+					navigate(URL.CATEGORY_SELECTOR);
+				}}
+			/>
+			{isLogin ? (
+				<UserProfileIcon />
+			) : (
+				<UserProfile
+					src={gongseek}
 					onClick={() => {
-						navigate(URL.CATEGORY_SELECTOR);
+						navigate('/login');
 					}}
 				/>
-				{isLogin ? (
-					<UserProfileIcon />
-				) : (
-					<UserProfile
-						src={gongseek}
-						onClick={() => {
-							navigate('/login');
-						}}
-					/>
-				)}
-				<S.MenuLink
-					onClick={() => {
-						setSliderState({ isOpen: true });
-					}}
-				/>
-			</S.Section>
-		</>
+			)}
+			<S.MenuLink
+				onClick={() => {
+					setSliderState({ isOpen: true });
+				}}
+			/>
+		</S.Section>
 	);
 };
 
