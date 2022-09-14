@@ -4,6 +4,7 @@ import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
 import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 import Loading from '@/components/common/Loading/Loading';
 import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
+import { URL } from '@/constants/url';
 import * as S from '@/pages/CategoryArticles/CategoryArticles.styles';
 import useGetCategoryArticles from '@/pages/CategoryArticles/hooks/useGetCategoryArticles';
 
@@ -12,7 +13,7 @@ const CategoryArticles = () => {
 	const { category } = useParams();
 
 	if (typeof category === 'undefined') {
-		navigate('/');
+		navigate(URL.HOME);
 		throw new Error('카테고리를 찾을 수 없습니다');
 	}
 
