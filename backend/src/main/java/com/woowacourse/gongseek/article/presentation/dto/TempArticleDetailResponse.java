@@ -1,5 +1,6 @@
 package com.woowacourse.gongseek.article.presentation.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowacourse.gongseek.article.domain.TempArticle;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +28,7 @@ public class TempArticleDetailResponse {
 
     private Boolean isAnonymous;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createAt;
 
     public static TempArticleDetailResponse from(TempArticle tempArticle) {
