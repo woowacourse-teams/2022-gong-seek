@@ -20,6 +20,12 @@ spring:
         show_sql: true
     database-platform: org.hibernate.dialect.MySQL57Dialect
 
+  flyway:
+    locations: classpath:/db/migration
+    sql-migration-suffixes: ddl
+    baseline-on-migrate: true
+    baseline-version: 0
+
 security:
   oauth2:
     client-id: clientId
