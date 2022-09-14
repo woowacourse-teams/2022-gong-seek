@@ -29,9 +29,8 @@ public class TempArticleController {
     @PostMapping
     public ResponseEntity<TempArticleIdResponse> create(@AuthenticationPrinciple AppMember appMember,
                                                         @Valid @RequestBody TempArticleRequest tempArticleRequest) {
-        final TempArticleIdResponse tempArticleIdResponse = tempArticleService.createOrUpdate(appMember,
-                tempArticleRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(tempArticleIdResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(tempArticleService.createOrUpdate(appMember, tempArticleRequest));
     }
 
     @GetMapping
