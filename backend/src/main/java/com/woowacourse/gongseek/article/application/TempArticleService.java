@@ -69,6 +69,7 @@ public class TempArticleService {
         return new TempArticleIdResponse(tempArticle.getId());
     }
 
+    @Transactional
     public void delete(Long articleTempId, AppMember appMember) {
         if (!isExistArticleTemp(articleTempId)) {
             return;
