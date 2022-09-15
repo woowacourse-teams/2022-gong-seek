@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.acceptance;
 
-import com.woowacourse.gongseek.common.DatabaseCleaner;
+import com.woowacourse.gongseek.support.DatabaseCleaner;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

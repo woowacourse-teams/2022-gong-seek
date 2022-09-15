@@ -6,10 +6,10 @@ import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.auth.utils.CookieUtils;
+import java.util.UUID;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +44,7 @@ public class AuthController {
 
     @GetMapping("/refresh")
     public ResponseEntity<AccessTokenResponse> renew(
-            @CookieValue(value = "refreshToken", required = false) String refreshToken,
+            @CookieValue(value = "refreshToken", required = false) UUID refreshToken,
             HttpServletResponse httpServletResponse
     ) {
         TokenResponse tokenResponse = authService.renewToken(refreshToken);

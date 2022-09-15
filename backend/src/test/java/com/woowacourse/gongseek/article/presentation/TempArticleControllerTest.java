@@ -151,7 +151,6 @@ class TempArticleControllerTest {
     @Test
     void 임시_게시글_삭제_API_문서화() throws Exception {
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
-        given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         doNothing().when(tempArticleService).delete(any(), any());
 
         ResultActions results = mockMvc.perform(delete("/api/temp-articles/{tempArticleId}", 1L)
