@@ -38,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final TempArticleService tempArticleService;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final VoteRepository voteRepository;
@@ -50,9 +51,10 @@ public class ArticleService {
 
         Tags foundTags = tagService.getOrCreateTags(Tags.from(articleRequest.getTag()));
 
-        Article article = articleRepository.save(articleRequest.toEntity(member));
+        Article article = articleRepository.save(articleRequest.toArticle(member));
         article.addTag(foundTags);
 
+        tempArticleService.delete(articleRequest.getTempArticleId(), appMember);
         return new ArticleIdResponse(article);
     }
 

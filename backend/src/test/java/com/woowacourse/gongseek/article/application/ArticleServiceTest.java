@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
@@ -59,6 +61,9 @@ public class ArticleServiceTest {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private TempArticleRepository tempArticleRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -491,7 +496,8 @@ public class ArticleServiceTest {
         articleRepository.saveAll(articles);
 
         ArticlePageResponse response = articleService.getAll(null, 0, Category.QUESTION.getValue(), "latest",
-                PageRequest.ofSize(10), loginMember);
+                PageRequest.ofSize(10),
+                loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
         assertAll(
@@ -514,7 +520,8 @@ public class ArticleServiceTest {
         articleRepository.saveAll(articles);
 
         ArticlePageResponse response = articleService.getAll(10L, 0, Category.QUESTION.getValue(), "latest",
-                PageRequest.ofSize(10), loginMember);
+                PageRequest.ofSize(10),
+                loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
         assertAll(
@@ -754,5 +761,18 @@ public class ArticleServiceTest {
                 () -> assertThat(articleRepository.findById(article.getId())).isEmpty(),
                 () -> assertThat(voteItemRepository.findAll()).isEmpty()
         );
+    }
+
+    @Transactional
+    @Test
+    void 게시글을_생성하면_임시_게시글은_삭제된다() {
+        final TempArticle tempArticle = tempArticleRepository.save(
+                new TempArticle("title", "content", Category.DISCUSSION.getValue(), member, List.of("spring"), false));
+        final ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true, tempArticle.getId());
+
+        articleService.save(new LoginMember(member.getId()), articleRequest);
+
+        assertThat(tempArticleRepository.existsById(tempArticle.getId())).isFalse();
     }
 }

@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.acceptance.support;
+package com.woowacourse.gongseek.acceptance.support.fixtures;
 
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
@@ -10,7 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class VoteFixtures {
+public class VoteFixture {
 
     public static ExtractableResponse<Response> 투표를_생성한다(AccessTokenResponse tokenResponse, Long articleId,
                                                          VoteCreateRequest voteCreateRequest) {

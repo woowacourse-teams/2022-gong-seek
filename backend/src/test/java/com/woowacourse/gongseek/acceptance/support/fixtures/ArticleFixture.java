@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.acceptance.support;
+package com.woowacourse.gongseek.acceptance.support.fixtures;
 
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
@@ -16,7 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class ArticleFixtures {
+public class ArticleFixture {
 
     public static ExtractableResponse<Response> 특정_게시글을_등록한다(AccessTokenResponse tokenResponse,
                                                              ArticleRequest articleRequest) {
