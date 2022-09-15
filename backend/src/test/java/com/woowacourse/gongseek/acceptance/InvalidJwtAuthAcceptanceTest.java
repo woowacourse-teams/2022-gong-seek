@@ -1,9 +1,9 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.기명으로_게시글을_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_하여_상태를_반환한다;
-import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
-import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.토큰을_재발급한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.기명으로_게시글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixture.로그인을_하여_상태를_반환한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixture.로그인을_한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixture.토큰을_재발급한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.기론;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
