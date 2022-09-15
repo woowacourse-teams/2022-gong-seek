@@ -95,7 +95,8 @@ class ArticleControllerTest {
                                 fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리"),
                                 fieldWithPath("tag.[]").type(JsonFieldType.ARRAY).description("해시태그"),
                                 fieldWithPath("isAnonymous").type(JsonFieldType.BOOLEAN).description("익명 여부"),
-                                fieldWithPath("tempArticleId").type(JsonFieldType.NUMBER).description("임시 게시글")
+                                fieldWithPath("tempArticleId").type(JsonFieldType.NUMBER).description("임시 게시글 식별자")
+                                        .optional()
                         ),
                         responseFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("식별자")
