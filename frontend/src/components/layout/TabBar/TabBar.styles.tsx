@@ -1,4 +1,5 @@
 import { AiFillEdit, AiOutlineMenu } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 
 import styled from '@emotion/styled';
 
@@ -39,6 +40,8 @@ export const PostingLink = styled(AiFillEdit)`
 		color: ${({ theme }) => theme.colors.PURPLE_500};
 	}
 `;
+
+export const MyPageLink = styled(Link)``;
 
 export const MenuLink = styled(AiOutlineMenu)`
 	font-size: ${({ theme }) => theme.size.SIZE_024};

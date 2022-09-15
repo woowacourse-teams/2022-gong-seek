@@ -23,7 +23,9 @@ const TabBar = () => {
 				}}
 			/>
 			{isLogin ? (
-				<UserProfileIcon />
+				<S.MyPageLink to={URL.MY_PAGE}>
+					<UserProfileIcon />
+				</S.MyPageLink>
 			) : (
 				<UserProfile
 					src={gongseek}
