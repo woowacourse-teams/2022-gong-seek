@@ -80,7 +80,6 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public Slice<Article> findAllByLikes(Long cursorId, Long cursorLikes, String category, Pageable pageable) {
-
         List<Article> fetch = queryFactory
                 .select(article)
                 .from(like)

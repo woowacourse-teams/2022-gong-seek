@@ -26,10 +26,12 @@ public class InvalidJwtAuthAcceptanceTest extends AcceptanceTest {
     void 시간이_만료된_엑세스토큰으로_요청을_하면_예외가_발생한다() {
         //given
         AccessTokenResponse tokenResponse = 로그인을_한다(기론);
+
         //when
         ErrorResponse errorResponse = 기명으로_게시글을_등록한다(tokenResponse, Category.QUESTION)
                 .as(ErrorResponse.class);
 
+        //then
         assertAll(
                 () -> assertThat(errorResponse.getErrorCode()).isEqualTo("1005"),
                 () -> assertThat(errorResponse.getMessage()).isEqualTo("엑세스 토큰이 유효하지 않습니다.")
@@ -41,11 +43,13 @@ public class InvalidJwtAuthAcceptanceTest extends AcceptanceTest {
         //given
         ExtractableResponse<Response> login = 로그인을_하여_상태를_반환한다(기론);
         AccessTokenResponse accessTokenResponse = login.as(AccessTokenResponse.class);
+
         //when
         ExtractableResponse<Response> response = 토큰을_재발급한다(login.cookie("refreshToken"),
                 accessTokenResponse.getAccessToken());
         AccessTokenResponse tokenResponse = response.as(AccessTokenResponse.class);
 
+        //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(response.header(HttpHeaders.SET_COOKIE)).isNotNull(),

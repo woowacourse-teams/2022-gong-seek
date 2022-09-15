@@ -19,7 +19,7 @@ class RefreshTokenTest {
     }
 
     @Test
-    void 처음_리프레시토큰은_issue가_false이고_한번_사용하면_trrue가_된다() {
+    void 처음_리프레시토큰은_재발급_여부가_false이고_한번_사용하면_true가_된다() {
         RefreshToken refreshToken = RefreshToken.create(1L);
         assertThat(refreshToken.isIssue()).isFalse();
         refreshToken.used();
