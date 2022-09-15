@@ -3,7 +3,6 @@ package com.woowacourse.gongseek.auth.utils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.woowacourse.gongseek.auth.config.AccessTokenProperty;
 import com.woowacourse.gongseek.auth.exception.EmptyTokenException;
 import com.woowacourse.gongseek.auth.exception.InvalidTokenTypeException;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
@@ -15,8 +14,7 @@ class TokenExtractorTest {
     private static final Long EXPIRE_TIME = 86400000L;
     private static final String SECRET_KEY = "thisIsTestSecretKey-thisIsTestSecretKey-thisIsTestSecretKey";
 
-    private final JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(
-            new AccessTokenProperty(EXPIRE_TIME, SECRET_KEY));
+    private final JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(EXPIRE_TIME, SECRET_KEY);
 
     @Test
     void 토큰이_없는_경우_예외가_발생한다() {
