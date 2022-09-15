@@ -16,3 +16,4 @@ alter table temp_article
         foreign key (member_id)
             references member (id)
             on delete cascade
+가
