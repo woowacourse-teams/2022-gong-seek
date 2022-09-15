@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import ArticleContent from '@/components/common/ArticleContent/ArticleContent';
 import Comment from '@/components/common/Comment/Comment';
 import CommentInputModal from '@/components/common/CommentInputModal/CommentInputModal';
+import { URL } from '@/constants/url';
 import * as S from '@/pages/Detail/index.styles';
 import { getUserIsLogin } from '@/store/userState';
 import { ArticleType } from '@/types/articleResponse';
@@ -35,7 +36,7 @@ const Detail = ({ children, article, commentList, articleId, category }: DetailP
 		}
 
 		if (window.confirm('로그인이 필요한 서비스입니다. 로그인 창으로 이동하시겠습니까?')) {
-			navigate('/login');
+			navigate(URL.LOGIN);
 		}
 	};
 

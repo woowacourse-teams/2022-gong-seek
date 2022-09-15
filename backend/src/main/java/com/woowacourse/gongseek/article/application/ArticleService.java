@@ -16,7 +16,6 @@ import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
 import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
-import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -38,9 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ArticleService {
 
-    private static final String ANONYMOUS_AVATAR_URL = "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png";
-    private static final String ANONYMOUS_NAME = "익명";
-
     private final ArticleRepository articleRepository;
     private final TempArticleService tempArticleService;
     private final MemberRepository memberRepository;
@@ -48,11 +44,10 @@ public class ArticleService {
     private final VoteRepository voteRepository;
     private final TagService tagService;
     private final LikeRepository likeRepository;
-    private final Encryptor encryptor;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
-        Member member = getAuthor(appMember, articleRequest);
+        Member member = getMember(appMember);
 
         Tags foundTags = tagService.getOrCreateTags(Tags.from(articleRequest.getTag()));
 
@@ -67,15 +62,6 @@ public class ArticleService {
         if (appMember.isGuest()) {
             throw new NotMemberException();
         }
-    }
-
-    private Member getAuthor(AppMember appMember, ArticleRequest articleRequest) {
-        if (articleRequest.getIsAnonymous()) {
-            String cipherId = encryptor.encrypt(String.valueOf(appMember.getPayload()));
-            return memberRepository.findByGithubId(cipherId)
-                    .orElseGet(() -> memberRepository.save(new Member(ANONYMOUS_NAME, cipherId, ANONYMOUS_AVATAR_URL)));
-        }
-        return getMember(appMember);
     }
 
     private Member getMember(AppMember appMember) {
@@ -111,16 +97,7 @@ public class ArticleService {
         if (appMember.isGuest()) {
             return ArticleResponse.of(article, tagNames, false, hasVote, likeResponse);
         }
-        return checkAuthor(article, tagNames, getMember(appMember), hasVote, likeResponse);
-    }
-
-    private ArticleResponse checkAuthor(Article article, List<String> tagNames, Member member, boolean hasVote,
-                                        LikeResponse likeResponse) {
-        if (article.isAnonymous()) {
-            String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
-            return ArticleResponse.of(article, tagNames, article.isAnonymousAuthor(cipherId), hasVote, likeResponse);
-        }
-        return ArticleResponse.of(article, tagNames, article.isAuthor(member), hasVote, likeResponse);
+        return ArticleResponse.of(article, tagNames, article.isAuthor(getMember(appMember)), hasVote, likeResponse);
     }
 
     @Transactional(readOnly = true)
@@ -209,17 +186,9 @@ public class ArticleService {
     }
 
     private void validateAuthor(Article article, Member member) {
-        if (!isAuthor(article, member)) {
+        if (!article.isAuthor(member)) {
             throw new NotAuthorException(article.getId(), member.getId());
         }
-    }
-
-    private boolean isAuthor(Article article, Member member) {
-        if (article.isAnonymous()) {
-            String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
-            return article.isAnonymousAuthor(cipherId);
-        }
-        return article.isAuthor(member);
     }
 
     public void delete(AppMember appMember, Long id) {

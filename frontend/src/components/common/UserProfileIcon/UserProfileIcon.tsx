@@ -4,7 +4,7 @@ import gongseek from '@/assets/gongseek.png';
 import Dropdown from '@/components/common/Dropdown/Dropdown';
 import Loading from '@/components/common/Loading/Loading';
 import * as S from '@/components/common/UserProfileIcon/UserProfileIcon.styles';
-import useGetUserInfo from '@/pages/MyPage/hooks/useGetUserInfo';
+import useGetUserInfo from '@/hooks/user/useGetUserInfo';
 import { dropdownState } from '@/store/dropdownState';
 
 const UserProfileIcon = () => {

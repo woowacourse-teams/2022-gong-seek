@@ -24,7 +24,6 @@ import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.like.application.LikeService;
-import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.tag.domain.Tag;
@@ -83,9 +82,6 @@ public class ArticleServiceTest {
 
     @Autowired
     private LikeService likeService;
-
-    @Autowired
-    private Encryptor encryptor;
 
     @Autowired
     private DatabaseCleaner databaseCleaner;
@@ -178,50 +174,6 @@ public class ArticleServiceTest {
         assertAll(
                 () -> assertThat(tags).hasSize(1),
                 () -> assertThat(tags.get(0).getName()).isEqualTo("SPRING")
-        );
-    }
-
-    @Test
-    void 회원이_익명_게시글을_저장하면_익명_회원이_저장된다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
-                List.of("Spring"), true);
-        ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
-
-        Long id = member.getId();
-        String cipherText = encryptor.encrypt(String.valueOf(id));
-        Member anonymousMember = memberRepository.findByGithubId(cipherText)
-                .orElseThrow();
-        Article article = articleRepository.findById(articleIdResponse.getId())
-                .orElseThrow();
-
-        assertAll(
-                () -> assertThat(anonymousMember)
-                        .usingRecursiveComparison()
-                        .ignoringFields("id")
-                        .isEqualTo(new Member("익명", cipherText,
-                                "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png")),
-                () -> assertThat(article.getMember().getId()).isEqualTo(anonymousMember.getId())
-        );
-    }
-
-    @Test
-    void 회원이_익명_게시글을_2번_저장한다() {
-        String cipherText = encryptor.encrypt(String.valueOf(member.getId()));
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
-                List.of("Spring"), true);
-        ArticleIdResponse firstArticleId = articleService.save(new LoginMember(member.getId()), articleRequest);
-        ArticleIdResponse secondArticleId = articleService.save(new LoginMember(member.getId()), articleRequest);
-
-        Member anonymousMember = memberRepository.findByGithubId(cipherText)
-                .orElseThrow();
-        Article firstArticle = articleRepository.findById(firstArticleId.getId())
-                .orElseThrow();
-        Article secondArticle = articleRepository.findById(secondArticleId.getId())
-                .orElseThrow();
-
-        assertAll(
-                () -> assertThat(secondArticle.getMember().getId()).isEqualTo(anonymousMember.getId()),
-                () -> assertThat(firstArticle.getMember().getId()).isEqualTo(secondArticle.getMember().getId())
         );
     }
 
