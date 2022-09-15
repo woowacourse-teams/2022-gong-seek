@@ -58,10 +58,10 @@ create table tag
 
 create table vote
 (
-    id         bigint      not null auto_increment,
+    id         bigint not null auto_increment,
     created_at datetime(6),
     expiry_at  datetime(6) not null,
-    article_id bigint      not null,
+    article_id bigint not null,
     primary key (id)
 ) engine = InnoDB;
 
@@ -119,7 +119,7 @@ alter
     table comment
     add constraint FKmrrrpi513ssu63i2783jyiv9m
         foreign key (member_id)
-    references member(id);
+            references member (id);
 
 alter
     table likes
