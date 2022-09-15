@@ -9,7 +9,6 @@ import PrivateRouter from '@/components/helper/PrivateRouter';
 import PublicRouter from '@/components/helper/PublicRouter';
 import Header from '@/components/layout/Header/Header';
 import TabBar from '@/components/layout/TabBar/TabBar';
-
 import { URL } from '@/constants/url';
 import { dropdownState } from '@/store/dropdownState';
 import { menuSliderState } from '@/store/menuSliderState';
@@ -37,6 +36,7 @@ const UpdateWriting = React.lazy(() => import('@/pages/UpdateWriting'));
 const VoteDeadlineGenerator = React.lazy(() => import('@/pages/VoteDeadlineGenerator'));
 const VoteGenerator = React.lazy(() => import('@/pages/VoteGenerator'));
 const WritingArticles = React.lazy(() => import('@/pages/WritingArticles'));
+const ServerErrorHandling = React.lazy(() => import('@/pages/ServerErrorHandling'));
 
 const Layout = styled.div`
 	position: relative;
@@ -82,31 +82,32 @@ const App = () => {
 			<Header />
 			<ErrorBoundary enable={false}>
 				<Content>
-        <Suspense fallback={<Loading />}>
-					<Routes>
-						<Route path={URL.LOGIN_CONTROLLER} element={<LoginController />} />
-						<Route path={URL.REFRESH_TOKEN_HANDLER} element={<RefreshTokenHandler />} />
-						<Route path={URL.CATEGORY_SELECTOR} element={<CategorySelector />} />
-						<Route element={<PrivateRouter isAuthenticated={isLogin} />}>
-							<Route path={URL.WRITING_ARTICLE} element={<WritingArticles />} />
-							<Route path={URL.VOTE_GENERATOR} element={<VoteGenerator />} />
-							<Route path={URL.MY_PAGE} element={<MyPage />} />
-							<Route path={URL.VOTE_DEADLINE_GENERATOR} element={<VoteDeadlineGenerator />} />
-						</Route>
-						<Route element={<PublicRouter isAuthenticated={isLogin} />}>
-							<Route path={URL.LOGIN} element={<Login />} />
-						</Route>
-						<Route path={URL.CATEGORY_ARTICLE} element={<CategoryArticles />} />
-						<Route path={URL.QUESTION_DETAIL} element={<ErrorDetail />} />
-						<Route path={URL.DISCUSSION_DETAIL} element={<DiscussionDetail />} />
-						<Route path={URL.MODIFY_ARTICLE} element={<UpdateWriting />} />
-						<Route path={URL.SEARCH_RESULT} element={<Search />} />
-						<Route path={URL.HASH_TAG_SEARCH} element={<HashTagSearch />} />
-						<Route path={URL.INQUIRE} element={<InquirePage />} />
-						<Route path={URL.NOT_FOUND} element={<NotFound />} />
-						<Route path={URL.HOME} element={<Home />} />
-					</Routes>
-          </Suspense>
+					<Suspense fallback={<Loading />}>
+						<Routes>
+							<Route path={URL.LOGIN_CONTROLLER} element={<LoginController />} />
+							<Route path={URL.REFRESH_TOKEN_HANDLER} element={<RefreshTokenHandler />} />
+							<Route path={URL.CATEGORY_SELECTOR} element={<CategorySelector />} />
+							<Route element={<PrivateRouter isAuthenticated={isLogin} />}>
+								<Route path={URL.WRITING_ARTICLE} element={<WritingArticles />} />
+								<Route path={URL.VOTE_GENERATOR} element={<VoteGenerator />} />
+								<Route path={URL.MY_PAGE} element={<MyPage />} />
+								<Route path={URL.VOTE_DEADLINE_GENERATOR} element={<VoteDeadlineGenerator />} />
+							</Route>
+							<Route element={<PublicRouter isAuthenticated={isLogin} />}>
+								<Route path={URL.LOGIN} element={<Login />} />
+							</Route>
+							<Route path={URL.CATEGORY_ARTICLE} element={<CategoryArticles />} />
+							<Route path={URL.QUESTION_DETAIL} element={<ErrorDetail />} />
+							<Route path={URL.DISCUSSION_DETAIL} element={<DiscussionDetail />} />
+							<Route path={URL.MODIFY_ARTICLE} element={<UpdateWriting />} />
+							<Route path={URL.SEARCH_RESULT} element={<Search />} />
+							<Route path={URL.HASH_TAG_SEARCH} element={<HashTagSearch />} />
+							<Route path={URL.INQUIRE} element={<InquirePage />} />
+							<Route path={URL.NOT_FOUND} element={<NotFound />} />
+							<Route path={URL.SERVER_ERROR} element={<ServerErrorHandling />} />
+							<Route path={URL.HOME} element={<Home />} />
+						</Routes>
+					</Suspense>
 				</Content>
 			</ErrorBoundary>
 			<TabBar />
