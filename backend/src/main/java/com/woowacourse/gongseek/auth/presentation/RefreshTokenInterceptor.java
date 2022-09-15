@@ -29,7 +29,7 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
     }
 
     private void validateAccessToken(String accessToken) {
-        if (!jwtTokenProvider.isValidOnlyClaims(accessToken)) {
+        if (!jwtTokenProvider.isValidAccessTokenWithTimeOut(accessToken)) {
             throw new UnAuthorizedTokenException();
         }
     }

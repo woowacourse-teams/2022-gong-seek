@@ -101,7 +101,7 @@ class AuthControllerTest {
     void 토큰_재발급_API_문서화() throws Exception {
         UUID refreshToken = UUID.randomUUID();
 
-        given(jwtTokenProvider.isValidOnlyClaims(any())).willReturn(true);
+        given(jwtTokenProvider.isValidAccessTokenWithTimeOut(any())).willReturn(true);
 
         given(authService.renewToken(any())).willReturn(
                 TokenResponse.builder()

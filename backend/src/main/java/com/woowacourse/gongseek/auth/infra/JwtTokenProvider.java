@@ -63,7 +63,8 @@ public class JwtTokenProvider implements TokenProvider {
         }
     }
 
-    public boolean isValidOnlyClaims(String token) {
+    @Override
+    public boolean isValidAccessTokenWithTimeOut(String token) {
         try {
             getClaimsJws(token, tokenSecretKey).getBody();
             throw new UnAuthorizedTokenException();

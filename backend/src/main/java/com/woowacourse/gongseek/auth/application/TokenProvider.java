@@ -7,4 +7,6 @@ public interface TokenProvider {
     String getAccessTokenPayload(String token);
 
     boolean isValidAccessToken(String token);
+
+    boolean isValidAccessTokenWithTimeOut(String token);
 }
