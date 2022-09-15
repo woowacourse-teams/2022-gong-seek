@@ -5,16 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
-import com.woowacourse.gongseek.config.JpaAuditingConfig;
-import com.woowacourse.gongseek.config.QuerydslConfig;
 import com.woowacourse.gongseek.like.domain.Like;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.support.RepositoryTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 
 @SuppressWarnings("NonAsciiCharacters")
 @RepositoryTest

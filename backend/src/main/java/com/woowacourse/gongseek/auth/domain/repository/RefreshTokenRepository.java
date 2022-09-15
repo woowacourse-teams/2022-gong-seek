@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.auth.domain.repository;
 
 import com.woowacourse.gongseek.auth.domain.RefreshToken;
-import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 

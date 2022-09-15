@@ -61,6 +61,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
                 accessTokenResponse.getAccessToken());
         AccessTokenResponse tokenResponse = response.as(AccessTokenResponse.class);
 
+        //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(response.header(HttpHeaders.SET_COOKIE)).isNotNull(),
@@ -78,6 +79,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
                 "invalidAcessToken");
         ErrorResponse errorResponse = response.as(ErrorResponse.class);
 
+        //then
         assertAll(
                 () -> assertThat(errorResponse.getErrorCode()).isEqualTo("1005"),
                 () -> assertThat(errorResponse.getMessage()).isEqualTo("엑세스 토큰이 유효하지 않습니다.")

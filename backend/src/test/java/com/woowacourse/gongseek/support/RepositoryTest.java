@@ -13,5 +13,5 @@ import org.springframework.context.annotation.Import;
 @Retention(RetentionPolicy.RUNTIME)
 @Import({JpaAuditingConfig.class, QuerydslConfig.class})
 @DataJpaTest
-public @interface RepositoryTest{
+public @interface RepositoryTest {
 }

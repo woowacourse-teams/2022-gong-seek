@@ -26,7 +26,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public Slice<Article> findAllByPage(Long cursorId, Integer cursorViews, String category, String sortType,
-                                       Pageable pageable) {
+                                        Pageable pageable) {
         JPAQuery<Article> query = queryFactory
                 .selectFrom(article)
                 .where(

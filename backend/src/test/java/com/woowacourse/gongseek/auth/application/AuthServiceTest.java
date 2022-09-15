@@ -9,7 +9,6 @@ import static org.mockito.BDDMockito.given;
 
 import com.woowacourse.gongseek.auth.exception.InvalidRefreshTokenException;
 import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
@@ -108,9 +107,6 @@ class AuthServiceTest {
 
     @Test
     void 유효하지않는_리프레시토큰이_들어오면_예외를_발생한다() {
-        Member giron = memberRepository.save(
-                new Member(기론.getGithubId(), 기론.getName(), "previous avatar url"));
-
         assertThatThrownBy(() -> authService.renewToken(UUID.randomUUID()))
                 .isExactlyInstanceOf(InvalidRefreshTokenException.class)
                 .hasMessage("리프레시 토큰이 유효하지 않습니다.");

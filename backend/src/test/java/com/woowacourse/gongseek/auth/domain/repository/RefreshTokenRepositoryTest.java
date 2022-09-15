@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.auth.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.gongseek.auth.domain.RefreshToken;
 import com.woowacourse.gongseek.member.domain.Member;
@@ -20,7 +19,7 @@ class RefreshTokenRepositoryTest {
     private MemberRepository memberRepository;
 
     @Test
-    void 리프레시토큰의_값으로_리프레시토큰을_찾는다(){
+    void 리프레시토큰의_값으로_리프레시토큰을_찾는다() {
         final Member member = memberRepository.save(new Member("giron", "gitID", "avatar.url"));
         RefreshToken refreshToken = refreshTokenRepository.save(RefreshToken.create(member.getId()));
 
@@ -28,7 +27,7 @@ class RefreshTokenRepositoryTest {
     }
 
     @Test
-    void 유저의_아이디로_리프레시토큰을_삭제한다(){
+    void 유저의_아이디로_리프레시토큰을_삭제한다() {
         final Member member = memberRepository.save(new Member("giron", "gitID", "avatar.url"));
         RefreshToken refreshToken = refreshTokenRepository.save(RefreshToken.create(member.getId()));
         refreshTokenRepository.deleteAllByMemberId(member.getId());

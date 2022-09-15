@@ -17,7 +17,8 @@ class JwtTokenProviderTest {
     private static final Long EXPIRE_TIME = 86400000L;
     private static final String SECRET_KEY = "thisIsTestSecretKey-thisIsTestSecretKey-thisIsTestSecretKey";
 
-    private final TokenProvider jwtTokenProvider = new JwtTokenProvider(new AccessTokenProperty(EXPIRE_TIME, SECRET_KEY));
+    private final TokenProvider jwtTokenProvider = new JwtTokenProvider(
+            new AccessTokenProperty(EXPIRE_TIME, SECRET_KEY));
 
     @Test
     void 토큰을_생성한다() {
