@@ -43,14 +43,4 @@ public class RefreshToken {
     public boolean isExpired() {
         return LocalDateTime.now().isAfter(expiryDate);
     }
-
-    @Override
-    public String toString() {
-        return "RefreshToken{" +
-                "id=" + id +
-                ", memberId=" + memberId +
-                ", expiryDate=" + expiryDate +
-                ", issue=" + issue +
-                '}';
-    }
 }

@@ -54,14 +54,11 @@ public class AuthService {
                 .build();
     }
 
-    //uuid 사용 이유, jwt는 길어서 대역폭이 크다. jwt에는 유저 id의 정보가 들어있다. 혹시나 하는 마음에 아예 일반 문자열인 UUID - 리프레시는 엑세스 토큰을 위한 토큰이므로 정보따위 필요 없다.
     public TokenResponse renewToken(UUID requestToken) {
         RefreshToken refreshToken = refreshTokenRepository.findById(requestToken)
                 .orElseThrow(InvalidRefreshTokenException::new);
-        //이미 발급되었으면 탈취당함.
         if (refreshToken.isIssue() || refreshToken.isExpired()) {
             refreshTokenRepository.deleteAllByMemberId(refreshToken.getMemberId());
-            System.out.println("refreshToken = " + refreshToken);
             throw new InvalidRefreshTokenException();
         }
         refreshToken.used();
