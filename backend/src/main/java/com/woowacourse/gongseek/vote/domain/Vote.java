@@ -4,7 +4,6 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.vote.exception.InvalidVoteExpiryDateException;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;

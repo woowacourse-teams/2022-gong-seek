@@ -21,6 +21,7 @@ import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.config.RestDocsConfig;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +72,7 @@ class AuthControllerTest {
         OAuthCodeRequest request = new OAuthCodeRequest("code");
         given(authService.generateToken(any())).willReturn(
                 TokenResponse.builder()
-                        .refreshToken("refreshToken")
+                        .refreshToken(UUID.randomUUID())
                         .accessToken("accessToken")
                         .build()
         );
@@ -98,15 +99,20 @@ class AuthControllerTest {
 
     @Test
     void 토큰_재발급_API_문서화() throws Exception {
+        UUID refreshToken = UUID.randomUUID();
+
+        given(jwtTokenProvider.isValidAccessTokenWithTimeOut(any())).willReturn(true);
+
         given(authService.renewToken(any())).willReturn(
                 TokenResponse.builder()
-                        .refreshToken("new-refreshToken")
-                        .accessToken("new-accessToken")
+                        .refreshToken(refreshToken)
+                        .accessToken("accessToken")
                         .build()
         );
 
         ResultActions results = mockMvc.perform(get("/api/auth/refresh")
-                .header(HttpHeaders.COOKIE, "gongSeek-refreshToken")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer accessToken")
+                .header(HttpHeaders.COOKIE, refreshToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8"));
 
@@ -115,6 +121,8 @@ class AuthControllerTest {
                 .andDo(document("renew-token",
                                 requestHeaders(
                                         headerWithName(HttpHeaders.COOKIE).description("기존의 리프레시 토큰")
+                                ), requestHeaders(
+                                        headerWithName(HttpHeaders.AUTHORIZATION).description("Bearer + 토큰")
                                 ),
                                 responseHeaders(
                                         headerWithName(HttpHeaders.SET_COOKIE).description("갱신된 리프레시 토큰")

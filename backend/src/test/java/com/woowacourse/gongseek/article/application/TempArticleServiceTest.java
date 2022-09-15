@@ -13,9 +13,9 @@ import com.woowacourse.gongseek.article.presentation.dto.TempArticleDetailRespon
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticlesResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
-import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.support.DatabaseCleaner;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
