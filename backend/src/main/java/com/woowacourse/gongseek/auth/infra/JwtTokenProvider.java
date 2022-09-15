@@ -64,7 +64,7 @@ public class JwtTokenProvider implements TokenProvider {
     public boolean isValidOnlyClaims(String token) {
         try {
             getClaimsJws(token, tokenSecretKey).getBody();
-            return true;
+            return false;
         } catch (ExpiredJwtException e) {
             return true;
         } catch (JwtException | IllegalArgumentException exception) {
