@@ -1,6 +1,8 @@
 package com.woowacourse.gongseek.auth.infra;
 
 import com.woowacourse.gongseek.auth.application.TokenProvider;
+import com.woowacourse.gongseek.auth.exception.InvalidAccessTokenException;
+import com.woowacourse.gongseek.common.exception.UnAuthorizedTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -64,11 +66,11 @@ public class JwtTokenProvider implements TokenProvider {
     public boolean isValidOnlyClaims(String token) {
         try {
             getClaimsJws(token, tokenSecretKey).getBody();
-            return false;
+            throw new UnAuthorizedTokenException();
         } catch (ExpiredJwtException e) {
             return true;
-        } catch (JwtException | IllegalArgumentException exception) {
-            return false;
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new InvalidAccessTokenException();
         }
     }
 

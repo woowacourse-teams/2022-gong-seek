@@ -52,25 +52,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 리프레시토큰을_재발급할때_유효하면서_유효시간이_지난_엑세스토큰은_정상발급한다() {
-        //given
-        ExtractableResponse<Response> login = 로그인을_하여_상태를_반환한다(기론);
-        AccessTokenResponse accessTokenResponse = login.as(AccessTokenResponse.class);
-        //when
-        ExtractableResponse<Response> response = 토큰을_재발급한다(login.cookie("refreshToken"),
-                accessTokenResponse.getAccessToken());
-        AccessTokenResponse tokenResponse = response.as(AccessTokenResponse.class);
-
-        //then
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.header(HttpHeaders.SET_COOKIE)).isNotNull(),
-                () -> assertThat(tokenResponse.getAccessToken()).isNotNull()
-        );
-    }
-
-    @Test
-    void 리프레시토큰을_재발급할때_유효하지않으면_예외가_발생한다() {
+    void 리프레시토큰을_재발급할때_액세스토큰이_유효하지않으면_예외가_발생한다() {
         //given
         ExtractableResponse<Response> login = 로그인을_하여_상태를_반환한다(기론);
 
