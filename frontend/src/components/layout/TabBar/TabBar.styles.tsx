@@ -1,5 +1,5 @@
-import { FaPencilAlt, FaUser } from 'react-icons/fa';
-import { HiMenu } from 'react-icons/hi';
+import { AiFillEdit, AiOutlineMenu } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 
 import styled from '@emotion/styled';
 
@@ -12,7 +12,7 @@ export const Section = styled.section`
 	justify-content: space-between;
 	align-items: center;
 
-	width: 100%;
+	width: 100vw;
 	height: ${({ theme }) => theme.size.SIZE_056};
 
 	border-radius: ${({ theme }) => theme.size.SIZE_010} ${({ theme }) => theme.size.SIZE_010} 0 0;
@@ -26,8 +26,8 @@ export const Section = styled.section`
 	}
 `;
 
-export const PostingLink = styled(FaPencilAlt)`
-	font-size: ${({ theme }) => theme.size.SIZE_022};
+export const PostingLink = styled(AiFillEdit)`
+	font-size: ${({ theme }) => theme.size.SIZE_026};
 
 	color: ${({ theme }) => theme.colors.BLACK_500};
 
@@ -41,20 +41,9 @@ export const PostingLink = styled(FaPencilAlt)`
 	}
 `;
 
-export const UserCircleLink = styled(FaUser)`
-	font-size: ${({ theme }) => theme.size.SIZE_022};
+export const MyPageLink = styled(Link)``;
 
-	color: ${({ theme }) => theme.colors.BLACK_500};
-
-	cursor: pointer;
-
-	&:hover,
-	&:active {
-		color: ${({ theme }) => theme.colors.PURPLE_500};
-	}
-`;
-
-export const MenuLink = styled(HiMenu)`
+export const MenuLink = styled(AiOutlineMenu)`
 	font-size: ${({ theme }) => theme.size.SIZE_024};
 
 	color: ${({ theme }) => theme.colors.BLACK_500};

@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 import type { PathParams } from 'msw';
 
-import { HOME_URL } from '@/constants/url';
+import { HOME_URL } from '@/constants/apiUrl';
 import mockArticle from '@/mock/data/articles.json';
 
 export const ArticleHandler = [
@@ -29,7 +29,7 @@ export const ArticleHandler = [
 	}),
 
 	rest.get(`${HOME_URL}/api/articles`, (req, res, ctx) => {
-		const size = req.url.searchParams.get('pageSize');
+		const size = req.url.searchParams.get('size');
 		const category = req.url.searchParams.get('category');
 
 		if (category === null || size === null) {

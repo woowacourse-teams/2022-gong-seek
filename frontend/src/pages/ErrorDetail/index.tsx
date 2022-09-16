@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import useGetDetailArticle from '@/hooks/useGetDetailArticle';
-import useGetDetailComment from '@/hooks/useGetDetailComment';
+import useGetDetailArticle from '@/hooks/article/useGetDetailArticle';
+import useGetDetailComment from '@/hooks/comment/useGetDetailComment';
 import Detail from '@/pages/Detail/index';
 
 const ErrorDetail = () => {

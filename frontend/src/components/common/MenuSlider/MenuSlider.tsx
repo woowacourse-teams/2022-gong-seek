@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import * as S from '@/components/common/MenuSlider/MenuSlider.styles';
+import { URL } from '@/constants/url';
 import { getUserIsLogin } from '@/store/userState';
 
 export interface MenuSliderProps {
@@ -18,7 +19,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 	const onLogoutClick = () => {
 		if (confirm('정말로 로그아웃 하시겠습니까?')) {
 			localStorage.removeItem('gongseekAccessToken');
-			window.location.href = '/';
+			window.location.href = URL.HOME;
 		}
 	};
 
@@ -47,7 +48,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 				{!isLogin && (
 					<S.LinkItem
 						onClick={() => {
-							navigate('/login');
+							navigate(URL.LOGIN);
 							closeSlider();
 						}}
 					>
@@ -56,7 +57,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 				)}
 				<S.LinkItem
 					onClick={() => {
-						navigate('/category');
+						navigate(URL.CATEGORY_SELECTOR);
 						closeSlider();
 					}}
 				>
@@ -80,7 +81,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 				</S.LinkItem>
 				<S.LinkItem
 					onClick={() => {
-						navigate('/hash-tag');
+						navigate(URL.HASH_TAG_SEARCH);
 						closeSlider();
 					}}
 				>
@@ -88,7 +89,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 				</S.LinkItem>
 				<S.LinkItem
 					onClick={() => {
-						navigate('/inquire');
+						navigate(URL.INQUIRE);
 						closeSlider();
 					}}
 				>

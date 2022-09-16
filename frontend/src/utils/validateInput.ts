@@ -7,3 +7,6 @@ export const validatedHashTagInput = (targetInput: string) =>
 	targetInput.length >= 2 && targetInput.length <= 20;
 
 export const validatedEditInput = (targetInput: string) => targetInput.length >= 1;
+
+export const validatedCommentInput = (targetInput: string) =>
+	targetInput.length >= 1 && targetInput.length <= 10000;

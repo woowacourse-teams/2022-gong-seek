@@ -1,60 +1,51 @@
 package com.woowacourse.gongseek.auth.infra;
 
 import com.woowacourse.gongseek.auth.application.TokenProvider;
-import com.woowacourse.gongseek.auth.config.AccessTokenProperty;
-import com.woowacourse.gongseek.auth.config.RefreshTokenProperty;
-import com.woowacourse.gongseek.auth.config.TokenProperty;
+import com.woowacourse.gongseek.auth.exception.InvalidAccessTokenException;
+import com.woowacourse.gongseek.common.exception.UnAuthorizedTokenException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-@RequiredArgsConstructor
 @Component
 public class JwtTokenProvider implements TokenProvider {
 
-    private final AccessTokenProperty accessTokenProperty;
-    private final RefreshTokenProperty refreshTokenProperty;
+    private final long tokenValidityInMilliseconds;
+    private final Key tokenSecretKey;
+
+    public JwtTokenProvider(@Value("${security.jwt.access.expire-length}") long tokenValidityInMilliseconds,
+                            @Value("${security.jwt.access.secret-key}") String tokenSecretKey) {
+        this.tokenValidityInMilliseconds = tokenValidityInMilliseconds;
+        this.tokenSecretKey = Keys.hmacShaKeyFor(tokenSecretKey.getBytes(StandardCharsets.UTF_8));
+    }
+
 
     @Override
     public String createAccessToken(String payload) {
         Claims claims = Jwts.claims().setSubject(payload);
-        return generateToken(claims, accessTokenProperty);
-    }
-
-    private String generateToken(Claims claims, TokenProperty tokenProperty) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + tokenProperty.getTokenValidityInMilliseconds());
+        Date validity = new Date(now.getTime() + tokenValidityInMilliseconds);
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(tokenProperty.getTokenSecretKey(), SignatureAlgorithm.HS256)
+                .signWith(tokenSecretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     @Override
-    public String createRefreshToken(String payload) {
-        Claims claims = Jwts.claims().setSubject(payload);
-        return generateToken(claims, refreshTokenProperty);
-    }
-
-    @Override
     public String getAccessTokenPayload(String token) {
-        return getClaimsJws(token, accessTokenProperty.getTokenSecretKey())
-                .getBody()
-                .getSubject();
-    }
-
-    @Override
-    public String getRefreshTokenPayload(String token) {
-        return getClaimsJws(token, refreshTokenProperty.getTokenSecretKey())
+        return getClaimsJws(token, tokenSecretKey)
                 .getBody()
                 .getSubject();
     }
@@ -62,7 +53,7 @@ public class JwtTokenProvider implements TokenProvider {
     @Override
     public boolean isValidAccessToken(String token) {
         try {
-            Jws<Claims> claims = getClaimsJws(token, accessTokenProperty.getTokenSecretKey());
+            Jws<Claims> claims = getClaimsJws(token, tokenSecretKey);
 
             return !claims.getBody()
                     .getExpiration()
@@ -73,15 +64,14 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public boolean isValidRefreshToken(String token) {
+    public boolean isValidAccessTokenWithTimeOut(String token) {
         try {
-            Jws<Claims> claims = getClaimsJws(token, refreshTokenProperty.getTokenSecretKey());
-
-            return !claims.getBody()
-                    .getExpiration()
-                    .before(new Date());
+            getClaimsJws(token, tokenSecretKey).getBody();
+            throw new UnAuthorizedTokenException();
+        } catch (ExpiredJwtException e) {
+            return true;
         } catch (JwtException | IllegalArgumentException e) {
-            return false;
+            throw new InvalidAccessTokenException();
         }
     }
 

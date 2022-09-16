@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { IMAGE_URL } from '@/constants/url';
+import { IMAGE_URL } from '@/constants/apiUrl';
 
 export const postImageUrlConverter = async (formData: FormData) => {
 	const accessToken = localStorage.getItem('gongseekAccessToken');

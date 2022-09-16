@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-import { HOME_URL } from '@/constants/url';
+import { HOME_URL } from '@/constants/apiUrl';
 import { CommonArticleType } from '@/types/articleResponse';
 
 export const HashTagHandler = [

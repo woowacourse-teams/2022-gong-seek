@@ -12,9 +12,10 @@ import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
-import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.support.DatabaseCleaner;
+import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,15 +79,26 @@ class AuthServiceTest {
     }
 
     @Test
+    void 유저의_이름이_null이면_깃허브_아이디로_대체된다() {
+        GithubProfileResponse profileResponse = new GithubProfileResponse(
+                주디.getGithubId(), null, 주디.getAvatarUrl());
+        given(githubOAuthClient.getMemberProfile(주디.getCode())).willReturn(profileResponse);
+
+        authService.generateToken(new OAuthCodeRequest(주디.getCode()));
+
+        Member actual = memberRepository.findByGithubId(주디.getGithubId()).get();
+        assertThat(actual.getName()).isEqualTo(주디.getGithubId());
+    }
+
+    @Test
     void 리프레시토큰이_유효하면_토큰을_재발급한다() {
         GithubProfileResponse profileResponse = new GithubProfileResponse(
                 기론.getGithubId(), 기론.getName(), 기론.getAvatarUrl());
         given(githubOAuthClient.getMemberProfile(기론.getCode())).willReturn(profileResponse);
-        memberRepository.save(new Member(기론.getGithubId(), 기론.getName(), "previous avatar url"));
+
         TokenResponse tokenResponse = authService.generateToken(new OAuthCodeRequest(기론.getCode()));
 
         TokenResponse renewToken = authService.renewToken(tokenResponse.getRefreshToken());
-
         assertAll(
                 () -> assertThat(renewToken.getRefreshToken()).isNotNull(),
                 () -> assertThat(renewToken.getAccessToken()).isNotNull()
@@ -95,7 +107,7 @@ class AuthServiceTest {
 
     @Test
     void 유효하지않는_리프레시토큰이_들어오면_예외를_발생한다() {
-        assertThatThrownBy(() -> authService.renewToken("invalid-refresh-token"))
+        assertThatThrownBy(() -> authService.renewToken(UUID.randomUUID()))
                 .isExactlyInstanceOf(InvalidRefreshTokenException.class)
                 .hasMessage("리프레시 토큰이 유효하지 않습니다.");
     }

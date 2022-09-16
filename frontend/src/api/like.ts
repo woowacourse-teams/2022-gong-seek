@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { HOME_URL } from '@/constants/url';
+import { HOME_URL } from '@/constants/apiUrl';
 
 export const postAddLikeArticle = (articleId: string) => {
 	const accessToken = localStorage.getItem('gongseekAccessToken');

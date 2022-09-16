@@ -25,20 +25,18 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Article> findAllByPage(Long cursorId, Integer cursorViews, String category, String sortType,
-                                       int pageSize) {
+    public Slice<Article> findAllByPage(Long cursorId, Integer cursorViews, String category, String sortType,
+                                        Pageable pageable) {
         JPAQuery<Article> query = queryFactory
                 .selectFrom(article)
                 .where(
                         cursorIdAndCursorViews(cursorId, cursorViews, sortType),
                         categoryEquals(category)
                 )
-                .limit(pageSize + 1);
+                .limit(pageable.getPageSize() + 1);
+        List<Article> fetch = sort(sortType, query);
 
-        if (sortType.equals("views")) {
-            return query.orderBy(article.views.value.desc(), article.id.desc()).fetch();
-        }
-        return query.orderBy(article.id.desc()).fetch();
+        return convertToSlice(fetch, pageable);
     }
 
     private BooleanExpression cursorIdAndCursorViews(Long cursorId, Integer cursorViews, String sortType) {
@@ -59,13 +57,29 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         return cursorId == null ? null : article.id.lt(cursorId);
     }
 
+    private List<Article> sort(String sortType, JPAQuery<Article> query) {
+        if (sortType.equals("views")) {
+            return query.orderBy(article.views.value.desc(), article.id.desc()).fetch();
+        }
+        return query.orderBy(article.id.desc()).fetch();
+    }
+
+    private SliceImpl<Article> convertToSlice(List<Article> fetch, Pageable pageable) {
+        boolean hasNext = false;
+
+        if (fetch.size() == pageable.getPageSize() + 1) {
+            fetch.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+        return new SliceImpl<>(fetch, pageable, hasNext);
+    }
+
     private BooleanExpression categoryEquals(String category) {
         return "all".equals(category) ? null : article.category.eq(Category.from(category));
     }
 
     @Override
     public Slice<Article> findAllByLikes(Long cursorId, Long cursorLikes, String category, Pageable pageable) {
-
         List<Article> fetch = queryFactory
                 .select(article)
                 .from(like)
@@ -77,13 +91,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .orderBy(like.count().desc(), article.id.desc())
                 .fetch();
 
-        boolean hasNext = false;
-
-        if (fetch.size() == pageable.getPageSize() + 1) {
-            fetch.remove(pageable.getPageSize());
-            hasNext = true;
-        }
-        return new SliceImpl<>(fetch, pageable, hasNext);
+        return convertToSlice(fetch, pageable);
     }
 
     private BooleanExpression cursorIdAndLikes(Long cursorId, Long likes) {
@@ -96,16 +104,17 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public List<Article> searchByContainingText(Long cursorId, int pageSize, String searchText) {
-        return queryFactory
+    public Slice<Article> searchByContainingText(Long cursorId, String searchText, Pageable pageable) {
+        List<Article> fetch = queryFactory
                 .selectFrom(article)
                 .where(
                         containsTitleOrContent(searchText),
                         isOverArticleId(cursorId)
                 )
-                .limit(pageSize + 1)
+                .limit(pageable.getPageSize() + 1)
                 .orderBy(article.id.desc())
                 .fetch();
+        return convertToSlice(fetch, pageable);
     }
 
     private BooleanExpression containsTitleOrContent(String searchText) {
@@ -117,21 +126,23 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public List<Article> searchByAuthor(Long cursorId, int pageSize, String author) {
-        return queryFactory
+    public Slice<Article> searchByAuthor(Long cursorId, String author, Pageable pageable) {
+        List<Article> fetch = queryFactory
                 .selectFrom(article)
                 .where(
                         article.member.name.value.eq(author),
+                        article.isAnonymous.eq(false),
                         isOverArticleId(cursorId)
                 )
-                .limit(pageSize + 1)
+                .limit(pageable.getPageSize() + 1)
                 .orderBy(article.id.desc())
                 .fetch();
+        return convertToSlice(fetch, pageable);
     }
 
     @Override
-    public List<Article> searchByTag(Long cursorId, int pageSize, List<String> tagNames) {
-        return queryFactory
+    public Slice<Article> searchByTag(Long cursorId, List<String> tagNames, Pageable pageable) {
+        List<Article> fetch = queryFactory
                 .select(article)
                 .from(articleTag)
                 .where(
@@ -141,9 +152,10 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .join(articleTag.article, article)
                 .join(articleTag.tag, tag)
                 .distinct()
-                .limit(pageSize + 1)
+                .limit(pageable.getPageSize() + 1)
                 .orderBy(articleTag.article.id.desc())
                 .fetch();
+        return convertToSlice(fetch, pageable);
     }
 
     private List<String> getUpperTagNames(List<String> tagNames) {

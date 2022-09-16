@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import * as S from '@/components/common/SearchBar/SearchBar.styles';
 import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
-import useSnackBar from '@/hooks/useSnackBar';
+import useSnackBar from '@/hooks/common/useSnackBar';
 import { searchState } from '@/store/searchState';
 import { validatedSearchInput } from '@/utils/validateInput';
 
@@ -11,6 +11,7 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 	const [searchInput, setSearchInput] = useState('');
 	const [searchIndex, setSearchIndex] = useState('게시물');
 	const [searchInputState, setSearchInputState] = useRecoilState(searchState);
+	const searchInputRef = useRef<HTMLInputElement>(null);
 
 	const { showSnackBar } = useSnackBar();
 
@@ -31,6 +32,12 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 		});
 	};
 
+	useEffect(() => {
+		if (searchInputState.isSearchOpen && searchInputRef.current !== null) {
+			searchInputRef.current.focus();
+		}
+	}, [searchInputState]);
+
 	return (
 		<S.Container>
 			{searchInputState.isSearchOpen && (
@@ -45,6 +52,7 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 					type="text"
 					readOnly={isValid}
 					value={searchInput}
+					ref={searchInputRef}
 					onChange={(e) => {
 						onChangeInputValue(e);
 					}}
