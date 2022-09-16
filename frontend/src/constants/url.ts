@@ -3,6 +3,8 @@ export const URL = {
 	LOGIN_CONTROLLER: '/callback',
 	REFRESH_TOKEN_HANDLER: '/check-login',
 	CATEGORY_SELECTOR: '/category',
+	CATEGORY_QUESTION: '/articles/question',
+	CATEGORY_DISCUSSION: '/articles/discussion',
 	WRITING_ARTICLE: '/article/:category',
 	VOTE_GENERATOR: '/votes/:articleId',
 	MY_PAGE: '/my-page',
