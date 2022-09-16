@@ -11,6 +11,7 @@ import Header from '@/components/layout/Header/Header';
 import TabBar from '@/components/layout/TabBar/TabBar';
 import { URL } from '@/constants/url';
 import { dropdownState } from '@/store/dropdownState';
+import { errorPortalState } from '@/store/errorPortalState';
 import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
 import styled from '@emotion/styled';
@@ -72,6 +73,7 @@ const App = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const [sliderState, setSliderState] = useRecoilState(menuSliderState);
 	const [dropdown, setDropdown] = useRecoilState(dropdownState);
+	const [errorPortal, setErrorPortal] = useRecoilState(errorPortalState);
 
 	return (
 		<Layout
@@ -79,7 +81,7 @@ const App = () => {
 				dropdown.isOpen && setDropdown({ isOpen: false });
 			}}
 		>
-			<Header />
+			{!errorPortal.isOpen && <Header />}
 			<ErrorBoundary enable={false}>
 				<Content>
 					<Suspense fallback={<Loading />}>
@@ -104,18 +106,22 @@ const App = () => {
 							<Route path={URL.HASH_TAG_SEARCH} element={<HashTagSearch />} />
 							<Route path={URL.INQUIRE} element={<InquirePage />} />
 							<Route path={URL.NOT_FOUND} element={<NotFound />} />
-							<Route path={URL.SERVER_ERROR} element={<ServerErrorHandling />} />
 							<Route path={URL.HOME} element={<Home />} />
 						</Routes>
 					</Suspense>
 				</Content>
 			</ErrorBoundary>
-			<TabBar />
+			{!errorPortal.isOpen && <TabBar />}
 			<SnackBar />
 			{sliderState.isOpen && <Dimmer onClick={() => setSliderState({ isOpen: false })} />}
 			{sliderState.isOpen && (
 				<Suspense fallback={<Loading />}>
 					<MenuSlider closeSlider={() => setSliderState({ isOpen: false })} />
+				</Suspense>
+			)}
+			{errorPortal.isOpen && (
+				<Suspense fallback={<Loading />}>
+					<ServerErrorHandling closeErrorPortal={() => setErrorPortal({ isOpen: false })} />
 				</Suspense>
 			)}
 		</Layout>

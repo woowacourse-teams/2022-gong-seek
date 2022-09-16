@@ -15,6 +15,5 @@ export const URL = {
 	SEARCH_RESULT: '/search-result',
 	HASH_TAG_SEARCH: '/hash-tag',
 	INQUIRE: '/inquire',
-	SERVER_ERROR: '/server-error',
 	NOT_FOUND: '/*',
 };

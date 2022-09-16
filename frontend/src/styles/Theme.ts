@@ -94,6 +94,7 @@ const zIndex = {
 	MENU_SLIDER_BACKGROUND: 104,
 	MENU_SLIDER_CONTENT: 105,
 	POPULAR_ARTICLES: 1,
+	SERVER_ERROR: 9999,
 };
 
 export const theme = {
