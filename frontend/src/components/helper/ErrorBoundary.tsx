@@ -35,18 +35,15 @@ class ErrorBoundary extends Component<Props, State> {
 			) {
 				alert('다시 로그인 해주세요');
 				window.location.href = URL.LOGIN;
-				return;
 			}
 			if (
 				Number(this.state.error.errorCode) === 1004 ||
 				Number(this.state.error.errorCode) === 1005
 			) {
 				window.location.href = URL.REFRESH_TOKEN_HANDLER;
-				return;
 			}
 			if (Number(this.state.error.errorCode) === 3001) {
 				window.location.href = URL.HOME;
-				return;
 			}
 			localStorage.removeItem('accessToken');
 		}
