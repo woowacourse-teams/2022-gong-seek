@@ -1,5 +1,6 @@
 package com.woowacourse.gongseek.acceptance;
 
+import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixture.로그아웃을_한다;
 import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixture.로그인_URL을_얻는다;
 import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixture.로그인을_하여_상태를_반환한다;
 import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixture.토큰을_재발급한다;
@@ -14,6 +15,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class AuthAcceptanceTest extends AcceptanceTest {
@@ -64,6 +66,21 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         assertAll(
                 () -> assertThat(errorResponse.getErrorCode()).isEqualTo("1005"),
                 () -> assertThat(errorResponse.getMessage()).isEqualTo("엑세스 토큰이 유효하지 않습니다.")
+        );
+    }
+
+    @Test
+    void 로그아웃을_시도하면_쿠키가_만료된다() {
+        //given
+        ExtractableResponse<Response> login = 로그인을_하여_상태를_반환한다(기론);
+
+        //when
+        ExtractableResponse<Response> response = 로그아웃을_한다(login.cookie("refreshToken"));
+
+        //then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value()),
+                () -> assertThat(response.cookies().get("refreshToken")).isEmpty()
         );
     }
 }
