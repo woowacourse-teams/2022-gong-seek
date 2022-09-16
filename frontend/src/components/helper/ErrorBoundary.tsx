@@ -52,6 +52,7 @@ class ErrorBoundary extends Component<Props, State> {
 			this.reset();
 			return;
 		}
+		window.location.href = URL.HOME;
 	}
 
 	static getDerivedStateFromError(error: Error) {
