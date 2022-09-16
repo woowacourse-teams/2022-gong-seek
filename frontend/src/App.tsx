@@ -4,7 +4,6 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Loading from '@/components/common/Loading/Loading';
 import SnackBar from '@/components/common/SnackBar/SnackBar';
-import ErrorBoundary from '@/components/helper/ErrorBoundary';
 import PrivateRouter from '@/components/helper/PrivateRouter';
 import PublicRouter from '@/components/helper/PublicRouter';
 import Header from '@/components/layout/Header/Header';
@@ -80,9 +79,8 @@ const App = () => {
 			}}
 		>
 			<Header />
-			<ErrorBoundary enable={false}>
-				<Content>
-        <Suspense fallback={<Loading />}>
+			<Content>
+				<Suspense fallback={<Loading />}>
 					<Routes>
 						<Route path={URL.LOGIN_CONTROLLER} element={<LoginController />} />
 						<Route path={URL.REFRESH_TOKEN_HANDLER} element={<RefreshTokenHandler />} />
@@ -106,9 +104,8 @@ const App = () => {
 						<Route path={URL.NOT_FOUND} element={<NotFound />} />
 						<Route path={URL.HOME} element={<Home />} />
 					</Routes>
-          </Suspense>
-				</Content>
-			</ErrorBoundary>
+				</Suspense>
+			</Content>
 			<TabBar />
 			<SnackBar />
 			{sliderState.isOpen && <Dimmer onClick={() => setSliderState({ isOpen: false })} />}
