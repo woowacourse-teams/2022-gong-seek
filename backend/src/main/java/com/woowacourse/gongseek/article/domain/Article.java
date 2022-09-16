@@ -19,12 +19,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@Builder
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -65,7 +67,8 @@ public class Article extends BaseTimeEntity {
                 null,
                 new Title(title),
                 new Content(content),
-                category, member,
+                category,
+                member,
                 new Views(),
                 new ArticleTags(),
                 isAnonymous
@@ -73,11 +76,7 @@ public class Article extends BaseTimeEntity {
     }
 
     public boolean isAuthor(Member member) {
-        return member.equals(this.getMember());
-    }
-
-    public boolean isAnonymousAuthor(String cipherId) {
-        return member.isAnonymous(cipherId);
+        return this.member.equals(member);
     }
 
     public void addViews() {
@@ -108,6 +107,10 @@ public class Article extends BaseTimeEntity {
 
     public String getContent() {
         return content.getValue();
+    }
+
+    public Member getMember() {
+        return member.getMemberOrAnonymous(isAnonymous);
     }
 
     public int getViews() {

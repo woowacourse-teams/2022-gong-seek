@@ -7,13 +7,6 @@ import org.junit.jupiter.api.Test;
 class MemberTest {
 
     @Test
-    void 익명의_유저는_깃허브_Id가_암호화된_Id와_같다() {
-        Member member = new Member("홍길동", "123", "avatar.example");
-
-        assertThat(member.isAnonymous("123")).isTrue();
-    }
-
-    @Test
     void 깃허브_프로필을_수정한다() {
         String updatedAvatarUrl = "avatar.update";
         Member member = new Member("홍길동", "123", "avatar.example");

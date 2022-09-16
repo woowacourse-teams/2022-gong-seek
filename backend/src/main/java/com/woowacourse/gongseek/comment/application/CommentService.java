@@ -13,7 +13,6 @@ import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentUpdateRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentsResponse;
-import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -28,35 +27,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CommentService {
 
-    private static final String ANONYMOUS_NAME = "익명";
-    private static final String ANONYMOUS_AVATAR_URL = "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png";
-
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
-    private final Encryptor encryptor;
 
     public void save(AppMember appMember, Long articleId, CommentRequest commentRequest) {
         validateGuest(appMember);
-        Member member = getAuthor(appMember, commentRequest);
+        Member member = getMember(appMember);
         Article article = getArticle(articleId);
 
-        commentRepository.save(commentRequest.toEntity(member, article));
+        commentRepository.save(commentRequest.toComment(member, article));
     }
 
     private void validateGuest(AppMember appMember) {
         if (appMember.isGuest()) {
             throw new NotMemberException();
         }
-    }
-
-    private Member getAuthor(AppMember appMember, CommentRequest commentRequest) {
-        if (commentRequest.getIsAnonymous()) {
-            String cipherId = encryptor.encrypt(String.valueOf(appMember.getPayload()));
-            return memberRepository.findByGithubId(cipherId)
-                    .orElseGet(() -> memberRepository.save(new Member(ANONYMOUS_NAME, cipherId, ANONYMOUS_AVATAR_URL)));
-        }
-        return getMember(appMember);
     }
 
     private Member getMember(AppMember appMember) {
@@ -81,15 +67,7 @@ public class CommentService {
         if (appMember.isGuest()) {
             return new CommentResponse(comment, false);
         }
-        return checkAuthor(comment, getMember(appMember));
-    }
-
-    private CommentResponse checkAuthor(Comment comment, Member member) {
-        if (comment.isAnonymous()) {
-            String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
-            return new CommentResponse(comment, comment.isAnonymousAuthor(cipherId));
-        }
-        return new CommentResponse(comment, comment.isAuthor(member));
+        return new CommentResponse(comment, comment.isAuthor(getMember(appMember)));
     }
 
     public void update(AppMember appMember, Long commentId, CommentUpdateRequest updateRequest) {
@@ -111,17 +89,9 @@ public class CommentService {
     }
 
     private void validateAuthor(Comment comment, Member member) {
-        if (!isAuthor(comment, member)) {
+        if (!comment.isAuthor(member)) {
             throw new NotAuthorException(comment.getArticle().getId(), member.getId());
         }
-    }
-
-    private boolean isAuthor(Comment comment, Member member) {
-        if (comment.isAnonymous()) {
-            String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
-            return comment.isAnonymousAuthor(cipherId);
-        }
-        return comment.isAuthor(member);
     }
 
     public void delete(AppMember appMember, Long commentId) {

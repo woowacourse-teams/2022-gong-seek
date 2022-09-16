@@ -25,10 +25,12 @@ export const postLogin = (code: string) =>
 	);
 
 export const getAccessTokenByRefreshToken = async () => {
+	const accessToken = localStorage.getItem('accessToken');
 	const response = await axios.get<{ accessToken: string }>(`${HOME_URL}/api/auth/refresh`, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			'Access-Control-Allow-Credentials': true,
+			Authorization: `Bearer ${accessToken}`,
 		},
 		withCredentials: true,
 	});

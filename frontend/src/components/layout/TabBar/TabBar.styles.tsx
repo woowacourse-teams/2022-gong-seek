@@ -1,4 +1,5 @@
 import { AiFillEdit, AiOutlineMenu } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 
 import styled from '@emotion/styled';
 
@@ -11,7 +12,7 @@ export const Section = styled.section`
 	justify-content: space-between;
 	align-items: center;
 
-	width: 100%;
+	width: 100vw;
 	height: ${({ theme }) => theme.size.SIZE_056};
 
 	border-radius: ${({ theme }) => theme.size.SIZE_010} ${({ theme }) => theme.size.SIZE_010} 0 0;
@@ -39,6 +40,8 @@ export const PostingLink = styled(AiFillEdit)`
 		color: ${({ theme }) => theme.colors.PURPLE_500};
 	}
 `;
+
+export const MyPageLink = styled(Link)``;
 
 export const MenuLink = styled(AiOutlineMenu)`
 	font-size: ${({ theme }) => theme.size.SIZE_024};

@@ -26,7 +26,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public Slice<Article> findAllByPage(Long cursorId, Integer cursorViews, String category, String sortType,
-                                       Pageable pageable) {
+                                        Pageable pageable) {
         JPAQuery<Article> query = queryFactory
                 .selectFrom(article)
                 .where(
@@ -80,7 +80,6 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public Slice<Article> findAllByLikes(Long cursorId, Long cursorLikes, String category, Pageable pageable) {
-
         List<Article> fetch = queryFactory
                 .select(article)
                 .from(like)
@@ -132,6 +131,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .selectFrom(article)
                 .where(
                         article.member.name.value.eq(author),
+                        article.isAnonymous.eq(false),
                         isOverArticleId(cursorId)
                 )
                 .limit(pageable.getPageSize() + 1)
