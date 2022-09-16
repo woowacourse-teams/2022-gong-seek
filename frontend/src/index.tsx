@@ -1,3 +1,4 @@
+import ErrorBoundary from './components/helper/ErrorBoundary';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
@@ -23,7 +24,9 @@ root.render(
 		<QueryClientProvider client={queryClient}>
 			<RecoilRoot>
 				<BrowserRouter>
-					<App />
+					<ErrorBoundary enable={false}>
+						<App />
+					</ErrorBoundary>
 				</BrowserRouter>
 			</RecoilRoot>
 		</QueryClientProvider>
