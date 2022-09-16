@@ -2,6 +2,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import React, { useEffect, useRef } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 
 import { registerVoteItems } from '@/api/vote';
 import Loading from '@/components/common/Loading/Loading';
@@ -9,6 +10,7 @@ import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useLocationState from '@/hooks/common/useLocationState';
 import * as S from '@/pages/VoteDeadlineGenerator/index.styles';
+import { errorPortalState } from '@/store/errorPortalState';
 import { afterWeekGenerator, tomorrowGenerator } from '@/utils/dateGenerator';
 
 const VoteDeadlineGenerator = () => {
@@ -16,6 +18,9 @@ const VoteDeadlineGenerator = () => {
 	const timeRef = useRef<HTMLInputElement>(null);
 	const { articleId, items } = useLocationState<{ articleId: string; items: string[] }>();
 	const navigate = useNavigate();
+
+	const [errorPortal, setErrorPortal] = useRecoilState(errorPortalState);
+
 	const { isLoading, mutate, isError, error, isSuccess } = useMutation<
 		AxiosResponse<{ articleId: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
@@ -33,12 +38,13 @@ const VoteDeadlineGenerator = () => {
 
 	useEffect(() => {
 		if (isError) {
-			if (!error.response) {
+			if (!error.response?.data?.errorCode) {
+				setErrorPortal({ isOpen: true });
 				return;
 			}
 			throw new CustomError(
 				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
+				ErrorMessage[error.response?.data.errorCode],
 			);
 		}
 	}, [isError]);

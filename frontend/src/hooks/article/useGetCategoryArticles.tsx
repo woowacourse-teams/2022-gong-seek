@@ -1,14 +1,17 @@
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
+import { useRecoilState } from 'recoil';
 
 import { getAllArticle } from '@/api/article';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import { errorPortalState } from '@/store/errorPortalState';
 import { infiniteArticleResponse } from '@/types/articleResponse';
 
 const useGetCategoryArticles = (category: string) => {
 	const [sortIndex, setSortIndex] = useState('최신순');
+	const [errorPortal, setErrorPortal] = useRecoilState(errorPortalState);
 
 	const { data, isLoading, isError, isSuccess, error, refetch, fetchNextPage } = useInfiniteQuery<
 		infiniteArticleResponse,
@@ -47,7 +50,8 @@ const useGetCategoryArticles = (category: string) => {
 
 	useEffect(() => {
 		if (isError) {
-			if (!error.response) {
+			if (!error.response?.data?.errorCode) {
+				setErrorPortal({ isOpen: true });
 				return;
 			}
 			throw new CustomError(

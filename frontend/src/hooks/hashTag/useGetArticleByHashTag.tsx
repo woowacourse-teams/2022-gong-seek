@@ -1,15 +1,19 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useInfiniteQuery } from 'react-query';
+import { useRecoilState } from 'recoil';
 
 import { getArticleByHashTag } from '@/api/search';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import { errorPortalState } from '@/store/errorPortalState';
 import { InfiniteHashTagSearchResultType } from '@/types/searchResponse';
 
 const useGetArticleByHashTag = (hashTag: string[]) => {
 	const tags = hashTag.join(',');
 	const cursorId = '';
+	const [errorPortal, setErrorPortal] = useRecoilState(errorPortalState);
+
 	const { data, isError, isLoading, isSuccess, error, refetch, fetchNextPage } = useInfiniteQuery<
 		InfiniteHashTagSearchResultType,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
@@ -36,12 +40,13 @@ const useGetArticleByHashTag = (hashTag: string[]) => {
 
 	useEffect(() => {
 		if (isError) {
-			if (!error.response) {
+			if (!error.response?.data?.errorCode) {
+				setErrorPortal({ isOpen: true });
 				return;
 			}
 			throw new CustomError(
 				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
+				ErrorMessage[error.response?.data.errorCode],
 			);
 		}
 	}, [isError]);

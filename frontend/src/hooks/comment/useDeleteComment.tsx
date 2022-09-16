@@ -1,11 +1,13 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
+import { useRecoilState } from 'recoil';
 
 import { deleteComments } from '@/api/comments';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { queryClient } from '@/index';
+import { errorPortalState } from '@/store/errorPortalState';
 
 const useDeleteComment = () => {
 	const { isLoading, isError, error, isSuccess, mutate } = useMutation<
@@ -26,14 +28,17 @@ const useDeleteComment = () => {
 		}
 	}, [isSuccess]);
 
+	const [errorPortal, setErrorPortal] = useRecoilState(errorPortalState);
+
 	useEffect(() => {
 		if (isError) {
-			if (!error.response) {
+			if (!error.response?.data?.errorCode) {
+				setErrorPortal({ isOpen: true });
 				return;
 			}
 			throw new CustomError(
 				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
+				ErrorMessage[error.response?.data.errorCode],
 			);
 		}
 	}, [isError]);

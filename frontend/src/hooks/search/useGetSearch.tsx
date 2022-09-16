@@ -1,14 +1,18 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useInfiniteQuery } from 'react-query';
+import { useRecoilState } from 'recoil';
 
 import { getSearchResult } from '@/api/search';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import { errorPortalState } from '@/store/errorPortalState';
 import { InfiniteSearchResultType } from '@/types/searchResponse';
 
 const useGetSearch = ({ target, searchIndex }: { target: string; searchIndex: string }) => {
 	const cursorId = '';
+	const [errorPortal, setErrorPortal] = useRecoilState(errorPortalState);
+
 	const { data, isSuccess, isLoading, isError, isIdle, error, refetch, fetchNextPage } =
 		useInfiniteQuery<
 			InfiniteSearchResultType,
@@ -44,12 +48,13 @@ const useGetSearch = ({ target, searchIndex }: { target: string; searchIndex: st
 
 	useEffect(() => {
 		if (isError) {
-			if (!error.response) {
+			if (!error.response?.data?.errorCode) {
+				setErrorPortal({ isOpen: true });
 				return;
 			}
 			throw new CustomError(
 				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
+				ErrorMessage[error.response?.data.errorCode],
 			);
 		}
 	}, [isError]);

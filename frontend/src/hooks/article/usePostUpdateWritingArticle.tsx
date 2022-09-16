@@ -2,12 +2,13 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { putArticle } from '@/api/article';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { articleState } from '@/store/articleState';
+import { errorPortalState } from '@/store/errorPortalState';
 import { validatedTitleInput } from '@/utils/validateInput';
 import { Editor } from '@toast-ui/react-editor';
 
@@ -35,14 +36,17 @@ const usePostUpdateWritingArticle = () => {
 		}
 	}, [isSuccess]);
 
+	const [errorPortal, setErrorPortal] = useRecoilState(errorPortalState);
+
 	useEffect(() => {
 		if (isError) {
-			if (!error.response) {
+			if (!error.response?.data?.errorCode) {
+				setErrorPortal({ isOpen: true });
 				return;
 			}
 			throw new CustomError(
 				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
+				ErrorMessage[error.response?.data.errorCode],
 			);
 		}
 	}, [isError]);

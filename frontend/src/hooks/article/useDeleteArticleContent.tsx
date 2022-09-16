@@ -2,12 +2,14 @@ import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 
 import { deleteArticle } from '@/api/article';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { URL } from '@/constants/url';
 import useSnackBar from '@/hooks/common/useSnackBar';
+import { errorPortalState } from '@/store/errorPortalState';
 
 const useDeleteArticleContent = () => {
 	const { showSnackBar } = useSnackBar();
@@ -17,6 +19,7 @@ const useDeleteArticleContent = () => {
 		string
 	>(deleteArticle, { retry: 1 });
 	const navigate = useNavigate();
+	const [errorPortal, setErrorPortal] = useRecoilState(errorPortalState);
 
 	useEffect(() => {
 		if (isSuccess) {
@@ -27,13 +30,13 @@ const useDeleteArticleContent = () => {
 
 	useEffect(() => {
 		if (isError) {
-			if (!error.response) {
+			if (!error.response?.data?.errorCode) {
+				setErrorPortal({ isOpen: true });
 				return;
 			}
-
 			throw new CustomError(
 				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
+				ErrorMessage[error.response?.data.errorCode],
 			);
 		}
 	}, [isError]);
