@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Input from '@/components/common/Input/Input';
@@ -14,6 +14,7 @@ import {
 const VoteGenerator = () => {
 	const [options, setOptions] = useState<string[]>([]);
 	const [input, setInput] = useState('');
+	const inputRef = useRef<HTMLInputElement>(null);
 	const { articleId } = useParams();
 	const { showSnackBar } = useSnackBar();
 	const navigate = useNavigate();
@@ -32,6 +33,9 @@ const VoteGenerator = () => {
 
 		if (!validatedVoteItemsQuantity(options)) {
 			showSnackBar('투표목록은 최소 2개이상이여야 합니다.');
+			if (inputRef.current) {
+				inputRef.current.focus();
+			}
 			return;
 		}
 
@@ -66,6 +70,7 @@ const VoteGenerator = () => {
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 							setInput(e.target.value);
 						}}
+						ref={inputRef}
 					/>
 					<S.AddButtonWrapper
 						disabled={
