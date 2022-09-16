@@ -1,3 +1,4 @@
+import { convertGithubAvartarUrlForResize } from '../../../utils/converter';
 import React, { useEffect, useState } from 'react';
 
 import Loading from '@/components/common/Loading/Loading';
@@ -31,7 +32,7 @@ const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 
 	return (
 		<S.Container>
-			<S.UserProfile src={avatarUrl} />
+			<S.UserProfile src={convertGithubAvartarUrlForResize(avatarUrl)} />
 			<S.UserNameBox>
 				{isEdit ? (
 					<S.UserNameContainer>

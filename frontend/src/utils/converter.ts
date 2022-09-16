@@ -72,6 +72,8 @@ export const convertSort = (sort: '좋아요순' | '최신순' | '조회순') =>
 	}
 };
 
+export const convertGithubAvartarUrlForResize = (avartarUrl: string) => `${avartarUrl}&size=100`;
+
 const timePicker = (timeArray: number[]) => {
 	for (let i = 0; i < timeArray.length - 1; i++) {
 		if (timeArray[i] > 0) {
