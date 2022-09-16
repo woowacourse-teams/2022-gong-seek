@@ -33,6 +33,8 @@
 
 
 ### 백엔드 🔥
+![기술스택 ](https://user-images.githubusercontent.com/70756680/190581698-e61245a7-75fd-4d5c-923c-8fbca232887b.png)
+
 
 <hr>
 
