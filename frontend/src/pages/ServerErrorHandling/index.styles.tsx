@@ -2,13 +2,23 @@ import styled from '@emotion/styled';
 
 export const Container = styled.section`
 	display: flex;
-
+	position: absolute;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 
-	width: 100%;
-	height: 68vh;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100vw;
+	height: 100%;
+
+	background-color: ${({ theme }) => theme.colors.WHITE};
+
+	z-index: ${({ theme }) => theme.zIndex.SERVER_ERROR};
+	overflow: hidden;
+	touch-action: none;
 `;
 
 export const LogoImg = styled.img`
