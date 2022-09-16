@@ -8,7 +8,8 @@ export const validatedHashTagInput = (targetInput: string) =>
 
 export const validatedEditInput = (targetInput: string) => targetInput.length >= 1;
 
-export const validatedVoteItemInputLength = (targetInput: string) => targetInput.length !== 0;
+export const validatedVoteItemInputLength = (targetInput: string) =>
+	targetInput.length > 0 && targetInput.length <= 300;
 
 export const validatedDuplicatedVoteItemInput = (targetInput: string, options: string[]) => {
 	const checkArray = options.concat(targetInput);

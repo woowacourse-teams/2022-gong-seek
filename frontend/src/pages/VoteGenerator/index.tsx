@@ -49,7 +49,7 @@ const VoteGenerator = () => {
 
 	const selectValidateMessage = (input: string, options: string[]) => {
 		if (!validatedVoteItemInputLength(input)) {
-			return '투표목록은 최소 1글자이상 이여야합니다.';
+			return '투표목록은 최소 1글자이상 300글자이하 이여야합니다.';
 		}
 
 		if (!validatedDuplicatedVoteItemInput(input, options)) {
