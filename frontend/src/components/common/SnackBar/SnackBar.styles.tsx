@@ -18,6 +18,8 @@ const PopUpAnimation = keyframes`
 export const Container = styled.section`
 	display: flex;
 
+	background-color: transparent;
+
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-end;
@@ -27,6 +29,8 @@ export const Container = styled.section`
 	left: 0;
 	right: 0;
 	bottom: 0;
+
+	z-index: ${({ theme }) => theme.zIndex.SNACK_BAR_BACKGROUND};
 `;
 
 export const MessageBox = styled.div`

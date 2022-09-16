@@ -1,3 +1,5 @@
 spring:
   profiles:
     active: local
+  config:
+    import: secret/

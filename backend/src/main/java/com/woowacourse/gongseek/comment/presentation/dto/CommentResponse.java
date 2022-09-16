@@ -36,7 +36,7 @@ public class CommentResponse {
         this(
                 comment.getId(),
                 comment.getContent(),
-                new AuthorDto(comment.getMember().getName(), comment.getMember().getAvatarUrl()),
+                new AuthorDto(comment.getMember()),
                 isAuthor,
                 comment.getCreatedAt(),
                 comment.getUpdatedAt()

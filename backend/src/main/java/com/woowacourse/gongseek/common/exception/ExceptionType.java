@@ -6,6 +6,7 @@ import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.ArticleTitleNullOrEmptyException;
 import com.woowacourse.gongseek.article.exception.ArticleTitleTooLongException;
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
+import com.woowacourse.gongseek.article.exception.TempArticleNotFoundException;
 import com.woowacourse.gongseek.auth.exception.EmptyTokenException;
 import com.woowacourse.gongseek.auth.exception.GithubAccessTokenLoadFailException;
 import com.woowacourse.gongseek.auth.exception.GithubUserProfileLoadFailException;
@@ -52,6 +53,7 @@ public enum ExceptionType {
     NOT_AUTHOR_EXCEPTION("1007", "작성자가 아니므로 권한이 없습니다.", NotAuthorException.class),
     NOT_MEMBER_EXCEPTION("1008", "회원이 아니므로 권한이 없습니다.", NotMemberException.class),
     INVALID_REFRESH_TOKEN_EXCEPTION("1009", "리프레시 토큰이 유효하지 않습니다.", InvalidRefreshTokenException.class),
+    UNAUTHORIZED_TOKEN_EXCEPTION("1010", "유효한 액세스 토큰으로 리프레시 토큰을 발급할 수 없습니다.", UnAuthorizedTokenException.class),
 
     MEMBER_NOT_FOUND_EXCEPTION("2001", "회원이 존재하지 않습니다.", MemberNotFoundException.class),
     NAME_NULL_OR_EMPTY_EXCEPTION("2002", "회원의 이름은 1자 이상이어야 합니다.", NameNullOrEmptyException.class),
@@ -61,6 +63,7 @@ public enum ExceptionType {
     ARTICLE_TITLE_NULL_OR_EMPTY_EXCEPTION("3003", "게시글 제목은 비어있을 수 없습니다.", ArticleTitleNullOrEmptyException.class),
     ARTICLE_CONTENT_NULL_EXCEPTION("3004", "게시글 내용은 null일 수 없습니다.", ArticleContentNullException.class),
     ARTICLE_CATEGORY_NOT_FOUND_EXCEPTION("3005", "존재하지 않는 카테고리입니다.", ArticleCategoryNotFoundException.class),
+    TEMP_ARTICLE_NOT_FOUND_EXCEPTION("3006", "임시 게시글이 존재하지 않습니다.", TempArticleNotFoundException.class),
 
     COMMENT_NOT_FOUND_EXCEPTION("4001", "댓글이 존재하지 않습니다.", CommentNotFoundException.class),
     COMMENT_NULL_OR_EMPTY_EXCEPTION("4002", "댓글은 비어있을 수 없습니다.", CommentNullOrEmptyException.class),

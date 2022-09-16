@@ -1,12 +1,12 @@
 import { rest } from 'msw';
 
-import { HOME_URL } from '@/constants/url';
+import { HOME_URL } from '@/constants/apiUrl';
 import { SearchResultType } from '@/types/searchResponse';
 
 export const SearchHandler = [
 	rest.get<SearchResultType>(`${HOME_URL}/api/articles/search/author`, (req, res, ctx) => {
 		const cursorId = req.url.searchParams.get('cursorId');
-		const pageSize = req.url.searchParams.get('pageSize');
+		const pageSize = req.url.searchParams.get('size');
 		const author = req.url.searchParams.get('author');
 
 		if (typeof author === 'undefined') {
@@ -63,7 +63,7 @@ export const SearchHandler = [
 	}),
 	rest.get<SearchResultType>(`${HOME_URL}/api/articles/search/text`, (req, res, ctx) => {
 		const cursorId = req.url.searchParams.get('cursorId');
-		const pageSize = req.url.searchParams.get('pageSize');
+		const pageSize = req.url.searchParams.get('size');
 		const searchText = req.url.searchParams.get('text');
 
 		if (typeof searchText === 'undefined') {

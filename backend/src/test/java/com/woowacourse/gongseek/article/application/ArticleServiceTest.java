@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
@@ -20,11 +22,10 @@ import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
-import com.woowacourse.gongseek.common.DatabaseCleaner;
 import com.woowacourse.gongseek.like.application.LikeService;
-import com.woowacourse.gongseek.member.application.Encryptor;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.support.DatabaseCleaner;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
@@ -47,6 +48,7 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +61,9 @@ public class ArticleServiceTest {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private TempArticleRepository tempArticleRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -77,9 +82,6 @@ public class ArticleServiceTest {
 
     @Autowired
     private LikeService likeService;
-
-    @Autowired
-    private Encryptor encryptor;
 
     @Autowired
     private DatabaseCleaner databaseCleaner;
@@ -172,50 +174,6 @@ public class ArticleServiceTest {
         assertAll(
                 () -> assertThat(tags).hasSize(1),
                 () -> assertThat(tags.get(0).getName()).isEqualTo("SPRING")
-        );
-    }
-
-    @Test
-    void 회원이_익명_게시글을_저장하면_익명_회원이_저장된다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
-                List.of("Spring"), true);
-        ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
-
-        Long id = member.getId();
-        String cipherText = encryptor.encrypt(String.valueOf(id));
-        Member anonymousMember = memberRepository.findByGithubId(cipherText)
-                .orElseThrow();
-        Article article = articleRepository.findById(articleIdResponse.getId())
-                .orElseThrow();
-
-        assertAll(
-                () -> assertThat(anonymousMember)
-                        .usingRecursiveComparison()
-                        .ignoringFields("id")
-                        .isEqualTo(new Member("익명", cipherText,
-                                "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png")),
-                () -> assertThat(article.getMember().getId()).isEqualTo(anonymousMember.getId())
-        );
-    }
-
-    @Test
-    void 회원이_익명_게시글을_2번_저장한다() {
-        String cipherText = encryptor.encrypt(String.valueOf(member.getId()));
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
-                List.of("Spring"), true);
-        ArticleIdResponse firstArticleId = articleService.save(new LoginMember(member.getId()), articleRequest);
-        ArticleIdResponse secondArticleId = articleService.save(new LoginMember(member.getId()), articleRequest);
-
-        Member anonymousMember = memberRepository.findByGithubId(cipherText)
-                .orElseThrow();
-        Article firstArticle = articleRepository.findById(firstArticleId.getId())
-                .orElseThrow();
-        Article secondArticle = articleRepository.findById(secondArticleId.getId())
-                .orElseThrow();
-
-        assertAll(
-                () -> assertThat(secondArticle.getMember().getId()).isEqualTo(anonymousMember.getId()),
-                () -> assertThat(firstArticle.getMember().getId()).isEqualTo(secondArticle.getMember().getId())
         );
     }
 
@@ -537,7 +495,8 @@ public class ArticleServiceTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(null, 0, Category.QUESTION.getValue(), "latest", 10,
+        ArticlePageResponse response = articleService.getAll(null, 0, Category.QUESTION.getValue(), "latest",
+                PageRequest.ofSize(10),
                 loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
@@ -560,7 +519,8 @@ public class ArticleServiceTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(10L, 0, Category.QUESTION.getValue(), "latest", 10,
+        ArticlePageResponse response = articleService.getAll(10L, 0, Category.QUESTION.getValue(), "latest",
+                PageRequest.ofSize(10),
                 loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
@@ -587,7 +547,7 @@ public class ArticleServiceTest {
         articleRepository.saveAll(articles);
 
         ArticlePageResponse response = articleService.getAll(null, cursorViews, Category.QUESTION.getValue(),
-                "latest", 10, loginMember);
+                "latest", PageRequest.ofSize(10), loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
 
         assertAll(
@@ -599,7 +559,8 @@ public class ArticleServiceTest {
     @Test
     void 공백으로_게시글을_검색한_경우_빈_값이_나온다() {
         AppMember loginMember = new LoginMember(member.getId());
-        ArticlePageResponse articlePageResponse = articleService.searchByText(null, 1, " ", loginMember);
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, PageRequest.ofSize(1), " ",
+                loginMember);
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).isEmpty(),
@@ -618,7 +579,8 @@ public class ArticleServiceTest {
                             false));
         }
 
-        ArticlePageResponse articlePageResponse = articleService.searchByText(null, 10, "질문", loginMember);
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, PageRequest.ofSize(10), "질문",
+                loginMember);
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(10),
@@ -637,9 +599,10 @@ public class ArticleServiceTest {
                             false));
         }
 
-        ArticlePageResponse firstPageResponse = articleService.searchByText(null, 10, "질문", loginMember);
+        ArticlePageResponse firstPageResponse = articleService.searchByText(null, PageRequest.ofSize(10), "질문",
+                loginMember);
         ArticlePageResponse secondPageResponse = articleService.searchByText(
-                firstPageResponse.getArticles().get(9).getId(), 10, "질문", loginMember);
+                firstPageResponse.getArticles().get(9).getId(), PageRequest.ofSize(10), "질문", loginMember);
 
         assertAll(
                 () -> assertThat(firstPageResponse.getArticles()).hasSize(10),
@@ -668,7 +631,8 @@ public class ArticleServiceTest {
             articleService.save(loginMember, articleRequest);
         }
 
-        ArticlePageResponse pageResponse = articleService.searchByAuthor(null, 15, this.member.getName(), loginMember);
+        ArticlePageResponse pageResponse = articleService.searchByAuthor(null, PageRequest.ofSize(15),
+                this.member.getName(), loginMember);
 
         assertThat(pageResponse.getArticles()).hasSize(5);
     }
@@ -713,7 +677,7 @@ public class ArticleServiceTest {
             articleService.save(loginMember, articleRequest);
         }
 
-        ArticlePageResponse pageResponse = articleService.searchByTag(null, 15, "spring",
+        ArticlePageResponse pageResponse = articleService.searchByTag(null, PageRequest.ofSize(15), "spring",
                 loginMember);
 
         assertAll(
@@ -769,7 +733,7 @@ public class ArticleServiceTest {
             articleService.save(loginMember, secondArticleRequest);
         }
 
-        ArticlePageResponse pageResponse = articleService.searchByTag(5L, 2, "spring,java",
+        ArticlePageResponse pageResponse = articleService.searchByTag(5L, PageRequest.ofSize(2), "spring,java",
                 loginMember);
 
         assertAll(
@@ -797,5 +761,18 @@ public class ArticleServiceTest {
                 () -> assertThat(articleRepository.findById(article.getId())).isEmpty(),
                 () -> assertThat(voteItemRepository.findAll()).isEmpty()
         );
+    }
+
+    @Transactional
+    @Test
+    void 게시글을_생성하면_임시_게시글은_삭제된다() {
+        final TempArticle tempArticle = tempArticleRepository.save(
+                new TempArticle("title", "content", Category.DISCUSSION.getValue(), member, List.of("spring"), false));
+        final ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true, tempArticle.getId());
+
+        articleService.save(new LoginMember(member.getId()), articleRequest);
+
+        assertThat(tempArticleRepository.existsById(tempArticle.getId())).isFalse();
     }
 }

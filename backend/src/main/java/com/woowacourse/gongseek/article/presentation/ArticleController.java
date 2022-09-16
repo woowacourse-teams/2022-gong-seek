@@ -66,10 +66,10 @@ public class ArticleController {
             @RequestParam String sort,
             @RequestParam(required = false) Long cursorId,
             @RequestParam(required = false) Integer cursorViews,
-            @RequestParam Integer pageSize,
+            Pageable pageable,
             @AuthenticationPrinciple AppMember appMember
     ) {
-        ArticlePageResponse response = articleService.getAll(cursorId, cursorViews, category, sort, pageSize,
+        ArticlePageResponse response = articleService.getAll(cursorId, cursorViews, category, sort, pageable,
                 appMember);
 
         return ResponseEntity.ok(response);
@@ -90,32 +90,32 @@ public class ArticleController {
     @GetMapping("/search/text")
     public ResponseEntity<ArticlePageResponse> searchByText(
             @RequestParam(required = false) Long cursorId,
-            @RequestParam Integer pageSize,
+            Pageable pageable,
             @RequestParam(required = false) String text,
             @AuthenticationPrinciple AppMember appMember
     ) {
-        ArticlePageResponse response = articleService.searchByText(cursorId, pageSize, text, appMember);
+        ArticlePageResponse response = articleService.searchByText(cursorId, pageable, text, appMember);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/search/author")
     public ResponseEntity<ArticlePageResponse> searchByAuthor(
             @RequestParam(required = false) Long cursorId,
-            @RequestParam Integer pageSize,
+            Pageable pageable,
             @RequestParam(required = false) String author,
             @AuthenticationPrinciple AppMember appMember
     ) {
-        ArticlePageResponse response = articleService.searchByAuthor(cursorId, pageSize, author, appMember);
+        ArticlePageResponse response = articleService.searchByAuthor(cursorId, pageable, author, appMember);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/search/tags")
     public ResponseEntity<ArticlePageResponse> searchByTag(
             @RequestParam(required = false) Long cursorId,
-            @RequestParam Integer pageSize,
+            Pageable pageable,
             @RequestParam String tagsText,
             @AuthenticationPrinciple AppMember appMember
     ) {
-        return ResponseEntity.ok(articleService.searchByTag(cursorId, pageSize, tagsText, appMember));
+        return ResponseEntity.ok(articleService.searchByTag(cursorId, pageable, tagsText, appMember));
     }
 }

@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
 import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 import Loading from '@/components/common/Loading/Loading';
+import useGetSearch from '@/hooks/search/useGetSearch';
 import * as S from '@/pages/Search/SearchResult/SearchResult.styles';
-import useGetSearch from '@/pages/Search/hooks/useGetSearch';
 
 const SearchResult = ({ target, searchIndex }: { target: string; searchIndex: string }) => {
 	const { data, isLoading, isIdle, refetch, fetchNextPage } = useGetSearch({ target, searchIndex });

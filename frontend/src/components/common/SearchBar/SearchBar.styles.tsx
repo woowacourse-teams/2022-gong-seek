@@ -1,4 +1,4 @@
-import { BiSearchAlt } from 'react-icons/bi';
+import { AiOutlineSearch } from 'react-icons/ai';
 
 import styled from '@emotion/styled';
 
@@ -54,7 +54,7 @@ export const SearchButtonBox = styled.button`
 	background-color: transparent;
 `;
 
-export const SearchButton = styled(BiSearchAlt)`
+export const SearchButton = styled(AiOutlineSearch)`
 	font-size: ${({ theme }) => theme.size.SIZE_024};
 
 	color: ${({ theme }) => theme.colors.PURPLE_500};

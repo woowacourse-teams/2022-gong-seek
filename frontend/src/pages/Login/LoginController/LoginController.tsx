@@ -4,7 +4,8 @@ import { useMutation } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { postLogin } from '@/api/login';
-import useSnackBar from '@/hooks/useSnackBar';
+import { URL } from '@/constants/url';
+import useSnackBar from '@/hooks/common/useSnackBar';
 
 const LoginController = () => {
 	const [searchParams] = useSearchParams();
@@ -12,10 +13,7 @@ const LoginController = () => {
 	const navigate = useNavigate();
 
 	const code = searchParams.get('code');
-	if (code === null) {
-		showSnackBar('깃허브 로그인에 동의해주세요.');
-		navigate('/');
-	}
+
 	const { data, isError, isSuccess, error, mutate } = useMutation<
 		AxiosResponse<{ accessToken: string }>,
 		AxiosError<{ errorCode: string; message: string }>,
@@ -23,16 +21,21 @@ const LoginController = () => {
 	>(postLogin);
 
 	useEffect(() => {
+		if (code === null) {
+			showSnackBar('깃허브 로그인에 동의해주세요.');
+			navigate(URL.HOME);
+			return;
+		}
 		mutate(code);
-	}, []);
+	}, [code]);
 
 	useEffect(() => {
 		if (isSuccess) {
 			localStorage.setItem('accessToken', data.data.accessToken);
-			window.location.href = '/';
+			window.location.href = URL.HOME;
 		}
 		if (isError) {
-			window.location.href = '/';
+			window.location.href = URL.HOME;
 		}
 	}, [isSuccess, isError]);
 

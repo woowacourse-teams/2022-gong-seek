@@ -69,7 +69,12 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:4.4.0'
 
+    // log
     implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
+
+    // flyway
+    implementation 'org.flywaydb:flyway-core:8.2.2'
+    implementation 'org.flywaydb:flyway-mysql'
 }
 
 tasks.named('test') {
@@ -160,4 +165,14 @@ sonarqube {
         property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
         // jacoco 플러그인의 결과 파일
     }
+}
+
+processResources.dependsOn('copySecret')
+
+task copySecret(type: Copy) {
+    from 'src/main/resources/secret/application-prod.yml'
+    into 'src/main/resources'
+
+    from 'src/main/resources/secret/application-dev.yml'
+    into 'src/main/resources'
 }

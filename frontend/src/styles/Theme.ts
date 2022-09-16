@@ -67,9 +67,11 @@ const size = {
 	SIZE_028: '1.75rem',
 	SIZE_030: '1.875rem',
 	SIZE_032: '2rem',
+	SIZE_035: '2.1875rem',
 	SIZE_040: '2.5rem',
 	SIZE_050: '3.125rem',
 	SIZE_056: '3.5rem',
+	SIZE_060: '3.75rem',
 	SIZE_080: '5rem',
 	SIZE_090: '5.625rem',
 	SIZE_100: '6.25rem',
@@ -92,6 +94,10 @@ const zIndex = {
 	MENU_SLIDER_BACKGROUND: 104,
 	MENU_SLIDER_CONTENT: 105,
 	POPULAR_ARTICLES: 1,
+	SNACK_BAR_BACKGROUND: 112,
+	SNACK_BAR: 200,
+	COMMON_INPUT_MODAL_BACKGROUND: 110,
+	COMMON_INPUT_MODAL: 111,
 };
 
 export const theme = {

@@ -1,28 +1,28 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시글_전체를_조회한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시글_전체를_추천순으로_조회한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시글을_유저이름으로_검색한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시글을_제목과_내용으로_검색한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.게시글을_제목과_내용으로_처음_검색한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.기명으로_게시글을_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_게시글을_삭제한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_게시글을_수정한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_게시글을_조회한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인_후_해시태그로_게시글들을_검색한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인을_하지_않고_게시글을_수정한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.로그인을_하지_않고_게시글을_조회한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.익명으로_게시글을_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.조회수가_있는_게시글_5개를_생성한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시글을_기명으로_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.특정_게시글을_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.해시태그_없이_게시글을_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.해시태그로_게시글들을_검색한다;
-import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
-import static com.woowacourse.gongseek.acceptance.support.CommentFixtures.기명으로_댓글을_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.LikeFixtures.게시글을_추천한다;
-import static com.woowacourse.gongseek.acceptance.support.VoteFixtures.투표를_생성한다;
-import static com.woowacourse.gongseek.acceptance.support.VoteFixtures.투표를_한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.게시글_전체를_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.게시글_전체를_추천순으로_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.게시글을_유저이름으로_검색한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.게시글을_제목과_내용으로_검색한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.게시글을_제목과_내용으로_처음_검색한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.기명으로_게시글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.로그인_후_게시글을_삭제한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.로그인_후_게시글을_수정한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.로그인_후_게시글을_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.로그인_후_해시태그로_게시글들을_검색한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.로그인을_하지_않고_게시글을_수정한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.로그인을_하지_않고_게시글을_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.익명으로_게시글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.조회수가_있는_게시글_5개를_생성한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.토론_게시글을_기명으로_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.특정_게시글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.해시태그_없이_게시글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.해시태그로_게시글들을_검색한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixture.로그인을_한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.CommentFixture.기명으로_댓글을_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.LikeFixture.게시글을_추천한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.VoteFixture.투표를_생성한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.VoteFixture.투표를_한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.기론;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.슬로;
@@ -738,10 +738,10 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         false));
 
         //when
-        int pageSize = 4;
+        int size = 4;
         String searchText = "커스텀";
-        ArticlePageResponse firstPage = 게시글을_제목과_내용으로_처음_검색한다(pageSize, searchText);
-        ArticlePageResponse secondPage = 게시글을_제목과_내용으로_검색한다(firstPage.getArticles().get(pageSize - 1).getId(), pageSize,
+        ArticlePageResponse firstPage = 게시글을_제목과_내용으로_처음_검색한다(size, searchText);
+        ArticlePageResponse secondPage = 게시글을_제목과_내용으로_검색한다(firstPage.getArticles().get(size - 1).getId(), size,
                 searchText);
 
         //then
@@ -772,9 +772,9 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         //when
         Long cursorId = null;
-        int pageSize = 4;
+        int size = 4;
         String author = 주디.getName();
-        ArticlePageResponse pageResponse = 게시글을_유저이름으로_검색한다(cursorId, pageSize, author);
+        ArticlePageResponse pageResponse = 게시글을_유저이름으로_검색한다(cursorId, size, author);
 
         assertAll(
                 () -> assertThat(pageResponse.hasNext()).isFalse(),
@@ -813,8 +813,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         //when
         Long cursorId = null;
-        int pageSize = 4;
-        ExtractableResponse<Response> response = 해시태그로_게시글들을_검색한다(cursorId, pageSize, "spring");
+        int size = 4;
+        ExtractableResponse<Response> response = 해시태그로_게시글들을_검색한다(cursorId, size, "spring");
         ArticlePageResponse articlesResponse = response.as(ArticlePageResponse.class);
 
         //then
@@ -855,8 +855,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         //when
         Long cursorId = null;
-        int pageSize = 8;
-        ExtractableResponse<Response> response = 해시태그로_게시글들을_검색한다(cursorId, pageSize, tags);
+        int size = 8;
+        ExtractableResponse<Response> response = 해시태그로_게시글들을_검색한다(cursorId, size, tags);
         ArticlePageResponse articlesResponse = response.as(ArticlePageResponse.class);
 
         //then
@@ -895,8 +895,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         //when
         Long cursorId = null;
-        int pageSize = 4;
-        ExtractableResponse<Response> response = 로그인_후_해시태그로_게시글들을_검색한다(tokenResponse, cursorId, pageSize, "spring");
+        int size = 4;
+        ExtractableResponse<Response> response = 로그인_후_해시태그로_게시글들을_검색한다(tokenResponse, cursorId, size, "spring");
         ArticlePageResponse articlesResponse = response.as(ArticlePageResponse.class);
 
         //then

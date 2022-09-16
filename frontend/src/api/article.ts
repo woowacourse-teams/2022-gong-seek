@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { HOME_URL } from '@/constants/url';
+import { HOME_URL } from '@/constants/apiUrl';
 import { AllArticleResponse, ArticleType } from '@/types/articleResponse';
 import { convertSort } from '@/utils/converter';
 
@@ -29,7 +29,7 @@ export const getPopularArticles = async () => {
 	const accessToken = localStorage.getItem('accessToken');
 
 	const result = await axios.get<PopularArticles>(
-		`${HOME_URL}/api/articles?category=all&sort=views&pageSize=10`,
+		`${HOME_URL}/api/articles?category=all&sort=views&size=10`,
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
@@ -91,7 +91,7 @@ export const getAllArticleByViewsOrLatest = async ({
 	const currentSort = convertSort(sort);
 
 	const { data } = await axios.get<AllArticleResponse>(
-		`${HOME_URL}/api/articles?category=${category}&sort=${currentSort}&cursorId=${cursorId}&cursorViews=${cursorViews}&pageSize=6`,
+		`${HOME_URL}/api/articles?category=${category}&sort=${currentSort}&cursorId=${cursorId}&cursorViews=${cursorViews}&size=6`,
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',

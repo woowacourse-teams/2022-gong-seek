@@ -7,7 +7,7 @@ import { registerVoteItems } from '@/api/vote';
 import Loading from '@/components/common/Loading/Loading';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
-import useLocationState from '@/hooks/useLocationState';
+import useLocationState from '@/hooks/common/useLocationState';
 import * as S from '@/pages/VoteDeadlineGenerator/index.styles';
 import { afterWeekGenerator, tomorrowGenerator } from '@/utils/dateGenerator';
 

@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
-
+import styled from '@emotion/styled';
 
 const searchOpenMaxAnimation = keyframes`
 	0% {
@@ -17,8 +16,7 @@ const searchOpenMaxAnimation = keyframes`
 	80%, 100%{
 		width: 60%;
 	}
-`
-
+`;
 
 const searchOpenMidAnimation = keyframes`
 	0% {
@@ -33,7 +31,7 @@ const searchOpenMidAnimation = keyframes`
 	80%, 100%{
 		width: 80%;
 	}
-`
+`;
 
 export const Container = styled.div`
 	position: sticky;
@@ -73,7 +71,6 @@ export const HeaderSection = styled.header`
 	}
 `;
 
-
 export const LogoLink = styled.h1`
 	font-weight: 800;
 	font-size: ${({ theme }) => theme.size.SIZE_022};
@@ -82,9 +79,9 @@ export const LogoLink = styled.h1`
 `;
 
 export const LogoImage = styled.img`
-	width: ${({theme}) => theme.size.SIZE_030};
-	height: ${({theme}) => theme.size.SIZE_030};
-`
+	width: ${({ theme }) => theme.size.SIZE_030};
+	height: ${({ theme }) => theme.size.SIZE_030};
+`;
 
 export const SearchBarBox = styled.div`
 	width: 60%;
@@ -102,7 +99,7 @@ export const SearchOpenBox = styled.div`
 		width: 60%;
 		animation: ${searchOpenMaxAnimation} 0.3s ease-in-out;
 	}
-`
+`;
 
 export const StyledLink = styled(Link)`
 	text-decoration: none;
@@ -112,19 +109,28 @@ export const NavBar = styled.nav`
 	display: none;
 	visibility: hidden;
 
-	padding-left: ${({ theme }) => theme.size.SIZE_160};
+	padding: 0 ${({ theme }) => theme.size.SIZE_160};
 
 	background-color: ${({ theme }) => theme.colors.WHITE};
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: calc(100% - ${({ theme }) => theme.size.SIZE_160} * 2);
+
 		display: flex;
 		visibility: visible;
 
-		gap: ${({ theme }) => theme.size.SIZE_024};
+		justify-content: space-around;
 	}
 `;
 
+export const NavBarItemBox = styled.div`
+	display: flex;
+	gap: ${({ theme }) => theme.size.SIZE_024};
+	width: fit-content;
+`;
+
 export const NavBarItem = styled(Link)`
+	width: fit-content;
 	text-decoration: none;
 
 	color: ${({ theme }) => theme.colors.BLACK_600};
@@ -137,16 +143,24 @@ export const NavBarItem = styled(Link)`
 	}
 `;
 
-export const LogOutItem = styled.button`
-	border: none;
+export const ProfileIconBox = styled.div`
+	width: fit-content;
+	margin: ${({ theme }) => theme.size.SIZE_004} ${({ theme }) => theme.size.SIZE_160} 0 auto;
+`;
+
+export const LoginIn = styled(Link)`
+	width: fit-content;
+	text-decoration: none;
 
 	background-color: transparent;
 	color: ${({ theme }) => theme.colors.BLACK_600};
+
+	margin: 0 ${({ theme }) => theme.size.SIZE_160} 0 auto;
+
+	padding: ${({ theme }) => theme.size.SIZE_016};
 
 	&:hover,
 	&:active {
 		color: ${({ theme }) => theme.colors.PURPLE_500};
 	}
 `;
-
-
