@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 
 import { getAccessTokenByRefreshToken } from '@/api/login';
 import CustomError from '@/components/helper/CustomError';
+import { ACCESSTOKEN_KEY } from '@/constants';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { URL } from '@/constants/url';
 import useSnackBar from '@/hooks/common/useSnackBar';
@@ -17,7 +18,7 @@ const RefreshTokenHandler = () => {
 	const { showSnackBar } = useSnackBar();
 
 	useEffect(() => {
-		localStorage.removeItem('gongseekAccessToken');
+		localStorage.removeItem(ACCESSTOKEN_KEY);
 	}, []);
 
 	useEffect(() => {
@@ -34,7 +35,7 @@ const RefreshTokenHandler = () => {
 
 	useEffect(() => {
 		if (isSuccess) {
-			localStorage.setItem('gongseekAccessToken', data.accessToken);
+			localStorage.setItem(ACCESSTOKEN_KEY, data.accessToken);
 			location.href = URL.HOME;
 			showSnackBar('재로그인 되었습니다');
 		}

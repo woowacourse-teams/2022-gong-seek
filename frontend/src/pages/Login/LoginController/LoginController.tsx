@@ -4,6 +4,7 @@ import { useMutation } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { postLogin } from '@/api/login';
+import { ACCESSTOKEN_KEY } from '@/constants';
 import { URL } from '@/constants/url';
 import useSnackBar from '@/hooks/common/useSnackBar';
 
@@ -31,7 +32,7 @@ const LoginController = () => {
 
 	useEffect(() => {
 		if (isSuccess) {
-			localStorage.setItem('gongseekAccessToken', data.data.accessToken);
+			localStorage.setItem(ACCESSTOKEN_KEY, data.data.accessToken);
 			window.location.href = URL.HOME;
 		}
 		if (isError) {
