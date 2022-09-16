@@ -23,7 +23,7 @@ export const Container = styled.section`
 
 	text-align: center;
 
-	z-index: 110;
+	z-index: ${({ theme }) => theme.zIndex.COMMON_INPUT_MODAL};
 `;
 
 export const CommentContainer = styled.div`
@@ -45,7 +45,7 @@ export const CommentContainer = styled.div`
 
 	background-color: ${({ theme }) => theme.colors.WHITE};
 
-	z-index: 110;
+	z-index: ${({ theme }) => theme.zIndex.COMMON_INPUT_MODAL};
 
 	animation: ${showSlider} 0.2s ease-in-out;
 
