@@ -1,3 +1,4 @@
+import { convertGithubAvartarUrlForResize } from '../../../utils/converter';
 import { useState } from 'react';
 
 import * as S from '@/components/common/Comment/Comment.styles';
@@ -28,7 +29,10 @@ const Comment = ({ id, author, content, createdAt, isAuthor, articleId }: Commen
 		<S.Container>
 			<S.CommentHeader>
 				<S.CommentInfo>
-					<S.UserProfile alt="유저 프로필이 보여지는 곳입니다" src={author.avatarUrl} />
+					<S.UserProfile
+						alt="유저 프로필이 보여지는 곳입니다"
+						src={convertGithubAvartarUrlForResize(author.avatarUrl)}
+					/>
 					<S.CommentInfoSub>
 						<S.UserName>{author.name}</S.UserName>
 						<S.CreateTime>{dateTimeConverter(createdAt)}</S.CreateTime>
