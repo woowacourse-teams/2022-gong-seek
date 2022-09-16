@@ -109,19 +109,28 @@ export const NavBar = styled.nav`
 	display: none;
 	visibility: hidden;
 
-	padding-left: ${({ theme }) => theme.size.SIZE_160};
+	padding: 0 ${({ theme }) => theme.size.SIZE_160};
 
 	background-color: ${({ theme }) => theme.colors.WHITE};
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: calc(100% - ${({ theme }) => theme.size.SIZE_160} * 2);
+
 		display: flex;
 		visibility: visible;
 
-		gap: ${({ theme }) => theme.size.SIZE_024};
+		justify-content: space-around;
 	}
 `;
 
+export const NavBarItemBox = styled.div`
+	display: flex;
+	gap: ${({ theme }) => theme.size.SIZE_024};
+	width: fit-content;
+`;
+
 export const NavBarItem = styled(Link)`
+	width: fit-content;
 	text-decoration: none;
 
 	color: ${({ theme }) => theme.colors.BLACK_600};
@@ -134,11 +143,21 @@ export const NavBarItem = styled(Link)`
 	}
 `;
 
-export const LogOutItem = styled.button`
-	border: none;
+export const ProfileIconBox = styled.div`
+	width: fit-content;
+	margin: ${({ theme }) => theme.size.SIZE_004} ${({ theme }) => theme.size.SIZE_160} 0 auto;
+`;
+
+export const LoginIn = styled(Link)`
+	width: fit-content;
+	text-decoration: none;
 
 	background-color: transparent;
 	color: ${({ theme }) => theme.colors.BLACK_600};
+
+	margin: 0 ${({ theme }) => theme.size.SIZE_160} 0 auto;
+
+	padding: ${({ theme }) => theme.size.SIZE_016};
 
 	&:hover,
 	&:active {
