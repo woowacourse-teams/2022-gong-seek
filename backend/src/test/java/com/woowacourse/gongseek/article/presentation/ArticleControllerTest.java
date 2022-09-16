@@ -277,7 +277,6 @@ class ArticleControllerTest {
     @Test
     void 게시글_삭제_API_문서화() throws Exception {
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
-        given(jwtTokenProvider.getRefreshTokenPayload(any())).willReturn("1");
         doNothing().when(articleService).delete(any(), any());
 
         ResultActions results = mockMvc.perform(delete("/api/articles/{id}", 1L)

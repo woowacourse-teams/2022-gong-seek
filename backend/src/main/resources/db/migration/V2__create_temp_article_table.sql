@@ -9,11 +9,10 @@ create table temp_article
     title        varchar(255) not null,
     member_id    bigint       not null,
     primary key (id)
-) engine=InnoDB
+) engine=InnoDB;
 
 alter table temp_article
     add constraint FKsraq3bq90l7xinsr8pfxqy4xm
         foreign key (member_id)
             references member (id)
-            on delete cascade
-가
+            on delete cascade;

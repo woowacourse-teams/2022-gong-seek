@@ -7,21 +7,17 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.comment.domain.Comment;
-import com.woowacourse.gongseek.config.JpaAuditingConfig;
-import com.woowacourse.gongseek.config.QuerydslConfig;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.support.RepositoryTest;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 
 @SuppressWarnings("NonAsciiCharacters")
-@Import({JpaAuditingConfig.class, QuerydslConfig.class})
-@DataJpaTest
+@RepositoryTest
 class CommentRepositoryTest {
 
     private final Member member = new Member("jurl", "jurlring", "");
