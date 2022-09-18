@@ -13,17 +13,7 @@ const useGetDetailComment = (id: string) => {
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('comments', () => getComments(id), { retry: false, refetchOnWindowFocus: false });
 
-	useEffect(() => {
-		if (isError) {
-			if (!error.response) {
-				return;
-			}
-			throw new CustomError(
-				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
-			);
-		}
-	}, [isError]);
+	useThrowCustomError;
 
 	return { isLoading, isSuccess, data, isIdle };
 };

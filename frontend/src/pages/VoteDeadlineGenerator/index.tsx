@@ -5,16 +5,16 @@ import { useNavigate } from 'react-router-dom';
 
 import { registerVoteItems } from '@/api/vote';
 import Loading from '@/components/common/Loading/Loading';
-import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useLocationState from '@/hooks/common/useLocationState';
+import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import * as S from '@/pages/VoteDeadlineGenerator/index.styles';
 import { afterWeekGenerator, currentTimeGenerator, todayGenerator } from '@/utils/dateGenerator';
 
 const VoteDeadlineGenerator = () => {
 	const { articleId, items } = useLocationState<{ articleId: string; items: string[] }>();
 	const navigate = useNavigate();
-	const { isLoading, mutate, isError, error, isSuccess } = useMutation<
+	const { isLoading, mutate, error, isSuccess } = useMutation<
 		AxiosResponse<{ articleId: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ articleId: string; items: string[]; expiryDate: string }
@@ -35,17 +35,7 @@ const VoteDeadlineGenerator = () => {
 		}
 	}, [isSuccess]);
 
-	useEffect(() => {
-		if (isError) {
-			if (!error.response) {
-				return;
-			}
-			throw new CustomError(
-				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
-			);
-		}
-	}, [isError]);
+	useThrowCustomError(error);
 
 	const handleSubmitVoteDeadlineForm = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();

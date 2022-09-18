@@ -1,58 +1,46 @@
 import { AxiosError } from 'axios';
-import { useEffect } from 'react';
 import { useInfiniteQuery } from 'react-query';
 
 import { getSearchResult } from '@/api/search';
-import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { InfiniteSearchResultType } from '@/types/searchResponse';
 
 const useGetSearch = ({ target, searchIndex }: { target: string; searchIndex: string }) => {
 	const cursorId = '';
-	const { data, isSuccess, isLoading, isError, isIdle, error, refetch, fetchNextPage } =
-		useInfiniteQuery<
-			InfiniteSearchResultType,
-			AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
-		>(
-			['search-result', `${searchIndex}-${target}`],
-			({
-				pageParam = {
-					target,
-					searchIndex,
-					cursorId,
-				},
-			}) => getSearchResult(pageParam),
-			{
-				getNextPageParam: (lastPage) => {
-					const { hasNext, articles, cursorId, target, searchIndex } = lastPage;
-
-					if (hasNext) {
-						return {
-							articles,
-							hasNext,
-							cursorId,
-							target,
-							searchIndex,
-						};
-					}
-					return;
-				},
-				retry: 1,
-				refetchOnWindowFocus: false,
+	const { data, isSuccess, isLoading, isIdle, error, refetch, fetchNextPage } = useInfiniteQuery<
+		InfiniteSearchResultType,
+		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
+	>(
+		['search-result', `${searchIndex}-${target}`],
+		({
+			pageParam = {
+				target,
+				searchIndex,
+				cursorId,
 			},
-		);
+		}) => getSearchResult(pageParam),
+		{
+			getNextPageParam: (lastPage) => {
+				const { hasNext, articles, cursorId, target, searchIndex } = lastPage;
 
-	useEffect(() => {
-		if (isError) {
-			if (!error.response) {
+				if (hasNext) {
+					return {
+						articles,
+						hasNext,
+						cursorId,
+						target,
+						searchIndex,
+					};
+				}
 				return;
-			}
-			throw new CustomError(
-				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
-			);
-		}
-	}, [isError]);
+			},
+			retry: 1,
+			refetchOnWindowFocus: false,
+		},
+	);
+
+	useThrowCustomError(error);
 
 	return {
 		data,

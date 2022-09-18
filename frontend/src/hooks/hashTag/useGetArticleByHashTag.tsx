@@ -3,14 +3,14 @@ import { useEffect } from 'react';
 import { useInfiniteQuery } from 'react-query';
 
 import { getArticleByHashTag } from '@/api/search';
-import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { InfiniteHashTagSearchResultType } from '@/types/searchResponse';
 
 const useGetArticleByHashTag = (hashTag: string[]) => {
 	const tags = hashTag.join(',');
 	const cursorId = '';
-	const { data, isError, isLoading, isSuccess, error, refetch, fetchNextPage } = useInfiniteQuery<
+	const { data, isLoading, isSuccess, error, refetch, fetchNextPage } = useInfiniteQuery<
 		InfiniteHashTagSearchResultType,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(
@@ -34,17 +34,7 @@ const useGetArticleByHashTag = (hashTag: string[]) => {
 		},
 	);
 
-	useEffect(() => {
-		if (isError) {
-			if (!error.response) {
-				return;
-			}
-			throw new CustomError(
-				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
-			);
-		}
-	}, [isError]);
+	useThrowCustomError(error);
 
 	useEffect(() => {
 		refetch();
