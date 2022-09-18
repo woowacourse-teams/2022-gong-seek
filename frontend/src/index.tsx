@@ -19,6 +19,15 @@ import { ThemeProvider, Global } from '@emotion/react';
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 export const queryClient = new QueryClient();
+let isUnhandledError = false;
+
+window.addEventListener('unhandledrejection', () => {
+	isUnhandledError = true;
+});
+
+if (isUnhandledError) {
+	root.render(<div>알수 없는 에러가 발생하였습니다. 잠시후 다시 시도해주세요</div>);
+}
 
 root.render(
 	<ThemeProvider theme={theme}>
