@@ -1,4 +1,7 @@
-import CommonErrorBoundary, { ErrorBoundaryProps, ErrorBoundaryState } from './CommonErrorBoundary';
+import CommonErrorBoundary, {
+	ErrorBoundaryProps,
+	ErrorBoundaryState,
+} from '@/components/helper/CommonErrorBoundary';
 
 interface UIErrorBoundaryProps {
 	serverErrorFallback: React.ReactNode;

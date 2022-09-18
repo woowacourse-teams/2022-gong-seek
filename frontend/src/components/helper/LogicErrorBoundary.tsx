@@ -1,10 +1,20 @@
-import { queryClient } from '../../index';
-import CommonErrorBoundary, { ErrorBoundaryProps, ErrorBoundaryState } from './CommonErrorBoundary';
-import CustomError from './CustomError';
 import { NavigateFunction } from 'react-router-dom';
 
+import CommonErrorBoundary, {
+	ErrorBoundaryProps,
+	ErrorBoundaryState,
+} from '@/components/helper/CommonErrorBoundary';
+import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { URL } from '@/constants/url';
+import { queryClient } from '@/index';
+import {
+	isVoteError,
+	isCommentError,
+	isServerError,
+	isNotFoundArticleError,
+} from '@/utils/confirmErrorType';
+import { isAuthenticatedError, isRefreshTokenError } from '@/utils/confirmErrorType';
 import WithHooksHOC from '@/utils/withHooksHOC';
 
 interface LogicErrorBoundaryProps {
@@ -32,15 +42,8 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 			return;
 		}
 		const errorMessage = ErrorMessage[errorCode];
-		if (
-			errorCode === '1001' ||
-			errorCode === '1002' ||
-			errorCode === '1003' ||
-			errorCode === '1006' ||
-			errorCode === '1008' ||
-			errorCode === '1009' ||
-			errorCode === '2001'
-		) {
+
+		if (isAuthenticatedError(errorCode)) {
 			if (errorCode === '1008') {
 				if (!confirm('로그인이 필요한 서비스입니다. 로그인 화면으로 이동하시겠습니까?')) {
 					return;
@@ -50,26 +53,21 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 			window.location.href = URL.LOGIN;
 		}
 
-		if (errorCode === '1004' || errorCode === '1005') {
+		if (isRefreshTokenError(errorCode)) {
 			window.location.href = URL.REFRESH_TOKEN_HANDLER;
 		}
 
-		if (
-			errorCode === '5002' ||
-			errorCode === '5003' ||
-			errorCode === '5009' ||
-			errorCode === '5005'
-		) {
+		if (isVoteError(errorCode)) {
 			navigate(-1);
 		}
 
-		if (errorCode === '4001') {
+		if (isCommentError(errorCode)) {
 			queryClient.invalidateQueries('comments');
 		}
-
+		//위의 에러코드를 제외하고는 모두 snackBar만을 보여주도록 함.
 		showSnackBar(errorMessage);
 
-		if (errorCode === '0000' || errorCode === '3001') {
+		if (isServerError(errorCode) || isNotFoundArticleError(errorCode)) {
 			throw new CustomError(errorCode);
 		}
 
