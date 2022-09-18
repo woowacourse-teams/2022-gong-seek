@@ -1,3 +1,5 @@
+import CustomError from './CustomError';
+
 import CommonErrorBoundary, {
 	ErrorBoundaryProps,
 	ErrorBoundaryState,
@@ -28,9 +30,10 @@ class RefreshErrorBoudary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 
 		if (isInValidTokenError(errorCode)) {
 			navigate(URL.LOGIN);
+			showSnackBar('로그인을 진행해주세요');
 		}
 
-		showSnackBar('로그인을 진행해주세요');
+		throw new CustomError(errorCode);
 	}
 }
 
