@@ -13,7 +13,9 @@ const RefreshTokenHandler = () => {
 	const { data, isSuccess, error } = useQuery<
 		{ accessToken: string },
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
-	>('getBack-accessToken', getAccessTokenByRefreshToken);
+	>('getBack-accessToken', getAccessTokenByRefreshToken, {
+		retry: 1,
+	});
 
 	const { showSnackBar } = useSnackBar();
 

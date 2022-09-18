@@ -1,3 +1,4 @@
+import { isRefreshTokenError } from '../../utils/confirmErrorType';
 import { NavigateFunction } from 'react-router-dom';
 
 import CommonErrorBoundary, {
@@ -13,11 +14,12 @@ import {
 	isCommentError,
 	isServerError,
 	isNotFoundArticleError,
+	isInValidTokenError,
+	isAuthenticatedError,
 } from '@/utils/confirmErrorType';
-import { isAuthenticatedError, isRefreshTokenError } from '@/utils/confirmErrorType';
 import WithHooksHOC from '@/utils/withHooksHOC';
 
-interface LogicErrorBoundaryProps {
+export interface LogicErrorBoundaryProps {
 	showSnackBar?: (message: string) => void;
 	navigate?: NavigateFunction;
 }
@@ -53,7 +55,7 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 			window.location.href = URL.LOGIN;
 		}
 
-		if (isRefreshTokenError(errorCode)) {
+		if (isInValidTokenError(errorCode)) {
 			window.location.href = URL.REFRESH_TOKEN_HANDLER;
 		}
 
@@ -63,6 +65,10 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 
 		if (isCommentError(errorCode)) {
 			queryClient.invalidateQueries('comments');
+		}
+
+		if (isRefreshTokenError(errorCode)) {
+			navigate(URL.HOME);
 		}
 		//위의 에러코드를 제외하고는 모두 snackBar만을 보여주도록 함.
 		showSnackBar(errorMessage);
