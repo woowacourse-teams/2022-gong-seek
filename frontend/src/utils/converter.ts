@@ -102,6 +102,3 @@ export const dateTimeConverter = (dateTime: string) => {
 
 	return `${selectedTime.value ? selectedTime.value : ''}${selectedTime.key}전`;
 };
-
-export const excludeSpecialWordConverter = (content: string) =>
-	content.replace(/[`~!@#$*|+\-='",.<>\{\}\[\]\\]/gi, '');
