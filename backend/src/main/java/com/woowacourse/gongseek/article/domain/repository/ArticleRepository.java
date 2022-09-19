@@ -9,7 +9,11 @@ import org.springframework.data.repository.query.Param;
 
 public interface ArticleRepository extends JpaRepository<Article, Long>, ArticleRepositoryCustom {
 
-    @Query("select a from Article a join fetch a.member where a.id = :id")
+    @Query("select a from Article a "
+            + "join fetch a.member "
+            + "left join fetch a.articleTags.value at "
+            + "left join fetch at.tag "
+            + "where a.id = :id")
     Optional<Article> findByIdWithMember(Long id);
 
     List<Article> findAllByMemberIdIn(List<Long> memberIds);
