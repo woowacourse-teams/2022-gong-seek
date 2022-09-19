@@ -248,3 +248,32 @@ export const SubmitBox = styled.div`
 		width: min-content;
 	}
 `;
+
+export const TemporaryStoreButtonBox = styled.div`
+	width: 90%;
+	display: flex;
+
+	justify-content: flex-end;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: 100%;
+		margin-top: ${({ theme }) => theme.size.SIZE_020};
+	}
+`;
+
+export const TemporaryStoreButton = styled.button`
+	width: fit-content;
+	padding: ${({ theme }) => theme.size.SIZE_004};
+
+	border-radius: ${({ theme }) => theme.size.SIZE_004};
+	background-color: transparent;
+	border: none;
+
+	font-size: ${({ theme }) => theme.size.SIZE_014};
+
+	&:hover,
+	&:active {
+		background-color: ${({ theme }) => theme.colors.PURPLE_500};
+		color: ${({ theme }) => theme.colors.WHITE};
+	}
+`;

@@ -80,7 +80,9 @@ const WritingArticles = () => {
 					<HashTag hashTags={hashTags} setHashTags={setHashTags} />
 				</S.OptionBox>
 			</S.SelectorBox>
-
+			<S.TemporaryStoreButtonBox>
+				<S.TemporaryStoreButton>임시저장</S.TemporaryStoreButton>
+			</S.TemporaryStoreButtonBox>
 			<S.Content>
 				<ToastUiEditor initContent={''} ref={content} />
 			</S.Content>
