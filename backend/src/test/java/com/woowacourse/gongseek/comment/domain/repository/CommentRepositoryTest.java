@@ -52,7 +52,7 @@ class CommentRepositoryTest {
         Comment comment = new Comment("content", member, article, false);
         commentRepository.save(comment);
 
-        List<Comment> comments = commentRepository.findAllByArticleId(article.getId());
+        List<Comment> comments = commentRepository.findAllByArticleIdWithMember(article.getId());
 
         assertAll(
                 () -> assertThat(comments).hasSize(1),

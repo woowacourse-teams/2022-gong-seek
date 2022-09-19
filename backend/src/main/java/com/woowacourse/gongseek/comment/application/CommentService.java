@@ -57,7 +57,7 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public CommentsResponse getAllByArticleId(AppMember appMember, Long articleId) {
-        List<CommentResponse> responses = commentRepository.findAllByArticleId(articleId).stream()
+        List<CommentResponse> responses = commentRepository.findAllByArticleIdWithMember(articleId).stream()
                 .map(comment -> checkGuest(comment, appMember))
                 .collect(Collectors.toList());
         return new CommentsResponse(responses);
