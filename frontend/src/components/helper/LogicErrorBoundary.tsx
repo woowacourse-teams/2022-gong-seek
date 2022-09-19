@@ -52,11 +52,11 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 				}
 				//1008번일때만 사용자에게 확인요청
 			}
-			window.location.href = URL.LOGIN;
+			navigate(URL.LOGIN);
 		}
 
 		if (isInValidTokenError(errorCode)) {
-			window.location.href = URL.REFRESH_TOKEN_HANDLER;
+			navigate(URL.REFRESH_TOKEN_HANDLER);
 		}
 
 		if (isVoteError(errorCode)) {

@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 
 import { getAccessTokenByRefreshToken } from '@/api/login';
 import Loading from '@/components/common/Loading/Loading';
@@ -18,13 +19,14 @@ const RefreshTokenHandler = () => {
 	});
 
 	const { showSnackBar } = useSnackBar();
+	const navigate = useNavigate();
 
 	useThrowCustomError(error);
 
 	useEffect(() => {
 		if (isSuccess) {
 			localStorage.setItem('accessToken', data.accessToken);
-			location.href = URL.HOME;
+			navigate(URL.HOME);
 			showSnackBar('재로그인 되었습니다');
 		}
 	}, [isSuccess]);
