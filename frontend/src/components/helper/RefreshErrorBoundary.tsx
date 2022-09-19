@@ -29,8 +29,10 @@ class RefreshErrorBoudary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 		}
 
 		if (isInValidTokenError(errorCode)) {
+			localStorage.removeItem('accessToken');
 			navigate(URL.LOGIN);
 			showSnackBar('로그인을 진행해주세요');
+			return;
 		}
 
 		throw new CustomError(errorCode);
