@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.common;
+package com.woowacourse.gongseek.support;
 
 import java.util.List;
 import java.util.stream.Collectors;

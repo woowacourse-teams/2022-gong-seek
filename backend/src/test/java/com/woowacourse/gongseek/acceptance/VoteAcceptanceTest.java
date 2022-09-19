@@ -1,11 +1,11 @@
 package com.woowacourse.gongseek.acceptance;
 
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시글을_기명으로_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.ArticleFixtures.토론_게시글을_익명으로_등록한다;
-import static com.woowacourse.gongseek.acceptance.support.AuthFixtures.로그인을_한다;
-import static com.woowacourse.gongseek.acceptance.support.VoteFixtures.투표를_생성한다;
-import static com.woowacourse.gongseek.acceptance.support.VoteFixtures.투표를_조회한다;
-import static com.woowacourse.gongseek.acceptance.support.VoteFixtures.투표를_한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.토론_게시글을_기명으로_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.토론_게시글을_익명으로_등록한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixture.로그인을_한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.VoteFixture.투표를_생성한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.VoteFixture.투표를_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.VoteFixture.투표를_한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.슬로;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -19,6 +19,7 @@ import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -45,6 +46,38 @@ public class VoteAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
                 () -> assertThat(voteCreateResponse.getArticleId()).isEqualTo(articleId)
         );
+    }
+
+    @Test
+    void 투표_아이템_수가_올바르지_않은_경우_5009_예외_코드를_반환한다() {
+        AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
+        Long articleId = 토론_게시글을_기명으로_등록한다(tokenResponse).getId();
+
+        ExtractableResponse<Response> response = 투표를_생성한다(
+                tokenResponse,
+                articleId,
+                new VoteCreateRequest(Set.of("DTO를 반환해야 한다."), LocalDateTime.now().plusDays(2))
+        );
+
+        ErrorResponse errorResponse = response.as(ErrorResponse.class);
+
+        assertThat(errorResponse.getErrorCode()).isEqualTo("5009");
+    }
+
+    @Test
+    void 투표_아이템_수가_null_경우_0001_예외_코드를_반환한다() {
+        AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
+        Long articleId = 토론_게시글을_기명으로_등록한다(tokenResponse).getId();
+
+        ExtractableResponse<Response> response = 투표를_생성한다(
+                tokenResponse,
+                articleId,
+                new VoteCreateRequest(null, LocalDateTime.now().plusDays(2))
+        );
+
+        ErrorResponse errorResponse = response.as(ErrorResponse.class);
+
+        assertThat(errorResponse.getErrorCode()).isEqualTo("0001");
     }
 
     @Test

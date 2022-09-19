@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.vote.domain;
 
 import com.woowacourse.gongseek.member.domain.Member;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;

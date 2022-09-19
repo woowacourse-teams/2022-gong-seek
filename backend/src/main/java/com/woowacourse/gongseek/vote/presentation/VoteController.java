@@ -29,7 +29,7 @@ public class VoteController {
     public ResponseEntity<VoteCreateResponse> create(
             @AuthenticationPrinciple AppMember appMember,
             @PathVariable Long articleId,
-            @RequestBody @Valid VoteCreateRequest voteCreateRequest
+            @Valid @RequestBody VoteCreateRequest voteCreateRequest
     ) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(voteService.create(appMember, articleId, voteCreateRequest));

@@ -22,6 +22,7 @@ import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.tag.application.TagService;
 import com.woowacourse.gongseek.tag.domain.Tags;
+import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,27 +40,25 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ArticleService {
 
-    private static final String ANONYMOUS_AVATAR_URL = "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png";
-    private static final String ANONYMOUS_NAME = "익명";
-
     private final ArticleRepository articleRepository;
+    private final TempArticleService tempArticleService;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final VoteRepository voteRepository;
     private final TagService tagService;
     private final LikeRepository likeRepository;
-    private final Encryptor encryptor;
     private final EntityManager em;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
-        Member member = getAuthor(appMember, articleRequest);
+        Member member = getMember(appMember);
 
         Tags foundTags = tagService.getOrCreateTags(Tags.from(articleRequest.getTag()));
 
-        Article article = articleRepository.save(articleRequest.toEntity(member));
+        Article article = articleRepository.save(articleRequest.toArticle(member));
         article.addTag(foundTags);
 
+        tempArticleService.delete(articleRequest.getTempArticleId(), appMember);
         return new ArticleIdResponse(article);
     }
 
@@ -67,15 +66,6 @@ public class ArticleService {
         if (appMember.isGuest()) {
             throw new NotMemberException();
         }
-    }
-
-    private Member getAuthor(AppMember appMember, ArticleRequest articleRequest) {
-        if (articleRequest.getIsAnonymous()) {
-            String cipherId = encryptor.encrypt(String.valueOf(appMember.getPayload()));
-            return memberRepository.findByGithubId(cipherId)
-                    .orElseGet(() -> memberRepository.save(new Member(ANONYMOUS_NAME, cipherId, ANONYMOUS_AVATAR_URL)));
-        }
-        return getMember(appMember);
     }
 
     private Member getMember(AppMember appMember) {
@@ -113,16 +103,7 @@ public class ArticleService {
         if (appMember.isGuest()) {
             return ArticleResponse.of(article, tagNames, false, hasVote, likeResponse);
         }
-        return checkAuthor(article, tagNames, getMember(appMember), hasVote, likeResponse);
-    }
-
-    private ArticleResponse checkAuthor(Article article, List<String> tagNames, Member member, boolean hasVote,
-                                        LikeResponse likeResponse) {
-        if (article.isAnonymous()) {
-            String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
-            return ArticleResponse.of(article, tagNames, article.isAnonymousAuthor(cipherId), hasVote, likeResponse);
-        }
-        return ArticleResponse.of(article, tagNames, article.isAuthor(member), hasVote, likeResponse);
+        return ArticleResponse.of(article, tagNames, article.isAuthor(getMember(appMember)), hasVote, likeResponse);
     }
 
     @Transactional(readOnly = true)
@@ -211,17 +192,9 @@ public class ArticleService {
     }
 
     private void validateAuthor(Article article, Member member) {
-        if (!isAuthor(article, member)) {
+        if (!article.isAuthor(member)) {
             throw new NotAuthorException(article.getId(), member.getId());
         }
-    }
-
-    private boolean isAuthor(Article article, Member member) {
-        if (article.isAnonymous()) {
-            String cipherId = encryptor.encrypt(String.valueOf(member.getId()));
-            return article.isAnonymousAuthor(cipherId);
-        }
-        return article.isAuthor(member);
     }
 
     public void delete(AppMember appMember, Long id) {

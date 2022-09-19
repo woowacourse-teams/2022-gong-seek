@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.acceptance.support;
+package com.woowacourse.gongseek.acceptance.support.fixtures;
 
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class CommentFixtures {
+public class CommentFixture {
 
     private static ExtractableResponse<Response> 댓글을_등록한다(AccessTokenResponse tokenResponse,
                                                           ArticleIdResponse articleIdResponse,
