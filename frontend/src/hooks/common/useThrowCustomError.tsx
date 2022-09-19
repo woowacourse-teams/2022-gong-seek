@@ -15,6 +15,9 @@ const useThrowCustomError = (
 			if (!error.response) {
 				return;
 			}
+			if (typeof error.response.data === 'undefined') {
+				throw new CustomError('0000');
+			}
 			throw new CustomError(
 				error.response.data.errorCode,
 				ErrorMessage[error.response.data.errorCode],
