@@ -2,11 +2,15 @@ package com.woowacourse.gongseek.article.domain.repository;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ArticleRepository extends JpaRepository<Article, Long>, ArticleRepositoryCustom {
+
+    @Query("select a from Article a join fetch a.member where a.id = :id")
+    Optional<Article> findByIdWithMember(Long id);
 
     List<Article> findAllByMemberIdIn(List<Long> memberIds);
 

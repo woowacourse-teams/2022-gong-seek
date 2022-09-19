@@ -22,12 +22,12 @@ import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.tag.application.TagService;
 import com.woowacourse.gongseek.tag.domain.Tags;
-import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -46,10 +46,10 @@ public class ArticleService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final VoteRepository voteRepository;
-    private final VoteHistoryRepository voteHistoryRepository;
     private final TagService tagService;
     private final LikeRepository likeRepository;
     private final Encryptor encryptor;
+    private final EntityManager em;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
@@ -85,6 +85,8 @@ public class ArticleService {
 
     public ArticleResponse getOne(AppMember appMember, Long id) {
         Article article = getArticle(id);
+        em.persist(article);
+
         List<String> tagNames = article.getTagNames();
         article.addViews();
         LikeResponse likeResponse = new LikeResponse(isLike(article, appMember), getLikeCount(article));
@@ -94,7 +96,7 @@ public class ArticleService {
     }
 
     private Article getArticle(Long id) {
-        return articleRepository.findById(id)
+        return articleRepository.findByIdWithMember(id)
                 .orElseThrow(() -> new ArticleNotFoundException(id));
     }
 

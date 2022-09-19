@@ -59,11 +59,11 @@ public class ArticleFixtures {
         return 특정_게시글을_등록한다(tokenResponse, request);
     }
 
-    public static void 조회수가_있는_게시글_5개를_생성한다(AccessTokenResponse tokenResponse, int count, Category category) {
+    public static void 조회수가_있는_게시글_5개를_생성한다(AccessTokenResponse tokenResponse, int views, Category category) {
         for (int i = 0; i < 5; i++) {
             ArticleIdResponse response = 기명으로_게시글을_등록한다(tokenResponse, category)
                     .as(ArticleIdResponse.class);
-            for (int j = 0; j < count; j++) {
+            for (int j = 0; j < views; j++) {
                 로그인을_하지_않고_게시글을_조회한다(response);
             }
         }
