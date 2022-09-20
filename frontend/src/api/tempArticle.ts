@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { HOME_URL } from '@/constants/apiUrl';
 import { postTempArticleProps } from '@/hooks/tempArticle/usePostTempArticle';
-import { TempArticleResponse } from '@/types/articleResponse';
+import { TempArticleDetailResponse, TempArticleResponse } from '@/types/articleResponse';
 
 export const getTempArticles = async () => {
 	const accessToken = localStorage.getItem('accessToken');
@@ -15,7 +15,17 @@ export const getTempArticles = async () => {
 	return result.data;
 };
 
-export const postTempArticle = async ({
+export const getTempDetailArticle = ({ id }: { id: number | '' }) => {
+	const accessToken = localStorage.getItem('accessToken');
+	return axios.get<TempArticleDetailResponse>(`${HOME_URL}/api/temp-articles/${id}`, {
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+			Authorization: `Bearer ${accessToken}`,
+		},
+	});
+};
+
+export const postTempArticle = ({
 	title,
 	content,
 	category,
