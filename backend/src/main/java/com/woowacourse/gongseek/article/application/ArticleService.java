@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -45,7 +44,6 @@ public class ArticleService {
     private final VoteRepository voteRepository;
     private final TagService tagService;
     private final LikeRepository likeRepository;
-    private final EntityManager em;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
@@ -73,7 +71,6 @@ public class ArticleService {
 
     public ArticleResponse getOne(AppMember appMember, Long id) {
         Article article = getArticle(id);
-        em.persist(article);
 
         List<String> tagNames = article.getTagNames();
         article.addViews();

@@ -433,7 +433,7 @@ class ArticleRepositoryTest {
         VoteItem thirdVoteItem = new VoteItem("C번", vote);
         voteItemRepository.saveAll(List.of(firstVoteItem, secondVoteItem, thirdVoteItem));
 
-        voteHistoryRepository.save(new VoteHistory(member, vote, firstVoteItem));
+        voteHistoryRepository.save(new VoteHistory(member, firstVoteItem));
         articleRepository.deleteById(article.getId());
 
         assertAll(
