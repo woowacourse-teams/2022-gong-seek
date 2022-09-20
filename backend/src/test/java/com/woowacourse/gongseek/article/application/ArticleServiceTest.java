@@ -6,7 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.Content;
 import com.woowacourse.gongseek.article.domain.TempArticle;
+import com.woowacourse.gongseek.article.domain.TempTags;
+import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
@@ -766,8 +769,14 @@ public class ArticleServiceTest {
     @Transactional
     @Test
     void 게시글을_생성하면_임시_게시글은_삭제된다() {
-        final TempArticle tempArticle = tempArticleRepository.save(
-                new TempArticle("title", "content", Category.DISCUSSION.getValue(), member, List.of("spring"), false));
+        final TempArticle tempArticle = tempArticleRepository.save(TempArticle.builder()
+                .title(new Title("title"))
+                .content(new Content("content"))
+                .category(Category.QUESTION)
+                .member(member)
+                .tempTags(new TempTags(List.of("spring")))
+                .isAnonymous(false)
+                .build());
         final ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true, tempArticle.getId());
 

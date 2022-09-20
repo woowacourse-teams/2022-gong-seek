@@ -116,7 +116,7 @@ class TempArticleControllerTest {
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                                 fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리"),
-                                fieldWithPath("tags").type(JsonFieldType.ARRAY).description("해시태그"),
+                                fieldWithPath("tag").type(JsonFieldType.ARRAY).description("해시태그"),
                                 fieldWithPath("isAnonymous").type(JsonFieldType.BOOLEAN).description("익명 여부"),
                                 fieldWithPath("createAt").type(JsonFieldType.STRING).description("생성 날짜")
                         )

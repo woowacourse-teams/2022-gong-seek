@@ -24,7 +24,7 @@ public class TempArticleDetailResponse {
 
     private String category;
 
-    private List<String> tags;
+    private List<String> tag;
 
     private Boolean isAnonymous;
 
@@ -37,7 +37,7 @@ public class TempArticleDetailResponse {
                 .title(tempArticle.getTitle().getValue())
                 .content(tempArticle.getContent().getValue())
                 .category(tempArticle.getCategory().getValue())
-                .tags(tempArticle.getTempTags())
+                .tag(tempArticle.getTempTags())
                 .isAnonymous(tempArticle.isAnonymous())
                 .createAt(tempArticle.getCreatedAt())
                 .build();
