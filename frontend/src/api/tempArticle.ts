@@ -36,3 +36,13 @@ export const postTempArticle = async ({
 		},
 	);
 };
+
+export const deleteArticleItem = ({ tempArticleId }: { tempArticleId: number }) => {
+	const accessToken = localStorage.getItem('accessToken');
+	return axios.delete<never, unknown, unknown>(`${HOME_URL}/api/temp-articles/${tempArticleId}`, {
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+			Authorization: `Bearer ${accessToken}`,
+		},
+	});
+};
