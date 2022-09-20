@@ -18,4 +18,5 @@ export const URL = {
 	HASH_TAG_SEARCH: '/hash-tag',
 	INQUIRE: '/inquire',
 	NOT_FOUND: '/*',
+	TEMP_ARTICLE_LIST: '/temp-articles',
 };
