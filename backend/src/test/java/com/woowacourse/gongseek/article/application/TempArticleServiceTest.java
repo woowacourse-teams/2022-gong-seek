@@ -116,7 +116,8 @@ class TempArticleServiceTest {
                 () -> assertThat(tempArticleDetailResponse.getContent()).isEqualTo("content"),
                 () -> assertThat(tempArticleDetailResponse.getCategory()).isEqualTo("question"),
                 () -> assertThat(tempArticleDetailResponse.getTags()).containsOnly("spring"),
-                () -> assertThat(tempArticleDetailResponse.getIsAnonymous()).isFalse()
+                () -> assertThat(tempArticleDetailResponse.getIsAnonymous()).isFalse(),
+                () -> assertThat(tempArticleDetailResponse.getCreateAt()).isNotNull()
         );
     }
 
