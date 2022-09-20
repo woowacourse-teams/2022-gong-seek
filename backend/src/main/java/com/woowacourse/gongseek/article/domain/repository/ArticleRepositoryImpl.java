@@ -161,7 +161,6 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                         articleTag.tag.name.in(getUpperTagNames(tagNames)),
                         isOverArticleId(cursorId)
                 )
-//                .distinct()
                 .limit(pageable.getPageSize() + 1)
                 .orderBy(article.id.desc())
                 .fetch();
