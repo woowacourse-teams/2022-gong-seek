@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useMutation } from 'react-query';
 
 import { postTempArticle } from '@/api/tempArticle';
@@ -15,8 +15,13 @@ export interface postTempArticleProps {
 	tempArticleId: number | '';
 }
 
-const usePostTempArticle = () => {
-	const [tempArticleId, setTempArticleId] = useState<number | ''>('');
+const usePostTempArticle = ({
+	tempArticleId,
+	setTempArticleId,
+}: {
+	tempArticleId: number | '';
+	setTempArticleId: Dispatch<SetStateAction<number | ''>>;
+}) => {
 	const { isSuccess, isError, isLoading, mutate } = useMutation<
 		AxiosResponse<{ id: number }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
