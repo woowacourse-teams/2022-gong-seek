@@ -1,0 +1,1 @@
+ALTER TABLE vote_item MODIFIY content VARCHAR(300);
