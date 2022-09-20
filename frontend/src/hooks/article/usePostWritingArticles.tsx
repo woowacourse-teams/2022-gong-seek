@@ -25,7 +25,7 @@ const usePostWritingArticles = ({
 
 	const content = useRef<Editor | null>(null);
 	const [title, setTitle] = useState('');
-	const [categoryOption, setCategoryOption] = useState(category ? category : '');
+	const [categoryOption, setCategoryOption] = useState<string>(category ? category : '');
 	const [isValidTitleInput, setIsValidTitleInput] = useState(true);
 	const [hashTags, setHashTags] = useState<string[]>([]);
 
