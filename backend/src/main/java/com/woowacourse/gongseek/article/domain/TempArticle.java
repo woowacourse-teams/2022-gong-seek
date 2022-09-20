@@ -62,20 +62,6 @@ public class TempArticle {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    public TempArticle(String title, String content, String category, Member member, List<String> tempTags,
-                       boolean isAnonymous) {
-        this(
-                null,
-                new Title(title),
-                new Content(content),
-                Category.from(category),
-                member,
-                new TempTags(tempTags),
-                isAnonymous,
-                LocalDateTime.now()
-        );
-    }
-
     public void update(TempArticle tempArticle) {
         this.title = tempArticle.getTitle();
         this.content = tempArticle.getContent();

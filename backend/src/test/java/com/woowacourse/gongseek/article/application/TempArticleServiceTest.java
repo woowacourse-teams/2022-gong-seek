@@ -5,7 +5,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.Content;
 import com.woowacourse.gongseek.article.domain.TempArticle;
+import com.woowacourse.gongseek.article.domain.TempTags;
+import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.exception.TempArticleNotFoundException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
@@ -40,10 +43,19 @@ class TempArticleServiceTest {
     private DatabaseCleaner databaseCleaner;
 
     private Member member;
+    private TempArticle tempArticle;
 
     @BeforeEach
     void setUp() {
         member = memberRepository.save(new Member("slo", "hanull", "avatar.com"));
+        tempArticle = tempArticleRepository.save(TempArticle.builder()
+                .title(new Title("title"))
+                .content(new Content("content"))
+                .category(Category.QUESTION)
+                .member(member)
+                .tempTags(new TempTags(List.of("spring")))
+                .isAnonymous(false)
+                .build());
     }
 
     @AfterEach
@@ -66,17 +78,15 @@ class TempArticleServiceTest {
     @Transactional
     @Test
     void 임시_게시글을_업데이트한다() {
-        final TempArticle saveTempArticle = tempArticleRepository.save(
-                new TempArticle("title", "content", Category.QUESTION.getValue(), member, List.of("spring"), false));
         final ArticleRequest updateRequest = new ArticleRequest("updateTitle", "updateContent",
-                Category.QUESTION.getValue(), List.of("updateSpring"), false, saveTempArticle.getId());
+                Category.QUESTION.getValue(), List.of("updateSpring"), false, tempArticle.getId());
 
         final TempArticleIdResponse updatedId = tempArticleService.createOrUpdate(new LoginMember(member.getId()),
                 updateRequest);
         final TempArticle tempArticle = tempArticleRepository.findById(updatedId.getId()).get();
 
         assertAll(
-                () -> assertThat(updatedId.getId()).isEqualTo(saveTempArticle.getId()),
+                () -> assertThat(updatedId.getId()).isEqualTo(tempArticle.getId()),
                 () -> assertThat(tempArticle.getTitle().getValue()).isEqualTo("updateTitle"),
                 () -> assertThat(tempArticle.getContent().getValue()).isEqualTo("updateContent"),
                 () -> assertThat(tempArticle.getTempTags().get(0)).isEqualTo("updateSpring"),
@@ -86,10 +96,15 @@ class TempArticleServiceTest {
 
     @Test
     void 전체_임시_게시글을_조회한다() {
-        tempArticleRepository.save(
-                new TempArticle("title", "content", Category.QUESTION.getValue(), member, List.of("spring"), false));
-        tempArticleRepository.save(
-                new TempArticle("title2", "content2", Category.QUESTION.getValue(), member, List.of("spring2"), false));
+        final TempArticle tempArticle2 = TempArticle.builder()
+                .title(new Title("title2"))
+                .content(new Content("content2"))
+                .category(Category.QUESTION)
+                .member(member)
+                .tempTags(new TempTags(List.of("spring2")))
+                .isAnonymous(false)
+                .build();
+        tempArticleRepository.save(tempArticle2);
 
         final TempArticlesResponse tempArticles = tempArticleService.getAll(new LoginMember(member.getId()));
 
@@ -103,12 +118,8 @@ class TempArticleServiceTest {
     @Transactional
     @Test
     void 단건_임시_게시물을_조회한다() {
-        final TempArticle tempArticle = tempArticleRepository.save(
-                new TempArticle("title", "content", Category.QUESTION.getValue(), member, List.of("spring"), false));
-
         final TempArticleDetailResponse tempArticleDetailResponse = tempArticleService.getOne(
-                new LoginMember(member.getId()),
-                tempArticle.getId());
+                new LoginMember(member.getId()), tempArticle.getId());
 
         assertAll(
                 () -> assertThat(tempArticleDetailResponse.getId()).isEqualTo(tempArticle.getId()),
@@ -123,7 +134,7 @@ class TempArticleServiceTest {
 
     @Test
     void 임시_게시물_조회_시_없다면_예외를_발생한다() {
-        assertThatThrownBy(() -> tempArticleService.getOne(new LoginMember(member.getId()), 1L))
+        assertThatThrownBy(() -> tempArticleService.getOne(new LoginMember(member.getId()), 2L))
                 .isInstanceOf(TempArticleNotFoundException.class)
                 .hasMessageContaining("임시 게시글이 존재하지 않습니다.");
     }
@@ -131,9 +142,6 @@ class TempArticleServiceTest {
     @Transactional
     @Test
     void 임시_게시물을_삭제한다() {
-        final TempArticle tempArticle = tempArticleRepository.save(
-                new TempArticle("title", "content", Category.QUESTION.getValue(), member, List.of("spring"), false));
-
         tempArticleService.delete(tempArticle.getId(), new LoginMember(member.getId()));
 
         assertThatThrownBy(() -> tempArticleService.getOne(new LoginMember(member.getId()), tempArticle.getId()))
