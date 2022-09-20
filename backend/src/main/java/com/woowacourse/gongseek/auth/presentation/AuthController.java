@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,5 +53,13 @@ public class AuthController {
         httpServletResponse.setHeader(HttpHeaders.SET_COOKIE, newCookie.toString());
 
         return ResponseEntity.ok(new AccessTokenResponse(tokenResponse.getAccessToken()));
+    }
+
+    @DeleteMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse httpServletResponse) {
+        ResponseCookie deleteCookie = CookieUtils.delete();
+        httpServletResponse.setHeader(HttpHeaders.SET_COOKIE, deleteCookie.toString());
+
+        return ResponseEntity.noContent().build();
     }
 }
