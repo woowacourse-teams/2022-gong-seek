@@ -39,6 +39,8 @@ const Layout = styled.div`
 	position: relative;
 	height: 100vh;
 	width: 100vw;
+	max-width: 1500px;
+	margin: 0 auto;
 `;
 
 const Content = styled.main`
