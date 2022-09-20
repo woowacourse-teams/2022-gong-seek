@@ -88,7 +88,7 @@ public class TempArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(articleDetailResponse.getTitle()).isEqualTo("title"),
                 () -> assertThat(articleDetailResponse.getContent()).isEqualTo("content"),
                 () -> assertThat(articleDetailResponse.getCategory()).isEqualTo("discussion"),
-                () -> assertThat(articleDetailResponse.getTags().get(0)).isEqualTo("spring"),
+                () -> assertThat(articleDetailResponse.getTag().get(0)).isEqualTo("spring"),
                 () -> assertThat(articleDetailResponse.getIsAnonymous()).isFalse(),
                 () -> assertThat(articleDetailResponse.getCreateAt()).isNotNull()
         );
