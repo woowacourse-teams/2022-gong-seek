@@ -4,9 +4,16 @@ import styled from '@emotion/styled';
 
 export const Container = styled.div`
 	display: flex;
-	height: 60vh;
+	height: 100%;
+	flex-direction: column-reverse;
 	align-items: center;
-	gap: ${({ theme }) => theme.size.SIZE_016};
+	gap: ${({ theme }) => theme.size.SIZE_080};
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		flex-direction: row;
+		height: 60vh;
+		gap: ${({ theme }) => theme.size.SIZE_010};
+	}
 `;
 
 export const AddOptionForm = styled.form`
