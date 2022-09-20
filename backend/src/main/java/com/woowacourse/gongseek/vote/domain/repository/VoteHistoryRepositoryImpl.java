@@ -18,9 +18,8 @@ public class VoteHistoryRepositoryImpl implements VoteHistoryRepositoryCustom {
     public Optional<VoteHistory> findByVoteIdAndMemberId(Long voteId, Long memberId) {
         return Optional.ofNullable(queryFactory
                 .selectFrom(voteHistory)
-                .from(voteHistory)
                 .join(voteHistory.voteItem, voteItem).fetchJoin()
-                .join(voteHistory.voteItem.vote, vote)
+                .join(voteItem.vote, vote)
                 .where(voteItem.vote.id.eq(voteId).and(voteHistory.member.id.eq(memberId)))
                 .fetchFirst());
     }
