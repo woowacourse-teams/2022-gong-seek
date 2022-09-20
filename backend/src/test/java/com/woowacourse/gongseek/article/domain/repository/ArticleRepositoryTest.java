@@ -200,16 +200,17 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    void 회원들이_작성한_게시글들을_조회할_수_있다() {
+    void 회원이_작성한_게시글들을_조회할_수_있다() {
         Member otherMember = new Member("rennon", "brorae", "avatar.com");
         memberRepository.save(otherMember);
         Article firstArticle = articleRepository.save(
                 new Article("title1", "content1", Category.QUESTION, member, false));
         Article secondArticle = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+        articleRepository.save(
                 new Article("title2", "content2", Category.DISCUSSION, otherMember, false));
 
-        List<Long> memberIds = List.of(member.getId(), otherMember.getId());
-        List<Article> articles = articleRepository.findAllByMemberIdIn(memberIds);
+        List<Article> articles = articleRepository.findAllByMemberId(member.getId());
 
         assertThat(articles).containsExactly(firstArticle, secondArticle);
     }

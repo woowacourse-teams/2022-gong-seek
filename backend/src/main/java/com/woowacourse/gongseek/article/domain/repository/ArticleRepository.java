@@ -14,9 +14,9 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
             + "left join fetch a.articleTags.value at "
             + "left join fetch at.tag "
             + "where a.id = :id")
-    Optional<Article> findByIdWithMember(Long id);
+    Optional<Article> findByIdWithAll(Long id);
 
-    List<Article> findAllByMemberIdIn(List<Long> memberIds);
+    List<Article> findAllByMemberId(Long memberId);
 
     @Query("SELECT case WHEN (count(at) > 0) THEN true ELSE false END FROM ArticleTag at WHERE upper(at.tag.name) = upper(:name)")
     boolean existsArticleByTagName(@Param("name") String name);

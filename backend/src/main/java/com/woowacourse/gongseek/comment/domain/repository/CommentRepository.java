@@ -10,7 +10,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("select c from Comment c join fetch c.member where c.article.id = :articleId")
     List<Comment> findAllByArticleIdWithMember(Long articleId);
 
-    List<Comment> findAllByMemberIdIn(List<Long> memberIds);
+    List<Comment> findAllByMemberId(Long memberId);
 
     int countByArticleId(Long articleId);
 }
