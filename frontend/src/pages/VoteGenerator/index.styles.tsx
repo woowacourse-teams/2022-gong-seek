@@ -4,14 +4,13 @@ import styled from '@emotion/styled';
 
 export const Container = styled.div`
 	display: flex;
-	flex-direction: column;
+	height: 60vh;
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_016};
 `;
 
 export const AddOptionForm = styled.form`
 	display: flex;
-
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -35,7 +34,6 @@ export const ContentForm = styled.form`
 
 export const OptionInputBox = styled.div`
 	display: flex;
-
 	justify-content: space-evenly;
 	align-items: center;
 
@@ -59,6 +57,7 @@ export const Content = styled.div`
 
 export const InputValidMessage = styled.p<{ isValid: boolean }>`
 	color: ${({ theme, isValid }) => (isValid ? theme.colors.BLUE_500 : theme.colors.RED_500)};
+	margin-top: ${({ theme }) => theme.size.SIZE_016};
 `;
 
 export const SubmitButton = styled.button`

@@ -82,14 +82,15 @@ const VoteGenerator = () => {
 						<S.AddButton />
 					</S.AddButtonWrapper>
 				</S.OptionInputBox>
+
+				<S.InputValidMessage
+					isValid={
+						validatedDuplicatedVoteItemInput(input, options) && validatedVoteItemInputLength(input)
+					}
+				>
+					{selectValidateMessage(input, options)}
+				</S.InputValidMessage>
 			</S.AddOptionForm>
-			<S.InputValidMessage
-				isValid={
-					validatedDuplicatedVoteItemInput(input, options) && validatedVoteItemInputLength(input)
-				}
-			>
-				{selectValidateMessage(input, options)}
-			</S.InputValidMessage>
 
 			<S.ContentForm onSubmit={onSubmitVoteForm}>
 				<S.RegisteredOptionTitle>등록된 항목</S.RegisteredOptionTitle>
