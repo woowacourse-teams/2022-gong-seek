@@ -23,6 +23,11 @@ const VoteGenerator = () => {
 	const onSubmitAddOption = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (input.length === 0) {
+			showSnackBar('입력은 공백이 될수 없습니다.');
+			return;
+		}
+		if (options.length >= 5) {
+			showSnackBar('옵션은 최대 5개까지 입니다.');
 			return;
 		}
 		setOptions((prevoptions) => prevoptions.concat(input));
@@ -33,7 +38,7 @@ const VoteGenerator = () => {
 		e.preventDefault();
 
 		if (!validatedVoteItemsQuantity(options)) {
-			showSnackBar('투표목록은 최소 2개이상이여야 합니다.');
+			showSnackBar('투표목록은 최소 2개이상 최대 5이상이여야 합니다.');
 			if (inputRef.current) {
 				inputRef.current.focus();
 			}
@@ -102,7 +107,7 @@ const VoteGenerator = () => {
 						</AddedOption>
 					))}
 				</S.Content>
-				<S.SubmitButton>등록하기</S.SubmitButton>
+				<S.SubmitButton disabled={!validatedVoteItemsQuantity(options)}>등록하기</S.SubmitButton>
 			</S.ContentForm>
 		</S.Container>
 	);
