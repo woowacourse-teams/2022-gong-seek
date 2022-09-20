@@ -5,6 +5,7 @@ import { deleteArticleItem } from '@/api/tempArticle';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useSnackBar from '@/hooks/common/useSnackBar';
+import { queryClient } from '@/index';
 
 const useDeleteTempArticle = () => {
 	const { mutate } = useMutation<
@@ -20,6 +21,7 @@ const useDeleteTempArticle = () => {
 			{
 				onSuccess: () => {
 					showSnackBar('게시글을 삭제하였습니다');
+					queryClient.refetchQueries(['temp-articles']);
 				},
 				onError: (error) => {
 					if (!error.response) {
