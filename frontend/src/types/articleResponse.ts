@@ -45,3 +45,13 @@ export interface UserArticleItemType {
 export interface UserArticlesResponse {
 	articles: UserArticleItemType[];
 }
+
+export interface TempArticleItem {
+	id: number;
+	title: string;
+	createdAt: string;
+}
+
+export interface TempArticleResponse {
+	values: TempArticleItem[];
+}
