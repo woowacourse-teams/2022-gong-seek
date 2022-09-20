@@ -4,7 +4,7 @@ import useGetDetailArticle from '@/hooks/article/useGetDetailArticle';
 import useGetDetailComment from '@/hooks/comment/useGetDetailComment';
 import Detail from '@/pages/Detail/index';
 
-const ErrorDetail = () => {
+const QuestionDetail = () => {
 	const { id } = useParams();
 
 	if (typeof id === 'undefined') {
@@ -32,4 +32,4 @@ const ErrorDetail = () => {
 	);
 };
 
-export default ErrorDetail;
+export default QuestionDetail;
