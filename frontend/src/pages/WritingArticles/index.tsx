@@ -59,16 +59,12 @@ const WritingArticles = () => {
 
 	if (isLoading) return <Loading />;
 
-	if (!category) {
-		return;
-	}
-
 	//추후에 로딩 상태일 경우 안내메세지 추가하거나 애니메이션 추가하면 좋을 듯
 	const handleTempSavedButtonClick = () => {
 		if (isTempArticleSavedLoading) {
 			return;
 		}
-		if (content.current) {
+		if (content.current && category) {
 			saveTempArticleId({
 				title,
 				category,
