@@ -12,7 +12,8 @@ export const Container = styled.div`
 
 	width: 100%;
 	min-height: 100%;
-
+	max-width: 900px;
+	margin: 0 auto;
 	margin-bottom: ${({ theme }) => theme.size.SIZE_040};
 `;
 
@@ -31,7 +32,7 @@ export const SelectorBox = styled.div`
 	flex-direction: column;
 	gap: ${({ theme }) => theme.size.SIZE_010};
 
-	width: 90%;
+	width: 95%;
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
 		width: 100%;
