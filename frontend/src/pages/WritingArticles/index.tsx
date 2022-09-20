@@ -65,7 +65,7 @@ const WritingArticles = () => {
 			saveTempArticleId({
 				title: titleInputRef.current.value,
 				category,
-				tags: hashTags,
+				tag: hashTags,
 				isAnonymous,
 				content: content.current?.getInstance().getMarkdown(),
 			});

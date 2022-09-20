@@ -10,7 +10,7 @@ export interface postTempArticleProps {
 	title: string;
 	content: string;
 	category: string;
-	tags: string[];
+	tag: string[];
 	isAnonymous: boolean;
 	tempArticleId: number | '';
 }
@@ -23,7 +23,7 @@ const usePostTempArticle = () => {
 		{
 			title: string;
 			content: string;
-			tags: string[];
+			tag: string[];
 			category: string;
 			isAnonymous: boolean;
 			tempArticleId: number | '';
@@ -34,17 +34,17 @@ const usePostTempArticle = () => {
 		title,
 		content,
 		category,
-		tags,
+		tag,
 		isAnonymous,
 	}: {
 		title: string;
 		content: string;
 		category: string;
-		tags: string[];
+		tag: string[];
 		isAnonymous: boolean;
 	}) => {
 		mutate(
-			{ title, content, category, tags, isAnonymous, tempArticleId },
+			{ title, content, category, tag, isAnonymous, tempArticleId },
 			{
 				onSuccess: (data) => {
 					setTempArticleId(data.data.id);

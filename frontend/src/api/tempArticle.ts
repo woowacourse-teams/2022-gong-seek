@@ -19,7 +19,7 @@ export const postTempArticle = async ({
 	title,
 	content,
 	category,
-	tags,
+	tag,
 	isAnonymous,
 	tempArticleId,
 }: postTempArticleProps) => {
@@ -27,7 +27,7 @@ export const postTempArticle = async ({
 
 	return axios.post<{ id: number }>(
 		`${HOME_URL}/api/temp-articles`,
-		{ title, content, category, tags, isAnonymous, tempArticleId },
+		{ title, content, category, tag, isAnonymous, tempArticleId },
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
