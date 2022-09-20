@@ -50,8 +50,19 @@ export interface TempArticleItem {
 	id: number;
 	title: string;
 	createdAt: string;
+	category: 'discussion' | 'question';
 }
 
 export interface TempArticleResponse {
 	values: TempArticleItem[];
+}
+
+export interface TempArticleDetailResponse {
+	id: number;
+	title: string;
+	content: string;
+	tag: string[];
+	category: 'question' | 'discussion';
+	isAnonymous: boolean;
+	createdAt: string;
 }
