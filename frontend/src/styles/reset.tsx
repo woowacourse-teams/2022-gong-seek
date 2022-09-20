@@ -116,7 +116,11 @@ export const reset = css`
 		@media (min-width: 420px) {
 			font-size: 3vw;
 		}
-		@media (min-width: 1280px) {
+
+		@media (min-width: 700px) {
+			font-size: 2vw;
+		}
+		@media (min-width: 1000px) {
 			font-size: 100%;
 		}
 	}
