@@ -145,7 +145,7 @@ export const NavBarItem = styled(Link)`
 
 export const ProfileIconBox = styled.div`
 	width: fit-content;
-	margin: ${({ theme }) => theme.size.SIZE_004} ${({ theme }) => theme.size.SIZE_160} 0 auto;
+	margin: ${({ theme }) => theme.size.SIZE_004} ${({ theme }) => theme.size.SIZE_040} 0 auto;
 `;
 
 export const LoginIn = styled(Link)`
