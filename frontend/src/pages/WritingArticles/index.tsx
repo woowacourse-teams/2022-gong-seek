@@ -8,11 +8,12 @@ import Loading from '@/components/common/Loading/Loading';
 import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import usePostWritingArticles from '@/hooks/article/usePostWritingArticles';
+import usePostTempArticle from '@/hooks/tempArticle/usePostTempArticle';
 import * as S from '@/pages/WritingArticles/index.styles';
 
 const WritingArticles = () => {
 	const { category } = useParams();
-	const [isAnonymous, setIsAnonymous] = useState(false);
+	const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
 
 	const {
 		isLoading,
@@ -28,12 +29,26 @@ const WritingArticles = () => {
 		setHashTags,
 	} = usePostWritingArticles({ category, isAnonymous });
 
+	const {
+		saveTempArticleId,
+		isSuccess: isTempArticleSavedSuccess,
+		isError: isTempArticleSavedError,
+		isLoading: isTempArticleSavedLoading,
+	} = usePostTempArticle();
+
+	useEffect(() => {
+		const timerInterval = setInterval(handleTempSavedButtonClick, 120000);
+
+		return () => clearInterval(timerInterval);
+	}, []);
+
 	useEffect(() => {
 		if (content.current) {
 			content.current.getInstance().removeHook('addImageBlobHook');
 			content.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
 				(async () => {
 					const formData = new FormData();
+
 					formData.append('imageFile', blob);
 					const url = await postImageUrlConverter(formData);
 					callback(url, 'alt-text');
@@ -43,6 +58,26 @@ const WritingArticles = () => {
 	}, [content]);
 
 	if (isLoading) return <Loading />;
+
+	if (!category) {
+		return;
+	}
+
+	//추후에 로딩 상태일 경우 안내메세지 추가하거나 애니메이션 추가하면 좋을 듯
+	const handleTempSavedButtonClick = () => {
+		if (isTempArticleSavedLoading) {
+			return;
+		}
+		if (content.current) {
+			saveTempArticleId({
+				title,
+				category,
+				tags: hashTags,
+				isAnonymous,
+				content: content.current?.getInstance().getMarkdown(),
+			});
+		}
+	};
 
 	return (
 		<S.Container>
@@ -81,7 +116,9 @@ const WritingArticles = () => {
 				</S.OptionBox>
 			</S.SelectorBox>
 			<S.TemporaryStoreButtonBox>
-				<S.TemporaryStoreButton>임시저장</S.TemporaryStoreButton>
+				<S.TemporaryStoreButton onClick={handleTempSavedButtonClick}>
+					임시저장
+				</S.TemporaryStoreButton>
 			</S.TemporaryStoreButtonBox>
 			<S.Content>
 				<ToastUiEditor initContent={''} ref={content} />
