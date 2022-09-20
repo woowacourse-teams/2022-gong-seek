@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 
 import * as S from '@/components/common/SearchBar/SearchBar.styles';
 import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
-import { URL } from '@/constants/url';
 import useSnackBar from '@/hooks/common/useSnackBar';
 import { searchState } from '@/store/searchState';
 import { validatedSearchInput } from '@/utils/validateInput';
@@ -14,7 +12,6 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 	const [searchIndex, setSearchIndex] = useState('게시물');
 	const [searchInputState, setSearchInputState] = useRecoilState(searchState);
 	const searchInputRef = useRef<HTMLInputElement>(null);
-	const navigate = useNavigate();
 
 	const { showSnackBar } = useSnackBar();
 
@@ -42,7 +39,7 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 	}, [searchInputState]);
 
 	return (
-		<S.Container onClick={() => navigate(URL.SEARCH_RESULT)}>
+		<S.Container>
 			{searchInputState.isSearchOpen && (
 				<SortDropdown
 					sortList={['유저', '게시물']}

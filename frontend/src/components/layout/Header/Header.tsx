@@ -20,7 +20,9 @@ const Header = () => {
 						<S.LogoImage src={gongseek} />
 					</S.StyledLink>
 					<S.SearchOpenBox>
-						<SearchBar isValid={false} />
+						<S.StyledLink to={URL.SEARCH_RESULT}>
+							<SearchBar isValid={false} />
+						</S.StyledLink>
 					</S.SearchOpenBox>
 				</S.HeaderSection>
 			</S.Container>
@@ -34,7 +36,9 @@ const Header = () => {
 					<S.LogoLink>공식</S.LogoLink>
 				</S.StyledLink>
 				<S.SearchBarBox>
-					<SearchBar isValid={true} />
+					<S.StyledLink to={URL.SEARCH_RESULT}>
+						<SearchBar isValid={true} />
+					</S.StyledLink>
 				</S.SearchBarBox>
 			</S.HeaderSection>
 			<S.NavBar>
