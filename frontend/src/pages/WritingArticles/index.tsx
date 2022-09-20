@@ -8,12 +8,15 @@ import Loading from '@/components/common/Loading/Loading';
 import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import usePostWritingArticles from '@/hooks/article/usePostWritingArticles';
+import useGetTempDetailArticles from '@/hooks/tempArticle/useGetTempDetailArticles';
 import usePostTempArticle from '@/hooks/tempArticle/usePostTempArticle';
 import * as S from '@/pages/WritingArticles/index.styles';
 
-const WritingArticles = () => {
+const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 	const { category } = useParams();
 	const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
+	const [tempArticleId, setTempArticleId] = useState<'' | number>(tempId);
+	const [initContent, setInitContent] = useState<string>('');
 
 	const {
 		isLoading,
@@ -34,13 +37,36 @@ const WritingArticles = () => {
 		isSuccess: isTempArticleSavedSuccess,
 		isError: isTempArticleSavedError,
 		isLoading: isTempArticleSavedLoading,
-	} = usePostTempArticle();
+	} = usePostTempArticle({ tempArticleId, setTempArticleId });
+
+	const {
+		data: tempArticleData,
+		isLoading: isTempDetailArticleLoading,
+		isSuccess: isTempDetailArticleSuccess,
+		mutate: getTempDetailArticle,
+	} = useGetTempDetailArticles({ tempArticleId });
 
 	useEffect(() => {
 		const timerInterval = setInterval(handleTempSavedButtonClick, 120000);
 
 		return () => clearInterval(timerInterval);
 	}, []);
+
+	useEffect(() => {
+		if (typeof tempArticleId === 'number') {
+			getTempDetailArticle({ tempArticleId });
+		}
+	}, []);
+
+	useEffect(() => {
+		if (isTempDetailArticleSuccess && tempArticleData && tempArticleData.data) {
+			setTitle(tempArticleData.data.title);
+			setHashTags(tempArticleData.data.tag);
+			setInitContent(tempArticleData.data.content);
+			setIsAnonymous(tempArticleData.data.isAnonymous);
+			setCategoryOption(tempArticleData.data.category);
+		}
+	}, [isTempDetailArticleSuccess]);
 
 	useEffect(() => {
 		if (content.current) {
@@ -65,7 +91,7 @@ const WritingArticles = () => {
 			saveTempArticleId({
 				title: titleInputRef.current.value,
 				category,
-				tag: hashTags,
+				tag: hashTags ? hashTags : [],
 				isAnonymous,
 				content: content.current?.getInstance().getMarkdown(),
 			});
@@ -114,7 +140,7 @@ const WritingArticles = () => {
 				</S.TemporaryStoreButton>
 			</S.TemporaryStoreButtonBox>
 			<S.Content>
-				<ToastUiEditor initContent={''} ref={content} />
+				<ToastUiEditor initContent={initContent} ref={content} />
 			</S.Content>
 			<S.SubmitBox>
 				<AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />
