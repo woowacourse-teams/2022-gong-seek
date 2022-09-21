@@ -25,19 +25,12 @@ export const getTempDetailArticle = ({ id }: { id: number | '' }) => {
 	});
 };
 
-export const postTempArticle = ({
-	title,
-	content,
-	category,
-	tag,
-	isAnonymous,
-	tempArticleId,
-}: postTempArticleProps) => {
+export const postTempArticle = ({ ...props }: postTempArticleProps) => {
 	const accessToken = localStorage.getItem('accessToken');
 
 	return axios.post<{ id: number }>(
 		`${HOME_URL}/api/temp-articles`,
-		{ title, content, category, tag, isAnonymous, tempArticleId },
+		{ ...props },
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',
