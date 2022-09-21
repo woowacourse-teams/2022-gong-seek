@@ -125,8 +125,8 @@ class TempArticleControllerTest {
 
     @Test
     void 임시_게시글_전체_조회_API_문서화() throws Exception {
-        TempArticleResponse response1 = new TempArticleResponse(1L, "title1", LocalDateTime.now());
-        TempArticleResponse response2 = new TempArticleResponse(2L, "title2", LocalDateTime.now());
+        TempArticleResponse response1 = new TempArticleResponse(1L, "title1", "question", LocalDateTime.now());
+        TempArticleResponse response2 = new TempArticleResponse(2L, "title2", "question", LocalDateTime.now());
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(tempArticleService.getAll(any())).willReturn(new TempArticlesResponse(List.of(response1, response2)));
 
@@ -143,6 +143,7 @@ class TempArticleControllerTest {
                         responseFields(
                                 fieldWithPath("values[].id").type(JsonFieldType.NUMBER).description("임시 게시글 식별자"),
                                 fieldWithPath("values[].title").type(JsonFieldType.STRING).description("임시 제목"),
+                                fieldWithPath("values[].category").type(JsonFieldType.STRING).description("임시 카테고리"),
                                 fieldWithPath("values[].createAt").type(JsonFieldType.STRING).description("생성 날짜")
                         )
                 ));
