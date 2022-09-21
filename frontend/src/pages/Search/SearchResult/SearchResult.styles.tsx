@@ -23,7 +23,7 @@ export const SearchResultBox = styled.div`
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_020};
 
-	@media (min-width: 700px) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
 		display: grid;
 		width: 100%;
 		grid-template-columns: 1fr 1fr;
@@ -33,7 +33,7 @@ export const SearchResultBox = styled.div`
 		margin-top: ${({ theme }) => theme.size.SIZE_040};
 	}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 100%;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;

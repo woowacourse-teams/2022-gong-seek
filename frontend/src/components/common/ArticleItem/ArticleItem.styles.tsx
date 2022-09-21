@@ -35,7 +35,7 @@ export const Container = styled.div`
 		cursor: pointer;
 	}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		height: ${({ theme }) => theme.size.SIZE_220};
 		width: ${({ theme }) => theme.size.SIZE_300};
 	}
@@ -58,7 +58,7 @@ export const ArticleItemTitle = styled.h2`
 		text-decoration: underline;
 	}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		line-height: 1.5;
 	}
 `;
@@ -152,7 +152,7 @@ export const HashTagListBox = styled.div`
 
 	margin: ${({ theme }) => theme.size.SIZE_020} 0;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		flex-wrap: wrap;
 	}
 `;

@@ -48,19 +48,19 @@ const Content = styled.main`
 	min-height: calc(100vh - 2 * ${({ theme }) => theme.size.SIZE_126});
 	padding-bottom: 7rem;
 
-	@media (min-width: 700px) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
 		width: calc(100% - ${({ theme }) => theme.size.SIZE_060} * 2);
 		padding: 1rem 5rem;
 		justify-content: space-between;
 	}
 
-	@media (min-width: 1000px) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_MIDDLE}) {
 		width: calc(100% - ${({ theme }) => theme.size.SIZE_110} * 2);
 		padding: 1rem 7rem;
 		justify-content: space-between;
 	}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: calc(100% - ${({ theme }) => theme.size.SIZE_160} * 2);
 		padding: 1rem ${({ theme }) => theme.size.SIZE_160};
 		justify-content: space-between;

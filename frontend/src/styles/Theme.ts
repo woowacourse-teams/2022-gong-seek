@@ -41,7 +41,9 @@ export const articleColors = {
 
 const breakpoints = {
 	MOBIL: '320px',
-	DESKTOP: '1280px',
+	DESKTOP_SMALL: '700px',
+	DESKTOP_MIDDLE: '1000px',
+	DESKTOP_LARGE: '1280px',
 };
 
 const boxShadows = {

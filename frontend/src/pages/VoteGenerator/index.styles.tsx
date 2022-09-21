@@ -27,7 +27,7 @@ export const ContentForm = styled.form`
 	width: 100%;
 	height: 100%;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 60%;
 		margin-top: ${({ theme }) => theme.size.SIZE_050};
 	}
@@ -41,7 +41,7 @@ export const OptionInputBox = styled.div`
 
 	width: 90%;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 50%;
 	}
 `;
@@ -82,7 +82,7 @@ export const SubmitButton = styled.button`
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
 	}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 40%;
 		padding: ${({ theme }) => theme.size.SIZE_008};
 		font-size: ${({ theme }) => theme.size.SIZE_014};

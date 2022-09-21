@@ -21,7 +21,7 @@ export const Content = styled.div`
 	width: 100%;
 	margin-top: ${({ theme }) => theme.size.SIZE_028};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 100%;
 	}
 `;
@@ -34,7 +34,7 @@ export const SelectorBox = styled.div`
 
 	width: 95%;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 100%;
 	}
 `;
@@ -50,7 +50,7 @@ export const TitleInput = styled.input`
 
 	padding: 0.6rem 0.8rem;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		font-size: ${({ theme }) => theme.size.SIZE_020};
 		padding: 1.3rem 0.8rem;
 	}
@@ -87,7 +87,7 @@ export const OptionBox = styled.div`
 	flex-direction: column;
 	gap: ${({ theme }) => theme.size.SIZE_010};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		flex-direction: row-reverse;
 	}
 `;
@@ -162,7 +162,7 @@ export const SubmitButton = styled.button`
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
 	}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: ${({ theme }) => theme.size.SIZE_100};
 		height: ${({ theme }) => theme.size.SIZE_040};
 
@@ -176,7 +176,7 @@ export const UpdateSubmitBox = styled.div`
 	width: 100%;
 	justify-content: center;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		justify-content: flex-end;
 	}
 `;
@@ -203,7 +203,7 @@ export const UpdateSubmitButton = styled.button`
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
 	}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: ${({ theme }) => theme.size.SIZE_100};
 		height: ${({ theme }) => theme.size.SIZE_040};
 
@@ -244,7 +244,7 @@ export const SubmitBox = styled.div`
 	margin-top: ${({ theme }) => theme.size.SIZE_050};
 	width: 85%;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		margin-left: auto;
 		width: min-content;
 	}

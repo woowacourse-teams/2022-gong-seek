@@ -77,7 +77,7 @@ export const Container = styled.div`
 
 	font-size: ${({ theme }) => theme.size.SIZE_012};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		font-size: ${({ theme }) => theme.size.SIZE_014};
 	}
 `;

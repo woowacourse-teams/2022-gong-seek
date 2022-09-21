@@ -36,7 +36,7 @@ const Trash = styled(AiFillDelete)`
 	:hover {
 		color: ${({ theme }) => theme.colors.RED_500};
 	}
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		font-size: ${({ theme }) => theme.size.SIZE_020};
 	}
 `;

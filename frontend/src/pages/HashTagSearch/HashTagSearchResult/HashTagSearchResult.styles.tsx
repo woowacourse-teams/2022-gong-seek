@@ -32,7 +32,7 @@ export const SearchResult = styled.div`
 
 	gap: ${({ theme }) => theme.size.SIZE_014};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		display: grid;
 		width: 100%;
 		grid-template-columns: 1fr 1fr 1fr;

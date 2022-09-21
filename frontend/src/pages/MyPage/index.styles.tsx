@@ -6,7 +6,7 @@ export const Container = styled.section`
 
 	width: 100%;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		gap: ${({ theme }) => theme.size.SIZE_100};
 	}
 `;
@@ -25,7 +25,7 @@ export const ContentContainer = styled.div`
 
 	gap: ${({ theme }) => theme.size.SIZE_040};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		gap: ${({ theme }) => theme.size.SIZE_056};
 	}
 `;

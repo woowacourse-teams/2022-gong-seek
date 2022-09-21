@@ -64,7 +64,7 @@ export const HeaderSection = styled.header`
 
 	padding: 1rem 0;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: calc(100% - ${({ theme }) => theme.size.SIZE_160} * 2);
 		padding: 1rem ${({ theme }) => theme.size.SIZE_160};
 		justify-content: space-between;
@@ -86,7 +86,7 @@ export const LogoImage = styled.img`
 export const SearchBarBox = styled.div`
 	width: 60%;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		min-width: 40%;
 	}
 `;
@@ -95,7 +95,7 @@ export const SearchOpenBox = styled.div`
 	width: 80%;
 	animation: ${searchOpenMidAnimation} 0.3s ease-in-out;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 60%;
 		animation: ${searchOpenMaxAnimation} 0.3s ease-in-out;
 	}
@@ -113,7 +113,7 @@ export const NavBar = styled.nav`
 
 	background-color: ${({ theme }) => theme.colors.WHITE};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: calc(100% - ${({ theme }) => theme.size.SIZE_160} * 2);
 
 		display: flex;
