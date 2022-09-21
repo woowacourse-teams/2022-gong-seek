@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
 
 import { getAllArticle } from '@/api/article';
-import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { infiniteArticleResponse } from '@/types/articleResponse';
 
 const useGetCategoryArticles = (category: string) => {
@@ -41,21 +41,11 @@ const useGetCategoryArticles = (category: string) => {
 		},
 	);
 
+	useThrowCustomError(isError, error);
+
 	useEffect(() => {
 		refetch();
 	}, [sortIndex]);
-
-	useEffect(() => {
-		if (isError) {
-			if (!error.response) {
-				return;
-			}
-			throw new CustomError(
-				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
-			);
-		}
-	}, [isError]);
 
 	return { data, fetchNextPage, sortIndex, setSortIndex, isLoading, isSuccess };
 };
