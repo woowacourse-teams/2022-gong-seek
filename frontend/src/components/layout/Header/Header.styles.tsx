@@ -69,6 +69,12 @@ export const HeaderSection = styled.header`
 		padding: 1rem ${({ theme }) => theme.size.SIZE_160};
 		justify-content: space-between;
 	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_MIDDLE}) {
+		width: calc(100% - ${({ theme }) => theme.size.SIZE_080} * 2);
+		padding: 1rem ${({ theme }) => theme.size.SIZE_080};
+		justify-content: space-between;
+	}
 `;
 
 export const LogoLink = styled.h1`
@@ -113,12 +119,12 @@ export const NavBar = styled.nav`
 
 	background-color: ${({ theme }) => theme.colors.WHITE};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
-		width: calc(100% - ${({ theme }) => theme.size.SIZE_160} * 2);
-
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
+		width: calc(100% - ${({ theme }) => theme.size.SIZE_080} * 2);
 		display: flex;
 		visibility: visible;
-
+		padding: 0 ${({ theme }) => theme.size.SIZE_080};
+		margin: 0 auto;
 		justify-content: space-around;
 	}
 `;
@@ -155,7 +161,7 @@ export const LoginIn = styled(Link)`
 	background-color: transparent;
 	color: ${({ theme }) => theme.colors.BLACK_600};
 
-	margin: 0 ${({ theme }) => theme.size.SIZE_160} 0 auto;
+	margin: 0 ${({ theme }) => theme.size.SIZE_032} 0 auto;
 
 	padding: ${({ theme }) => theme.size.SIZE_016};
 
