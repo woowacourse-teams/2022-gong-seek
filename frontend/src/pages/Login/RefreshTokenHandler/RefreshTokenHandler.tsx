@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 
 import { getAccessTokenByRefreshToken } from '@/api/login';
 import Loading from '@/components/common/Loading/Loading';
+import RefreshErrorBoundary from '@/components/helper/RefreshErrorBoundary';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { URL } from '@/constants/url';
 import useSnackBar from '@/hooks/common/useSnackBar';
@@ -29,7 +30,11 @@ const RefreshTokenHandler = () => {
 		}
 	}, [isSuccess]);
 
-	return <Loading />;
+	return (
+		<RefreshErrorBoundary>
+			<Loading />
+		</RefreshErrorBoundary>
+	);
 };
 
 export default RefreshTokenHandler;

@@ -6,7 +6,6 @@ import Loading from '@/components/common/Loading/Loading';
 import SnackBar from '@/components/common/SnackBar/SnackBar';
 import PrivateRouter from '@/components/helper/PrivateRouter';
 import PublicRouter from '@/components/helper/PublicRouter';
-import RefreshErrorBoundary from '@/components/helper/RefreshErrorBoundary';
 import Header from '@/components/layout/Header/Header';
 import TabBar from '@/components/layout/TabBar/TabBar';
 import { URL } from '@/constants/url';
@@ -80,33 +79,31 @@ const App = () => {
 		>
 			<Header />
 			<Content>
-				<RefreshErrorBoundary>
-					<Suspense fallback={<Loading />}>
-						<Routes>
-							<Route path={URL.LOGIN_CONTROLLER} element={<LoginController />} />
-							<Route path={URL.REFRESH_TOKEN_HANDLER} element={<RefreshTokenHandler />} />
-							<Route path={URL.CATEGORY_SELECTOR} element={<CategorySelector />} />
-							<Route element={<PrivateRouter isAuthenticated={isLogin} />}>
-								<Route path={URL.WRITING_ARTICLE} element={<WritingArticles />} />
-								<Route path={URL.VOTE_GENERATOR} element={<VoteGenerator />} />
-								<Route path={URL.MY_PAGE} element={<MyPage />} />
-								<Route path={URL.VOTE_DEADLINE_GENERATOR} element={<VoteDeadlineGenerator />} />
-							</Route>
-							<Route element={<PublicRouter isAuthenticated={isLogin} />}>
-								<Route path={URL.LOGIN} element={<Login />} />
-							</Route>
-							<Route path={URL.CATEGORY_ARTICLE} element={<CategoryArticles />} />
-							<Route path={URL.QUESTION_DETAIL} element={<ErrorDetail />} />
-							<Route path={URL.DISCUSSION_DETAIL} element={<DiscussionDetail />} />
-							<Route path={URL.MODIFY_ARTICLE} element={<UpdateWriting />} />
-							<Route path={URL.SEARCH_RESULT} element={<Search />} />
-							<Route path={URL.HASH_TAG_SEARCH} element={<HashTagSearch />} />
-							<Route path={URL.INQUIRE} element={<InquirePage />} />
-							<Route path={URL.NOT_FOUND} element={<NotFound />} />
-							<Route path={URL.HOME} element={<Home />} />
-						</Routes>
-					</Suspense>
-				</RefreshErrorBoundary>
+				<Suspense fallback={<Loading />}>
+					<Routes>
+						<Route path={URL.LOGIN_CONTROLLER} element={<LoginController />} />
+						<Route path={URL.REFRESH_TOKEN_HANDLER} element={<RefreshTokenHandler />} />
+						<Route path={URL.CATEGORY_SELECTOR} element={<CategorySelector />} />
+						<Route element={<PrivateRouter isAuthenticated={isLogin} />}>
+							<Route path={URL.WRITING_ARTICLE} element={<WritingArticles />} />
+							<Route path={URL.VOTE_GENERATOR} element={<VoteGenerator />} />
+							<Route path={URL.MY_PAGE} element={<MyPage />} />
+							<Route path={URL.VOTE_DEADLINE_GENERATOR} element={<VoteDeadlineGenerator />} />
+						</Route>
+						<Route element={<PublicRouter isAuthenticated={isLogin} />}>
+							<Route path={URL.LOGIN} element={<Login />} />
+						</Route>
+						<Route path={URL.CATEGORY_ARTICLE} element={<CategoryArticles />} />
+						<Route path={URL.QUESTION_DETAIL} element={<ErrorDetail />} />
+						<Route path={URL.DISCUSSION_DETAIL} element={<DiscussionDetail />} />
+						<Route path={URL.MODIFY_ARTICLE} element={<UpdateWriting />} />
+						<Route path={URL.SEARCH_RESULT} element={<Search />} />
+						<Route path={URL.HASH_TAG_SEARCH} element={<HashTagSearch />} />
+						<Route path={URL.INQUIRE} element={<InquirePage />} />
+						<Route path={URL.NOT_FOUND} element={<NotFound />} />
+						<Route path={URL.HOME} element={<Home />} />
+					</Routes>
+				</Suspense>
 			</Content>
 			<TabBar />
 			<SnackBar />
