@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 
 public class TempArticleFixture {
 
-    public static ExtractableResponse<Response> 임시_게시물을_등록한다(AccessTokenResponse tokenResponse,
+    public static ExtractableResponse<Response> 임시_게시글을_등록한다(AccessTokenResponse tokenResponse,
                                                              ArticleRequest request) {
         return RestAssured
                 .given().log().all()
@@ -19,6 +19,15 @@ public class TempArticleFixture {
                 .body(request)
                 .when()
                 .post("/api/temp-articles")
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> 임시_게시글_단건_조회한다(AccessTokenResponse tokenResponse, long tempArticleId) {
+        return RestAssured.given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .when()
+                .get("/api/temp-articles/{tempArticleId}", tempArticleId)
                 .then().log().all()
                 .extract();
     }

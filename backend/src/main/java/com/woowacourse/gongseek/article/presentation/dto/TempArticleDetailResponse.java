@@ -37,7 +37,7 @@ public class TempArticleDetailResponse {
                 .title(tempArticle.getTitle().getValue())
                 .content(tempArticle.getContent().getValue())
                 .category(tempArticle.getCategory().getValue())
-                .tag(tempArticle.getTempTags())
+                .tag(tempArticle.getTempTags().toResponse())
                 .isAnonymous(tempArticle.isAnonymous())
                 .createAt(tempArticle.getCreatedAt())
                 .build();
