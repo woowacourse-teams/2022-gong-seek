@@ -52,7 +52,7 @@ class CommentRepositoryTest {
         Comment comment = new Comment("content", member, article, false);
         commentRepository.save(comment);
 
-        List<Comment> comments = commentRepository.findAllByArticleId(article.getId());
+        List<Comment> comments = commentRepository.findAllByArticleIdWithMember(article.getId());
 
         assertAll(
                 () -> assertThat(comments).hasSize(1),
@@ -87,14 +87,14 @@ class CommentRepositoryTest {
     }
 
     @Test
-    void 회원들이_작성한_댓글을_조회한다() {
+    void 회원이_작성한_댓글을_조회한다() {
         Member otherMember = new Member("rennon", "brorae", "avatar.con");
         memberRepository.save(otherMember);
         Comment firstComment = commentRepository.save(new Comment("content1", member, article, false));
-        Comment secondComment = commentRepository.save(new Comment("content2", otherMember, article, false));
+        Comment secondComment = commentRepository.save(new Comment("content2", member, article, false));
+        commentRepository.save(new Comment("content3", otherMember, article, false));
 
-        List<Long> memberIds = List.of(member.getId(), otherMember.getId());
-        List<Comment> comments = commentRepository.findAllByMemberIdIn(memberIds);
+        List<Comment> comments = commentRepository.findAllByMemberId(member.getId());
 
         assertThat(comments).containsExactly(firstComment, secondComment);
     }

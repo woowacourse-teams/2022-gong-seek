@@ -28,7 +28,7 @@ public class Member {
     private Long id;
 
     @Embedded
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private Name name;
 
     @Column(nullable = false)
