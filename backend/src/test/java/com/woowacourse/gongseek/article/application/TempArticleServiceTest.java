@@ -89,7 +89,7 @@ class TempArticleServiceTest {
                 () -> assertThat(updatedId.getId()).isEqualTo(tempArticle.getId()),
                 () -> assertThat(tempArticle.getTitle().getValue()).isEqualTo("updateTitle"),
                 () -> assertThat(tempArticle.getContent().getValue()).isEqualTo("updateContent"),
-                () -> assertThat(tempArticle.getTempTags().get(0)).isEqualTo("updateSpring"),
+                () -> assertThat(tempArticle.getTempTags().toResponse().get(0)).isEqualTo("updateSpring"),
                 () -> assertThat(tempArticle.isAnonymous()).isFalse()
         );
     }

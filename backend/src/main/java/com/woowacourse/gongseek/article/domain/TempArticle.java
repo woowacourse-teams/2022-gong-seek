@@ -2,7 +2,6 @@ package com.woowacourse.gongseek.article.domain;
 
 import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -66,12 +65,8 @@ public class TempArticle {
         this.title = tempArticle.getTitle();
         this.content = tempArticle.getContent();
         this.category = tempArticle.getCategory();
-        this.tempTags = new TempTags(tempArticle.getTempTags());
+        this.tempTags = tempArticle.getTempTags();
         this.isAnonymous = tempArticle.isAnonymous;
         this.createdAt = LocalDateTime.now();
-    }
-
-    public List<String> getTempTags() {
-        return tempTags.toResponse();
     }
 }
