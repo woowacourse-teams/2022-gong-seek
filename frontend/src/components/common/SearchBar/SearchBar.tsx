@@ -8,6 +8,7 @@ import { searchState } from '@/store/searchState';
 import { validatedSearchInput } from '@/utils/validateInput';
 
 const SearchBar = ({ isValid }: { isValid: boolean }) => {
+	//TODO: customHook으로 분리
 	const [searchInput, setSearchInput] = useState('');
 	const [searchIndex, setSearchIndex] = useState('게시물');
 	const [searchInputState, setSearchInputState] = useRecoilState(searchState);

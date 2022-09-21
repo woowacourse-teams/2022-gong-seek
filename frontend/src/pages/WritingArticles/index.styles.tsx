@@ -114,7 +114,7 @@ export const SelectorButton = styled(AiOutlineDown)`
 
 	z-index: -100;
 `;
-
+//TODO: 네이밍이 CategorySelector 페이지랑 동일하다 좀더 다른 네이밍이 좋을것 같다.
 export const CategorySelector = styled.select`
 	width: 100%;
 
@@ -169,6 +169,7 @@ export const SubmitButton = styled.button`
 	}
 `;
 
+//TODO: UpdateWriting에서 쓰이는게 여기에 존재한다. 위치 변경 필요!
 export const UpdateSubmitBox = styled.div`
 	display: flex;
 

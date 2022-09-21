@@ -11,6 +11,9 @@ import useLocationState from '@/hooks/common/useLocationState';
 import * as S from '@/pages/VoteDeadlineGenerator/index.styles';
 import { afterWeekGenerator, currentTimeGenerator, todayGenerator } from '@/utils/dateGenerator';
 
+//TODO: VoteGenerator와 동일하게 네이밍 변경 필요
+//TODO: 커스텀 훅으로 분리 필요
+
 const VoteDeadlineGenerator = () => {
 	const { articleId, items } = useLocationState<{ articleId: string; items: string[] }>();
 	const navigate = useNavigate();
@@ -82,6 +85,7 @@ const VoteDeadlineGenerator = () => {
 	return (
 		<S.Container onSubmit={handleSubmitVoteDeadlineForm}>
 			<S.VoteDeadlineLabel>마감 기한을 설정해주세요.</S.VoteDeadlineLabel>
+			{/* CompoundComponent를 이용하면 어떨까? */}
 			<S.VoteDeadlineInputBox>
 				<S.DeadlineInput
 					type="date"

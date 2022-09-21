@@ -14,6 +14,10 @@ import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
 import styled from '@emotion/styled';
 
+//TODO: 정말 실제 페이지인것들만 페이지로 분리, 그외에는 컴포넌트로 관리하자
+// TODO: 과도한 레이지 로딩! 실제로 라우팅되는 페이지만 레이지 로딩해줘도 될것같다.
+//TODO: RefreshTokenHandler 라우팅을 이용해서 이동하지만 pages에 있는것이 맞을까?
+
 const MenuSlider = React.lazy(() => import('@/components/common/MenuSlider/MenuSlider'));
 const Home = React.lazy(() => import('@/pages/Home'));
 const CategoryArticles = React.lazy(() => import('@/pages/CategoryArticles/CategoryArticles'));
@@ -34,7 +38,7 @@ const UpdateWriting = React.lazy(() => import('@/pages/UpdateWriting'));
 const VoteDeadlineGenerator = React.lazy(() => import('@/pages/VoteDeadlineGenerator'));
 const VoteGenerator = React.lazy(() => import('@/pages/VoteGenerator'));
 const WritingArticles = React.lazy(() => import('@/pages/WritingArticles'));
-
+// TODO: 이 css는 App.styles.tsx로 빼는게 좋지 않을까?
 const Layout = styled.div`
 	position: relative;
 	height: 100vh;

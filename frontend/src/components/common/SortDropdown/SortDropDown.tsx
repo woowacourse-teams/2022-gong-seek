@@ -28,6 +28,7 @@ const SortDropdown = ({ sortList, sortIndex, setSortIndex }: SortPropDownProps) 
 			</S.SortBox>
 
 			{onDropdown && (
+				// TODO: DropdownList로 묶자!
 				<S.DropdownBox>
 					{sortList.map((sort, idx) => (
 						<S.DropdownItem key={idx} idx={idx} onClick={() => onClickDropdownItem(sort)}>

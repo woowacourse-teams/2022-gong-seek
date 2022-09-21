@@ -46,6 +46,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 					</S.LinkItem>
 				)}
 				{!isLogin && (
+					//TODO: LinkItemList로 처리하는것이 좋을것 같다, 텍스트와 이동할 경로를 배열로 넣어서 map으로 처리하면 어떨까?
 					<S.LinkItem
 						onClick={() => {
 							navigate(URL.LOGIN);

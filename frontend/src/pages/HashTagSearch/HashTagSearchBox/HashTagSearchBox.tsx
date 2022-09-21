@@ -31,6 +31,7 @@ const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 		<S.Container>
 			<h2 hidden>해시태그들을 보여주는 곳입니다</h2>
 			<S.HashTagLists aria-label="검색하고 싶은 해시태그들을 클릭해주세요">
+				{/*TODO: List로 묶어서 컴포넌트 화 */}
 				{targets.slice(0, 5).map((item) => (
 					<S.HashTagItem
 						key={item.name}
@@ -40,6 +41,7 @@ const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 						{item.name}
 					</S.HashTagItem>
 				))}
+				{/*TODO: List로 묶어서 컴포넌트 화 */}
 				{isOpen &&
 					targets.slice(5).map((item) => (
 						<S.HashTagItem
@@ -50,7 +52,7 @@ const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 							{item.name}
 						</S.HashTagItem>
 					))}
-
+				{/*TODO: 하나의 조건으로 통일하는것이 좋을것 같다 */}
 				{targets.length > 5 && !isOpen && (
 					<S.HashTagButton
 						onClick={() => {

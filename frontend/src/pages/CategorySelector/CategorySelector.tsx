@@ -12,6 +12,7 @@ const CategorySelector = () => (
 			justifyContent="space-around"
 		>
 			<h2 css={mobileTitleSecondary}>글쓰기 카테고리 선택</h2>
+			{/*TODO: CateGoryButton.Question, CateGoryButton.Discussion 으로 분리해도 좋을듯! */}
 			<S.CategoryButtonBox>
 				<S.StyledLink to="/article/question">
 					<S.CategoryButton type="button" categoryType="question">

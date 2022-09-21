@@ -14,13 +14,14 @@ export interface UserProfileProps {
 const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 	const [isEdit, setIsEdit] = useState(false);
 	const [editedName, setEditedName] = useState(name);
+	//TODO: 안쓰는 변수 제거
 	const { data, isLoading, isSuccess, onClickConfirmButton } = usePutUserProfile();
 	const isValidInput = validatedEditInput(editedName);
 
 	const onClickEditIcon = () => {
 		setIsEdit(true);
 	};
-
+	// TODO: 성공로직은 onSuccess로 빼는게 괜찮을것 같다.
 	useEffect(() => {
 		if (isSuccess) {
 			queryClient.invalidateQueries('user-info');

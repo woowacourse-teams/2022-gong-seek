@@ -27,12 +27,13 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 		prevLikeCount: article.likeCount,
 		articleId: String(article.id),
 	});
-
+	// compound component 패턴 이용하여 쪼개는것이 좋을것 같다!
 	return (
 		<S.Container onClick={onClick}>
 			<S.ArticleItemTitle>
 				<div>{article.title}</div>
 			</S.ArticleItemTitle>
+
 			<S.ArticleInfoBox>
 				<S.ArticleTimeStamp>{dateTimeConverter(article.createdAt)}</S.ArticleTimeStamp>
 				<S.ArticleInfoSubBox>
@@ -40,16 +41,19 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 					<S.Views>조회 수 {article.views}</S.Views>
 				</S.ArticleInfoSubBox>
 			</S.ArticleInfoBox>
+
 			<S.HashTagListBox>
 				{article.tag &&
 					article.tag.length >= 1 &&
 					article.tag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}
 			</S.HashTagListBox>
+
 			<S.FooterBox>
 				<S.ProfileBox>
 					<S.UserProfile src={article.author.avatarUrl} />
 					<div>{article.author.name}</div>
 				</S.ProfileBox>
+				{/*TODO: Right라는 네이밍 수정필요*/}
 				<S.RightFooterBox>
 					<S.HeartBox>
 						{isLike ? (

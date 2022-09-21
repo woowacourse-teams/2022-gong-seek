@@ -8,6 +8,7 @@ import { URL } from '@/constants/url';
 import useSnackBar from '@/hooks/common/useSnackBar';
 
 const LoginController = () => {
+	// 커스텀 훅으로 분리 필요
 	const [searchParams] = useSearchParams();
 	const { showSnackBar } = useSnackBar();
 	const navigate = useNavigate();

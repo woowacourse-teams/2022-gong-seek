@@ -13,6 +13,7 @@ export interface CommentProps extends CommentType {
 }
 
 const Comment = ({ id, author, content, createdAt, isAuthor, articleId }: CommentProps) => {
+	// custom hook으로 분리
 	const [isEditCommentOpen, setIsEditCommentOpen] = useState(false);
 	const [commentPlaceholder, setCommentPlaceHolder] = useState('');
 	const { isLoading, onDeleteButtonClick } = useDeleteComment();
@@ -24,6 +25,7 @@ const Comment = ({ id, author, content, createdAt, isAuthor, articleId }: Commen
 
 	if (isLoading) return <Loading />;
 
+	//TODO: compound component 패턴을 이용하면 좋을것 같다.
 	return (
 		<S.Container>
 			<S.CommentHeader>

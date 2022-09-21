@@ -14,11 +14,11 @@ const PopularArticle = () => {
 		handleRightSlideEvent,
 		mainArticleContent,
 	} = useGetPopularArticles();
-
+	//TODO: Idle 제거
 	if (isLoading || isIdle) {
 		return <Loading />;
 	}
-
+	//TODO: util로 분리
 	const getColorKey = (index: number) => {
 		if (index < 0) {
 			return convertIdxToArticleColorKey(9);

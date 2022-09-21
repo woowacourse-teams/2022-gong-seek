@@ -19,7 +19,9 @@ const Vote = ({ articleId }: { articleId: string }) => {
 					<S.TotalVotes>총 {totalCount}표</S.TotalVotes>
 				</S.TotalVotesBox>
 			</S.VoteTitleBox>
+
 			<S.VoteBox>
+				{/*TODO: VoteItemList로 결합필요 */}
 				{data &&
 					data.voteItems.map((datum, idx) => (
 						<VoteItem

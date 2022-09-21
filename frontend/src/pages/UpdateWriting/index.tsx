@@ -35,6 +35,7 @@ const UpdateWriting = () => {
 	return (
 		<S.Container>
 			<S.SelectorBox>
+				{/* 이 부분 WritingArticles와 동일, OptionBox의 여부만 다르다.*/}
 				<PageLayout width="100%" height="fit-content">
 					<S.TitleInput
 						type="text"
@@ -65,6 +66,7 @@ const UpdateWriting = () => {
 			<S.Content>
 				<ToastUiEditor initContent={tempArticle.content} ref={content} />
 			</S.Content>
+			{/* 이부분만 다르다. */}
 			<S.UpdateSubmitBox>
 				<S.UpdateSubmitButton
 					type="button"

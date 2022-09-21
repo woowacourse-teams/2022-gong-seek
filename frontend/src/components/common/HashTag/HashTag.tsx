@@ -10,6 +10,7 @@ export interface HashTagProps {
 }
 
 const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
+	// 커스텀 훅으로 로직 분리 하자!
 	const [hashTagInput, setHashInput] = useState<string>('');
 	const [errorMsg, setErrorMsg] = useState<string>('');
 
@@ -70,6 +71,7 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 					padding="0.25rem"
 				>
 					<S.HashTagItemBox>
+						{/* List로 만들기 */}
 						{hashTags.length >= 1 &&
 							hashTags.map((item) => <S.HastTagItem key={item}>{item}</S.HastTagItem>)}
 					</S.HashTagItemBox>

@@ -21,6 +21,7 @@ const Header = () => {
 					<S.StyledLink to={URL.HOME}>
 						<S.LogoImage src={gongseek} />
 					</S.StyledLink>
+
 					<S.SearchOpenBox>
 						<Link to={URL.SEARCH_RESULT}>
 							<SearchBar isValid={false} />
@@ -37,12 +38,15 @@ const Header = () => {
 				<S.StyledLink to={URL.HOME}>
 					<S.LogoLink>공식</S.LogoLink>
 				</S.StyledLink>
+				{/*TODO: Container부터 여기까지 코드 동일함 */}
+
 				<S.SearchBarBox>
 					<Link to={URL.SEARCH_RESULT}>
 						<SearchBar isValid={true} />
 					</Link>
 				</S.SearchBarBox>
 			</S.HeaderSection>
+			{/*TODO: NavBar는 하나의 컴포넌트로 분리하는것이 좋을것 같다 */}
 			<S.NavBar>
 				<S.NavBarItemBox>
 					<S.NavBarItem to={URL.CATEGORY_SELECTOR}>글 쓰러 가기</S.NavBarItem>

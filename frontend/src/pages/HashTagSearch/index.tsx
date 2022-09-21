@@ -6,6 +6,7 @@ import HashTagSearchResult from '@/pages/HashTagSearch/HashTagSearchResult/HashT
 import * as S from '@/pages/HashTagSearch/index.styles';
 
 const HashTagSearch = () => {
+	//TODO: 커스텀 훅으로 분리하자
 	const [targetHashTags, setTargetHashTags] = useState<{ name: string; isChecked: boolean }[]>([]);
 	const [selectedHashTags, setSelectedHashTags] = useState<string[]>([]);
 	const {
@@ -15,6 +16,7 @@ const HashTagSearch = () => {
 	} = useGetAllHashTags();
 
 	useEffect(() => {
+		//TODO: 3개의 옵션 하나로 추상화하면 좋을것 같음!
 		if (isTagsOptionSuccess && tagsOption && tagsOption?.tag.length >= 1) {
 			setTargetHashTags(
 				tagsOption.tag.map((item) => ({

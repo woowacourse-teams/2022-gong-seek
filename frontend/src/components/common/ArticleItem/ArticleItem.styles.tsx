@@ -15,7 +15,7 @@ const scaleAnimation = keyframes`
 
 export const Container = styled.div`
 	display: flex;
-
+	position: relative;
 	flex-direction: column;
 
 	width: 80%;

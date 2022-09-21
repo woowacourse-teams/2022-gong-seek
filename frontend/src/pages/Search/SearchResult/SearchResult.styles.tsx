@@ -14,6 +14,8 @@ export const Container = styled.section`
 export const Title = styled.h2`
 	font-size: ${({ theme }) => theme.size.SIZE_018};
 `;
+
+//TODO: 여기있는 media query 홈, 카테고리별 게시물 읽기에서 똑같이 사용됨.
 export const SearchResultBox = styled.div`
 	display: flex;
 	flex-direction: column;

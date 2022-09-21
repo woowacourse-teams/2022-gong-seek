@@ -27,7 +27,7 @@ const WritingArticles = () => {
 		hashTags,
 		setHashTags,
 	} = usePostWritingArticles({ category, isAnonymous });
-
+	//TODO: 이 useEffect도 훅으로 넣자!
 	useEffect(() => {
 		if (content.current) {
 			content.current.getInstance().removeHook('addImageBlobHook');
@@ -42,9 +42,11 @@ const WritingArticles = () => {
 		}
 	}, [content]);
 
+	//TODO: 얘도 선언적으로 처리하면 깔끔해지지 않을까?
 	if (isLoading) return <Loading />;
 
 	return (
+		// TODO: SelectBox 분리
 		<S.Container>
 			<S.SelectorBox>
 				<PageLayout width="100%" height="fit-content">
@@ -84,6 +86,7 @@ const WritingArticles = () => {
 			<S.Content>
 				<ToastUiEditor initContent={''} ref={content} />
 			</S.Content>
+
 			<S.SubmitBox>
 				<AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />
 				<S.SubmitButton type="button" onClick={() => handleSubmitButtonClick(categoryOption)}>

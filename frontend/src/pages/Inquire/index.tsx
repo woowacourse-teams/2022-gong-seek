@@ -3,6 +3,7 @@ import { mobileTitleSecondary } from '@/constants/titleType';
 import * as S from '@/pages/Inquire/index.styles';
 
 const InquirePage = () => {
+	//TODO: 인라인으로 관리!
 	const onClickInquireButton = () => {
 		window.location.href = 'https://github.com/woowacourse-teams/2022-gong-seek/issues';
 	};

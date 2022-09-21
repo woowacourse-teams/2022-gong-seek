@@ -2,6 +2,7 @@ import { AiOutlineMessage } from 'react-icons/ai';
 
 import styled from '@emotion/styled';
 
+//TODO: UserCommentBox와 중복되는 스타일이 많다.
 export const Container = styled.div`
 	display: flex;
 
@@ -75,6 +76,7 @@ export const CommentIcon = styled(AiOutlineMessage)`
 	font-size: ${({ theme }) => theme.size.SIZE_020};
 	margin-top: -${({ theme }) => theme.size.SIZE_006};
 `;
+
 export const CommentCount = styled.div`
 	font-size: ${({ theme }) => theme.size.SIZE_014};
 `;

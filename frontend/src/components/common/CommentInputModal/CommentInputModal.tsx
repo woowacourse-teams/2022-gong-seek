@@ -38,6 +38,9 @@ const CommentInputModal = ({
 	commentId,
 	placeholder = '',
 }: CommentInputModalProps) => {
+	//TODO: custom hook으로 고쳐야함
+	//TODO: 현재 여기서 수정, 등록의 모든 것을 관리하고 있다.
+	//TODO: UI는 재활용하고 로직은 각각 분리하는것이 좋을것 같다! 공통되는 로직이 있다면 훅으로 처리
 	const commentModal = document.getElementById('comment-portal');
 	const [isAnonymous, setIsAnonymous] = useState(false);
 	const commentContent = useRef<Editor | null>(null);

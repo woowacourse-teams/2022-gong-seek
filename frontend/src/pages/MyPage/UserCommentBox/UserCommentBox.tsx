@@ -19,6 +19,7 @@ const UserCommentBox = ({ comment }: { comment: UserComment }) => {
 				<S.ContentLabel>댓글: </S.ContentLabel>
 				{content}
 			</S.ContentBox>
+
 			<S.CommentTime>
 				{updatedAt.length !== 0 ? dateTimeConverter(updatedAt) : dateTimeConverter(createdAt)}
 			</S.CommentTime>

@@ -1,16 +1,16 @@
-import { infiniteArticleResponse } from '@/types/articleResponse';
-import { InfiniteSearchResultType } from '@/types/searchResponse';
 import { useEffect, useRef } from 'react';
 import { InfiniteQueryObserverResult } from 'react-query';
 
+import { infiniteArticleResponse } from '@/types/articleResponse';
+import { InfiniteSearchResultType } from '@/types/searchResponse';
 
 type ObserverResponseType = infiniteArticleResponse | InfiniteSearchResultType;
 interface infiniteScrollObserverProps {
 	children: React.ReactNode;
 	hasNext: boolean;
-	fetchNextPage: () => Promise<InfiniteQueryObserverResult<ObserverResponseType , Error>>;
+	fetchNextPage: () => Promise<InfiniteQueryObserverResult<ObserverResponseType, Error>>;
 }
-
+//TODO: 이건 helper 폴더로 빼는것이 좋을것 같다
 const InfiniteScrollObserver = ({
 	children,
 	hasNext,

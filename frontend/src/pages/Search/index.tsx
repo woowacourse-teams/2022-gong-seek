@@ -7,6 +7,8 @@ import { searchState } from '@/store/searchState';
 import { validatedSearchInput } from '@/utils/validateInput';
 
 const Search = () => {
+	//TODO: Custom hook으로 분리 필요
+
 	const [searchInputState, setSearchInputState] = useRecoilState(searchState);
 	const [validSearch, setValidSearch] = useState(false);
 	const { isSearching, target, searchIndex } = searchInputState;

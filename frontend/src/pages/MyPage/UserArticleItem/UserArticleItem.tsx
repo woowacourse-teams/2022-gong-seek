@@ -25,6 +25,8 @@ const UserArticleItem = ({ article }: { article: UserArticleItemType }) => {
 				<S.ArticleTime>
 					{updatedAt.length !== 0 ? dateTimeConverter(updatedAt) : dateTimeConverter(createdAt)}
 				</S.ArticleTime>
+
+				{/*TODO: RightBox 네이밍 수정 필요 */}
 				<S.ArticleRightBox>
 					<S.CommentBox>
 						<S.CommentIcon
@@ -33,6 +35,7 @@ const UserArticleItem = ({ article }: { article: UserArticleItemType }) => {
 						/>
 						<S.CommentCount id="comment-count">{commentCount}</S.CommentCount>
 					</S.CommentBox>
+
 					<S.Views>조회수 {views}</S.Views>
 				</S.ArticleRightBox>
 			</S.ArticleSubInfo>

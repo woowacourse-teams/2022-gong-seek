@@ -22,6 +22,7 @@ const HashTagSearchResult = ({ hashTags }: HashTagSearchResultProps) => {
 	return (
 		<S.Container>
 			<S.Title>검색 결과</S.Title>
+			{/*TODO: 하나의 List로 묶어야한다. */}
 			{data && data.pages[0].articles.length >= 1 ? (
 				<InfiniteScrollObserver
 					hasNext={data.pages[data.pages.length - 1].hasNext}

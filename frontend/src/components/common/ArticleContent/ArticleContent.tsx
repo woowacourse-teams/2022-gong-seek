@@ -39,6 +39,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 					<div>{author.name}</div>
 				</S.UserProfile>
 			</S.Header>
+
 			<PageLayout flexDirection="column" width="90%" padding="0.7rem">
 				<S.ArticleInfo>
 					<S.ArticleTitle>{article.title}</S.ArticleTitle>
@@ -47,9 +48,11 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 						<S.DetailBox>조회수 {article.views}</S.DetailBox>
 					</S.ArticleDetailInfo>
 				</S.ArticleInfo>
+
 				<S.TextViewerBox>
 					<ToastUiViewer initContent={article.content} />
 				</S.TextViewerBox>
+
 				<S.Footer>
 					<S.WritingOrderBox>
 						{article.isAuthor && (
@@ -65,6 +68,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 							</S.ButtonWrapper>
 						)}
 					</S.WritingOrderBox>
+
 					<S.LikeContentBox>
 						{isLike ? (
 							<S.FillHeart onClick={onUnlikeButtonClick} />
@@ -74,8 +78,10 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 						<div>{likeCount}</div>
 					</S.LikeContentBox>
 				</S.Footer>
+
 				<S.HashTagListBox>
 					<h2 hidden>hash tag가 있다면 보여지는 곳입니다</h2>
+					{/* map은 List로! */}
 					{article.tag &&
 						article.tag.length >= 1 &&
 						article.tag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}

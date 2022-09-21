@@ -12,6 +12,8 @@ import {
 	validatedVoteItemsQuantity,
 } from '@/utils/validateInput';
 
+//TODO: 로직들 커스텀훅으로 분리 필요
+//TODO: 네이밍 변경 필요
 const VoteGenerator = () => {
 	const [options, setOptions] = useState<string[]>([]);
 	const [input, setInput] = useState('');
@@ -59,7 +61,7 @@ const VoteGenerator = () => {
 
 		return '유효한 입력입니다.';
 	};
-
+	//TODO: AddedOptionForm, ContentForm의 분리 필요
 	return (
 		<S.Container>
 			<S.AddOptionForm onSubmit={onSubmitAddOption}>

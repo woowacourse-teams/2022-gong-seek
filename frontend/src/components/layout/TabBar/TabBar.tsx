@@ -12,7 +12,7 @@ import { getUserIsLogin } from '@/store/userState';
 const TabBar = () => {
 	const navigate = useNavigate();
 	const isLogin = useRecoilValue(getUserIsLogin);
-
+	//TODO: 안쓰는 state 제거
 	const [sliderState, setSliderState] = useRecoilState(menuSliderState);
 
 	return (

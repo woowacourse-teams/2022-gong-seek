@@ -2,6 +2,7 @@ import { AiFillPlusCircle } from 'react-icons/ai';
 
 import styled from '@emotion/styled';
 
+//TODO: emotion 파일도 파일내에서 연관된 컴포넌트끼리 뭉치는게 좋아보임
 export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -61,6 +62,7 @@ export const InputValidMessage = styled.p<{ isValid: boolean }>`
 	color: ${({ theme, isValid }) => (isValid ? theme.colors.BLUE_500 : theme.colors.RED_500)};
 `;
 
+//TODO: 이 버튼 UI 여러군데에서 사용되는것 같은데 하나의 공통 컴포넌트로 만들수 있을것 같다.
 export const SubmitButton = styled.button`
 	width: 60%;
 
@@ -102,7 +104,7 @@ export const AddButton = styled(AiFillPlusCircle)`
 		color: ${({ theme }) => theme.colors.PURPLE_400};
 	}
 `;
-
+//TODO: Wrapper -> BOX라는 네이밍!
 export const AddButtonWrapper = styled.button`
 	border: none;
 

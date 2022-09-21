@@ -3,6 +3,7 @@ import { AiFillDelete } from 'react-icons/ai';
 
 import styled from '@emotion/styled';
 
+//TODO: style.tsx로 분리필요
 const AddedOption = ({ children, onClick }: { children: React.ReactNode; onClick: () => void }) => (
 	<OptionBox>
 		<div>{children}</div>

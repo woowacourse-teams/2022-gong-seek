@@ -18,7 +18,7 @@ interface DetailProps {
 	articleId: string;
 	category: string;
 }
-
+//TODO: CompountComponent 필요!
 const Detail = ({ children, article, commentList, articleId, category }: DetailProps) => {
 	const [isCommentOpen, setIsCommentOpen] = useState(false);
 	const isLogin = useRecoilValue(getUserIsLogin);
@@ -50,6 +50,7 @@ const Detail = ({ children, article, commentList, articleId, category }: DetailP
 			/>
 			{children}
 			<S.CommentSection>
+				{/*TODO: CompoundComponent -> CommentSection.Input, CommentSection.Header, CommentSection.CommentList 분리해도 좋을것 같다.*/}
 				<S.CommentInputBox>
 					<S.CommentInput
 						aria-label="댓글을 입력하는 창으로 이동하는 링크 입니다"
@@ -70,8 +71,11 @@ const Detail = ({ children, article, commentList, articleId, category }: DetailP
 						<div>{commentList.length || 0}개</div>
 					</S.CommentTotal>
 				</S.CommentHeader>
+
+				{/TODO: CommentList라는 컴포넌트를 만들자 */}
 				{commentList && commentList.length > 0 ? (
 					commentList.map((item) => (
+						//TODO: Comment 역시 too many props 너무 많은 역할을 처리한다. 분리 필요!
 						<Comment
 							key={item.id}
 							id={item.id}

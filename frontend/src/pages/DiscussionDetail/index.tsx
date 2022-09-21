@@ -35,6 +35,7 @@ const DiscussionDetail = () => {
 					articleId={id}
 					category="토론"
 				>
+					{/*TODO: 삼항 연산자 로직 분리(알아보기 힘듬) */}
 					{articleData.hasVote ? (
 						<Vote articleId={id} />
 					) : articleData.isAuthor ? (

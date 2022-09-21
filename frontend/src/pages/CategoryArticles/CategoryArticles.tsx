@@ -32,14 +32,17 @@ const CategoryArticles = () => {
 		<S.Container>
 			<S.TitleBox>
 				<S.CategoryArticlesTitle category={category}>
+					{/*TODO:  바깥으로 빼서 변수로 관리 */}
 					{category === 'discussion' ? '토론' : '질문'}
 				</S.CategoryArticlesTitle>
+
 				<SortDropdown
 					sortList={['최신순', '조회순', '좋아요순']}
 					sortIndex={sortIndex}
 					setSortIndex={setSortIndex}
 				/>
 			</S.TitleBox>
+			{/*TODO: ArticleItemList를 하나의 컴포넌트로 분리 */}
 			{data?.pages.length ? (
 				<InfiniteScrollObserver
 					hasNext={data?.pages[data.pages.length - 1].hasNext}

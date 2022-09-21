@@ -23,6 +23,7 @@ const VoteItem = ({
 	isExpired,
 	isVoted,
 }: VoteItemProps) => {
+	//TODO: too many props 컴포넌트의 분리 필요,
 	const progressivePercent = Math.floor((itemVotes / totalVotes) * 100);
 	const { onChangeRadio } = usePostVoteItem(articleId);
 

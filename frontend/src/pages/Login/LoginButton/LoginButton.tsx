@@ -6,7 +6,7 @@ export interface LoginButtonProps {
 	onClick: (e: React.MouseEvent) => void;
 	children: React.ReactNode;
 }
-
+//TODO: 얘는 굳이 LoginButton으로 빼야될까?
 const LoginButton = ({ loginType, children, onClick }: LoginButtonProps) => (
 	<S.Container onClick={onClick} loginType={loginType}>
 		<S.IconBox>{LOGIN_TYPE[loginType].icon}</S.IconBox>

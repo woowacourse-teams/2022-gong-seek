@@ -1,17 +1,19 @@
+import { useRecoilState } from 'recoil';
+
 import { snackBarState } from '@/store/snackBarState';
-import { useRecoilState } from 'recoil'
 
 const useSnackBar = () => {
-    const [snackBar, setSnackBar] = useRecoilState(snackBarState);
-    
-    const showSnackBar = (message: string) => {
-        setSnackBar({isOpen: true, message: message});
-        setTimeout(() => {
-            setSnackBar({isOpen: false, message: message});
-        },1500);
-    }
+	//TODO: 안쓰는 snackBar state 제거
+	const [snackBar, setSnackBar] = useRecoilState(snackBarState);
 
-    return {showSnackBar};
-}
+	const showSnackBar = (message: string) => {
+		setSnackBar({ isOpen: true, message: message });
+		setTimeout(() => {
+			setSnackBar({ isOpen: false, message: message });
+		}, 1500);
+	};
 
-export default useSnackBar
+	return { showSnackBar };
+};
+
+export default useSnackBar;
