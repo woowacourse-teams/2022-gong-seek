@@ -14,7 +14,7 @@ const useThrowCustomError = (
 	useEffect(() => {
 		if (isError && error) {
 			if (!error.response || typeof error.response.data === 'undefined') {
-				throw new CustomError('0000');
+				throw new CustomError('0000', '네트워크에 문제가 발생하였습니다.');
 			}
 			throw new CustomError(
 				error.response.data.errorCode,
