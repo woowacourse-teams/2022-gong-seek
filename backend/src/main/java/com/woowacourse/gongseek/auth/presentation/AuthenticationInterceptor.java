@@ -30,7 +30,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         if (HttpMethod.OPTIONS.matches(request.getMethod())) {
             return true;
         }
-        logger.trace("요청 받음");
+        logger.debug("요청 받음");
 
         if (isGuest(request)) {
             return true;
