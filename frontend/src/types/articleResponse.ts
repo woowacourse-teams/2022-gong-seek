@@ -49,7 +49,7 @@ export interface UserArticlesResponse {
 export interface TempArticleItem {
 	id: number;
 	title: string;
-	createdAt: string;
+	createAt: string;
 	category: 'discussion' | 'question';
 }
 
