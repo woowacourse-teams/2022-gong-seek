@@ -95,9 +95,9 @@ const App = () => {
 				<Suspense fallback={<Loading />}>
 					<Routes>
 						<Route path={URL.LOGIN_CONTROLLER} element={<LoginController />} />
-						<Route path={URL.REFRESH_TOKEN_HANDLER} element={<RefreshTokenHandler />} />
 						<Route path={URL.CATEGORY_SELECTOR} element={<CategorySelector />} />
 						<Route element={<PrivateRouter isAuthenticated={isLogin} />}>
+							<Route path={URL.REFRESH_TOKEN_HANDLER} element={<RefreshTokenHandler />} />
 							<Route path={URL.WRITING_ARTICLE} element={<WritingArticles />} />
 							<Route path={URL.VOTE_GENERATOR} element={<VoteGenerator />} />
 							<Route path={URL.MY_PAGE} element={<MyPage />} />
