@@ -86,9 +86,7 @@ class TagServiceTest {
 
         assertAll(
                 () -> assertThat(response.getTag()).hasSize(3),
-                () -> assertThat(response.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(response.getTag().get(1)).isEqualTo("JAVA"),
-                () -> assertThat(response.getTag().get(2)).isEqualTo("REACT")
+                () -> assertThat(response.getTag()).contains("SPRING", "JAVA", "REACT")
         );
     }
 

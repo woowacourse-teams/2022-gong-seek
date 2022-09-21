@@ -200,16 +200,17 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    void 회원들이_작성한_게시글들을_조회할_수_있다() {
+    void 회원이_작성한_게시글들을_조회할_수_있다() {
         Member otherMember = new Member("rennon", "brorae", "avatar.com");
         memberRepository.save(otherMember);
         Article firstArticle = articleRepository.save(
                 new Article("title1", "content1", Category.QUESTION, member, false));
         Article secondArticle = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+        articleRepository.save(
                 new Article("title2", "content2", Category.DISCUSSION, otherMember, false));
 
-        List<Long> memberIds = List.of(member.getId(), otherMember.getId());
-        List<Article> articles = articleRepository.findAllByMemberIdIn(memberIds);
+        List<Article> articles = articleRepository.findAllByMemberId(member.getId());
 
         assertThat(articles).containsExactly(firstArticle, secondArticle);
     }
@@ -392,12 +393,12 @@ class ArticleRepositoryTest {
                 new Article("title2", "content2", Category.DISCUSSION, member, false));
         Article thirdArticle = articleRepository.save(
                 new Article("title3", "content3", Category.DISCUSSION, member, false));
-        List<Tag> firstTags = List.of(new Tag("spring"), new Tag("java"));
-        List<Tag> secondTags = List.of(new Tag("spring"));
-        List<Tag> thirdTags = List.of(new Tag("java"));
+        Tag springTag = new Tag("spring");
+        Tag javaTag = new Tag("java");
+        List<Tag> firstTags = List.of(springTag, javaTag);
+        List<Tag> secondTags = List.of(springTag);
+        List<Tag> thirdTags = List.of(javaTag);
         tagRepository.saveAll(firstTags);
-        tagRepository.saveAll(secondTags);
-        tagRepository.saveAll(thirdTags);
         firstArticle.addTag(new Tags(firstTags));
         secondArticle.addTag(new Tags(secondTags));
         thirdArticle.addTag(new Tags(thirdTags));
@@ -432,7 +433,7 @@ class ArticleRepositoryTest {
         VoteItem thirdVoteItem = new VoteItem("C번", vote);
         voteItemRepository.saveAll(List.of(firstVoteItem, secondVoteItem, thirdVoteItem));
 
-        voteHistoryRepository.save(new VoteHistory(member, vote, firstVoteItem));
+        voteHistoryRepository.save(new VoteHistory(member, firstVoteItem));
         articleRepository.deleteById(article.getId());
 
         assertAll(
