@@ -15,7 +15,7 @@ export interface LogicErrorBoundaryProps extends ErrorBoundaryProps {
 	navigate?: NavigateFunction;
 }
 
-export interface UIErrorBoundaryProps {
+export interface FallbackErrorBoundaryProps {
 	serverErrorFallback: React.ReactNode;
 	NotFoundErrorFallback: React.ReactNode;
 }

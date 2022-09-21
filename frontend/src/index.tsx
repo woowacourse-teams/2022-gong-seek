@@ -4,8 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import App from '@/App';
+import FallbackErrorBoundary from '@/components/helper/FallbackErrorBoundary';
 import LogicErrorBoundary from '@/components/helper/LogicErrorBoundary';
-import UIErrorBoundary from '@/components/helper/UIErrorBoundary';
 import { worker } from '@/mock/browser';
 import NotFound from '@/pages/NotFound';
 import { theme } from '@/styles/Theme';
@@ -35,14 +35,14 @@ root.render(
 		<QueryClientProvider client={queryClient}>
 			<RecoilRoot>
 				<BrowserRouter>
-					<UIErrorBoundary
+					<FallbackErrorBoundary
 						serverErrorFallback={<div>서버 에러입니다!</div>}
 						NotFoundErrorFallback={<NotFound />}
 					>
 						<LogicErrorBoundary>
 							<App />
 						</LogicErrorBoundary>
-					</UIErrorBoundary>
+					</FallbackErrorBoundary>
 				</BrowserRouter>
 			</RecoilRoot>
 		</QueryClientProvider>

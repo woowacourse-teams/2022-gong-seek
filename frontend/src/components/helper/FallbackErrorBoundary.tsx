@@ -2,11 +2,11 @@ import CommonErrorBoundary from '@/components/helper/CommonErrorBoundary';
 import {
 	ErrorBoundaryProps,
 	ErrorBoundaryState,
-	UIErrorBoundaryProps,
+	FallbackErrorBoundaryProps,
 } from '@/components/helper/types/ErrorBoundary.type';
 
-class UIErrorBoundary extends CommonErrorBoundary<UIErrorBoundaryProps> {
-	constructor(props: UIErrorBoundaryProps & ErrorBoundaryProps) {
+class FallbackErrorBoundary extends CommonErrorBoundary<FallbackErrorBoundaryProps> {
+	constructor(props: FallbackErrorBoundaryProps & ErrorBoundaryProps) {
 		super(props);
 	}
 
@@ -34,4 +34,4 @@ class UIErrorBoundary extends CommonErrorBoundary<UIErrorBoundaryProps> {
 	}
 }
 
-export default UIErrorBoundary;
+export default FallbackErrorBoundary;
