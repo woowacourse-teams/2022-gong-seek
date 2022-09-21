@@ -19,8 +19,11 @@ public class VoteHistoryRepositoryImpl implements VoteHistoryRepositoryCustom {
         return Optional.ofNullable(queryFactory
                 .selectFrom(voteHistory)
                 .join(voteHistory.voteItem, voteItem).fetchJoin()
-                .join(voteItem.vote, vote)
-                .where(voteItem.vote.id.eq(voteId).and(voteHistory.member.id.eq(memberId)))
+                .join(voteItem.vote, vote).fetchJoin()
+                .where(
+                        voteItem.vote.id.eq(voteId)
+                        .and(voteHistory.member.id.eq(memberId))
+                )
                 .fetchFirst());
     }
 }
