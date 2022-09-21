@@ -1,10 +1,10 @@
-import { NavigateFunction } from 'react-router-dom';
-
-import CommonErrorBoundary, {
+import CommonErrorBoundary from '@/components/helper/CommonErrorBoundary';
+import CustomError from '@/components/helper/CustomError';
+import {
 	ErrorBoundaryProps,
 	ErrorBoundaryState,
-} from '@/components/helper/CommonErrorBoundary';
-import CustomError from '@/components/helper/CustomError';
+	LogicErrorBoundaryProps,
+} from '@/components/helper/types/ErrorBoundary.type';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { URL } from '@/constants/url';
 import { queryClient } from '@/index';
@@ -18,11 +18,6 @@ import {
 	isAuthenticatedError,
 } from '@/utils/confirmErrorType';
 import WithHooksHOC from '@/utils/withHooksHOC';
-
-export interface LogicErrorBoundaryProps {
-	showSnackBar?: (message: string) => void;
-	navigate?: NavigateFunction;
-}
 
 class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 	constructor(props: LogicErrorBoundaryProps & ErrorBoundaryProps) {

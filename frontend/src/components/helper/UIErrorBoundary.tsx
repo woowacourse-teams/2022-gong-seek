@@ -1,12 +1,9 @@
-import CommonErrorBoundary, {
+import CommonErrorBoundary from '@/components/helper/CommonErrorBoundary';
+import {
 	ErrorBoundaryProps,
 	ErrorBoundaryState,
-} from '@/components/helper/CommonErrorBoundary';
-
-interface UIErrorBoundaryProps {
-	serverErrorFallback: React.ReactNode;
-	NotFoundErrorFallback: React.ReactNode;
-}
+	UIErrorBoundaryProps,
+} from '@/components/helper/types/ErrorBoundary.type';
 
 class UIErrorBoundary extends CommonErrorBoundary<UIErrorBoundaryProps> {
 	constructor(props: UIErrorBoundaryProps & ErrorBoundaryProps) {
