@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 
 import { putArticle } from '@/api/article';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import { queryClient } from '@/index';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { articleState } from '@/store/articleState';
 import { validatedTitleInput } from '@/utils/validateInput';
@@ -50,7 +51,15 @@ const usePostUpdateWritingArticle = () => {
 			return;
 		}
 		setIsValidTitleInput(true);
-		mutate({ title, content: content.current.getInstance().getMarkdown(), id, tag: hashTag });
+		mutate(
+			{ title, content: content.current.getInstance().getMarkdown(), id, tag: hashTag },
+			{
+				onSuccess: ({ data }) => {
+					queryClient.refetchQueries(['detail-article', `article${data.id}`]);
+					window.location.href = `/articles/${data.category}/${data.id}`;
+				},
+			},
+		);
 	};
 
 	return {
