@@ -7,6 +7,7 @@ import { useRecoilValue } from 'recoil';
 import { putArticle } from '@/api/article';
 import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import { queryClient } from '@/index';
 import { articleState } from '@/store/articleState';
 import { validatedTitleInput } from '@/utils/validateInput';
 import { Editor } from '@toast-ui/react-editor';
@@ -28,12 +29,6 @@ const usePostUpdateWritingArticle = () => {
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ title: string; content: string; id: string; tag: string[] }
 	>(putArticle, { retry: 1 });
-
-	useEffect(() => {
-		if (isSuccess) {
-			navigate(`/articles/${data.data.category}/${data.data.id}`);
-		}
-	}, [isSuccess]);
 
 	useEffect(() => {
 		if (isError) {
@@ -60,7 +55,15 @@ const usePostUpdateWritingArticle = () => {
 			return;
 		}
 		setIsValidTitleInput(true);
-		mutate({ title, content: content.current.getInstance().getMarkdown(), id, tag: hashTag });
+		mutate(
+			{ title, content: content.current.getInstance().getMarkdown(), id, tag: hashTag },
+			{
+				onSuccess: ({ data }) => {
+					queryClient.refetchQueries(['detail-article', `article${data.id}`]);
+					window.location.href = `/articles/${data.category}/${data.id}`;
+				},
+			},
+		);
 	};
 
 	return {
