@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface ArticleRepository extends JpaRepository<Article, Long>, ArticleRepositoryCustom {
 
-    @Query("select a from Article a "
+    @Query("select distinct a from Article a "
             + "join fetch a.member "
             + "left join fetch a.articleTags.value at "
             + "left join fetch at.tag "

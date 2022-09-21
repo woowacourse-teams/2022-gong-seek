@@ -31,8 +31,6 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         JPAQuery<Article> query = queryFactory
                 .selectFrom(article)
                 .leftJoin(article.member, member).fetchJoin()
-                .leftJoin(article.articleTags.value, articleTag).fetchJoin()
-                .leftJoin(articleTag.tag, tag).fetchJoin()
                 .where(
                         cursorIdAndCursorViews(cursorId, cursorViews, sortType),
                         categoryEquals(category)
@@ -112,8 +110,6 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         List<Article> fetch = queryFactory
                 .selectFrom(article)
                 .leftJoin(article.member, member).fetchJoin()
-                .leftJoin(article.articleTags.value, articleTag).fetchJoin()
-                .leftJoin(articleTag.tag, tag).fetchJoin()
                 .where(
                         containsTitleOrContent(searchText),
                         isOverArticleId(cursorId)
@@ -137,8 +133,6 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         List<Article> fetch = queryFactory
                 .selectFrom(article)
                 .leftJoin(article.member, member).fetchJoin()
-                .leftJoin(article.articleTags.value, articleTag).fetchJoin()
-                .leftJoin(articleTag.tag, tag).fetchJoin()
                 .where(
                         article.member.name.value.eq(author),
                         article.isAnonymous.eq(false),
@@ -153,16 +147,17 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     @Override
     public Slice<Article> searchByTag(Long cursorId, List<String> tagNames, Pageable pageable) {
         List<Article> fetch = queryFactory
-                .selectFrom(article)
-                .leftJoin(article.member, member).fetchJoin()
-                .leftJoin(article.articleTags.value, articleTag).fetchJoin()
-                .leftJoin(articleTag.tag, tag).fetchJoin()
+                .select(article)
+                .from(articleTag)
                 .where(
                         articleTag.tag.name.in(getUpperTagNames(tagNames)),
                         isOverArticleId(cursorId)
                 )
+                .join(articleTag.article, article)
+                .join(articleTag.tag, tag)
+                .distinct()
                 .limit(pageable.getPageSize() + 1)
-                .orderBy(article.id.desc())
+                .orderBy(articleTag.article.id.desc())
                 .fetch();
         return convertToSlice(fetch, pageable);
     }

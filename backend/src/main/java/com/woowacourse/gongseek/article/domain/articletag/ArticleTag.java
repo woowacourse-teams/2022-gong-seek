@@ -30,7 +30,7 @@ public class ArticleTag {
     private Article article;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "tag_id")
     private Tag tag;
 
