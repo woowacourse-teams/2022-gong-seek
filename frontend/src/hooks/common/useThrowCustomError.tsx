@@ -12,10 +12,7 @@ const useThrowCustomError = (
 ) => {
 	useEffect(() => {
 		if (error) {
-			if (!error.response) {
-				return;
-			}
-			if (typeof error.response.data === 'undefined') {
+			if (!error.response || typeof error.response.data === 'undefined') {
 				throw new CustomError('0000');
 			}
 			throw new CustomError(
