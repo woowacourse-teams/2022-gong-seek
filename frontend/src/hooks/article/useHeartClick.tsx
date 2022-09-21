@@ -19,6 +19,7 @@ const useHeartClick = ({
 	const [likeCount, setLikeCount] = useState(prevLikeCount);
 	const {
 		mutate: postMutate,
+		isError: isPostError,
 		error: postError,
 		isSuccess: postIsSuccess,
 	} = useMutation<
@@ -30,6 +31,7 @@ const useHeartClick = ({
 	});
 	const {
 		mutate: deleteMutate,
+		isError: isDeleteError,
 		error: deleteError,
 		isSuccess: deleteIsSuccess,
 	} = useMutation<
@@ -40,8 +42,8 @@ const useHeartClick = ({
 		retry: 1,
 	});
 
-	useThrowCustomError(postError);
-	useThrowCustomError(deleteError);
+	useThrowCustomError(isPostError, postError);
+	useThrowCustomError(isDeleteError, deleteError);
 
 	useEffect(() => {
 		setIsLike(prevIsLike);
