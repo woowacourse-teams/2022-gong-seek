@@ -71,7 +71,7 @@ public enum ExceptionType {
 
     INVALID_VOTE_EXPIRY_DATE_EXCEPTION("5001", "투표 만료일 설정이 잘못되었습니다.", InvalidVoteExpiryDateException.class),
     VOTE_ITEM_NULL_OR_EMPTY_EXCEPTION("5002", "투표 항목 내용은 비어있을 수 없습니다.", VoteItemNullOrEmptyException.class),
-    VOTE_ITEM_TOO_LONG_EXCEPTION("5003", "투표 항목 내용은 500자를 초과할 수 없습니다.", VoteItemTooLongException.class),
+    VOTE_ITEM_TOO_LONG_EXCEPTION("5003", "투표 항목 내용은 300자를 초과할 수 없습니다.", VoteItemTooLongException.class),
     VOTE_NOT_FOUND_EXCEPTION("5004", "투표가 존재하지 않습니다.", VoteNotFoundException.class),
     UNAVAILABLE_ARTICLE_EXCEPTION("5005", "토론 게시글만 투표를 생성할 수 있습니다.", UnavailableArticleException.class),
     INVALID_VOTE_AMOUNT_EXCEPTION("5006", "투표수는 양수여야만 합니다.", InvalidVoteAmountException.class),
