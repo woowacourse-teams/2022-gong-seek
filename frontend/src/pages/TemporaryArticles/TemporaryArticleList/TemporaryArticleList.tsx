@@ -29,7 +29,7 @@ const TemporaryArticleList = () => {
 						<S.ArticleItemBox key={item.id}>
 							<TemporaryArticleItem
 								article={{ title: item.title, createdAt: item.createdAt }}
-								onClick={() => nav('/')}
+								onClick={() => nav(`/temp-article/${item.category}/${item.id}`)}
 							/>
 							<S.DeleteButton onClick={() => handleTempArticleDeleteClick(item.id)} />
 						</S.ArticleItemBox>
