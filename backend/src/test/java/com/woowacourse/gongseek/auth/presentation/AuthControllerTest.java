@@ -2,6 +2,8 @@ package com.woowacourse.gongseek.auth.presentation;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
@@ -102,7 +104,7 @@ class AuthControllerTest {
     void 토큰_재발급_API_문서화() throws Exception {
         UUID refreshToken = UUID.randomUUID();
 
-        given(jwtTokenProvider.isValidAccessTokenWithTimeOut(any())).willReturn(true);
+        doNothing().when(jwtTokenProvider).isValidAccessTokenWithTimeOut(any());
 
         given(authService.renewToken(any())).willReturn(
                 TokenResponse.builder()
