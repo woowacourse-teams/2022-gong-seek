@@ -15,7 +15,6 @@ const useGetDetailArticle = (id: string) => {
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(['detail-article', `article${id}`], () => getDetailArticle(id), {
 		retry: false,
-		refetchOnWindowFocus: false,
 	});
 	const setTempArticle = useSetRecoilState(articleState);
 
