@@ -1,9 +1,8 @@
-import { convertGithubAvartarUrlForResize } from '../../../utils/converter';
-
 import * as S from '@/components/common/ArticleItem/ArticleItem.styles';
 import useHeartClick from '@/hooks/article/useHeartClick';
 import { Category } from '@/types/articleResponse';
 import { Author } from '@/types/author';
+import { convertGithubAvartarUrlForResize } from '@/utils/converter';
 import { dateTimeConverter } from '@/utils/converter';
 
 export interface ArticleItemProps {

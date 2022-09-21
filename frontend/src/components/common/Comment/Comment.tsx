@@ -1,4 +1,3 @@
-import { convertGithubAvartarUrlForResize } from '../../../utils/converter';
 import { useState } from 'react';
 
 import * as S from '@/components/common/Comment/Comment.styles';
@@ -7,6 +6,7 @@ import Loading from '@/components/common/Loading/Loading';
 import ToastUiViewer from '@/components/common/ToastUiViewer/ToastUiViewer';
 import useDeleteComment from '@/hooks/comment/useDeleteComment';
 import { CommentType } from '@/types/commentResponse';
+import { convertGithubAvartarUrlForResize } from '@/utils/converter';
 import { dateTimeConverter } from '@/utils/converter';
 
 export interface CommentProps extends CommentType {

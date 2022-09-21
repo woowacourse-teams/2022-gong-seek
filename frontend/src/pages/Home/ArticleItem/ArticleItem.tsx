@@ -1,8 +1,8 @@
-import { convertGithubAvartarUrlForResize } from '../../../utils/converter';
 import { useNavigate } from 'react-router-dom';
 
 import * as S from '@/pages/Home/ArticleItem/ArticleItem.styles';
 import { CommonArticleType } from '@/types/articleResponse';
+import { convertGithubAvartarUrlForResize } from '@/utils/converter';
 
 const ArticleItem = ({ article }: { article: CommonArticleType }) => {
 	const navigate = useNavigate();
