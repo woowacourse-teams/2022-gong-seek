@@ -11,7 +11,7 @@ const useGetAllArticles = () => {
 	const [currentCategory, setCurrentCategory] = useState('question');
 	const [sortIndex, setSortIndex] = useState('최신순');
 
-	const { data, isLoading, isSuccess, error, refetch, fetchNextPage } = useInfiniteQuery<
+	const { data, isLoading, isError, isSuccess, error, refetch, fetchNextPage } = useInfiniteQuery<
 		infiniteArticleResponse,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(
@@ -44,7 +44,7 @@ const useGetAllArticles = () => {
 		},
 	);
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	useEffect(() => {
 		refetch();

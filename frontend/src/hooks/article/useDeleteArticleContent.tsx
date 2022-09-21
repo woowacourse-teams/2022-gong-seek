@@ -11,14 +11,14 @@ import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 
 const useDeleteArticleContent = () => {
 	const { showSnackBar } = useSnackBar();
-	const { isSuccess, error, mutate } = useMutation<
+	const { isSuccess, isError, error, mutate } = useMutation<
 		unknown,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		string
 	>(deleteArticle, { retry: 1 });
 	const navigate = useNavigate();
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	useEffect(() => {
 		if (isSuccess) {

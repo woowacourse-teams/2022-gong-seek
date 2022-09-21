@@ -8,39 +8,40 @@ import { InfiniteSearchResultType } from '@/types/searchResponse';
 
 const useGetSearch = ({ target, searchIndex }: { target: string; searchIndex: string }) => {
 	const cursorId = '';
-	const { data, isSuccess, isLoading, isIdle, error, refetch, fetchNextPage } = useInfiniteQuery<
-		InfiniteSearchResultType,
-		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
-	>(
-		['search-result', `${searchIndex}-${target}`],
-		({
-			pageParam = {
-				target,
-				searchIndex,
-				cursorId,
-			},
-		}) => getSearchResult(pageParam),
-		{
-			getNextPageParam: (lastPage) => {
-				const { hasNext, articles, cursorId, target, searchIndex } = lastPage;
+	const { data, isSuccess, isLoading, isError, isIdle, error, refetch, fetchNextPage } =
+		useInfiniteQuery<
+			InfiniteSearchResultType,
+			AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
+		>(
+			['search-result', `${searchIndex}-${target}`],
+			({
+				pageParam = {
+					target,
+					searchIndex,
+					cursorId,
+				},
+			}) => getSearchResult(pageParam),
+			{
+				getNextPageParam: (lastPage) => {
+					const { hasNext, articles, cursorId, target, searchIndex } = lastPage;
 
-				if (hasNext) {
-					return {
-						articles,
-						hasNext,
-						cursorId,
-						target,
-						searchIndex,
-					};
-				}
-				return;
+					if (hasNext) {
+						return {
+							articles,
+							hasNext,
+							cursorId,
+							target,
+							searchIndex,
+						};
+					}
+					return;
+				},
+				retry: 1,
+				refetchOnWindowFocus: false,
 			},
-			retry: 1,
-			refetchOnWindowFocus: false,
-		},
-	);
+		);
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	return {
 		data,

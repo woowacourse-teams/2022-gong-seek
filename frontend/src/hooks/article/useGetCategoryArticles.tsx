@@ -10,7 +10,7 @@ import { infiniteArticleResponse } from '@/types/articleResponse';
 const useGetCategoryArticles = (category: string) => {
 	const [sortIndex, setSortIndex] = useState('최신순');
 
-	const { data, isLoading, isSuccess, error, refetch, fetchNextPage } = useInfiniteQuery<
+	const { data, isLoading, isError, isSuccess, error, refetch, fetchNextPage } = useInfiniteQuery<
 		infiniteArticleResponse,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(
@@ -41,7 +41,7 @@ const useGetCategoryArticles = (category: string) => {
 		},
 	);
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	useEffect(() => {
 		refetch();

@@ -10,13 +10,13 @@ import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 
 const usePutCommentInputModal = (closeModal: CommentInputModalProps['closeModal']) => {
 	const { showSnackBar } = useSnackBar();
-	const { isLoading, isSuccess, mutate, error } = useMutation<
+	const { isLoading, isSuccess, isError, mutate, error } = useMutation<
 		unknown,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ content: string; commentId: string }
 	>(putComments, { retry: 1 });
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	useEffect(() => {
 		if (isSuccess) {

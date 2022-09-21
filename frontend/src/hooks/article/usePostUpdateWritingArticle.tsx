@@ -23,7 +23,7 @@ const usePostUpdateWritingArticle = () => {
 	const [isValidTitleInput, setIsValidTitleInput] = useState(true);
 	const titleInputRef = useRef<HTMLInputElement>(null);
 
-	const { data, isSuccess, isLoading, error, mutate } = useMutation<
+	const { data, isSuccess, isError, isLoading, error, mutate } = useMutation<
 		AxiosResponse<{ id: number; category: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ title: string; content: string; id: string; tag: string[] }
@@ -35,7 +35,7 @@ const usePostUpdateWritingArticle = () => {
 		}
 	}, [isSuccess]);
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	const handleUpdateButtonClick = (id: string) => {
 		if (content.current === null) {

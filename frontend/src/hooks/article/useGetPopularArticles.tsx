@@ -12,12 +12,12 @@ const useGetPopularArticles = () => {
 	const [indexLimit, setIndexLimit] = useState(0);
 	const mainArticleContent = useRef<HTMLDivElement>(null);
 
-	const { data, error, isSuccess, isLoading, isIdle } = useQuery<
+	const { data, error, isError, isSuccess, isLoading, isIdle } = useQuery<
 		PopularArticles,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('popular-articles', getPopularArticles, { retry: 1, refetchOnWindowFocus: false });
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	useEffect(() => {
 		if (isSuccess) {

@@ -10,7 +10,7 @@ import { InfiniteHashTagSearchResultType } from '@/types/searchResponse';
 const useGetArticleByHashTag = (hashTag: string[]) => {
 	const tags = hashTag.join(',');
 	const cursorId = '';
-	const { data, isLoading, isSuccess, error, refetch, fetchNextPage } = useInfiniteQuery<
+	const { data, isLoading, isSuccess, isError, error, refetch, fetchNextPage } = useInfiniteQuery<
 		InfiniteHashTagSearchResultType,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(
@@ -34,7 +34,7 @@ const useGetArticleByHashTag = (hashTag: string[]) => {
 		},
 	);
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	useEffect(() => {
 		refetch();

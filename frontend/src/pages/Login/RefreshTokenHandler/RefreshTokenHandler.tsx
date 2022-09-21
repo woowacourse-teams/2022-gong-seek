@@ -10,7 +10,7 @@ import useSnackBar from '@/hooks/common/useSnackBar';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 
 const RefreshTokenHandler = () => {
-	const { data, isSuccess, error } = useQuery<
+	const { data, isSuccess, isError, error } = useQuery<
 		{ accessToken: string },
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('getBack-accessToken', getAccessTokenByRefreshToken, {
@@ -19,7 +19,7 @@ const RefreshTokenHandler = () => {
 
 	const { showSnackBar } = useSnackBar();
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	useEffect(() => {
 		if (isSuccess) {

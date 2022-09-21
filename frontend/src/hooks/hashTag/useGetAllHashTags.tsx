@@ -6,12 +6,12 @@ import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 
 const useGetAllHashTags = () => {
-	const { data, isLoading, isSuccess, error } = useQuery<
+	const { data, isLoading, isError, isSuccess, error } = useQuery<
 		{ tag: string[] },
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('all-hash-tag', getAllHashTag);
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	return { data, isLoading, isSuccess };
 };

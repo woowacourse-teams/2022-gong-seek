@@ -5,13 +5,14 @@ import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 
 const useThrowCustomError = (
+	isError: boolean,
 	error: AxiosError<{
 		errorCode: keyof typeof ErrorMessage;
 		message: string;
 	}> | null,
 ) => {
 	useEffect(() => {
-		if (error) {
+		if (isError && error) {
 			if (!error.response || typeof error.response.data === 'undefined') {
 				throw new CustomError('0000');
 			}

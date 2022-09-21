@@ -8,13 +8,13 @@ import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { queryClient } from '@/index';
 
 const useDeleteComment = () => {
-	const { isLoading, error, isSuccess, mutate } = useMutation<
+	const { isLoading, error, isError, isSuccess, mutate } = useMutation<
 		unknown,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ commentId: string }
 	>(deleteComments, { retry: 1 });
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	const onDeleteButtonClick = (id: number) => {
 		if (confirm('정말로 삭제하시겠습니까?')) {

@@ -8,7 +8,7 @@ import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { queryClient } from '@/index';
 
 const usePostVoteItem = (articleId: string) => {
-	const { error, mutate, isSuccess, isLoading } = useMutation<
+	const { error, mutate, isError, isSuccess, isLoading } = useMutation<
 		unknown,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ articleId: string; voteItemId: string }
@@ -20,7 +20,7 @@ const usePostVoteItem = (articleId: string) => {
 		}
 	}, [isSuccess]);
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	const onChangeRadio = (articleId: string, idx: number) => {
 		mutate({ articleId, voteItemId: String(idx) });

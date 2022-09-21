@@ -14,7 +14,7 @@ import { afterWeekGenerator, currentTimeGenerator, todayGenerator } from '@/util
 const VoteDeadlineGenerator = () => {
 	const { articleId, items } = useLocationState<{ articleId: string; items: string[] }>();
 	const navigate = useNavigate();
-	const { isLoading, mutate, error, isSuccess } = useMutation<
+	const { isLoading, mutate, isError, error, isSuccess } = useMutation<
 		AxiosResponse<{ articleId: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ articleId: string; items: string[]; expiryDate: string }
@@ -35,7 +35,7 @@ const VoteDeadlineGenerator = () => {
 		}
 	}, [isSuccess]);
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	const handleSubmitVoteDeadlineForm = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();

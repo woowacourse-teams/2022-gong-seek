@@ -17,7 +17,7 @@ const usePostWritingArticles = ({
 	category?: string;
 	isAnonymous: boolean;
 }) => {
-	const { data, mutate, isLoading, isSuccess, error } = useMutation<
+	const { data, mutate, isError, isLoading, isSuccess, error } = useMutation<
 		AxiosResponse<{ id: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ title: string; category: string; content: string; tag: string[]; isAnonymous: boolean }
@@ -31,7 +31,7 @@ const usePostWritingArticles = ({
 	const titleInputRef = useRef<HTMLInputElement>(null);
 	const navigate = useNavigate();
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	if (typeof category === 'undefined') {
 		throw new Error('카테고리가 존재하지 않습니다.');

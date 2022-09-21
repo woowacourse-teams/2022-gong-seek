@@ -7,12 +7,12 @@ import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { UserCommentResponse } from '@/types/commentResponse';
 
 const useGetUserComments = () => {
-	const { data, isSuccess, isLoading, isIdle, error } = useQuery<
+	const { data, isSuccess, isError, isLoading, isIdle, error } = useQuery<
 		UserCommentResponse,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('user-comments', getUserComments, { retry: 1, refetchOnWindowFocus: false });
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	return {
 		data,

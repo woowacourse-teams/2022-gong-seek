@@ -10,7 +10,7 @@ import { articleState } from '@/store/articleState';
 import { ArticleType } from '@/types/articleResponse';
 
 const useGetDetailArticle = (id: string) => {
-	const { data, isSuccess, isLoading, error, isIdle } = useQuery<
+	const { data, isSuccess, isError, isLoading, error, isIdle } = useQuery<
 		ArticleType,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(['detail-article', `article${id}`], () => getDetailArticle(id), {
@@ -19,7 +19,7 @@ const useGetDetailArticle = (id: string) => {
 	});
 	const setTempArticle = useSetRecoilState(articleState);
 
-	useThrowCustomError(error);
+	useThrowCustomError(isError, error);
 
 	useEffect(() => {
 		if (isSuccess) {
