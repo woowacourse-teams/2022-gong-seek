@@ -69,7 +69,8 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 		}
 
 		if (isRefreshTokenError(errorCode)) {
-			navigate(URL.HOME);
+			localStorage.removeItem('accessToken');
+			window.location.href = URL.HOME;
 		}
 		//위의 에러코드를 제외하고는 모두 snackBar만을 보여주도록 함.
 		showSnackBar(errorMessage);

@@ -12,7 +12,8 @@ export const isAuthenticatedError = (errorCode: keyof typeof ErrorMessage) =>
 export const isInValidTokenError = (errorCode: keyof typeof ErrorMessage) =>
 	errorCode === '1004' || errorCode === '1005' || errorCode === '1003';
 
-export const isRefreshTokenError = (errorCode: keyof typeof ErrorMessage) => errorCode === '1010';
+export const isRefreshTokenError = (errorCode: keyof typeof ErrorMessage) =>
+	errorCode === '1010' || errorCode === '1011';
 
 export const isVoteError = (errorCode: keyof typeof ErrorMessage) =>
 	errorCode === '5002' || errorCode === '5003' || errorCode === '5009';
