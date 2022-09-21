@@ -4,10 +4,7 @@ import com.woowacourse.gongseek.vote.domain.VoteHistory;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface VoteHistoryRepository extends JpaRepository<VoteHistory, Long> {
+public interface VoteHistoryRepository extends JpaRepository<VoteHistory, Long>, VoteHistoryRepositoryCustom {
 
-    Optional<VoteHistory> findByVoteIdAndMemberId(Long voteId, Long memberId);
-
-    void deleteByVoteIdAndMemberId(Long voteId, Long memberId);
-
+    Optional<VoteHistory> findByMemberId(Long memberId);
 }

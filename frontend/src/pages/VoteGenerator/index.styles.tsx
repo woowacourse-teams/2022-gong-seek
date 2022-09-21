@@ -57,6 +57,10 @@ export const Content = styled.div`
 	margin-top: ${({ theme }) => theme.size.SIZE_026};
 `;
 
+export const InputValidMessage = styled.p<{ isValid: boolean }>`
+	color: ${({ theme, isValid }) => (isValid ? theme.colors.BLUE_500 : theme.colors.RED_500)};
+`;
+
 export const SubmitButton = styled.button`
 	width: 60%;
 
@@ -106,6 +110,12 @@ export const AddButtonWrapper = styled.button`
 
 	appearance: none;
 	background: none;
+
+	&:disabled ${AddButton} {
+		cursor: not-allowed;
+		color: ${({ theme }) => theme.colors.GRAY_500};
+		opacity: 0.7;
+	}
 `;
 
 export const RegisteredOptionTitle = styled.h2`
