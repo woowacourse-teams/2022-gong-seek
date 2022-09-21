@@ -4,9 +4,9 @@ import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { postWritingArticle } from '@/api/article';
-import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { CATEGORY } from '@/constants/categoryType';
+import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { validatedTitleInput } from '@/utils/validateInput';
 import { Editor } from '@toast-ui/react-editor';
 
@@ -35,10 +35,10 @@ const usePostWritingArticles = ({
 	const [categoryOption, setCategoryOption] = useState<string>(category ? category : '');
 	const [isValidTitleInput, setIsValidTitleInput] = useState(true);
 	const [hashTags, setHashTags] = useState<string[]>([]);
-
 	const titleInputRef = useRef<HTMLInputElement>(null);
-
 	const navigate = useNavigate();
+
+	useThrowCustomError(isError, error);
 
 	if (typeof category === 'undefined') {
 		throw new Error('카테고리가 존재하지 않습니다.');
@@ -57,6 +57,7 @@ const usePostWritingArticles = ({
 		}
 	}, [isSuccess]);
 
+<<<<<<< HEAD
 	useEffect(() => {
 		if (isError) {
 			if (!error.response) {
@@ -70,6 +71,9 @@ const usePostWritingArticles = ({
 	}, [isError]);
 
 	const handleSubmitButtonClick = (categoryOption: string, tempArticleId: number | '') => {
+=======
+	const handleSubmitButtonClick = (categoryOption: string) => {
+>>>>>>> origin
 		if (content.current === null) {
 			return;
 		}

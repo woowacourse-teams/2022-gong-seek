@@ -83,8 +83,8 @@ public class VoteService {
         Vote foundVote = getVoteByArticleId(articleId);
         List<VoteItem> voteItems = voteItemRepository.findAllByVoteArticleId(articleId);
 
-        VoteHistory voteHistory = voteHistoryRepository.findByVoteIdAndMemberId(foundVote.getId(),
-                appMember.getPayload()).orElse(null);
+        VoteHistory voteHistory = voteHistoryRepository.findByMemberId(appMember.getPayload())
+                .orElse(null);
         return VoteResponse.of(foundVote.getArticle().getId(), voteItems, getVotedItemIdOrNull(voteHistory),
                 foundVote.isExpired());
     }
@@ -106,27 +106,20 @@ public class VoteService {
         Member member = getMember(appMember);
         VoteItem selectedVoteItem = getVoteItem(selectVoteItemIdRequest.getVoteItemId());
 
-        deleteOriginVoteIfExist(vote, member);
-        saveVoteHistory(vote, member, selectedVoteItem);
+        voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(),
+                member.getId()).ifPresentOrElse(
+                voteHistory -> voteHistory.changeVoteItem(selectedVoteItem),
+                () -> saveVoteHistory(member, selectedVoteItem)
+        );
     }
 
-    private void deleteOriginVoteIfExist(Vote vote, Member member) {
-        voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(), member.getId())
-                .ifPresent(this::deleteVoteHistory);
-    }
-
-    private void deleteVoteHistory(VoteHistory voteHistory) {
-        voteHistory.getVoteItem().decreaseAmount();
-        voteHistoryRepository.delete(voteHistory);
+    private void saveVoteHistory(Member member, VoteItem selectedVoteItem) {
+        selectedVoteItem.increaseAmount();
+        voteHistoryRepository.save(new VoteHistory(member, selectedVoteItem));
     }
 
     private VoteItem getVoteItem(Long voteItemId) {
         return voteItemRepository.findById(voteItemId)
                 .orElseThrow(() -> new VoteItemNotFoundException(voteItemId));
-    }
-
-    private void saveVoteHistory(Vote vote, Member member, VoteItem selectedVoteItem) {
-        selectedVoteItem.increaseAmount();
-        voteHistoryRepository.save(new VoteHistory(member, vote, selectedVoteItem));
     }
 }

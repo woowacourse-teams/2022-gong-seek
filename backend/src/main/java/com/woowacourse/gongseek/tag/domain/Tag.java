@@ -24,7 +24,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = MAX_NAME_LENGTH)
+    @Column(name = "name", unique = true, nullable = false, length = MAX_NAME_LENGTH)
     private String name;
 
     public Tag(String name) {

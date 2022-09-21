@@ -2,10 +2,13 @@ package com.woowacourse.gongseek.auth.presentation;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -101,7 +104,7 @@ class AuthControllerTest {
     void 토큰_재발급_API_문서화() throws Exception {
         UUID refreshToken = UUID.randomUUID();
 
-        given(jwtTokenProvider.isValidAccessTokenWithTimeOut(any())).willReturn(true);
+        doNothing().when(jwtTokenProvider).isValidAccessTokenWithTimeOut(any());
 
         given(authService.renewToken(any())).willReturn(
                 TokenResponse.builder()
@@ -129,6 +132,27 @@ class AuthControllerTest {
                                 ),
                                 responseFields(
                                         fieldWithPath("accessToken").type(JsonFieldType.STRING).description("갱신된 엑세스 토큰")
+                                )
+                        )
+                );
+    }
+
+    @Test
+    void 로그아웃_API_문서화() throws Exception {
+
+        ResultActions results = mockMvc.perform(delete("/api/auth/logout")
+                .header(HttpHeaders.COOKIE, "refreshToken")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8"));
+
+        results.andExpect(status().isNoContent())
+                .andDo(print())
+                .andDo(document("logout",
+                                requestHeaders(
+                                        headerWithName(HttpHeaders.COOKIE).description("기존의 리프레시 토큰")
+                                ),
+                                responseHeaders(
+                                        headerWithName(HttpHeaders.SET_COOKIE).description("MAX_AGE가 0으로 만료된 토큰")
                                 )
                         )
                 );

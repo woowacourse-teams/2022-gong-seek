@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { postImageUrlConverter } from '@/api/image';
-import AnonymouseCheckBox from '@/components/common/AnonymousCheckBox/AnonymouseCheckBox';
+import AnonymousCheckBox from '@/components/common/AnonymousCheckBox/AnonymousCheckBox';
 import HashTag from '@/components/common/HashTag/HashTag';
 import Loading from '@/components/common/Loading/Loading';
 import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
@@ -144,7 +144,7 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 				<ToastUiEditor initContent={initContent} ref={content} />
 			</S.Content>
 			<S.SubmitBox>
-				<AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />
+				<AnonymousCheckBox setIsAnonymous={setIsAnonymous} />
 				<S.SubmitButton
 					type="button"
 					onClick={() => handleSubmitButtonClick(categoryOption, tempArticleId)}

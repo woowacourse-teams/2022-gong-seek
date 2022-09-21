@@ -15,12 +15,11 @@ import { getUserIsLogin } from '@/store/userState';
 import styled from '@emotion/styled';
 
 const MenuSlider = React.lazy(() => import('@/components/common/MenuSlider/MenuSlider'));
-
 const Home = React.lazy(() => import('@/pages/Home'));
 const CategoryArticles = React.lazy(() => import('@/pages/CategoryArticles/CategoryArticles'));
 const CategorySelector = React.lazy(() => import('@/pages/CategorySelector/CategorySelector'));
 const DiscussionDetail = React.lazy(() => import('@/pages/DiscussionDetail'));
-const ErrorDetail = React.lazy(() => import('@/pages/ErrorDetail'));
+const QuestionDetail = React.lazy(() => import('@/pages/QuestionDetail'));
 const HashTagSearch = React.lazy(() => import('@/pages/HashTagSearch'));
 const InquirePage = React.lazy(() => import('@/pages/Inquire'));
 const Login = React.lazy(() => import('@/pages/Login'));
@@ -98,7 +97,7 @@ const App = () => {
 							<Route path={URL.LOGIN} element={<Login />} />
 						</Route>
 						<Route path={URL.CATEGORY_ARTICLE} element={<CategoryArticles />} />
-						<Route path={URL.QUESTION_DETAIL} element={<ErrorDetail />} />
+						<Route path={URL.QUESTION_DETAIL} element={<QuestionDetail />} />
 						<Route path={URL.DISCUSSION_DETAIL} element={<DiscussionDetail />} />
 						<Route path={URL.MODIFY_ARTICLE} element={<UpdateWriting />} />
 						<Route path={URL.SEARCH_RESULT} element={<Search />} />

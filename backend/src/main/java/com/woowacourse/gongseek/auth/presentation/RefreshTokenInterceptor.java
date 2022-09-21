@@ -24,13 +24,7 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
         }
 
         String accessToken = TokenExtractor.extract(request.getHeader(HttpHeaders.AUTHORIZATION));
-        validateAccessToken(accessToken);
+        jwtTokenProvider.isValidAccessTokenWithTimeOut(accessToken);
         return true;
-    }
-
-    private void validateAccessToken(String accessToken) {
-        if (!jwtTokenProvider.isValidAccessTokenWithTimeOut(accessToken)) {
-            throw new UnAuthorizedTokenException();
-        }
     }
 }
