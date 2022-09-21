@@ -1,10 +1,10 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { useMutation } from 'react-query';
 
 import { postTempArticle } from '@/api/tempArticle';
-import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 
 export interface postTempArticleProps {
 	title: string;
@@ -22,7 +22,7 @@ const usePostTempArticle = ({
 	tempArticleId: number | '';
 	setTempArticleId: Dispatch<SetStateAction<number | ''>>;
 }) => {
-	const { isSuccess, isError, isLoading, mutate } = useMutation<
+	const { isSuccess, isError, isLoading, error, mutate } = useMutation<
 		AxiosResponse<{ id: number }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{
@@ -34,6 +34,8 @@ const usePostTempArticle = ({
 			tempArticleId: number | '';
 		}
 	>(['temp-article', tempArticleId], postTempArticle);
+
+	useThrowCustomError(isError, error);
 
 	const saveTempArticleId = ({
 		title,
@@ -53,15 +55,6 @@ const usePostTempArticle = ({
 			{
 				onSuccess: (data) => {
 					setTempArticleId(data.data.id);
-				},
-				onError: (error) => {
-					if (!error.response) {
-						return;
-					}
-					throw new CustomError(
-						error.response?.data.errorCode,
-						ErrorMessage[error.response?.data.errorCode],
-					);
 				},
 			},
 		);
