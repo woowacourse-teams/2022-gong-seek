@@ -57,23 +57,7 @@ const usePostWritingArticles = ({
 		}
 	}, [isSuccess]);
 
-<<<<<<< HEAD
-	useEffect(() => {
-		if (isError) {
-			if (!error.response) {
-				return;
-			}
-			throw new CustomError(
-				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
-			);
-		}
-	}, [isError]);
-
 	const handleSubmitButtonClick = (categoryOption: string, tempArticleId: number | '') => {
-=======
-	const handleSubmitButtonClick = (categoryOption: string) => {
->>>>>>> origin
 		if (content.current === null) {
 			return;
 		}
