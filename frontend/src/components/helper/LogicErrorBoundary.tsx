@@ -36,7 +36,7 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 			typeof showSnackBar === 'undefined' ||
 			typeof navigate === 'undefined'
 		) {
-			return;
+			throw new CustomError('9999', '빠진 인자가 없는지 확인해주세요');
 		}
 		const errorMessage = ErrorMessage[errorCode];
 
