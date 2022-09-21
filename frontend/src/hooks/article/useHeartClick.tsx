@@ -1,10 +1,10 @@
-import useThrowCustomError from '../common/useThrowCustomError';
 import { AxiosError, AxiosResponse } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 
 import { deleteLikeArticle, postAddLikeArticle } from '@/api/like';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 
 const useHeartClick = ({
 	prevIsLike,

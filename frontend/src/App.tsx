@@ -1,4 +1,3 @@
-import RefreshErrorBoundary from './components/helper/RefreshErrorBoundary';
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -7,6 +6,7 @@ import Loading from '@/components/common/Loading/Loading';
 import SnackBar from '@/components/common/SnackBar/SnackBar';
 import PrivateRouter from '@/components/helper/PrivateRouter';
 import PublicRouter from '@/components/helper/PublicRouter';
+import RefreshErrorBoundary from '@/components/helper/RefreshErrorBoundary';
 import Header from '@/components/layout/Header/Header';
 import TabBar from '@/components/layout/TabBar/TabBar';
 import { URL } from '@/constants/url';

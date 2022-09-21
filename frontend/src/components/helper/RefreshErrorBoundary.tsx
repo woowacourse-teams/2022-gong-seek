@@ -1,9 +1,8 @@
-import CustomError from './CustomError';
-
 import CommonErrorBoundary, {
 	ErrorBoundaryProps,
 	ErrorBoundaryState,
 } from '@/components/helper/CommonErrorBoundary';
+import CustomError from '@/components/helper/CustomError';
 import { LogicErrorBoundaryProps } from '@/components/helper/LogicErrorBoundary';
 import { URL } from '@/constants/url';
 import { isInValidTokenError } from '@/utils/confirmErrorType';

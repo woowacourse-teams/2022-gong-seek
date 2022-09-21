@@ -1,4 +1,3 @@
-import { isRefreshTokenError } from '../../utils/confirmErrorType';
 import { NavigateFunction } from 'react-router-dom';
 
 import CommonErrorBoundary, {
@@ -9,6 +8,7 @@ import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { URL } from '@/constants/url';
 import { queryClient } from '@/index';
+import { isRefreshTokenError } from '@/utils/confirmErrorType';
 import {
 	isVoteError,
 	isCommentError,
