@@ -35,6 +35,11 @@ github:
     profile: http://localhost:8888/api/auth/user
     redirect: https://127.0.0.1/callback
 
+logging:
+  level.org:
+    hibernate.type:
+      descriptor:
+        sql.BasicBinder: TRACE
 cors:
   url:
     service: https://gongseek.site

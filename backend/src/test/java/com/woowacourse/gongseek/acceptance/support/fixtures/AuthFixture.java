@@ -61,4 +61,15 @@ public class AuthFixture {
                 .then().log().all()
                 .extract();
     }
+
+    public static ExtractableResponse<Response> 로그아웃을_한다(String refreshToken) {
+        return RestAssured
+                .given().log().all()
+                .cookie("refreshToken", refreshToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .delete("/api/auth/logout")
+                .then().log().all()
+                .extract();
+    }
 }
