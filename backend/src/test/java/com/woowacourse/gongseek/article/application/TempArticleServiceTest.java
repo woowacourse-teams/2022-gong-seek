@@ -111,7 +111,9 @@ class TempArticleServiceTest {
         assertAll(
                 () -> assertThat(tempArticles.getValues()).hasSize(2),
                 () -> assertThat(tempArticles.getValues().get(0).getTitle()).isEqualTo("title"),
-                () -> assertThat(tempArticles.getValues().get(1).getTitle()).isEqualTo("title2")
+                () -> assertThat(tempArticles.getValues().get(0).getCategory()).isEqualTo("question"),
+                () -> assertThat(tempArticles.getValues().get(1).getTitle()).isEqualTo("title2"),
+                () -> assertThat(tempArticles.getValues().get(1).getCategory()).isEqualTo("question")
         );
     }
 
