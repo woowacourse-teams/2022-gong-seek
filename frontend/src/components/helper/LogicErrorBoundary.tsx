@@ -1,4 +1,4 @@
-import { isNotAccessVoteError } from '../../utils/confirmErrorType';
+import { isNotAccessVoteError, isExpiredTokenError } from '../../utils/confirmErrorType';
 
 import CommonErrorBoundary from '@/components/helper/CommonErrorBoundary';
 import CustomError from '@/components/helper/CustomError';
@@ -52,7 +52,7 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 			navigate(URL.LOGIN);
 		}
 
-		if (isInValidTokenError(errorCode)) {
+		if (isExpiredTokenError(errorCode)) {
 			navigate(URL.REFRESH_TOKEN_HANDLER);
 		}
 
@@ -68,7 +68,7 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 			queryClient.invalidateQueries('comments');
 		}
 
-		if (isRefreshTokenError(errorCode)) {
+		if (isRefreshTokenError(errorCode) || isInValidTokenError(errorCode)) {
 			localStorage.removeItem('accessToken');
 			window.location.href = URL.HOME;
 		}
