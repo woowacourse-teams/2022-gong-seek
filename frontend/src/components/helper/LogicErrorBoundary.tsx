@@ -10,7 +10,10 @@ import {
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { URL } from '@/constants/url';
 import { queryClient } from '@/index';
-import { isRefreshTokenError } from '@/utils/confirmErrorType';
+import {
+	isAlreayLoginRefreshTokenError,
+	isInvalidRefreshTokenError,
+} from '@/utils/confirmErrorType';
 import {
 	isVoteError,
 	isCommentError,
@@ -68,7 +71,11 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 			queryClient.invalidateQueries('comments');
 		}
 
-		if (isRefreshTokenError(errorCode) || isInValidTokenError(errorCode)) {
+		if (isAlreayLoginRefreshTokenError(errorCode)) {
+			navigate(URL.HOME);
+		}
+
+		if (isInvalidRefreshTokenError(errorCode)) {
 			localStorage.removeItem('accessToken');
 			window.location.href = URL.HOME;
 		}
