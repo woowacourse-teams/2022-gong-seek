@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import gongseek from '@/assets/gongseek.png';
@@ -11,6 +12,7 @@ import { getUserIsLogin } from '@/store/userState';
 const Header = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const { isSearchOpen } = useRecoilValue(searchState);
+	const navigate = useNavigate();
 
 	if (isSearchOpen) {
 		return (
@@ -20,9 +22,9 @@ const Header = () => {
 						<S.LogoImage src={gongseek} />
 					</S.StyledLink>
 					<S.SearchOpenBox>
-						<S.StyledLink to={URL.SEARCH_RESULT}>
+						<div onClick={() => navigate(URL.SEARCH_RESULT)}>
 							<SearchBar isValid={false} />
-						</S.StyledLink>
+						</div>
 					</S.SearchOpenBox>
 				</S.HeaderSection>
 			</S.Container>
@@ -36,9 +38,9 @@ const Header = () => {
 					<S.LogoLink>공식</S.LogoLink>
 				</S.StyledLink>
 				<S.SearchBarBox>
-					<S.StyledLink to={URL.SEARCH_RESULT}>
+					<div onClick={() => navigate(URL.SEARCH_RESULT)}>
 						<SearchBar isValid={true} />
-					</S.StyledLink>
+					</div>
 				</S.SearchBarBox>
 			</S.HeaderSection>
 			<S.NavBar>
