@@ -9,7 +9,7 @@ import * as S from '@/pages/TemporaryArticles/TemporaryArticleList/TemporaryArti
 const TemporaryArticleList = () => {
 	const { data, isLoading } = useGetTempArticles();
 	const { deleteTempArticleId } = useDeleteTempArticle();
-	const nav = useNavigate();
+	const navigate = useNavigate();
 	if (isLoading) {
 		return <Loading />;
 	}
@@ -29,7 +29,7 @@ const TemporaryArticleList = () => {
 						<S.ArticleItemBox key={item.id}>
 							<TemporaryArticleItem
 								article={{ title: item.title, createAt: item.createAt }}
-								onClick={() => nav(`/temp-article/${item.category}/${item.id}`)}
+								onClick={() => navigate(`/temp-article/${item.category}/${item.id}`)}
 							/>
 							<S.DeleteButton onClick={() => handleTempArticleDeleteClick(item.id)} />
 						</S.ArticleItemBox>
