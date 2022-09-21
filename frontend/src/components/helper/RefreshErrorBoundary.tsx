@@ -1,9 +1,10 @@
-import CommonErrorBoundary, {
+import CommonErrorBoundary from '@/components/helper/CommonErrorBoundary';
+import CustomError from '@/components/helper/CustomError';
+import {
 	ErrorBoundaryProps,
 	ErrorBoundaryState,
-} from '@/components/helper/CommonErrorBoundary';
-import CustomError from '@/components/helper/CustomError';
-import { LogicErrorBoundaryProps } from '@/components/helper/LogicErrorBoundary';
+	LogicErrorBoundaryProps,
+} from '@/components/helper/types/ErrorBoundary.type';
 import { URL } from '@/constants/url';
 import { isInValidTokenError } from '@/utils/confirmErrorType';
 import WithHooksHOC from '@/utils/withHooksHOC';
