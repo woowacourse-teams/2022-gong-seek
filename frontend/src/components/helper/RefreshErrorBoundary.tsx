@@ -8,7 +8,7 @@ import { URL } from '@/constants/url';
 import { isInValidTokenError } from '@/utils/confirmErrorType';
 import WithHooksHOC from '@/utils/withHooksHOC';
 
-class RefreshErrorBoudary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
+class RefreshErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 	constructor(props: LogicErrorBoundaryProps & ErrorBoundaryProps) {
 		super(props);
 	}
@@ -38,4 +38,4 @@ class RefreshErrorBoudary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 	}
 }
 
-export default WithHooksHOC(RefreshErrorBoudary);
+export default WithHooksHOC(RefreshErrorBoundary);
