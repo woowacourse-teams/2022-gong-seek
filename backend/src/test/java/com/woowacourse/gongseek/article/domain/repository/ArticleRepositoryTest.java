@@ -393,12 +393,12 @@ class ArticleRepositoryTest {
                 new Article("title2", "content2", Category.DISCUSSION, member, false));
         Article thirdArticle = articleRepository.save(
                 new Article("title3", "content3", Category.DISCUSSION, member, false));
-        List<Tag> firstTags = List.of(new Tag("spring"), new Tag("java"));
-        List<Tag> secondTags = List.of(new Tag("spring"));
-        List<Tag> thirdTags = List.of(new Tag("java"));
+        Tag springTag = new Tag("spring");
+        Tag javaTag = new Tag("java");
+        List<Tag> firstTags = List.of(springTag, javaTag);
+        List<Tag> secondTags = List.of(springTag);
+        List<Tag> thirdTags = List.of(javaTag);
         tagRepository.saveAll(firstTags);
-        tagRepository.saveAll(secondTags);
-        tagRepository.saveAll(thirdTags);
         firstArticle.addTag(new Tags(firstTags));
         secondArticle.addTag(new Tags(secondTags));
         thirdArticle.addTag(new Tags(thirdTags));
