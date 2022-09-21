@@ -20,7 +20,14 @@ const usePostWritingArticles = ({
 	const { data, mutate, isError, isLoading, isSuccess, error } = useMutation<
 		AxiosResponse<{ id: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
-		{ title: string; category: string; content: string; tag: string[]; isAnonymous: boolean }
+		{
+			title: string;
+			category: string;
+			content: string;
+			tag: string[];
+			isAnonymous: boolean;
+			tempArticleId: number | '';
+		}
 	>(postWritingArticle, { retry: 1 });
 
 	const content = useRef<Editor | null>(null);
@@ -62,7 +69,7 @@ const usePostWritingArticles = ({
 		}
 	}, [isError]);
 
-	const handleSubmitButtonClick = (categoryOption: string) => {
+	const handleSubmitButtonClick = (categoryOption: string, tempArticleId: number | '') => {
 		if (content.current === null) {
 			return;
 		}
@@ -83,6 +90,7 @@ const usePostWritingArticles = ({
 			content: content.current.getInstance().getMarkdown(),
 			tag: hashTags,
 			isAnonymous,
+			tempArticleId,
 		});
 	};
 

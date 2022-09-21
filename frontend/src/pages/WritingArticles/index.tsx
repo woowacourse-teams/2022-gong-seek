@@ -61,7 +61,7 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 	useEffect(() => {
 		if (isTempDetailArticleSuccess && tempArticleData && tempArticleData.data) {
 			setTitle(tempArticleData.data.title);
-			setHashTags(tempArticleData.data.tag);
+			setHashTags(tempArticleData.data.tag.filter((item) => item !== ''));
 			setInitContent(tempArticleData.data.content);
 			setIsAnonymous(tempArticleData.data.isAnonymous);
 			setCategoryOption(tempArticleData.data.category);
@@ -88,10 +88,11 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 	//추후에 로딩 상태일 경우 안내메세지 추가하거나 애니메이션 추가하면 좋을 듯
 	const handleTempSavedButtonClick = () => {
 		if (content.current && category && titleInputRef.current) {
+			const tempTags = hashTags.filter((item) => item !== '');
 			saveTempArticleId({
 				title: titleInputRef.current.value,
 				category,
-				tag: hashTags ? hashTags : [],
+				tag: tempTags,
 				isAnonymous,
 				content: content.current?.getInstance().getMarkdown(),
 			});
@@ -144,7 +145,10 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 			</S.Content>
 			<S.SubmitBox>
 				<AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />
-				<S.SubmitButton type="button" onClick={() => handleSubmitButtonClick(categoryOption)}>
+				<S.SubmitButton
+					type="button"
+					onClick={() => handleSubmitButtonClick(categoryOption, tempArticleId)}
+				>
 					등록하기
 				</S.SubmitButton>
 			</S.SubmitBox>
