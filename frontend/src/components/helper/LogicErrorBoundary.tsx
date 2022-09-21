@@ -1,3 +1,5 @@
+import { isNotAccessVoteError } from '../../utils/confirmErrorType';
+
 import CommonErrorBoundary from '@/components/helper/CommonErrorBoundary';
 import CustomError from '@/components/helper/CustomError';
 import {
@@ -56,6 +58,10 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 
 		if (isVoteError(errorCode)) {
 			navigate(-1);
+		}
+
+		if (isNotAccessVoteError(errorCode)) {
+			navigate('article/discuttion');
 		}
 
 		if (isCommentError(errorCode)) {
