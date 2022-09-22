@@ -66,6 +66,9 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 			setIsAnonymous(tempArticleData.data.isAnonymous);
 			setCategoryOption(tempArticleData.data.category);
 		}
+		if (content.current && tempArticleData) {
+			content.current.getInstance().setMarkdown(tempArticleData.data.content);
+		}
 	}, [isTempDetailArticleSuccess]);
 
 	useEffect(() => {
