@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { ACCESSTOKEN_KEY } from '@/constants';
 import { HOME_URL } from '@/constants/apiUrl';
 import { SearchResultType } from '@/types/searchResponse';
 
@@ -71,7 +72,7 @@ export const getArticleByHashTag = async ({
 	hashTags: string;
 	cursorId: string;
 }) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
 	const encodedTarget = encodeURIComponent(hashTags);
 	const { data } = await axios.get<SearchResultType>(
 		`${HOME_URL}/api/articles/search/tags?tagsText=${encodedTarget}&cursorId=${cursorId}&size=6`,
@@ -99,7 +100,7 @@ export const getSearchResult = async ({
 	searchIndex: string;
 	cursorId: string;
 }) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
 
 	if (searchIndex === '유저') {
 		const data = await getUserSearchResult({ accessToken, target, searchIndex, cursorId });

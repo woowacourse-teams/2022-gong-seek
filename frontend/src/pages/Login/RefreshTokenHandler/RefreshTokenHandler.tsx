@@ -5,6 +5,7 @@ import { useQuery } from 'react-query';
 import { getAccessTokenByRefreshToken } from '@/api/login';
 import Loading from '@/components/common/Loading/Loading';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import { ACCESSTOKEN_KEY } from '@/constants/index';
 import { URL } from '@/constants/url';
 import useSnackBar from '@/hooks/common/useSnackBar';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
@@ -23,9 +24,9 @@ const RefreshTokenHandler = () => {
 
 	useEffect(() => {
 		if (isSuccess) {
+			localStorage.setItem(ACCESSTOKEN_KEY, data.accessToken);
+			location.href = URL.HOME;
 			showSnackBar('재로그인 되었습니다');
-			localStorage.setItem('accessToken', data.accessToken);
-			window.location.href = URL.HOME;
 		}
 	}, [isSuccess]);
 

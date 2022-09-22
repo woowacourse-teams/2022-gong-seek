@@ -7,6 +7,7 @@ import {
 	ErrorBoundaryState,
 	LogicErrorBoundaryProps,
 } from '@/components/helper/types/ErrorBoundary.type';
+import { ACCESSTOKEN_KEY } from '@/constants';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { URL } from '@/constants/url';
 import { queryClient } from '@/index';
@@ -77,7 +78,7 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 		}
 
 		if (isInvalidRefreshTokenError(errorCode)) {
-			localStorage.removeItem('accessToken');
+			localStorage.removeItem(ACCESSTOKEN_KEY);
 			window.location.href = URL.HOME;
 		}
 		showSnackBar(errorMessage);
