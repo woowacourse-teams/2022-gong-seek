@@ -4,12 +4,10 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Loading from '@/components/common/Loading/Loading';
 import SnackBar from '@/components/common/SnackBar/SnackBar';
-import ErrorBoundary from '@/components/helper/ErrorBoundary';
 import PrivateRouter from '@/components/helper/PrivateRouter';
 import PublicRouter from '@/components/helper/PublicRouter';
 import Header from '@/components/layout/Header/Header';
 import TabBar from '@/components/layout/TabBar/TabBar';
-
 import { URL } from '@/constants/url';
 import { dropdownState } from '@/store/dropdownState';
 import { menuSliderState } from '@/store/menuSliderState';
@@ -17,12 +15,11 @@ import { getUserIsLogin } from '@/store/userState';
 import styled from '@emotion/styled';
 
 const MenuSlider = React.lazy(() => import('@/components/common/MenuSlider/MenuSlider'));
-
 const Home = React.lazy(() => import('@/pages/Home'));
 const CategoryArticles = React.lazy(() => import('@/pages/CategoryArticles/CategoryArticles'));
 const CategorySelector = React.lazy(() => import('@/pages/CategorySelector/CategorySelector'));
 const DiscussionDetail = React.lazy(() => import('@/pages/DiscussionDetail'));
-const ErrorDetail = React.lazy(() => import('@/pages/ErrorDetail'));
+const QuestionDetail = React.lazy(() => import('@/pages/QuestionDetail'));
 const HashTagSearch = React.lazy(() => import('@/pages/HashTagSearch'));
 const InquirePage = React.lazy(() => import('@/pages/Inquire'));
 const Login = React.lazy(() => import('@/pages/Login'));
@@ -37,11 +34,15 @@ const UpdateWriting = React.lazy(() => import('@/pages/UpdateWriting'));
 const VoteDeadlineGenerator = React.lazy(() => import('@/pages/VoteDeadlineGenerator'));
 const VoteGenerator = React.lazy(() => import('@/pages/VoteGenerator'));
 const WritingArticles = React.lazy(() => import('@/pages/WritingArticles'));
+const TemporaryArticles = React.lazy(() => import('@/pages/TemporaryArticles'));
+const WritingTempArticle = React.lazy(() => import('@/pages/WritingTempArticle'));
 
 const Layout = styled.div`
 	position: relative;
 	height: 100vh;
 	width: 100vw;
+	max-width: 1500px;
+	margin: 0 auto;
 `;
 
 const Content = styled.main`
@@ -49,7 +50,19 @@ const Content = styled.main`
 	min-height: calc(100vh - 2 * ${({ theme }) => theme.size.SIZE_126});
 	padding-bottom: 7rem;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
+		width: calc(100% - ${({ theme }) => theme.size.SIZE_060} * 2);
+		padding: 1rem 5rem;
+		justify-content: space-between;
+	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_MIDDLE}) {
+		width: calc(100% - ${({ theme }) => theme.size.SIZE_110} * 2);
+		padding: 1rem 7rem;
+		justify-content: space-between;
+	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: calc(100% - ${({ theme }) => theme.size.SIZE_160} * 2);
 		padding: 1rem ${({ theme }) => theme.size.SIZE_160};
 		justify-content: space-between;
@@ -80,9 +93,8 @@ const App = () => {
 			}}
 		>
 			<Header />
-			<ErrorBoundary enable={false}>
-				<Content>
-        <Suspense fallback={<Loading />}>
+			<Content>
+				<Suspense fallback={<Loading />}>
 					<Routes>
 						<Route path={URL.LOGIN_CONTROLLER} element={<LoginController />} />
 						<Route path={URL.REFRESH_TOKEN_HANDLER} element={<RefreshTokenHandler />} />
@@ -92,12 +104,14 @@ const App = () => {
 							<Route path={URL.VOTE_GENERATOR} element={<VoteGenerator />} />
 							<Route path={URL.MY_PAGE} element={<MyPage />} />
 							<Route path={URL.VOTE_DEADLINE_GENERATOR} element={<VoteDeadlineGenerator />} />
+							<Route path={URL.TEMP_ARTICLE_LIST} element={<TemporaryArticles />} />
+							<Route path={URL.UPDATE_TEMP_ARTICLE} element={<WritingTempArticle />} />
 						</Route>
 						<Route element={<PublicRouter isAuthenticated={isLogin} />}>
 							<Route path={URL.LOGIN} element={<Login />} />
 						</Route>
 						<Route path={URL.CATEGORY_ARTICLE} element={<CategoryArticles />} />
-						<Route path={URL.QUESTION_DETAIL} element={<ErrorDetail />} />
+						<Route path={URL.QUESTION_DETAIL} element={<QuestionDetail />} />
 						<Route path={URL.DISCUSSION_DETAIL} element={<DiscussionDetail />} />
 						<Route path={URL.MODIFY_ARTICLE} element={<UpdateWriting />} />
 						<Route path={URL.SEARCH_RESULT} element={<Search />} />
@@ -106,9 +120,8 @@ const App = () => {
 						<Route path={URL.NOT_FOUND} element={<NotFound />} />
 						<Route path={URL.HOME} element={<Home />} />
 					</Routes>
-          </Suspense>
-				</Content>
-			</ErrorBoundary>
+				</Suspense>
+			</Content>
 			<TabBar />
 			<SnackBar />
 			{sliderState.isOpen && <Dimmer onClick={() => setSliderState({ isOpen: false })} />}

@@ -55,4 +55,18 @@ include::{snippets}/renew-token/http-response.adoc[]
 include::{snippets}/renew-token/response-headers.adoc[]
 include::{snippets}/renew-token/response-fields.adoc[]
 
+== 로그아웃
+
+`DELETE /api/auth/logout'
+
+=== Request
+
+include::{snippets}/logout/http-request.adoc[]
+include::{snippets}/logout/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/logout/http-response.adoc[]
+include::{snippets}/logout/response-headers.adoc[]
+
 

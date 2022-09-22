@@ -2,7 +2,7 @@ import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 import * as S from '@/components/common/AnonymousCheckBox/AnonymousCheckBox.styles';
 
-const AnonymouseCheckBox = ({
+const AnonymousCheckBox = ({
 	setIsAnonymous,
 }: {
 	setIsAnonymous: Dispatch<SetStateAction<boolean>>;
@@ -19,4 +19,4 @@ const AnonymouseCheckBox = ({
 	);
 };
 
-export default AnonymouseCheckBox;
+export default AnonymousCheckBox;

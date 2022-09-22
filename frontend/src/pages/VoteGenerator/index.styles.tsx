@@ -27,7 +27,7 @@ export const ContentForm = styled.form`
 	width: 100%;
 	height: 100%;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 60%;
 		margin-top: ${({ theme }) => theme.size.SIZE_050};
 	}
@@ -41,7 +41,7 @@ export const OptionInputBox = styled.div`
 
 	width: 90%;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 50%;
 	}
 `;
@@ -55,6 +55,10 @@ export const Content = styled.div`
 	width: 90%;
 
 	margin-top: ${({ theme }) => theme.size.SIZE_026};
+`;
+
+export const InputValidMessage = styled.p<{ isValid: boolean }>`
+	color: ${({ theme, isValid }) => (isValid ? theme.colors.BLUE_500 : theme.colors.RED_500)};
 `;
 
 export const SubmitButton = styled.button`
@@ -78,7 +82,7 @@ export const SubmitButton = styled.button`
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
 	}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 40%;
 		padding: ${({ theme }) => theme.size.SIZE_008};
 		font-size: ${({ theme }) => theme.size.SIZE_014};
@@ -106,6 +110,12 @@ export const AddButtonWrapper = styled.button`
 
 	appearance: none;
 	background: none;
+
+	&:disabled ${AddButton} {
+		cursor: not-allowed;
+		color: ${({ theme }) => theme.colors.GRAY_500};
+		opacity: 0.7;
+	}
 `;
 
 export const RegisteredOptionTitle = styled.h2`

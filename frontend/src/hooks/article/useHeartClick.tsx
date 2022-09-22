@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 
 import { deleteLikeArticle, postAddLikeArticle } from '@/api/like';
+import { ErrorMessage } from '@/constants/ErrorMessage';
+import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 
 const useHeartClick = ({
 	prevIsLike,
@@ -17,35 +19,36 @@ const useHeartClick = ({
 	const [likeCount, setLikeCount] = useState(prevLikeCount);
 	const {
 		mutate: postMutate,
-		isError: postIsError,
+		isError: isPostError,
 		error: postError,
 		isSuccess: postIsSuccess,
-	} = useMutation<AxiosResponse, AxiosError, string>(`like${articleId}`, postAddLikeArticle, {
+	} = useMutation<
+		AxiosResponse,
+		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
+		string
+	>(`like${articleId}`, postAddLikeArticle, {
 		retry: 1,
 	});
 	const {
 		mutate: deleteMutate,
-		isError: deleteIsError,
+		isError: isDeleteError,
 		error: deleteError,
 		isSuccess: deleteIsSuccess,
-	} = useMutation<AxiosResponse, AxiosError, string>(`unlike${articleId}`, deleteLikeArticle, {
+	} = useMutation<
+		AxiosResponse,
+		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
+		string
+	>(`unlike${articleId}`, deleteLikeArticle, {
 		retry: 1,
 	});
+
+	useThrowCustomError(isPostError, postError);
+	useThrowCustomError(isDeleteError, deleteError);
 
 	useEffect(() => {
 		setIsLike(prevIsLike);
 		setLikeCount(prevLikeCount);
 	}, [prevIsLike, prevLikeCount]);
-
-	useEffect(() => {
-		if (postIsError) {
-			throw new Error(postError.message);
-		}
-
-		if (deleteIsError) {
-			throw new Error(deleteError.message);
-		}
-	}, [postIsError, deleteIsError]);
 
 	useEffect(() => {
 		if (deleteIsSuccess) {

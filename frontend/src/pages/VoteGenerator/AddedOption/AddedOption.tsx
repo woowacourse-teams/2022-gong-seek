@@ -25,7 +25,7 @@ const OptionBox = styled.div`
 	box-shadow: 1px 1px 4px ${({ theme }) => theme.boxShadows.primary};
 	padding: 0 ${({ theme }) => theme.size.SIZE_012};
 
-	overflow: scroll;
+	overflow-x: scroll;
 `;
 
 const Trash = styled(AiFillDelete)`
@@ -36,7 +36,7 @@ const Trash = styled(AiFillDelete)`
 	:hover {
 		color: ${({ theme }) => theme.colors.RED_500};
 	}
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		font-size: ${({ theme }) => theme.size.SIZE_020};
 	}
 `;

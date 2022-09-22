@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import { putArticle } from '@/api/article';
-import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import { queryClient } from '@/index';
+import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { articleState } from '@/store/articleState';
 import { validatedTitleInput } from '@/utils/validateInput';
 import { Editor } from '@toast-ui/react-editor';
@@ -23,7 +24,7 @@ const usePostUpdateWritingArticle = () => {
 	const [isValidTitleInput, setIsValidTitleInput] = useState(true);
 	const titleInputRef = useRef<HTMLInputElement>(null);
 
-	const { data, isError, isSuccess, isLoading, error, mutate } = useMutation<
+	const { data, isSuccess, isError, isLoading, error, mutate } = useMutation<
 		AxiosResponse<{ id: number; category: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{ title: string; content: string; id: string; tag: string[] }
@@ -35,17 +36,7 @@ const usePostUpdateWritingArticle = () => {
 		}
 	}, [isSuccess]);
 
-	useEffect(() => {
-		if (isError) {
-			if (!error.response) {
-				return;
-			}
-			throw new CustomError(
-				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
-			);
-		}
-	}, [isError]);
+	useThrowCustomError(isError, error);
 
 	const handleUpdateButtonClick = (id: string) => {
 		if (content.current === null) {
@@ -60,7 +51,15 @@ const usePostUpdateWritingArticle = () => {
 			return;
 		}
 		setIsValidTitleInput(true);
-		mutate({ title, content: content.current.getInstance().getMarkdown(), id, tag: hashTag });
+		mutate(
+			{ title, content: content.current.getInstance().getMarkdown(), id, tag: hashTag },
+			{
+				onSuccess: ({ data }) => {
+					queryClient.refetchQueries(['detail-article', `article${data.id}`]);
+					window.location.href = `/articles/${data.category}/${data.id}`;
+				},
+			},
+		);
 	};
 
 	return {

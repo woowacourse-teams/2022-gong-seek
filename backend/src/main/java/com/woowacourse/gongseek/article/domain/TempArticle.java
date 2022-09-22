@@ -2,10 +2,10 @@ package com.woowacourse.gongseek.article.domain;
 
 import com.woowacourse.gongseek.member.domain.Member;
 import java.time.LocalDateTime;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -22,8 +22,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
@@ -59,30 +61,12 @@ public class TempArticle {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    public TempArticle(String title, String content, String category, Member member, List<String> tempTags,
-                       boolean isAnonymous) {
-        this(
-                null,
-                new Title(title),
-                new Content(content),
-                Category.from(category),
-                member,
-                new TempTags(tempTags),
-                isAnonymous,
-                LocalDateTime.now()
-        );
-    }
-
     public void update(TempArticle tempArticle) {
         this.title = tempArticle.getTitle();
         this.content = tempArticle.getContent();
         this.category = tempArticle.getCategory();
-        this.tempTags = new TempTags(tempArticle.getTempTags());
+        this.tempTags = tempArticle.getTempTags();
         this.isAnonymous = tempArticle.isAnonymous;
         this.createdAt = LocalDateTime.now();
-    }
-
-    public List<String> getTempTags() {
-        return tempTags.toResponse();
     }
 }

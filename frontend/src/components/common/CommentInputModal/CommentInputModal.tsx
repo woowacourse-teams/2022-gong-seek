@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import reactDom from 'react-dom';
 
 import { postImageUrlConverter } from '@/api/image';
-import AnonymouseCheckBox from '@/components/common/AnonymousCheckBox/AnonymouseCheckBox';
+import AnonymousCheckBox from '@/components/common/AnonymousCheckBox/AnonymousCheckBox';
 import * as S from '@/components/common/CommentInputModal/CommentInputModal.styles';
 import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
 import usePostCommentInputModal from '@/hooks/comment/usePostCommentInputModal';
@@ -109,7 +109,7 @@ const CommentInputModal = ({
 				<ToastUiEditor initContent={placeholder} ref={commentContent} />
 			</S.CommentContentBox>
 			<S.SubmitBox>
-				{modalType === 'register' && <AnonymouseCheckBox setIsAnonymous={setIsAnonymous} />}
+				{modalType === 'register' && <AnonymousCheckBox setIsAnonymous={setIsAnonymous} />}
 				<S.CommentPostButton onClick={onClickCommentPostButton}>
 					{modalStatus[modalType].buttonText}
 				</S.CommentPostButton>
