@@ -3,40 +3,34 @@ import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 
 import { getAccessTokenByRefreshToken } from '@/api/login';
-import CustomError from '@/components/helper/CustomError';
+import Loading from '@/components/common/Loading/Loading';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import { ACCESSTOKEN_KEY } from '@/constants/index';
 import { URL } from '@/constants/url';
 import useSnackBar from '@/hooks/common/useSnackBar';
+import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 
 const RefreshTokenHandler = () => {
 	const { data, isSuccess, isError, error } = useQuery<
 		{ accessToken: string },
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
-	>('getBack-accessToken', getAccessTokenByRefreshToken);
+	>('getBack-accessToken', getAccessTokenByRefreshToken, {
+		retry: 1,
+	});
 
 	const { showSnackBar } = useSnackBar();
 
-	useEffect(() => {
-		if (isError) {
-			if (!error.response) {
-				return;
-			}
-			throw new CustomError(
-				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
-			);
-		}
-	}, [isError]);
+	useThrowCustomError(isError, error);
 
 	useEffect(() => {
 		if (isSuccess) {
-			localStorage.setItem('accessToken', data.accessToken);
+			localStorage.setItem(ACCESSTOKEN_KEY, data.accessToken);
 			location.href = URL.HOME;
 			showSnackBar('재로그인 되었습니다');
 		}
 	}, [isSuccess]);
 
-	return <div>재로그인중입니다</div>;
+	return <Loading />;
 };
 
 export default RefreshTokenHandler;

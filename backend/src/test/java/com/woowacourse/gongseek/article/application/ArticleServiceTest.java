@@ -6,7 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.Content;
 import com.woowacourse.gongseek.article.domain.TempArticle;
+import com.woowacourse.gongseek.article.domain.TempTags;
+import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
@@ -30,7 +33,6 @@ import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
 import com.woowacourse.gongseek.vote.application.VoteService;
-import com.woowacourse.gongseek.vote.domain.Vote;
 import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
@@ -747,8 +749,6 @@ public class ArticleServiceTest {
         Article article = articleRepository.save(
                 new Article("title2", "content2", Category.DISCUSSION, member, false));
 
-        Vote vote = new Vote(article, LocalDateTime.now().plusDays(3));
-
         LoginMember loginMember = new LoginMember(member.getId());
         voteService.create(loginMember, article.getId(),
                 new VoteCreateRequest(Set.of("A번", "B번", "C번"), LocalDateTime.now().plusDays(4)));
@@ -756,18 +756,23 @@ public class ArticleServiceTest {
         voteService.doVote(article.getId(), loginMember, new SelectVoteItemIdRequest(1L));
         articleService.delete(loginMember, article.getId());
         assertAll(
-                () -> assertThat(voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(),
-                        loginMember.getPayload())).isEmpty(),
                 () -> assertThat(articleRepository.findById(article.getId())).isEmpty(),
-                () -> assertThat(voteItemRepository.findAll()).isEmpty()
+                () -> assertThat(voteItemRepository.findAll()).isEmpty(),
+                () -> assertThat(voteHistoryRepository.findAll()).isEmpty()
         );
     }
 
     @Transactional
     @Test
     void 게시글을_생성하면_임시_게시글은_삭제된다() {
-        final TempArticle tempArticle = tempArticleRepository.save(
-                new TempArticle("title", "content", Category.DISCUSSION.getValue(), member, List.of("spring"), false));
+        final TempArticle tempArticle = tempArticleRepository.save(TempArticle.builder()
+                .title(new Title("title"))
+                .content(new Content("content"))
+                .category(Category.QUESTION)
+                .member(member)
+                .tempTags(new TempTags(List.of("spring")))
+                .isAnonymous(false)
+                .build());
         final ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true, tempArticle.getId());
 

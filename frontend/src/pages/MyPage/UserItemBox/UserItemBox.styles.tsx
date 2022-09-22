@@ -27,7 +27,7 @@ export const HeaderLine = styled.div`
 
 	padding: ${({ theme }) => theme.size.SIZE_010};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 50%;
 	}
 `;
@@ -70,7 +70,7 @@ export const ChildrenBox = styled.div`
 
 	gap: ${({ theme }) => theme.size.SIZE_020};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 50%;
 	}
 `;

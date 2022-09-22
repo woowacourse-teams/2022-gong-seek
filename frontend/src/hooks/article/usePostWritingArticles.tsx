@@ -4,9 +4,9 @@ import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { postWritingArticle } from '@/api/article';
-import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { CATEGORY } from '@/constants/categoryType';
+import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { validatedTitleInput } from '@/utils/validateInput';
 import { Editor } from '@toast-ui/react-editor';
 
@@ -20,18 +20,25 @@ const usePostWritingArticles = ({
 	const { data, mutate, isError, isLoading, isSuccess, error } = useMutation<
 		AxiosResponse<{ id: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
-		{ title: string; category: string; content: string; tag: string[]; isAnonymous: boolean }
+		{
+			title: string;
+			category: string;
+			content: string;
+			tag: string[];
+			isAnonymous: boolean;
+			tempArticleId: number | '';
+		}
 	>(postWritingArticle, { retry: 1 });
 
 	const content = useRef<Editor | null>(null);
 	const [title, setTitle] = useState('');
-	const [categoryOption, setCategoryOption] = useState(category ? category : '');
+	const [categoryOption, setCategoryOption] = useState<string>(category ? category : '');
 	const [isValidTitleInput, setIsValidTitleInput] = useState(true);
 	const [hashTags, setHashTags] = useState<string[]>([]);
-
 	const titleInputRef = useRef<HTMLInputElement>(null);
-
 	const navigate = useNavigate();
+
+	useThrowCustomError(isError, error);
 
 	if (typeof category === 'undefined') {
 		throw new Error('카테고리가 존재하지 않습니다.');
@@ -50,19 +57,7 @@ const usePostWritingArticles = ({
 		}
 	}, [isSuccess]);
 
-	useEffect(() => {
-		if (isError) {
-			if (!error.response) {
-				return;
-			}
-			throw new CustomError(
-				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
-			);
-		}
-	}, [isError]);
-
-	const handleSubmitButtonClick = (categoryOption: string) => {
+	const handleSubmitButtonClick = (categoryOption: string, tempArticleId: number | '') => {
 		if (content.current === null) {
 			return;
 		}
@@ -83,6 +78,7 @@ const usePostWritingArticles = ({
 			content: content.current.getInstance().getMarkdown(),
 			tag: hashTags,
 			isAnonymous,
+			tempArticleId,
 		});
 	};
 

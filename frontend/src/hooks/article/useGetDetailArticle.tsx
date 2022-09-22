@@ -4,32 +4,21 @@ import { useQuery } from 'react-query';
 import { useSetRecoilState } from 'recoil';
 
 import { getDetailArticle } from '@/api/article';
-import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { articleState } from '@/store/articleState';
 import { ArticleType } from '@/types/articleResponse';
 
 const useGetDetailArticle = (id: string) => {
-	const { data, isError, isSuccess, isLoading, error, isIdle } = useQuery<
+	const { data, isSuccess, isError, isLoading, error, isIdle } = useQuery<
 		ArticleType,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(['detail-article', `article${id}`], () => getDetailArticle(id), {
 		retry: false,
-		refetchOnWindowFocus: false,
 	});
 	const setTempArticle = useSetRecoilState(articleState);
 
-	useEffect(() => {
-		if (isError) {
-			if (!error.response) {
-				return;
-			}
-			throw new CustomError(
-				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
-			);
-		}
-	}, [isError]);
+	useThrowCustomError(isError, error);
 
 	useEffect(() => {
 		if (isSuccess) {

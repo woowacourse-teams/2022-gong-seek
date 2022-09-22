@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import * as S from '@/components/common/MenuSlider/MenuSlider.styles';
+import { ACCESSTOKEN_KEY } from '@/constants';
 import { URL } from '@/constants/url';
 import { getUserIsLogin } from '@/store/userState';
 
@@ -18,7 +19,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 
 	const onLogoutClick = () => {
 		if (confirm('정말로 로그아웃 하시겠습니까?')) {
-			localStorage.removeItem('accessToken');
+			localStorage.removeItem(ACCESSTOKEN_KEY);
 			window.location.href = URL.HOME;
 		}
 	};
@@ -65,7 +66,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 				</S.LinkItem>
 				<S.LinkItem
 					onClick={() => {
-						navigate('/articles/question');
+						navigate(URL.CATEGORY_QUESTION);
 						closeSlider();
 					}}
 				>
@@ -73,7 +74,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 				</S.LinkItem>
 				<S.LinkItem
 					onClick={() => {
-						navigate('/articles/discussion');
+						navigate(URL.CATEGORY_DISCUSSION);
 						closeSlider();
 					}}
 				>

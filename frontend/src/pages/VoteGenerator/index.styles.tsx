@@ -4,14 +4,20 @@ import styled from '@emotion/styled';
 
 export const Container = styled.div`
 	display: flex;
-	flex-direction: column;
+	height: 100%;
+	flex-direction: column-reverse;
 	align-items: center;
-	gap: ${({ theme }) => theme.size.SIZE_016};
+	gap: ${({ theme }) => theme.size.SIZE_080};
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		flex-direction: row;
+		height: 60vh;
+		gap: ${({ theme }) => theme.size.SIZE_010};
+	}
 `;
 
 export const AddOptionForm = styled.form`
 	display: flex;
-
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -27,7 +33,7 @@ export const ContentForm = styled.form`
 	width: 100%;
 	height: 100%;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 60%;
 		margin-top: ${({ theme }) => theme.size.SIZE_050};
 	}
@@ -35,13 +41,12 @@ export const ContentForm = styled.form`
 
 export const OptionInputBox = styled.div`
 	display: flex;
-
 	justify-content: space-evenly;
 	align-items: center;
 
 	width: 90%;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 50%;
 	}
 `;
@@ -59,6 +64,7 @@ export const Content = styled.div`
 
 export const InputValidMessage = styled.p<{ isValid: boolean }>`
 	color: ${({ theme, isValid }) => (isValid ? theme.colors.BLUE_500 : theme.colors.RED_500)};
+	margin-top: ${({ theme }) => theme.size.SIZE_016};
 `;
 
 export const SubmitButton = styled.button`
@@ -82,7 +88,7 @@ export const SubmitButton = styled.button`
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
 	}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 40%;
 		padding: ${({ theme }) => theme.size.SIZE_008};
 		font-size: ${({ theme }) => theme.size.SIZE_014};
