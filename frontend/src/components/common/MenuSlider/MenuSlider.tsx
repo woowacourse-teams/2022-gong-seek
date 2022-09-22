@@ -66,7 +66,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 				</S.LinkItem>
 				<S.LinkItem
 					onClick={() => {
-						navigate('/articles/question');
+						navigate(URL.CATEGORY_QUESTION);
 						closeSlider();
 					}}
 				>
@@ -74,7 +74,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 				</S.LinkItem>
 				<S.LinkItem
 					onClick={() => {
-						navigate('/articles/discussion');
+						navigate(URL.CATEGORY_DISCUSSION);
 						closeSlider();
 					}}
 				>
