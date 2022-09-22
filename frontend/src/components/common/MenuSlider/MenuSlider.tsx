@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import * as S from '@/components/common/MenuSlider/MenuSlider.styles';
 import { ACCESSTOKEN_KEY } from '@/constants';
 import { URL } from '@/constants/url';
+import useDeleteRefreshToken from '@/hooks/login/useDeleteRefreshToken';
 import { getUserIsLogin } from '@/store/userState';
 
 export interface MenuSliderProps {
@@ -14,12 +15,14 @@ export interface MenuSliderProps {
 const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 	const menuSlider = document.getElementById('menu-slider');
 	const isLogin = useRecoilValue(getUserIsLogin);
+	const { mutate: mutateDeleteRefreshToken } = useDeleteRefreshToken();
 
 	const navigate = useNavigate();
 
 	const onLogoutClick = () => {
 		if (confirm('정말로 로그아웃 하시겠습니까?')) {
 			localStorage.removeItem(ACCESSTOKEN_KEY);
+			mutateDeleteRefreshToken();
 			window.location.href = URL.HOME;
 		}
 	};
