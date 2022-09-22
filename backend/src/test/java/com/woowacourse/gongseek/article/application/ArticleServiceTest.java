@@ -33,7 +33,6 @@ import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
 import com.woowacourse.gongseek.vote.application.VoteService;
-import com.woowacourse.gongseek.vote.domain.Vote;
 import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
@@ -750,8 +749,6 @@ public class ArticleServiceTest {
         Article article = articleRepository.save(
                 new Article("title2", "content2", Category.DISCUSSION, member, false));
 
-        Vote vote = new Vote(article, LocalDateTime.now().plusDays(3));
-
         LoginMember loginMember = new LoginMember(member.getId());
         voteService.create(loginMember, article.getId(),
                 new VoteCreateRequest(Set.of("A번", "B번", "C번"), LocalDateTime.now().plusDays(4)));
@@ -759,9 +756,9 @@ public class ArticleServiceTest {
         voteService.doVote(article.getId(), loginMember, new SelectVoteItemIdRequest(1L));
         articleService.delete(loginMember, article.getId());
         assertAll(
-                () -> assertThat(voteHistoryRepository.findByMemberId(loginMember.getPayload())).isEmpty(),
                 () -> assertThat(articleRepository.findById(article.getId())).isEmpty(),
-                () -> assertThat(voteItemRepository.findAll()).isEmpty()
+                () -> assertThat(voteItemRepository.findAll()).isEmpty(),
+                () -> assertThat(voteHistoryRepository.findAll()).isEmpty()
         );
     }
 

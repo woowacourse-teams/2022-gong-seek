@@ -22,6 +22,7 @@ const usePutCommentInputModal = (closeModal: CommentInputModalProps['closeModal'
 		if (isSuccess) {
 			showSnackBar('댓글이 수정되었습니다');
 			closeModal();
+			window.location.reload();
 		}
 	}, [isSuccess]);
 

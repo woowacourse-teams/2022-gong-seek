@@ -18,7 +18,8 @@ export const validatedDuplicatedVoteItemInput = (targetInput: string, options: s
 	return checkSet.size === checkArray.length;
 };
 
-export const validatedVoteItemsQuantity = (options: string[]) => options.length >= 2;
+export const validatedVoteItemsQuantity = (options: string[]) =>
+	options.length >= 2 && options.length <= 5;
 
 export const validatedCommentInput = (targetInput: string) =>
 	targetInput.length >= 1 && targetInput.length <= 10000;

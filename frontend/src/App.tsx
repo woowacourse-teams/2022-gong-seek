@@ -34,11 +34,15 @@ const UpdateWriting = React.lazy(() => import('@/pages/UpdateWriting'));
 const VoteDeadlineGenerator = React.lazy(() => import('@/pages/VoteDeadlineGenerator'));
 const VoteGenerator = React.lazy(() => import('@/pages/VoteGenerator'));
 const WritingArticles = React.lazy(() => import('@/pages/WritingArticles'));
+const TemporaryArticles = React.lazy(() => import('@/pages/TemporaryArticles'));
+const WritingTempArticle = React.lazy(() => import('@/pages/WritingTempArticle'));
 
 const Layout = styled.div`
 	position: relative;
 	height: 100vh;
 	width: 100vw;
+	max-width: 1500px;
+	margin: 0 auto;
 `;
 
 const Content = styled.main`
@@ -46,7 +50,19 @@ const Content = styled.main`
 	min-height: calc(100vh - 2 * ${({ theme }) => theme.size.SIZE_126});
 	padding-bottom: 7rem;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
+		width: calc(100% - ${({ theme }) => theme.size.SIZE_060} * 2);
+		padding: 1rem 5rem;
+		justify-content: space-between;
+	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_MIDDLE}) {
+		width: calc(100% - ${({ theme }) => theme.size.SIZE_110} * 2);
+		padding: 1rem 7rem;
+		justify-content: space-between;
+	}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: calc(100% - ${({ theme }) => theme.size.SIZE_160} * 2);
 		padding: 1rem ${({ theme }) => theme.size.SIZE_160};
 		justify-content: space-between;
@@ -81,13 +97,15 @@ const App = () => {
 				<Suspense fallback={<Loading />}>
 					<Routes>
 						<Route path={URL.LOGIN_CONTROLLER} element={<LoginController />} />
-						<Route path={URL.REFRESH_TOKEN_HANDLER} element={<RefreshTokenHandler />} />
 						<Route path={URL.CATEGORY_SELECTOR} element={<CategorySelector />} />
 						<Route element={<PrivateRouter isAuthenticated={isLogin} />}>
 							<Route path={URL.WRITING_ARTICLE} element={<WritingArticles />} />
 							<Route path={URL.VOTE_GENERATOR} element={<VoteGenerator />} />
 							<Route path={URL.MY_PAGE} element={<MyPage />} />
 							<Route path={URL.VOTE_DEADLINE_GENERATOR} element={<VoteDeadlineGenerator />} />
+							<Route path={URL.TEMP_ARTICLE_LIST} element={<TemporaryArticles />} />
+							<Route path={URL.UPDATE_TEMP_ARTICLE} element={<WritingTempArticle />} />
+							<Route path={URL.REFRESH_TOKEN_HANDLER} element={<RefreshTokenHandler />} />
 						</Route>
 						<Route element={<PublicRouter isAuthenticated={isLogin} />}>
 							<Route path={URL.LOGIN} element={<Login />} />
