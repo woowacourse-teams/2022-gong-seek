@@ -34,6 +34,8 @@ const UpdateWriting = React.lazy(() => import('@/pages/UpdateWriting'));
 const VoteDeadlineGenerator = React.lazy(() => import('@/pages/VoteDeadlineGenerator'));
 const VoteGenerator = React.lazy(() => import('@/pages/VoteGenerator'));
 const WritingArticles = React.lazy(() => import('@/pages/WritingArticles'));
+const TemporaryArticles = React.lazy(() => import('@/pages/TemporaryArticles'));
+const WritingTempArticle = React.lazy(() => import('@/pages/WritingTempArticle'));
 
 const Layout = styled.div`
 	position: relative;
@@ -88,6 +90,8 @@ const App = () => {
 							<Route path={URL.VOTE_GENERATOR} element={<VoteGenerator />} />
 							<Route path={URL.MY_PAGE} element={<MyPage />} />
 							<Route path={URL.VOTE_DEADLINE_GENERATOR} element={<VoteDeadlineGenerator />} />
+							<Route path={URL.TEMP_ARTICLE_LIST} element={<TemporaryArticles />} />
+							<Route path={URL.UPDATE_TEMP_ARTICLE} element={<WritingTempArticle />} />
 						</Route>
 						<Route element={<PublicRouter isAuthenticated={isLogin} />}>
 							<Route path={URL.LOGIN} element={<Login />} />

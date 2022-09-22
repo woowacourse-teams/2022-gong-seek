@@ -45,3 +45,24 @@ export interface UserArticleItemType {
 export interface UserArticlesResponse {
 	articles: UserArticleItemType[];
 }
+
+export interface TempArticleItem {
+	id: number;
+	title: string;
+	createAt: string;
+	category: 'discussion' | 'question';
+}
+
+export interface TempArticleResponse {
+	values: TempArticleItem[];
+}
+
+export interface TempArticleDetailResponse {
+	id: number;
+	title: string;
+	content: string;
+	tag: string[];
+	category: 'question' | 'discussion';
+	isAnonymous: boolean;
+	createdAt: string;
+}
