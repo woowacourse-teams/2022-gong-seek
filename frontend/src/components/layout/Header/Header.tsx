@@ -22,9 +22,9 @@ const Header = () => {
 						<S.LogoImage src={gongseek} />
 					</S.StyledLink>
 					<S.SearchOpenBox>
-						<div onClick={() => navigate(URL.SEARCH_RESULT)}>
+						<S.StyledLink to={URL.SEARCH_RESULT}>
 							<SearchBar isValid={false} />
-						</div>
+						</S.StyledLink>
 					</S.SearchOpenBox>
 				</S.HeaderSection>
 			</S.Container>
@@ -38,9 +38,9 @@ const Header = () => {
 					<S.LogoLink>공식</S.LogoLink>
 				</S.StyledLink>
 				<S.SearchBarBox>
-					<div onClick={() => navigate(URL.SEARCH_RESULT)}>
+					<S.StyledLink to={URL.SEARCH_RESULT}>
 						<SearchBar isValid={true} />
-					</div>
+					</S.StyledLink>
 				</S.SearchBarBox>
 			</S.HeaderSection>
 			<S.NavBar>
