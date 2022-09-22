@@ -20,7 +20,7 @@ export const Section = styled.section`
 	box-shadow: 0px -4px 15px ${({ theme }) => theme.boxShadows.secondary};
 	background-color: ${({ theme }) => theme.colors.WHITE};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
 		display: none;
 		visibility: hidden;
 	}

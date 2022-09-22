@@ -49,7 +49,7 @@ export const CommentContainer = styled.div`
 
 	animation: ${showSlider} 0.2s ease-in-out;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 70vw;
 		height: 60vh;
 		margin: 0 auto;
@@ -69,7 +69,7 @@ export const CommentTitle = styled.h2`
 	margin: ${({ theme }) => theme.size.SIZE_016} 0 ${({ theme }) => theme.size.SIZE_016}
 		${({ theme }) => theme.size.SIZE_026};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		margin-top: ${({ theme }) => theme.size.SIZE_020};
 	}
 `;
@@ -79,7 +79,7 @@ export const CommentContentBox = styled.div`
 	height: 80%;
 	overflow: hidden;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		height: 40vh;
 	}
 `;
@@ -103,7 +103,7 @@ export const CommentPostButton = styled.button`
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
 	}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: ${({ theme }) => theme.size.SIZE_160};
 	}
 `;
@@ -118,7 +118,7 @@ export const SubmitBox = styled.div`
 	margin-bottom: ${({ theme }) => theme.size.SIZE_050};
 	width: 80%;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 100%;
 		display: flex;
 		justify-content: flex-end;
