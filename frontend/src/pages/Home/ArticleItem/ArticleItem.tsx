@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import * as S from '@/pages/Home/ArticleItem/ArticleItem.styles';
 import { CommonArticleType } from '@/types/articleResponse';
+import { convertGithubAvartarUrlForResize } from '@/utils/converter';
 
 const ArticleItem = ({ article }: { article: CommonArticleType }) => {
 	const navigate = useNavigate();
@@ -11,7 +12,10 @@ const ArticleItem = ({ article }: { article: CommonArticleType }) => {
 			<S.Title onClick={() => navigate(`/articles/${category}/${id}`)}>{title}</S.Title>
 			<S.ArticleInfo>
 				<S.ProfileBox>
-					<S.UserImg alt="유저의 프로필 이미지가 보여지는 곳 입니다 " src={author.avatarUrl} />
+					<S.UserImg
+						alt="유저의 프로필 이미지가 보여지는 곳 입니다 "
+						src={convertGithubAvartarUrlForResize(author.avatarUrl)}
+					/>
 					<S.UserName>{author.name}</S.UserName>
 				</S.ProfileBox>
 				<S.SubInfoBox>
