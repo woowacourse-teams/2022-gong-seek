@@ -2,7 +2,6 @@ package com.woowacourse.gongseek.auth.infra;
 
 import com.woowacourse.gongseek.auth.application.TokenProvider;
 import com.woowacourse.gongseek.auth.exception.InvalidAccessTokenAtRenewException;
-import com.woowacourse.gongseek.auth.exception.InvalidAccessTokenException;
 import com.woowacourse.gongseek.common.exception.UnAuthorizedTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

@@ -55,7 +55,8 @@ public enum ExceptionType {
     NOT_MEMBER_EXCEPTION("1008", "회원이 아니므로 권한이 없습니다.", NotMemberException.class),
     INVALID_REFRESH_TOKEN_EXCEPTION("1009", "리프레시 토큰이 유효하지 않습니다.", InvalidRefreshTokenException.class),
     UNAUTHORIZED_TOKEN_EXCEPTION("1010", "유효한 액세스 토큰으로 리프레시 토큰을 발급할 수 없습니다.", UnAuthorizedTokenException.class),
-    INVALID_ACCESS_TOKEN_AT_RENEW_EXCEPTION("1011", "유효하지 않는 액세스 토큰으로 권한이 없는 유저입니다. 재로그인을 해주세요", InvalidAccessTokenAtRenewException.class),
+    INVALID_ACCESS_TOKEN_AT_RENEW_EXCEPTION("1011", "유효하지 않는 액세스 토큰으로 권한이 없는 유저입니다. 재로그인을 해주세요",
+            InvalidAccessTokenAtRenewException.class),
 
     MEMBER_NOT_FOUND_EXCEPTION("2001", "회원이 존재하지 않습니다.", MemberNotFoundException.class),
     NAME_NULL_OR_EMPTY_EXCEPTION("2002", "회원의 이름은 1자 이상이어야 합니다.", NameNullOrEmptyException.class),
