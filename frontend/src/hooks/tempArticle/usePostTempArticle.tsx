@@ -4,6 +4,7 @@ import { useMutation } from 'react-query';
 
 import { postTempArticle } from '@/api/tempArticle';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import useSnackBar from '@/hooks/common/useSnackBar';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 
 export interface postTempArticleProps {
@@ -34,6 +35,7 @@ const usePostTempArticle = ({
 			tempArticleId: number | '';
 		}
 	>(['temp-article', tempArticleId], postTempArticle);
+	const { showSnackBar } = useSnackBar();
 
 	useThrowCustomError(isError, error);
 
@@ -55,6 +57,7 @@ const usePostTempArticle = ({
 			{
 				onSuccess: (data) => {
 					setTempArticleId(data.data.id);
+					showSnackBar('작성 중이신 글이 임시저장 되었습니다');
 				},
 			},
 		);
