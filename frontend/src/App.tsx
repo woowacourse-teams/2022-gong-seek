@@ -97,7 +97,6 @@ const App = () => {
 				<Suspense fallback={<Loading />}>
 					<Routes>
 						<Route path={URL.LOGIN_CONTROLLER} element={<LoginController />} />
-						<Route path={URL.REFRESH_TOKEN_HANDLER} element={<RefreshTokenHandler />} />
 						<Route path={URL.CATEGORY_SELECTOR} element={<CategorySelector />} />
 						<Route element={<PrivateRouter isAuthenticated={isLogin} />}>
 							<Route path={URL.WRITING_ARTICLE} element={<WritingArticles />} />
@@ -106,6 +105,7 @@ const App = () => {
 							<Route path={URL.VOTE_DEADLINE_GENERATOR} element={<VoteDeadlineGenerator />} />
 							<Route path={URL.TEMP_ARTICLE_LIST} element={<TemporaryArticles />} />
 							<Route path={URL.UPDATE_TEMP_ARTICLE} element={<WritingTempArticle />} />
+							<Route path={URL.REFRESH_TOKEN_HANDLER} element={<RefreshTokenHandler />} />
 						</Route>
 						<Route element={<PublicRouter isAuthenticated={isLogin} />}>
 							<Route path={URL.LOGIN} element={<Login />} />
