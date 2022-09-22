@@ -59,7 +59,7 @@ export const getArticleSearchResult = async ({
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
-		cursorId: String(data.articles[data.articles.length - 1].id),
+		cursorId: String(data.articles[data.articles.length - 1]?.id),
 		target: target,
 		searchIndex,
 	};
