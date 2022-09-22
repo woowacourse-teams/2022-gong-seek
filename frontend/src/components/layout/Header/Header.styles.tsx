@@ -103,7 +103,6 @@ export const SearchOpenBox = styled.div`
 
 export const StyledLink = styled(Link)`
 	text-decoration: none;
-	user-select: none;
 `;
 
 export const NavBar = styled.nav`
