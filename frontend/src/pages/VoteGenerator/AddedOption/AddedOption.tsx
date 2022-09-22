@@ -28,7 +28,8 @@ const OptionBox = styled.div`
 
 const Text = styled.div`
 	width: 90%;
-	overflow-x: scroll;
+	overflow-x: auto;
+	white-space: nowrap;
 `;
 
 const Trash = styled(AiFillDelete)`
