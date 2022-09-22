@@ -1,13 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 
 import * as S from '@/components/common/Dropdown/Dropdown.styles';
+import { ACCESSTOKEN_KEY } from '@/constants';
 
 const Dropdown = ({ onClickCloseDropdown }: { onClickCloseDropdown: () => void }) => {
 	const navigate = useNavigate();
 
 	const onLogOutClick = () => {
 		if (window.confirm('정말로 로그아웃을 하시겠습니까?')) {
-			localStorage.removeItem('accessToken');
+			localStorage.removeItem(ACCESSTOKEN_KEY);
 			window.location.href = '/';
 			return;
 		}

@@ -20,7 +20,7 @@ const VoteGenerateButton = styled.button`
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
 	}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 30%;
 		margin-top: ${({ theme }) => theme.size.SIZE_040};
 		padding: ${({ theme }) => theme.size.SIZE_012} 0;

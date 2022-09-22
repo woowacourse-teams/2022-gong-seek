@@ -1,0 +1,80 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= TempArticle
+---
+= 기본 API
+
+== 임시 게시글 생성 및 수정
+
+`POST /api/temp-articles`
+
+=== Request
+
+include::{snippets}/temp-article-create/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/temp-article-create/request-headers.adoc[]
+
+==== Body
+
+include::{snippets}/temp-article-create/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/temp-article-create/http-response.adoc[]
+include::{snippets}/temp-article-create/response-fields.adoc[]
+
+== 임시 게시글 단건 조회
+
+`GET /api/temp-articles/1`
+
+=== Request
+
+include::{snippets}/temp-article-find-one/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/temp-article-find-one/http-response.adoc[]
+include::{snippets}/temp-article-find-one/response-fields.adoc[]
+
+== 임시 게시글 삭제
+
+`DELETE /api/temp-articles/1`
+
+=== Request
+
+include::{snippets}/temp-article-delete/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/temp-article-delete/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/temp-article-delete/http-response.adoc[]
+
+== 임시 게시글 전체 조회
+
+`GET /api/temp-articles`
+
+=== Request
+
+include::{snippets}/temp-article-find-all/http-request.adoc[]
+
+==== Header
+
+include::{snippets}/temp-article-find-all/request-headers.adoc[]
+
+=== Response
+
+include::{snippets}/temp-article-find-all/http-response.adoc[]
+include::{snippets}/temp-article-find-all/response-fields.adoc[]

@@ -69,7 +69,7 @@ export const SubmitButton = styled.button`
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
 	}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: ${({ theme }) => theme.size.SIZE_100};
 		height: ${({ theme }) => theme.size.SIZE_040};
 

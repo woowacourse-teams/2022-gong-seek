@@ -1,4 +1,5 @@
 import Loading from '@/components/common/Loading/Loading';
+import { URL } from '@/constants/url';
 import useGetUserArticles from '@/hooks/user/useGetUserArticles';
 import useGetUserComments from '@/hooks/user/useGetUserComments';
 import useGetUserInfo from '@/hooks/user/useGetUserInfo';
@@ -42,9 +43,13 @@ const MyPage = () => {
 	return (
 		<S.Container>
 			<S.Title>마이 페이지</S.Title>
+
 			{isInfoSuccess && isArticlesSuccess && isCommentsSuccess ? (
 				<S.ContentContainer>
 					{info && <UserProfile name={info.name} avatarUrl={info.avatarUrl} />}
+					<S.LinkTemporaryArticle to={URL.TEMP_ARTICLE_LIST}>
+						임시작성글 보러가기
+					</S.LinkTemporaryArticle>
 					<UserItemBox subTitle="내가 작성한 글">
 						{articles ? (
 							articles.articles.map((article) => (

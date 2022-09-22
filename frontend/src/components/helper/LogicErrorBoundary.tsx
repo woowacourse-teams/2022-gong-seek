@@ -7,10 +7,14 @@ import {
 	ErrorBoundaryState,
 	LogicErrorBoundaryProps,
 } from '@/components/helper/types/ErrorBoundary.type';
+import { ACCESSTOKEN_KEY } from '@/constants';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { URL } from '@/constants/url';
 import { queryClient } from '@/index';
-import { isRefreshTokenError } from '@/utils/confirmErrorType';
+import {
+	isAlreayLoginRefreshTokenError,
+	isInvalidRefreshTokenError,
+} from '@/utils/confirmErrorType';
 import {
 	isVoteError,
 	isCommentError,
@@ -32,7 +36,9 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 		}
 
 		const { showSnackBar, navigate } = this.props;
+
 		const errorCode = this.state.error.errorCode;
+
 		if (
 			typeof errorCode === 'undefined' ||
 			typeof showSnackBar === 'undefined' ||
@@ -47,7 +53,6 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 				if (!confirm('로그인이 필요한 서비스입니다. 로그인 화면으로 이동하시겠습니까?')) {
 					return;
 				}
-				//1008번일때만 사용자에게 확인요청
 			}
 			navigate(URL.LOGIN);
 		}
@@ -61,18 +66,21 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 		}
 
 		if (isNotAccessVoteError(errorCode)) {
-			navigate('article/discuttion');
+			navigate(URL.CATEGORY_DISCUSSION);
 		}
 
 		if (isCommentError(errorCode)) {
 			queryClient.invalidateQueries('comments');
 		}
 
-		if (isRefreshTokenError(errorCode) || isInValidTokenError(errorCode)) {
-			localStorage.removeItem('accessToken');
+		if (isAlreayLoginRefreshTokenError(errorCode)) {
+			navigate(URL.HOME);
+		}
+
+		if (isInvalidRefreshTokenError(errorCode)) {
+			localStorage.removeItem(ACCESSTOKEN_KEY);
 			window.location.href = URL.HOME;
 		}
-		//위의 에러코드를 제외하고는 모두 snackBar만을 보여주도록 함.
 		showSnackBar(errorMessage);
 
 		if (isServerError(errorCode) || isNotFoundArticleError(errorCode)) {
