@@ -59,6 +59,16 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 	}, []);
 
 	useEffect(() => {
+		(() => {
+			window.addEventListener('beforeunload', preventRefresh);
+		})();
+
+		return () => {
+			window.removeEventListener('beforeunload', preventRefresh);
+		};
+	}, []);
+
+	useEffect(() => {
 		if (isTempDetailArticleSuccess && tempArticleData && tempArticleData.data) {
 			setTitle(tempArticleData.data.title);
 			setHashTags(tempArticleData.data.tag.filter((item) => item !== ''));
@@ -100,6 +110,11 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 				content: content.current?.getInstance().getMarkdown(),
 			});
 		}
+	};
+
+	const preventRefresh = (e: BeforeUnloadEvent) => {
+		e.preventDefault();
+		e.returnValue = '';
 	};
 
 	return (
