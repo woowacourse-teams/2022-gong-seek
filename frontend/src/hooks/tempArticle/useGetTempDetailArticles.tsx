@@ -1,10 +1,9 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 
 import { getTempDetailArticle } from '@/api/tempArticle';
-import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { TempArticleDetailResponse } from '@/types/articleResponse';
 
 const useGetTempDetailArticles = ({ tempArticleId }: { tempArticleId: number | '' }) => {
@@ -16,17 +15,7 @@ const useGetTempDetailArticles = ({ tempArticleId }: { tempArticleId: number | '
 		}
 	>(['temp-detail-article', tempArticleId], () => getTempDetailArticle({ id: tempArticleId }));
 
-	useEffect(() => {
-		if (isError) {
-			if (!error.response) {
-				return;
-			}
-			throw new CustomError(
-				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
-			);
-		}
-	}, [isError]);
+	useThrowCustomError(isError, error);
 
 	return { data, isLoading, isSuccess, mutate };
 };
