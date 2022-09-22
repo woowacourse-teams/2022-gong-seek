@@ -55,7 +55,7 @@ export const getArticleSearchResult = async ({
 			},
 		},
 	);
-	console.log(data.articles, data.articles.length);
+
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
