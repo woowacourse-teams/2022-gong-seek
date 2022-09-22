@@ -8,6 +8,7 @@ import FallbackErrorBoundary from '@/components/helper/FallbackErrorBoundary';
 import LogicErrorBoundary from '@/components/helper/LogicErrorBoundary';
 import { worker } from '@/mock/browser';
 import NotFound from '@/pages/NotFound';
+import ServerErrorPage from '@/pages/ServerErrorPage';
 import { theme } from '@/styles/Theme';
 import { reset } from '@/styles/reset';
 import { ThemeProvider, Global } from '@emotion/react';
@@ -26,7 +27,7 @@ window.addEventListener('unhandledrejection', () => {
 });
 
 if (isUnhandledError) {
-	root.render(<div>알수 없는 에러가 발생하였습니다. 잠시후 다시 시도해주세요</div>);
+	root.render(<ServerErrorPage />);
 }
 
 root.render(
@@ -36,7 +37,7 @@ root.render(
 			<RecoilRoot>
 				<BrowserRouter>
 					<FallbackErrorBoundary
-						serverErrorFallback={<div>서버 에러입니다!</div>}
+						serverErrorFallback={<ServerErrorPage />}
 						NotFoundErrorFallback={<NotFound />}
 					>
 						<LogicErrorBoundary>
