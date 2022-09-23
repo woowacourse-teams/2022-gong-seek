@@ -22,3 +22,19 @@ export const Message = styled.div`
 	text-align: center;
 	word-break: keep-all;
 `;
+
+export const HomeButton = styled.button`
+	margin-top: ${({ theme }) => theme.size.SIZE_020};
+	width: fit-content;
+	padding: ${({ theme }) => theme.size.SIZE_004};
+	background-color: transparent;
+	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.PURPLE_500};
+	border-radius: ${({ theme }) => theme.size.SIZE_004};
+
+	&:hover,
+	&:active {
+		cursor: pointer;
+		background-color: ${({ theme }) => theme.colors.PURPLE_500};
+		color: ${({ theme }) => theme.colors.WHITE};
+	}
+`;

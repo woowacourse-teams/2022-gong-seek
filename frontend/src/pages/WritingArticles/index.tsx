@@ -8,6 +8,7 @@ import Loading from '@/components/common/Loading/Loading';
 import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
 import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import usePostWritingArticles from '@/hooks/article/usePostWritingArticles';
+import useSnackBar from '@/hooks/common/useSnackBar';
 import useGetTempDetailArticles from '@/hooks/tempArticle/useGetTempDetailArticles';
 import usePostTempArticle from '@/hooks/tempArticle/usePostTempArticle';
 import * as S from '@/pages/WritingArticles/index.styles';
@@ -17,6 +18,7 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 	const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
 	const [tempArticleId, setTempArticleId] = useState<'' | number>(tempId);
 	const [initContent, setInitContent] = useState<string>('');
+	const { showSnackBar } = useSnackBar();
 
 	const {
 		isLoading,
@@ -98,10 +100,15 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 
 	if (isLoading) return <Loading />;
 
-	//추후에 로딩 상태일 경우 안내메세지 추가하거나 애니메이션 추가하면 좋을 듯
 	const handleTempSavedButtonClick = () => {
+		if (titleInputRef.current && titleInputRef.current.value === '') {
+			showSnackBar('제목을 입력해주세요!');
+			titleInputRef.current.focus();
+			return;
+		}
 		if (content.current && category && titleInputRef.current) {
 			const tempTags = hashTags.filter((item) => item !== '');
+
 			saveTempArticleId({
 				title: titleInputRef.current.value,
 				category,
