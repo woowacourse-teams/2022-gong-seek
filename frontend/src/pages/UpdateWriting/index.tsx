@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { postImageUrlConverter } from '@/api/image';
 import HashTag from '@/components/common/HashTag/HashTag';
 import Loading from '@/components/common/Loading/Loading';
 import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
@@ -27,6 +29,21 @@ const UpdateWriting = () => {
 		isValidTitleInput,
 		handleUpdateButtonClick,
 	} = usePostWritingArticle();
+
+	useEffect(() => {
+		if (content.current) {
+			content.current.getInstance().removeHook('addImageBlobHook');
+			content.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
+				(async () => {
+					const formData = new FormData();
+
+					formData.append('imageFile', blob);
+					const url = await postImageUrlConverter(formData);
+					callback(url, 'alt-text');
+				})();
+			});
+		}
+	}, [content]);
 
 	if (isLoading) {
 		return <Loading />;
