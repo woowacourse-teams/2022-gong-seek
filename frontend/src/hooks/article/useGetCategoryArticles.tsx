@@ -21,17 +21,19 @@ const useGetCategoryArticles = (category: string) => {
 				sort: sortIndex,
 				cursorId: '',
 				cursorViews: '',
+				cursorLikes: '',
 			},
 		}) => getAllArticle(pageParam),
 		{
 			getNextPageParam: (lastPage) => {
-				const { hasNext, cursorId, cursorViews } = lastPage;
+				const { hasNext, cursorId, cursorViews, cursorLikes } = lastPage;
 				if (hasNext) {
 					return {
 						category: category,
 						sort: sortIndex,
 						cursorId,
 						cursorViews,
+						cursorLikes,
 					};
 				}
 				return;

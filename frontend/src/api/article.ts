@@ -72,7 +72,13 @@ export const getAllArticle = async ({
 		return data;
 	}
 
-	const data = getAllArticleByViewsOrLatest({ category, sort, cursorId, cursorViews, accessToken });
+	const data = await getAllArticleByViewsOrLatest({
+		category,
+		sort,
+		cursorId,
+		cursorViews,
+		accessToken,
+	});
 	return data;
 };
 
@@ -104,15 +110,25 @@ export const getAllArticleByViewsOrLatest = async ({
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
-		cursorId: String(data.articles[data.articles.length - 1]?.id),
-		cursorViews: String(data.articles[data.articles.length - 1]?.views),
+		cursorId:
+			data.articles && data.articles[data.articles.length - 1]
+				? String(data.articles[data.articles.length - 1].id)
+				: '',
+		cursorViews:
+			data.articles && data.articles[data.articles.length - 1]
+				? String(data.articles[data.articles.length - 1].views)
+				: '',
+		cursorLikes:
+			data.articles && data.articles[data.articles.length - 1]
+				? String(data.articles[data.articles.length - 1].likeCount)
+				: '',
 	};
 };
 
 export const getAllArticlesByLikes = async ({
 	category,
 	cursorId,
-	cursorLikes,
+	cursorLikes = '',
 	accessToken,
 }: {
 	category: string;
@@ -133,8 +149,18 @@ export const getAllArticlesByLikes = async ({
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
-		cursorId: String(data.articles[data.articles.length - 1]?.id),
-		cursorLikes: String(data.articles[data.articles.length - 1]?.likeCount),
+		cursorId:
+			data && data.articles[data.articles.length - 1].id
+				? String(data.articles[data.articles.length - 1]?.id)
+				: '',
+		cursorLikes:
+			data && data.articles[data.articles.length - 1].likeCount
+				? String(data.articles[data.articles.length - 1].likeCount)
+				: '',
+		cursorViews:
+			data.articles && data.articles[data.articles.length - 1]
+				? String(data.articles[data.articles.length - 1].views)
+				: '',
 	};
 };
 
