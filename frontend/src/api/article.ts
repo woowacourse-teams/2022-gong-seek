@@ -150,11 +150,11 @@ export const getAllArticlesByLikes = async ({
 		articles: data.articles,
 		hasNext: data.hasNext,
 		cursorId:
-			data && data.articles[data.articles.length - 1].id
-				? String(data.articles[data.articles.length - 1]?.id)
+			data && data.articles[data.articles.length - 1]
+				? String(data.articles[data.articles.length - 1].id)
 				: '',
 		cursorLikes:
-			data && data.articles[data.articles.length - 1].likeCount
+			data && data.articles[data.articles.length - 1]
 				? String(data.articles[data.articles.length - 1].likeCount)
 				: '',
 		cursorViews:
