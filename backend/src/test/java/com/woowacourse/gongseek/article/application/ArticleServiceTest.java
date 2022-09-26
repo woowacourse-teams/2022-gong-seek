@@ -750,8 +750,6 @@ public class ArticleServiceTest {
         Article article = articleRepository.save(
                 new Article("title2", "content2", Category.DISCUSSION, member, false));
 
-        Vote vote = new Vote(article, LocalDateTime.now().plusDays(3));
-
         LoginMember loginMember = new LoginMember(member.getId());
         voteService.create(loginMember, article.getId(),
                 new VoteCreateRequest(Set.of("A번", "B번", "C번"), LocalDateTime.now().plusDays(4)));
