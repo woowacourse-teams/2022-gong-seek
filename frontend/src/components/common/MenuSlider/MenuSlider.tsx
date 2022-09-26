@@ -21,9 +21,9 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 
 	const onLogoutClick = () => {
 		if (confirm('정말로 로그아웃 하시겠습니까?')) {
-			localStorage.removeItem(ACCESSTOKEN_KEY);
 			mutateDeleteRefreshToken();
-			window.location.href = URL.HOME;
+			localStorage.removeItem(ACCESSTOKEN_KEY);
+			navigate(URL.HOME);
 		}
 	};
 
