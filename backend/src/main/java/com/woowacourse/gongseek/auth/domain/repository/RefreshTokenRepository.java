@@ -8,6 +8,4 @@ import org.springframework.data.repository.CrudRepository;
 public interface RefreshTokenRepository extends CrudRepository<RefreshToken, UUID> {
 
     List<RefreshToken> findAllByMemberId(Long memberId);
-
-    void deleteByMemberId(Long memberId);
 }
