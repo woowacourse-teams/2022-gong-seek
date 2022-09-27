@@ -5,6 +5,9 @@ import { HOME_URL } from '@/constants/apiUrl';
 import { AllArticleResponse, ArticleType } from '@/types/articleResponse';
 import { convertSort } from '@/utils/converter';
 
+//TODO: api 타입들은 api폴더의 types 폴더로 관리, 도메인 별로 분리하자.
+//TODO: 응답값에 대해서는 뒤에 Response를 달아주자
+//TODO: 요청값에 대해서는 뒤에 Request를 달아주자
 export interface WritingArticles {
 	title: string;
 	content: string;
@@ -52,6 +55,7 @@ export const getDetailArticle = async (id: string) => {
 	return data;
 };
 
+//TODO: 분리 필요!, cursorId, cursorLikes, cursorView는 따로 interface로 관리가 필요
 export const getAllArticle = async ({
 	category,
 	sort,

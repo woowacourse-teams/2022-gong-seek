@@ -5,6 +5,7 @@ import { Author } from '@/types/author';
 import { convertGithubAvartarUrlForResize } from '@/utils/converter';
 import { dateTimeConverter } from '@/utils/converter';
 
+//TODO: CommonArticle 만들고 안쓰고 있다..!
 export interface ArticleItemProps {
 	article: {
 		id: number;

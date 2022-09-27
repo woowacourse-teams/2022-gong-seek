@@ -1,14 +1,19 @@
-import { infiniteArticleResponse } from '@/types/articleResponse';
-import { InfiniteSearchResultType } from '@/types/searchResponse';
 import { useEffect, useRef } from 'react';
 import { InfiniteQueryObserverResult } from 'react-query';
 
+import { infiniteArticleResponse } from '@/types/articleResponse';
+import { InfiniteSearchResultType } from '@/types/searchResponse';
 
+//TODO: 이렇게 이용하는거 어떨까??
+// type PropsWithStrictChildren<P, T extends React.ReactNode = React.ReactNode> = P & { children: T };
+// type PropsWithOptionalChildren<P, T extends React.ReactNode = React.ReactNode> = P & {
+// 	children?: T;
+// };
 type ObserverResponseType = infiniteArticleResponse | InfiniteSearchResultType;
 interface infiniteScrollObserverProps {
 	children: React.ReactNode;
 	hasNext: boolean;
-	fetchNextPage: () => Promise<InfiniteQueryObserverResult<ObserverResponseType , Error>>;
+	fetchNextPage: () => Promise<InfiniteQueryObserverResult<ObserverResponseType, Error>>;
 }
 
 const InfiniteScrollObserver = ({
