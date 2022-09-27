@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { PropsWithStrictChildren } from 'gongseek-types';
 
 import UserItemBox from '@/pages/MyPage/UserItemBox/UserItemBox';
 import { Meta, Story } from '@storybook/react';
@@ -15,7 +15,7 @@ export default {
 	],
 } as Meta;
 
-const Template: Story<{ children: ReactNode; subTitle: string }> = (args) => (
+const Template: Story<PropsWithStrictChildren<{ subTitle: string }>> = (args) => (
 	<UserItemBox {...args} />
 );
 

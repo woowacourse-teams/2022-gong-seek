@@ -1,21 +1,21 @@
-import { infiniteArticleResponse } from '@/types/articleResponse';
-import { InfiniteSearchResultType } from '@/types/searchResponse';
+import { PropsWithStrictChildren } from 'gongseek-types';
 import { useEffect, useRef } from 'react';
 import { InfiniteQueryObserverResult } from 'react-query';
 
+import { infiniteArticleResponse } from '@/types/articleResponse';
+import { InfiniteSearchResultType } from '@/types/searchResponse';
 
 type ObserverResponseType = infiniteArticleResponse | InfiniteSearchResultType;
 interface infiniteScrollObserverProps {
-	children: React.ReactNode;
 	hasNext: boolean;
-	fetchNextPage: () => Promise<InfiniteQueryObserverResult<ObserverResponseType , Error>>;
+	fetchNextPage: () => Promise<InfiniteQueryObserverResult<ObserverResponseType, Error>>;
 }
 
 const InfiniteScrollObserver = ({
 	children,
 	hasNext,
 	fetchNextPage,
-}: infiniteScrollObserverProps) => {
+}: PropsWithStrictChildren<infiniteScrollObserverProps, JSX.Element>) => {
 	const endFlag = useRef<HTMLDivElement>(null);
 
 	const intersectionObserver = new IntersectionObserver((entries) => {

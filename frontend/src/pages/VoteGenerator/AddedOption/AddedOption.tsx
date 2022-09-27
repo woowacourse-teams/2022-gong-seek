@@ -1,9 +1,12 @@
-import React from 'react';
+import { PropsWithStrictChildren } from 'gongseek-types';
 import { AiFillDelete } from 'react-icons/ai';
 
 import styled from '@emotion/styled';
 
-const AddedOption = ({ children, onClick }: { children: React.ReactNode; onClick: () => void }) => (
+const AddedOption = ({
+	children,
+	onClick,
+}: PropsWithStrictChildren<{ onClick: () => void }, string>) => (
 	<OptionBox>
 		<Text>{children}</Text>
 		<Trash onClick={onClick} />

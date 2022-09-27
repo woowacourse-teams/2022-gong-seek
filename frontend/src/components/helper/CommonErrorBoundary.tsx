@@ -1,12 +1,13 @@
+import { PropsWithStrictChildren } from 'gongseek-types';
 import { Component } from 'react';
 
-import {
-	ErrorBoundaryProps,
-	ErrorBoundaryState,
-} from '@/components/helper/types/ErrorBoundary.type';
+import { ErrorBoundaryState } from '@/components/helper/types/ErrorBoundary.type';
 
-class CommonErrorBoundary<P> extends Component<P & ErrorBoundaryProps, ErrorBoundaryState> {
-	constructor(props: P & ErrorBoundaryProps) {
+class CommonErrorBoundary<P> extends Component<
+	P & PropsWithStrictChildren<unknown>,
+	ErrorBoundaryState
+> {
+	constructor(props: P & PropsWithStrictChildren<unknown>) {
 		super(props);
 		this.state = { error: null };
 	}

@@ -7179,6 +7179,20 @@ globby@^9.2.0:
     pify "^4.0.1"
     slash "^2.0.0"
 
+gongseek-types@^0.1.6:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/gongseek-types/-/gongseek-types-0.1.7.tgz#67f4ad410d50e95e336de9adf6301cd77ae2e2fd"
+  integrity sha512-Wd3Jf/PC+CE1ZxawTViJCvTudkHSyLQygIRhW4b0Nj5BEJewrSvjltYo7sxsxGFTEIHp4BALVXFJDILtdmCv9A==
+  dependencies:
+    gongseek-types "^0.1.6"
+
+gongseek-types@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/gongseek-types/-/gongseek-types-1.1.1.tgz#a65625ab26e1d1823e39da4168df351ae4bfe53d"
+  integrity sha512-xAjBqcXLNI+KQ5jU/seF2lI3QcwKC8X3oNHs9DH+2xsic25WZhLzesiY+3LhS85I6e2YpenK7LODf17P11ezvA==
+  dependencies:
+    gongseek-types "^0.1.6"
+
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.0, graceful-fs@^4.2.4, graceful-fs@^4.2.6, graceful-fs@^4.2.9:
   version "4.2.10"
   resolved "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.10.tgz"
