@@ -7186,10 +7186,10 @@ gongseek-types@^0.1.6:
   dependencies:
     gongseek-types "^0.1.6"
 
-gongseek-types@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/gongseek-types/-/gongseek-types-1.0.0.tgz#3ffbef622192fab7c4cbe8073f7202e9df7c45c5"
-  integrity sha512-GI0xKMp82a9RVU3Hiw0O3fcCQFrQe2Q5IY+WT55XMlOIT3PbmQzbJ7J6JMSsq3ae788P5yV3P+N/AQ+LBG6Y6A==
+gongseek-types@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/gongseek-types/-/gongseek-types-1.1.1.tgz#a65625ab26e1d1823e39da4168df351ae4bfe53d"
+  integrity sha512-xAjBqcXLNI+KQ5jU/seF2lI3QcwKC8X3oNHs9DH+2xsic25WZhLzesiY+3LhS85I6e2YpenK7LODf17P11ezvA==
   dependencies:
     gongseek-types "^0.1.6"
 
