@@ -1,9 +1,9 @@
 import { isNotAccessVoteError, isExpiredTokenError } from '../../utils/confirmErrorType';
+import { PropsWithStrictChildren } from 'gongseek-types';
 
 import CommonErrorBoundary from '@/components/helper/CommonErrorBoundary';
 import CustomError from '@/components/helper/CustomError';
 import {
-	ErrorBoundaryProps,
 	ErrorBoundaryState,
 	LogicErrorBoundaryProps,
 } from '@/components/helper/types/ErrorBoundary.type';
@@ -20,13 +20,12 @@ import {
 	isCommentError,
 	isServerError,
 	isNotFoundArticleError,
-	isInValidTokenError,
 	isAuthenticatedError,
 } from '@/utils/confirmErrorType';
 import WithHooksHOC from '@/utils/withHooksHOC';
 
 class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
-	constructor(props: LogicErrorBoundaryProps & ErrorBoundaryProps) {
+	constructor(props: PropsWithStrictChildren<LogicErrorBoundaryProps>) {
 		super(props);
 	}
 

@@ -1,3 +1,4 @@
+import { PropsWithOptionalChildren } from 'gongseek-types';
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -11,15 +12,20 @@ import { getUserIsLogin } from '@/store/userState';
 import { ArticleType } from '@/types/articleResponse';
 import { CommentType } from '@/types/commentResponse';
 
-interface DetailProps {
-	children?: React.ReactNode;
+export interface DetailProps {
 	article: ArticleType;
 	commentList: CommentType[];
 	articleId: string;
 	category: string;
 }
 
-const Detail = ({ children, article, commentList, articleId, category }: DetailProps) => {
+const Detail = ({
+	children,
+	article,
+	commentList,
+	articleId,
+	category,
+}: PropsWithOptionalChildren<DetailProps>) => {
 	const [isCommentOpen, setIsCommentOpen] = useState(false);
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const navigate = useNavigate();
