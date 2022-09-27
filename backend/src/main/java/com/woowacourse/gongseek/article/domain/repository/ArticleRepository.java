@@ -14,7 +14,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
             + "left join fetch a.articleTags.value at "
             + "left join fetch at.tag "
             + "where a.id = :id")
-    Optional<Article> findByIdWithAll(Long id);
+    Optional<Article> findByIdWithAll(@Param("id") Long id);
 
     List<Article> findAllByMemberId(Long memberId);
 
