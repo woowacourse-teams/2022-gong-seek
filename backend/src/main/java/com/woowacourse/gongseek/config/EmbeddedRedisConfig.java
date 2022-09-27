@@ -4,6 +4,7 @@ import com.woowacourse.gongseek.config.exception.NotFoundProcessException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import redis.embedded.RedisServer;
 public class EmbeddedRedisConfig {
 
     private static final String WINDOW_FIND_PORT_COMMAND = "netstat -nao | find \"LISTEN\" | find \"%d\"";
+    private static final String MAC_FIND_PORT_COMMAND = "netstat -nat | grep LISTEN | grep %d";
     private static final int MAX_PORT_NUMBER = 65535;
     private static final int MIN_PORT_NUMBER = 10000;
 
@@ -29,7 +31,10 @@ public class EmbeddedRedisConfig {
 
     @PostConstruct
     public void redisServer() {
-        int port = isRedisRunning() ? findAvailablePort() : redisPort;
+        int port = redisPort;
+        if (isRedisRunning()) {
+            port = findAvailablePort();
+        }
         redisServer = new RedisServer(port);
         redisServer.start();
     }
@@ -42,12 +47,12 @@ public class EmbeddedRedisConfig {
     }
 
     private boolean isRedisRunning() {
-        return isRunning(executeGrepProcessCommand(redisPort));
+        return isRunning(executeGrepProcess(redisPort));
     }
 
     public int findAvailablePort() {
         for (int port = MIN_PORT_NUMBER; port <= MAX_PORT_NUMBER; port++) {
-            Process process = executeGrepProcessCommand(port);
+            Process process = executeGrepProcess(port);
             if (!isRunning(process)) {
                 return port;
             }
@@ -56,13 +61,20 @@ public class EmbeddedRedisConfig {
         throw new NotFoundProcessException();
     }
 
-    private Process executeGrepProcessCommand(int port) {
-        String command = String.format(WINDOW_FIND_PORT_COMMAND, port);
-        String[] shell = {"cmd.exe", "/y", "/c", command};
+    private Process executeGrepProcess(int port) {
+        String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+        String command = String.format(MAC_FIND_PORT_COMMAND, port);
+        String[] shell = {"/bin/sh", "-c", command};
+
+        if (osName.startsWith("win")) {
+            command = String.format(WINDOW_FIND_PORT_COMMAND, port);
+            shell = new String[]{"cmd.exe", "/y", "/c", command};
+        }
+
         try {
             return Runtime.getRuntime().exec(shell);
         } catch (IOException e) {
-            log.info("실행중인 process 찾기에 실패했습니다. port:{} error: {}, {}", port, e, e.getMessage());
+            log.info("process 찾기에 실패했습니다. port:{} error: {}, {}", port, e, e.getMessage());
             throw new NotFoundProcessException();
         }
     }
