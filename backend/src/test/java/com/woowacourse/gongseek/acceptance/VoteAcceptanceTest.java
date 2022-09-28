@@ -157,6 +157,38 @@ public class VoteAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    void 비회원이_투표를_조회할_수_있다() {
+        //given
+        AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
+        Long articleId = 토론_게시글을_기명으로_등록한다(tokenResponse).getId();
+
+        투표를_생성한다(
+                tokenResponse,
+                articleId,
+                new VoteCreateRequest(Set.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
+        );
+        VoteResponse firstGetResponse = 투표를_조회한다(tokenResponse, articleId).as(VoteResponse.class);
+
+        //when
+        Long votedItemId = firstGetResponse.getVoteItems()
+                .stream()
+                .findFirst()
+                .get()
+                .getId();
+        ExtractableResponse<Response> response = 투표를_한다(tokenResponse, articleId,
+                new SelectVoteItemIdRequest(votedItemId));
+        VoteResponse voteResponse = 투표를_조회한다(new AccessTokenResponse(null), articleId).as(VoteResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value()),
+                () -> assertThat(voteResponse.getArticleId()).isEqualTo(articleId),
+                () -> assertThat(voteResponse.getVotedItemId()).isNull(),
+                () -> assertThat(voteResponse.getVoteItems()).hasSize(2)
+        );
+    }
+
+    @Test
     void 비회원이_투표를_하면_투표수가_안_오른다() {
         //given
         AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
@@ -175,12 +207,12 @@ public class VoteAcceptanceTest extends AcceptanceTest {
                 .findFirst()
                 .get()
                 .getId();
-        ErrorResponse response = 투표를_한다(new AccessTokenResponse(""), articleId,
+        ErrorResponse response = 투표를_한다(new AccessTokenResponse(null), articleId,
                 new SelectVoteItemIdRequest(votedItemId)).as(
                 ErrorResponse.class);
         assertAll(
-                () -> assertThat(response.getErrorCode()).isEqualTo("1004"),
-                () -> assertThat(response.getMessage()).isEqualTo("토큰 타입이 올바르지 않습니다.")
+                () -> assertThat(response.getErrorCode()).isEqualTo("2001"),
+                () -> assertThat(response.getMessage()).contains("회원이 존재하지 않습니다.")
         );
     }
 }
