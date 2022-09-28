@@ -1,11 +1,14 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
+import static com.querydsl.core.types.ExpressionUtils.count;
 import static com.woowacourse.gongseek.article.domain.QArticle.article;
 import static com.woowacourse.gongseek.article.domain.articletag.QArticleTag.articleTag;
+import static com.woowacourse.gongseek.comment.domain.QComment.comment;
 import static com.woowacourse.gongseek.like.domain.QLike.like;
 import static com.woowacourse.gongseek.member.domain.QMember.member;
 import static com.woowacourse.gongseek.tag.domain.QTag.tag;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
@@ -13,6 +16,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +28,26 @@ import org.springframework.data.domain.SliceImpl;
 public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+
+    @Override
+    public List<MyPageArticleDto> findAllByMemberIdWithCommentCount(Long memberId) {
+        return queryFactory
+                .select(Projections.constructor(
+                        MyPageArticleDto.class,
+                        article.id,
+                        article.title.value,
+                        article.category,
+                        count(comment.id),
+                        article.views.value,
+                        article.createdAt,
+                        article.updatedAt)
+                )
+                .from(article)
+                .leftJoin(comment).on(article.id.eq(comment.article.id))
+                .where(article.member.id.eq(memberId))
+                .groupBy(article.id)
+                .fetch();
+    }
 
     @Override
     public Slice<Article> findAllByPage(Long cursorId, Integer cursorViews, String category, String sortType,

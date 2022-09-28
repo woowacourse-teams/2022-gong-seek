@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface ArticleRepository extends JpaRepository<Article, Long>, ArticleRepositoryCustom {
 
-    @Query("select distinct a from Article a "
+    @Query("select a from Article a "
             + "join fetch a.member "
             + "left join fetch a.articleTags.value at "
             + "left join fetch at.tag "
@@ -18,6 +18,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
 
     List<Article> findAllByMemberId(Long memberId);
 
-    @Query("SELECT case WHEN (count(at) > 0) THEN true ELSE false END FROM ArticleTag at WHERE upper(at.tag.name) = upper(:name)")
+    @Query("SELECT case WHEN (count(at) > 0) THEN true ELSE false END FROM ArticleTag at where at.tag.name = upper(:name)")
     boolean existsArticleByTagName(@Param("name") String name);
 }
