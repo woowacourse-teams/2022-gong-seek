@@ -19,11 +19,16 @@ export const ArticleListBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: ${({ theme }) => theme.size.SIZE_020};
+
+	width: 100%;
 `;
 
 export const ArticleItemBox = styled.div`
 	display: flex;
 	align-items: center;
+
+	width: 100%;
+	justify-content: space-between;
 `;
 
 export const EmptyArticleMessage = styled.div``;
