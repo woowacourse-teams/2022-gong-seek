@@ -37,3 +37,12 @@ export const getAccessTokenByRefreshToken = async () => {
 	});
 	return response.data;
 };
+
+export const deleteRefreshToken = () =>
+	axios.delete(`${HOME_URL}/api/auth/logout`, {
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+			'Access-Control-Allow-Credentials': true,
+		},
+		withCredentials: true,
+	});

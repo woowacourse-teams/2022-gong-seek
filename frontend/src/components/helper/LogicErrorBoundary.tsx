@@ -34,14 +34,15 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 			return;
 		}
 
-		const { showSnackBar, navigate } = this.props;
+		const { showSnackBar, navigate, mutateDeleteRefreshToken } = this.props;
 
 		const errorCode = this.state.error.errorCode;
 
 		if (
 			typeof errorCode === 'undefined' ||
 			typeof showSnackBar === 'undefined' ||
-			typeof navigate === 'undefined'
+			typeof navigate === 'undefined' ||
+			typeof mutateDeleteRefreshToken == 'undefined'
 		) {
 			throw new CustomError('9999', '빠진 인자가 없는지 확인해주세요');
 		}
@@ -78,6 +79,7 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 
 		if (isInvalidRefreshTokenError(errorCode)) {
 			localStorage.removeItem(ACCESSTOKEN_KEY);
+			mutateDeleteRefreshToken();
 			window.location.href = URL.HOME;
 		}
 		showSnackBar(errorMessage);
