@@ -77,13 +77,14 @@ public class VoteService {
 
     @Transactional(readOnly = true)
     public VoteResponse getOne(Long articleId, AppMember appMember) {
+        Member member = getMember(appMember);
         if (!articleRepository.existsById(articleId)) {
             throw new ArticleNotFoundException(articleId);
         }
         Vote foundVote = getVoteByArticleId(articleId);
         List<VoteItem> voteItems = voteItemRepository.findAllByVoteArticleId(articleId);
 
-        VoteHistory voteHistory = voteHistoryRepository.findByMemberId(appMember.getPayload())
+        VoteHistory voteHistory = voteHistoryRepository.findByVoteIdAndMemberId(foundVote.getId(), member.getId())
                 .orElse(null);
         return VoteResponse.of(foundVote.getArticle().getId(), voteItems, getVotedItemIdOrNull(voteHistory),
                 foundVote.isExpired());

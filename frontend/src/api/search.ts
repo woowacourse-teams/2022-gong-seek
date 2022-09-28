@@ -28,7 +28,10 @@ export const getUserSearchResult = async ({
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
-		cursorId: String(data.articles[data.articles.length - 1].id),
+		cursorId:
+			data.articles && data.articles[data.articles.length - 1]
+				? String(data.articles[data.articles.length - 1].id)
+				: '',
 		target: target,
 		searchIndex,
 	};
@@ -59,7 +62,10 @@ export const getArticleSearchResult = async ({
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
-		cursorId: String(data.articles[data.articles.length - 1].id),
+		cursorId:
+			data.articles && data.articles[data.articles.length - 1]
+				? String(data.articles[data.articles.length - 1].id)
+				: '',
 		target: target,
 		searchIndex,
 	};
@@ -86,7 +92,10 @@ export const getArticleByHashTag = async ({
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
-		cursorId: String(data.articles[data.articles.length - 1].id),
+		cursorId:
+			data.articles && data.articles[data.articles.length - 1]
+				? String(data.articles[data.articles.length - 1].id)
+				: '',
 		hashTags: hashTags,
 	};
 };

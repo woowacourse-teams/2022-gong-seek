@@ -22,7 +22,7 @@ public class VoteHistoryRepositoryImpl implements VoteHistoryRepositoryCustom {
                 .join(voteItem.vote, vote).fetchJoin()
                 .where(
                         voteItem.vote.id.eq(voteId)
-                        .and(voteHistory.member.id.eq(memberId))
+                                .and(voteHistory.member.id.eq(memberId))
                 )
                 .fetchFirst());
     }
