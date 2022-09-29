@@ -1,3 +1,4 @@
+import useScroll from './hooks/common/useScroll';
 import { isScrollDown, isScrollUp, isMinDeltaScroll } from './utils/scrollObserver';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
@@ -89,7 +90,6 @@ const App = () => {
 	const [dropdown, setDropdown] = useRecoilState(dropdownState);
 	const [isActiveHeader, setIsActiveHeader] = useState(true);
 	const headerElement = useRef<HTMLDivElement>(null);
-	const isHeaderScroll = useRef(false);
 	const lastScrollTop = useRef(0);
 	const minDelatScroll = useRef(10);
 
@@ -127,24 +127,7 @@ const App = () => {
 		lastScrollTop.current = currentScroll;
 	};
 
-	const handleSetHeaderShow = () => {
-		isHeaderScroll.current = true;
-	};
-
-	useEffect(() => {
-		window.addEventListener('scroll', handleSetHeaderShow);
-
-		return () => {
-			window.removeEventListener('scroll', handleSetHeaderShow);
-		};
-	}, []);
-
-	useInterval(() => {
-		if (isHeaderScroll) {
-			handleHeaderViewByScroll();
-			isHeaderScroll.current = false;
-		}
-	}, 10);
+	useScroll(handleHeaderViewByScroll);
 
 	return (
 		<Layout
