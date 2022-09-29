@@ -3,11 +3,14 @@ import styled from '@emotion/styled';
 
 export const CategoryTitleContainer = styled.div`
 	display: flex;
+	position: relative;
 
 	justify-content: space-between;
 	align-items: center;
 
 	margin-top: ${({ theme }) => theme.size.SIZE_050};
+
+	z-index: ${({ theme }) => theme.zIndex.CATEGORY_TITLE_CONTAINER};
 `;
 
 export const CategoryTitleBox = styled.div`
@@ -55,6 +58,7 @@ export const PopularArticleTitle = styled.h2`
 
 export const ArticleItemList = styled.div`
 	display: flex;
+	position: relative;
 
 	flex-direction: column;
 	align-items: center;
@@ -63,6 +67,8 @@ export const ArticleItemList = styled.div`
 	width: 100%;
 
 	margin-top: ${({ theme }) => theme.size.SIZE_024};
+
+	z-index: ${({ theme }) => theme.zIndex.ARTICLE_ITEM_LIST};
 
 	@media (min-width: 700px) {
 		display: grid;
