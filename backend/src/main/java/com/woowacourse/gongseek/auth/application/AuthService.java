@@ -9,6 +9,7 @@ import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,9 @@ public class AuthService {
     }
 
     public TokenResponse renewToken(UUID requestToken) {
+        if (Objects.isNull(requestToken)) {
+            throw new InvalidRefreshTokenException();
+        }
         RefreshToken refreshToken = refreshTokenRepository.findById(requestToken)
                 .orElseThrow(InvalidRefreshTokenException::new);
         if (refreshToken.isIssue() || refreshToken.isExpired()) {
@@ -63,13 +67,18 @@ public class AuthService {
             refreshTokenRepository.deleteAll(refreshTokens);
             throw new InvalidRefreshTokenException();
         }
-        refreshToken.used();
 
+        updateOriginRefreshToken(refreshToken);
         RefreshToken newRefreshToken = refreshTokenRepository.save(RefreshToken.create(refreshToken.getMemberId()));
         String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(refreshToken.getMemberId()));
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(newRefreshToken.getId())
                 .build();
+    }
+
+    private void updateOriginRefreshToken(RefreshToken refreshToken) {
+        refreshToken.used();
+        refreshTokenRepository.save(refreshToken);
     }
 }
