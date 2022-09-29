@@ -1,6 +1,4 @@
-import useScroll from './hooks/common/useScroll';
-import { isScrollDown, isScrollUp, isMinDeltaScroll } from './utils/scrollObserver';
-import React, { Suspense, useEffect, useRef, useState } from 'react';
+import React, { Suspense, useRef, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
@@ -11,10 +9,11 @@ import PublicRouter from '@/components/helper/PublicRouter';
 import Header from '@/components/layout/Header/Header';
 import TabBar from '@/components/layout/TabBar/TabBar';
 import { URL } from '@/constants/url';
-import useInterval from '@/hooks/common/useInterval';
+import useScroll from '@/hooks/common/useScroll';
 import { dropdownState } from '@/store/dropdownState';
 import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
+import { isScrollDown, isScrollUp, isMinDeltaScroll } from '@/utils/scrollObserver';
 import styled from '@emotion/styled';
 
 const MenuSlider = React.lazy(() => import('@/components/common/MenuSlider/MenuSlider'));
