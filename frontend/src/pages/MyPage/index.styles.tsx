@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 import styled from '@emotion/styled';
 
 export const Container = styled.section`
@@ -29,23 +27,5 @@ export const ContentContainer = styled.div`
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		gap: ${({ theme }) => theme.size.SIZE_056};
-	}
-`;
-
-export const LinkTemporaryArticle = styled(Link)`
-	width: 95%;
-	text-decoration: none;
-	text-align: right;
-	padding-right: ${({ theme }) => theme.size.SIZE_020};
-
-	color: ${({ theme }) => theme.colors.BLACK_500};
-
-	&:hover,
-	&:active {
-		color: ${({ theme }) => theme.colors.PURPLE_500};
-	}
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
-		width: 100%;
-		text-align: center;
 	}
 `;
