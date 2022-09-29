@@ -79,6 +79,7 @@ const size = {
 	SIZE_100: '6.25rem',
 	SIZE_110: '6.875rem',
 	SIZE_126: '7.875rem',
+	SIZE_140: '8.75rem',
 	SIZE_160: '10rem',
 	SIZE_200: '12.5rem',
 	SIZE_220: '13.75rem',
