@@ -133,6 +133,10 @@ const App = () => {
 
 	useEffect(() => {
 		window.addEventListener('scroll', handleSetHeaderShow);
+
+		return () => {
+			window.removeEventListener('scroll', handleSetHeaderShow);
+		};
 	}, []);
 
 	useInterval(() => {
