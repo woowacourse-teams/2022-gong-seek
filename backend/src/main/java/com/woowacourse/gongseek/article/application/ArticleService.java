@@ -85,19 +85,6 @@ public class ArticleService {
                 .orElseThrow(() -> new ArticleNotFoundException(id));
     }
 
-    private Article getArticle(Long id) {
-        return articleRepository.findById(id)
-                .orElseThrow(() -> new ArticleNotFoundException(id));
-    }
-
-    private boolean isLike(Article article, AppMember appMember) {
-        return likeRepository.existsByArticleIdAndMemberId(article.getId(), appMember.getPayload());
-    }
-
-    private Long getLikeCount(Article article) {
-        return likeRepository.countByArticleId(article.getId());
-    }
-
     @Transactional(readOnly = true)
     public ArticlePageResponse getAll(Long cursorId, Integer cursorViews, String category, String sortType,
                                       Pageable pageable, AppMember appMember) {
@@ -123,6 +110,25 @@ public class ArticleService {
         return commentRepository.countByArticleId(article.getId());
     }
 
+    private boolean isLike(Article article, AppMember appMember) {
+        return likeRepository.existsByArticleIdAndMemberId(article.getId(), appMember.getPayload());
+    }
+
+    private Long getLikeCount(Article article) {
+        return likeRepository.countByArticleId(article.getId());
+    }
+
+    @Transactional(readOnly = true)
+    public ArticlePageResponse getAllByLikes(Long cursorId, Long likes, String category, Pageable pageable,
+                                             AppMember appMember) {
+        Slice<Article> articles = articleRepository.findAllByLikes(cursorId, likes, category, pageable);
+        List<ArticlePreviewResponse> response = articles.getContent().stream()
+                .map(it -> getArticlePreviewResponse(it, appMember))
+                .collect(Collectors.toList());
+
+        return new ArticlePageResponse(response, articles.hasNext());
+    }
+
     @Transactional(readOnly = true)
     public ArticlePageResponseNew searchByText(Long cursorId, Pageable pageable, String searchText,
                                                AppMember appMember) {
@@ -145,6 +151,17 @@ public class ArticleService {
 
         List<ArticlePreviewResponse> response = createResponse(appMember, articles);
         return new ArticlePageResponse(response, articles.hasNext());
+    }
+
+    @Transactional(readOnly = true)
+    public ArticlePageResponse searchByTag(Long cursorId, Pageable pageable, String tagsText, AppMember appMember) {
+        Slice<Article> articles = articleRepository.searchByTag(cursorId, extract(tagsText), pageable);
+        List<ArticlePreviewResponse> response = createResponse(appMember, articles);
+        return new ArticlePageResponse(response, articles.hasNext());
+    }
+
+    private List<String> extract(String tagsText) {
+        return Arrays.asList(tagsText.split(","));
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
@@ -180,6 +197,11 @@ public class ArticleService {
         }
     }
 
+    private Article getArticle(Long id) {
+        return articleRepository.findById(id)
+                .orElseThrow(() -> new ArticleNotFoundException(id));
+    }
+
     public void delete(AppMember appMember, Long id) {
         Article article = checkAuthorization(appMember, id);
         articleRepository.delete(article);
@@ -191,27 +213,5 @@ public class ArticleService {
         return tagIds.stream()
                 .filter(tagId -> !articleRepository.existsArticleByTagId(tagId))
                 .collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    public ArticlePageResponse searchByTag(Long cursorId, Pageable pageable, String tagsText, AppMember appMember) {
-        Slice<Article> articles = articleRepository.searchByTag(cursorId, extract(tagsText), pageable);
-        List<ArticlePreviewResponse> response = createResponse(appMember, articles);
-        return new ArticlePageResponse(response, articles.hasNext());
-    }
-
-    private List<String> extract(String tagsText) {
-        return Arrays.asList(tagsText.split(","));
-    }
-
-    @Transactional(readOnly = true)
-    public ArticlePageResponse getAllByLikes(Long cursorId, Long likes, String category, Pageable pageable,
-                                             AppMember appMember) {
-        Slice<Article> articles = articleRepository.findAllByLikes(cursorId, likes, category, pageable);
-        List<ArticlePreviewResponse> response = articles.getContent().stream()
-                .map(it -> getArticlePreviewResponse(it, appMember))
-                .collect(Collectors.toList());
-
-        return new ArticlePageResponse(response, articles.hasNext());
     }
 }
