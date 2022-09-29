@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
@@ -9,6 +9,7 @@ import PublicRouter from '@/components/helper/PublicRouter';
 import Header from '@/components/layout/Header/Header';
 import TabBar from '@/components/layout/TabBar/TabBar';
 import { URL } from '@/constants/url';
+import useInterval from '@/hooks/common/useInterval';
 import { dropdownState } from '@/store/dropdownState';
 import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
@@ -85,6 +86,54 @@ const App = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const [sliderState, setSliderState] = useRecoilState(menuSliderState);
 	const [dropdown, setDropdown] = useRecoilState(dropdownState);
+	const [isActiveHeader, setIsActiveHeader] = useState(true);
+	const headerElement = useRef<HTMLDivElement>(null);
+	const isHeaderScroll = useRef(false);
+	const lastScrollTop = useRef(0);
+	const minDelatScroll = useRef(10);
+
+	const handleHeaderViewByScroll = () => {
+		const currentScroll = document.documentElement.scrollTop;
+		if (!headerElement.current) {
+			return;
+		}
+
+		if (Math.abs(lastScrollTop.current - currentScroll) <= minDelatScroll.current) {
+			return;
+		}
+
+		if (
+			currentScroll > lastScrollTop.current &&
+			currentScroll > headerElement.current.offsetHeight
+		) {
+			setIsActiveHeader(false);
+			return;
+		}
+
+		if (
+			currentScroll + document.documentElement.offsetHeight <=
+			document.documentElement.scrollHeight
+		) {
+			setIsActiveHeader(true);
+		}
+
+		lastScrollTop.current = currentScroll;
+	};
+
+	const handleSetHeaderShow = () => {
+		isHeaderScroll.current = true;
+	};
+
+	useEffect(() => {
+		window.addEventListener('scroll', handleSetHeaderShow);
+	}, []);
+
+	useInterval(() => {
+		if (isHeaderScroll) {
+			handleHeaderViewByScroll();
+			isHeaderScroll.current = false;
+		}
+	}, 10);
 
 	return (
 		<Layout
@@ -92,7 +141,7 @@ const App = () => {
 				dropdown.isOpen && setDropdown({ isOpen: false });
 			}}
 		>
-			<Header />
+			<Header ref={headerElement} active={isActiveHeader} />
 			<Content>
 				<Suspense fallback={<Loading />}>
 					<Routes>
