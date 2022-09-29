@@ -5,7 +5,8 @@
         <encoder>
             <charset>utf8</charset>
             <Pattern>
-                ###### HTTP Request ######%n%fullRequest%n Time:%t{dd MMM yyyy HH:mm:ss,SSS}%n###### HTTP Response ######%n%fullResponse%n
+                ###### HTTP Request ######%n%fullRequest%n Time:%t{dd MMM yyyy HH:mm:ss,SSS}%n###### HTTP Response
+                ######%n%fullResponse%n
             </Pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
