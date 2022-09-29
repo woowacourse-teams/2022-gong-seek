@@ -1,3 +1,5 @@
+import { PropsWithStrictChildren } from 'gongseek-types';
+
 import AddedOption from '@/pages/VoteGenerator/AddedOption/AddedOption';
 import { Meta, Story } from '@storybook/react';
 
@@ -13,7 +15,9 @@ export default {
 	],
 } as Meta;
 
-const Template: Story = (args) => <AddedOption {...args} />;
+const Template: Story<PropsWithStrictChildren<{ onClick: () => void }, string>> = (args) => (
+	<AddedOption {...args} />
+);
 
 export const DefaultAddedOption = Template.bind({});
 DefaultAddedOption.args = {

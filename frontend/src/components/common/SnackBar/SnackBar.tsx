@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
+import { PropsWithStrictChildren } from 'gongseek-types';
 import ReactDOM from 'react-dom';
 import { useRecoilValue } from 'recoil';
 
 import * as S from '@/components/common/SnackBar/SnackBar.styles';
 import { snackBarState } from '@/store/snackBarState';
 
-const SnackBarPortal = ({ children }: { children: ReactNode }) => {
+const SnackBarPortal = ({ children }: PropsWithStrictChildren<unknown>) => {
 	const snackBar = document.getElementById('snack-bar');
 
 	if (!snackBar) {
