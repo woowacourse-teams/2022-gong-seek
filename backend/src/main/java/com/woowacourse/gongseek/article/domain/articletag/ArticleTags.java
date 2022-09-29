@@ -32,6 +32,12 @@ public class ArticleTags {
         value.clear();
     }
 
+    public List<Long> getTagIds() {
+        return value.stream()
+                .map(articleTag -> articleTag.getTag().getId())
+                .collect(Collectors.toList());
+    }
+
     public List<String> getTagNames() {
         return value.stream()
                 .map(articleTag -> articleTag.getTag().getName())

@@ -2,12 +2,12 @@ package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
@@ -21,11 +21,11 @@ import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.tag.application.TagService;
 import com.woowacourse.gongseek.tag.domain.Tags;
-import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -41,9 +41,9 @@ public class ArticleService {
     private final TempArticleService tempArticleService;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
-    private final VoteRepository voteRepository;
     private final TagService tagService;
     private final LikeRepository likeRepository;
+    private final EntityManager entityManager;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
@@ -69,19 +69,23 @@ public class ArticleService {
                 .orElseThrow(() -> new MemberNotFoundException(appMember.getPayload()));
     }
 
-    public ArticleResponse getOne(AppMember appMember, Long id) {
-        Article article = getArticle(id);
+    public ArticleDto getOne(AppMember appMember, Long id) {
+        articleRepository.addViews(id);
+        ArticleDto articleDto = getArticleDto(id, appMember);
 
-        List<String> tagNames = article.getTagNames();
-        article.addViews();
-        LikeResponse likeResponse = new LikeResponse(isLike(article, appMember), getLikeCount(article));
+        entityManager.flush();
+        entityManager.flush();
 
-        return checkGuest(article, tagNames, appMember, voteRepository.existsByArticleId(article.getId()),
-                likeResponse);
+        return articleDto;
+    }
+
+    private ArticleDto getArticleDto(Long id, AppMember appMember) {
+        return articleRepository.findByIdWithAll(id, appMember.getPayload())
+                .orElseThrow(() -> new ArticleNotFoundException(id));
     }
 
     private Article getArticle(Long id) {
-        return articleRepository.findByIdWithAll(id)
+        return articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException(id));
     }
 
@@ -91,14 +95,6 @@ public class ArticleService {
 
     private Long getLikeCount(Article article) {
         return likeRepository.countByArticleId(article.getId());
-    }
-
-    private ArticleResponse checkGuest(Article article, List<String> tagNames, AppMember appMember, boolean hasVote,
-                                       LikeResponse likeResponse) {
-        if (appMember.isGuest()) {
-            return ArticleResponse.of(article, tagNames, false, hasVote, likeResponse);
-        }
-        return ArticleResponse.of(article, tagNames, article.isAuthor(getMember(appMember)), hasVote, likeResponse);
     }
 
     @Transactional(readOnly = true)
@@ -151,31 +147,21 @@ public class ArticleService {
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
         Article article = checkAuthorization(appMember, id);
-        List<String> existingTagNames = article.getTagNames();
+        List<Long> existingTags = article.getTagIds();
         List<String> updatedTagNames = articleUpdateRequest.getTag();
         Tags tags = Tags.from(updatedTagNames);
         Tags foundTags = tagService.getOrCreateTags(tags);
         article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent());
         article.updateTag(foundTags);
-        deleteUnusedTags(existingTagNames, updatedTagNames);
+        deleteUnusedTags(existingTags, foundTags.getTagIds());
 
         return new ArticleUpdateResponse(article);
     }
 
-    private void deleteUnusedTags(List<String> existingTagNames, List<String> updatedTagNames) {
-        updatedTagNames = updatedTagNames.stream()
-                .map(String::toUpperCase)
-                .collect(Collectors.toList());
-
-        existingTagNames.removeAll(updatedTagNames);
-        List<String> deletedTagNames = getDeletedTagNames(existingTagNames);
-        tagService.delete(deletedTagNames);
-    }
-
-    private List<String> getDeletedTagNames(List<String> tagNames) {
-        return tagNames.stream()
-                .filter(tagName -> !articleRepository.existsArticleByTagName(tagName))
-                .collect(Collectors.toList());
+    private void deleteUnusedTags(List<Long> existingTagIds, List<Long> updatedTagIds) {
+        List<Long> deletedTagIds = new ArrayList<>(existingTagIds);
+        deletedTagIds.removeAll(updatedTagIds);
+        tagService.deleteAll(deletedTagIds);
     }
 
     private Article checkAuthorization(AppMember appMember, Long id) {
@@ -195,9 +181,14 @@ public class ArticleService {
     public void delete(AppMember appMember, Long id) {
         Article article = checkAuthorization(appMember, id);
         articleRepository.delete(article);
+        List<Long> deletedTagIds = getDeletedTagIds(article.getTagIds());
+        tagService.deleteAll(deletedTagIds);
+    }
 
-        List<String> deletedTagNames = getDeletedTagNames(article.getTagNames());
-        tagService.delete(deletedTagNames);
+    private List<Long> getDeletedTagIds(List<Long> tagIds) {
+        return tagIds.stream()
+                .filter(tagId -> !articleRepository.existsArticleByTagId(tagId))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

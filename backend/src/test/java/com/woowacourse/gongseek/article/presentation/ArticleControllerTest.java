@@ -24,11 +24,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
@@ -108,7 +108,7 @@ class ArticleControllerTest {
     void 로그인한_사용자일때_기명_게시글_단건_조회_API_문서화() throws Exception {
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
-        ArticleResponse response = new ArticleResponse(
+        ArticleDto response = new ArticleDto(
                 "title",
                 List.of("SPRING", "JAVA"),
                 new AuthorDto("rennon", "avatar.com"),
@@ -154,7 +154,7 @@ class ArticleControllerTest {
     void 로그인한_사용자일때_익명_게시글_단건_조회_API_문서화() throws Exception {
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
-        ArticleResponse response = new ArticleResponse(
+        ArticleDto response = new ArticleDto(
                 "title",
                 List.of("SPRING", "JAVA"),
                 new AuthorDto("익명",
@@ -201,7 +201,7 @@ class ArticleControllerTest {
     void 로그인_안한_사용자일때_기명_게시글_단건_조회_API_문서화() throws Exception {
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
-        ArticleResponse response = new ArticleResponse(
+        ArticleDto response = new ArticleDto(
                 "title",
                 List.of("SPRING", "JAVA"),
                 new AuthorDto("rennon", "avatar.com"),

@@ -12,13 +12,13 @@ import com.woowacourse.gongseek.article.domain.TempTags;
 import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
@@ -33,7 +33,6 @@ import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
 import com.woowacourse.gongseek.vote.application.VoteService;
-import com.woowacourse.gongseek.vote.domain.Vote;
 import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
@@ -41,6 +40,7 @@ import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
@@ -196,15 +196,15 @@ public class ArticleServiceTest {
                 List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
-        ArticleResponse articleResponse = articleService.getOne(new LoginMember(member.getId()), savedArticle.getId());
+        ArticleDto articleDto = articleService.getOne(new LoginMember(member.getId()), savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
-                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
-                () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
-                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo"),
-                () -> assertThat(articleResponse.isAuthor()).isTrue()
+                () -> assertThat(articleDto.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("SPRING"),
+                () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
+                () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
+                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("slo"),
+                () -> assertThat(articleDto.isAuthor()).isTrue()
         );
     }
 
@@ -214,15 +214,15 @@ public class ArticleServiceTest {
                 List.of("Spring"), true);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
-        ArticleResponse articleResponse = articleService.getOne(new LoginMember(member.getId()), savedArticle.getId());
+        ArticleDto articleDto = articleService.getOne(new LoginMember(member.getId()), savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
-                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
-                () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
-                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명"),
-                () -> assertThat(articleResponse.isAuthor()).isTrue()
+                () -> assertThat(articleDto.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("SPRING"),
+                () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
+                () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
+                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("익명"),
+                () -> assertThat(articleDto.isAuthor()).isTrue()
         );
     }
 
@@ -233,16 +233,16 @@ public class ArticleServiceTest {
                 List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(this.member.getId()), articleRequest);
 
-        ArticleResponse articleResponse = articleService.getOne(new LoginMember(notAuthorMember.getId()),
+        ArticleDto articleDto = articleService.getOne(new LoginMember(notAuthorMember.getId()),
                 savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
-                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
-                () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
-                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo"),
-                () -> assertThat(articleResponse.isAuthor()).isFalse()
+                () -> assertThat(articleDto.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("SPRING"),
+                () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
+                () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
+                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("slo"),
+                () -> assertThat(articleDto.isAuthor()).isFalse()
         );
     }
 
@@ -253,15 +253,15 @@ public class ArticleServiceTest {
                 List.of("Spring"), true);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(notAuthorMember.getId()), articleRequest);
 
-        ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
+        ArticleDto articleDto = articleService.getOne(new GuestMember(), savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
-                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
-                () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
-                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명"),
-                () -> assertThat(articleResponse.isAuthor()).isFalse()
+                () -> assertThat(articleDto.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("SPRING"),
+                () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
+                () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
+                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("익명"),
+                () -> assertThat(articleDto.isAuthor()).isFalse()
         );
     }
 
@@ -271,15 +271,15 @@ public class ArticleServiceTest {
                 List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
-        ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
+        ArticleDto articleDto = articleService.getOne(new GuestMember(), savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
-                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
-                () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
-                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo"),
-                () -> assertThat(articleResponse.isAuthor()).isFalse()
+                () -> assertThat(articleDto.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("SPRING"),
+                () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
+                () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
+                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("slo"),
+                () -> assertThat(articleDto.isAuthor()).isFalse()
         );
     }
 
@@ -289,15 +289,15 @@ public class ArticleServiceTest {
                 List.of("Spring"), true);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
-        ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
+        ArticleDto articleDto = articleService.getOne(new GuestMember(), savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
-                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
-                () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
-                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명"),
-                () -> assertThat(articleResponse.isAuthor()).isFalse()
+                () -> assertThat(articleDto.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("SPRING"),
+                () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
+                () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
+                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("익명"),
+                () -> assertThat(articleDto.isAuthor()).isFalse()
         );
     }
 
@@ -308,14 +308,14 @@ public class ArticleServiceTest {
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         articleService.getOne(new GuestMember(), savedArticle.getId());
-        ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
+        ArticleDto articleDto = articleService.getOne(new GuestMember(), savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
-                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
-                () -> assertThat(articleResponse.getViews()).isEqualTo(2),
-                () -> assertThat(articleResponse.getCreatedAt()).isNotNull()
+                () -> assertThat(articleDto.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("SPRING"),
+                () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
+                () -> assertThat(articleDto.getViews()).isEqualTo(2),
+                () -> assertThat(articleDto.getCreatedAt()).isNotNull()
         );
     }
 
@@ -330,14 +330,14 @@ public class ArticleServiceTest {
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
         articleService.update(loginMember, request, savedArticle.getId());
 
-        ArticleResponse response = articleService.getOne(loginMember, savedArticle.getId());
+        ArticleDto articleDto = articleService.getOne(loginMember, savedArticle.getId());
 
         assertAll(
-                () -> assertThat(response.getTitle()).isEqualTo(request.getTitle()),
-                () -> assertThat(response.getTag()).hasSize(1),
-                () -> assertThat(response.getTag().get(0)).isEqualTo("JAVA"),
-                () -> assertThat(response.getContent()).isEqualTo(request.getContent()),
-                () -> assertThat(response.getAuthor().getName()).isEqualTo("slo")
+                () -> assertThat(articleDto.getTitle()).isEqualTo(request.getTitle()),
+                () -> assertThat(articleDto.getTag()).hasSize(1),
+                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("JAVA"),
+                () -> assertThat(articleDto.getContent()).isEqualTo(request.getContent()),
+                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("slo")
         );
     }
 
@@ -351,14 +351,14 @@ public class ArticleServiceTest {
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
         articleService.update(loginMember, request, savedArticle.getId());
 
-        ArticleResponse response = articleService.getOne(loginMember, savedArticle.getId());
+        ArticleDto articleDto = articleService.getOne(loginMember, savedArticle.getId());
 
         assertAll(
-                () -> assertThat(response.getTitle()).isEqualTo(request.getTitle()),
-                () -> assertThat(response.getTag()).hasSize(1),
-                () -> assertThat(response.getTag().get(0)).isEqualTo("JAVA"),
-                () -> assertThat(response.getContent()).isEqualTo(request.getContent()),
-                () -> assertThat(response.getAuthor().getName()).isEqualTo("익명")
+                () -> assertThat(articleDto.getTitle()).isEqualTo(request.getTitle()),
+                () -> assertThat(articleDto.getTag()).hasSize(1),
+                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("JAVA"),
+                () -> assertThat(articleDto.getContent()).isEqualTo(request.getContent()),
+                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("익명")
         );
     }
 
@@ -402,10 +402,13 @@ public class ArticleServiceTest {
         articleService.update(loginMember, new ArticleUpdateRequest("하이", "하이", List.of("JAVA", "backend")),
                 firstSavedArticle.getId());
 
+        ArticleDto articleDto = articleRepository.findByIdWithAll(firstSavedArticle.getId(), member.getId()).get();
+        List<String> existTagNames = articleDto.getTag();
+
         assertAll(
-                () -> assertThat(articleRepository.existsArticleByTagName("SPRING")).isFalse(),
-                () -> assertThat(articleRepository.existsArticleByTagName("JAVA")).isTrue(),
-                () -> assertThat(articleRepository.existsArticleByTagName("BACKEND")).isTrue(),
+                () -> assertThat(existTagNames).hasSize(2),
+                () -> assertThat(existTagNames.get(0)).isEqualTo("JAVA"),
+                () -> assertThat(existTagNames.get(1)).isEqualTo("BACKEND"),
                 () -> assertThat(tagRepository.findByNameIgnoreCase("SPRING")).isEmpty(),
                 () -> assertThat(tagRepository.findByNameIgnoreCase("JAVA")).isNotEmpty(),
                 () -> assertThat(tagRepository.findByNameIgnoreCase("BACKEND")).isNotEmpty()
@@ -477,9 +480,9 @@ public class ArticleServiceTest {
 
         articleService.delete(loginMember, firstSavedArticle.getId());
 
+        Optional<ArticleDto> article = articleRepository.findByIdWithAll(firstSavedArticle.getId(), member.getId());
         assertAll(
-                () -> assertThat(articleRepository.existsArticleByTagName("SPRING")).isFalse(),
-                () -> assertThat(articleRepository.existsArticleByTagName("JAVA")).isTrue(),
+                () -> assertThat(article).isEmpty(),
                 () -> assertThat(tagRepository.findByNameIgnoreCase("SPRING")).isEmpty(),
                 () -> assertThat(tagRepository.findByNameIgnoreCase("JAVA")).isNotEmpty()
         );

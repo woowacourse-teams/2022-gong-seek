@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
@@ -25,6 +26,8 @@ import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -296,12 +299,14 @@ class ArticleRepositoryTest {
         Article article = articleRepository.save(
                 new Article("title1", "content1", Category.QUESTION, member, false));
         List<Tag> tags = List.of(new Tag("spring"), new Tag("java"));
-        tagRepository.saveAll(tags);
+        List<Long> tagIds = tagRepository.saveAll(tags).stream()
+                .map(Tag::getId)
+                .collect(Collectors.toList());
         article.addTag(new Tags(tags));
 
-        boolean firstResult = articleRepository.existsArticleByTagName("SPRING");
-        boolean secondResult = articleRepository.existsArticleByTagName("java");
-        boolean thirdResult = articleRepository.existsArticleByTagName("REACT");
+        boolean firstResult = articleRepository.existsArticleByTagId(tagIds.get(0));
+        boolean secondResult = articleRepository.existsArticleByTagId(tagIds.get(1));
+        boolean thirdResult = articleRepository.existsArticleByTagId(999L);
 
         assertAll(
                 () -> assertThat(firstResult).isTrue(),
@@ -449,7 +454,7 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    void 마이페이지에서_내가_작성한_게시글을_조회할_때_댓글_갯수도_함께_조회다() {
+    void 마이페이지에서_내가_작성한_게시글을_조회할_때_댓글_갯수도_함께_조회한다() {
         Article firstArticle = articleRepository.save(
                 new Article("title1", "content1", Category.DISCUSSION, member, false));
         Article secondArticle = articleRepository.save(
@@ -475,5 +480,64 @@ class ArticleRepositoryTest {
                                         firstArticle.getCategory(),
                                         3L, 0, LocalDateTime.now(), LocalDateTime.now()))
         );
+    }
+
+    @Test
+    void 게시글_단건_조회_시_작성자_투표생성여부_좋아요여부_좋아요갯수를_반환한다() {
+        Article article = articleRepository.save(
+                new Article("title1", "content1", Category.DISCUSSION, member, false));
+        Tag firstTag = new Tag("Spring");
+        Tag secondTag = new Tag("Rennon");
+        tagRepository.saveAll(List.of(firstTag, secondTag));
+        article.addTag(new Tags(List.of(firstTag, secondTag)));
+        likeRepository.save(new Like(article, member));
+
+        ArticleDto foundArticleDto = articleRepository.findByIdWithAll(article.getId(), member.getId()).get();
+
+        assertThat(foundArticleDto)
+                .usingRecursiveComparison()
+                .ignoringFields("createdAt", "updatedAt")
+                .isEqualTo(
+                        new ArticleDto(
+                                article.getTitle(),
+                                List.of("SPRING", "RENNON"),
+                                member.getName(),
+                                member.getAvatarUrl(),
+                                article.getContent(),
+                                true,
+                                article.getViews(),
+                                false,
+                                true,
+                                article.isAnonymous(),
+                                1L,
+                                LocalDateTime.now(),
+                                LocalDateTime.now()
+                        )
+                );
+    }
+
+    @Test
+    void 존재하지_않는_게시글_식별자로_단건_조회_시_Optional을_반환한다() {
+        Optional<ArticleDto> articleDto = articleRepository.findByIdWithAll(500L, member.getId());
+
+        assertThat(articleDto).isEmpty();
+    }
+
+    @Test
+    void 게시글의_조회수를_증가시킨다() {
+        Article article = articleRepository.save(
+                new Article("title1", "content1", Category.DISCUSSION, member, false));
+
+        testEntityManager.flush();
+        testEntityManager.clear();
+
+        articleRepository.addViews(article.getId());
+        articleRepository.addViews(article.getId());
+        articleRepository.addViews(article.getId());
+
+        Article foundArticle = articleRepository.findById(article.getId()).get();
+        int views = foundArticle.getViews();
+
+        assertThat(views).isEqualTo(3L);
     }
 }

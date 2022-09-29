@@ -7,17 +7,22 @@ import static com.woowacourse.gongseek.comment.domain.QComment.comment;
 import static com.woowacourse.gongseek.like.domain.QLike.like;
 import static com.woowacourse.gongseek.member.domain.QMember.member;
 import static com.woowacourse.gongseek.tag.domain.QTag.tag;
+import static com.woowacourse.gongseek.vote.domain.QVote.vote;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.articletag.ArticleTag;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +33,60 @@ import org.springframework.data.domain.SliceImpl;
 public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+
+    @Override
+    public Optional<ArticleDto> findByIdWithAll(Long articleId, Long memberId) {
+        List<ArticleTag> articleTags = getArticleTags(articleId);
+        List<String> tagNames = articleTags.stream()
+                .map(articleTag -> articleTag.getTag().getName())
+                .collect(Collectors.toList());
+
+        return Optional.ofNullable(queryFactory
+                .select(Projections.constructor(
+                                ArticleDto.class,
+                                article.title.value,
+                                Expressions.constant(tagNames),
+                                article.member.name.value,
+                                article.member.avatarUrl,
+                                article.content.value,
+                                article.member.id.eq(memberId),
+                                article.views.value,
+                                hasVote(articleId),
+                                isLike(articleId, memberId),
+                                article.isAnonymous,
+                                count(like.id),
+                                article.createdAt,
+                                article.updatedAt
+                        )
+                )
+                .from(article)
+                .join(article.member, member)
+                .leftJoin(like).on(article.id.eq(like.article.id))
+                .where(article.id.eq(articleId))
+                .groupBy(article.id)
+                .fetchOne());
+    }
+
+    private List<ArticleTag> getArticleTags(Long articleId) {
+        return queryFactory.selectFrom(articleTag)
+                .join(articleTag.tag, tag).fetchJoin()
+                .where(articleTag.article.id.eq(articleId))
+                .fetch();
+    }
+
+    private BooleanExpression hasVote(Long articleId) {
+        return JPAExpressions.selectOne()
+                .from(vote)
+                .where(vote.article.id.eq(articleId))
+                .exists();
+    }
+
+    private BooleanExpression isLike(Long articleId, Long memberId) {
+        return JPAExpressions.selectOne()
+                .from(like)
+                .where(like.article.id.eq(articleId).and(like.member.id.eq(memberId)))
+                .exists();
+    }
 
     @Override
     public List<MyPageArticleDto> findAllByMemberIdWithCommentCount(Long memberId) {
@@ -47,6 +106,16 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .where(article.member.id.eq(memberId))
                 .groupBy(article.id)
                 .fetch();
+    }
+
+    @Override
+    public boolean existsArticleByTagId(Long tagId) {
+        Integer tagCount = queryFactory.selectOne()
+                .from(articleTag)
+                .where(articleTag.tag.id.eq(tagId))
+                .fetchFirst();
+
+        return tagCount != null;
     }
 
     @Override

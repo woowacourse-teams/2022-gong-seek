@@ -117,6 +117,10 @@ public class Article extends BaseTimeEntity {
         return views.getValue();
     }
 
+    public List<Long> getTagIds() {
+        return this.articleTags.getTagIds();
+    }
+
     public List<String> getTagNames() {
         return this.articleTags.getTagNames();
     }

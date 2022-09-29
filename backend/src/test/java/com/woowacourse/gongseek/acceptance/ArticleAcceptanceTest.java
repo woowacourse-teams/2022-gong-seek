@@ -31,11 +31,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
@@ -134,17 +134,17 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> response = 로그인을_하지_않고_게시글을_조회한다(articleIdResponse);
-        ArticleResponse articleResponse = response.as(ArticleResponse.class);
+        ArticleDto ArticleDto = response.as(ArticleDto.class);
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articleResponse)
+                () -> assertThat(ArticleDto)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
                         .ignoringFields("updatedAt")
                         .isEqualTo(
-                                new ArticleResponse(
+                                new ArticleDto(
                                         "title",
                                         List.of("SPRING"),
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
@@ -170,17 +170,17 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> response = 로그인을_하지_않고_게시글을_조회한다(articleIdResponse);
-        ArticleResponse articleResponse = response.as(ArticleResponse.class);
+        ArticleDto ArticleDto = response.as(ArticleDto.class);
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articleResponse)
+                () -> assertThat(ArticleDto)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
                         .ignoringFields("updatedAt")
                         .isEqualTo(
-                                new ArticleResponse(
+                                new ArticleDto(
                                         "title",
                                         List.of("SPRING"),
                                         anonymousAuthor,
@@ -206,17 +206,17 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> response = 로그인_후_게시글을_조회한다(tokenResponse, articleIdResponse);
-        ArticleResponse articleResponse = response.as(ArticleResponse.class);
+        ArticleDto ArticleDto = response.as(ArticleDto.class);
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articleResponse)
+                () -> assertThat(ArticleDto)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
                         .ignoringFields("updatedAt")
                         .isEqualTo(
-                                new ArticleResponse(
+                                new ArticleDto(
                                         "title",
                                         List.of("SPRING"),
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
@@ -242,17 +242,17 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> response = 로그인_후_게시글을_조회한다(tokenResponse, articleIdResponse);
-        ArticleResponse articleResponse = response.as(ArticleResponse.class);
+        ArticleDto ArticleDto = response.as(ArticleDto.class);
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articleResponse)
+                () -> assertThat(ArticleDto)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
                         .ignoringFields("updatedAt")
                         .isEqualTo(
-                                new ArticleResponse(
+                                new ArticleDto(
                                         "title",
                                         List.of("SPRING"),
                                         anonymousAuthor,
@@ -279,17 +279,17 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         // when
         로그인_후_게시글을_조회한다(tokenResponse, articleIdResponse);
         ExtractableResponse<Response> response = 로그인_후_게시글을_조회한다(tokenResponse, articleIdResponse);
-        ArticleResponse articleResponse = response.as(ArticleResponse.class);
+        ArticleDto ArticleDto = response.as(ArticleDto.class);
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articleResponse)
+                () -> assertThat(ArticleDto)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
                         .ignoringFields("updatedAt")
                         .isEqualTo(
-                                new ArticleResponse(
+                                new ArticleDto(
                                         "title",
                                         List.of("SPRING"),
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
@@ -387,15 +387,15 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 로그인_후_게시글을_수정한다(tokenResponse, articleIdResponse);
         ArticleUpdateResponse articleUpdateResponse = response.as(ArticleUpdateResponse.class);
 
-        ArticleResponse articleResponse = 로그인을_하지_않고_게시글을_조회한다(articleIdResponse).as(ArticleResponse.class);
+        ArticleDto ArticleDto = 로그인을_하지_않고_게시글을_조회한다(articleIdResponse).as(ArticleDto.class);
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(articleUpdateResponse.getId()).isEqualTo(articleIdResponse.getId()),
                 () -> assertThat(articleUpdateResponse.getCategory()).isEqualTo(Category.QUESTION.getValue()),
-                () -> assertThat(articleResponse.getTag()).hasSize(1),
-                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("JAVA")
+                () -> assertThat(ArticleDto.getTag()).hasSize(1),
+                () -> assertThat(ArticleDto.getTag().get(0)).isEqualTo("JAVA")
         );
     }
 
@@ -410,15 +410,15 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 로그인_후_게시글을_수정한다(tokenResponse, articleIdResponse);
         ArticleUpdateResponse articleUpdateResponse = response.as(ArticleUpdateResponse.class);
 
-        ArticleResponse articleResponse = 로그인을_하지_않고_게시글을_조회한다(articleIdResponse).as(ArticleResponse.class);
+        ArticleDto ArticleDto = 로그인을_하지_않고_게시글을_조회한다(articleIdResponse).as(ArticleDto.class);
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(articleUpdateResponse.getId()).isEqualTo(articleIdResponse.getId()),
                 () -> assertThat(articleUpdateResponse.getCategory()).isEqualTo(Category.QUESTION.getValue()),
-                () -> assertThat(articleResponse.getTag()).hasSize(1),
-                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("JAVA")
+                () -> assertThat(ArticleDto.getTag()).hasSize(1),
+                () -> assertThat(ArticleDto.getTag().get(0)).isEqualTo("JAVA")
         );
     }
 

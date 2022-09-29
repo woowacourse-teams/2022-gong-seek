@@ -1,14 +1,20 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
 import com.woowacourse.gongseek.article.domain.Article;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
 public interface ArticleRepositoryCustom {
 
+    Optional<ArticleDto> findByIdWithAll(Long id, Long memberId);
+
     List<MyPageArticleDto> findAllByMemberIdWithCommentCount(Long memberId);
+
+    boolean existsArticleByTagId(Long tagId);
 
     Slice<Article> findAllByPage(Long cursorId, Integer views, String category, String sortType, Pageable pageable);
 
