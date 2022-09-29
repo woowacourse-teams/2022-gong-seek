@@ -19,7 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
 @SuppressWarnings("NonAsciiCharacters")
-@ActiveProfiles("invalid")
+@ActiveProfiles("invalidToken")
 public class InvalidJwtAuthAcceptanceTest extends AcceptanceTest {
 
     @Test
