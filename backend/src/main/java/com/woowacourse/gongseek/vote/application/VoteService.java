@@ -83,7 +83,8 @@ public class VoteService {
         Vote foundVote = getVoteByArticleId(articleId);
         List<VoteItem> voteItems = voteItemRepository.findAllByVoteArticleId(articleId);
 
-        VoteHistory voteHistory = voteHistoryRepository.findByMemberId(appMember.getPayload())
+        VoteHistory voteHistory = voteHistoryRepository.findByVoteIdAndMemberId(foundVote.getId(),
+                        appMember.getPayload())
                 .orElse(null);
         return VoteResponse.of(foundVote.getArticle().getId(), voteItems, getVotedItemIdOrNull(voteHistory),
                 foundVote.isExpired());

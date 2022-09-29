@@ -24,7 +24,7 @@ const TemporaryArticleList = () => {
 		<S.Container>
 			<h2 hidden>임시저장글들의 목록이 보여지는 곳입니다</h2>
 			<S.ArticleListBox>
-				{data ? (
+				{data && data.values.length >= 1 ? (
 					data.values.map((item) => (
 						<S.ArticleItemBox key={item.id}>
 							<TemporaryArticleItem

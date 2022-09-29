@@ -760,9 +760,9 @@ public class ArticleServiceTest {
         voteService.doVote(article.getId(), loginMember, new SelectVoteItemIdRequest(1L));
         articleService.delete(loginMember, article.getId());
         assertAll(
-                () -> assertThat(voteHistoryRepository.findByMemberId(loginMember.getPayload())).isEmpty(),
                 () -> assertThat(articleRepository.findById(article.getId())).isEmpty(),
-                () -> assertThat(voteItemRepository.findAll()).isEmpty()
+                () -> assertThat(voteItemRepository.findAll()).isEmpty(),
+                () -> assertThat(voteHistoryRepository.findAll()).isEmpty()
         );
     }
 

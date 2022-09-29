@@ -1,8 +1,9 @@
-import { ReactNode, useState } from 'react';
+import { PropsWithStrictChildren } from 'gongseek-types';
+import { useState } from 'react';
 
 import * as S from '@/pages/MyPage/UserItemBox/UserItemBox.styles';
 
-const UserItemBox = ({ children, subTitle }: { children: ReactNode; subTitle: string }) => {
+const UserItemBox = ({ children, subTitle }: PropsWithStrictChildren<{ subTitle: string }>) => {
 	const [isContainerOpen, setIsContainerOpen] = useState(true);
 
 	return (
