@@ -25,8 +25,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponseNew;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
@@ -358,13 +360,13 @@ class ArticleControllerTest {
 
     @Test
     void 게시글_제목_내용_검색_문서화() throws Exception {
-        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
+        ArticlePreviewDto articlePreviewResponse1 = new ArticlePreviewDto(1L, "제목", List.of("SPRING"),
                 new AuthorDto("작성자1", "작성자1 이미지 url"),
-                "내용", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
-        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목", List.of("SPRING"),
+                "내용", Category.QUESTION.getValue(), 3L, 2, false, 0L, LocalDateTime.now());
+        ArticlePreviewDto articlePreviewResponse2 = new ArticlePreviewDto(2L, "제목", List.of("SPRING"),
                 new AuthorDto("작성자2", "작성자2 이미지 url"),
-                "내용", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
-        ArticlePageResponse response = new ArticlePageResponse(
+                "내용", Category.DISCUSSION.getValue(), 10L, 5, false, 0L, LocalDateTime.now());
+        ArticlePageResponseNew response = new ArticlePageResponseNew(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
@@ -393,7 +395,7 @@ class ArticleControllerTest {
                         responseFields(
                                 fieldWithPath("articles[].id").type(JsonFieldType.NUMBER).description("게시글 식별자"),
                                 fieldWithPath("articles[].title").type(JsonFieldType.STRING).description("게시글 제목"),
-                                fieldWithPath("articles[].tag").type(JsonFieldType.ARRAY).description("게시글 해시태그"),
+                                fieldWithPath("articles[].tags").type(JsonFieldType.ARRAY).description("게시글 해시태그"),
                                 fieldWithPath("articles[].author.name").type(JsonFieldType.STRING)
                                         .description("게시글 작성자 이름"),
                                 fieldWithPath("articles[].author.avatarUrl").type(JsonFieldType.STRING)

@@ -4,6 +4,7 @@ import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponseNew;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
@@ -88,13 +89,13 @@ public class ArticleController {
     }
 
     @GetMapping("/search/text")
-    public ResponseEntity<ArticlePageResponse> searchByText(
+    public ResponseEntity<ArticlePageResponseNew> searchByText(
             @RequestParam(required = false) Long cursorId,
             Pageable pageable,
             @RequestParam(required = false) String text,
             @AuthenticationPrinciple AppMember appMember
     ) {
-        ArticlePageResponse response = articleService.searchByText(cursorId, pageable, text, appMember);
+        ArticlePageResponseNew response = articleService.searchByText(cursorId, pageable, text, appMember);
         return ResponseEntity.ok(response);
     }
 

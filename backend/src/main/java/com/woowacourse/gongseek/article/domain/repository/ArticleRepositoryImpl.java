@@ -12,16 +12,19 @@ import static com.woowacourse.gongseek.vote.domain.QVote.vote;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.articletag.ArticleTag;
+import com.woowacourse.gongseek.article.domain.articletag.ArticleTags;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -36,40 +39,40 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public Optional<ArticleDto> findByIdWithAll(Long articleId, Long memberId) {
-        List<ArticleTag> articleTags = getArticleTags(articleId);
-        List<String> tagNames = articleTags.stream()
-                .map(articleTag -> articleTag.getTag().getName())
-                .collect(Collectors.toList());
-
-        return Optional.ofNullable(queryFactory
-                .select(Projections.constructor(
-                                ArticleDto.class,
-                                article.title.value,
-                                Expressions.constant(tagNames),
-                                article.member.name.value,
-                                article.member.avatarUrl,
-                                article.content.value,
-                                article.member.id.eq(memberId),
-                                article.views.value,
-                                hasVote(articleId),
-                                isLike(articleId, memberId),
-                                article.isAnonymous,
-                                count(like.id),
-                                article.createdAt,
-                                article.updatedAt
+        ArticleTags articleTags = new ArticleTags(getArticleTags(articleId));
+        return Optional.ofNullable(
+                queryFactory.select(
+                                Projections.constructor(
+                                        ArticleDto.class,
+                                        article.title.value,
+                                        Expressions.constant(articleTags),
+                                        article.member.name.value,
+                                        article.member.avatarUrl,
+                                        article.content.value,
+                                        article.member.id.eq(memberId),
+                                        article.views.value,
+                                        hasVote(articleId),
+                                        isLike(articleId, memberId),
+                                        article.isAnonymous,
+                                        count(like.id),
+                                        article.createdAt,
+                                        article.updatedAt)
                         )
-                )
-                .from(article)
-                .join(article.member, member)
-                .leftJoin(like).on(article.id.eq(like.article.id))
-                .where(article.id.eq(articleId))
-                .groupBy(article.id)
-                .fetchOne());
+                        .from(article)
+                        .join(article.member, member)
+                        .leftJoin(like).on(article.id.eq(like.article.id))
+                        .where(article.id.eq(articleId))
+                        .groupBy(article.id)
+                        .fetchOne());
     }
 
     private List<ArticleTag> getArticleTags(Long articleId) {
+        if (Objects.isNull(articleId)) {
+            return new ArrayList<>();
+        }
+
         return queryFactory.selectFrom(articleTag)
-                .join(articleTag.tag, tag).fetchJoin()
+                .join(articleTag.tag).fetchJoin()
                 .where(articleTag.article.id.eq(articleId))
                 .fetch();
     }
@@ -84,8 +87,15 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     private BooleanExpression isLike(Long articleId, Long memberId) {
         return JPAExpressions.selectOne()
                 .from(like)
-                .where(like.article.id.eq(articleId).and(like.member.id.eq(memberId)))
+                .where(eqLike(articleId, memberId))
                 .exists();
+    }
+
+    private BooleanExpression eqLike(Long articleId, Long memberId) {
+        if (Objects.isNull(articleId) || memberId.equals(0L)) {
+            return null;
+        }
+        return like.article.id.eq(articleId).and(like.member.id.eq(memberId));
     }
 
     @Override
@@ -199,26 +209,54 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public Slice<Article> searchByContainingText(Long cursorId, String searchText, Pageable pageable) {
-        List<Article> fetch = queryFactory
-                .selectFrom(article)
-                .leftJoin(article.member, member).fetchJoin()
+    public Slice<ArticlePreviewDto> searchByContainingText(Long cursorId, String searchText, Long memberId,
+                                                           Pageable pageable) {
+        List<ArticlePreviewDto> fetch = queryFactory
+                .select(
+                        Projections.constructor(
+                                ArticlePreviewDto.class,
+                                article.id,
+                                article.title.value,
+                                Expressions.constant(new ArticleTags(getArticleTags(cursorId))),
+                                article.member.name.value,
+                                article.member.avatarUrl,
+                                article.content.value,
+                                article.category,
+                                count(comment.id),
+                                article.views.value,
+                                isLike(cursorId, memberId),
+                                count(like.id),
+                                article.createdAt
+                        )
+                )
+                .from(article)
+                .leftJoin(article.member, member)
+                .leftJoin(comment).on(article.id.eq(comment.article.id))
+                .leftJoin(like).on(article.id.eq(like.article.id))
                 .where(
                         containsTitleOrContent(searchText),
                         isOverArticleId(cursorId)
                 )
+                .groupBy(article.id)
                 .limit(pageable.getPageSize() + 1)
                 .orderBy(article.id.desc())
                 .fetch();
-        return convertToSlice(fetch, pageable);
+        return convertToSliceBySearch(fetch, pageable);
     }
 
     private BooleanExpression containsTitleOrContent(String searchText) {
-        String text = searchText.toLowerCase().replace(" ", "");
-        StringExpression title = Expressions.stringTemplate("replace({0},' ','')", article.title.value).lower();
-        StringExpression content = Expressions.stringTemplate("replace({0},' ','')", article.content.value).lower();
-        return title.contains(text)
-                .or(content.contains(text));
+        return article.title.value.contains(searchText)
+                .or(article.content.value.contains(searchText));
+    }
+
+    private SliceImpl<ArticlePreviewDto> convertToSliceBySearch(List<ArticlePreviewDto> fetch, Pageable pageable) {
+        boolean hasNext = false;
+
+        if (fetch.size() == pageable.getPageSize() + 1) {
+            fetch.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+        return new SliceImpl<>(fetch, pageable, hasNext);
     }
 
     @Override

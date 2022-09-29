@@ -3,6 +3,7 @@ package com.woowacourse.gongseek.acceptance.support.fixtures;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponseNew;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
@@ -160,7 +161,7 @@ public class ArticleFixture {
                 .extract();
     }
 
-    public static ArticlePageResponse 게시글을_제목과_내용으로_처음_검색한다(int size, String text) {
+    public static ArticlePageResponseNew 게시글을_제목과_내용으로_처음_검색한다(int size, String text) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
@@ -170,10 +171,10 @@ public class ArticleFixture {
                 .get("/api/articles/search/text")
                 .then().log().all()
                 .extract()
-                .as(ArticlePageResponse.class);
+                .as(ArticlePageResponseNew.class);
     }
 
-    public static ArticlePageResponse 게시글을_제목과_내용으로_검색한다(long cursorId, int size, String text) {
+    public static ArticlePageResponseNew 게시글을_제목과_내용으로_검색한다(long cursorId, int size, String text) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)
@@ -184,7 +185,7 @@ public class ArticleFixture {
                 .get("/api/articles/search/text")
                 .then().log().all()
                 .extract()
-                .as(ArticlePageResponse.class);
+                .as(ArticlePageResponseNew.class);
     }
 
     public static ArticlePageResponse 게시글을_유저이름으로_검색한다(Long cursorId, int size, String author) {

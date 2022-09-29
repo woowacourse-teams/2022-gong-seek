@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
@@ -157,28 +158,29 @@ class ArticleRepositoryTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"this is wooteco", "is", "THIS IS WOOTECO", "IS", "THiS Is WOOteCO", "Is", "thisis",
-            "thisIs", "this iswooteco"})
-    void 띄어쓰기와_대소문자_관계_없이_제목으로_게시글을_검색한다(String searchText) {
+    @ValueSource(strings = {"this is wooteco", "is", "this", "wooteco"})
+    void 제목으로_게시글을_검색한다(String searchText) {
         Article article = articleRepository.save(
                 new Article("this is wooteco", "wow", Category.QUESTION, member, false));
         articleRepository.save(new Article("i am judy", "hello", Category.QUESTION, member, false));
 
-        Slice<Article> articles = articleRepository.searchByContainingText(null, searchText, PageRequest.ofSize(2));
+        Slice<ArticlePreviewDto> articles = articleRepository.searchByContainingText(null, searchText, 0L,
+                PageRequest.ofSize(2));
 
-        assertThat(articles.getContent()).containsExactly(article);
+        assertThat(articles.getContent()).hasSize(1);
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"wow", "w", "WOW", "W", "WoW", "W ow", "w o w"})
+    @ValueSource(strings = {"wow", "w"})
     void 띄어쓰기와_대소문자_관계_없이_내용으로_게시글을_검색한다(String searchText) {
         Article article = articleRepository.save(
                 new Article("this is wooteco", "wow", Category.QUESTION, member, false));
         articleRepository.save(new Article("i am 주디", "hello", Category.QUESTION, member, false));
 
-        Slice<Article> articles = articleRepository.searchByContainingText(null, searchText, PageRequest.ofSize(2));
+        Slice<ArticlePreviewDto> articles = articleRepository.searchByContainingText(null, searchText, 0L,
+                PageRequest.ofSize(2));
 
-        assertThat(articles.getContent()).containsExactly(article);
+        assertThat(articles.getContent()).hasSize(1);
     }
 
     @Test
@@ -186,16 +188,18 @@ class ArticleRepositoryTest {
         for (int i = 0; i < 5; i++) {
             articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         }
-        Slice<Article> articles = articleRepository.searchByContainingText(null, "title", PageRequest.ofSize(5));
+        Slice<ArticlePreviewDto> articles = articleRepository.searchByContainingText(null, "title", 0L,
+                PageRequest.ofSize(5));
 
-        assertThat(articles).hasSize(5);
+        assertThat(articles.getContent()).hasSize(5);
     }
 
     @Test
     void 게시글이_없을_때_검색하면_빈_값을_반환한다() {
-        Slice<Article> articles = articleRepository.searchByContainingText(null, "empty", PageRequest.ofSize(5));
+        Slice<ArticlePreviewDto> articles = articleRepository.searchByContainingText(null, "empty", 0L,
+                PageRequest.ofSize(5));
 
-        assertThat(articles).isEmpty();
+        assertThat(articles.getContent()).isEmpty();
     }
 
     @Test
@@ -500,7 +504,7 @@ class ArticleRepositoryTest {
                 .isEqualTo(
                         new ArticleDto(
                                 article.getTitle(),
-                                List.of("SPRING", "RENNON"),
+                                article.getArticleTags(),
                                 member.getName(),
                                 member.getAvatarUrl(),
                                 article.getContent(),

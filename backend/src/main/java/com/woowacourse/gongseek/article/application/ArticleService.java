@@ -3,9 +3,11 @@ package com.woowacourse.gongseek.article.application;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponseNew;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
@@ -74,7 +76,6 @@ public class ArticleService {
         ArticleDto articleDto = getArticleDto(id, appMember);
 
         entityManager.flush();
-        entityManager.flush();
 
         return articleDto;
     }
@@ -123,14 +124,15 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticlePageResponse searchByText(Long cursorId, Pageable pageable, String searchText, AppMember appMember) {
+    public ArticlePageResponseNew searchByText(Long cursorId, Pageable pageable, String searchText,
+                                               AppMember appMember) {
         if (searchText.isBlank()) {
-            return new ArticlePageResponse(new ArrayList<>(), false);
+            return new ArticlePageResponseNew(new ArrayList<>(), false);
         }
-        Slice<Article> articles = articleRepository.searchByContainingText(cursorId, searchText, pageable);
-        List<ArticlePreviewResponse> responses = createResponse(appMember, articles);
+        Slice<ArticlePreviewDto> articles = articleRepository.searchByContainingText(cursorId, searchText,
+                appMember.getPayload(), pageable);
 
-        return new ArticlePageResponse(responses, articles.hasNext());
+        return new ArticlePageResponseNew(articles.getContent(), articles.hasNext());
     }
 
     @Transactional(readOnly = true)

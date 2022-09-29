@@ -34,6 +34,7 @@ import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponseNew;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
@@ -740,8 +741,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //when
         int size = 4;
         String searchText = "커스텀";
-        ArticlePageResponse firstPage = 게시글을_제목과_내용으로_처음_검색한다(size, searchText);
-        ArticlePageResponse secondPage = 게시글을_제목과_내용으로_검색한다(firstPage.getArticles().get(size - 1).getId(), size,
+        ArticlePageResponseNew firstPage = 게시글을_제목과_내용으로_처음_검색한다(size, searchText);
+        ArticlePageResponseNew secondPage = 게시글을_제목과_내용으로_검색한다(firstPage.getArticles().get(size - 1).getId(), size,
                 searchText);
 
         //then
