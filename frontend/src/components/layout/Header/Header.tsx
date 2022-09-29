@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { forwardRef, LegacyRef } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import gongseek from '@/assets/gongseek.png';
@@ -9,14 +9,13 @@ import { URL } from '@/constants/url';
 import { searchState } from '@/store/searchState';
 import { getUserIsLogin } from '@/store/userState';
 
-const Header = () => {
+const Header = (props: { active: boolean }, ref: LegacyRef<HTMLDivElement>) => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const { isSearchOpen } = useRecoilValue(searchState);
-	const navigate = useNavigate();
 
 	if (isSearchOpen) {
 		return (
-			<S.Container>
+			<S.Container active={props.active}>
 				<S.HeaderSection>
 					<S.StyledLink to={URL.HOME}>
 						<S.LogoImage src={gongseek} />
@@ -32,7 +31,7 @@ const Header = () => {
 	}
 
 	return (
-		<S.Container>
+		<S.Container ref={ref} active={props.active}>
 			<S.HeaderSection>
 				<S.StyledLink to={URL.HOME}>
 					<S.LogoLink>공식</S.LogoLink>
@@ -63,4 +62,4 @@ const Header = () => {
 	);
 };
 
-export default Header;
+export default forwardRef(Header);

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { keyframes } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const searchOpenMaxAnimation = keyframes`
@@ -33,7 +33,7 @@ const searchOpenMidAnimation = keyframes`
 	}
 `;
 
-export const Container = styled.div`
+export const Container = styled.div<{ active: boolean }>`
 	position: sticky;
 	display: flex;
 
@@ -48,6 +48,19 @@ export const Container = styled.div`
 
 	border-bottom: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
 	margin-bottom: ${({ theme }) => theme.size.SIZE_030};
+	transition-property: opacity, transform;
+	transition-duration: 500ms, 500ms;
+
+	${({ active }) =>
+		active
+			? css`
+					transform: tranlate(0);
+					opacity: 1;
+			  `
+			: css`
+					transform: translateY(-200px);
+					opacity: 0;
+			  `}
 `;
 
 export const HeaderSection = styled.header`
