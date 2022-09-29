@@ -85,19 +85,6 @@ public class ArticleService {
                 .orElseThrow(() -> new ArticleNotFoundException(id));
     }
 
-    private Article getArticle(Long id) {
-        return articleRepository.findById(id)
-                .orElseThrow(() -> new ArticleNotFoundException(id));
-    }
-
-    private boolean isLike(Article article, AppMember appMember) {
-        return likeRepository.existsByArticleIdAndMemberId(article.getId(), appMember.getPayload());
-    }
-
-    private Long getLikeCount(Article article) {
-        return likeRepository.countByArticleId(article.getId());
-    }
-
     @Transactional(readOnly = true)
     public ArticlePageResponse getAll(Long cursorId, Integer cursorViews, String category, String sortType,
                                       Pageable pageable, AppMember appMember) {
@@ -121,6 +108,14 @@ public class ArticleService {
 
     private int getCommentCount(Article article) {
         return commentRepository.countByArticleId(article.getId());
+    }
+
+    private boolean isLike(Article article, AppMember appMember) {
+        return likeRepository.existsByArticleIdAndMemberId(article.getId(), appMember.getPayload());
+    }
+
+    private Long getLikeCount(Article article) {
+        return likeRepository.countByArticleId(article.getId());
     }
 
     @Transactional(readOnly = true)
@@ -178,6 +173,11 @@ public class ArticleService {
         if (!article.isAuthor(member)) {
             throw new NotAuthorException(article.getId(), member.getId());
         }
+    }
+
+    private Article getArticle(Long id) {
+        return articleRepository.findById(id)
+                .orElseThrow(() -> new ArticleNotFoundException(id));
     }
 
     public void delete(AppMember appMember, Long id) {
