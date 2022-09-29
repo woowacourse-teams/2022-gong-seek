@@ -16,7 +16,7 @@ const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 	const [isEdit, setIsEdit] = useState(false);
 	const [editedName, setEditedName] = useState(name);
 	const { data, isLoading, isSuccess, onClickConfirmButton } = usePutUserProfile();
-	const isValidInput = validatedEditInput(editedName);
+	const isValidInput: boolean = validatedEditInput(editedName);
 
 	const onClickEditIcon = () => {
 		setIsEdit(true);
