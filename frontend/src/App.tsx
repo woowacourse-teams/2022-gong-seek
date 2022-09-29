@@ -1,3 +1,4 @@
+import { isScrollDown, isScrollUp, isMinDeltaScroll } from './utils/scrollObserver';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -98,22 +99,28 @@ const App = () => {
 			return;
 		}
 
-		if (Math.abs(lastScrollTop.current - currentScroll) <= minDelatScroll.current) {
+		if (
+			isMinDeltaScroll({
+				minDeltaScroll: minDelatScroll.current,
+				currentScroll,
+				lastScrollTop: lastScrollTop.current,
+			})
+		) {
 			return;
 		}
 
 		if (
-			currentScroll > lastScrollTop.current &&
-			currentScroll > headerElement.current.offsetHeight
+			isScrollDown({
+				currentScroll,
+				lastScrollTop: lastScrollTop.current,
+				headerHeight: headerElement.current.offsetHeight,
+			})
 		) {
 			setIsActiveHeader(false);
 			return;
 		}
 
-		if (
-			currentScroll + document.documentElement.offsetHeight <=
-			document.documentElement.scrollHeight
-		) {
+		if (isScrollUp({ currentScroll })) {
 			setIsActiveHeader(true);
 		}
 
