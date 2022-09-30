@@ -9,8 +9,11 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.util.StringUtils;
 import redis.embedded.RedisServer;
 
@@ -21,6 +24,7 @@ public class EmbeddedRedisConfig {
 
     private static final String WINDOW_FIND_PORT_COMMAND = "netstat -nao | find \"LISTEN\" | find \"%d\"";
     private static final String MAC_FIND_PORT_COMMAND = "netstat -nat | grep LISTEN | grep %d";
+    private static final String LOCAL_HOST = "127.0.0.1";
     private static final int MAX_PORT_NUMBER = 65535;
     private static final int MIN_PORT_NUMBER = 10000;
 
@@ -28,6 +32,11 @@ public class EmbeddedRedisConfig {
     private int redisPort;
 
     private RedisServer redisServer;
+
+    @Bean
+    public RedisConnectionFactory redisConnectionFactory() {
+        return new LettuceConnectionFactory(LOCAL_HOST, redisPort);
+    }
 
     @PostConstruct
     public void redisServer() {
