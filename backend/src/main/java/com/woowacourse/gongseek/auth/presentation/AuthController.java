@@ -56,7 +56,11 @@ public class AuthController {
     }
 
     @DeleteMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletResponse httpServletResponse) {
+    public ResponseEntity<Void> logout(
+            @CookieValue(value = "refreshToken", required = false) UUID refreshToken,
+            HttpServletResponse httpServletResponse
+    ) {
+        authService.updateRefreshToken(refreshToken);
         ResponseCookie deleteCookie = CookieUtils.delete();
         httpServletResponse.setHeader(HttpHeaders.SET_COOKIE, deleteCookie.toString());
 
