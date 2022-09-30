@@ -18,7 +18,7 @@ import org.springframework.util.StringUtils;
 import redis.embedded.RedisServer;
 
 @Slf4j
-@Profile({"local", "test"})
+@Profile({"local", "test", "invalidToken"})
 @Configuration
 public class EmbeddedRedisConfig {
 
