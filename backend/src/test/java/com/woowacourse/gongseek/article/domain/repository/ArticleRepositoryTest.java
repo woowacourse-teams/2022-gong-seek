@@ -504,7 +504,7 @@ class ArticleRepositoryTest {
                 .isEqualTo(
                         new ArticleDto(
                                 article.getTitle(),
-                                article.getArticleTags(),
+                                List.of("SPRING", "RENNON"),
                                 member.getName(),
                                 member.getAvatarUrl(),
                                 article.getContent(),
@@ -543,5 +543,20 @@ class ArticleRepositoryTest {
         int views = foundArticle.getViews();
 
         assertThat(views).isEqualTo(3L);
+    }
+
+    @Test
+    void 게시글의_아이디로_태그를_찾을_수_있다() {
+        Article article = articleRepository.save(
+                new Article("title", "content", Category.DISCUSSION, member, false));
+        Tag tag = tagRepository.save(new Tag("spring"));
+        article.addTag(new Tags(List.of(tag)));
+
+        testEntityManager.flush();
+        testEntityManager.clear();
+
+        List<String> tags = articleRepository.findTagNamesByArticleId(article.getId());
+
+        assertThat(tags).isEqualTo(article.getTagNames());
     }
 }

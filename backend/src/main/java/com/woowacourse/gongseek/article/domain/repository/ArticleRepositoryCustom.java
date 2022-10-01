@@ -15,6 +15,8 @@ public interface ArticleRepositoryCustom {
 
     List<MyPageArticleDto> findAllByMemberIdWithCommentCount(Long memberId);
 
+    List<String> findTagNamesByArticleId(Long articleId);
+
     boolean existsArticleByTagId(Long tagId);
 
     Slice<Article> findAllByPage(Long cursorId, Integer views, String category, String sortType, Pageable pageable);

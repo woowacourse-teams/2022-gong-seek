@@ -18,11 +18,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.articletag.ArticleTag;
-import com.woowacourse.gongseek.article.domain.articletag.ArticleTags;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -39,13 +37,13 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public Optional<ArticleDto> findByIdWithAll(Long articleId, Long memberId) {
-        ArticleTags articleTags = new ArticleTags(getArticleTags(articleId));
+        List<String> tags = findTagNamesByArticleId(articleId);
         return Optional.ofNullable(
                 queryFactory.select(
                                 Projections.constructor(
                                         ArticleDto.class,
                                         article.title.value,
-                                        Expressions.constant(articleTags),
+                                        Expressions.constant(tags),
                                         article.member.name.value,
                                         article.member.avatarUrl,
                                         article.content.value,
@@ -66,15 +64,20 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                         .fetchOne());
     }
 
-    private List<ArticleTag> getArticleTags(Long articleId) {
-        if (Objects.isNull(articleId)) {
-            return new ArrayList<>();
-        }
-
-        return queryFactory.selectFrom(articleTag)
+    @Override
+    public List<String> findTagNamesByArticleId(Long articleId) {
+        List<ArticleTag> tags = queryFactory.selectFrom(articleTag)
                 .join(articleTag.tag).fetchJoin()
                 .where(articleTag.article.id.eq(articleId))
                 .fetch();
+
+        return getTagNames(tags);
+    }
+
+    private List<String> getTagNames(List<ArticleTag> articleTags) {
+        return articleTags.stream()
+                .map(articleTag -> articleTag.getTag().getName())
+                .collect(Collectors.toList());
     }
 
     private BooleanExpression hasVote(Long articleId) {
@@ -199,6 +202,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         return convertToSlice(fetch, pageable);
     }
 
+
     private BooleanExpression cursorIdAndLikes(Long cursorId, Long likes) {
         if (cursorId == null || likes == null) {
             return null;
@@ -217,7 +221,6 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                                 ArticlePreviewDto.class,
                                 article.id,
                                 article.title.value,
-                                Expressions.constant(new ArticleTags(getArticleTags(cursorId))),
                                 article.member.name.value,
                                 article.member.avatarUrl,
                                 article.content.value,

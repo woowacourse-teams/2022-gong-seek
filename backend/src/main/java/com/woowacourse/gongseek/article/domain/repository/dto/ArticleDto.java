@@ -2,7 +2,6 @@ package com.woowacourse.gongseek.article.domain.repository.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.woowacourse.gongseek.article.domain.articletag.ArticleTags;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,7 +46,7 @@ public class ArticleDto {
 
     public ArticleDto(
             String title,
-            ArticleTags articleTags,
+            List<String> tags,
             String memberName,
             String memberAvatarUrl,
             String content,
@@ -62,7 +61,7 @@ public class ArticleDto {
     ) {
         this(
                 title,
-                articleTags.getTagNames(),
+                tags,
                 new AuthorDto(memberName, memberAvatarUrl),
                 content,
                 isAuthor,

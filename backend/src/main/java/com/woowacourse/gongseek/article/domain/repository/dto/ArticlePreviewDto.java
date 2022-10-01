@@ -1,10 +1,8 @@
 package com.woowacourse.gongseek.article.domain.repository.dto;
 
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.article.domain.articletag.ArticleTags;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +17,6 @@ public class ArticlePreviewDto {
 
     private Long id;
     private String title;
-    private List<String> tags;
     private AuthorDto author;
     private String content;
     private String category;
@@ -31,7 +28,6 @@ public class ArticlePreviewDto {
 
     public ArticlePreviewDto(Long id,
                              String title,
-                             ArticleTags articleTags,
                              String authorName,
                              String authorAvatarUrl,
                              String content,
@@ -44,7 +40,6 @@ public class ArticlePreviewDto {
         this(
                 id,
                 title,
-                articleTags.getTagNames(),
                 new AuthorDto(authorName, authorAvatarUrl),
                 content,
                 category.getValue().toLowerCase(),

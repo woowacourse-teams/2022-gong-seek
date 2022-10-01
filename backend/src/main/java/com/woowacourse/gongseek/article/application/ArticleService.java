@@ -7,7 +7,6 @@ import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponseNew;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
@@ -130,15 +129,22 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticlePageResponseNew searchByText(Long cursorId, Pageable pageable, String searchText,
-                                               AppMember appMember) {
+    public ArticlePageResponse searchByText(Long cursorId, Pageable pageable, String searchText,
+                                            AppMember appMember) {
         if (searchText.isBlank()) {
-            return new ArticlePageResponseNew(new ArrayList<>(), false);
+            return new ArticlePageResponse(new ArrayList<>(), false);
         }
         Slice<ArticlePreviewDto> articles = articleRepository.searchByContainingText(cursorId, searchText,
                 appMember.getPayload(), pageable);
 
-        return new ArticlePageResponseNew(articles.getContent(), articles.hasNext());
+        return new ArticlePageResponse(getTags(articles), articles.hasNext());
+    }
+
+    private List<ArticlePreviewResponse> getTags(Slice<ArticlePreviewDto> articles) {
+        return articles.stream()
+                .map(article -> new ArticlePreviewResponse(article, articleRepository.findTagNamesByArticleId(
+                        article.getId())))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

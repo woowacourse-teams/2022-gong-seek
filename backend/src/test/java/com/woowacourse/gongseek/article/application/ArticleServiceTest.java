@@ -17,7 +17,6 @@ import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponseNew;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
@@ -566,7 +565,7 @@ public class ArticleServiceTest {
     @Test
     void 공백으로_게시글을_검색한_경우_빈_값이_나온다() {
         AppMember loginMember = new LoginMember(member.getId());
-        ArticlePageResponseNew articlePageResponse = articleService.searchByText(null, PageRequest.ofSize(1), " ",
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, PageRequest.ofSize(1), " ",
                 loginMember);
 
         assertAll(
@@ -586,7 +585,7 @@ public class ArticleServiceTest {
                             false));
         }
 
-        ArticlePageResponseNew articlePageResponse = articleService.searchByText(null, PageRequest.ofSize(10), "질문",
+        ArticlePageResponse articlePageResponse = articleService.searchByText(null, PageRequest.ofSize(10), "질문",
                 loginMember);
 
         assertAll(
@@ -606,9 +605,9 @@ public class ArticleServiceTest {
                             false));
         }
 
-        ArticlePageResponseNew firstPageResponse = articleService.searchByText(null, PageRequest.ofSize(10), "질문",
+        ArticlePageResponse firstPageResponse = articleService.searchByText(null, PageRequest.ofSize(10), "질문",
                 loginMember);
-        ArticlePageResponseNew secondPageResponse = articleService.searchByText(
+        ArticlePageResponse secondPageResponse = articleService.searchByText(
                 firstPageResponse.getArticles().get(9).getId(), PageRequest.ofSize(10), "질문", loginMember);
 
         assertAll(
