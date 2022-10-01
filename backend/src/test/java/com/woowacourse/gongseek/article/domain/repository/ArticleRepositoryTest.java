@@ -207,7 +207,8 @@ class ArticleRepositoryTest {
         articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
 
-        Slice<Article> articles = articleRepository.searchByAuthor(null, member.getName(), PageRequest.ofSize(2));
+        Slice<ArticlePreviewDto> articles = articleRepository.searchByAuthor(null, member.getName(), member.getId(),
+                PageRequest.ofSize(2));
 
         assertThat(articles.getContent()).hasSize(2);
     }

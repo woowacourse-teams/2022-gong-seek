@@ -25,7 +25,7 @@ public interface ArticleRepositoryCustom {
 
     Slice<ArticlePreviewDto> searchByContainingText(Long cursorId, String searchText, Long memberId, Pageable pageable);
 
-    Slice<Article> searchByAuthor(Long cursorId, String author, Pageable pageable);
+    Slice<ArticlePreviewDto> searchByAuthor(Long cursorId, String author, Long payload, Pageable pageable);
 
     Slice<Article> searchByTag(Long cursorId, List<String> tagNames, Pageable pageable);
 }

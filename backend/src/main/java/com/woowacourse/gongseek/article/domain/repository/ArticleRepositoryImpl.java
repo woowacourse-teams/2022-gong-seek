@@ -182,6 +182,16 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         return new SliceImpl<>(fetch, pageable, hasNext);
     }
 
+    private SliceImpl<ArticlePreviewDto> convertToSliceWhenSearch(List<ArticlePreviewDto> fetch, Pageable pageable) {
+        boolean hasNext = false;
+
+        if (fetch.size() == pageable.getPageSize() + 1) {
+            fetch.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+        return new SliceImpl<>(fetch, pageable, hasNext);
+    }
+
     private BooleanExpression categoryEquals(String category) {
         return "all".equals(category) ? null : article.category.eq(Category.from(category));
     }
@@ -215,7 +225,20 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     @Override
     public Slice<ArticlePreviewDto> searchByContainingText(Long cursorId, String searchText, Long memberId,
                                                            Pageable pageable) {
-        List<ArticlePreviewDto> fetch = queryFactory
+        List<ArticlePreviewDto> fetch = getAllArticle(cursorId, memberId)
+                .where(
+                        containsTitleOrContent(searchText),
+                        isOverArticleId(cursorId)
+                )
+                .groupBy(article.id)
+                .limit(pageable.getPageSize() + 1)
+                .orderBy(article.id.desc())
+                .fetch();
+        return convertToSliceBySearch(fetch, pageable);
+    }
+
+    private JPAQuery<ArticlePreviewDto> getAllArticle(Long cursorId, Long memberId) {
+        return queryFactory
                 .select(
                         Projections.constructor(
                                 ArticlePreviewDto.class,
@@ -235,16 +258,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .from(article)
                 .leftJoin(article.member, member)
                 .leftJoin(comment).on(article.id.eq(comment.article.id))
-                .leftJoin(like).on(article.id.eq(like.article.id))
-                .where(
-                        containsTitleOrContent(searchText),
-                        isOverArticleId(cursorId)
-                )
-                .groupBy(article.id)
-                .limit(pageable.getPageSize() + 1)
-                .orderBy(article.id.desc())
-                .fetch();
-        return convertToSliceBySearch(fetch, pageable);
+                .leftJoin(like).on(article.id.eq(like.article.id));
     }
 
     private BooleanExpression containsTitleOrContent(String searchText) {
@@ -263,19 +277,18 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public Slice<Article> searchByAuthor(Long cursorId, String author, Pageable pageable) {
-        List<Article> fetch = queryFactory
-                .selectFrom(article)
-                .leftJoin(article.member, member).fetchJoin()
+    public Slice<ArticlePreviewDto> searchByAuthor(Long cursorId, String author, Long memberId, Pageable pageable) {
+        List<ArticlePreviewDto> fetch = getAllArticle(cursorId, memberId)
                 .where(
                         article.member.name.value.eq(author),
                         article.isAnonymous.eq(false),
                         isOverArticleId(cursorId)
                 )
+                .groupBy(article.id)
                 .limit(pageable.getPageSize() + 1)
                 .orderBy(article.id.desc())
                 .fetch();
-        return convertToSlice(fetch, pageable);
+        return convertToSliceWhenSearch(fetch, pageable);
     }
 
     @Override

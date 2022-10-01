@@ -153,10 +153,10 @@ public class ArticleService {
         if (authorName.isBlank()) {
             return new ArticlePageResponse(new ArrayList<>(), false);
         }
-        Slice<Article> articles = articleRepository.searchByAuthor(cursorId, authorName, pageable);
+        Slice<ArticlePreviewDto> articles = articleRepository.searchByAuthor(cursorId, authorName,
+                appMember.getPayload(), pageable);
 
-        List<ArticlePreviewResponse> response = createResponse(appMember, articles);
-        return new ArticlePageResponse(response, articles.hasNext());
+        return new ArticlePageResponse(getTags(articles), articles.hasNext());
     }
 
     @Transactional(readOnly = true)
