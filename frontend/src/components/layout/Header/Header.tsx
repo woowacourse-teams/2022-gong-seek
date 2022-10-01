@@ -15,7 +15,7 @@ const Header = (props: { active: boolean }, ref: LegacyRef<HTMLDivElement>) => {
 
 	if (isSearchOpen) {
 		return (
-			<S.Container active={props.active}>
+			<S.Container ref={ref} active={props.active}>
 				<S.HeaderSection>
 					<S.StyledLink to={URL.HOME}>
 						<S.LogoImage src={gongseek} />
