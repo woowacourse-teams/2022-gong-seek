@@ -70,7 +70,9 @@ const Content = styled.main`
 `;
 
 const Dimmer = styled.div`
-	position: absolute;
+	position: fixed;
+
+	height: 100vh;
 	top: 0;
 	left: 0;
 	right: 0;
