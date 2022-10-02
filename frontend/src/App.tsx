@@ -1,4 +1,5 @@
-import React, { Suspense, useRef, useState } from 'react';
+import useHeaderViewByScroll from './hooks/common/useHeaderViewByScroll';
+import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
@@ -13,7 +14,6 @@ import useScroll from '@/hooks/common/useScroll';
 import { dropdownState } from '@/store/dropdownState';
 import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
-import { isScrollDown, isScrollUp, isMinDeltaScroll } from '@/utils/scrollObserver';
 import styled from '@emotion/styled';
 
 const MenuSlider = React.lazy(() => import('@/components/common/MenuSlider/MenuSlider'));
@@ -87,44 +87,7 @@ const App = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const [sliderState, setSliderState] = useRecoilState(menuSliderState);
 	const [dropdown, setDropdown] = useRecoilState(dropdownState);
-	const [isActiveHeader, setIsActiveHeader] = useState(true);
-	const headerElement = useRef<HTMLDivElement>(null);
-	const lastScrollTop = useRef(0);
-	const minDelatScroll = useRef(10);
-
-	const handleHeaderViewByScroll = () => {
-		const currentScroll = document.documentElement.scrollTop;
-		if (!headerElement.current) {
-			return;
-		}
-
-		if (
-			isMinDeltaScroll({
-				minDeltaScroll: minDelatScroll.current,
-				currentScroll,
-				lastScrollTop: lastScrollTop.current,
-			})
-		) {
-			return;
-		}
-
-		if (
-			isScrollDown({
-				currentScroll,
-				lastScrollTop: lastScrollTop.current,
-				headerHeight: headerElement.current.offsetHeight,
-			})
-		) {
-			setIsActiveHeader(false);
-			return;
-		}
-
-		if (isScrollUp({ currentScroll })) {
-			setIsActiveHeader(true);
-		}
-
-		lastScrollTop.current = currentScroll;
-	};
+	const { handleHeaderViewByScroll, headerElement, isActiveHeader } = useHeaderViewByScroll();
 
 	useScroll(handleHeaderViewByScroll);
 
