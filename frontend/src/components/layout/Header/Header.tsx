@@ -1,4 +1,3 @@
-import { forwardRef, LegacyRef } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import gongseek from '@/assets/gongseek.png';
@@ -6,16 +5,20 @@ import SearchBar from '@/components/common/SearchBar/SearchBar';
 import UserProfileIcon from '@/components/common/UserProfileIcon/UserProfileIcon';
 import * as S from '@/components/layout/Header/Header.styles';
 import { URL } from '@/constants/url';
+import useHeaderViewByScroll from '@/hooks/common/useHeaderViewByScroll';
+import useScroll from '@/hooks/common/useScroll';
 import { searchState } from '@/store/searchState';
 import { getUserIsLogin } from '@/store/userState';
 
-const Header = (props: { active: boolean }, ref: LegacyRef<HTMLDivElement>) => {
+const Header = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const { isSearchOpen } = useRecoilValue(searchState);
+	const { handleHeaderViewByScroll, headerElement, isActiveHeader } = useHeaderViewByScroll();
+	useScroll(handleHeaderViewByScroll);
 
 	if (isSearchOpen) {
 		return (
-			<S.Container ref={ref} active={props.active}>
+			<S.Container ref={headerElement} active={isActiveHeader}>
 				<S.HeaderSection>
 					<S.StyledLink to={URL.HOME}>
 						<S.LogoImage src={gongseek} />
@@ -31,7 +34,7 @@ const Header = (props: { active: boolean }, ref: LegacyRef<HTMLDivElement>) => {
 	}
 
 	return (
-		<S.Container ref={ref} active={props.active}>
+		<S.Container ref={headerElement} active={isActiveHeader}>
 			<S.HeaderSection>
 				<S.StyledLink to={URL.HOME}>
 					<S.LogoLink>공식</S.LogoLink>
@@ -62,4 +65,4 @@ const Header = (props: { active: boolean }, ref: LegacyRef<HTMLDivElement>) => {
 	);
 };
 
-export default forwardRef(Header);
+export default Header;

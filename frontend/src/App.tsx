@@ -1,4 +1,3 @@
-import useHeaderViewByScroll from './hooks/common/useHeaderViewByScroll';
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -10,7 +9,6 @@ import PublicRouter from '@/components/helper/PublicRouter';
 import Header from '@/components/layout/Header/Header';
 import TabBar from '@/components/layout/TabBar/TabBar';
 import { URL } from '@/constants/url';
-import useScroll from '@/hooks/common/useScroll';
 import { dropdownState } from '@/store/dropdownState';
 import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
@@ -87,9 +85,6 @@ const App = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const [sliderState, setSliderState] = useRecoilState(menuSliderState);
 	const [dropdown, setDropdown] = useRecoilState(dropdownState);
-	const { handleHeaderViewByScroll, headerElement, isActiveHeader } = useHeaderViewByScroll();
-
-	useScroll(handleHeaderViewByScroll);
 
 	return (
 		<Layout
@@ -97,7 +92,7 @@ const App = () => {
 				dropdown.isOpen && setDropdown({ isOpen: false });
 			}}
 		>
-			<Header ref={headerElement} active={isActiveHeader} />
+			<Header />
 			<Content>
 				<Suspense fallback={<Loading />}>
 					<Routes>
