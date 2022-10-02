@@ -6,7 +6,7 @@ const useHeaderViewByScroll = () => {
 	const [isActiveHeader, setIsActiveHeader] = useState(true);
 	const headerElement = useRef<HTMLDivElement>(null);
 	const lastScrollTop = useRef(0);
-	const minDelatScroll = useRef(10);
+	const minDeltaScroll = useRef(10);
 
 	const handleHeaderViewByScroll = () => {
 		const currentScroll = document.documentElement.scrollTop;
@@ -16,7 +16,7 @@ const useHeaderViewByScroll = () => {
 
 		if (
 			isMinDeltaScroll({
-				minDeltaScroll: minDelatScroll.current,
+				minDeltaScroll: minDeltaScroll.current,
 				currentScroll,
 				lastScrollTop: lastScrollTop.current,
 			})
