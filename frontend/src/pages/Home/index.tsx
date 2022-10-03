@@ -1,6 +1,7 @@
 import React, { Suspense, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/common/Loading/Loading';
 import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
 import useGetAllArticles from '@/hooks/article/useGetAllArticles';
@@ -67,7 +68,7 @@ const Home = () => {
 						</S.ArticleItemList>
 					</InfiniteScrollObserver>
 				) : (
-					<S.EmptyText>게시물이 존재하지 않습니다</S.EmptyText>
+					<EmptyMessage>게시글이 존재하지 않습니다</EmptyMessage>
 				)}
 			</Suspense>
 		</S.Container>
