@@ -16,12 +16,12 @@ module.exports = merge(common, {
 		new webpack.DefinePlugin({
 			'process.env': JSON.stringify(process.env),
 		}),
-		new WebpackBundleAnalyzer({
-			analyzerMode: 'static',
-			openAnalyzer: false,
-			generateStatsFile: true,
-			statsFilename: 'bundle-report.json',
-		}),
+		// new WebpackBundleAnalyzer({
+		// 	analyzerMode: 'static',
+		// 	openAnalyzer: false,
+		// 	generateStatsFile: true,
+		// 	statsFilename: 'bundle-report.json',
+		// }),
 	],
 	optimization: {
 		minimize: true,
