@@ -7,11 +7,11 @@ export const Container = styled.section`
 	flex-direction: column;
 
 	width: 100%;
-	height: 80vh;
+	height: 60vh;
 `;
 
 export const EmptyImg = styled.div`
-	size: ${({ theme }) => theme.size.SIZE_040};
+	font-size: ${({ theme }) => theme.size.SIZE_050};
 `;
 
 export const EmptyDescription = styled.div`
