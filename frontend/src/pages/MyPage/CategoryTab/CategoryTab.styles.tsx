@@ -14,7 +14,7 @@ export const Container = styled.nav`
 export const Tab = styled.button<{ isClicked: boolean }>`
 	width: ${({ theme }) => theme.size.SIZE_140};
 	height: fit-content;
-	padding: ${({ theme }) => theme.size.SIZE_004};
+	padding: ${({ theme }) => theme.size.SIZE_006};
 
 	text-align: center;
 
