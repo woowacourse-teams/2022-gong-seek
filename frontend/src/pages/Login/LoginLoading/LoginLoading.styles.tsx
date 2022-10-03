@@ -14,7 +14,7 @@ export const Container = styled.section`
 	flex-direction: column;
 
 	width: 100%;
-	height: 100%;
+	height: 80vh;
 `;
 
 export const LogoImg = styled.img`
