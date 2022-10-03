@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import reactDom from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -18,6 +19,14 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 	const { mutate: mutateDeleteRefreshToken } = useDeleteRefreshToken();
 
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		document.body.style.overflow = 'hidden';
+
+		return () => {
+			document.body.style.overflow = 'auto';
+		};
+	}, []);
 
 	const onLogoutClick = () => {
 		if (confirm('정말로 로그아웃 하시겠습니까?')) {

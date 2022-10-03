@@ -35,6 +35,10 @@ export const MenuBox = styled.div`
 	z-index: ${({ theme }) => theme.zIndex.MENU_SLIDER_CONTENT};
 
 	animation: ${showSlider} 0.2s ease-in-out;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
+		display: none;
+	}
 `;
 
 export const Header = styled.header`
