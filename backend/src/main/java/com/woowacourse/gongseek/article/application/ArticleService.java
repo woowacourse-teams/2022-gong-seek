@@ -93,39 +93,21 @@ public class ArticleService {
         return new ArticlePageResponse(getTags(articles), articles.hasNext());
     }
 
-    private List<ArticlePreviewResponse> createResponse(AppMember appMember, Slice<Article> articles) {
-        return articles.getContent().stream()
-                .map(it -> getArticlePreviewResponse(it, appMember))
+    private List<ArticlePreviewResponse> getTags(Slice<ArticlePreviewDto> articles) {
+        return articles.stream()
+                .map(article -> new ArticlePreviewResponse(article, articleRepository.findTagNamesByArticleId(
+                        article.getId())))
                 .collect(Collectors.toList());
-    }
-
-    private ArticlePreviewResponse getArticlePreviewResponse(Article article, AppMember appMember) {
-        List<String> tagNames = article.getTagNames();
-        return ArticlePreviewResponse.of(article, tagNames, getCommentCount(article),
-                new LikeResponse(isLike(article, appMember), getLikeCount(article)));
-    }
-
-    private int getCommentCount(Article article) {
-        return commentRepository.countByArticleId(article.getId());
-    }
-
-    private boolean isLike(Article article, AppMember appMember) {
-        return likeRepository.existsByArticleIdAndMemberId(article.getId(), appMember.getPayload());
-    }
-
-    private Long getLikeCount(Article article) {
-        return likeRepository.countByArticleId(article.getId());
     }
 
     @Transactional(readOnly = true)
     public ArticlePageResponse getAllByLikes(Long cursorId, Long likes, String category, Pageable pageable,
                                              AppMember appMember) {
-        Slice<Article> articles = articleRepository.findAllByLikes(cursorId, likes, category, pageable);
-        List<ArticlePreviewResponse> response = articles.getContent().stream()
-                .map(it -> getArticlePreviewResponse(it, appMember))
-                .collect(Collectors.toList());
+        Slice<ArticlePreviewDto> articles = articleRepository.findAllByLikes(cursorId, likes, category,
+                appMember.getPayload(),
+                pageable);
 
-        return new ArticlePageResponse(response, articles.hasNext());
+        return new ArticlePageResponse(getTags(articles), articles.hasNext());
     }
 
     @Transactional(readOnly = true)
@@ -138,13 +120,6 @@ public class ArticleService {
                 appMember.getPayload(), pageable);
 
         return new ArticlePageResponse(getTags(articles), articles.hasNext());
-    }
-
-    private List<ArticlePreviewResponse> getTags(Slice<ArticlePreviewDto> articles) {
-        return articles.stream()
-                .map(article -> new ArticlePreviewResponse(article, articleRepository.findTagNamesByArticleId(
-                        article.getId())))
-                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -168,6 +143,30 @@ public class ArticleService {
 
     private List<String> extract(String tagsText) {
         return Arrays.asList(tagsText.split(","));
+    }
+
+    private List<ArticlePreviewResponse> createResponse(AppMember appMember, Slice<Article> articles) {
+        return articles.getContent().stream()
+                .map(it -> getArticlePreviewResponse(it, appMember))
+                .collect(Collectors.toList());
+    }
+
+    private ArticlePreviewResponse getArticlePreviewResponse(Article article, AppMember appMember) {
+        List<String> tagNames = article.getTagNames();
+        return ArticlePreviewResponse.of(article, tagNames, getCommentCount(article),
+                new LikeResponse(isLike(article, appMember), getLikeCount(article)));
+    }
+
+    private int getCommentCount(Article article) {
+        return commentRepository.countByArticleId(article.getId());
+    }
+
+    private boolean isLike(Article article, AppMember appMember) {
+        return likeRepository.existsByArticleIdAndMemberId(article.getId(), appMember.getPayload());
+    }
+
+    private Long getLikeCount(Article article) {
+        return likeRepository.countByArticleId(article.getId());
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {

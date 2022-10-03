@@ -60,7 +60,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                         .join(article.member, member)
                         .leftJoin(like).on(article.id.eq(like.article.id))
                         .where(article.id.eq(articleId))
-                        .groupBy(article.id)
+                        .groupBy(article)
                         .fetchOne());
     }
 
@@ -117,7 +117,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .from(article)
                 .leftJoin(comment).on(article.id.eq(comment.article.id))
                 .where(article.member.id.eq(memberId))
-                .groupBy(article.id)
+                .groupBy(article)
                 .fetch();
     }
 
@@ -139,11 +139,35 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                         cursorIdAndCursorViews(cursorId, cursorViews, sortType),
                         categoryEquals(category)
                 )
-                .groupBy(article.id)
+                .groupBy(article)
                 .limit(pageable.getPageSize() + 1);
         List<ArticlePreviewDto> fetch = sort(sortType, query);
 
-        return convertToSliceWhenSearch(fetch, pageable);
+        return convertToSliceFromArticle(fetch, pageable);
+    }
+
+    private JPAQuery<ArticlePreviewDto> getAllArticle(Long articleId, Long memberId) {
+        return queryFactory
+                .select(
+                        Projections.constructor(
+                                ArticlePreviewDto.class,
+                                article.id,
+                                article.title.value,
+                                article.member.name.value,
+                                article.member.avatarUrl,
+                                article.content.value,
+                                article.category,
+                                count(comment.id),
+                                article.views.value,
+                                isLike(articleId, memberId),
+                                count(like.id),
+                                article.createdAt
+                        )
+                )
+                .from(article)
+                .leftJoin(article.member, member)
+                .leftJoin(comment).on(article.id.eq(comment.article.id))
+                .leftJoin(like).on(article.id.eq(like.article.id));
     }
 
     private BooleanExpression cursorIdAndCursorViews(Long cursorId, Integer cursorViews, String sortType) {
@@ -181,7 +205,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         return new SliceImpl<>(fetch, pageable, hasNext);
     }
 
-    private SliceImpl<ArticlePreviewDto> convertToSliceWhenSearch(List<ArticlePreviewDto> fetch, Pageable pageable) {
+    private SliceImpl<ArticlePreviewDto> convertToSliceFromArticle(List<ArticlePreviewDto> fetch, Pageable pageable) {
         boolean hasNext = false;
 
         if (fetch.size() == pageable.getPageSize() + 1) {
@@ -196,11 +220,9 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public Slice<Article> findAllByLikes(Long cursorId, Long cursorLikes, String category, Pageable pageable) {
-        List<Article> fetch = queryFactory
-                .select(article)
-                .from(like)
-                .rightJoin(like.article, article)
+    public Slice<ArticlePreviewDto> findAllByLikes(Long cursorId, Long cursorLikes, String category, Long memberId,
+                                                   Pageable pageable) {
+        List<ArticlePreviewDto> fetch = getAllArticle(cursorId, memberId)
                 .where(categoryEquals(category))
                 .groupBy(article)
                 .having(cursorIdAndLikes(cursorId, cursorLikes))
@@ -208,7 +230,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .orderBy(like.count().desc(), article.id.desc())
                 .fetch();
 
-        return convertToSlice(fetch, pageable);
+        return convertToSliceFromArticle(fetch, pageable);
     }
 
 
@@ -229,35 +251,11 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                         containsTitleOrContent(searchText),
                         isOverArticleId(cursorId)
                 )
-                .groupBy(article.id)
+                .groupBy(article)
                 .limit(pageable.getPageSize() + 1)
                 .orderBy(article.id.desc())
                 .fetch();
         return convertToSliceBySearch(fetch, pageable);
-    }
-
-    private JPAQuery<ArticlePreviewDto> getAllArticle(Long articleId, Long memberId) {
-        return queryFactory
-                .select(
-                        Projections.constructor(
-                                ArticlePreviewDto.class,
-                                article.id,
-                                article.title.value,
-                                article.member.name.value,
-                                article.member.avatarUrl,
-                                article.content.value,
-                                article.category,
-                                count(comment.id),
-                                article.views.value,
-                                isLike(articleId, memberId),
-                                count(like.id),
-                                article.createdAt
-                        )
-                )
-                .from(article)
-                .leftJoin(article.member, member)
-                .leftJoin(comment).on(article.id.eq(comment.article.id))
-                .leftJoin(like).on(article.id.eq(like.article.id));
     }
 
     private BooleanExpression containsTitleOrContent(String searchText) {
@@ -283,11 +281,11 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                         article.isAnonymous.eq(false),
                         isOverArticleId(cursorId)
                 )
-                .groupBy(article.id)
+                .groupBy(article)
                 .limit(pageable.getPageSize() + 1)
                 .orderBy(article.id.desc())
                 .fetch();
-        return convertToSliceWhenSearch(fetch, pageable);
+        return convertToSliceFromArticle(fetch, pageable);
     }
 
     @Override

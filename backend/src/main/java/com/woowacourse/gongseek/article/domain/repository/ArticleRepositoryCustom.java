@@ -22,7 +22,8 @@ public interface ArticleRepositoryCustom {
     Slice<ArticlePreviewDto> findAllByPage(Long cursorId, Integer views, String category, String sortType, Long payload,
                                            Pageable pageable);
 
-    Slice<Article> findAllByLikes(Long cursorId, Long likes, String category, Pageable pageable);
+    Slice<ArticlePreviewDto> findAllByLikes(Long cursorId, Long likes, String category, Long payload,
+                                            Pageable pageable);
 
     Slice<ArticlePreviewDto> searchByContainingText(Long cursorId, String searchText, Long memberId, Pageable pageable);
 

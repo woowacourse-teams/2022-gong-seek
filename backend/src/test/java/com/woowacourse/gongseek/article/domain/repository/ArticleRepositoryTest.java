@@ -340,17 +340,19 @@ class ArticleRepositoryTest {
                 new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         Article thirdArticle = articleRepository.save(
                 new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
 
         likeRepository.save(new Like(firstArticle, member));
-        Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
         likeRepository.save(new Like(firstArticle, newMember));
         likeRepository.save(new Like(secondArticle, member));
 
-        Slice<Article> articles = articleRepository.findAllByLikes(null, null, Category.QUESTION.getValue(),
-                PageRequest.ofSize(5));
+        Slice<ArticlePreviewDto> articles = articleRepository.findAllByLikes(null, null, Category.QUESTION.getValue(),
+                member.getId(), PageRequest.ofSize(3));
 
         assertAll(
-                () -> assertThat(articles.getContent()).isEqualTo(List.of(firstArticle, secondArticle, thirdArticle)),
+                () -> assertThat(articles.getContent().get(0).getId()).isEqualTo(firstArticle.getId()),
+                () -> assertThat(articles.getContent().get(1).getId()).isEqualTo(secondArticle.getId()),
+                () -> assertThat(articles.getContent().get(2).getId()).isEqualTo(thirdArticle.getId()),
                 () -> assertThat(articles.hasNext()).isFalse()
         );
     }
@@ -362,17 +364,18 @@ class ArticleRepositoryTest {
         Article secondArticle = articleRepository.save(
                 new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
 
         likeRepository.save(new Like(firstArticle, member));
-        Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
         likeRepository.save(new Like(firstArticle, newMember));
         likeRepository.save(new Like(secondArticle, member));
 
-        Slice<Article> articles = articleRepository.findAllByLikes(null, null, Category.QUESTION.getValue(),
-                PageRequest.ofSize(2));
+        Slice<ArticlePreviewDto> articles = articleRepository.findAllByLikes(null, null, Category.QUESTION.getValue(),
+                member.getId(), PageRequest.ofSize(2));
 
         assertAll(
-                () -> assertThat(articles.getContent()).isEqualTo(List.of(firstArticle, secondArticle)),
+                () -> assertThat(articles.getContent().get(0).getId()).isEqualTo(firstArticle.getId()),
+                () -> assertThat(articles.getContent().get(1).getId()).isEqualTo(secondArticle.getId()),
                 () -> assertThat(articles.hasNext()).isTrue()
         );
     }
