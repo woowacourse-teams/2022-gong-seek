@@ -8,10 +8,9 @@ const UserCommentBox = () => {
 		data: comments,
 		isSuccess: isCommentsSuccess,
 		isLoading: isCommentsLoading,
-		isIdle: isCommentsIdle,
 	} = useGetUserComments();
 
-	if (isCommentsLoading || isCommentsIdle) {
+	if (isCommentsLoading) {
 		return <Loading />;
 	}
 

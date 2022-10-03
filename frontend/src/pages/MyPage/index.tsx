@@ -14,16 +14,11 @@ const TemporaryArticleList = React.lazy(
 );
 
 const MyPage = () => {
-	const {
-		data: info,
-		isSuccess: isInfoSuccess,
-		isLoading: isInfoLoading,
-		isIdle: isInfoIdle,
-	} = useGetUserInfo();
+	const { data: info, isSuccess: isInfoSuccess, isLoading: isInfoLoading } = useGetUserInfo();
 
 	const [category, setCategory] = useState<CategoryType>('article');
 
-	if (isInfoLoading || isInfoIdle) {
+	if (isInfoLoading) {
 		return <Loading />;
 	}
 

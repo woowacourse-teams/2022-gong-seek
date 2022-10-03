@@ -8,11 +8,12 @@ const UserArticleBox = () => {
 		data: articles,
 		isSuccess: isArticlesSuccess,
 		isLoading: isArticlesLoading,
-		isIdle: isArticlesIdle,
 	} = useGetUserArticles();
-	if (isArticlesLoading || isArticlesIdle) {
+
+	if (isArticlesLoading) {
 		return <Loading />;
 	}
+
 	return (
 		<>
 			{isArticlesSuccess ? (
