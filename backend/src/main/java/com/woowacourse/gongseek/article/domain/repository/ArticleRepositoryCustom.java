@@ -19,7 +19,8 @@ public interface ArticleRepositoryCustom {
 
     boolean existsArticleByTagId(Long tagId);
 
-    Slice<Article> findAllByPage(Long cursorId, Integer views, String category, String sortType, Pageable pageable);
+    Slice<ArticlePreviewDto> findAllByPage(Long cursorId, Integer views, String category, String sortType, Long payload,
+                                           Pageable pageable);
 
     Slice<Article> findAllByLikes(Long cursorId, Long likes, String category, Pageable pageable);
 

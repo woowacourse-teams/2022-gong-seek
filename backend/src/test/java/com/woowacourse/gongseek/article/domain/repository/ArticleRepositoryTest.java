@@ -90,8 +90,8 @@ class ArticleRepositoryTest {
 
     @Test
     void 게시글이_없으면_빈_값을_반환한다() {
-        Slice<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "",
-                PageRequest.ofSize(5));
+        Slice<ArticlePreviewDto> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "",
+                member.getId(), PageRequest.ofSize(5));
 
         assertThat(articles).isEmpty();
     }
@@ -101,8 +101,9 @@ class ArticleRepositoryTest {
         for (int i = 0; i < 5; i++) {
             articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         }
-        Slice<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "views",
-                PageRequest.ofSize(5));
+        Slice<ArticlePreviewDto> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(),
+                "views",
+                member.getId(), PageRequest.ofSize(5));
 
         assertThat(articles.getContent()).hasSize(5);
     }
@@ -113,7 +114,8 @@ class ArticleRepositoryTest {
         articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         articleRepository.save(new Article(TITLE, CONTENT, Category.DISCUSSION, member, false));
 
-        Slice<Article> articles = articleRepository.findAllByPage(null, 0, category, "views", PageRequest.ofSize(5));
+        Slice<ArticlePreviewDto> articles = articleRepository.findAllByPage(null, 0, category, "views", member.getId(),
+                PageRequest.ofSize(5));
 
         assertThat(articles.getContent()).hasSize(expectedSize);
     }
@@ -127,10 +129,15 @@ class ArticleRepositoryTest {
         firstArticle.addViews();
         secondArticle.addViews();
 
-        Slice<Article> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(), "views",
-                PageRequest.ofSize(10));
+        Slice<ArticlePreviewDto> articles = articleRepository.findAllByPage(null, 0, Category.QUESTION.getValue(),
+                "views",
+                member.getId(), PageRequest.ofSize(10));
 
-        assertThat(articles.getContent()).isEqualTo(List.of(firstArticle, secondArticle, thirdArticle));
+        assertAll(
+                () -> assertThat(articles.getContent().get(0).getId()).isEqualTo(firstArticle.getId()),
+                () -> assertThat(articles.getContent().get(1).getId()).isEqualTo(secondArticle.getId()),
+                () -> assertThat(articles.getContent().get(2).getId()).isEqualTo(thirdArticle.getId())
+        );
     }
 
     @Test
@@ -139,10 +146,15 @@ class ArticleRepositoryTest {
         Article secondArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         Article firstArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
 
-        Slice<Article> articles = articleRepository.findAllByPage(null, null, Category.QUESTION.getValue(), "latest",
-                PageRequest.ofSize(3));
+        Slice<ArticlePreviewDto> articles = articleRepository.findAllByPage(null, null, Category.QUESTION.getValue(),
+                "latest",
+                member.getId(), PageRequest.ofSize(3));
 
-        assertThat(articles.getContent()).isEqualTo(List.of(firstArticle, secondArticle, thirdArticle));
+        assertAll(
+                () -> assertThat(articles.getContent().get(0).getId()).isEqualTo(firstArticle.getId()),
+                () -> assertThat(articles.getContent().get(1).getId()).isEqualTo(secondArticle.getId()),
+                () -> assertThat(articles.getContent().get(2).getId()).isEqualTo(thirdArticle.getId())
+        );
     }
 
     @ParameterizedTest

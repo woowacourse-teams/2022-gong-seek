@@ -132,19 +132,18 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public Slice<Article> findAllByPage(Long cursorId, Integer cursorViews, String category, String sortType,
-                                        Pageable pageable) {
-        JPAQuery<Article> query = queryFactory
-                .selectFrom(article)
-                .leftJoin(article.member, member).fetchJoin()
+    public Slice<ArticlePreviewDto> findAllByPage(Long cursorId, Integer cursorViews, String category, String sortType,
+                                                  Long memberId, Pageable pageable) {
+        JPAQuery<ArticlePreviewDto> query = getAllArticle(cursorId, memberId)
                 .where(
                         cursorIdAndCursorViews(cursorId, cursorViews, sortType),
                         categoryEquals(category)
                 )
+                .groupBy(article.id)
                 .limit(pageable.getPageSize() + 1);
-        List<Article> fetch = sort(sortType, query);
+        List<ArticlePreviewDto> fetch = sort(sortType, query);
 
-        return convertToSlice(fetch, pageable);
+        return convertToSliceWhenSearch(fetch, pageable);
     }
 
     private BooleanExpression cursorIdAndCursorViews(Long cursorId, Integer cursorViews, String sortType) {
@@ -165,7 +164,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         return cursorId == null ? null : article.id.lt(cursorId);
     }
 
-    private List<Article> sort(String sortType, JPAQuery<Article> query) {
+    private List<ArticlePreviewDto> sort(String sortType, JPAQuery<ArticlePreviewDto> query) {
         if (sortType.equals("views")) {
             return query.orderBy(article.views.value.desc(), article.id.desc()).fetch();
         }
@@ -237,7 +236,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         return convertToSliceBySearch(fetch, pageable);
     }
 
-    private JPAQuery<ArticlePreviewDto> getAllArticle(Long cursorId, Long memberId) {
+    private JPAQuery<ArticlePreviewDto> getAllArticle(Long articleId, Long memberId) {
         return queryFactory
                 .select(
                         Projections.constructor(
@@ -250,7 +249,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                                 article.category,
                                 count(comment.id),
                                 article.views.value,
-                                isLike(cursorId, memberId),
+                                isLike(articleId, memberId),
                                 count(like.id),
                                 article.createdAt
                         )

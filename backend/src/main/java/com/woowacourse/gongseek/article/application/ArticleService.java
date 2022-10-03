@@ -87,10 +87,10 @@ public class ArticleService {
     @Transactional(readOnly = true)
     public ArticlePageResponse getAll(Long cursorId, Integer cursorViews, String category, String sortType,
                                       Pageable pageable, AppMember appMember) {
-        Slice<Article> articles = articleRepository.findAllByPage(cursorId, cursorViews, category, sortType, pageable);
-        List<ArticlePreviewResponse> responses = createResponse(appMember, articles);
+        Slice<ArticlePreviewDto> articles = articleRepository.findAllByPage(cursorId, cursorViews, category, sortType,
+                appMember.getPayload(), pageable);
 
-        return new ArticlePageResponse(responses, articles.hasNext());
+        return new ArticlePageResponse(getTags(articles), articles.hasNext());
     }
 
     private List<ArticlePreviewResponse> createResponse(AppMember appMember, Slice<Article> articles) {
