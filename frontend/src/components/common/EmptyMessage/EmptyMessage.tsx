@@ -1,9 +1,9 @@
 import * as S from '@/components/common/EmptyMessage/EmptyMessage.styles';
 
-const EmptyMessage = () => (
+const EmptyMessage = ({ children }: { children: string }) => (
 	<S.Container>
 		<S.EmptyImg>🗑</S.EmptyImg>
-		<S.EmptyDescription>게시글이 텅 비었습니다</S.EmptyDescription>
+		<S.EmptyDescription>{children}</S.EmptyDescription>
 	</S.Container>
 );
 

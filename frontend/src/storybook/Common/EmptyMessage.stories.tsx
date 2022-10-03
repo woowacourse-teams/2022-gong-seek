@@ -13,6 +13,9 @@ export default {
 	],
 } as Meta;
 
-const Template: Story = () => <EmptyMessage />;
+const Template: Story<{ children: string }> = (args) => <EmptyMessage {...args} />;
 
 export const DefaultEmptyMEssage = Template.bind({});
+DefaultEmptyMEssage.args = {
+	children: '빈 게시글 입니다',
+};
