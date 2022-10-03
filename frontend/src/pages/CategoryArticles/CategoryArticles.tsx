@@ -7,6 +7,7 @@ import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
 import { URL } from '@/constants/url';
 import useGetCategoryArticles from '@/hooks/article/useGetCategoryArticles';
 import * as S from '@/pages/CategoryArticles/CategoryArticles.styles';
+import { categoryNameConverter } from '@/utils/converter';
 
 const CategoryArticles = () => {
 	const navigate = useNavigate();
@@ -32,7 +33,7 @@ const CategoryArticles = () => {
 		<S.Container>
 			<S.TitleBox>
 				<S.CategoryArticlesTitle category={category}>
-					{category === 'discussion' ? '토론' : '질문'}
+					{categoryNameConverter(category)}
 				</S.CategoryArticlesTitle>
 				<SortDropdown
 					sortList={['최신순', '조회순', '좋아요순']}
