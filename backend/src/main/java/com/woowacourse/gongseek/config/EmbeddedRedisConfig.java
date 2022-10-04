@@ -44,7 +44,10 @@ public class EmbeddedRedisConfig {
         if (isRedisRunning()) {
             port = findAvailablePort();
         }
-        redisServer = new RedisServer(port);
+        redisServer = RedisServer.builder()
+                .port(port)
+                .setting("maxmemory 128M")
+                .build();
         redisServer.start();
     }
 
