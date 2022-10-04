@@ -2,13 +2,11 @@ import { useNavigate } from 'react-router-dom';
 
 import * as S from '@/pages/MyPage/UserArticleItem/UserArticleItem.styles';
 import { UserArticleItemType } from '@/types/articleResponse';
-import { dateTimeConverter } from '@/utils/converter';
+import { categoryNameConverter, dateTimeConverter } from '@/utils/converter';
 
 const UserArticleItem = ({ article }: { article: UserArticleItemType }) => {
 	const navigate = useNavigate();
 	const { id, title, category, commentCount, createdAt, updatedAt, views } = article;
-
-	const 한글_카테고리 = category === 'question' ? '질문' : '토론';
 
 	return (
 		<S.Container
@@ -17,7 +15,9 @@ const UserArticleItem = ({ article }: { article: UserArticleItemType }) => {
 			}}
 		>
 			<S.ArticleTitleBox>
-				<S.CategoryName isQuestion={category === 'question'}>{한글_카테고리}</S.CategoryName>
+				<S.CategoryName isQuestion={category === 'question'}>
+					{categoryNameConverter(category)}
+				</S.CategoryName>
 				<S.ArticleTitle>{title}</S.ArticleTitle>
 			</S.ArticleTitleBox>
 

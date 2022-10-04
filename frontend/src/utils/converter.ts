@@ -110,3 +110,10 @@ export const dateTimeConverter = (dateTime: string) => {
 
 	return `${selectedTime.value ? selectedTime.value : ''}${selectedTime.key}전`;
 };
+
+export const categoryNameConverter = (category: string) => {
+	if (category === 'question') {
+		return '질문';
+	}
+	return '토론';
+};

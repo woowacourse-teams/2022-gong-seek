@@ -1,3 +1,4 @@
+import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/common/Loading/Loading';
 import useGetPopularArticles from '@/hooks/article/useGetPopularArticles';
 import ArticleItem from '@/pages/Home/ArticleItem/ArticleItem';
@@ -30,7 +31,7 @@ const PopularArticle = () => {
 	};
 
 	if (!data?.articles.length) {
-		return <S.EmptyText>텅 비었어요..!</S.EmptyText>;
+		return <EmptyMessage>게시글이 존재하지 않습니다</EmptyMessage>;
 	}
 
 	return data ? (
