@@ -392,7 +392,7 @@ class ArticleRepositoryTest {
         firstArticle.addTag(new Tags(tags));
         secondArticle.addTag(new Tags(tags));
 
-        Slice<Article> articles = articleRepository.searchByTag(null, List.of(tag), PageRequest.ofSize(2));
+        Slice<ArticlePreviewDto> articles = articleRepository.searchByTag(null, member.getId(), List.of(tag), PageRequest.ofSize(2));
 
         assertThat(articles.getContent()).hasSize(2);
     }
@@ -408,7 +408,7 @@ class ArticleRepositoryTest {
         firstArticle.addTag(new Tags(tags));
         secondArticle.addTag(new Tags(tags));
 
-        Slice<Article> articles = articleRepository.searchByTag(null, new ArrayList<>(), PageRequest.ofSize(2));
+        Slice<ArticlePreviewDto> articles = articleRepository.searchByTag(null, member.getId(), new ArrayList<>(), PageRequest.ofSize(2));
 
         assertAll(
                 () -> assertThat(articles.getContent()).hasSize(0),
@@ -434,7 +434,7 @@ class ArticleRepositoryTest {
         secondArticle.addTag(new Tags(secondTags));
         thirdArticle.addTag(new Tags(thirdTags));
 
-        Slice<Article> articles = articleRepository.searchByTag(null, List.of("spring", "java"), PageRequest.ofSize(3));
+        Slice<ArticlePreviewDto> articles = articleRepository.searchByTag(null, member.getId(), List.of("spring", "java"), PageRequest.ofSize(3));
 
         assertThat(articles.getContent()).hasSize(3);
     }

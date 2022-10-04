@@ -16,7 +16,6 @@ import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
-import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -44,7 +42,6 @@ public class ArticleService {
     private final CommentRepository commentRepository;
     private final TagService tagService;
     private final LikeRepository likeRepository;
-    private final EntityManager entityManager;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
@@ -72,11 +69,7 @@ public class ArticleService {
 
     public ArticleDto getOne(AppMember appMember, Long id) {
         articleRepository.addViews(id);
-        ArticleDto articleDto = getArticleDto(id, appMember);
-
-        entityManager.flush();
-
-        return articleDto;
+        return getArticleDto(id, appMember);
     }
 
     private ArticleDto getArticleDto(Long id, AppMember appMember) {
@@ -136,37 +129,13 @@ public class ArticleService {
 
     @Transactional(readOnly = true)
     public ArticlePageResponse searchByTag(Long cursorId, Pageable pageable, String tagsText, AppMember appMember) {
-        Slice<Article> articles = articleRepository.searchByTag(cursorId, extract(tagsText), pageable);
-        List<ArticlePreviewResponse> response = createResponse(appMember, articles);
-        return new ArticlePageResponse(response, articles.hasNext());
+        Slice<ArticlePreviewDto> articles = articleRepository.searchByTag(cursorId, appMember.getPayload(),
+                extract(tagsText), pageable);
+        return new ArticlePageResponse(getTags(articles), articles.hasNext());
     }
 
     private List<String> extract(String tagsText) {
         return Arrays.asList(tagsText.split(","));
-    }
-
-    private List<ArticlePreviewResponse> createResponse(AppMember appMember, Slice<Article> articles) {
-        return articles.getContent().stream()
-                .map(it -> getArticlePreviewResponse(it, appMember))
-                .collect(Collectors.toList());
-    }
-
-    private ArticlePreviewResponse getArticlePreviewResponse(Article article, AppMember appMember) {
-        List<String> tagNames = article.getTagNames();
-        return ArticlePreviewResponse.of(article, tagNames, getCommentCount(article),
-                new LikeResponse(isLike(article, appMember), getLikeCount(article)));
-    }
-
-    private int getCommentCount(Article article) {
-        return commentRepository.countByArticleId(article.getId());
-    }
-
-    private boolean isLike(Article article, AppMember appMember) {
-        return likeRepository.existsByArticleIdAndMemberId(article.getId(), appMember.getPayload());
-    }
-
-    private Long getLikeCount(Article article) {
-        return likeRepository.countByArticleId(article.getId());
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {

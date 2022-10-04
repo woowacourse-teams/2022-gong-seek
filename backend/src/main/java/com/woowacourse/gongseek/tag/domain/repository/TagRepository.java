@@ -12,7 +12,4 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     Optional<Tag> findByNameIgnoreCase(String name);
 
     void deleteByNameIgnoreCaseIn(List<String> names);
-
-//    @Query(value = "SELECT at.tag FROM ArticleTag at JOIN FETCH at.tag t WHERE at.article.id = :articleId")
-//    List<Tag> findAllByArticleId(@Param("articleId") Long articleId);
 }

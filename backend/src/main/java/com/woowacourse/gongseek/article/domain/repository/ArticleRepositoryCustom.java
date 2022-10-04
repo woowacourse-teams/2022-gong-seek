@@ -1,6 +1,5 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
-import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
@@ -29,5 +28,5 @@ public interface ArticleRepositoryCustom {
 
     Slice<ArticlePreviewDto> searchByAuthor(Long cursorId, String author, Long payload, Pageable pageable);
 
-    Slice<Article> searchByTag(Long cursorId, List<String> tagNames, Pageable pageable);
+    Slice<ArticlePreviewDto> searchByTag(Long cursorId, Long memberId, List<String> tagNames, Pageable pageable);
 }

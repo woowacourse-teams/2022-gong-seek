@@ -15,7 +15,6 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.articletag.ArticleTag;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
@@ -134,7 +133,11 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     @Override
     public Slice<ArticlePreviewDto> findAllByPage(Long cursorId, Integer cursorViews, String category, String sortType,
                                                   Long memberId, Pageable pageable) {
-        JPAQuery<ArticlePreviewDto> query = getAllArticle(cursorId, memberId)
+        JPAQuery<ArticlePreviewDto> query = getAllArticlePreviewDto(cursorId, memberId)
+                .from(article)
+                .leftJoin(article.member, member)
+                .leftJoin(comment).on(article.id.eq(comment.article.id))
+                .leftJoin(like).on(article.id.eq(like.article.id))
                 .where(
                         cursorIdAndCursorViews(cursorId, cursorViews, sortType),
                         categoryEquals(category)
@@ -146,7 +149,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         return convertToSliceFromArticle(fetch, pageable);
     }
 
-    private JPAQuery<ArticlePreviewDto> getAllArticle(Long articleId, Long memberId) {
+    private JPAQuery<ArticlePreviewDto> getAllArticlePreviewDto(Long articleId, Long memberId) {
         return queryFactory
                 .select(
                         Projections.constructor(
@@ -163,11 +166,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                                 count(like.id),
                                 article.createdAt
                         )
-                )
-                .from(article)
-                .leftJoin(article.member, member)
-                .leftJoin(comment).on(article.id.eq(comment.article.id))
-                .leftJoin(like).on(article.id.eq(like.article.id));
+                );
     }
 
     private BooleanExpression cursorIdAndCursorViews(Long cursorId, Integer cursorViews, String sortType) {
@@ -195,16 +194,6 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         return query.orderBy(article.id.desc()).fetch();
     }
 
-    private SliceImpl<Article> convertToSlice(List<Article> fetch, Pageable pageable) {
-        boolean hasNext = false;
-
-        if (fetch.size() == pageable.getPageSize() + 1) {
-            fetch.remove(pageable.getPageSize());
-            hasNext = true;
-        }
-        return new SliceImpl<>(fetch, pageable, hasNext);
-    }
-
     private SliceImpl<ArticlePreviewDto> convertToSliceFromArticle(List<ArticlePreviewDto> fetch, Pageable pageable) {
         boolean hasNext = false;
 
@@ -222,7 +211,11 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     @Override
     public Slice<ArticlePreviewDto> findAllByLikes(Long cursorId, Long cursorLikes, String category, Long memberId,
                                                    Pageable pageable) {
-        List<ArticlePreviewDto> fetch = getAllArticle(cursorId, memberId)
+        List<ArticlePreviewDto> fetch = getAllArticlePreviewDto(cursorId, memberId)
+                .from(article)
+                .leftJoin(article.member, member)
+                .leftJoin(comment).on(article.id.eq(comment.article.id))
+                .leftJoin(like).on(article.id.eq(like.article.id))
                 .where(categoryEquals(category))
                 .groupBy(article)
                 .having(cursorIdAndLikes(cursorId, cursorLikes))
@@ -246,7 +239,11 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     @Override
     public Slice<ArticlePreviewDto> searchByContainingText(Long cursorId, String searchText, Long memberId,
                                                            Pageable pageable) {
-        List<ArticlePreviewDto> fetch = getAllArticle(cursorId, memberId)
+        List<ArticlePreviewDto> fetch = getAllArticlePreviewDto(cursorId, memberId)
+                .from(article)
+                .leftJoin(article.member, member)
+                .leftJoin(comment).on(article.id.eq(comment.article.id))
+                .leftJoin(like).on(article.id.eq(like.article.id))
                 .where(
                         containsTitleOrContent(searchText),
                         isOverArticleId(cursorId)
@@ -275,7 +272,11 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public Slice<ArticlePreviewDto> searchByAuthor(Long cursorId, String author, Long memberId, Pageable pageable) {
-        List<ArticlePreviewDto> fetch = getAllArticle(cursorId, memberId)
+        List<ArticlePreviewDto> fetch = getAllArticlePreviewDto(cursorId, memberId)
+                .from(article)
+                .leftJoin(article.member, member)
+                .leftJoin(comment).on(article.id.eq(comment.article.id))
+                .leftJoin(like).on(article.id.eq(like.article.id))
                 .where(
                         article.member.name.value.eq(author),
                         article.isAnonymous.eq(false),
@@ -289,21 +290,24 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public Slice<Article> searchByTag(Long cursorId, List<String> tagNames, Pageable pageable) {
-        List<Article> fetch = queryFactory
-                .select(article)
+    public Slice<ArticlePreviewDto> searchByTag(Long cursorId, Long memberId, List<String> tagNames,
+                                                Pageable pageable) {
+        List<ArticlePreviewDto> fetch = getAllArticlePreviewDto(cursorId, memberId)
                 .from(articleTag)
+                .join(articleTag.article, article)
+                .join(article.member, member)
+                .join(articleTag.tag, tag)
+                .leftJoin(comment).on(article.id.eq(comment.article.id))
+                .leftJoin(like).on(article.id.eq(like.article.id))
                 .where(
                         articleTag.tag.name.in(getUpperTagNames(tagNames)),
                         isOverArticleId(cursorId)
                 )
-                .join(articleTag.article, article)
-                .join(articleTag.tag, tag)
-                .distinct()
+                .groupBy(article)
                 .limit(pageable.getPageSize() + 1)
                 .orderBy(articleTag.article.id.desc())
                 .fetch();
-        return convertToSlice(fetch, pageable);
+        return convertToSliceBySearch(fetch, pageable);
     }
 
     private List<String> getUpperTagNames(List<String> tagNames) {
