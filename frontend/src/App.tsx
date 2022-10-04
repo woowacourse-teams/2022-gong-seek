@@ -70,7 +70,9 @@ const Content = styled.main`
 `;
 
 const Dimmer = styled.div`
-	position: absolute;
+	position: fixed;
+
+	height: 100vh;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -79,6 +81,10 @@ const Dimmer = styled.div`
 	background-color: ${({ theme }) => theme.colors.GRAY_500};
 
 	z-index: ${({ theme }) => theme.zIndex.MENU_SLIDER_BACKGROUND};
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
+		display: none;
+	}
 `;
 
 const App = () => {

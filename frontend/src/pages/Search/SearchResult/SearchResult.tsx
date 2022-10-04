@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
+import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
 import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 import Loading from '@/components/common/Loading/Loading';
 import useGetSearch from '@/hooks/search/useGetSearch';
@@ -42,7 +43,7 @@ const SearchResult = ({ target, searchIndex }: { target: string; searchIndex: st
 					</S.SearchResultBox>
 				</InfiniteScrollObserver>
 			) : (
-				<div>검색 결과가 존재하지 않습니다</div>
+				<EmptyMessage>검색 결과가 존재하지 않습니다</EmptyMessage>
 			)}
 		</S.Container>
 	);

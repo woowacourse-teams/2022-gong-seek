@@ -63,7 +63,7 @@ public class AuthService {
             refreshTokenRepository.deleteAll(refreshTokens);
             throw new InvalidRefreshTokenException();
         }
-        refreshToken.used();
+        updateIssue(refreshToken);
 
         RefreshToken newRefreshToken = refreshTokenRepository.save(RefreshToken.create(refreshToken.getMemberId()));
         String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(refreshToken.getMemberId()));
@@ -71,5 +71,16 @@ public class AuthService {
                 .accessToken(accessToken)
                 .refreshToken(newRefreshToken.getId())
                 .build();
+    }
+
+    public void updateRefreshToken(UUID value) {
+        RefreshToken refreshToken = refreshTokenRepository.findById(value)
+                .orElseThrow(InvalidRefreshTokenException::new);
+        updateIssue(refreshToken);
+    }
+
+    private void updateIssue(RefreshToken refreshToken) {
+        refreshToken.used();
+        refreshTokenRepository.save(refreshToken);
     }
 }
