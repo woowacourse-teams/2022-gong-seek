@@ -6,5 +6,3 @@ export const Container = styled.section`
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_014};
 `;
-
-export const EmptyMsg = styled.div``;

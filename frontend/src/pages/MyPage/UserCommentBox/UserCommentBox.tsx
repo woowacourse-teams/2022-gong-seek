@@ -1,3 +1,4 @@
+import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/common/Loading/Loading';
 import useGetUserComments from '@/hooks/user/useGetUserComments';
 import * as S from '@/pages/MyPage/UserCommentBox/UserCommentBox.styles';
@@ -23,7 +24,7 @@ const UserCommentBox = () => {
 							<UserCommentItem key={comment.id} comment={comment} />
 						))
 					) : (
-						<S.EmptyMsg>작성하신 댓글이 없습니다</S.EmptyMsg>
+						<EmptyMessage>작성하신 댓글이 없습니다</EmptyMessage>
 					)}
 				</S.Container>
 			) : (

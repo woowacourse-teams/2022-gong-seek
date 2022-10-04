@@ -1,3 +1,4 @@
+import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/common/Loading/Loading';
 import useGetUserArticles from '@/hooks/user/useGetUserArticles';
 import * as S from '@/pages/MyPage/UserArticleBox/UserArticleBox.styles';
@@ -23,7 +24,7 @@ const UserArticleBox = () => {
 							<UserArticleItem key={article.id} article={article} />
 						))
 					) : (
-						<S.EmptyMsg>작성하신 글이 없습니다</S.EmptyMsg>
+						<EmptyMessage>작성하신 글이 없습니다</EmptyMessage>
 					)}
 				</S.Container>
 			) : (

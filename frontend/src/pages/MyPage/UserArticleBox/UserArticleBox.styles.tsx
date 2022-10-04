@@ -8,5 +8,3 @@ export const Container = styled.section`
 
 	gap: ${({ theme }) => theme.size.SIZE_014};
 `;
-
-export const EmptyMsg = styled.div``;
