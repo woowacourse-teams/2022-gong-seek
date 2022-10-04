@@ -25,5 +25,3 @@ export const ArticleItemBox = styled.div`
 	display: flex;
 	align-items: center;
 `;
-
-export const EmptyArticleMessage = styled.div``;

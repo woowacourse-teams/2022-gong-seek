@@ -84,8 +84,3 @@ export const ArticleItemList = styled.div`
 		margin-top: ${({ theme }) => theme.size.SIZE_040};
 	}
 `;
-
-export const EmptyText = styled.div`
-	margin: 0 auto;
-	font-size: ${({ theme }) => theme.size.SIZE_018};
-`;

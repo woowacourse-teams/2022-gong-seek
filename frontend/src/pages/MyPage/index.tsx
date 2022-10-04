@@ -1,3 +1,4 @@
+import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/common/Loading/Loading';
 import { URL } from '@/constants/url';
 import useGetUserArticles from '@/hooks/user/useGetUserArticles';
@@ -56,7 +57,7 @@ const MyPage = () => {
 								<UserArticleItem key={article.id} article={article} />
 							))
 						) : (
-							<div>작성하신 글이 없습니다</div>
+							<EmptyMessage>작성하신 글이 없습니다</EmptyMessage>
 						)}
 					</UserItemBox>
 
@@ -66,7 +67,7 @@ const MyPage = () => {
 								<UserCommentBox key={comment.id} comment={comment} />
 							))
 						) : (
-							<div>작성하신 댓글이 없습니다</div>
+							<EmptyMessage>작성하신 댓글이 없습니다</EmptyMessage>
 						)}
 					</UserItemBox>
 				</S.ContentContainer>
