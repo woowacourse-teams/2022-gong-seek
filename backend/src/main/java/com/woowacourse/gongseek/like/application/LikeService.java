@@ -58,6 +58,6 @@ public class LikeService {
         Member member = getMember(appMember);
         Article article = getArticle(articleId);
 
-        likeRepository.deleteByArticleIdAndMemberId(article.getId(), member.getId());
+        likeRepository.deleteByArticleAndMember(article, member);
     }
 }
