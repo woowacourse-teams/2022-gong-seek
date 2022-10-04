@@ -6,7 +6,6 @@ export const isAuthenticatedError = (errorCode: keyof typeof ErrorMessage) =>
 	errorCode === '1003' ||
 	errorCode === '1006' ||
 	errorCode === '1008' ||
-	errorCode === '1009' ||
 	errorCode === '2001';
 
 export const isInValidTokenError = (errorCode: keyof typeof ErrorMessage) =>
@@ -15,7 +14,7 @@ export const isInValidTokenError = (errorCode: keyof typeof ErrorMessage) =>
 export const isExpiredTokenError = (errorCode: keyof typeof ErrorMessage) => errorCode === '1005';
 
 export const isInvalidRefreshTokenError = (errorCode: keyof typeof ErrorMessage) =>
-	errorCode === '1011';
+	errorCode === '1011' || errorCode === '1009';
 
 export const isAlreayLoginRefreshTokenError = (errorCode: keyof typeof ErrorMessage) =>
 	errorCode === '1010';

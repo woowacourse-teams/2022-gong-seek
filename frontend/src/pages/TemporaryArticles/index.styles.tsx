@@ -15,6 +15,6 @@ export const Header = styled.header``;
 export const Title = styled.h2``;
 
 export const ArticleListBox = styled.div`
-	width: 80%;
+	width: 90%;
 	margin-top: ${({ theme }) => theme.size.SIZE_030};
 `;
