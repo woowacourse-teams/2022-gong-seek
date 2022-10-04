@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
+import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/common/Loading/Loading';
 import useDeleteTempArticle from '@/hooks/tempArticle/useDeleteTempArticle';
 import useGetTempArticles from '@/hooks/tempArticle/useGetTempArticles';
@@ -35,7 +36,7 @@ const TemporaryArticleList = () => {
 						</S.ArticleItemBox>
 					))
 				) : (
-					<S.EmptyArticleMessage>임시저장한 글이 존재하지 않습니다</S.EmptyArticleMessage>
+					<EmptyMessage>임시저장한 글이 없습니다</EmptyMessage>
 				)}
 			</S.ArticleListBox>
 		</S.Container>

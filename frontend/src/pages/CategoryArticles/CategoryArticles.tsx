@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
+import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
 import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 import Loading from '@/components/common/Loading/Loading';
 import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
@@ -60,7 +61,7 @@ const CategoryArticles = () => {
 					</S.ArticleItemList>
 				</InfiniteScrollObserver>
 			) : (
-				<S.EmptyText>텅 비었어요..!</S.EmptyText>
+				<EmptyMessage>게시글이 존재하지 않습니다</EmptyMessage>
 			)}
 		</S.Container>
 	);
