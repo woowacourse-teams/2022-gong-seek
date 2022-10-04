@@ -4,6 +4,7 @@ import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -17,6 +18,8 @@ public interface ArticleRepositoryCustom {
     List<String> findTagNamesByArticleId(Long articleId);
 
     boolean existsArticleByTagId(Long tagId);
+
+    Map<Long, List<String>> findTags(List<Long> articleIds);
 
     Slice<ArticlePreviewDto> findAllByPage(Long cursorId, Integer views, String category, String sortType, Long payload,
                                            Pageable pageable);

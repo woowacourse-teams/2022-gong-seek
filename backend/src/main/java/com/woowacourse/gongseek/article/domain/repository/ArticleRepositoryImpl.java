@@ -1,5 +1,6 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
+import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.types.ExpressionUtils.count;
 import static com.woowacourse.gongseek.article.domain.QArticle.article;
 import static com.woowacourse.gongseek.article.domain.articletag.QArticleTag.articleTag;
@@ -9,6 +10,7 @@ import static com.woowacourse.gongseek.member.domain.QMember.member;
 import static com.woowacourse.gongseek.tag.domain.QTag.tag;
 import static com.woowacourse.gongseek.vote.domain.QVote.vote;
 
+import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -21,6 +23,7 @@ import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -128,6 +131,18 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .fetchFirst();
 
         return tagCount != null;
+    }
+
+    @Override
+    public Map<Long, List<String>> findTags(List<Long> articleIds) {
+        return queryFactory
+                .from(article)
+                .leftJoin(article.articleTags.value, articleTag)
+                .leftJoin(articleTag.tag, tag)
+                .where(
+                        article.id.in(articleIds)
+                )
+                .transform(groupBy(article.id).as(GroupBy.list(tag.name)));
     }
 
     @Override

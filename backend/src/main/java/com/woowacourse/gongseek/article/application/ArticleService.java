@@ -14,8 +14,6 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
-import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
-import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -24,6 +22,7 @@ import com.woowacourse.gongseek.tag.domain.Tags;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -39,9 +38,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final TempArticleService tempArticleService;
     private final MemberRepository memberRepository;
-    private final CommentRepository commentRepository;
     private final TagService tagService;
-    private final LikeRepository likeRepository;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
@@ -82,14 +79,20 @@ public class ArticleService {
                                       Pageable pageable, AppMember appMember) {
         Slice<ArticlePreviewDto> articles = articleRepository.findAllByPage(cursorId, cursorViews, category, sortType,
                 appMember.getPayload(), pageable);
-
-        return new ArticlePageResponse(getTags(articles), articles.hasNext());
+        List<Long> foundArticleIds = getArticleIds(articles);
+        Map<Long, List<String>> tags = articleRepository.findTags(foundArticleIds);
+        return new ArticlePageResponse(getTags(articles, tags), articles.hasNext());
     }
 
-    private List<ArticlePreviewResponse> getTags(Slice<ArticlePreviewDto> articles) {
+    private List<Long> getArticleIds(Slice<ArticlePreviewDto> articles) {
         return articles.stream()
-                .map(article -> new ArticlePreviewResponse(article, articleRepository.findTagNamesByArticleId(
-                        article.getId())))
+                .map(ArticlePreviewDto::getId)
+                .collect(Collectors.toList());
+    }
+
+    private List<ArticlePreviewResponse> getTags(Slice<ArticlePreviewDto> articles, Map<Long, List<String>> tags) {
+        return articles.stream()
+                .map(article -> new ArticlePreviewResponse(article, tags.get(article.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -99,8 +102,9 @@ public class ArticleService {
         Slice<ArticlePreviewDto> articles = articleRepository.findAllByLikes(cursorId, likes, category,
                 appMember.getPayload(),
                 pageable);
-
-        return new ArticlePageResponse(getTags(articles), articles.hasNext());
+        List<Long> foundArticleIds = getArticleIds(articles);
+        Map<Long, List<String>> tags = articleRepository.findTags(foundArticleIds);
+        return new ArticlePageResponse(getTags(articles, tags), articles.hasNext());
     }
 
     @Transactional(readOnly = true)
@@ -111,8 +115,9 @@ public class ArticleService {
         }
         Slice<ArticlePreviewDto> articles = articleRepository.searchByContainingText(cursorId, searchText,
                 appMember.getPayload(), pageable);
-
-        return new ArticlePageResponse(getTags(articles), articles.hasNext());
+        List<Long> foundArticleIds = getArticleIds(articles);
+        Map<Long, List<String>> tags = articleRepository.findTags(foundArticleIds);
+        return new ArticlePageResponse(getTags(articles, tags), articles.hasNext());
     }
 
     @Transactional(readOnly = true)
@@ -123,15 +128,18 @@ public class ArticleService {
         }
         Slice<ArticlePreviewDto> articles = articleRepository.searchByAuthor(cursorId, authorName,
                 appMember.getPayload(), pageable);
-
-        return new ArticlePageResponse(getTags(articles), articles.hasNext());
+        List<Long> foundArticleIds = getArticleIds(articles);
+        Map<Long, List<String>> tags = articleRepository.findTags(foundArticleIds);
+        return new ArticlePageResponse(getTags(articles, tags), articles.hasNext());
     }
 
     @Transactional(readOnly = true)
     public ArticlePageResponse searchByTag(Long cursorId, Pageable pageable, String tagsText, AppMember appMember) {
         Slice<ArticlePreviewDto> articles = articleRepository.searchByTag(cursorId, appMember.getPayload(),
                 extract(tagsText), pageable);
-        return new ArticlePageResponse(getTags(articles), articles.hasNext());
+        List<Long> foundArticleIds = getArticleIds(articles);
+        Map<Long, List<String>> tags = articleRepository.findTags(foundArticleIds);
+        return new ArticlePageResponse(getTags(articles, tags), articles.hasNext());
     }
 
     private List<String> extract(String tagsText) {

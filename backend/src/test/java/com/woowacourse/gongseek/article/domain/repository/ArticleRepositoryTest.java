@@ -27,6 +27,7 @@ import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
@@ -392,7 +393,8 @@ class ArticleRepositoryTest {
         firstArticle.addTag(new Tags(tags));
         secondArticle.addTag(new Tags(tags));
 
-        Slice<ArticlePreviewDto> articles = articleRepository.searchByTag(null, member.getId(), List.of(tag), PageRequest.ofSize(2));
+        Slice<ArticlePreviewDto> articles = articleRepository.searchByTag(null, member.getId(), List.of(tag),
+                PageRequest.ofSize(2));
 
         assertThat(articles.getContent()).hasSize(2);
     }
@@ -408,7 +410,8 @@ class ArticleRepositoryTest {
         firstArticle.addTag(new Tags(tags));
         secondArticle.addTag(new Tags(tags));
 
-        Slice<ArticlePreviewDto> articles = articleRepository.searchByTag(null, member.getId(), new ArrayList<>(), PageRequest.ofSize(2));
+        Slice<ArticlePreviewDto> articles = articleRepository.searchByTag(null, member.getId(), new ArrayList<>(),
+                PageRequest.ofSize(2));
 
         assertAll(
                 () -> assertThat(articles.getContent()).hasSize(0),
@@ -434,7 +437,8 @@ class ArticleRepositoryTest {
         secondArticle.addTag(new Tags(secondTags));
         thirdArticle.addTag(new Tags(thirdTags));
 
-        Slice<ArticlePreviewDto> articles = articleRepository.searchByTag(null, member.getId(), List.of("spring", "java"), PageRequest.ofSize(3));
+        Slice<ArticlePreviewDto> articles = articleRepository.searchByTag(null, member.getId(),
+                List.of("spring", "java"), PageRequest.ofSize(3));
 
         assertThat(articles.getContent()).hasSize(3);
     }
@@ -574,5 +578,30 @@ class ArticleRepositoryTest {
         List<String> tags = articleRepository.findTagNamesByArticleId(article.getId());
 
         assertThat(tags).isEqualTo(article.getTagNames());
+    }
+
+    @Test
+    void 조회한_게시글의_태그들을_검색한다() {
+        Article firstArticle = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
+        List<Tag> tags = List.of(new Tag("spring"), new Tag("java"));
+        tagRepository.saveAll(tags);
+        firstArticle.addTag(new Tags(tags));
+        secondArticle.addTag(new Tags(tags));
+
+        Slice<ArticlePreviewDto> articles = articleRepository.searchByTag(null, member.getId(), List.of("spring"),
+                PageRequest.ofSize(2));
+
+        List<Long> articleIds = articles.getContent().stream()
+                .map(ArticlePreviewDto::getId)
+                .collect(Collectors.toList());
+
+        Map<Long, List<String>> foundTags = articleRepository.findTags(articleIds);
+        assertAll(
+                () -> assertThat(foundTags.get(firstArticle.getId()).containsAll(tags)),
+                () -> assertThat(foundTags.get(secondArticle.getId()).containsAll(tags))
+        );
     }
 }
