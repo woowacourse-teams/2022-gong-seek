@@ -1,15 +1,20 @@
 import * as S from '@/pages/TemporaryArticles/TemporaryArticleItem/TemporaryArticleItem.styles';
-import { dateTimeConverter } from '@/utils/converter';
+import { categoryNameConverter, dateTimeConverter } from '@/utils/converter';
 
 export interface TemporaryArticleItemProps {
-	article: { title: string; createAt: string };
+	article: { title: string; createAt: string; category: string };
 	onClick: () => void;
 }
 
 const TemporaryArticleItem = ({ article, onClick }: TemporaryArticleItemProps) => (
 	<S.Container onClick={onClick}>
 		<S.Title>{article.title}</S.Title>
-		<S.CreatedAt>{article.createAt && dateTimeConverter(article.createAt)}</S.CreatedAt>
+		<S.SubInfo>
+			<S.Category isQuestion={article.category === 'question'}>
+				{categoryNameConverter(article.category)}
+			</S.Category>
+			<S.CreatedAt>{article.createAt && dateTimeConverter(article.createAt)}</S.CreatedAt>
+		</S.SubInfo>
 	</S.Container>
 );
 
