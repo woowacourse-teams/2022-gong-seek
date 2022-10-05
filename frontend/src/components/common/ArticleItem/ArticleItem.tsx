@@ -1,5 +1,7 @@
 import * as S from '@/components/common/ArticleItem/ArticleItem.styles';
+import Card from '@/components/common/Card/Card';
 import useHeartClick from '@/hooks/article/useHeartClick';
+import { ArticleItemCard } from '@/styles/cardStyle';
 import { Category } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 import { convertGithubAvatarUrlForResize } from '@/utils/converter';
@@ -30,7 +32,12 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 	});
 
 	return (
-		<S.Container onClick={onClick}>
+		<Card
+			cssObject={ArticleItemCard.cssObject}
+			media={ArticleItemCard.media}
+			hasActiveAnimation={true}
+			onClick={onClick}
+		>
 			<S.ArticleItemTitle>
 				<div>{article.title}</div>
 			</S.ArticleItemTitle>
@@ -62,7 +69,7 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 					</S.HeartBox>
 				</S.RightFooterBox>
 			</S.FooterBox>
-		</S.Container>
+		</Card>
 	);
 };
 
