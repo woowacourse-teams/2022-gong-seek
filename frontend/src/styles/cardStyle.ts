@@ -14,3 +14,11 @@ export const ArticleItemCard: Pick<CardProps, 'cssObject' | 'media'> = {
 		height: theme.size.SIZE_220,
 	},
 };
+
+export const ArticleContentCard: Pick<CardProps, 'cssObject'> = {
+	cssObject: {
+		width: '90%',
+		height: 'fit-content',
+		padding: theme.size.SIZE_011,
+	},
+};
