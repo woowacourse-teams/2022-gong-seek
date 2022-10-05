@@ -5,9 +5,10 @@ module.exports = {
 	entry: './src/index.tsx',
 	output: {
 		path: path.join(__dirname, '../dist'),
-		filename: '[name].bundle.js',
+		filename: '[name].[contenthash].js',
 		publicPath: '/',
 		clean: true,
+		pathinfo: false,
 	},
 	resolve: {
 		alias: {
@@ -25,13 +26,12 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.(js|jsx|ts|tsx)$/,
+				test: /\.(js|jsx|ts|tsx)?$/,
+				loader: 'babel-loader',
 				exclude: /node_modules/,
-				use: {
-					loader: 'babel-loader',
-				},
-				generator: {
-					filename: '[name].[contenthash].js',
+				options: {
+					cacheCompression: false,
+					cacheDirectory: true,
 				},
 			},
 			{
