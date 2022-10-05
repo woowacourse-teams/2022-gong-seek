@@ -55,6 +55,6 @@ module.exports = {
 		}),
 	],
 	optimization: {
-		minimize: true,
+		runtimeChunk: true,
 	},
 };
