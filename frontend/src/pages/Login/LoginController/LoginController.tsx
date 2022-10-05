@@ -7,6 +7,7 @@ import { postLogin } from '@/api/login';
 import { ACCESSTOKEN_KEY } from '@/constants';
 import { URL } from '@/constants/url';
 import useSnackBar from '@/hooks/common/useSnackBar';
+import LoginLoading from '@/pages/Login/LoginLoading/LoginLoading';
 
 const LoginController = () => {
 	const [searchParams] = useSearchParams();
@@ -40,7 +41,7 @@ const LoginController = () => {
 		}
 	}, [isSuccess, isError]);
 
-	return <div>로그인 중입니다...</div>;
+	return <LoginLoading />;
 };
 
 export default LoginController;
