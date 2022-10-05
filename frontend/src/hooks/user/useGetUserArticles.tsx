@@ -7,7 +7,7 @@ import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { UserArticlesResponse } from '@/types/articleResponse';
 
 const useGetUserArticles = () => {
-	const { data, isSuccess, isError, isLoading, isIdle, error } = useQuery<
+	const { data, isSuccess, isError, isLoading, error } = useQuery<
 		UserArticlesResponse,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('user-articles', getUserArticles, { retry: 1, refetchOnWindowFocus: false });
@@ -18,7 +18,6 @@ const useGetUserArticles = () => {
 		data,
 		isSuccess,
 		isLoading,
-		isIdle,
 	};
 };
 
