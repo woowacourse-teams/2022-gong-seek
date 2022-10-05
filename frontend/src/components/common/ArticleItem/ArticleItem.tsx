@@ -2,7 +2,7 @@ import * as S from '@/components/common/ArticleItem/ArticleItem.styles';
 import useHeartClick from '@/hooks/article/useHeartClick';
 import { Category } from '@/types/articleResponse';
 import { Author } from '@/types/author';
-import { convertGithubAvartarUrlForResize } from '@/utils/converter';
+import { convertGithubAvatarUrlForResize } from '@/utils/converter';
 import { dateTimeConverter } from '@/utils/converter';
 
 export interface ArticleItemProps {
@@ -48,7 +48,7 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 			</S.HashTagListBox>
 			<S.FooterBox>
 				<S.ProfileBox>
-					<S.UserProfile src={convertGithubAvartarUrlForResize(article.author.avatarUrl)} />
+					<S.UserProfile src={convertGithubAvatarUrlForResize(article.author.avatarUrl)} />
 					<div>{article.author.name}</div>
 				</S.ProfileBox>
 				<S.RightFooterBox>
