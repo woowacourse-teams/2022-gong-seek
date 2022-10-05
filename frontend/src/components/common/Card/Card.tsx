@@ -1,7 +1,7 @@
 import { PropsWithStrictChildren } from 'gongseek-types';
 
 import * as S from '@/components/common/Card/Card.styles';
-import { css, keyframes } from '@emotion/react';
+import { css } from '@emotion/react';
 
 export interface CardProps {
 	cssObject: {
@@ -21,16 +21,6 @@ export interface CardProps {
 	hasActiveAnimation: true | false;
 }
 
-const scaleAnimation = keyframes`
-	0%{
-
-	}
-
-	100% {
-		transform: scale(1.01);
-	}
-`;
-
 const Card = ({
 	cssObject,
 	media,
@@ -43,23 +33,12 @@ const Card = ({
 			height: ${cssObject.height};
 			padding: ${cssObject.padding ? cssObject.padding : 0};
 			max-width: ${cssObject.maxWidth ? cssObject.maxWidth : cssObject.width};
-			justify-content: ${cssObject.justifyContent ? cssObject.justifyContent : 'center'};
-			align-items: ${cssObject.alignItems ? cssObject.alignItems : 'center'};
+			justify-content: ${cssObject.justifyContent ? cssObject.justifyContent : 'normal'};
+			align-items: ${cssObject.alignItems ? cssObject.alignItems : 'normal'};
 			gap: ${cssObject.gap ? cssObject.gap : 0};
-
-			@media (min-width: ${media ? media.minWidth : ''}) {
-				width: ${media ? media.width : cssObject.width};
-				height: ${media ? media.height : cssObject.height};
-			}
-
-			&:hover,
-			&:active {
-				cursor: pointer;
-
-				animation: ${hasActiveAnimation ? `${scaleAnimation} 0.3 ease-in` : ''};
-				animation-fill-mode: forwards;
-			}
 		`}
+		media={media ? media : false}
+		hasActiveAnimation={hasActiveAnimation}
 	>
 		{children}
 	</S.Container>

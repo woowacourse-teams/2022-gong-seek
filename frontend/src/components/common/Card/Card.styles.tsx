@@ -7,20 +7,35 @@ const scaleAnimation = keyframes`
 	}
 `;
 
-export const Container = styled.section`
+export const Container = styled.section<{
+	media: { minWidth: string; width?: string; height?: string } | false;
+	hasActiveAnimation: boolean;
+}>`
 	display: flex;
 	flex-direction: column;
-	flex-wrap: wrap;
 
 	${({ theme }) => css`
 		border-radius: ${theme.size.SIZE_010};
 		box-shadow: 0 ${theme.size.SIZE_008} ${theme.size.SIZE_024} ${theme.boxShadows.secondary};
 	`}
 
-	&:hover,
-	&:active {
-		animation: ${scaleAnimation} 0.3s ease-in;
-		animation-fill-mode: forwards;
-		cursor: pointer;
-	}
+	${({ hasActiveAnimation }) =>
+		hasActiveAnimation &&
+		css`
+			&:hover,
+			&:active {
+				animation: ${scaleAnimation} 0.3s ease-in;
+				animation-fill-mode: forwards;
+				cursor: pointer;
+			}
+		`}
+
+	${({ media }) =>
+		media !== false &&
+		css`
+			@media (min-width: ${media.minWidth}) {
+				width: ${media.width};
+				height: ${media.height};
+			}
+		`}
 `;
