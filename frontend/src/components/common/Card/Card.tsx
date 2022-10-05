@@ -12,6 +12,8 @@ export interface CardProps {
 		alignItems?: string;
 		gap?: string;
 		padding?: string;
+		flexWrap?: string;
+		flexDirection?: string;
 	};
 	media?: {
 		minWidth: string;
@@ -38,6 +40,8 @@ const Card = ({
 			justify-content: ${cssObject.justifyContent ? cssObject.justifyContent : 'normal'};
 			align-items: ${cssObject.alignItems ? cssObject.alignItems : 'normal'};
 			gap: ${cssObject.gap ? cssObject.gap : 0};
+			flex-direction: ${cssObject.flexDirection ? cssObject.flexDirection : 'column'};
+			flex-wrap: ${cssObject.flexWrap ? cssObject.flexWrap : 'nowrap'};
 		`}
 		media={media ? media : false}
 		hasActiveAnimation={hasActiveAnimation}
