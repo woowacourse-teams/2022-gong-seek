@@ -1,15 +1,13 @@
-import PageLayout from '@/components/layout/PageLayout/PageLayout';
+import Card from '@/components/common/Card/Card';
 import { mobileTitleSecondary } from '@/constants/titleType';
 import * as S from '@/pages/CategorySelector/CategorySelector.styles';
+import { CategorySelectorCard } from '@/styles/cardStyle';
 
 const CategorySelector = () => (
 	<S.Container>
-		<PageLayout
-			width="80%"
-			maxWidth="25rem"
-			height="16rem"
-			flexDirection="column"
-			justifyContent="space-around"
+		<Card
+			cssObject={CategorySelectorCard.cssObject}
+			hasActiveAnimation={CategorySelectorCard.hasActiveAnimation}
 		>
 			<h2 css={mobileTitleSecondary}>글쓰기 카테고리 선택</h2>
 			<S.CategoryButtonBox>
@@ -24,7 +22,7 @@ const CategorySelector = () => (
 					</S.CategoryButton>
 				</S.StyledLink>
 			</S.CategoryButtonBox>
-		</PageLayout>
+		</Card>
 	</S.Container>
 );
 

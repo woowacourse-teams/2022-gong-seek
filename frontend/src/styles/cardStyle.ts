@@ -36,3 +36,14 @@ export const HashTagCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = 
 	},
 	hasActiveAnimation: false,
 };
+
+export const CategorySelectorCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
+	cssObject: {
+		width: '80%',
+		height: theme.size.SIZE_256,
+		maxWidth: theme.size.SIZE_400,
+		justifyContent: 'space-around',
+		alignItems: 'center',
+	},
+	hasActiveAnimation: false,
+};
