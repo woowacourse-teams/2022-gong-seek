@@ -60,14 +60,6 @@ export const LoginCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
 	hasActiveAnimation: false,
 };
 
-// export const UpdateWritingCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
-// 	cssObject: {
-// 		width: '100%',
-// 		height: 'fit-content',
-// 	},
-// 	hasActiveAnimation: false,
-// };
-
 export const WritingTitleCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
 	cssObject: {
 		width: '100%',
