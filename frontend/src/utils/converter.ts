@@ -59,11 +59,11 @@ const convertIdxToTimeKey = (idx: number) => {
 	}
 };
 
-export const convertSort = (sort: '좋아요순' | '최신순' | '조회순') => {
+export const convertSort = (sort: '추천순' | '최신순' | '조회순') => {
 	switch (sort) {
 		case '조회순':
 			return 'views';
-		case '좋아요순':
+		case '추천순':
 			return 'likes';
 		case '최신순':
 			return 'latest';

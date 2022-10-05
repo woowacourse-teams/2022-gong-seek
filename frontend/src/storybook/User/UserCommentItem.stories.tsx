@@ -1,10 +1,10 @@
-import UserCommentBox from '@/pages/MyPage/UserCommentBox/UserCommentBox';
+import UserCommentItem from '@/pages/MyPage/UserCommentItem/UserCommentItem';
 import { UserComment } from '@/types/commentResponse';
 import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'User/UserCommentBox',
-	component: UserCommentBox,
+	component: UserCommentItem,
 	decorators: [
 		(Story) => (
 			<div style={{ width: '320px' }}>
@@ -14,11 +14,11 @@ export default {
 	],
 } as Meta;
 
-const Template: Story<{ comment: UserComment }> = (args) => <UserCommentBox {...args} />;
+const Template: Story<{ comment: UserComment }> = (args) => <UserCommentItem {...args} />;
 
-export const UserCommentBoxTemplate = Template.bind({});
+export const UserCommentItemTemplate = Template.bind({});
 
-UserCommentBoxTemplate.args = {
+UserCommentItemTemplate.args = {
 	comment: {
 		id: 1,
 		content:

@@ -60,14 +60,14 @@ export const getAllArticle = async ({
 	cursorLikes,
 }: {
 	category: string;
-	sort: '좋아요순' | '조회순' | '최신순';
+	sort: '추천순' | '조회순' | '최신순';
 	cursorId: string;
 	cursorViews: string;
 	cursorLikes: string;
 }) => {
 	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
 
-	if (sort === '좋아요순') {
+	if (sort === '추천순') {
 		const data = await getAllArticlesByLikes({ category, cursorId, cursorLikes, accessToken });
 		return data;
 	}
@@ -90,7 +90,7 @@ export const getAllArticleByViewsOrLatest = async ({
 	accessToken,
 }: {
 	category: string;
-	sort: '좋아요순' | '조회순' | '최신순';
+	sort: '추천순' | '조회순' | '최신순';
 	cursorId: string;
 	cursorViews: string;
 	accessToken: string | null;
