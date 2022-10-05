@@ -30,11 +30,4 @@ public class RedisConfig {
         configuration.setPassword(password);
         return new LettuceConnectionFactory(configuration);
     }
-
-    @Bean
-    public RedisTemplate<?, ?> redisTemplate() {
-        RedisTemplate<byte[], byte[]> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
-        return redisTemplate;
-    }
 }
