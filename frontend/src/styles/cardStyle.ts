@@ -25,18 +25,6 @@ export const ArticleContentCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimati
 	hasActiveAnimation: false,
 };
 
-export const HashTagCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
-	cssObject: {
-		width: '100%',
-		height: 'fit-content',
-		justifyContent: 'flex-start',
-		flexWrap: 'wrap',
-		flexDirection: 'row',
-		padding: theme.size.SIZE_004,
-	},
-	hasActiveAnimation: false,
-};
-
 export const CategorySelectorCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
 	cssObject: {
 		width: '80%',
@@ -70,4 +58,50 @@ export const LoginCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
 		alignItems: 'center',
 	},
 	hasActiveAnimation: false,
+};
+
+// export const UpdateWritingCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
+// 	cssObject: {
+// 		width: '100%',
+// 		height: 'fit-content',
+// 	},
+// 	hasActiveAnimation: false,
+// };
+
+export const WritingTitleCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
+	cssObject: {
+		width: '100%',
+		height: 'fit-content',
+	},
+	hasActiveAnimation: false,
+};
+
+export const WritingCategoryCard: CardProps = {
+	cssObject: {
+		width: '100%',
+		height: 'fit-content',
+	},
+	hasActiveAnimation: false,
+	media: {
+		minWidth: theme.breakpoints.DESKTOP_LARGE,
+		width: '10%',
+		height: 'fit-content',
+	},
+};
+
+export const WritingHashTagCard: CardProps = {
+	cssObject: {
+		width: '100%',
+		height: 'fit-content',
+		justifyContent: 'flex-start',
+		flexWrap: 'wrap',
+		flexDirection: 'row',
+		padding: theme.size.SIZE_004,
+	},
+	hasActiveAnimation: false,
+	media: {
+		minWidth: theme.breakpoints.DESKTOP_LARGE,
+		width: '95%',
+		height: 'fit-content',
+	},
 };

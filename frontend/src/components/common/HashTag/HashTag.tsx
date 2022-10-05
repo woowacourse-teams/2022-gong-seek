@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import Card from '@/components/common/Card/Card';
 import * as S from '@/components/common/HashTag/HashTag.styles';
-import { HashTagCard } from '@/styles/cardStyle';
+import { WritingHashTagCard } from '@/styles/cardStyle';
 import { validatedHashTagInput } from '@/utils/validateInput';
 
 export interface HashTagProps {
@@ -62,7 +62,11 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 				aria-label="해시태그가 보여지고 입력하는 곳입니다"
 				onSubmit={onHashTagEnterEventHandler}
 			>
-				<Card cssObject={HashTagCard.cssObject} hasActiveAnimation={HashTagCard.hasActiveAnimation}>
+				<Card
+					cssObject={WritingHashTagCard.cssObject}
+					hasActiveAnimation={WritingHashTagCard.hasActiveAnimation}
+					media={WritingHashTagCard.media}
+				>
 					<S.HashTagItemBox>
 						{hashTags.length >= 1 &&
 							hashTags.map((item) => <S.HastTagItem key={item}>{item}</S.HastTagItem>)}

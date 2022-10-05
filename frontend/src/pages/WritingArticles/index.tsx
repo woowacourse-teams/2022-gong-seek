@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import { postImageUrlConverter } from '@/api/image';
 import AnonymousCheckBox from '@/components/common/AnonymousCheckBox/AnonymousCheckBox';
+import Card from '@/components/common/Card/Card';
 import HashTag from '@/components/common/HashTag/HashTag';
 import Loading from '@/components/common/Loading/Loading';
 import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
@@ -12,6 +13,7 @@ import useSnackBar from '@/hooks/common/useSnackBar';
 import useGetTempDetailArticles from '@/hooks/tempArticle/useGetTempDetailArticles';
 import usePostTempArticle from '@/hooks/tempArticle/usePostTempArticle';
 import * as S from '@/pages/WritingArticles/index.styles';
+import { WritingCategoryCard } from '@/styles/cardStyle';
 
 const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 	const { category } = useParams();
@@ -140,7 +142,11 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 					<S.TitleInputErrorMsgBox>제목은 1글자 이상 500자 이하여야 합니다</S.TitleInputErrorMsgBox>
 				)}
 				<S.OptionBox>
-					<PageLayout width="100%" height="fit-content">
+					<Card
+						cssObject={WritingCategoryCard.cssObject}
+						media={WritingCategoryCard.media}
+						hasActiveAnimation={WritingCategoryCard.hasActiveAnimation}
+					>
 						<S.CategorySelectorBox>
 							<S.CategorySelector
 								name="writing"
@@ -156,7 +162,7 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 							</S.CategorySelector>
 							<S.SelectorButton />
 						</S.CategorySelectorBox>
-					</PageLayout>
+					</Card>
 					<HashTag hashTags={hashTags} setHashTags={setHashTags} />
 				</S.OptionBox>
 			</S.SelectorBox>
