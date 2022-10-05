@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 
-import * as S from '@/pages/Home/ArticleItem/ArticleItem.styles';
+import * as S from '@/pages/Home/PopularArticleItem/PopularArticleItem.styles';
 import { CommonArticleType } from '@/types/articleResponse';
 import { convertGithubAvatarUrlForResize } from '@/utils/converter';
 
-const ArticleItem = ({ article }: { article: CommonArticleType }) => {
+const PopularArticleItem = ({ article }: { article: CommonArticleType }) => {
 	const navigate = useNavigate();
 	const { id, title, author, commentCount, views, likeCount, category } = article;
 	return (
@@ -39,4 +39,4 @@ const ArticleItem = ({ article }: { article: CommonArticleType }) => {
 	);
 };
 
-export default ArticleItem;
+export default PopularArticleItem;
