@@ -40,7 +40,10 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 					<div>{author.name}</div>
 				</S.UserProfile>
 			</S.Header>
-			<Card cssObject={ArticleContentCard.cssObject} hasActiveAnimation={false}>
+			<Card
+				cssObject={ArticleContentCard.cssObject}
+				hasActiveAnimation={ArticleContentCard.hasActiveAnimation}
+			>
 				<S.ArticleInfo>
 					<S.ArticleTitle>{article.title}</S.ArticleTitle>
 					<S.ArticleDetailInfo>

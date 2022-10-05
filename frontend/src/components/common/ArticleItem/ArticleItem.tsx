@@ -35,7 +35,7 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 		<Card
 			cssObject={ArticleItemCard.cssObject}
 			media={ArticleItemCard.media}
-			hasActiveAnimation={true}
+			hasActiveAnimation={ArticleItemCard.hasActiveAnimation}
 			onClick={onClick}
 		>
 			<S.ArticleItemTitle>
