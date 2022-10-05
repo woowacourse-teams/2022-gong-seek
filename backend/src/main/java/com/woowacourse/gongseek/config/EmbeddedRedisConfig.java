@@ -44,6 +44,7 @@ public class EmbeddedRedisConfig {
         if (isRedisRunning()) {
             port = findAvailablePort();
         }
+        System.out.println("새로운 PORT : " + port);
         redisServer = new RedisServer(port);
         redisServer.start();
     }
