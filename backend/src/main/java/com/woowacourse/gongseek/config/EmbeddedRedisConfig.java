@@ -44,13 +44,14 @@ public class EmbeddedRedisConfig {
         if (isRedisRunning()) {
             port = findAvailablePort();
         }
+        System.out.println("새로운 PORT : " + port);
         redisServer = new RedisServer(port);
         redisServer.start();
     }
 
     @PreDestroy
     public void stopRedis() {
-        if (redisServer != null) {
+        if (redisServer != null && redisServer.isActive()) {
             redisServer.stop();
         }
     }

@@ -37,7 +37,7 @@ const CategoryArticles = () => {
 					{categoryNameConverter(category)}
 				</S.CategoryArticlesTitle>
 				<SortDropdown
-					sortList={['최신순', '조회순', '좋아요순']}
+					sortList={['최신순', '조회순', '추천순']}
 					sortIndex={sortIndex}
 					setSortIndex={setSortIndex}
 				/>
