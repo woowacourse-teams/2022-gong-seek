@@ -47,3 +47,15 @@ export const CategorySelectorCard: Pick<CardProps, 'cssObject' | 'hasActiveAnima
 	},
 	hasActiveAnimation: false,
 };
+
+export const InquireCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
+	cssObject: {
+		width: '80%',
+		height: theme.size.SIZE_280,
+		maxWidth: theme.size.SIZE_400,
+		justifyContent: 'space-around',
+		padding: theme.size.SIZE_016,
+		alignItems: 'center',
+	},
+	hasActiveAnimation: false,
+};
