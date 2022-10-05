@@ -5,7 +5,6 @@ import styled from '@emotion/styled';
 
 const scaleAnimation = keyframes`
 	0%{
-
 	}
 
 	100% {
