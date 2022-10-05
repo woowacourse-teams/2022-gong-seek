@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
 	entry: './src/index.tsx',
@@ -54,7 +53,6 @@ module.exports = {
 			template: './public/index.html',
 			favicon: './public/favicon-32x32.png',
 		}),
-		new CleanWebpackPlugin(),
 	],
 	optimization: {
 		minimize: true,
