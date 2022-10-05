@@ -59,3 +59,15 @@ export const InquireCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = 
 	},
 	hasActiveAnimation: false,
 };
+
+export const LoginCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
+	cssObject: {
+		width: '80%',
+		maxWidth: theme.size.SIZE_400,
+		height: theme.size.SIZE_240,
+		justifyContent: 'space-around',
+		padding: theme.size.SIZE_010,
+		alignItems: 'center',
+	},
+	hasActiveAnimation: false,
+};
