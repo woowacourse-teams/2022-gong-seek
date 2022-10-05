@@ -2,7 +2,7 @@ import { theme } from './Theme';
 
 import { CardProps } from '@/components/common/Card/Card';
 
-export const ArticleItemCard: Pick<CardProps, 'cssObject' | 'media'> = {
+export const ArticleItemCard: CardProps = {
 	cssObject: {
 		width: '80%',
 		height: theme.size.SIZE_160,
@@ -13,12 +13,26 @@ export const ArticleItemCard: Pick<CardProps, 'cssObject' | 'media'> = {
 		width: theme.size.SIZE_300,
 		height: theme.size.SIZE_220,
 	},
+	hasActiveAnimation: true,
 };
 
-export const ArticleContentCard: Pick<CardProps, 'cssObject'> = {
+export const ArticleContentCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
 	cssObject: {
 		width: '90%',
 		height: 'fit-content',
 		padding: theme.size.SIZE_011,
 	},
+	hasActiveAnimation: false,
+};
+
+export const HashTagCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
+	cssObject: {
+		width: '100%',
+		height: 'fit-content',
+		justifyContent: 'flex-start',
+		flexWrap: 'wrap',
+		flexDirection: 'row',
+		padding: theme.size.SIZE_004,
+	},
+	hasActiveAnimation: false,
 };
