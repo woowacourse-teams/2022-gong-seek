@@ -19,12 +19,14 @@ export interface CardProps {
 		height?: string;
 	};
 	hasActiveAnimation: true | false;
+	onClick?: () => void;
 }
 
 const Card = ({
 	cssObject,
 	media,
 	hasActiveAnimation,
+	onClick,
 	children,
 }: PropsWithStrictChildren<CardProps>) => (
 	<S.Container
@@ -39,6 +41,7 @@ const Card = ({
 		`}
 		media={media ? media : false}
 		hasActiveAnimation={hasActiveAnimation}
+		onClick={onClick}
 	>
 		{children}
 	</S.Container>
