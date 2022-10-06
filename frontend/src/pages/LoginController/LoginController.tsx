@@ -4,10 +4,10 @@ import { useMutation } from 'react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { postLogin } from '@/api/login';
+import LoginLoading from '@/components/login/LoginLoading/LoginLoading';
 import { ACCESSTOKEN_KEY } from '@/constants';
 import { URL } from '@/constants/url';
 import useSnackBar from '@/hooks/common/useSnackBar';
-import LoginLoading from '@/pages/Login/LoginLoading/LoginLoading';
 
 const LoginController = () => {
 	const [searchParams] = useSearchParams();

@@ -23,9 +23,9 @@ const QuestionDetail = React.lazy(() => import('@/pages/QuestionDetail'));
 const HashTagSearch = React.lazy(() => import('@/pages/HashTagSearch'));
 const InquirePage = React.lazy(() => import('@/pages/Inquire'));
 const Login = React.lazy(() => import('@/pages/Login'));
-const LoginController = React.lazy(() => import('@/pages/Login/LoginController/LoginController'));
+const LoginController = React.lazy(() => import('@/pages/LoginController/LoginController'));
 const RefreshTokenHandler = React.lazy(
-	() => import('@/pages/Login/RefreshTokenHandler/RefreshTokenHandler'),
+	() => import('@/pages/RefreshTokenHandler/RefreshTokenHandler'),
 );
 const MyPage = React.lazy(() => import('@/pages/MyPage'));
 const NotFound = React.lazy(() => import('@/pages/NotFound'));
