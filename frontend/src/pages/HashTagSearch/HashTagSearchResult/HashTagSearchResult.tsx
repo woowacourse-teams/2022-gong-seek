@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
-import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 import Loading from '@/components/common/Loading/Loading';
+import ResponsiveInfiniteCardList from '@/components/common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList';
 import useGetArticleByHashTag from '@/hooks/hashTag/useGetArticleByHashTag';
 import * as S from '@/pages/HashTagSearch/HashTagSearchResult/HashTagSearchResult.styles';
+import { EmptyMessage } from '@/pages/Search/index.styles';
 
 export interface HashTagSearchResultProps {
 	hashTags: string[];
@@ -23,11 +24,11 @@ const HashTagSearchResult = ({ hashTags }: HashTagSearchResultProps) => {
 		<S.Container>
 			<S.Title>검색 결과</S.Title>
 			{data && data.pages[0].articles.length >= 1 ? (
-				<InfiniteScrollObserver
+				<ResponsiveInfiniteCardList
 					hasNext={data.pages[data.pages.length - 1].hasNext}
 					fetchNextPage={fetchNextPage}
 				>
-					<S.SearchResult>
+					<>
 						{data.pages.map(({ articles }) =>
 							articles.map((article) => (
 								<ArticleItem
@@ -37,10 +38,10 @@ const HashTagSearchResult = ({ hashTags }: HashTagSearchResultProps) => {
 								/>
 							)),
 						)}
-					</S.SearchResult>
-				</InfiniteScrollObserver>
+					</>
+				</ResponsiveInfiniteCardList>
 			) : (
-				<S.EmptyMsg>검색 결과가 존재하지 않습니다</S.EmptyMsg>
+				<EmptyMessage>검색결과가 존재하지 않습니다</EmptyMessage>
 			)}
 		</S.Container>
 	);

@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
 import * as S from '@/components/common/ArticleContent/ArticleContent.styles';
+import Card from '@/components/common/Card/Card';
 import ToastUiViewer from '@/components/common/ToastUiViewer/ToastUiViewer';
-import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import useDeleteArticleContent from '@/hooks/article/useDeleteArticleContent';
 import useHeartClick from '@/hooks/article/useHeartClick';
+import { ArticleContentCardStyle } from '@/styles/cardStyle';
 import { ArticleType } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 import { dateTimeConverter } from '@/utils/converter';
@@ -39,7 +40,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 					<div>{author.name}</div>
 				</S.UserProfile>
 			</S.Header>
-			<PageLayout flexDirection="column" width="90%" padding="0.7rem">
+			<Card {...ArticleContentCardStyle}>
 				<S.ArticleInfo>
 					<S.ArticleTitle>{article.title}</S.ArticleTitle>
 					<S.ArticleDetailInfo>
@@ -80,7 +81,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 						article.tag.length >= 1 &&
 						article.tag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}
 				</S.HashTagListBox>
-			</PageLayout>
+			</Card>
 		</S.Container>
 	);
 };

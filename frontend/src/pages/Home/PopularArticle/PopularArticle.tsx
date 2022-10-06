@@ -1,8 +1,8 @@
 import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/common/Loading/Loading';
 import useGetPopularArticles from '@/hooks/article/useGetPopularArticles';
-import ArticleItem from '@/pages/Home/ArticleItem/ArticleItem';
 import * as S from '@/pages/Home/PopularArticle/PopularArticle.styles';
+import PopularArticleItem from '@/pages/Home/PopularArticleItem/PopularArticleItem';
 import { convertIdxToArticleColorKey } from '@/utils/converter';
 
 const PopularArticle = () => {
@@ -39,7 +39,7 @@ const PopularArticle = () => {
 			<S.LeftArrowButton onClick={handleLeftSlideEvent} />
 			<S.LeftBackgroundArticle colorKey={getColorKey(currentIndex - 1)} />
 			<S.ArticleContent colorKey={getColorKey(currentIndex)} ref={mainArticleContent}>
-				<ArticleItem article={data.articles[currentIndex]} />
+				<PopularArticleItem article={data.articles[currentIndex]} />
 			</S.ArticleContent>
 			<S.RightBackgroundArticle colorKey={getColorKey(currentIndex + 1)} />
 			<S.RightArrowButton onClick={handleRightSlideEvent} />
