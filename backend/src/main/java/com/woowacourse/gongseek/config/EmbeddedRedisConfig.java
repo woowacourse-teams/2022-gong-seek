@@ -80,7 +80,7 @@ public class EmbeddedRedisConfig {
             }
             System.out.println("!!!!!!OS:"+osName);
             String command = String.format(MAC_FIND_PORT_COMMAND, port);
-            String[] shell = {"/bin/sh", "-c", command};
+            String[] shell = {"/bin/bash", "-c", command};
             return Runtime.getRuntime().exec(shell);
         } catch (IOException e) {
             log.info("process 찾기에 실패했습니다. port:{} error: {}, {}", port, e, e.getMessage());
@@ -99,6 +99,7 @@ public class EmbeddedRedisConfig {
         } catch (Exception e) {
             log.info("Embedded Redis Server Error: {}", e, e.getMessage());
         }
+        System.out.println("isRunning!!!!!!!!!:"+pidInfo);
         return !pidInfo.toString().isEmpty();
     }
 }
