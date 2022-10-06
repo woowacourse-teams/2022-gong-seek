@@ -4,7 +4,7 @@ import Loading from '@/components/common/Loading/Loading';
 import usePutUserProfile from '@/hooks/user/usePutUserProfile';
 import { queryClient } from '@/index';
 import * as S from '@/pages/MyPage/UserProfile/UserProfile.styles';
-import { convertGithubAvartarUrlForResize } from '@/utils/converter';
+import { convertGithubAvatarUrlForResize } from '@/utils/converter';
 import { validatedEditInput } from '@/utils/validateInput';
 
 export interface UserProfileProps {
@@ -32,7 +32,7 @@ const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 
 	return (
 		<S.Container>
-			<S.UserProfile src={convertGithubAvartarUrlForResize(avatarUrl)} />
+			<S.UserProfile src={convertGithubAvatarUrlForResize(avatarUrl)} />
 			<S.UserNameBox>
 				{isEdit ? (
 					<S.UserNameContainer>

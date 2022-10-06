@@ -5,7 +5,7 @@ import { InfiniteQueryObserverResult } from 'react-query';
 import { infiniteArticleResponse } from '@/types/articleResponse';
 import { InfiniteSearchResultType } from '@/types/searchResponse';
 
-type ObserverResponseType = infiniteArticleResponse | InfiniteSearchResultType;
+export type ObserverResponseType = infiniteArticleResponse | InfiniteSearchResultType;
 interface infiniteScrollObserverProps {
 	hasNext: boolean;
 	fetchNextPage: () => Promise<InfiniteQueryObserverResult<ObserverResponseType, Error>>;
