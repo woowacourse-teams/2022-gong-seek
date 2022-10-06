@@ -1,7 +1,7 @@
 import { PropsWithStrictChildren } from 'gongseek-types';
 
+import * as S from '@/components/login/LoginButton/LoginButton.styles';
 import { LOGIN_TYPE } from '@/constants/loginType';
-import * as S from '@/pages/Login/LoginButton/LoginButton.styles';
 
 export interface LoginButtonProps {
 	loginType: keyof typeof LOGIN_TYPE;

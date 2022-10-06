@@ -1,5 +1,5 @@
 import gongseekImg from '@/assets/gongseek.png';
-import * as S from '@/pages/Login/LoginLoading/LoginLoading.styles';
+import * as S from '@/components/login/LoginLoading/LoginLoading.styles';
 
 const LoginLoading = () => (
 	<S.Container>

@@ -1,5 +1,5 @@
+import { LoginButtonProps } from '@/components/login/LoginButton/LoginButton';
 import { LOGIN_TYPE } from '@/constants/loginType';
-import { LoginButtonProps } from '@/pages/Login/LoginButton/LoginButton';
 import styled from '@emotion/styled';
 
 export const Container = styled.button<Pick<LoginButtonProps, 'loginType'>>`
