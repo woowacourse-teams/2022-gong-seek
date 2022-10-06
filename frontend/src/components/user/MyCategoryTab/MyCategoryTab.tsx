@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 
-import * as S from '@/pages/MyPage/MyCategoryTab/MyCategoryTab.styles';
+import * as S from '@/components/user/MyCategoryTab/MyCategoryTab.styles';
 import { CategoryType } from '@/types/myPage';
 
 export interface MyCategoryTabProps {
