@@ -10,7 +10,7 @@ import { CategoryType } from '@/types/myPage';
 
 const CommentBox = React.lazy(() => import('@/components/user/UserCommentBox/UserCommentBox'));
 const TemporaryArticleList = React.lazy(
-	() => import('@/pages/TemporaryArticles/TemporaryArticleList/TemporaryArticleList'),
+	() => import('@/components/tempArticle/TemporaryArticleList/TemporaryArticleList'),
 );
 
 const MyPage = () => {

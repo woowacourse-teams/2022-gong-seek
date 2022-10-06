@@ -1,4 +1,4 @@
-import * as S from '@/pages/TemporaryArticles/TemporaryArticleItem/TemporaryArticleItem.styles';
+import * as S from '@/components/tempArticle/TemporaryArticleItem/TemporaryArticleItem.styles';
 import { categoryNameConverter, dateTimeConverter } from '@/utils/converter';
 
 export interface TemporaryArticleItemProps {

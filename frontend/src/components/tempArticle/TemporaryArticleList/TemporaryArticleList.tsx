@@ -2,10 +2,10 @@ import { useNavigate } from 'react-router-dom';
 
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
+import TemporaryArticleItem from '@/components/tempArticle/TemporaryArticleItem/TemporaryArticleItem';
+import * as S from '@/components/tempArticle/TemporaryArticleList/TemporaryArticleList.styles';
 import useDeleteTempArticle from '@/hooks/tempArticle/useDeleteTempArticle';
 import useGetTempArticles from '@/hooks/tempArticle/useGetTempArticles';
-import TemporaryArticleItem from '@/pages/TemporaryArticles/TemporaryArticleItem/TemporaryArticleItem';
-import * as S from '@/pages/TemporaryArticles/TemporaryArticleList/TemporaryArticleList.styles';
 
 const TemporaryArticleList = () => {
 	const { data, isLoading } = useGetTempArticles();

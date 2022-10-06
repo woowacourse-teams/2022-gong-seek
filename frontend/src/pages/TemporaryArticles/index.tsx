@@ -1,4 +1,4 @@
-import TemporaryArticleList from '@/pages/TemporaryArticles/TemporaryArticleList/TemporaryArticleList';
+import TemporaryArticleList from '@/components/tempArticle/TemporaryArticleList/TemporaryArticleList';
 import * as S from '@/pages/TemporaryArticles/index.styles';
 
 const TemporaryArticles = () => (
