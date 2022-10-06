@@ -1,4 +1,4 @@
-import TabBar from '@/components/layout/TabBar/TabBar';
+import TabBar from '@/components/@layout/TabBar/TabBar';
 import { Story, Meta } from '@storybook/react';
 
 export default {

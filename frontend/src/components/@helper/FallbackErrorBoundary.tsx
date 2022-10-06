@@ -1,6 +1,6 @@
 import { PropsWithStrictChildren } from 'gongseek-types';
 
-import CommonErrorBoundary from '@/components/helper/CommonErrorBoundary';
+import CommonErrorBoundary from '@/components/@helper/CommonErrorBoundary';
 import { ErrorBoundaryState, FallbackErrorBoundaryProps } from '@/types/ErrorBoundary.type';
 
 class FallbackErrorBoundary extends CommonErrorBoundary<FallbackErrorBoundaryProps> {

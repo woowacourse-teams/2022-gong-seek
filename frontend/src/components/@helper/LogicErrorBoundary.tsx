@@ -1,8 +1,8 @@
 import { isNotAccessVoteError, isExpiredTokenError } from '../../utils/confirmErrorType';
 import { PropsWithStrictChildren } from 'gongseek-types';
 
-import CommonErrorBoundary from '@/components/helper/CommonErrorBoundary';
-import CustomError from '@/components/helper/CustomError';
+import CommonErrorBoundary from '@/components/@helper/CommonErrorBoundary';
+import CustomError from '@/components/@helper/CustomError';
 import { ACCESSTOKEN_KEY } from '@/constants';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { URL } from '@/constants/url';

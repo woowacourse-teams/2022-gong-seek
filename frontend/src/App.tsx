@@ -4,10 +4,10 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Loading from '@/components/@common/Loading/Loading';
 import SnackBar from '@/components/@common/SnackBar/SnackBar';
-import PrivateRouter from '@/components/helper/PrivateRouter';
-import PublicRouter from '@/components/helper/PublicRouter';
-import Header from '@/components/layout/Header/Header';
-import TabBar from '@/components/layout/TabBar/TabBar';
+import PrivateRouter from '@/components/@helper/PrivateRouter';
+import PublicRouter from '@/components/@helper/PublicRouter';
+import Header from '@/components/@layout/Header/Header';
+import TabBar from '@/components/@layout/TabBar/TabBar';
 import { URL } from '@/constants/url';
 import { dropdownState } from '@/store/dropdownState';
 import { menuSliderState } from '@/store/menuSliderState';
