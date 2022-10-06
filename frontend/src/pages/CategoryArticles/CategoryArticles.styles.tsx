@@ -23,34 +23,6 @@ export const CategoryArticlesTitle = styled.h2<{ category: string }>`
 		category === 'discussion' ? theme.colors.BLUE_500 : theme.colors.RED_500};
 `;
 
-export const ArticleItemList = styled.div`
-	display: flex;
-
-	flex-direction: column;
-	align-items: center;
-	gap: ${({ theme }) => theme.size.SIZE_024};
-
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
-		display: grid;
-		width: 100%;
-		grid-template-columns: 1fr 1fr;
-		place-items: center;
-		margin: 0 auto;
-		gap: ${({ theme }) => theme.size.SIZE_022};
-		margin-top: ${({ theme }) => theme.size.SIZE_040};
-	}
-
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
-		display: grid;
-		width: 100%;
-		grid-template-columns: 1fr 1fr 1fr;
-		place-items: center;
-		margin: 0 auto;
-		gap: ${({ theme }) => theme.size.SIZE_022};
-		margin-top: ${({ theme }) => theme.size.SIZE_040};
-	}
-`;
-
 export const TitleBox = styled.div`
 	display: flex;
 

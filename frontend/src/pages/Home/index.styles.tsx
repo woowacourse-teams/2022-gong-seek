@@ -52,35 +52,3 @@ export const PopularArticleTitle = styled.h2`
 
 	margin-bottom: ${({ theme }) => theme.size.SIZE_030};
 `;
-
-export const ArticleItemList = styled.div`
-	display: flex;
-
-	flex-direction: column;
-	align-items: center;
-	gap: ${({ theme }) => theme.size.SIZE_018};
-
-	width: 100%;
-
-	margin-top: ${({ theme }) => theme.size.SIZE_024};
-
-	@media (min-width: 700px) {
-		display: grid;
-		width: 100%;
-		grid-template-columns: 1fr 1fr;
-		place-items: center;
-		margin: 0 auto;
-		gap: ${({ theme }) => theme.size.SIZE_022};
-		margin-top: ${({ theme }) => theme.size.SIZE_040};
-	}
-
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
-		display: grid;
-		width: 100%;
-		grid-template-columns: 1fr 1fr 1fr;
-		place-items: center;
-		margin: 0 auto;
-		gap: ${({ theme }) => theme.size.SIZE_022};
-		margin-top: ${({ theme }) => theme.size.SIZE_040};
-	}
-`;
