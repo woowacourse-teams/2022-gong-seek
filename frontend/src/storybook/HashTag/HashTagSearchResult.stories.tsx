@@ -1,6 +1,6 @@
 import HashTagSearchResult, {
 	HashTagSearchResultProps,
-} from '@/pages/HashTagSearch/HashTagSearchResult/HashTagSearchResult';
+} from '@/components/hashTag/HashTagSearchResult/HashTagSearchResult';
 import { Meta, Story } from '@storybook/react';
 
 export default {
