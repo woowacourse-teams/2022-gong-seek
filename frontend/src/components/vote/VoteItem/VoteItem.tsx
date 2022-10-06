@@ -1,5 +1,5 @@
+import * as S from '@/components/vote/VoteItem/VoteItem.styles';
 import usePostVoteItem from '@/hooks/vote/usePostVoteItem';
-import * as S from '@/pages/Discussion/VoteItem/VoteItem.styles';
 import { convertIdxToVoteColorKey } from '@/utils/converter';
 
 export interface VoteItemProps {
