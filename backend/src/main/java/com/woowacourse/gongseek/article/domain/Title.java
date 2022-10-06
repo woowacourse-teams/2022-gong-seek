@@ -17,7 +17,7 @@ public class Title {
     private static final int MIN_TITLE_LENGTH = 1;
     private static final int MAX_TITLE_LENGTH = 500;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = MAX_TITLE_LENGTH)
     private String value;
 
     public Title(String value) {
