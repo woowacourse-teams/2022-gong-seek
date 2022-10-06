@@ -1,8 +1,8 @@
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
+import * as S from '@/components/user/UserArticleBox/UserArticleBox.styles';
+import UserArticleItem from '@/components/user/UserArticleItem/UserArticleItem';
 import useGetUserArticles from '@/hooks/user/useGetUserArticles';
-import * as S from '@/pages/MyPage/UserArticleBox/UserArticleBox.styles';
-import UserArticleItem from '@/pages/MyPage/UserArticleItem/UserArticleItem';
 
 const UserArticleBox = () => {
 	const {

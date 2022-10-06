@@ -2,7 +2,7 @@ import { useRecoilState } from 'recoil';
 
 import gongseek from '@/assets/gongseek.png';
 import Dropdown from '@/components/@common/Dropdown/Dropdown';
-import * as S from '@/components/@common/UserProfileIcon/UserProfileIcon.styles';
+import * as S from '@/components/user/UserProfileIcon/UserProfileIcon.styles';
 import useGetUserInfo from '@/hooks/user/useGetUserInfo';
 import { dropdownState } from '@/store/dropdownState';
 

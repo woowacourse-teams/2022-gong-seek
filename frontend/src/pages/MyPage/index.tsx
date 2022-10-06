@@ -1,14 +1,14 @@
 import React, { Suspense, useState } from 'react';
 
 import Loading from '@/components/@common/Loading/Loading';
+import ArticleBox from '@/components/user/UserArticleBox/UserArticleBox';
+import UserProfile from '@/components/user/UserProfile/UserProfile';
 import useGetUserInfo from '@/hooks/user/useGetUserInfo';
-import CategoryTab from '@/pages/MyPage/CategoryTab/CategoryTab';
-import ArticleBox from '@/pages/MyPage/UserArticleBox/UserArticleBox';
-import UserProfile from '@/pages/MyPage/UserProfile/UserProfile';
+import MyCategoryTab from '@/pages/MyPage/MyCategoryTab/MyCategoryTab';
 import * as S from '@/pages/MyPage/index.styles';
 import { CategoryType } from '@/types/myPage';
 
-const CommentBox = React.lazy(() => import('@/pages/MyPage/UserCommentBox/UserCommentBox'));
+const CommentBox = React.lazy(() => import('@/components/user/UserCommentBox/UserCommentBox'));
 const TemporaryArticleList = React.lazy(
 	() => import('@/pages/TemporaryArticles/TemporaryArticleList/TemporaryArticleList'),
 );
@@ -28,7 +28,7 @@ const MyPage = () => {
 			{isInfoSuccess && info ? (
 				<>
 					<UserProfile name={info.name} avatarUrl={info.avatarUrl} />
-					<CategoryTab category={category} setCategory={setCategory} />
+					<MyCategoryTab category={category} setCategory={setCategory} />
 					<Suspense fallback={<Loading />}>
 						<S.ContentContainer>
 							{category === 'article' && <ArticleBox />}

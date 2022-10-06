@@ -2,9 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import gongseek from '@/assets/gongseek.png';
-import UserProfileIcon from '@/components/@common/UserProfileIcon/UserProfileIcon';
 import * as S from '@/components/layout/Header/Header.styles';
 import SearchBar from '@/components/search/SearchBar/SearchBar';
+import UserProfileIcon from '@/components/user/UserProfileIcon/UserProfileIcon';
 import { URL } from '@/constants/url';
 import { searchState } from '@/store/searchState';
 import { getUserIsLogin } from '@/store/userState';

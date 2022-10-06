@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 import Loading from '@/components/@common/Loading/Loading';
+import * as S from '@/components/user/UserProfile/UserProfile.styles';
 import usePutUserProfile from '@/hooks/user/usePutUserProfile';
 import { queryClient } from '@/index';
-import * as S from '@/pages/MyPage/UserProfile/UserProfile.styles';
 import { convertGithubAvatarUrlForResize } from '@/utils/converter';
 import { validatedEditInput } from '@/utils/validateInput';
 

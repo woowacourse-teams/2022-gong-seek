@@ -1,6 +1,6 @@
 import { PropsWithStrictChildren } from 'gongseek-types';
 
-import AddedOption from '@/pages/VoteGenerator/AddedOption/AddedOption';
+import AddedOption from '@/components/vote/AddedOption/AddedOption';
 import { Meta, Story } from '@storybook/react';
 
 export default {

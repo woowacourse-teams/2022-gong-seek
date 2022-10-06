@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import * as S from '@/pages/MyPage/UserArticleItem/UserArticleItem.styles';
+import * as S from '@/components/user/UserArticleItem/UserArticleItem.styles';
 import { UserArticleItemType } from '@/types/articleResponse';
 import { categoryNameConverter, dateTimeConverter } from '@/utils/converter';
 

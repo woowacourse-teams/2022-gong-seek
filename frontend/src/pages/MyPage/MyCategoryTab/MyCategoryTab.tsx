@@ -1,14 +1,14 @@
 import { Dispatch, SetStateAction } from 'react';
 
-import * as S from '@/pages/MyPage/CategoryTab/CategoryTab.styles';
+import * as S from '@/pages/MyPage/MyCategoryTab/MyCategoryTab.styles';
 import { CategoryType } from '@/types/myPage';
 
-export interface CategoryTabProps {
+export interface MyCategoryTabProps {
 	category: CategoryType;
 	setCategory: Dispatch<SetStateAction<CategoryType>>;
 }
 
-const CategoryTab = ({ category, setCategory }: CategoryTabProps) => {
+const MyCategoryTab = ({ category, setCategory }: MyCategoryTabProps) => {
 	const onChangeCategoryClick = (value: CategoryType) => {
 		setCategory(value);
 	};
@@ -31,4 +31,4 @@ const CategoryTab = ({ category, setCategory }: CategoryTabProps) => {
 	);
 };
 
-export default CategoryTab;
+export default MyCategoryTab;
