@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import * as S from '@/pages/Home/PopularArticleItem/PopularArticleItem.styles';
+import * as S from '@/components/article/PopularArticleItem/PopularArticleItem.styles';
 import { CommonArticleType } from '@/types/articleResponse';
 import { convertGithubAvatarUrlForResize } from '@/utils/converter';
 

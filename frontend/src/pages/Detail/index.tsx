@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import ArticleContent from '@/components/@common/ArticleContent/ArticleContent';
+import ArticleContent from '@/components/article/ArticleContent/ArticleContent';
 import Comment from '@/components/comment/Comment/Comment';
 import CommentInputModal from '@/components/comment/CommentInputModal/CommentInputModal';
 import { URL } from '@/constants/url';

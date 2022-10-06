@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 
-import * as S from '@/components/@common/ArticleContent/ArticleContent.styles';
 import Card from '@/components/@common/Card/Card';
 import ToastUiViewer from '@/components/@common/ToastUiViewer/ToastUiViewer';
+import * as S from '@/components/article/ArticleContent/ArticleContent.styles';
 import useDeleteArticleContent from '@/hooks/article/useDeleteArticleContent';
 import useHeartClick from '@/hooks/article/useHeartClick';
 import { ArticleContentCardStyle } from '@/styles/cardStyle';

@@ -1,4 +1,4 @@
-import PopularArticle from '@/pages/Home/PopularArticle/PopularArticle';
+import PopularArticle from '@/components/article/PopularArticle/PopularArticle';
 import { Meta, Story } from '@storybook/react';
 
 export default {

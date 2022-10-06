@@ -1,5 +1,5 @@
-import * as S from '@/components/@common/ArticleItem/ArticleItem.styles';
 import Card from '@/components/@common/Card/Card';
+import * as S from '@/components/article/ArticleItem/ArticleItem.styles';
 import useHeartClick from '@/hooks/article/useHeartClick';
 import { ArticleItemCardStyle } from '@/styles/cardStyle';
 import { Category } from '@/types/articleResponse';

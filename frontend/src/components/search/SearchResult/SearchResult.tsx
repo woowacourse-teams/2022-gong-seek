@@ -1,9 +1,9 @@
 import React, { Suspense, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import ArticleItem from '@/components/@common/ArticleItem/ArticleItem';
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
+import ArticleItem from '@/components/article/ArticleItem/ArticleItem';
 import * as S from '@/components/search/SearchResult/SearchResult.styles';
 import useGetSearch from '@/hooks/search/useGetSearch';
 

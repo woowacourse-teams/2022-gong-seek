@@ -10,8 +10,10 @@ import * as S from '@/pages/Home/index.styles';
 const ResponsiveInfiniteCardList = React.lazy(
 	() => import('@/components/@common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList'),
 );
-const ArticleItem = React.lazy(() => import('@/components/@common/ArticleItem/ArticleItem'));
-const PopularArticle = React.lazy(() => import('@/pages/Home/PopularArticle/PopularArticle'));
+const ArticleItem = React.lazy(() => import('@/components/article/ArticleItem/ArticleItem'));
+const PopularArticle = React.lazy(
+	() => import('@/components/article/PopularArticle/PopularArticle'),
+);
 
 const Home = () => {
 	const endFlag = useRef<HTMLDivElement>(null);

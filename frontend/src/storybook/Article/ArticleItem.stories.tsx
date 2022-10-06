@@ -1,4 +1,4 @@
-import ArticleItem, { ArticleItemProps } from '@/components/@common/ArticleItem/ArticleItem';
+import ArticleItem, { ArticleItemProps } from '@/components/article/ArticleItem/ArticleItem';
 import { action } from '@storybook/addon-actions';
 import { Meta, Story } from '@storybook/react';
 

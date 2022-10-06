@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 
-import ArticleItem from '@/components/@common/ArticleItem/ArticleItem';
 import Loading from '@/components/@common/Loading/Loading';
 import ResponsiveInfiniteCardList from '@/components/@common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList';
+import ArticleItem from '@/components/article/ArticleItem/ArticleItem';
 import * as S from '@/components/hashTag/HashTagSearchResult/HashTagSearchResult.styles';
 import useGetArticleByHashTag from '@/hooks/hashTag/useGetArticleByHashTag';
 import { EmptyMessage } from '@/pages/Search/index.styles';

@@ -1,6 +1,6 @@
 import ArticleContent, {
 	ArticleContentProps,
-} from '@/components/@common/ArticleContent/ArticleContent';
+} from '@/components/article/ArticleContent/ArticleContent';
 import { Meta, Story } from '@storybook/react';
 
 export default {
