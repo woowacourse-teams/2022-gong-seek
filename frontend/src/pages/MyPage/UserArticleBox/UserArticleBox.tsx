@@ -1,5 +1,5 @@
-import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
-import Loading from '@/components/common/Loading/Loading';
+import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
+import Loading from '@/components/@common/Loading/Loading';
 import useGetUserArticles from '@/hooks/user/useGetUserArticles';
 import * as S from '@/pages/MyPage/UserArticleBox/UserArticleBox.styles';
 import UserArticleItem from '@/pages/MyPage/UserArticleItem/UserArticleItem';
