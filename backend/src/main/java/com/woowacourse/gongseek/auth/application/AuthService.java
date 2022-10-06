@@ -9,7 +9,6 @@ import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,7 +54,7 @@ public class AuthService {
                 .build();
     }
 
-    public TokenResponse renewToken(UUID requestToken) {
+    public TokenResponse renewToken(Long requestToken) {
         RefreshToken refreshToken = refreshTokenRepository.findById(requestToken)
                 .orElseThrow(InvalidRefreshTokenException::new);
         if (refreshToken.isIssue() || refreshToken.isExpired()) {
@@ -73,7 +72,7 @@ public class AuthService {
                 .build();
     }
 
-    public void updateRefreshToken(UUID value) {
+    public void updateRefreshToken(Long value) {
         RefreshToken refreshToken = refreshTokenRepository.findById(value)
                 .orElseThrow(InvalidRefreshTokenException::new);
         updateIssue(refreshToken);

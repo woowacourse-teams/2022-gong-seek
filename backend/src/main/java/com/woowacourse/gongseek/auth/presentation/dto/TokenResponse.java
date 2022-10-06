@@ -1,6 +1,5 @@
 package com.woowacourse.gongseek.auth.presentation.dto;
 
-import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +12,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TokenResponse {
 
-    private UUID refreshToken;
+    private Long refreshToken;
     private String accessToken;
 }

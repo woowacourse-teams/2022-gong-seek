@@ -6,7 +6,6 @@ import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.auth.utils.CookieUtils;
-import java.util.UUID;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +44,7 @@ public class AuthController {
 
     @GetMapping("/refresh")
     public ResponseEntity<AccessTokenResponse> renew(
-            @CookieValue(value = "refreshToken", required = false) UUID refreshToken,
+            @CookieValue(value = "refreshToken", required = false) Long refreshToken,
             HttpServletResponse httpServletResponse
     ) {
         TokenResponse tokenResponse = authService.renewToken(refreshToken);
@@ -57,7 +56,7 @@ public class AuthController {
 
     @DeleteMapping("/logout")
     public ResponseEntity<Void> logout(
-            @CookieValue(value = "refreshToken", required = false) UUID refreshToken,
+            @CookieValue(value = "refreshToken", required = false) Long refreshToken,
             HttpServletResponse httpServletResponse
     ) {
         authService.updateRefreshToken(refreshToken);

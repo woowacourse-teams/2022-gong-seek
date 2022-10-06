@@ -17,7 +17,6 @@ import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.support.DatabaseCleaner;
-import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -109,7 +108,7 @@ class AuthServiceTest {
 
     @Test
     void 유효하지않는_리프레시토큰이_들어오면_예외를_발생한다() {
-        assertThatThrownBy(() -> authService.renewToken(UUID.randomUUID()))
+        assertThatThrownBy(() -> authService.renewToken(2L))
                 .isExactlyInstanceOf(InvalidRefreshTokenException.class)
                 .hasMessage("리프레시 토큰이 유효하지 않습니다.");
     }

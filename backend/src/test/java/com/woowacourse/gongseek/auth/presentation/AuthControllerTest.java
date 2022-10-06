@@ -23,7 +23,6 @@ import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.config.RestDocsConfig;
-import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +73,7 @@ class AuthControllerTest {
         OAuthCodeRequest request = new OAuthCodeRequest("code");
         given(authService.generateToken(any())).willReturn(
                 TokenResponse.builder()
-                        .refreshToken(UUID.randomUUID())
+                        .refreshToken(1L)
                         .accessToken("accessToken")
                         .build()
         );
@@ -101,7 +100,7 @@ class AuthControllerTest {
 
     @Test
     void 토큰_재발급_API_문서화() throws Exception {
-        UUID refreshToken = UUID.randomUUID();
+        Long refreshToken = 2L;
 
         doNothing().when(jwtTokenProvider).isValidAccessTokenWithTimeOut(any());
 

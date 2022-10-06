@@ -2,7 +2,6 @@ package com.woowacourse.gongseek.auth.domain;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import lombok.Getter;
@@ -18,10 +17,10 @@ import org.springframework.data.redis.core.index.Indexed;
 public class RefreshToken implements Serializable {
 
     @Id
-    @GeneratedValue(generator = "uuid4")
-    @GenericGenerator(name = "uuid4", strategy = "uuid4")
+    @GeneratedValue(generator = "Long4")
+    @GenericGenerator(name = "Long4", strategy = "Long4")
     @Column(columnDefinition = "BINARY(16)")
-    private UUID id;
+    private Long id;
 
     @Indexed
     private Long memberId;

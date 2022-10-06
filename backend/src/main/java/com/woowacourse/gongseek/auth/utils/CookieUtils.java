@@ -1,6 +1,5 @@
 package com.woowacourse.gongseek.auth.utils;
 
-import java.util.UUID;
 import org.springframework.boot.web.server.Cookie.SameSite;
 import org.springframework.http.ResponseCookie;
 
@@ -11,7 +10,7 @@ public class CookieUtils {
     private static final String COOKIE_NAME = "refreshToken";
     private static final String EMPTY_VALUE = "";
 
-    public static ResponseCookie create(UUID refreshToken) {
+    public static ResponseCookie create(Long refreshToken) {
         return ResponseCookie.from(COOKIE_NAME, refreshToken.toString())
                 .httpOnly(true)
                 .path("/")
