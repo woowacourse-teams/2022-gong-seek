@@ -76,11 +76,8 @@ dependencies {
     implementation 'org.flywaydb:flyway-core:8.2.2'
     implementation 'org.flywaydb:flyway-mysql'
 
-    //redis
+    // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
-    // testConatiners
-    testImplementation "org.testcontainers:junit-jupiter:1.17.4"
 }
 
 tasks.named('test') {

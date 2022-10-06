@@ -2,9 +2,8 @@ spring:
   profiles:
     active: test
   redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:6379}
-    password: test
+    host: 127.0.0.1
+    port: 6379
   flyway:
     enabled: false
   test:
