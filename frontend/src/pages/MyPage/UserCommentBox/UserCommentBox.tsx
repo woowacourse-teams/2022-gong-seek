@@ -1,29 +1,36 @@
-import { useNavigate } from 'react-router-dom';
-
+import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
+import Loading from '@/components/common/Loading/Loading';
+import useGetUserComments from '@/hooks/user/useGetUserComments';
 import * as S from '@/pages/MyPage/UserCommentBox/UserCommentBox.styles';
-import { UserComment } from '@/types/commentResponse';
-import { categoryNameConverter, dateTimeConverter } from '@/utils/converter';
+import UserCommentItem from '@/pages/MyPage/UserCommentItem/UserCommentItem';
 
-const UserCommentBox = ({ comment }: { comment: UserComment }) => {
-	const { id, content, createdAt, updatedAt, articleId, category, articleTitle } = comment;
-	const navigate = useNavigate();
+const UserCommentBox = () => {
+	const {
+		data: comments,
+		isSuccess: isCommentsSuccess,
+		isLoading: isCommentsLoading,
+	} = useGetUserComments();
+
+	if (isCommentsLoading) {
+		return <Loading />;
+	}
+
 	return (
-		<S.Container onClick={() => navigate(`/articles/${category}/${articleId}`)}>
-			<S.ArticleBox>
-				<S.ArticleCategory isQuestion={category === 'question'}>
-					{categoryNameConverter(category)}
-				</S.ArticleCategory>
-				<S.ArticleTitle>{articleTitle}</S.ArticleTitle>
-			</S.ArticleBox>
-
-			<S.ContentBox>
-				<S.ContentLabel>댓글: </S.ContentLabel>
-				{content}
-			</S.ContentBox>
-			<S.CommentTime>
-				{updatedAt.length !== 0 ? dateTimeConverter(updatedAt) : dateTimeConverter(createdAt)}
-			</S.CommentTime>
-		</S.Container>
+		<>
+			{isCommentsSuccess ? (
+				<S.Container>
+					{comments ? (
+						comments.comments.map((comment) => (
+							<UserCommentItem key={comment.id} comment={comment} />
+						))
+					) : (
+						<EmptyMessage>작성하신 댓글이 없습니다</EmptyMessage>
+					)}
+				</S.Container>
+			) : (
+				<div>정보를 가져오는데 실패하였습니다</div>
+			)}
+		</>
 	);
 };
 

@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.util.StringUtils;
 import redis.embedded.RedisServer;
 
 @Slf4j
@@ -40,17 +39,17 @@ public class EmbeddedRedisConfig {
 
     @PostConstruct
     public void redisServer() {
-        int port = redisPort;
-        if (isRedisRunning()) {
-            port = findAvailablePort();
-        }
-        redisServer = new RedisServer(port);
+        int port = isRedisRunning() ? findAvailablePort() : redisPort;
+        redisServer = RedisServer.builder()
+                .port(port)
+                .setting("maxmemory 128M")
+                .build();
         redisServer.start();
     }
 
     @PreDestroy
     public void stopRedis() {
-        if (redisServer != null) {
+        if (redisServer != null && redisServer.isActive()) {
             redisServer.stop();
         }
     }
@@ -71,16 +70,15 @@ public class EmbeddedRedisConfig {
     }
 
     private Process executeGrepProcess(int port) {
-        String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-        String command = String.format(MAC_FIND_PORT_COMMAND, port);
-        String[] shell = {"/bin/sh", "-c", command};
-
-        if (osName.startsWith("win")) {
-            command = String.format(WINDOW_FIND_PORT_COMMAND, port);
-            shell = new String[]{"cmd.exe", "/y", "/c", command};
-        }
-
         try {
+            String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+            if (osName.startsWith("win")) {
+                String command = String.format(WINDOW_FIND_PORT_COMMAND, port);
+                String[] shell = new String[]{"cmd.exe", "/y", "/c", command};
+                return Runtime.getRuntime().exec(shell);
+            }
+            String command = String.format(MAC_FIND_PORT_COMMAND, port);
+            String[] shell = {"/bin/sh", "-c", command};
             return Runtime.getRuntime().exec(shell);
         } catch (IOException e) {
             log.info("process 찾기에 실패했습니다. port:{} error: {}, {}", port, e, e.getMessage());
@@ -97,8 +95,8 @@ public class EmbeddedRedisConfig {
                 pidInfo.append(line);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            log.info("Embedded Redis Server Error: {}", e, e.getMessage());
         }
-        return StringUtils.hasText(pidInfo.toString());
+        return !pidInfo.toString().isEmpty();
     }
 }

@@ -3,11 +3,14 @@ import styled from '@emotion/styled';
 
 export const CategoryTitleContainer = styled.div`
 	display: flex;
+	position: relative;
 
 	justify-content: space-between;
 	align-items: center;
 
 	margin-top: ${({ theme }) => theme.size.SIZE_050};
+
+	z-index: ${({ theme }) => theme.zIndex.CATEGORY_TITLE_CONTAINER};
 `;
 
 export const CategoryTitleBox = styled.div`

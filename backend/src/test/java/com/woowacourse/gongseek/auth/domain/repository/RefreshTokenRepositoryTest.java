@@ -65,5 +65,4 @@ class RefreshTokenRepositoryTest {
                 () -> assertThat(refreshTokenRepository.findById(sloRefreshToken.getId())).isNotEmpty()
         );
     }
-
 }

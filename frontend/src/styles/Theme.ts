@@ -80,6 +80,7 @@ const size = {
 	SIZE_100: '6.25rem',
 	SIZE_110: '6.875rem',
 	SIZE_126: '7.875rem',
+	SIZE_140: '8.75rem',
 	SIZE_160: '10rem',
 	SIZE_200: '12.5rem',
 	SIZE_220: '13.75rem',
@@ -106,6 +107,8 @@ const zIndex = {
 	SNACK_BAR: 200,
 	COMMON_INPUT_MODAL_BACKGROUND: 110,
 	COMMON_INPUT_MODAL: 111,
+	ARTICLE_ITEM_LIST: 50,
+	CATEGORY_TITLE_CONTAINER: 90,
 };
 
 export const theme = {

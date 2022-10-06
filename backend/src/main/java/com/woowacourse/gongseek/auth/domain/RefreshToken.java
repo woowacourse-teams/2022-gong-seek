@@ -1,27 +1,32 @@
 package com.woowacourse.gongseek.auth.domain;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
+@NoArgsConstructor
 @Getter
-@RedisHash(value = "RefreshToken", timeToLive = 1_209_600L)
-public class RefreshToken {
+@RedisHash(value = "refreshToken", timeToLive = 1_209_600L)
+public class RefreshToken implements Serializable {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
+    @GeneratedValue(generator = "uuid4")
+    @GenericGenerator(name = "uuid4", strategy = "uuid4")
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Indexed
-    private final Long memberId;
+    private Long memberId;
 
-    private final LocalDateTime expiryDate;
+    private LocalDateTime expiryDate;
 
     private boolean issue;
 

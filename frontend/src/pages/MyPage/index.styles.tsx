@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 import styled from '@emotion/styled';
 
 export const Container = styled.section`
@@ -7,10 +5,6 @@ export const Container = styled.section`
 	flex-direction: column;
 
 	width: 100%;
-
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
-		gap: ${({ theme }) => theme.size.SIZE_100};
-	}
 `;
 
 export const Title = styled.h2`
@@ -25,27 +19,11 @@ export const ContentContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 
-	gap: ${({ theme }) => theme.size.SIZE_040};
+	min-height: ${({ theme }) => theme.size.SIZE_700};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
-		gap: ${({ theme }) => theme.size.SIZE_056};
-	}
-`;
+	padding: ${({ theme }) => theme.size.SIZE_006};
 
-export const LinkTemporaryArticle = styled(Link)`
-	width: 95%;
-	text-decoration: none;
-	text-align: right;
-	padding-right: ${({ theme }) => theme.size.SIZE_020};
-
-	color: ${({ theme }) => theme.colors.BLACK_500};
-
-	&:hover,
-	&:active {
-		color: ${({ theme }) => theme.colors.PURPLE_500};
-	}
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
-		width: 100%;
-		text-align: center;
-	}
+	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
+	border-radius: 0 ${({ theme }) => theme.size.SIZE_004} ${({ theme }) => theme.size.SIZE_004}
+		${({ theme }) => theme.size.SIZE_004};
 `;
