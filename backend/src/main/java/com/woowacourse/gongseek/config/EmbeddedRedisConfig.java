@@ -17,7 +17,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import redis.embedded.RedisServer;
 
 @Slf4j
-@Profile({"local", "test", "invalidToken"})
+@Profile({"test", "invalidToken"})
 @Configuration
 public class EmbeddedRedisConfig {
 
@@ -44,6 +44,7 @@ public class EmbeddedRedisConfig {
                 .port(port)
                 .setting("maxmemory 128M")
                 .build();
+        System.out.println("port:"+port);
         redisServer.start();
     }
 
@@ -77,6 +78,7 @@ public class EmbeddedRedisConfig {
                 String[] shell = new String[]{"cmd.exe", "/y", "/c", command};
                 return Runtime.getRuntime().exec(shell);
             }
+            System.out.println("!!!!!!OS:"+osName);
             String command = String.format(MAC_FIND_PORT_COMMAND, port);
             String[] shell = {"/bin/sh", "-c", command};
             return Runtime.getRuntime().exec(shell);

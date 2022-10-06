@@ -13,8 +13,10 @@ import org.springframework.data.redis.core.index.Indexed;
 
 @NoArgsConstructor
 @Getter
-@RedisHash(value = "refreshToken", timeToLive = 1_209_600L)
+@RedisHash(value = "refreshToken", timeToLive = 1209600L)
 public class RefreshToken implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(generator = "Long4")

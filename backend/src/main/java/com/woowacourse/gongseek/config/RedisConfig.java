@@ -27,7 +27,6 @@ public class RedisConfig {
     @ConditionalOnMissingBean(RedisConnectionFactory.class)
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration(redisHost, redisPort);
-        configuration.setPassword(password);
         return new LettuceConnectionFactory(configuration);
     }
 
