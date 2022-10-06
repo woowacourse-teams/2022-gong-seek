@@ -5,7 +5,7 @@ import Card from '@/components/common/Card/Card';
 import ToastUiViewer from '@/components/common/ToastUiViewer/ToastUiViewer';
 import useDeleteArticleContent from '@/hooks/article/useDeleteArticleContent';
 import useHeartClick from '@/hooks/article/useHeartClick';
-import { ArticleContentCard } from '@/styles/cardStyle';
+import { ArticleContentCardStyle } from '@/styles/cardStyle';
 import { ArticleType } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 import { dateTimeConverter } from '@/utils/converter';
@@ -40,10 +40,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 					<div>{author.name}</div>
 				</S.UserProfile>
 			</S.Header>
-			<Card
-				cssObject={ArticleContentCard.cssObject}
-				hasActiveAnimation={ArticleContentCard.hasActiveAnimation}
-			>
+			<Card {...ArticleContentCardStyle}>
 				<S.ArticleInfo>
 					<S.ArticleTitle>{article.title}</S.ArticleTitle>
 					<S.ArticleDetailInfo>

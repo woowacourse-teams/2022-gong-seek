@@ -1,7 +1,7 @@
 import * as S from '@/components/common/ArticleItem/ArticleItem.styles';
 import Card from '@/components/common/Card/Card';
 import useHeartClick from '@/hooks/article/useHeartClick';
-import { ArticleItemCard } from '@/styles/cardStyle';
+import { ArticleItemCardStyle } from '@/styles/cardStyle';
 import { Category } from '@/types/articleResponse';
 import { Author } from '@/types/author';
 import { convertGithubAvatarUrlForResize } from '@/utils/converter';
@@ -32,12 +32,7 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 	});
 
 	return (
-		<Card
-			cssObject={ArticleItemCard.cssObject}
-			media={ArticleItemCard.media}
-			hasActiveAnimation={ArticleItemCard.hasActiveAnimation}
-			onClick={onClick}
-		>
+		<Card {...ArticleItemCardStyle} onClick={onClick}>
 			<S.ArticleItemTitle>
 				<div>{article.title}</div>
 			</S.ArticleItemTitle>

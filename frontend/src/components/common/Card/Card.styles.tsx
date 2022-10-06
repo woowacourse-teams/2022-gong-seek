@@ -8,7 +8,7 @@ const scaleAnimation = keyframes`
 `;
 
 export const Container = styled.section<{
-	media: { minWidth: string; width?: string; height?: string } | false;
+	media: { minWidth: string; width?: string; height?: string } | '';
 	hasActiveAnimation: boolean;
 }>`
 	display: flex;
@@ -29,9 +29,8 @@ export const Container = styled.section<{
 				cursor: pointer;
 			}
 		`}
-
 	${({ media }) =>
-		media !== false &&
+		media !== '' &&
 		css`
 			@media (min-width: ${media.minWidth}) {
 				width: ${media.width};

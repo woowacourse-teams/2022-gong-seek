@@ -1,14 +1,11 @@
 import Card from '@/components/common/Card/Card';
 import { mobileTitleSecondary } from '@/constants/titleType';
 import * as S from '@/pages/CategorySelector/CategorySelector.styles';
-import { CategorySelectorCard } from '@/styles/cardStyle';
+import { CategorySelectorCardStyle } from '@/styles/cardStyle';
 
 const CategorySelector = () => (
 	<S.Container>
-		<Card
-			cssObject={CategorySelectorCard.cssObject}
-			hasActiveAnimation={CategorySelectorCard.hasActiveAnimation}
-		>
+		<Card {...CategorySelectorCardStyle}>
 			<h2 css={mobileTitleSecondary}>글쓰기 카테고리 선택</h2>
 			<S.CategoryButtonBox>
 				<S.StyledLink to="/article/question">

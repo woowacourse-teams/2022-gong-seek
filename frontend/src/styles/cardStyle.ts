@@ -1,8 +1,8 @@
 import { theme } from './Theme';
 
-import { CardProps } from '@/components/common/Card/Card';
+import { CardProps } from '@/types/card';
 
-export const ArticleItemCard: CardProps = {
+export const ArticleItemCardStyle: CardProps = {
 	cssObject: {
 		width: '80%',
 		height: theme.size.SIZE_160,
@@ -16,7 +16,7 @@ export const ArticleItemCard: CardProps = {
 	hasActiveAnimation: true,
 };
 
-export const ArticleContentCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
+export const ArticleContentCardStyle: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
 	cssObject: {
 		width: '90%',
 		height: 'fit-content',
@@ -25,7 +25,7 @@ export const ArticleContentCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimati
 	hasActiveAnimation: false,
 };
 
-export const CategorySelectorCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
+export const CategorySelectorCardStyle: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
 	cssObject: {
 		width: '80%',
 		height: theme.size.SIZE_256,
@@ -36,7 +36,7 @@ export const CategorySelectorCard: Pick<CardProps, 'cssObject' | 'hasActiveAnima
 	hasActiveAnimation: false,
 };
 
-export const InquireCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
+export const InquireCardStyle: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
 	cssObject: {
 		width: '80%',
 		height: theme.size.SIZE_280,
@@ -48,7 +48,7 @@ export const InquireCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = 
 	hasActiveAnimation: false,
 };
 
-export const LoginCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
+export const LoginCardStyle: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
 	cssObject: {
 		width: '80%',
 		maxWidth: theme.size.SIZE_400,
@@ -60,7 +60,7 @@ export const LoginCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
 	hasActiveAnimation: false,
 };
 
-export const WritingTitleCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
+export const WritingTitleCardStyle: Pick<CardProps, 'cssObject' | 'hasActiveAnimation'> = {
 	cssObject: {
 		width: '100%',
 		height: 'fit-content',
@@ -68,7 +68,7 @@ export const WritingTitleCard: Pick<CardProps, 'cssObject' | 'hasActiveAnimation
 	hasActiveAnimation: false,
 };
 
-export const WritingCategoryCard: CardProps = {
+export const WritingCategoryCardStyle: CardProps = {
 	cssObject: {
 		width: '100%',
 		height: 'fit-content',
@@ -81,7 +81,7 @@ export const WritingCategoryCard: CardProps = {
 	},
 };
 
-export const WritingHashTagCard: CardProps = {
+export const WritingHashTagCardStyle: CardProps = {
 	cssObject: {
 		width: '100%',
 		height: 'fit-content',

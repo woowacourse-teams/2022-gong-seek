@@ -4,7 +4,7 @@ import { mobileTitleSecondary } from '@/constants/titleType';
 import useGetLoginURL from '@/hooks/login/useGetLoginURL';
 import LoginButton from '@/pages/Login/LoginButton/LoginButton';
 import * as S from '@/pages/Login/index.styles';
-import { LoginCard } from '@/styles/cardStyle';
+import { LoginCardStyle } from '@/styles/cardStyle';
 
 const Login = () => {
 	const { isLoading, handleLoginButtonClick } = useGetLoginURL();
@@ -13,7 +13,7 @@ const Login = () => {
 
 	return (
 		<S.Container>
-			<Card cssObject={LoginCard.cssObject} hasActiveAnimation={LoginCard.hasActiveAnimation}>
+			<Card {...LoginCardStyle}>
 				<h2 css={mobileTitleSecondary}>로그인</h2>
 				<LoginButton loginType="github" onClick={handleLoginButtonClick}>
 					github로 로그인하기

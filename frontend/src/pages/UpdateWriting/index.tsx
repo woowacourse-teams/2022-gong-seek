@@ -8,7 +8,7 @@ import Loading from '@/components/common/Loading/Loading';
 import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
 import usePostWritingArticle from '@/hooks/article/usePostUpdateWritingArticle';
 import * as S from '@/pages/WritingArticles/index.styles';
-import { WritingCategoryCard, WritingTitleCard } from '@/styles/cardStyle';
+import { WritingCategoryCardStyle, WritingTitleCardStyle } from '@/styles/cardStyle';
 
 const UpdateWriting = () => {
 	const { id } = useParams();
@@ -53,10 +53,7 @@ const UpdateWriting = () => {
 	return (
 		<S.Container>
 			<S.SelectorBox>
-				<Card
-					cssObject={WritingTitleCard.cssObject}
-					hasActiveAnimation={WritingTitleCard.hasActiveAnimation}
-				>
+				<Card {...WritingTitleCardStyle}>
 					<S.TitleInput
 						type="text"
 						placeholder="제목을 입력해주세요"
@@ -69,11 +66,7 @@ const UpdateWriting = () => {
 					<S.TitleInputErrorMsgBox>제목은 1글자 이상 500자 이하여야 합니다</S.TitleInputErrorMsgBox>
 				)}
 				<S.OptionBox>
-					<Card
-						cssObject={WritingCategoryCard.cssObject}
-						hasActiveAnimation={WritingCategoryCard.hasActiveAnimation}
-						media={WritingCategoryCard.media}
-					>
+					<Card {...WritingCategoryCardStyle}>
 						<S.CategorySelectorBox>
 							<S.CategorySelector name="writing" required value={category} disabled>
 								<option value="" disabled>
