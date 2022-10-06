@@ -25,7 +25,7 @@
 	},
 	"scripts": {
 		"start": "webpack serve --open --config webpack/webpack.dev.js",
-		"build": "webpack --mode=production --config webpack/webpack.prod.js &&  rm dist/*.map",
+		"build": "webpack --mode=production --config webpack/webpack.prod.js",
 		"build-dev": "webpack --mode=production --config webpack/webpack.dev.js",
 		"storybook": "start-storybook -p 6006",
 		"build-storybook": "build-storybook",
