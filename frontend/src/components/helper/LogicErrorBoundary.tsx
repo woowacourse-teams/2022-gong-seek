@@ -3,14 +3,11 @@ import { PropsWithStrictChildren } from 'gongseek-types';
 
 import CommonErrorBoundary from '@/components/helper/CommonErrorBoundary';
 import CustomError from '@/components/helper/CustomError';
-import {
-	ErrorBoundaryState,
-	LogicErrorBoundaryProps,
-} from '@/components/helper/types/ErrorBoundary.type';
 import { ACCESSTOKEN_KEY } from '@/constants';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { URL } from '@/constants/url';
 import { queryClient } from '@/index';
+import { ErrorBoundaryState, LogicErrorBoundaryProps } from '@/types/ErrorBoundary.type';
 import {
 	isAlreayLoginRefreshTokenError,
 	isInvalidRefreshTokenError,
