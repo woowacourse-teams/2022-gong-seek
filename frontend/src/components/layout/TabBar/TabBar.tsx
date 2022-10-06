@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import gongseek from '@/assets/gongseek.png';
-import UserProfileIcon from '@/components/common/UserProfileIcon/UserProfileIcon';
-import { UserProfile } from '@/components/common/UserProfileIcon/UserProfileIcon.styles';
+import UserProfileIcon from '@/components/@common/UserProfileIcon/UserProfileIcon';
+import { UserProfile } from '@/components/@common/UserProfileIcon/UserProfileIcon.styles';
 import * as S from '@/components/layout/TabBar/TabBar.styles';
 import { URL } from '@/constants/url';
 import { menuSliderState } from '@/store/menuSliderState';

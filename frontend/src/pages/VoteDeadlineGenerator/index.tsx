@@ -4,7 +4,7 @@ import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { registerVoteItems } from '@/api/vote';
-import Loading from '@/components/common/Loading/Loading';
+import Loading from '@/components/@common/Loading/Loading';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useLocationState from '@/hooks/common/useLocationState';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';

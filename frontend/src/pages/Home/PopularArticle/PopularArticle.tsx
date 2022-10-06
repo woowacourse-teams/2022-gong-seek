@@ -1,5 +1,5 @@
-import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
-import Loading from '@/components/common/Loading/Loading';
+import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
+import Loading from '@/components/@common/Loading/Loading';
 import useGetPopularArticles from '@/hooks/article/useGetPopularArticles';
 import * as S from '@/pages/Home/PopularArticle/PopularArticle.styles';
 import PopularArticleItem from '@/pages/Home/PopularArticleItem/PopularArticleItem';

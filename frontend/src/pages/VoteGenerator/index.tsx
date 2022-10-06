@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import Input from '@/components/common/Input/Input';
+import Input from '@/components/@common/Input/Input';
 import { URL } from '@/constants/url';
 import useSnackBar from '@/hooks/common/useSnackBar';
 import AddedOption from '@/pages/VoteGenerator/AddedOption/AddedOption';

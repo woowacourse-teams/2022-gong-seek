@@ -1,16 +1,16 @@
 import React, { Suspense, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
-import Loading from '@/components/common/Loading/Loading';
-import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
+import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
+import Loading from '@/components/@common/Loading/Loading';
+import SortDropdown from '@/components/@common/SortDropdown/SortDropDown';
 import useGetAllArticles from '@/hooks/article/useGetAllArticles';
 import * as S from '@/pages/Home/index.styles';
 
 const ResponsiveInfiniteCardList = React.lazy(
-	() => import('@/components/common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList'),
+	() => import('@/components/@common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList'),
 );
-const ArticleItem = React.lazy(() => import('@/components/common/ArticleItem/ArticleItem'));
+const ArticleItem = React.lazy(() => import('@/components/@common/ArticleItem/ArticleItem'));
 const PopularArticle = React.lazy(() => import('@/pages/Home/PopularArticle/PopularArticle'));
 
 const Home = () => {

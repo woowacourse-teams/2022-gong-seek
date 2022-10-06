@@ -1,6 +1,6 @@
 import React, { Suspense, useState } from 'react';
 
-import Loading from '@/components/common/Loading/Loading';
+import Loading from '@/components/@common/Loading/Loading';
 import useGetUserInfo from '@/hooks/user/useGetUserInfo';
 import CategoryTab from '@/pages/MyPage/CategoryTab/CategoryTab';
 import ArticleBox from '@/pages/MyPage/UserArticleBox/UserArticleBox';

@@ -1,5 +1,5 @@
-import Card from '@/components/common/Card/Card';
-import Loading from '@/components/common/Loading/Loading';
+import Card from '@/components/@common/Card/Card';
+import Loading from '@/components/@common/Loading/Loading';
 import { mobileTitleSecondary } from '@/constants/titleType';
 import useGetLoginURL from '@/hooks/login/useGetLoginURL';
 import LoginButton from '@/pages/Login/LoginButton/LoginButton';

@@ -1,6 +1,6 @@
 import { MdOutlineHowToVote } from 'react-icons/md';
 
-import Loading from '@/components/common/Loading/Loading';
+import Loading from '@/components/@common/Loading/Loading';
 import useGetVote from '@/hooks/vote/useGetVote';
 import * as S from '@/pages/Discussion/Vote/Vote.styles';
 import VoteItem from '@/pages/Discussion/VoteItem/VoteItem';

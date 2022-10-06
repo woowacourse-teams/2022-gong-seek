@@ -1,6 +1,6 @@
 import { AiFillEdit } from 'react-icons/ai';
 
-import Input from '@/components/common/Input/Input';
+import Input from '@/components/@common/Input/Input';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`

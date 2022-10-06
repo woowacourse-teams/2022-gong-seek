@@ -1,4 +1,4 @@
-import SortDropdown, { SortPropDownProps } from '@/components/common/SortDropdown/SortDropDown';
+import SortDropdown, { SortPropDownProps } from '@/components/@common/SortDropdown/SortDropDown';
 import { action } from '@storybook/addon-actions';
 import { Meta, Story } from '@storybook/react';
 

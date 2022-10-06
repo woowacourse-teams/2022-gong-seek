@@ -2,8 +2,8 @@ import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import Loading from '@/components/common/Loading/Loading';
-import SnackBar from '@/components/common/SnackBar/SnackBar';
+import Loading from '@/components/@common/Loading/Loading';
+import SnackBar from '@/components/@common/SnackBar/SnackBar';
 import PrivateRouter from '@/components/helper/PrivateRouter';
 import PublicRouter from '@/components/helper/PublicRouter';
 import Header from '@/components/layout/Header/Header';
@@ -14,7 +14,7 @@ import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
 import styled from '@emotion/styled';
 
-const MenuSlider = React.lazy(() => import('@/components/common/MenuSlider/MenuSlider'));
+const MenuSlider = React.lazy(() => import('@/components/@common/MenuSlider/MenuSlider'));
 const Home = React.lazy(() => import('@/pages/Home'));
 const CategoryArticles = React.lazy(() => import('@/pages/CategoryArticles/CategoryArticles'));
 const CategorySelector = React.lazy(() => import('@/pages/CategorySelector/CategorySelector'));

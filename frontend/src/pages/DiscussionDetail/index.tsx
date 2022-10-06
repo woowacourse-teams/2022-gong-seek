@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 
-import Loading from '@/components/common/Loading/Loading';
+import Loading from '@/components/@common/Loading/Loading';
 import useGetDetailArticle from '@/hooks/article/useGetDetailArticle';
 import useGetDetailComment from '@/hooks/comment/useGetDetailComment';
 import Detail from '@/pages/Detail';

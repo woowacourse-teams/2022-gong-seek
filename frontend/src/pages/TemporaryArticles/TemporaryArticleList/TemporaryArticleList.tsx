@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
-import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
-import Loading from '@/components/common/Loading/Loading';
+import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
+import Loading from '@/components/@common/Loading/Loading';
 import useDeleteTempArticle from '@/hooks/tempArticle/useDeleteTempArticle';
 import useGetTempArticles from '@/hooks/tempArticle/useGetTempArticles';
 import TemporaryArticleItem from '@/pages/TemporaryArticles/TemporaryArticleItem/TemporaryArticleItem';
