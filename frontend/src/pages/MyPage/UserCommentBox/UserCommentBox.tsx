@@ -1,5 +1,5 @@
-import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
-import Loading from '@/components/common/Loading/Loading';
+import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
+import Loading from '@/components/@common/Loading/Loading';
 import useGetUserComments from '@/hooks/user/useGetUserComments';
 import * as S from '@/pages/MyPage/UserCommentBox/UserCommentBox.styles';
 import UserCommentItem from '@/pages/MyPage/UserCommentItem/UserCommentItem';

@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import reactDom from 'react-dom';
 
 import { postImageUrlConverter } from '@/api/image';
-import AnonymousCheckBox from '@/components/common/AnonymousCheckBox/AnonymousCheckBox';
-import * as S from '@/components/common/CommentInputModal/CommentInputModal.styles';
-import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
+import AnonymousCheckBox from '@/components/@common/AnonymousCheckBox/AnonymousCheckBox';
+import ToastUiEditor from '@/components/@common/ToastUiEditor/ToastUiEditor';
+import * as S from '@/components/comment/CommentInputModal/CommentInputModal.styles';
 import usePostCommentInputModal from '@/hooks/comment/usePostCommentInputModal';
 import usePutCommentInputModal from '@/hooks/comment/usePutCommentInputModal';
 import useSnackBar from '@/hooks/common/useSnackBar';

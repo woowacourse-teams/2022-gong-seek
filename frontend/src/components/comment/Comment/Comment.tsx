@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import * as S from '@/components/common/Comment/Comment.styles';
-import CommentInputModal from '@/components/common/CommentInputModal/CommentInputModal';
-import Loading from '@/components/common/Loading/Loading';
-import ToastUiViewer from '@/components/common/ToastUiViewer/ToastUiViewer';
+import Loading from '@/components/@common/Loading/Loading';
+import ToastUiViewer from '@/components/@common/ToastUiViewer/ToastUiViewer';
+import * as S from '@/components/comment/Comment/Comment.styles';
+import CommentInputModal from '@/components/comment/CommentInputModal/CommentInputModal';
 import useDeleteComment from '@/hooks/comment/useDeleteComment';
 import { CommentType } from '@/types/commentResponse';
 import { convertGithubAvatarUrlForResize } from '@/utils/converter';
