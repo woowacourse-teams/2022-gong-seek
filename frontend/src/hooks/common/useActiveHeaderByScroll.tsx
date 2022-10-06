@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 
 import { isScrollDown, isScrollUp, isMinDeltaScroll } from '@/utils/scrollObserver';
 
-const useHeaderViewByScroll = () => {
+const useActiveHeaderByScroll = () => {
 	const [isActiveHeader, setIsActiveHeader] = useState(true);
 	const headerElement = useRef<HTMLDivElement>(null);
 	const lastScrollTop = useRef(0);
@@ -45,4 +45,4 @@ const useHeaderViewByScroll = () => {
 	return { isActiveHeader, handleHeaderViewByScroll, headerElement };
 };
 
-export default useHeaderViewByScroll;
+export default useActiveHeaderByScroll;
