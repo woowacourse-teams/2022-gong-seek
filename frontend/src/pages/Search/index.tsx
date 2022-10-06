@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
-import SearchResult from '@/pages/Search/SearchResult/SearchResult';
+import SearchResult from '@/components/search/SearchResult/SearchResult';
 import * as S from '@/pages/Search/index.styles';
 import { searchState } from '@/store/searchState';
 import { validatedSearchInput } from '@/utils/validateInput';
