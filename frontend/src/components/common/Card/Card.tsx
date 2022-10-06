@@ -1,28 +1,8 @@
 import { PropsWithStrictChildren } from 'gongseek-types';
 
 import * as S from '@/components/common/Card/Card.styles';
+import { CardProps } from '@/types/card';
 import { css } from '@emotion/react';
-
-export interface CardProps {
-	cssObject: {
-		width: string;
-		maxWidth?: string;
-		height: string;
-		justifyContent?: string;
-		alignItems?: string;
-		gap?: string;
-		padding?: string;
-		flexWrap?: string;
-		flexDirection?: string;
-	};
-	media?: {
-		minWidth: string;
-		width?: string;
-		height?: string;
-	};
-	hasActiveAnimation: true | false;
-	onClick?: () => void;
-}
 
 const Card = ({
 	cssObject,
@@ -43,7 +23,7 @@ const Card = ({
 			flex-direction: ${cssObject.flexDirection ? cssObject.flexDirection : 'column'};
 			flex-wrap: ${cssObject.flexWrap ? cssObject.flexWrap : 'nowrap'};
 		`}
-		media={media ? media : false}
+		media={media ? media : ''}
 		hasActiveAnimation={hasActiveAnimation}
 		onClick={onClick}
 	>
