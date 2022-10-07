@@ -78,6 +78,9 @@ dependencies {
 
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // testcontainers
+    testImplementation "org.testcontainers:junit-jupiter:1.17.3"
 }
 
 tasks.named('test') {

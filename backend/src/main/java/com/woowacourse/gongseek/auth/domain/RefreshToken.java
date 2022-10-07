@@ -5,11 +5,13 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
+@NoArgsConstructor
 @Getter
 @RedisHash(value = "refreshToken", timeToLive = 1_209_600L)
 public class RefreshToken {
@@ -21,9 +23,9 @@ public class RefreshToken {
     private UUID id;
 
     @Indexed
-    private final Long memberId;
+    private Long memberId;
 
-    private final LocalDateTime expiryDate;
+    private LocalDateTime expiryDate;
 
     private boolean issue;
 

@@ -1,0 +1,27 @@
+version: '3.1'
+
+services:
+  redis:
+    image: redis-image
+    ports:
+      - 6379:6379
+    networks:
+      - spring-net
+
+  gongseek:
+    image: gongseek
+    build: .
+    restart: always
+    environment:
+      REDIS_HOST: redis
+      REDOS_PORT: 6379
+      REDIS_PASSWORD: test
+    ports:
+      - 8080:8080
+    depends_on:
+      - redis
+    networks:
+      - spring-net
+
+networks:
+  spring-net:
