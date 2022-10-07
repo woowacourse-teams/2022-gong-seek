@@ -72,12 +72,12 @@ export const convertSort = (sort: '추천순' | '최신순' | '조회순') => {
 	}
 };
 
-export const convertGithubAvartarUrlForResize = (avartarUrl: string) => {
-	if (avartarUrl.includes('gongseek.png')) {
-		return avartarUrl;
+export const convertGithubAvatarUrlForResize = (avatarUrl: string) => {
+	if (avatarUrl.includes('gongseek.png')) {
+		return avatarUrl;
 	}
 
-	return `${avartarUrl}&size=100`;
+	return `${avatarUrl}&size=100`;
 };
 
 const timePicker = (timeArray: number[]) => {

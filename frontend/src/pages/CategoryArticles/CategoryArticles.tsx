@@ -2,8 +2,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
 import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
-import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 import Loading from '@/components/common/Loading/Loading';
+import ResponsiveInfiniteCardList from '@/components/common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList';
 import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
 import { URL } from '@/constants/url';
 import useGetCategoryArticles from '@/hooks/article/useGetCategoryArticles';
@@ -43,11 +43,11 @@ const CategoryArticles = () => {
 				/>
 			</S.TitleBox>
 			{data?.pages.length ? (
-				<InfiniteScrollObserver
-					hasNext={data?.pages[data.pages.length - 1].hasNext}
+				<ResponsiveInfiniteCardList
+					hasNext={data.pages[data.pages.length - 1].hasNext}
 					fetchNextPage={fetchNextPage}
 				>
-					<S.ArticleItemList>
+					<>
 						{data.pages.map(({ articles }) =>
 							articles.map((item) => (
 								<ArticleItem
@@ -59,8 +59,8 @@ const CategoryArticles = () => {
 								/>
 							)),
 						)}
-					</S.ArticleItemList>
-				</InfiniteScrollObserver>
+					</>
+				</ResponsiveInfiniteCardList>
 			) : (
 				<EmptyMessage>게시글이 존재하지 않습니다</EmptyMessage>
 			)}
