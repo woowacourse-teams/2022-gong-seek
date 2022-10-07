@@ -32,7 +32,7 @@ export const DropdownBox = styled.ul`
 	display: flex;
 	position: absolute;
 
-	top: ${({ theme }) => theme.size.SIZE_016};
+	top: ${({ theme }) => theme.size.SIZE_020};
 
 	flex-direction: column;
 	align-items: center;
@@ -45,7 +45,9 @@ export const DropdownBox = styled.ul`
 `;
 
 export const DropdownItem = styled.li<{ idx: number }>`
+	width: 100%;
 	text-align: center;
+	margin: 0 auto;
 
 	border-bottom: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
 
@@ -53,8 +55,7 @@ export const DropdownItem = styled.li<{ idx: number }>`
 	background-color: ${({ theme }) => theme.colors.WHITE};
 	opacity: 0;
 
-	padding: ${({ theme }) => theme.size.SIZE_008} ${({ theme }) => theme.size.SIZE_012}
-		${({ theme }) => theme.size.SIZE_008} 0;
+	padding: ${({ theme }) => theme.size.SIZE_008} ${({ theme }) => theme.size.SIZE_004};
 
 	cursor: pointer;
 

@@ -6,7 +6,7 @@ import Loading from '@/components/common/Loading/Loading';
 import ToastUiViewer from '@/components/common/ToastUiViewer/ToastUiViewer';
 import useDeleteComment from '@/hooks/comment/useDeleteComment';
 import { CommentType } from '@/types/commentResponse';
-import { convertGithubAvartarUrlForResize } from '@/utils/converter';
+import { convertGithubAvatarUrlForResize } from '@/utils/converter';
 import { dateTimeConverter } from '@/utils/converter';
 
 export interface CommentProps extends CommentType {
@@ -31,7 +31,7 @@ const Comment = ({ id, author, content, createdAt, isAuthor, articleId }: Commen
 				<S.CommentInfo>
 					<S.UserProfile
 						alt="유저 프로필이 보여지는 곳입니다"
-						src={convertGithubAvartarUrlForResize(author.avatarUrl)}
+						src={convertGithubAvatarUrlForResize(author.avatarUrl)}
 					/>
 					<S.CommentInfoSub>
 						<S.UserName>{author.name}</S.UserName>

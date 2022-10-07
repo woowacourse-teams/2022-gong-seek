@@ -58,6 +58,7 @@ const size = {
 	SIZE_006: '0.375rem',
 	SIZE_008: '0.5rem',
 	SIZE_010: '0.625rem',
+	SIZE_011: '0.7rem',
 	SIZE_012: '0.75rem',
 	SIZE_014: '0.875rem',
 	SIZE_016: '1rem',
@@ -79,13 +80,17 @@ const size = {
 	SIZE_100: '6.25rem',
 	SIZE_110: '6.875rem',
 	SIZE_126: '7.875rem',
+	SIZE_140: '8.75rem',
 	SIZE_160: '10rem',
 	SIZE_200: '12.5rem',
 	SIZE_220: '13.75rem',
 	SIZE_240: '15rem',
+	SIZE_256: '16rem',
 	SIZE_260: '16.25rem',
+	SIZE_280: '17.5rem',
 	SIZE_300: '18.75rem',
 	SIZE_350: '21.875rem',
+	SIZE_400: '25rem',
 	SIZE_450: '28.125rem',
 	SIZE_700: '43.75rem',
 };
@@ -102,6 +107,8 @@ const zIndex = {
 	SNACK_BAR: 200,
 	COMMON_INPUT_MODAL_BACKGROUND: 110,
 	COMMON_INPUT_MODAL: 111,
+	ARTICLE_ITEM_LIST: 50,
+	CATEGORY_TITLE_CONTAINER: 90,
 };
 
 export const theme = {

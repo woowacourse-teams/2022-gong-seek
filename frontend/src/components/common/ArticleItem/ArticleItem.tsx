@@ -1,8 +1,10 @@
 import * as S from '@/components/common/ArticleItem/ArticleItem.styles';
+import Card from '@/components/common/Card/Card';
 import useHeartClick from '@/hooks/article/useHeartClick';
+import { ArticleItemCardStyle } from '@/styles/cardStyle';
 import { Category } from '@/types/articleResponse';
 import { Author } from '@/types/author';
-import { convertGithubAvartarUrlForResize } from '@/utils/converter';
+import { convertGithubAvatarUrlForResize } from '@/utils/converter';
 import { dateTimeConverter } from '@/utils/converter';
 
 export interface ArticleItemProps {
@@ -30,7 +32,7 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 	});
 
 	return (
-		<S.Container onClick={onClick}>
+		<Card {...ArticleItemCardStyle} onClick={onClick}>
 			<S.ArticleItemTitle>
 				<div>{article.title}</div>
 			</S.ArticleItemTitle>
@@ -48,7 +50,7 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 			</S.HashTagListBox>
 			<S.FooterBox>
 				<S.ProfileBox>
-					<S.UserProfile src={convertGithubAvartarUrlForResize(article.author.avatarUrl)} />
+					<S.UserProfile src={convertGithubAvatarUrlForResize(article.author.avatarUrl)} />
 					<div>{article.author.name}</div>
 				</S.ProfileBox>
 				<S.RightFooterBox>
@@ -62,7 +64,7 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 					</S.HeartBox>
 				</S.RightFooterBox>
 			</S.FooterBox>
-		</S.Container>
+		</Card>
 	);
 };
 

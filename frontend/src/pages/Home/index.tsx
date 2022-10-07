@@ -7,8 +7,8 @@ import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
 import useGetAllArticles from '@/hooks/article/useGetAllArticles';
 import * as S from '@/pages/Home/index.styles';
 
-const InfiniteScrollObserver = React.lazy(
-	() => import('@/components/common/InfiniteScrollObserver/InfiniteScrollObserver'),
+const ResponsiveInfiniteCardList = React.lazy(
+	() => import('@/components/common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList'),
 );
 const ArticleItem = React.lazy(() => import('@/components/common/ArticleItem/ArticleItem'));
 const PopularArticle = React.lazy(() => import('@/pages/Home/PopularArticle/PopularArticle'));
@@ -42,18 +42,18 @@ const Home = () => {
 					</S.CategoryTitle>
 				</S.CategoryTitleBox>
 				<SortDropdown
-					sortList={['최신순', '조회순', '좋아요순']}
+					sortList={['최신순', '조회순', '추천순']}
 					sortIndex={sortIndex}
 					setSortIndex={setSortIndex}
 				/>
 			</S.CategoryTitleContainer>
 			<Suspense fallback={<Loading />}>
 				{data?.pages.length ? (
-					<InfiniteScrollObserver
+					<ResponsiveInfiniteCardList
 						hasNext={data.pages[data.pages.length - 1].hasNext}
 						fetchNextPage={fetchNextPage}
 					>
-						<S.ArticleItemList>
+						<>
 							{data.pages.map(({ articles }) =>
 								articles.map((item) => (
 									<ArticleItem
@@ -65,8 +65,8 @@ const Home = () => {
 									/>
 								)),
 							)}
-						</S.ArticleItemList>
-					</InfiniteScrollObserver>
+						</>
+					</ResponsiveInfiniteCardList>
 				) : (
 					<EmptyMessage>게시글이 존재하지 않습니다</EmptyMessage>
 				)}

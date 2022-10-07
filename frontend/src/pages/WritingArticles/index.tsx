@@ -3,15 +3,16 @@ import { useParams } from 'react-router-dom';
 
 import { postImageUrlConverter } from '@/api/image';
 import AnonymousCheckBox from '@/components/common/AnonymousCheckBox/AnonymousCheckBox';
+import Card from '@/components/common/Card/Card';
 import HashTag from '@/components/common/HashTag/HashTag';
 import Loading from '@/components/common/Loading/Loading';
 import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
-import PageLayout from '@/components/layout/PageLayout/PageLayout';
 import usePostWritingArticles from '@/hooks/article/usePostWritingArticles';
 import useSnackBar from '@/hooks/common/useSnackBar';
 import useGetTempDetailArticles from '@/hooks/tempArticle/useGetTempDetailArticles';
 import usePostTempArticle from '@/hooks/tempArticle/usePostTempArticle';
 import * as S from '@/pages/WritingArticles/index.styles';
+import { WritingCategoryCardStyle, WritingTitleCardStyle } from '@/styles/cardStyle';
 
 const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 	const { category } = useParams();
@@ -127,7 +128,7 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 	return (
 		<S.Container>
 			<S.SelectorBox>
-				<PageLayout width="100%" height="fit-content">
+				<Card {...WritingTitleCardStyle}>
 					<S.TitleInput
 						type="text"
 						placeholder="제목을 입력해주세요"
@@ -135,12 +136,12 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 						onChange={(e) => setTitle(e.target.value)}
 						ref={titleInputRef}
 					/>
-				</PageLayout>
+				</Card>
 				{!isValidTitleInput && (
 					<S.TitleInputErrorMsgBox>제목은 1글자 이상 500자 이하여야 합니다</S.TitleInputErrorMsgBox>
 				)}
 				<S.OptionBox>
-					<PageLayout width="100%" height="fit-content">
+					<Card {...WritingCategoryCardStyle}>
 						<S.CategorySelectorBox>
 							<S.CategorySelector
 								name="writing"
@@ -156,7 +157,7 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 							</S.CategorySelector>
 							<S.SelectorButton />
 						</S.CategorySelectorBox>
-					</PageLayout>
+					</Card>
 					<HashTag hashTags={hashTags} setHashTags={setHashTags} />
 				</S.OptionBox>
 			</S.SelectorBox>

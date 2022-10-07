@@ -52,7 +52,7 @@ export const TitleInput = styled.input`
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		font-size: ${({ theme }) => theme.size.SIZE_020};
-		padding: 1.3rem 0.8rem;
+		padding: ${({ theme }) => theme.size.SIZE_008} ${({ theme }) => theme.size.SIZE_010};
 	}
 
 	&:focus {
