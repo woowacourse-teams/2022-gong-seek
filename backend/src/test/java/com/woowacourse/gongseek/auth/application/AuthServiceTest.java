@@ -17,26 +17,21 @@ import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.support.DatabaseCleaner;
+import com.woowacourse.gongseek.support.IntegrationTest;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SuppressWarnings("NonAsciiCharacters")
-@SpringBootTest
-class AuthServiceTest {
+class AuthServiceTest extends IntegrationTest {
 
     @Autowired
     private AuthService authService;
 
     @Autowired
     private MemberRepository memberRepository;
-
-    @MockBean
-    private OAuthClient githubOAuthClient;
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
