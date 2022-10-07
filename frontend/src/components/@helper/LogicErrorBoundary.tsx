@@ -1,4 +1,3 @@
-import { isNotAccessVoteError, isExpiredTokenError } from '../../utils/confirmErrorType';
 import { PropsWithStrictChildren } from 'gongseek-types';
 
 import CommonErrorBoundary from '@/components/@helper/CommonErrorBoundary';
@@ -8,6 +7,7 @@ import { ErrorMessage } from '@/constants/ErrorMessage';
 import { URL } from '@/constants/url';
 import { queryClient } from '@/index';
 import { ErrorBoundaryState, LogicErrorBoundaryProps } from '@/types/ErrorBoundary.type';
+import { isNotAccessVoteError, isExpiredTokenError } from '@/utils/confirmErrorType';
 import {
 	isAlreayLoginRefreshTokenError,
 	isInvalidRefreshTokenError,
