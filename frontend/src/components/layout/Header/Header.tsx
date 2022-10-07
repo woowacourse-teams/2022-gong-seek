@@ -5,7 +5,7 @@ import SearchBar from '@/components/common/SearchBar/SearchBar';
 import UserProfileIcon from '@/components/common/UserProfileIcon/UserProfileIcon';
 import * as S from '@/components/layout/Header/Header.styles';
 import { URL } from '@/constants/url';
-import useActiveHeaderByScroll from '@/hooks/common/useActiveHeaderByScroll';
+import useHandleHeaderByScroll from '@/hooks/common/useHandleHeaderByScroll';
 import useScroll from '@/hooks/common/useScroll';
 import { searchState } from '@/store/searchState';
 import { getUserIsLogin } from '@/store/userState';
@@ -13,7 +13,7 @@ import { getUserIsLogin } from '@/store/userState';
 const Header = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const { isSearchOpen } = useRecoilValue(searchState);
-	const { handleHeaderViewByScroll, headerElement, isActiveHeader } = useActiveHeaderByScroll();
+	const { handleHeaderViewByScroll, headerElement, isActiveHeader } = useHandleHeaderByScroll();
 	useScroll(handleHeaderViewByScroll);
 
 	if (isSearchOpen) {
