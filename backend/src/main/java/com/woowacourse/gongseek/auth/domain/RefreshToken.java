@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
 @Getter
 @RedisHash(value = "refreshToken", timeToLive = 1_209_600L)
@@ -17,6 +18,7 @@ public class RefreshToken {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
+    @Indexed
     private final Long memberId;
 
     private final LocalDateTime expiryDate;
