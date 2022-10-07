@@ -1,10 +1,10 @@
 import { PropsWithStrictChildren } from 'gongseek-types';
 import { InfiniteQueryObserverResult } from 'react-query';
 
+import * as S from '@/components/@common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList.styles';
 import InfiniteScrollObserver, {
 	ObserverResponseType,
-} from '@/components/@common/InfiniteScrollObserver/InfiniteScrollObserver';
-import * as S from '@/components/@common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList.styles';
+} from '@/components/@helper/observer/InfiniteScrollObserver';
 
 export interface ResponsiveInfiniteCardListProps<DataType> {
 	hasNext: boolean;

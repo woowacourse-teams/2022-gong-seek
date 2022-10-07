@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 
-import CustomError from '@/components/@helper/CustomError';
+import CustomError from '@/components/@helper/errorBoundary/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 
 const useThrowCustomError = (

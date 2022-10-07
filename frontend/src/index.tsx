@@ -4,8 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import App from '@/App';
-import FallbackErrorBoundary from '@/components/@helper/FallbackErrorBoundary';
-import LogicErrorBoundary from '@/components/@helper/LogicErrorBoundary';
+import FallbackErrorBoundary from '@/components/@helper/errorBoundary/FallbackErrorBoundary';
+import LogicErrorBoundary from '@/components/@helper/errorBoundary/LogicErrorBoundary';
 import { worker } from '@/mock/browser';
 import NotFound from '@/pages/NotFound';
 import ServerErrorPage from '@/pages/ServerErrorPage';

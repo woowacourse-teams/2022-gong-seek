@@ -2,7 +2,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { UseMutateFunction } from 'react-query';
 import { NavigateFunction } from 'react-router-dom';
 
-import CustomError from '@/components/@helper/CustomError';
+import CustomError from '@/components/@helper/errorBoundary/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 
 export interface ErrorBoundaryState {
