@@ -12,10 +12,12 @@ import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.support.RepositoryTest;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RepositoryTest
@@ -43,10 +45,9 @@ class TempArticleRepositoryTest {
                 .build());
     }
 
-    @ValueSource(strings = {"a", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"})
+    @MethodSource("provideTitles")
     @ParameterizedTest
     void 임시_게시글을_저장한다_제목_길이는_최소1에서_최대500자까지_가능하다(String title) {
-        System.out.println(title.length());
         final TempArticle tempArticle = TempArticle.builder()
                 .title(new Title(title))
                 .content(new Content("content"))
@@ -59,6 +60,13 @@ class TempArticleRepositoryTest {
         final TempArticle savedTempArticle = tempArticleRepository.save(tempArticle);
 
         assertThat(savedTempArticle).isEqualTo(tempArticle);
+    }
+
+    private static Stream<Arguments> provideTitles() {
+        return Stream.of(
+                Arguments.of("a"),
+                Arguments.of("a".repeat(500))
+        );
     }
 
     @Test
