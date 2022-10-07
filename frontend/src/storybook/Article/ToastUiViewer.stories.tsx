@@ -1,6 +1,6 @@
 import ToastUiViewer, {
 	ToastUiContentProps,
-} from '@/components/common/ToastUiViewer/ToastUiViewer';
+} from '@/components/@common/ToastUiViewer/ToastUiViewer';
 import { Meta, Story } from '@storybook/react';
 
 export default {
