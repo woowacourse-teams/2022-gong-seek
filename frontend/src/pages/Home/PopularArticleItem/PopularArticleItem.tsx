@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 
-import * as S from '@/pages/Home/ArticleItem/ArticleItem.styles';
+import * as S from '@/pages/Home/PopularArticleItem/PopularArticleItem.styles';
 import { CommonArticleType } from '@/types/articleResponse';
-import { convertGithubAvartarUrlForResize } from '@/utils/converter';
+import { convertGithubAvatarUrlForResize } from '@/utils/converter';
 
-const ArticleItem = ({ article }: { article: CommonArticleType }) => {
+const PopularArticleItem = ({ article }: { article: CommonArticleType }) => {
 	const navigate = useNavigate();
 	const { id, title, author, commentCount, views, likeCount, category } = article;
 	return (
@@ -14,7 +14,7 @@ const ArticleItem = ({ article }: { article: CommonArticleType }) => {
 				<S.ProfileBox>
 					<S.UserImg
 						alt="유저의 프로필 이미지가 보여지는 곳 입니다 "
-						src={convertGithubAvartarUrlForResize(author.avatarUrl)}
+						src={convertGithubAvatarUrlForResize(author.avatarUrl)}
 					/>
 					<S.UserName>{author.name}</S.UserName>
 				</S.ProfileBox>
@@ -39,4 +39,4 @@ const ArticleItem = ({ article }: { article: CommonArticleType }) => {
 	);
 };
 
-export default ArticleItem;
+export default PopularArticleItem;

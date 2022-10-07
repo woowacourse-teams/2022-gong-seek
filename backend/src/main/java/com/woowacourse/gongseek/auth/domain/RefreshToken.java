@@ -3,25 +3,26 @@ package com.woowacourse.gongseek.auth.domain;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import lombok.AccessLevel;
 import lombok.Getter;
-import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.index.Indexed;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@RedisHash(value = "RefreshToken", timeToLive = 1_209_600L)
+@Entity
 public class RefreshToken {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
+    @GeneratedValue(generator = "uuid4")
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Indexed
-    private final Long memberId;
+    private Long memberId;
 
-    private final LocalDateTime expiryDate;
+    private LocalDateTime expiryDate;
 
     private boolean issue;
 

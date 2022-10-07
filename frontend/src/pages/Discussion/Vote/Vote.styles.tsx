@@ -3,9 +3,10 @@ import styled from '@emotion/styled';
 export const VoteBox = styled.div`
 	display: flex;
 
+	margin: 0 auto;
 	flex-direction: column;
 	gap: ${({ theme }) => theme.size.SIZE_016};
-	align-items: center;
+	align-items: flex-start;
 `;
 
 export const Container = styled.div`

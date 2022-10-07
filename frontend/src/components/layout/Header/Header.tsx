@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import gongseek from '@/assets/gongseek.png';
@@ -6,17 +5,20 @@ import SearchBar from '@/components/common/SearchBar/SearchBar';
 import UserProfileIcon from '@/components/common/UserProfileIcon/UserProfileIcon';
 import * as S from '@/components/layout/Header/Header.styles';
 import { URL } from '@/constants/url';
+import useHandleHeaderByScroll from '@/hooks/common/useHandleHeaderByScroll';
+import useScroll from '@/hooks/common/useScroll';
 import { searchState } from '@/store/searchState';
 import { getUserIsLogin } from '@/store/userState';
 
 const Header = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const { isSearchOpen } = useRecoilValue(searchState);
-	const navigate = useNavigate();
+	const { handleHeaderViewByScroll, headerElement, isActiveHeader } = useHandleHeaderByScroll();
+	useScroll(handleHeaderViewByScroll);
 
 	if (isSearchOpen) {
 		return (
-			<S.Container>
+			<S.Container ref={headerElement} active={isActiveHeader}>
 				<S.HeaderSection>
 					<S.StyledLink to={URL.HOME}>
 						<S.LogoImage src={gongseek} />
@@ -32,7 +34,7 @@ const Header = () => {
 	}
 
 	return (
-		<S.Container>
+		<S.Container ref={headerElement} active={isActiveHeader}>
 			<S.HeaderSection>
 				<S.StyledLink to={URL.HOME}>
 					<S.LogoLink>공식</S.LogoLink>

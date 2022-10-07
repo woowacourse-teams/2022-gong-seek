@@ -1,45 +1,6 @@
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
-import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-
-const scaleAnimation = keyframes`
-	0%{
-
-	}
-
-	100% {
-		transform: scale(1.01);
-	}
-`;
-
-export const Container = styled.div`
-	display: flex;
-
-	flex-direction: column;
-
-	width: 80%;
-	height: ${({ theme }) => theme.size.SIZE_160};
-
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
-
-	box-shadow: 0 8px 24px ${({ theme }) => theme.boxShadows.secondary};
-
-	padding: ${({ theme }) => theme.size.SIZE_016};
-
-	&:hover,
-	&:active {
-		animation: ${scaleAnimation} 0.3s ease-in;
-		animation-fill-mode: forwards;
-
-		cursor: pointer;
-	}
-
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
-		height: ${({ theme }) => theme.size.SIZE_220};
-		width: ${({ theme }) => theme.size.SIZE_300};
-	}
-`;
 
 export const ArticleItemTitle = styled.h2`
 	display: flex;
@@ -105,8 +66,7 @@ export const ProfileBox = styled.div`
 
 export const FooterBox = styled.div`
 	display: flex;
-
-	align-items: center;
+	justify-content: space-between;
 
 	margin-top: auto;
 `;
