@@ -9,7 +9,7 @@ import { ACCESSTOKEN_KEY } from '@/constants';
 import { URL } from '@/constants/url';
 import useSnackBar from '@/hooks/common/useSnackBar';
 
-const LoginController = () => {
+const LoginHandler = () => {
 	const [searchParams] = useSearchParams();
 	const { showSnackBar } = useSnackBar();
 	const navigate = useNavigate();
@@ -44,4 +44,4 @@ const LoginController = () => {
 	return <LoginLoading />;
 };
 
-export default LoginController;
+export default LoginHandler;
