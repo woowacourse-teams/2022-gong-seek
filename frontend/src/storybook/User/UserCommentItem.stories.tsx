@@ -1,4 +1,4 @@
-import UserCommentItem from '@/pages/MyPage/UserCommentItem/UserCommentItem';
+import UserCommentItem from '@/components/user/UserCommentItem/UserCommentItem';
 import { UserComment } from '@/types/commentResponse';
 import { Meta, Story } from '@storybook/react';
 

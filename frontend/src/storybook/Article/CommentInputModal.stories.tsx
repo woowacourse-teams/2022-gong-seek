@@ -1,6 +1,6 @@
 import CommentInputModal, {
 	CommentInputModalProps,
-} from '@/components/common/CommentInputModal/CommentInputModal';
+} from '@/components/comment/CommentInputModal/CommentInputModal';
 import { Meta, Story } from '@storybook/react';
 
 const modalRoot = document.createElement('div');

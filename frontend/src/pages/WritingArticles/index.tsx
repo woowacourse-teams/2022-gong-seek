@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { postImageUrlConverter } from '@/api/image';
-import AnonymousCheckBox from '@/components/common/AnonymousCheckBox/AnonymousCheckBox';
-import Card from '@/components/common/Card/Card';
-import HashTag from '@/components/common/HashTag/HashTag';
-import Loading from '@/components/common/Loading/Loading';
-import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
+import AnonymousCheckBox from '@/components/@common/AnonymousCheckBox/AnonymousCheckBox';
+import Card from '@/components/@common/Card/Card';
+import Loading from '@/components/@common/Loading/Loading';
+import ToastUiEditor from '@/components/@common/ToastUiEditor/ToastUiEditor';
+import HashTag from '@/components/hashTag/HashTag/HashTag';
 import usePostWritingArticles from '@/hooks/article/usePostWritingArticles';
 import useSnackBar from '@/hooks/common/useSnackBar';
 import useGetTempDetailArticles from '@/hooks/tempArticle/useGetTempDetailArticles';

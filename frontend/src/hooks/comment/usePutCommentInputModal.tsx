@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 
 import { putComments } from '@/api/comments';
-import { CommentInputModalProps } from '@/components/common/CommentInputModal/CommentInputModal';
+import { CommentInputModalProps } from '@/components/comment/CommentInputModal/CommentInputModal';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useSnackBar from '@/hooks/common/useSnackBar';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';

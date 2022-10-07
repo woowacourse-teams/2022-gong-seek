@@ -1,4 +1,4 @@
-import UserProfile, { UserProfileProps } from '@/pages/MyPage/UserProfile/UserProfile';
+import UserProfile, { UserProfileProps } from '@/components/user/UserProfile/UserProfile';
 import { Meta, Story } from '@storybook/react';
 
 export default {
