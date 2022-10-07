@@ -125,12 +125,10 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public boolean existsArticleByTagId(Long tagId) {
-        Integer tagCount = queryFactory.selectOne()
+        return queryFactory.selectOne()
                 .from(articleTag)
                 .where(articleTag.tag.id.eq(tagId))
-                .fetchFirst();
-
-        return tagCount != null;
+                .fetchFirst() != null;
     }
 
     @Override
@@ -139,16 +137,14 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .from(article)
                 .leftJoin(article.articleTags.value, articleTag)
                 .leftJoin(articleTag.tag, tag)
-                .where(
-                        article.id.in(articleIds)
-                )
+                .where(article.id.in(articleIds))
                 .transform(groupBy(article.id).as(GroupBy.list(tag.name)));
     }
 
     @Override
     public Slice<ArticlePreviewDto> findAllByPage(Long cursorId, Integer cursorViews, String category, String sortType,
                                                   Long memberId, Pageable pageable) {
-        JPAQuery<ArticlePreviewDto> query = getAllArticlePreviewDto(cursorId, memberId)
+        JPAQuery<ArticlePreviewDto> query = selectArticlePreviewDto(cursorId, memberId)
                 .from(article)
                 .leftJoin(article.member, member)
                 .leftJoin(comment).on(article.id.eq(comment.article.id))
@@ -164,7 +160,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         return convertToSliceFromArticle(fetch, pageable);
     }
 
-    private JPAQuery<ArticlePreviewDto> getAllArticlePreviewDto(Long articleId, Long memberId) {
+    private JPAQuery<ArticlePreviewDto> selectArticlePreviewDto(Long articleId, Long memberId) {
         return queryFactory
                 .select(
                         Projections.constructor(
@@ -226,7 +222,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     @Override
     public Slice<ArticlePreviewDto> findAllByLikes(Long cursorId, Long cursorLikes, String category, Long memberId,
                                                    Pageable pageable) {
-        List<ArticlePreviewDto> fetch = getAllArticlePreviewDto(cursorId, memberId)
+        List<ArticlePreviewDto> fetch = selectArticlePreviewDto(cursorId, memberId)
                 .from(article)
                 .leftJoin(article.member, member)
                 .leftJoin(comment).on(article.id.eq(comment.article.id))
@@ -254,7 +250,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     @Override
     public Slice<ArticlePreviewDto> searchByContainingText(Long cursorId, String searchText, Long memberId,
                                                            Pageable pageable) {
-        List<ArticlePreviewDto> fetch = getAllArticlePreviewDto(cursorId, memberId)
+        List<ArticlePreviewDto> fetch = selectArticlePreviewDto(cursorId, memberId)
                 .from(article)
                 .leftJoin(article.member, member)
                 .leftJoin(comment).on(article.id.eq(comment.article.id))
@@ -287,7 +283,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public Slice<ArticlePreviewDto> searchByAuthor(Long cursorId, String author, Long memberId, Pageable pageable) {
-        List<ArticlePreviewDto> fetch = getAllArticlePreviewDto(cursorId, memberId)
+        List<ArticlePreviewDto> fetch = selectArticlePreviewDto(cursorId, memberId)
                 .from(article)
                 .leftJoin(article.member, member)
                 .leftJoin(comment).on(article.id.eq(comment.article.id))
@@ -307,7 +303,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     @Override
     public Slice<ArticlePreviewDto> searchByTag(Long cursorId, Long memberId, List<String> tagNames,
                                                 Pageable pageable) {
-        List<ArticlePreviewDto> fetch = getAllArticlePreviewDto(cursorId, memberId)
+        List<ArticlePreviewDto> fetch = selectArticlePreviewDto(cursorId, memberId)
                 .from(articleTag)
                 .join(articleTag.article, article)
                 .join(article.member, member)

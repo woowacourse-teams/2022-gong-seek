@@ -66,10 +66,6 @@ public class ArticleService {
 
     public ArticleDto getOne(AppMember appMember, Long id) {
         articleRepository.addViews(id);
-        return getArticleDto(id, appMember);
-    }
-
-    private ArticleDto getArticleDto(Long id, AppMember appMember) {
         return articleRepository.findByIdWithAll(id, appMember.getPayload())
                 .orElseThrow(() -> new ArticleNotFoundException(id));
     }
@@ -148,21 +144,28 @@ public class ArticleService {
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
         Article article = checkAuthorization(appMember, id);
-        List<Long> existingTags = article.getTagIds();
+        List<Long> existingTagIds = article.getTagIds();
         List<String> updatedTagNames = articleUpdateRequest.getTag();
-        Tags tags = Tags.from(updatedTagNames);
-        Tags foundTags = tagService.getOrCreateTags(tags);
+        Tags foundTags = tagService.getOrCreateTags(Tags.from(updatedTagNames));
         article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent());
         article.updateTag(foundTags);
-        deleteUnusedTags(existingTags, foundTags.getTagIds());
+        deleteUnusedTags(existingTagIds, foundTags.getTagIds());
 
         return new ArticleUpdateResponse(article);
     }
 
     private void deleteUnusedTags(List<Long> existingTagIds, List<Long> updatedTagIds) {
-        List<Long> deletedTagIds = new ArrayList<>(existingTagIds);
-        deletedTagIds.removeAll(updatedTagIds);
+//        List<Long> deletedTagIds = new ArrayList<>(existingTagIds);
+//        deletedTagIds.removeAll(updatedTagIds);
+        existingTagIds.removeAll(updatedTagIds);
+        List<Long> deletedTagIds = getDeletedTagIds(existingTagIds);
         tagService.deleteAll(deletedTagIds);
+    }
+
+    private List<Long> getDeletedTagIds(List<Long> tagIds) {
+        return tagIds.stream()
+                .filter(tagId -> !articleRepository.existsArticleByTagId(tagId))
+                .collect(Collectors.toList());
     }
 
     private Article checkAuthorization(AppMember appMember, Long id) {
@@ -189,11 +192,5 @@ public class ArticleService {
         articleRepository.delete(article);
         List<Long> deletedTagIds = getDeletedTagIds(article.getTagIds());
         tagService.deleteAll(deletedTagIds);
-    }
-
-    private List<Long> getDeletedTagIds(List<Long> tagIds) {
-        return tagIds.stream()
-                .filter(tagId -> !articleRepository.existsArticleByTagId(tagId))
-                .collect(Collectors.toList());
     }
 }

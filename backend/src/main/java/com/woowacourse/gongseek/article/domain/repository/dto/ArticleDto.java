@@ -1,14 +1,12 @@
 package com.woowacourse.gongseek.article.domain.repository.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,17 +24,15 @@ public class ArticleDto {
 
     private String content;
 
-    @JsonProperty("isAuthor")
-    @Accessors(fluent = true)
-    private boolean isAuthor;
+    private Boolean isAuthor;
 
-    private int views;
+    private Integer views;
 
-    private boolean hasVote;
+    private Boolean hasVote;
 
     private Boolean isLike;
 
-    private long likeCount;
+    private Long likeCount;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
@@ -50,11 +46,11 @@ public class ArticleDto {
             String memberName,
             String memberAvatarUrl,
             String content,
-            boolean isAuthor,
-            int views,
-            boolean hasVote,
-            boolean isLike,
-            boolean isAnonymous,
+            Boolean isAuthor,
+            Integer views,
+            Boolean hasVote,
+            Boolean isLike,
+            Boolean isAnonymous,
             long likeCount,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
@@ -75,7 +71,7 @@ public class ArticleDto {
         checkAnonymous(isAnonymous);
     }
 
-    public void checkAnonymous(boolean isAnonymous) {
+    public void checkAnonymous(Boolean isAnonymous) {
         if (isAnonymous) {
             this.author = new AuthorDto(ANONYMOUS_NAME, ANONYMOUS_AVATAR_URL);
         }

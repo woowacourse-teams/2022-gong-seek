@@ -204,7 +204,7 @@ public class ArticleServiceTest {
                 () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("slo"),
-                () -> assertThat(articleDto.isAuthor()).isTrue()
+                () -> assertThat(articleDto.getIsAuthor()).isTrue()
         );
     }
 
@@ -222,7 +222,7 @@ public class ArticleServiceTest {
                 () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("익명"),
-                () -> assertThat(articleDto.isAuthor()).isTrue()
+                () -> assertThat(articleDto.getIsAuthor()).isTrue()
         );
     }
 
@@ -242,7 +242,7 @@ public class ArticleServiceTest {
                 () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("slo"),
-                () -> assertThat(articleDto.isAuthor()).isFalse()
+                () -> assertThat(articleDto.getIsAuthor()).isFalse()
         );
     }
 
@@ -261,7 +261,7 @@ public class ArticleServiceTest {
                 () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("익명"),
-                () -> assertThat(articleDto.isAuthor()).isFalse()
+                () -> assertThat(articleDto.getIsAuthor()).isFalse()
         );
     }
 
@@ -279,7 +279,7 @@ public class ArticleServiceTest {
                 () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("slo"),
-                () -> assertThat(articleDto.isAuthor()).isFalse()
+                () -> assertThat(articleDto.getIsAuthor()).isFalse()
         );
     }
 
@@ -297,7 +297,7 @@ public class ArticleServiceTest {
                 () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("익명"),
-                () -> assertThat(articleDto.isAuthor()).isFalse()
+                () -> assertThat(articleDto.getIsAuthor()).isFalse()
         );
     }
 
@@ -319,7 +319,6 @@ public class ArticleServiceTest {
         );
     }
 
-    @Transactional
     @Test
     void 작성자인_회원이_기명_게시글을_수정한다() {
         AppMember loginMember = new LoginMember(member.getId());
@@ -508,7 +507,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
-                () -> assertThat(response.hasNext()).isEqualTo(true)
+                () -> assertThat(response.getHasNext()).isEqualTo(true)
         );
     }
 
@@ -533,7 +532,7 @@ public class ArticleServiceTest {
         assertAll(
                 () -> assertThat(responses).hasSize(9),
                 () -> assertThat(responses.get(0).getId()).isEqualTo(9L),
-                () -> assertThat(response.hasNext()).isFalse()
+                () -> assertThat(response.getHasNext()).isFalse()
         );
     }
 
@@ -558,7 +557,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
-                () -> assertThat(response.hasNext()).isFalse()
+                () -> assertThat(response.getHasNext()).isFalse()
         );
     }
 
@@ -570,7 +569,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).isEmpty(),
-                () -> assertThat(articlePageResponse.hasNext()).isFalse()
+                () -> assertThat(articlePageResponse.getHasNext()).isFalse()
         );
     }
 
@@ -590,7 +589,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(10),
-                () -> assertThat(articlePageResponse.hasNext()).isFalse()
+                () -> assertThat(articlePageResponse.getHasNext()).isFalse()
         );
     }
 
@@ -612,9 +611,9 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(firstPageResponse.getArticles()).hasSize(10),
-                () -> assertThat(firstPageResponse.hasNext()).isTrue(),
+                () -> assertThat(firstPageResponse.getHasNext()).isTrue(),
                 () -> assertThat(secondPageResponse.getArticles()).hasSize(10),
-                () -> assertThat(secondPageResponse.hasNext()).isFalse()
+                () -> assertThat(secondPageResponse.getHasNext()).isFalse()
         );
     }
 
@@ -668,7 +667,7 @@ public class ArticleServiceTest {
                 .collect(Collectors.toList());
 
         assertAll(
-                () -> assertThat(articlePageResponse.hasNext()).isTrue(),
+                () -> assertThat(articlePageResponse.getHasNext()).isTrue(),
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(3),
                 () -> assertThat(collect).containsExactly(3L, 2L, 1L)
         );
@@ -688,7 +687,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(pageResponse.getArticles()).hasSize(15),
-                () -> assertThat(pageResponse.hasNext()).isFalse()
+                () -> assertThat(pageResponse.getHasNext()).isFalse()
         );
     }
 
@@ -717,7 +716,7 @@ public class ArticleServiceTest {
                 .collect(Collectors.toList());
 
         assertAll(
-                () -> assertThat(articlePageResponse.hasNext()).isTrue(),
+                () -> assertThat(articlePageResponse.getHasNext()).isTrue(),
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(2),
                 () -> assertThat(collect).containsExactly(1L, 10L)
         );
@@ -744,7 +743,7 @@ public class ArticleServiceTest {
 
         assertAll(
                 () -> assertThat(pageResponse.getArticles()).hasSize(2),
-                () -> assertThat(pageResponse.hasNext()).isTrue()
+                () -> assertThat(pageResponse.getHasNext()).isTrue()
         );
     }
 

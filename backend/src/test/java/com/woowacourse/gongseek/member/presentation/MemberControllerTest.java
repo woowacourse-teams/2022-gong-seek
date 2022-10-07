@@ -87,9 +87,9 @@ public class MemberControllerTest {
     void 마이페이지에서_회원_게시글_조회_API_문서화() throws Exception {
         MyPageArticlesResponse myPageArticlesResponse = new MyPageArticlesResponse(
                 List.of(
-                        new MyPageArticleDto(1L, "title1", Category.QUESTION, 10, 100, LocalDateTime.now(),
+                        new MyPageArticleDto(1L, "title1", Category.QUESTION, 10L, 100, LocalDateTime.now(),
                                 LocalDateTime.now()),
-                        new MyPageArticleDto(1L, "title2", Category.DISCUSSION, 20, 100, LocalDateTime.now(),
+                        new MyPageArticleDto(1L, "title2", Category.DISCUSSION, 20L, 100, LocalDateTime.now(),
                                 LocalDateTime.now()))
         );
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);

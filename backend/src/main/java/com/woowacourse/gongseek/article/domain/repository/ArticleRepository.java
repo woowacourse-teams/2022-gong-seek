@@ -11,7 +11,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
 
     List<Article> findAllByMemberId(Long memberId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE Article a SET a.views.value = a.views.value + 1 WHERE a.id = :articleId")
     void addViews(@Param("articleId") Long articleId);
 }
