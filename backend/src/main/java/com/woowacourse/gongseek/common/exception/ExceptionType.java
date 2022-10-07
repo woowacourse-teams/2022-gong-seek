@@ -90,7 +90,6 @@ public enum ExceptionType {
 
     UNHANDLED_EXCEPTION("0000", "알 수 없는 서버 에러가 발생했습니다."),
     METHOD_ARGUMENT_NOT_VALID_EXCEPTION("0001", "요청 데이터가 잘못되었습니다."),
-    PROCESS_NOT_FOUND_EXCEPTION("0002", "프로세스를 찾을수 없습니다.", NotFoundProcessException.class),
     ;
 
     private final String errorCode;
