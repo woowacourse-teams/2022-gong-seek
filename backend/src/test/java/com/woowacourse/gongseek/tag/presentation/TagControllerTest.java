@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.config.RestDocsConfig;
+import com.woowacourse.gongseek.support.ControllerTest;
 import com.woowacourse.gongseek.tag.application.TagService;
 import com.woowacourse.gongseek.tag.presentation.dto.TagsResponse;
 import java.util.List;
@@ -31,22 +32,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayName("해시태그 문서화")
-@AutoConfigureRestDocs
-@WebMvcTest(TagController.class)
-@Import(RestDocsConfig.class)
-class TagControllerTest {
-
-    @MockBean
-    private TagService tagService;
-
-    @MockBean
-    private JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private MockMvc mockMvc;
+class TagControllerTest extends ControllerTest {
 
     @Test
     void 해시태그_조회_API_문서화() throws Exception {
