@@ -28,6 +28,7 @@ const Comment = ({ id, author, content, createdAt, isAuthor, articleId }: Commen
 				commentId: String(id),
 				placeholder: commentPlaceholder,
 			},
+			isMobileOnly: false,
 		});
 	};
 

@@ -36,7 +36,7 @@ const TabBar = () => {
 			)}
 			<S.MenuLink
 				onClick={() => {
-					showModal({ modalType: 'menu-slider', modalProps: {} });
+					showModal({ modalType: 'menu-slider', modalProps: {}, isMobileOnly: true });
 				}}
 			/>
 		</S.Section>
