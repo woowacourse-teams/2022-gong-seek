@@ -6,11 +6,13 @@ import { CommentInputModalProps } from '@/components/comment/CommentInputModal/C
 interface MenuSliderType {
 	modalType: typeof MODAL_TYPES.MENU_SLIDER;
 	modalProps: Record<string, never>;
+	isMobileOnly: true;
 }
 
 interface CommentInputModalType {
 	modalType: typeof MODAL_TYPES.COMMENT_INPUT_MODAL;
 	modalProps: CommentInputModalProps;
+	isMobileOnly: false;
 }
 
 export type ModalStateType = MenuSliderType | CommentInputModalType;

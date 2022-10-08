@@ -1,5 +1,8 @@
+import useModal from '../../hooks/common/useModal';
 import { PropsWithOptionalChildren } from 'gongseek-types';
-import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import ArticleContent from '@/components/article/ArticleContent/ArticleContent';
 import CommentContent from '@/components/comment/CommentContent/CommentContent';

@@ -1,3 +1,4 @@
+import useModal from '../../../hooks/common/useModal';
 import { useEffect, useRef, useState } from 'react';
 import reactDom from 'react-dom';
 
@@ -13,7 +14,6 @@ import { validatedCommentInput } from '@/utils/validateInput';
 import { Editor } from '@toast-ui/react-editor';
 
 export interface CommentInputModalProps {
-	closeModal: () => void;
 	articleId: string;
 	modalType: 'edit' | 'register';
 	commentId?: string;
@@ -32,26 +32,26 @@ const modalStatus = {
 } as const;
 
 const CommentInputModal = ({
-	closeModal,
 	articleId,
 	modalType,
 	commentId,
 	placeholder = '',
 }: CommentInputModalProps) => {
-	const commentModal = document.getElementById('comment-portal');
 	const [isAnonymous, setIsAnonymous] = useState(false);
 	const commentContent = useRef<Editor | null>(null);
 	const { showSnackBar } = useSnackBar();
+	const { hideModal } = useModal();
+
 	const {
 		isLoading: postIsLoading,
 		mutate: postMutate,
 		isSuccess: postIsSuccess,
-	} = usePostCommentInputModal(closeModal);
+	} = usePostCommentInputModal(hideModal);
 	const {
 		isLoading: putIsLoading,
 		mutate: putMutate,
 		isSuccess: putIsSuccess,
-	} = usePutCommentInputModal(closeModal);
+	} = usePutCommentInputModal(hideModal);
 
 	useEffect(() => {
 		if (postIsSuccess || putIsSuccess) {
@@ -72,10 +72,6 @@ const CommentInputModal = ({
 			});
 		}
 	}, [commentContent]);
-
-	if (commentModal === null) {
-		throw new Error('모달을 찾지 못하였습니다.');
-	}
 
 	const onClickCommentPostButton = () => {
 		if (commentContent.current == null) {
@@ -102,7 +98,7 @@ const CommentInputModal = ({
 
 	if (putIsLoading || postIsLoading) return <div>로딩중...</div>;
 
-	return reactDom.createPortal(
+	return (
 		<S.CommentContainer>
 			<S.CommentTitle>{modalStatus[modalType].title}</S.CommentTitle>
 			<S.CommentContentBox>
@@ -114,8 +110,7 @@ const CommentInputModal = ({
 					{modalStatus[modalType].buttonText}
 				</S.CommentPostButton>
 			</S.SubmitBox>
-		</S.CommentContainer>,
-		commentModal,
+		</S.CommentContainer>
 	);
 };
 export default CommentInputModal;
