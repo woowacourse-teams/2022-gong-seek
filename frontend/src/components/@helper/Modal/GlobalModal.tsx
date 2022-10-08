@@ -22,12 +22,14 @@ const GlobalModal = () => {
 	const { modalProps, modalType } = modal ?? {};
 
 	useEffect(() => {
-		document.body.style.overflow = 'hidden';
+		if (modalType) {
+			document.body.style.overflow = 'hidden';
 
-		return () => {
-			document.body.style.overflow = 'auto';
-		};
-	}, []);
+			return () => {
+				document.body.style.overflow = 'auto';
+			};
+		}
+	}, [modalType]);
 
 	if (!modalType) {
 		return null;
