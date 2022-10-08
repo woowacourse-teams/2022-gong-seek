@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import * as S from '@/components/@common/Dropdown/Dropdown.styles';
 import { ACCESSTOKEN_KEY } from '@/constants';
-import useDeleteRefreshToken from '@/hooks/login/useDeleteRefreshToken';
+import useDeleteRefreshToken from '@/hooks/queries/login/useDeleteRefreshToken';
 
 const Dropdown = ({ onClickCloseDropdown }: { onClickCloseDropdown: () => void }) => {
 	const navigate = useNavigate();

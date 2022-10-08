@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import HashTagSearchBox from '@/components/hashTag/HashTagSearchBox/HashTagSearchBox';
 import HashTagSearchResult from '@/components/hashTag/HashTagSearchResult/HashTagSearchResult';
-import useGetAllHashTags from '@/hooks/hashTag/useGetAllHashTags';
+import useGetAllHashTags from '@/hooks/queries/hashTag/useGetAllHashTags';
 import * as S from '@/pages/HashTagSearch/index.styles';
 
 const HashTagSearch = () => {

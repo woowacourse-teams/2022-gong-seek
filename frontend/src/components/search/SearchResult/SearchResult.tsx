@@ -5,7 +5,7 @@ import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import ArticleItem from '@/components/article/ArticleItem/ArticleItem';
 import * as S from '@/components/search/SearchResult/SearchResult.styles';
-import useGetSearch from '@/hooks/search/useGetSearch';
+import useGetSearch from '@/hooks/queries/search/useGetSearch';
 
 const ResponsiveInfiniteCardList = React.lazy(
 	() => import('@/components/@common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList'),

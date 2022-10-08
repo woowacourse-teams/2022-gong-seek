@@ -4,7 +4,7 @@ import Loading from '@/components/@common/Loading/Loading';
 import ToastUiViewer from '@/components/@common/ToastUiViewer/ToastUiViewer';
 import * as S from '@/components/comment/Comment/Comment.styles';
 import CommentInputModal from '@/components/comment/CommentInputModal/CommentInputModal';
-import useDeleteComment from '@/hooks/comment/useDeleteComment';
+import useDeleteComment from '@/hooks/queries/comment/useDeleteComment';
 import { CommentType } from '@/types/commentResponse';
 import { convertGithubAvatarUrlForResize } from '@/utils/converter';
 import { dateTimeConverter } from '@/utils/converter';

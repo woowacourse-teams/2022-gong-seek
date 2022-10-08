@@ -2,7 +2,7 @@ import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import * as S from '@/components/article/PopularArticle/PopularArticle.styles';
 import PopularArticleItem from '@/components/article/PopularArticleItem/PopularArticleItem';
-import useGetPopularArticles from '@/hooks/article/useGetPopularArticles';
+import useGetPopularArticles from '@/hooks/queries/article/useGetPopularArticles';
 import { convertIdxToArticleColorKey } from '@/utils/converter';
 
 const PopularArticle = () => {

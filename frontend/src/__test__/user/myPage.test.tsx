@@ -4,9 +4,9 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
-import useGetUserArticles from '@/hooks/user/useGetUserArticles';
-import useGetUserComments from '@/hooks/user/useGetUserComments';
-import useGetUserInfo from '@/hooks/user/useGetUserInfo';
+import useGetUserArticles from '@/hooks/queries/user/useGetUserArticles';
+import useGetUserComments from '@/hooks/queries/user/useGetUserComments';
+import useGetUserInfo from '@/hooks/queries/user/useGetUserInfo';
 import { MyPageHandler } from '@/mock';
 import { theme } from '@/styles/Theme';
 import { ThemeProvider } from '@emotion/react';

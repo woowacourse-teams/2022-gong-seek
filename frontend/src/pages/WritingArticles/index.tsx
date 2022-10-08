@@ -7,10 +7,10 @@ import Card from '@/components/@common/Card/Card';
 import Loading from '@/components/@common/Loading/Loading';
 import ToastUiEditor from '@/components/@common/ToastUiEditor/ToastUiEditor';
 import HashTag from '@/components/hashTag/HashTag/HashTag';
-import usePostWritingArticles from '@/hooks/article/usePostWritingArticles';
 import useSnackBar from '@/hooks/common/useSnackBar';
-import useGetTempDetailArticles from '@/hooks/tempArticle/useGetTempDetailArticles';
-import usePostTempArticle from '@/hooks/tempArticle/usePostTempArticle';
+import usePostWritingArticles from '@/hooks/queries/article/usePostWritingArticles';
+import useGetTempDetailArticles from '@/hooks/queries/tempArticle/useGetTempDetailArticles';
+import usePostTempArticle from '@/hooks/queries/tempArticle/usePostTempArticle';
 import * as S from '@/pages/WritingArticles/index.styles';
 import { WritingCategoryCardStyle, WritingTitleCardStyle } from '@/styles/cardStyle';
 

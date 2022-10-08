@@ -6,7 +6,7 @@ import Card from '@/components/@common/Card/Card';
 import Loading from '@/components/@common/Loading/Loading';
 import ToastUiEditor from '@/components/@common/ToastUiEditor/ToastUiEditor';
 import HashTag from '@/components/hashTag/HashTag/HashTag';
-import usePostWritingArticle from '@/hooks/article/usePostUpdateWritingArticle';
+import usePostWritingArticle from '@/hooks/queries/article/usePostUpdateWritingArticle';
 import * as S from '@/pages/WritingArticles/index.styles';
 import { WritingCategoryCardStyle, WritingTitleCardStyle } from '@/styles/cardStyle';
 

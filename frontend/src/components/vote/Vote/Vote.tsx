@@ -3,7 +3,7 @@ import { MdOutlineHowToVote } from 'react-icons/md';
 import Loading from '@/components/@common/Loading/Loading';
 import * as S from '@/components/vote/Vote/Vote.styles';
 import VoteItem from '@/components/vote/VoteItem/VoteItem';
-import useGetVote from '@/hooks/vote/useGetVote';
+import useGetVote from '@/hooks/queries/vote/useGetVote';
 
 const Vote = ({ articleId }: { articleId: string }) => {
 	const { data, isLoading, totalCount } = useGetVote(articleId);

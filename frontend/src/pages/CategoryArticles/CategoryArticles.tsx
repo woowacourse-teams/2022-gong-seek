@@ -6,7 +6,7 @@ import ResponsiveInfiniteCardList from '@/components/@common/ResponsiveInfiniteC
 import SortDropdown from '@/components/@common/SortDropdown/SortDropDown';
 import ArticleItem from '@/components/article/ArticleItem/ArticleItem';
 import { URL } from '@/constants/url';
-import useGetCategoryArticles from '@/hooks/article/useGetCategoryArticles';
+import useGetCategoryArticles from '@/hooks/queries/article/useGetCategoryArticles';
 import * as S from '@/pages/CategoryArticles/CategoryArticles.styles';
 import { categoryNameConverter } from '@/utils/converter';
 

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { ACCESSTOKEN_KEY } from '@/constants';
 import { HOME_URL } from '@/constants/apiUrl';
-import { postTempArticleProps } from '@/hooks/tempArticle/usePostTempArticle';
+import { postTempArticleProps } from '@/hooks/queries/tempArticle/usePostTempArticle';
 import { TempArticleDetailResponse, TempArticleResponse } from '@/types/articleResponse';
 
 export const getTempArticles = async () => {

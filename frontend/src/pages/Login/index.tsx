@@ -2,7 +2,7 @@ import Card from '@/components/@common/Card/Card';
 import Loading from '@/components/@common/Loading/Loading';
 import LoginButton from '@/components/login/LoginButton/LoginButton';
 import { mobileTitleSecondary } from '@/constants/titleType';
-import useGetLoginURL from '@/hooks/login/useGetLoginURL';
+import useGetLoginURL from '@/hooks/queries/login/useGetLoginURL';
 import * as S from '@/pages/Login/index.styles';
 import { LoginCardStyle } from '@/styles/cardStyle';
 

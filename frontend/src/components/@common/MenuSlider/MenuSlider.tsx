@@ -6,7 +6,7 @@ import { useRecoilValue } from 'recoil';
 import * as S from '@/components/@common/MenuSlider/MenuSlider.styles';
 import { ACCESSTOKEN_KEY } from '@/constants';
 import { URL } from '@/constants/url';
-import useDeleteRefreshToken from '@/hooks/login/useDeleteRefreshToken';
+import useDeleteRefreshToken from '@/hooks/queries/login/useDeleteRefreshToken';
 import { getUserIsLogin } from '@/store/userState';
 
 export interface MenuSliderProps {

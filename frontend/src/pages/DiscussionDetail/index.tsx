@@ -3,8 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Loading from '@/components/@common/Loading/Loading';
 import Vote from '@/components/vote/Vote/Vote';
 import VoteGenerateButton from '@/components/vote/VoteGenerateButton/VoteGenerateButton';
-import useGetDetailArticle from '@/hooks/article/useGetDetailArticle';
-import useGetDetailComment from '@/hooks/comment/useGetDetailComment';
+import useGetDetailArticle from '@/hooks/queries/article/useGetDetailArticle';
+import useGetDetailComment from '@/hooks/queries/comment/useGetDetailComment';
 import Detail from '@/pages/Detail';
 
 const DiscussionDetail = () => {

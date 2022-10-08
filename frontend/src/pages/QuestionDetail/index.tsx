@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 
-import useGetDetailArticle from '@/hooks/article/useGetDetailArticle';
-import useGetDetailComment from '@/hooks/comment/useGetDetailComment';
+import useGetDetailArticle from '@/hooks/queries/article/useGetDetailArticle';
+import useGetDetailComment from '@/hooks/queries/comment/useGetDetailComment';
 import Detail from '@/pages/Detail/index';
 
 const QuestionDetail = () => {

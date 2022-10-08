@@ -4,7 +4,7 @@ import Loading from '@/components/@common/Loading/Loading';
 import MyCategoryTab from '@/components/user/MyCategoryTab/MyCategoryTab';
 import ArticleBox from '@/components/user/UserArticleBox/UserArticleBox';
 import UserProfile from '@/components/user/UserProfile/UserProfile';
-import useGetUserInfo from '@/hooks/user/useGetUserInfo';
+import useGetUserInfo from '@/hooks/queries/user/useGetUserInfo';
 import * as S from '@/pages/MyPage/index.styles';
 import { CategoryType } from '@/types/myPage';
 

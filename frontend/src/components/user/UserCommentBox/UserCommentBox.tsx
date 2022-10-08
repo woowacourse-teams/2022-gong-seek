@@ -2,7 +2,7 @@ import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import * as S from '@/components/user/UserCommentBox/UserCommentBox.styles';
 import UserCommentItem from '@/components/user/UserCommentItem/UserCommentItem';
-import useGetUserComments from '@/hooks/user/useGetUserComments';
+import useGetUserComments from '@/hooks/queries/user/useGetUserComments';
 
 const UserCommentBox = () => {
 	const {

@@ -4,8 +4,8 @@ import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import TemporaryArticleItem from '@/components/tempArticle/TemporaryArticleItem/TemporaryArticleItem';
 import * as S from '@/components/tempArticle/TemporaryArticleList/TemporaryArticleList.styles';
-import useDeleteTempArticle from '@/hooks/tempArticle/useDeleteTempArticle';
-import useGetTempArticles from '@/hooks/tempArticle/useGetTempArticles';
+import useDeleteTempArticle from '@/hooks/queries/tempArticle/useDeleteTempArticle';
+import useGetTempArticles from '@/hooks/queries/tempArticle/useGetTempArticles';
 
 const TemporaryArticleList = () => {
 	const { data, isLoading } = useGetTempArticles();
