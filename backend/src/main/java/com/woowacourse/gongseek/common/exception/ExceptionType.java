@@ -20,7 +20,6 @@ import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
 import com.woowacourse.gongseek.comment.exception.CommentNullOrEmptyException;
 import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
-import com.woowacourse.gongseek.config.exception.NotFoundProcessException;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.member.exception.NameNullOrEmptyException;
 import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
