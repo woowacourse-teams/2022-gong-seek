@@ -12,8 +12,10 @@ export const Dimmer = styled.div`
 	background-color: ${({ theme }) => theme.colors.GRAY_500};
 
 	z-index: ${({ theme }) => theme.zIndex.MENU_SLIDER_BACKGROUND};
+`;
 
+export const Container = styled.div<{ isMobileOnly: boolean }>`
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
-		display: none;
+		display: ${({ isMobileOnly }) => (isMobileOnly ? 'none' : 'block')};
 	}
 `;

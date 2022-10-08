@@ -19,7 +19,7 @@ const MODAL_COMPONENTS: any = {
 
 const GlobalModal = () => {
 	const [modal, setModal] = useRecoilState(modalState);
-	const { modalProps, modalType } = modal ?? {};
+	const { modalProps, modalType, isMobileOnly } = modal ?? {};
 
 	useEffect(() => {
 		if (modalType) {
@@ -41,10 +41,10 @@ const GlobalModal = () => {
 	};
 
 	return (
-		<>
+		<S.Container isMobileOnly={isMobileOnly || false}>
 			<S.Dimmer onClick={() => setModal(null)} />
 			<ModalPortal modalId={modalType}>{renderComponent()}</ModalPortal>
-		</>
+		</S.Container>
 	);
 };
 
