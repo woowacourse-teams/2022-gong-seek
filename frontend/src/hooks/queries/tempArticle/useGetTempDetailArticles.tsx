@@ -28,7 +28,7 @@ const useGetTempDetailArticles = ({
 		AxiosResponse<TempArticleDetailResponse>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(['temp-detail-article', tempArticleId], () => getTempDetailArticle({ id: tempArticleId }), {
-		enabled: typeof tempArticleId !== 'undefined',
+		enabled: typeof tempArticleId === 'number',
 	});
 
 	useEffect(() => {
