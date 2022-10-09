@@ -1,4 +1,4 @@
-import React, { Suspense, useRef } from 'react';
+import React, { Suspense, useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
@@ -16,11 +16,16 @@ const PopularArticle = React.lazy(
 );
 
 const Home = () => {
+	const [currentCategory, setCurrentCategory] = useState('question');
+	const [sortIndex, setSortIndex] = useState('최신순');
 	const endFlag = useRef<HTMLDivElement>(null);
 	const navigate = useNavigate();
 
-	const { data, currentCategory, setCurrentCategory, sortIndex, setSortIndex, fetchNextPage } =
-		useGetAllArticles();
+	const { data, fetchNextPage, refetch } = useGetAllArticles({ currentCategory, sortIndex });
+
+	useEffect(() => {
+		refetch();
+	}, [sortIndex, currentCategory]);
 
 	return (
 		<S.Container ref={endFlag}>

@@ -7,10 +7,12 @@ import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { infiniteArticleResponse } from '@/types/articleResponse';
 
-const useGetAllArticles = () => {
-	const [currentCategory, setCurrentCategory] = useState('question');
-	const [sortIndex, setSortIndex] = useState('최신순');
+interface useGetAllArticlesProps {
+	currentCategory: string;
+	sortIndex: string;
+}
 
+const useGetAllArticles = ({ currentCategory, sortIndex }: useGetAllArticlesProps) => {
 	const { data, isError, error, refetch, fetchNextPage } = useInfiniteQuery<
 		infiniteArticleResponse,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
@@ -46,16 +48,9 @@ const useGetAllArticles = () => {
 
 	useThrowCustomError(isError, error);
 
-	useEffect(() => {
-		refetch();
-	}, [currentCategory, sortIndex]);
-
 	return {
 		data,
-		currentCategory,
-		setCurrentCategory,
-		sortIndex,
-		setSortIndex,
+		refetch,
 		fetchNextPage,
 	};
 };
