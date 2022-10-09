@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import reactDom from 'react-dom';
 
-import { postImageUrlConverter } from '@/api/image';
 import AnonymousCheckBox from '@/components/@common/AnonymousCheckBox/AnonymousCheckBox';
 import ToastUiEditor from '@/components/@common/ToastUiEditor/ToastUiEditor';
 import * as S from '@/components/comment/CommentInputModal/CommentInputModal.styles';
+import useConvertImageUrl from '@/hooks/common/useConvertImageUrl';
 import useSnackBar from '@/hooks/common/useSnackBar';
 import usePostCommentInputModal from '@/hooks/queries/comment/usePostCommentInputModal';
 import usePutCommentInputModal from '@/hooks/queries/comment/usePutCommentInputModal';
@@ -59,19 +59,7 @@ const CommentInputModal = ({
 		}
 	});
 
-	useEffect(() => {
-		if (commentContent.current) {
-			commentContent.current.getInstance().removeHook('addImageBlobHook');
-			commentContent.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
-				(async () => {
-					const formData = new FormData();
-					formData.append('imageFile', blob);
-					const url = await postImageUrlConverter(formData);
-					callback(url, 'alt-text');
-				})();
-			});
-		}
-	}, [commentContent]);
+	useConvertImageUrl(commentContent);
 
 	if (commentModal === null) {
 		throw new Error('모달을 찾지 못하였습니다.');

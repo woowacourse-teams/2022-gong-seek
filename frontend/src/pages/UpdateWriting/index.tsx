@@ -1,11 +1,10 @@
-import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { postImageUrlConverter } from '@/api/image';
 import Card from '@/components/@common/Card/Card';
 import Loading from '@/components/@common/Loading/Loading';
 import ToastUiEditor from '@/components/@common/ToastUiEditor/ToastUiEditor';
 import HashTag from '@/components/hashTag/HashTag/HashTag';
+import useConvertImageUrl from '@/hooks/common/useConvertImageUrl';
 import usePostWritingArticle from '@/hooks/queries/article/usePostUpdateWritingArticle';
 import * as S from '@/pages/WritingArticles/index.styles';
 import { WritingCategoryCardStyle, WritingTitleCardStyle } from '@/styles/cardStyle';
@@ -31,20 +30,7 @@ const UpdateWriting = () => {
 		handleUpdateButtonClick,
 	} = usePostWritingArticle();
 
-	useEffect(() => {
-		if (content.current) {
-			content.current.getInstance().removeHook('addImageBlobHook');
-			content.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
-				(async () => {
-					const formData = new FormData();
-
-					formData.append('imageFile', blob);
-					const url = await postImageUrlConverter(formData);
-					callback(url, 'alt-text');
-				})();
-			});
-		}
-	}, [content]);
+	useConvertImageUrl(content);
 
 	if (isLoading) {
 		return <Loading />;
