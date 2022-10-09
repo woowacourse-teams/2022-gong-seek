@@ -1,105 +1,57 @@
-import { useEffect, useState } from 'react';
+import { AxiosResponse } from 'axios';
+import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { postImageUrlConverter } from '@/api/image';
 import AnonymousCheckBox from '@/components/@common/AnonymousCheckBox/AnonymousCheckBox';
 import Card from '@/components/@common/Card/Card';
 import Loading from '@/components/@common/Loading/Loading';
 import ToastUiEditor from '@/components/@common/ToastUiEditor/ToastUiEditor';
 import HashTag from '@/components/hashTag/HashTag/HashTag';
+import useAutoSaveTempArticle from '@/hooks/common/useAutoSaveTempArticle';
+import useConvertImageUrl from '@/hooks/common/useConvertImageUrl';
 import useSnackBar from '@/hooks/common/useSnackBar';
 import usePostWritingArticles from '@/hooks/queries/article/usePostWritingArticles';
 import useGetTempDetailArticles from '@/hooks/queries/tempArticle/useGetTempDetailArticles';
 import usePostTempArticle from '@/hooks/queries/tempArticle/usePostTempArticle';
 import * as S from '@/pages/WritingArticles/index.styles';
 import { WritingCategoryCardStyle, WritingTitleCardStyle } from '@/styles/cardStyle';
+import { TempArticleDetailResponse } from '@/types/articleResponse';
+import { validatedTitleInput } from '@/utils/validateInput';
+import { Editor } from '@toast-ui/react-editor';
 
 const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 	const { category } = useParams();
 	const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
 	const [tempArticleId, setTempArticleId] = useState<'' | number>(tempId);
 	const [initContent, setInitContent] = useState<string>('');
+	const [title, setTitle] = useState('');
+	const [categoryOption, setCategoryOption] = useState<string>(category ? category : '');
+	const [isValidTitleInput, setIsValidTitleInput] = useState(true);
+	const [hashTags, setHashTags] = useState<string[]>([]);
+
+	const titleInputRef = useRef<HTMLInputElement>(null);
+	const content = useRef<Editor | null>(null);
+
 	const { showSnackBar } = useSnackBar();
+	const { isLoading, mutate: postMutate } = usePostWritingArticles({ categoryOption });
+	const { saveTempArticleId } = usePostTempArticle({ tempArticleId, setTempArticleId });
 
-	const {
-		isLoading,
-		content,
-		handleSubmitButtonClick,
-		title,
-		isValidTitleInput,
-		setTitle,
-		titleInputRef,
-		categoryOption,
-		setCategoryOption,
-		hashTags,
-		setHashTags,
-	} = usePostWritingArticles({ category, isAnonymous });
+	const setWritingArticlesInfo = (tempArticleData: AxiosResponse<TempArticleDetailResponse>) => {
+		setTitle(tempArticleData.data.title);
+		setHashTags(tempArticleData.data.tag.filter((item) => item !== ''));
+		setInitContent(tempArticleData.data.content);
+		setIsAnonymous(tempArticleData.data.isAnonymous);
+		setCategoryOption(tempArticleData.data.category);
+	};
 
-	const {
-		saveTempArticleId,
-		isSuccess: isTempArticleSavedSuccess,
-		isError: isTempArticleSavedError,
-		isLoading: isTempArticleSavedLoading,
-	} = usePostTempArticle({ tempArticleId, setTempArticleId });
-
-	const {
-		data: tempArticleData,
-		isLoading: isTempDetailArticleLoading,
-		isSuccess: isTempDetailArticleSuccess,
-		mutate: getTempDetailArticle,
-	} = useGetTempDetailArticles({ tempArticleId });
-
-	useEffect(() => {
-		const timerInterval = setInterval(handleTempSavedButtonClick, 120000);
-
-		return () => clearInterval(timerInterval);
-	}, []);
-
-	useEffect(() => {
-		if (typeof tempArticleId === 'number') {
-			getTempDetailArticle({ tempArticleId });
+	const setEditorContent = (
+		content: Editor | null,
+		tempArticleData: AxiosResponse<TempArticleDetailResponse>,
+	) => {
+		if (content && tempArticleData) {
+			content.getInstance().setMarkdown(tempArticleData.data.content);
 		}
-	}, []);
-
-	useEffect(() => {
-		(() => {
-			window.addEventListener('beforeunload', preventRefresh);
-		})();
-
-		return () => {
-			window.removeEventListener('beforeunload', preventRefresh);
-		};
-	}, []);
-
-	useEffect(() => {
-		if (isTempDetailArticleSuccess && tempArticleData && tempArticleData.data) {
-			setTitle(tempArticleData.data.title);
-			setHashTags(tempArticleData.data.tag.filter((item) => item !== ''));
-			setInitContent(tempArticleData.data.content);
-			setIsAnonymous(tempArticleData.data.isAnonymous);
-			setCategoryOption(tempArticleData.data.category);
-		}
-		if (content.current && tempArticleData) {
-			content.current.getInstance().setMarkdown(tempArticleData.data.content);
-		}
-	}, [isTempDetailArticleSuccess]);
-
-	useEffect(() => {
-		if (content.current) {
-			content.current.getInstance().removeHook('addImageBlobHook');
-			content.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
-				(async () => {
-					const formData = new FormData();
-
-					formData.append('imageFile', blob);
-					const url = await postImageUrlConverter(formData);
-					callback(url, 'alt-text');
-				})();
-			});
-		}
-	}, [content]);
-
-	if (isLoading) return <Loading />;
+	};
 
 	const handleTempSavedButtonClick = () => {
 		if (titleInputRef.current && titleInputRef.current.value === '') {
@@ -120,10 +72,46 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 		}
 	};
 
-	const preventRefresh = (e: BeforeUnloadEvent) => {
-		e.preventDefault();
-		e.returnValue = '';
+	useGetTempDetailArticles({
+		tempArticleId,
+		setWritingArticlesInfo,
+		setEditorContent,
+		content: content.current,
+	});
+
+	useConvertImageUrl(content);
+	useAutoSaveTempArticle(handleTempSavedButtonClick);
+
+	if (typeof category === 'undefined') {
+		throw new Error('카테고리가 존재하지 않습니다.');
+	}
+
+	const handleSubmitButtonClick = (categoryOption: string, tempArticleId: number | '') => {
+		if (content.current === null) {
+			return;
+		}
+
+		if (!validatedTitleInput(title)) {
+			setIsValidTitleInput(false);
+
+			if (titleInputRef.current !== null) {
+				titleInputRef.current.focus();
+			}
+
+			return;
+		}
+		setIsValidTitleInput(true);
+		postMutate({
+			title: title,
+			category: categoryOption,
+			content: content.current.getInstance().getMarkdown(),
+			tag: hashTags,
+			isAnonymous,
+			tempArticleId,
+		});
 	};
+
+	if (isLoading) return <Loading />;
 
 	return (
 		<S.Container>
