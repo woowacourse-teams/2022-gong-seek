@@ -34,7 +34,12 @@ const usePostTempArticle = ({
 			isAnonymous: boolean;
 			tempArticleId: number | '';
 		}
-	>(['temp-article', tempArticleId], postTempArticle);
+	>(['temp-article', tempArticleId], postTempArticle, {
+		onSuccess: (data) => {
+			setTempArticleId(data.data.id);
+			showSnackBar('작성 중이신 글이 임시저장 되었습니다');
+		},
+	});
 	const { showSnackBar } = useSnackBar();
 
 	useThrowCustomError(isError, error);
@@ -52,15 +57,7 @@ const usePostTempArticle = ({
 		tag: string[];
 		isAnonymous: boolean;
 	}) => {
-		mutate(
-			{ title, content, category, tag, isAnonymous, tempArticleId },
-			{
-				onSuccess: (data) => {
-					setTempArticleId(data.data.id);
-					showSnackBar('작성 중이신 글이 임시저장 되었습니다');
-				},
-			},
-		);
+		mutate({ title, content, category, tag, isAnonymous, tempArticleId });
 	};
 
 	return { isSuccess, isError, isLoading, saveTempArticleId };
