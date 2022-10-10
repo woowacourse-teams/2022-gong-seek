@@ -1,5 +1,5 @@
 import { PropsWithOptionalChildren } from 'gongseek-types';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
