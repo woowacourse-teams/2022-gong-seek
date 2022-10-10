@@ -28,8 +28,8 @@
 ## 테크 스택
 
 ### 프론트엔드 🌈
+![공식기술스택 002](https://user-images.githubusercontent.com/60773373/194794503-34147348-c00a-40ab-b6d4-2327e6e453da.jpeg)
 
-![기술스택 001](https://user-images.githubusercontent.com/60773373/190334994-c1d6611b-7906-462c-9996-3ff70b68ccb2.png)
 
 
 ### 백엔드 🔥
@@ -48,6 +48,7 @@
 |1차| <a href="https://www.youtube.com/watch?v=REILvP6YXy4&t=7s">1차 데모 영상</a>|
 |2차| <a href="https://www.youtube.com/watch?v=6fya54RMtzA&list=PLgXGHBqgT2TsWUA5puZimG3DDlJTd370Q&index=34">2차 데모 영상</a>|
 |3차| <a href="https://www.youtube.com/watch?v=ZA48GkZuEYY&list=PLgXGHBqgT2TsWUA5puZimG3DDlJTd370Q&index=18">3차 데모 영상</a>|
+
 
 <hr> 
 
