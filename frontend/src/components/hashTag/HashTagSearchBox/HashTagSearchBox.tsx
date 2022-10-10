@@ -52,15 +52,13 @@ const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 					))}
 
 				{targets.length > 5 && !isOpen && (
-					<S.HashTagButton
+					<S.OpenButton
 						onClick={() => {
 							setIsOpen(!isOpen);
 						}}
-					>
-						더보기
-					</S.HashTagButton>
+					/>
 				)}
-				{isOpen && <S.HashTagButton onClick={() => setIsOpen(!isOpen)}>닫기</S.HashTagButton>}
+				{isOpen && <S.CloseButton onClick={() => setIsOpen(!isOpen)} />}
 			</S.HashTagLists>
 		</S.Container>
 	);
