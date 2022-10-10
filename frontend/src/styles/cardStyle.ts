@@ -76,7 +76,7 @@ export const WritingCategoryCardStyle: CardProps = {
 	hasActiveAnimation: false,
 	media: {
 		minWidth: theme.breakpoints.DESKTOP_LARGE,
-		width: '10%',
+		width: '25%',
 		height: 'fit-content',
 	},
 };
@@ -93,7 +93,7 @@ export const WritingHashTagCardStyle: CardProps = {
 	hasActiveAnimation: false,
 	media: {
 		minWidth: theme.breakpoints.DESKTOP_LARGE,
-		width: '95%',
+		width: '97%',
 		height: 'fit-content',
 	},
 };

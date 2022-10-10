@@ -109,6 +109,7 @@ const zIndex = {
 	COMMON_INPUT_MODAL: 111,
 	ARTICLE_ITEM_LIST: 50,
 	CATEGORY_TITLE_CONTAINER: 90,
+	SELECTOR_BUTTON: -100,
 };
 
 export const theme = {
