@@ -19,7 +19,7 @@ export const Container = styled.div`
 
 		padding: ${theme.size.SIZE_006};
 
-		gap: ${theme.size.SIZE_010};
+		gap: ${theme.size.SIZE_020};
 
 		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
 			width: 80%;
