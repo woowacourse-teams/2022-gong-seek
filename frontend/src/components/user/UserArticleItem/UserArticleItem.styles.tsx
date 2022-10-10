@@ -1,5 +1,6 @@
 import { AiOutlineMessage } from 'react-icons/ai';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
@@ -10,28 +11,37 @@ export const Container = styled.div`
 	width: 90%;
 	height: fit-content;
 
-	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
-	border-radius: ${({ theme }) => theme.size.SIZE_004};
+	${({ theme }) => css`
+		border: ${theme.size.SIZE_001} solid ${theme.colors.GRAY_500};
+		border-radius: ${theme.size.SIZE_004};
 
-	background-color: ${({ theme }) => theme.colors.GRAY_100};
+		background-color: ${theme.colors.GRAY_100};
 
-	padding: ${({ theme }) => theme.size.SIZE_006};
+		padding: ${theme.size.SIZE_006};
 
-	gap: ${({ theme }) => theme.size.SIZE_010};
+		gap: ${theme.size.SIZE_010};
+
+		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
+			width: 80%;
+			justify-content: center;
+		}
+	`}
 `;
 
 export const CategoryName = styled.div<{ isQuestion: boolean }>`
 	width: fit-content;
 	height: fit-content;
 
-	color: ${({ theme }) => theme.colors.WHITE};
+	${({ theme, isQuestion }) => css`
+		color: ${theme.colors.WHITE};
 
-	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
+		border: ${theme.size.SIZE_001} solid ${theme.colors.GRAY_500};
+		border-radius: ${theme.size.SIZE_010};
 
-	background-color: ${(props) => (props.isQuestion ? '#FF0063' : '#3AB0FF')};
+		background-color: ${isQuestion ? `${theme.colors.RED_600}` : `${theme.colors.BLUE_500}`};
 
-	padding: ${({ theme }) => theme.size.SIZE_004};
+		padding: ${theme.size.SIZE_004};
+	`}
 `;
 
 export const ArticleTitleBox = styled.div`
@@ -41,14 +51,16 @@ export const ArticleTitleBox = styled.div`
 
 export const ArticleTitle = styled.div`
 	width: 80%;
-	font-size: ${({ theme }) => theme.size.SIZE_016};
 
 	overflow: hidden;
 	word-break: break-all;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 
-	margin-left: ${({ theme }) => theme.size.SIZE_008};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_016};
+		margin-left: ${theme.size.SIZE_008};
+	`}
 `;
 
 export const ArticleSubInfo = styled.div`
@@ -57,8 +69,10 @@ export const ArticleSubInfo = styled.div`
 `;
 
 export const ArticleTime = styled.div`
-	font-size: ${({ theme }) => theme.size.SIZE_012};
-	color: ${({ theme }) => theme.colors.BLACK_400};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_012};
+		color: ${theme.colors.BLACK_400};
+	`}
 `;
 
 export const ArticleRightBox = styled.div`
@@ -72,8 +86,10 @@ export const CommentBox = styled.div`
 	gap: ${({ theme }) => theme.size.SIZE_006};
 `;
 export const CommentIcon = styled(AiOutlineMessage)`
-	font-size: ${({ theme }) => theme.size.SIZE_020};
-	margin-top: -${({ theme }) => theme.size.SIZE_006};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_020};
+		margin-top: -${theme.size.SIZE_006};
+	`}
 `;
 export const CommentCount = styled.div`
 	font-size: ${({ theme }) => theme.size.SIZE_014};
