@@ -1,6 +1,7 @@
-import { AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineDelete, AiOutlineEdit, AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
@@ -22,12 +23,13 @@ export const Header = styled.div`
 	width: 90%;
 `;
 
-export const CategoryTitle = styled.h2<{ category: string }>`
-	font-size: ${({ theme }) => theme.size.SIZE_020};
+export const CategoryTitle = styled.h2<{ isQuestion: boolean }>`
 	font-weight: 800;
 
-	color: ${({ theme, category }) =>
-		category === '토론' ? theme.colors.BLUE_500 : theme.colors.RED_500};
+	${({ theme, isQuestion }) => css`
+		font-size: ${theme.size.SIZE_020};
+		color: ${isQuestion ? `${theme.colors.RED_600}` : `${theme.colors.BLUE_500}`};
+	`}
 `;
 
 export const UserProfile = styled.div`
@@ -37,15 +39,16 @@ export const UserProfile = styled.div`
 `;
 
 export const UserProfileImg = styled.img`
-	width: ${({ theme }) => theme.size.SIZE_032};
-	height: ${({ theme }) => theme.size.SIZE_032};
-
 	border-radius: 50%;
-
-	margin-right: ${({ theme }) => theme.size.SIZE_014};
 
 	object-fit: cover;
 	object-position: center;
+
+	${({ theme }) => css`
+		width: ${theme.size.SIZE_032};
+		height: ${theme.size.SIZE_032};
+		margin-right: ${theme.size.SIZE_014};
+	`}
 `;
 
 export const UserName = styled.span``;
@@ -60,12 +63,14 @@ export const ArticleInfo = styled.div`
 `;
 
 export const ArticleTitle = styled.h3`
-	font-size: ${({ theme }) => theme.size.SIZE_014};
-	line-height: ${({ theme }) => theme.size.SIZE_026};
-
-	color: ${({ theme }) => theme.colors.BLACK_600};
-
 	word-break: break-all;
+
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_014};
+		line-height: ${theme.size.SIZE_026};
+
+		color: ${theme.colors.BLACK_600};
+	`}
 `;
 
 export const ArticleDetailInfo = styled.div`
@@ -76,10 +81,13 @@ export const ArticleDetailInfo = styled.div`
 
 export const DetailBox = styled.span`
 	font-weight: 300;
-	font-size: ${({ theme }) => theme.size.SIZE_012};
-
-	color: ${({ theme }) => theme.colors.BLACK_600};
 	opacity: 0.5;
+
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_012};
+
+		color: ${theme.colors.BLACK_600};
+	`}
 `;
 
 export const TextViewerBox = styled.div`
@@ -96,6 +104,8 @@ export const Footer = styled.div`
 	justify-content: space-between;
 
 	width: 100%;
+
+	margin-bottom: ${({ theme }) => theme.size.SIZE_020};
 `;
 
 export const WritingOrderBox = styled.div``;
@@ -103,24 +113,35 @@ export const WritingOrderBox = styled.div``;
 export const ButtonWrapper = styled.div`
 	display: flex;
 
-	gap: ${({ theme }) => theme.size.SIZE_004};
+	gap: ${({ theme }) => theme.size.SIZE_010};
 `;
 
-export const Button = styled.div`
-	border: none;
+export const ModifyButton = styled(AiOutlineEdit)`
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_024};
+		color: ${theme.colors.BLACK_600};
 
-	font-size: ${({ theme }) => theme.size.SIZE_012};
-	text-decoration: none;
+		&:hover,
+		&:active {
+			color: ${theme.colors.PURPLE_500};
+			opacity: 1;
+			cursor: pointer;
+		}
+	`}
+`;
 
-	background-color: transparent;
-	color: ${({ theme }) => theme.colors.BLACK_600};
-	opacity: 0.5;
+export const DeleteButton = styled(AiOutlineDelete)`
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_024};
+		color: ${theme.colors.BLACK_600};
 
-	&:hover,
-	&:active {
-		color: ${({ theme }) => theme.colors.PURPLE_500};
-		opacity: 1;
-	}
+		&:hover,
+		&:active {
+			color: ${theme.colors.PURPLE_500};
+			opacity: 1;
+			cursor: pointer;
+		}
+	`}
 `;
 
 export const LikeContentBox = styled.div`
@@ -136,9 +157,11 @@ export const EmptyHeart = styled(AiOutlineHeart)`
 `;
 
 export const FillHeart = styled(AiFillHeart)`
-	font-size: ${({ theme }) => theme.size.SIZE_024};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_024};
 
-	color: ${({ theme }) => theme.colors.RED_600};
+		color: ${theme.colors.RED_600};
+	`}
 `;
 
 export const HashTagListBox = styled.section`
@@ -151,11 +174,13 @@ export const HashTagListBox = styled.section`
 `;
 
 export const HashTagItem = styled.div`
-	font-size: ${({ theme }) => theme.size.SIZE_014};
-
 	background: transparent;
-	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
-	border-radius: ${({ theme }) => theme.size.SIZE_004};
 
-	padding: ${({ theme }) => theme.size.SIZE_004};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_014};
+		border: ${theme.size.SIZE_001} solid ${theme.colors.GRAY_500};
+		border-radius: ${theme.size.SIZE_004};
+
+		padding: ${theme.size.SIZE_004};
+	`}
 `;
