@@ -6,7 +6,9 @@ export default {
 	component: SearchBar,
 } as Meta;
 
-const Template: Story = (args) => <SearchBar {...args} />;
+const Template: Story<{ isValid: boolean }> = (args) => <SearchBar {...args} />;
 
 export const DefaultSearchBar = Template.bind({});
-DefaultSearchBar.args = {};
+DefaultSearchBar.args = {
+	isValid: true,
+};

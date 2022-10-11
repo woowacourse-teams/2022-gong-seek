@@ -13,7 +13,9 @@ export default {
 	],
 } as Meta;
 
-const Template: Story = (args) => <ToastUiEditor {...args} />;
+const Template: Story<{ initContent: string }> = (args) => <ToastUiEditor {...args} />;
 
 export const DefaultEditor = Template.bind({});
-DefaultEditor.args = {};
+DefaultEditor.args = {
+	initContent: 'dwdw',
+};

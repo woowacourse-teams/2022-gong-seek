@@ -14,13 +14,14 @@ export default {
 	],
 } as Meta;
 
-const Template: Story = (args) => <Vote {...args} />;
+const Template: Story<{ articleId: string }> = (args) => <Vote {...args} />;
 
 export const DefaultVote = Template.bind({});
-DefaultVote.args = {};
+DefaultVote.args = {
+	articleId: '1',
+};
 DefaultVote.parameters = {
 	msw: {
 		handlers: VoteHandler,
 	},
 };
-z;
