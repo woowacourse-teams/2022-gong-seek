@@ -2,6 +2,7 @@ package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.ArticleRepositoryCustom;
 import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
@@ -37,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ArticleRepositoryCustom articleRepositoryCustom;
     private final PagingArticleRepository pagingArticleRepository;
     private final MemberRepository memberRepository;
     private final TempArticleService tempArticleService;
@@ -68,7 +70,7 @@ public class ArticleService {
 
     public ArticleDto getOne(AppMember appMember, Long id) {
         articleRepository.addViews(id);
-        return pagingArticleRepository.findByIdWithAll(id, appMember.getPayload())
+        return articleRepositoryCustom.findByIdWithAll(id, appMember.getPayload())
                 .orElseThrow(() -> new ArticleNotFoundException(id));
     }
 
@@ -92,7 +94,7 @@ public class ArticleService {
 
     private Map<Long, List<String>> findTagNames(Slice<ArticlePreviewDto> articles) {
         List<Long> foundArticleIds = getArticleIds(articles);
-        return pagingArticleRepository.findTags(foundArticleIds);
+        return articleRepositoryCustom.findTags(foundArticleIds);
     }
 
     private List<Long> getArticleIds(Slice<ArticlePreviewDto> articles) {
@@ -170,7 +172,7 @@ public class ArticleService {
 
     private List<Long> getDeletedTagIds(List<Long> tagIds) {
         return tagIds.stream()
-                .filter(tagId -> !pagingArticleRepository.existsArticleByTagId(tagId))
+                .filter(tagId -> !articleRepositoryCustom.existsArticleByTagId(tagId))
                 .collect(Collectors.toList());
     }
 

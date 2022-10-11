@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.member.application;
 
-import com.woowacourse.gongseek.article.domain.repository.MyPageArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.ArticleRepositoryCustom;
 import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.Comment;
@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final MyPageArticleRepository myPageArticleRepository;
+    private final ArticleRepositoryCustom articleRepositoryCustom;
     private final CommentRepository commentRepository;
 
     public MemberDto getOne(AppMember appMember) {
@@ -41,7 +41,7 @@ public class MemberService {
 
     public MyPageArticlesResponse getArticles(AppMember appMember) {
         Member member = getMember(appMember);
-        List<MyPageArticleDto> myPageArticles = myPageArticleRepository.findAllByMemberIdWithCommentCount(
+        List<MyPageArticleDto> myPageArticles = articleRepositoryCustom.findAllByMemberIdWithCommentCount(
                 member.getId());
         return new MyPageArticlesResponse(myPageArticles);
     }

@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
-import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.ArticleRepositoryCustom;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.support.DatabaseCleaner;
@@ -16,32 +16,25 @@ import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.presentation.dto.TagsResponse;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestConstructor;
+import org.springframework.test.context.TestConstructor.AutowireMode;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
+@TestConstructor(autowireMode = AutowireMode.ALL)
+@RequiredArgsConstructor
 class TagServiceTest extends IntegrationTest {
 
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private ArticleRepository articleRepository;
-
-    @Autowired
-    private PagingArticleRepository pagingArticleRepository;
-
-    @Autowired
-    private TagRepository tagRepository;
-
-    @Autowired
-    private TagService tagService;
-
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
+    private final MemberRepository memberRepository;
+    private final ArticleRepository articleRepository;
+    private final ArticleRepositoryCustom articleRepositoryCustom;
+    private final TagRepository tagRepository;
+    private final TagService tagService;
+    private final DatabaseCleaner databaseCleaner;
 
     private Member member;
 
@@ -130,8 +123,8 @@ class TagServiceTest extends IntegrationTest {
 
         tagService.deleteAll(List.of(spring.getId(), java.getId()));
 
-        assertThat(pagingArticleRepository.existsArticleByTagId(spring.getId())).isFalse();
-        assertThat(pagingArticleRepository.existsArticleByTagId(java.getId())).isFalse();
-        assertThat(pagingArticleRepository.existsArticleByTagId(react.getId())).isTrue();
+        assertThat(articleRepositoryCustom.existsArticleByTagId(spring.getId())).isFalse();
+        assertThat(articleRepositoryCustom.existsArticleByTagId(java.getId())).isFalse();
+        assertThat(articleRepositoryCustom.existsArticleByTagId(react.getId())).isTrue();
     }
 }

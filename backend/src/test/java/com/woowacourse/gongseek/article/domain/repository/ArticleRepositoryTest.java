@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.support.RepositoryTest;
@@ -21,7 +20,7 @@ import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -32,7 +31,7 @@ import org.springframework.test.context.TestConstructor.AutowireMode;
 
 @SuppressWarnings("NonAsciiCharacters")
 @TestConstructor(autowireMode = AutowireMode.ALL)
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RepositoryTest
 class ArticleRepositoryTest {
 

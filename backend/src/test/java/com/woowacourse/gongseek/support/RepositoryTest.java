@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.support;
 
-import com.woowacourse.gongseek.article.domain.repository.MyPageArticleRepositoryImpl;
+import com.woowacourse.gongseek.article.domain.repository.ArticleRepositoryCustomImpl;
 import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepositoryImpl;
 import com.woowacourse.gongseek.config.JpaAuditingConfig;
 import com.woowacourse.gongseek.config.QuerydslConfig;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Import({JpaAuditingConfig.class, QuerydslConfig.class, PagingArticleRepositoryImpl.class,
-        MyPageArticleRepositoryImpl.class})
+        ArticleRepositoryCustomImpl.class})
 @DataJpaTest
 public @interface RepositoryTest {
 }

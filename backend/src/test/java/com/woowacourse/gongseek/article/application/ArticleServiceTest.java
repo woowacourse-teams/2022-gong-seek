@@ -11,6 +11,7 @@ import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.TempTags;
 import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.ArticleRepositoryCustom;
 import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
@@ -45,52 +46,36 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.TestConstructor;
+import org.springframework.test.context.TestConstructor.AutowireMode;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
+@TestConstructor(autowireMode = AutowireMode.ALL)
+@RequiredArgsConstructor
 public class ArticleServiceTest extends IntegrationTest {
 
-    @Autowired
-    private ArticleService articleService;
-
-    @Autowired
-    private ArticleRepository articleRepository;
-
-    @Autowired
-    private PagingArticleRepository pagingArticleRepository;
-
-    @Autowired
-    private TempArticleRepository tempArticleRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private VoteService voteService;
-
-    @Autowired
-    private VoteItemRepository voteItemRepository;
-
-    @Autowired
-    private VoteHistoryRepository voteHistoryRepository;
-
-    @Autowired
-    private TagRepository tagRepository;
-
-    @Autowired
-    private LikeService likeService;
-
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
+    private final ArticleService articleService;
+    private final ArticleRepository articleRepository;
+    private final PagingArticleRepository pagingArticleRepository;
+    private final ArticleRepositoryCustom articleRepositoryCustom;
+    private final TempArticleRepository tempArticleRepository;
+    private final MemberRepository memberRepository;
+    private final VoteService voteService;
+    private final VoteItemRepository voteItemRepository;
+    private final VoteHistoryRepository voteHistoryRepository;
+    private final TagRepository tagRepository;
+    private final LikeService likeService;
+    private final DatabaseCleaner databaseCleaner;
 
     private Member member;
 
@@ -404,7 +389,7 @@ public class ArticleServiceTest extends IntegrationTest {
         articleService.update(loginMember, new ArticleUpdateRequest("하이", "하이", List.of("JAVA", "backend")),
                 firstSavedArticle.getId());
 
-        ArticleDto articleDto = pagingArticleRepository.findByIdWithAll(firstSavedArticle.getId(), member.getId())
+        ArticleDto articleDto = articleRepositoryCustom.findByIdWithAll(firstSavedArticle.getId(), member.getId())
                 .get();
         List<String> existTagNames = articleDto.getTag();
 
@@ -483,7 +468,7 @@ public class ArticleServiceTest extends IntegrationTest {
 
         articleService.delete(loginMember, firstSavedArticle.getId());
 
-        Optional<ArticleDto> article = pagingArticleRepository.findByIdWithAll(firstSavedArticle.getId(),
+        Optional<ArticleDto> article = articleRepositoryCustom.findByIdWithAll(firstSavedArticle.getId(),
                 member.getId());
         assertAll(
                 () -> assertThat(article).isEmpty(),

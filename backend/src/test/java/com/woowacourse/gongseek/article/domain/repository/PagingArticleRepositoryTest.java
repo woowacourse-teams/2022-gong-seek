@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.like.domain.Like;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
@@ -15,13 +14,11 @@ import com.woowacourse.gongseek.support.RepositoryTest;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,7 +32,7 @@ import org.springframework.test.context.TestConstructor.AutowireMode;
 
 @SuppressWarnings("NonAsciiCharacters")
 @TestConstructor(autowireMode = AutowireMode.ALL)
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RepositoryTest
 public class PagingArticleRepositoryTest {
 
@@ -46,6 +43,7 @@ public class PagingArticleRepositoryTest {
 
     private final ArticleRepository articleRepository;
     private final PagingArticleRepository pagingArticleRepository;
+    private final ArticleRepositoryCustom articleRepositoryCustom;
     private final MemberRepository memberRepository;
     private final TagRepository tagRepository;
     private final LikeRepository likeRepository;
@@ -188,27 +186,6 @@ public class PagingArticleRepositoryTest {
     }
 
     @Test
-    void 특정_해시태그로_저장되어_있는_게시글이_있는지_확인한다() {
-        Article article = articleRepository.save(
-                new Article("title1", "content1", Category.QUESTION, member, false));
-        List<Tag> tags = List.of(new Tag("spring"), new Tag("java"));
-        List<Long> tagIds = tagRepository.saveAll(tags).stream()
-                .map(Tag::getId)
-                .collect(Collectors.toList());
-        article.addTag(new Tags(tags));
-
-        boolean firstResult = pagingArticleRepository.existsArticleByTagId(tagIds.get(0));
-        boolean secondResult = pagingArticleRepository.existsArticleByTagId(tagIds.get(1));
-        boolean thirdResult = pagingArticleRepository.existsArticleByTagId(999L);
-
-        assertAll(
-                () -> assertThat(firstResult).isTrue(),
-                () -> assertThat(secondResult).isTrue(),
-                () -> assertThat(thirdResult).isFalse()
-        );
-    }
-
-    @Test
     void 게시글을_추천순으로_조회하고_다음_데이터가_존재하지_않는다() {
         Article firstArticle = articleRepository.save(
                 new Article(TITLE, CONTENT, Category.QUESTION, member, false));
@@ -322,62 +299,6 @@ public class PagingArticleRepositoryTest {
     }
 
     @Test
-    void 게시글_단건_조회_시_작성자_투표생성여부_좋아요여부_좋아요갯수를_반환한다() {
-        Article article = articleRepository.save(
-                new Article("title1", "content1", Category.DISCUSSION, member, false));
-        Tag firstTag = new Tag("Spring");
-        Tag secondTag = new Tag("Rennon");
-        tagRepository.saveAll(List.of(firstTag, secondTag));
-        article.addTag(new Tags(List.of(firstTag, secondTag)));
-        likeRepository.save(new Like(article, member));
-
-        ArticleDto foundArticleDto = pagingArticleRepository.findByIdWithAll(article.getId(), member.getId()).get();
-
-        assertThat(foundArticleDto)
-                .usingRecursiveComparison()
-                .ignoringFields("createdAt", "updatedAt")
-                .isEqualTo(
-                        new ArticleDto(
-                                article.getTitle(),
-                                List.of("SPRING", "RENNON"),
-                                member.getName(),
-                                member.getAvatarUrl(),
-                                article.getContent(),
-                                true,
-                                article.getViews(),
-                                false,
-                                true,
-                                article.isAnonymous(),
-                                1L,
-                                LocalDateTime.now(),
-                                LocalDateTime.now()
-                        )
-                );
-    }
-
-    @Test
-    void 존재하지_않는_게시글_식별자로_단건_조회_시_Optional을_반환한다() {
-        Optional<ArticleDto> articleDto = pagingArticleRepository.findByIdWithAll(500L, member.getId());
-
-        assertThat(articleDto).isEmpty();
-    }
-
-    @Test
-    void 게시글의_아이디로_태그를_찾을_수_있다() {
-        Article article = articleRepository.save(
-                new Article("title", "content", Category.DISCUSSION, member, false));
-        Tag tag = tagRepository.save(new Tag("spring"));
-        article.addTag(new Tags(List.of(tag)));
-
-        testEntityManager.flush();
-        testEntityManager.clear();
-
-        List<String> tags = pagingArticleRepository.findTagNamesByArticleId(article.getId());
-
-        assertThat(tags).isEqualTo(article.getTagNames());
-    }
-
-    @Test
     void 조회한_게시글의_태그들을_검색한다() {
         Article firstArticle = articleRepository.save(
                 new Article("title1", "content1", Category.QUESTION, member, false));
@@ -396,7 +317,7 @@ public class PagingArticleRepositoryTest {
                 .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
-        Map<Long, List<String>> foundTags = pagingArticleRepository.findTags(articleIds);
+        Map<Long, List<String>> foundTags = articleRepositoryCustom.findTags(articleIds);
         assertAll(
                 () -> assertThat(foundTags.get(firstArticle.getId()).containsAll(tags)),
                 () -> assertThat(foundTags.get(secondArticle.getId()).containsAll(tags))
