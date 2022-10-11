@@ -54,7 +54,7 @@ dependencies {
     implementation 'software.amazon.awssdk:s3'
 
     // testcontainers
-    testImplementation "org.testcontainers:junit-jupiter:1.17.4"
+    testImplementation "org.testcontainers:junit-jupiter:1.17.3"
     testImplementation group: 'org.testcontainers', name: 'localstack', version: '1.17.3'
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
@@ -91,9 +91,6 @@ dependencies {
 
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
-    // testcontainers
-    testImplementation "org.testcontainers:junit-jupiter:1.17.3"
 }
 
 tasks.named('test') {
