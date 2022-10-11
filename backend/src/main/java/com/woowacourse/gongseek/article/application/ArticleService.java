@@ -75,7 +75,7 @@ public class ArticleService {
                                       Pageable pageable, AppMember appMember) {
         Slice<ArticlePreviewDto> articles = articleRepository.findAllByPage(cursorId, cursorViews, category, sortType,
                 appMember.getPayload(), pageable);
-        Map<Long, List<String>> tags = findByTags(articles);
+        Map<Long, List<String>> tags = findTagNames(articles);
         List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tags);
         return new ArticlePageResponse(articleResponses, articles.hasNext());
     }
@@ -87,7 +87,7 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    private Map<Long, List<String>> findByTags(Slice<ArticlePreviewDto> articles) {
+    private Map<Long, List<String>> findTagNames(Slice<ArticlePreviewDto> articles) {
         List<Long> foundArticleIds = getArticleIds(articles);
         return articleRepository.findTags(foundArticleIds);
     }
@@ -104,8 +104,8 @@ public class ArticleService {
         Slice<ArticlePreviewDto> articles = articleRepository.findAllByLikes(cursorId, likes, category,
                 appMember.getPayload(),
                 pageable);
-        Map<Long, List<String>> tags = findByTags(articles);
-        List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tags);
+        Map<Long, List<String>> tagNames = findTagNames(articles);
+        List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tagNames);
         return new ArticlePageResponse(articleResponses, articles.hasNext());
     }
 
@@ -117,8 +117,8 @@ public class ArticleService {
         }
         Slice<ArticlePreviewDto> articles = articleRepository.searchByContainingText(cursorId, searchText,
                 appMember.getPayload(), pageable);
-        Map<Long, List<String>> tags = findByTags(articles);
-        List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tags);
+        Map<Long, List<String>> tagNames = findTagNames(articles);
+        List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tagNames);
         return new ArticlePageResponse(articleResponses, articles.hasNext());
     }
 
@@ -130,8 +130,8 @@ public class ArticleService {
         }
         Slice<ArticlePreviewDto> articles = articleRepository.searchByAuthor(cursorId, authorName,
                 appMember.getPayload(), pageable);
-        Map<Long, List<String>> tags = findByTags(articles);
-        List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tags);
+        Map<Long, List<String>> tagNames = findTagNames(articles);
+        List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tagNames);
         return new ArticlePageResponse(articleResponses, articles.hasNext());
     }
 
@@ -139,8 +139,8 @@ public class ArticleService {
     public ArticlePageResponse searchByTag(Long cursorId, Pageable pageable, String tagsText, AppMember appMember) {
         Slice<ArticlePreviewDto> articles = articleRepository.searchByTag(cursorId, appMember.getPayload(),
                 extract(tagsText), pageable);
-        Map<Long, List<String>> tags = findByTags(articles);
-        List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tags);
+        Map<Long, List<String>> tagNames = findTagNames(articles);
+        List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tagNames);
         return new ArticlePageResponse(articleResponses, articles.hasNext());
     }
 
@@ -161,8 +161,6 @@ public class ArticleService {
     }
 
     private void deleteUnusedTags(List<Long> existingTagIds, List<Long> updatedTagIds) {
-//        List<Long> deletedTagIds = new ArrayList<>(existingTagIds);
-//        deletedTagIds.removeAll(updatedTagIds);
         existingTagIds.removeAll(updatedTagIds);
         List<Long> deletedTagIds = getDeletedTagIds(existingTagIds);
         tagService.deleteAll(deletedTagIds);

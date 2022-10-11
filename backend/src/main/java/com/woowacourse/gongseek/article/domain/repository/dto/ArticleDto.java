@@ -13,9 +13,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ArticleDto {
 
-    private static final String ANONYMOUS_NAME = "익명";
-    private static final String ANONYMOUS_AVATAR_URL = "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png";
-
     private String title;
 
     private List<String> tag;
@@ -58,7 +55,7 @@ public class ArticleDto {
         this(
                 title,
                 tags,
-                new AuthorDto(memberName, memberAvatarUrl),
+                AuthorDto.of(memberName, memberAvatarUrl, isAnonymous),
                 content,
                 isAuthor,
                 views,
@@ -68,12 +65,5 @@ public class ArticleDto {
                 createdAt,
                 updatedAt
         );
-        checkAnonymous(isAnonymous);
-    }
-
-    public void checkAnonymous(Boolean isAnonymous) {
-        if (isAnonymous) {
-            this.author = new AuthorDto(ANONYMOUS_NAME, ANONYMOUS_AVATAR_URL);
-        }
     }
 }
