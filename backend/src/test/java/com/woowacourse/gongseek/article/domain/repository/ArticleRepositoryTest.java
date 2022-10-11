@@ -247,7 +247,7 @@ class ArticleRepositoryTest {
         Article article = articleRepository.save(
                 new Article("title1", "content1", Category.QUESTION, member, false));
 
-        article.update("수정 제목", "내용 바꿉니다.");
+        article.update("수정 제목", "내용 바꿉니다.", new Tags(new ArrayList<>()));
         articleRepository.flush();
 
         assertAll(
@@ -299,7 +299,7 @@ class ArticleRepositoryTest {
         Article firstFoundArticle = articleRepository.findById(article.getId()).get();
         Tag updatedTag = new Tag("backend");
         tagRepository.save(updatedTag);
-        firstFoundArticle.updateTag(new Tags(List.of(updatedTag)));
+        firstFoundArticle.update("title1", "content1", new Tags(List.of(updatedTag)));
 
         testEntityManager.flush();
         testEntityManager.clear();

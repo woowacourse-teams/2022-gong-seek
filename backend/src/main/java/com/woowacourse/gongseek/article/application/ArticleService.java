@@ -152,10 +152,9 @@ public class ArticleService {
         Article article = checkAuthorization(appMember, id);
         List<Long> existingTagIds = article.getTagIds();
         List<String> updatedTagNames = articleUpdateRequest.getTag();
-        Tags foundTags = tagService.getOrCreateTags(Tags.from(updatedTagNames));
-        article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent());
-        article.updateTag(foundTags);
-        deleteUnusedTags(existingTagIds, foundTags.getTagIds());
+        Tags updatedTags = tagService.getOrCreateTags(Tags.from(updatedTagNames));
+        article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent(), updatedTags);
+        deleteUnusedTags(existingTagIds, updatedTags.getTagIds());
 
         return new ArticleUpdateResponse(article);
     }
