@@ -50,7 +50,7 @@ export const SecondSpinner = styled.div`
 		height: ${theme.size.SIZE_020};
 		background-color: ${theme.colors.ORANGE_500};
 
-		transform-origin: -${theme.size.SIZE_030}px 50%;
+		transform-origin: -${theme.size.SIZE_030} 50%;
 
 		animation: ${twoSpinAnimation} 2s infinite linear;
 	`}
