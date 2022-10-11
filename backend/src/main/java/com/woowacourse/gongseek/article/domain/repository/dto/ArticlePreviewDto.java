@@ -42,7 +42,7 @@ public class ArticlePreviewDto {
                 title,
                 new AuthorDto(authorName, authorAvatarUrl),
                 content,
-                category.getValue().toLowerCase(),
+                category.getValue(),
                 commentCount,
                 views,
                 isLike,
