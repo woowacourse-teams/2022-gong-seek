@@ -1,5 +1,6 @@
 import { AiFillPlusCircle } from 'react-icons/ai';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
@@ -7,13 +8,16 @@ export const Container = styled.div`
 	height: 100%;
 	flex-direction: column-reverse;
 	align-items: center;
-	gap: ${({ theme }) => theme.size.SIZE_080};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
-		flex-direction: row;
-		height: 60vh;
-		gap: ${({ theme }) => theme.size.SIZE_010};
-	}
+	${({ theme }) => css`
+		gap: ${theme.size.SIZE_080};
+
+		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
+			flex-direction: row;
+			height: 60vh;
+			gap: ${theme.size.SIZE_010};
+		}
+	`}
 `;
 
 export const AddOptionForm = styled.form`
@@ -69,30 +73,31 @@ export const InputValidMessage = styled.p<{ isValid: boolean }>`
 
 export const SubmitButton = styled.button`
 	width: 60%;
-
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	border-color: transparent;
-
-	font-size: 0.8rem;
-
-	color: ${({ theme }) => theme.colors.WHITE};
-	background-color: ${({ theme }) => theme.colors.PURPLE_500};
-
-	padding: ${({ theme }) => theme.size.SIZE_004};
-	margin-top: ${({ theme }) => theme.size.SIZE_040};
 
 	cursor: pointer;
 
-	&:hover,
-	&:active {
-		background-color: ${({ theme }) => theme.colors.PURPLE_400};
-	}
+	${({ theme }) => css`
+		border-radius: ${theme.size.SIZE_010};
+		font-size: ${theme.size.SIZE_014}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
-		width: 40%;
-		padding: ${({ theme }) => theme.size.SIZE_008};
-		font-size: ${({ theme }) => theme.size.SIZE_014};
-	}
+		color: ${theme.colors.WHITE};
+		background-color: ${theme.colors.PURPLE_500};
+
+		padding: ${theme.size.SIZE_004};
+		margin-top: ${theme.size.SIZE_040};
+
+		&:hover,
+		&:active {
+			background-color: ${theme.colors.PURPLE_400};
+		}
+
+		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
+			width: 40%;
+			padding: ${theme.size.SIZE_008};
+			font-size: ${theme.size.SIZE_014};
+		}
+	`}
 `;
 
 export const AddButton = styled(AiFillPlusCircle)`

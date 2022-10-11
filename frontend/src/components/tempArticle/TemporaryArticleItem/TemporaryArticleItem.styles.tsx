@@ -1,4 +1,5 @@
 import { theme } from '@/styles/Theme';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.section`
@@ -6,27 +7,29 @@ export const Container = styled.section`
 	flex-direction: column;
 
 	width: 85%;
-	height: ${({ theme }) => theme.size.SIZE_050};
+	${({ theme }) => css`
+		height: ${theme.size.SIZE_050};
 
-	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.BLACK_200};
-	border-radius: ${({ theme }) => theme.size.SIZE_004};
+		border: ${theme.size.SIZE_001} solid ${theme.colors.BLACK_200};
+		border-radius: ${theme.size.SIZE_004};
+	`}
 `;
 
 export const Title = styled.h2`
 	display: block;
 	width: 90%;
 
-	font-size: ${({ theme }) => theme.size.SIZE_016};
-
 	text-overflow: ellipsis;
 	overflow: hidden;
 	word-break: break-all;
 	white-space: nowrap;
 
-	border-bottom: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_016};
+		border-bottom: ${theme.size.SIZE_001} solid ${theme.colors.GRAY_500};
 
-	padding: ${({ theme }) => theme.size.SIZE_004} 0 ${({ theme }) => theme.size.SIZE_014}
-		${({ theme }) => theme.size.SIZE_004};
+		padding: ${theme.size.SIZE_004} 0 ${theme.size.SIZE_014} ${theme.size.SIZE_004};
+	`}
 `;
 
 export const CreatedAt = styled.div`
@@ -42,8 +45,10 @@ export const SubInfo = styled.div`
 `;
 
 export const Category = styled.div<{ isQuestion: boolean }>`
-	font-size: ${({ theme }) => theme.size.SIZE_012};
-	background-color: ${(props) => (props.isQuestion ? theme.colors.RED_500 : theme.colors.BLUE_500)};
-	padding: ${({ theme }) => theme.size.SIZE_004};
-	border-radius: ${({ theme }) => theme.size.SIZE_004};
+	${({ theme, isQuestion }) => css`
+		font-size: ${theme.size.SIZE_012};
+		background-color: ${isQuestion ? `${theme.colors.RED_500}` : `${theme.colors.BLUE_500}`};
+		padding: ${theme.size.SIZE_004};
+		border-radius: ${theme.size.SIZE_004};
+	`}
 `;

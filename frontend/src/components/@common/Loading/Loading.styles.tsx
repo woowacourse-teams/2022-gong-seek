@@ -1,4 +1,4 @@
-import { keyframes } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const oneSpinAnimation = keyframes`
@@ -30,25 +30,28 @@ export const Container = styled.section`
 `;
 
 export const FirstSpinner = styled.div`
-	width: ${({ theme }) => theme.size.SIZE_040};
-	height: ${({ theme }) => theme.size.SIZE_040};
-
 	border-radius: 50%;
 
-	background-color: ${({ theme }) => theme.colors.PURPLE_400};
+	${({ theme }) => css`
+		width: ${theme.size.SIZE_040};
+		height: ${theme.size.SIZE_040};
 
-	animation: ${oneSpinAnimation} 2s infinite linear;
+		background-color: ${theme.colors.PURPLE_400};
+
+		animation: ${oneSpinAnimation} 2s infinite linear;
+	`}
 `;
 
 export const SecondSpinner = styled.div`
-	width: ${({ theme }) => theme.size.SIZE_020};
-	height: ${({ theme }) => theme.size.SIZE_020};
-
 	border-radius: 50%;
 
-	background-color: ${({ theme }) => theme.colors.ORANGE_500};
+	${({ theme }) => css`
+		width: ${theme.size.SIZE_020};
+		height: ${theme.size.SIZE_020};
+		background-color: ${theme.colors.ORANGE_500};
 
-	transform-origin: -30px 50%;
+		transform-origin: -${theme.size.SIZE_030}px 50%;
 
-	animation: ${twoSpinAnimation} 2s infinite linear;
+		animation: ${twoSpinAnimation} 2s infinite linear;
+	`}
 `;

@@ -1,6 +1,7 @@
 import { AiOutlineMessage, AiOutlineLeft } from 'react-icons/ai';
 
 import { articleColors } from '@/styles/Theme';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const showPopularSlider = [
@@ -39,11 +40,12 @@ export const LeftBackgroundArticle = styled.div<{ colorKey: keyof typeof article
 	width: 50%;
 	height: 100%;
 
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
+	${({ theme, colorKey }) => css`
+		border-radius: ${theme.size.SIZE_010};
+		background-color: ${theme.articleColors[colorKey]};
 
-	background-color: ${({ theme, colorKey }) => theme.articleColors[colorKey]};
-
-	z-index: ${({ theme }) => theme.zIndex.ARTICLE_BACKGROUND_CONTENT};
+		z-index: ${theme.zIndex.ARTICLE_BACKGROUND_CONTENT};
+	`}
 `;
 
 export const RightBackgroundArticle = styled.div<{ colorKey: keyof typeof articleColors }>`
@@ -55,52 +57,55 @@ export const RightBackgroundArticle = styled.div<{ colorKey: keyof typeof articl
 	width: 50%;
 	height: 100%;
 
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
+	${({ theme, colorKey }) => css`
+		border-radius: ${theme.size.SIZE_010};
+		background-color: ${theme.articleColors[colorKey]};
 
-	background-color: ${({ theme, colorKey }) => theme.articleColors[colorKey]};
-
-	z-index: ${({ theme }) => theme.zIndex.ARTICLE_BACKGROUND_CONTENT};
+		z-index: ${theme.zIndex.ARTICLE_BACKGROUND_CONTENT};
+	`}
 `;
 
 export const LeftArrowButton = styled(AiOutlineLeft)`
 	position: absolute;
-
-	left: ${({ theme }) => theme.size.SIZE_002};
-
-	font-size: ${({ theme }) => theme.size.SIZE_020};
-
-	color: ${({ theme }) => theme.colors.BLACK_600};
 	opacity: 0.5;
 
 	cursor: pointer;
-
-	z-index: ${({ theme }) => theme.zIndex.ARTICLE_ARROW_BUTTON};
 
 	&:hover,
 	&:active {
 		opacity: 1;
 	}
+
+	${({ theme }) => css`
+		left: ${theme.size.SIZE_002};
+
+		font-size: ${theme.size.SIZE_020};
+		color: ${theme.colors.BLACK_600};
+
+		z-index: ${theme.zIndex.ARTICLE_ARROW_BUTTON};
+	`}
 `;
 
 export const RightArrowButton = styled(AiOutlineLeft)`
 	position: absolute;
-
-	right: ${({ theme }) => theme.size.SIZE_002};
-
-	font-size: ${({ theme }) => theme.size.SIZE_020};
-
-	color: ${({ theme }) => theme.colors.BLACK_600};
 	opacity: 0.5;
 
 	cursor: pointer;
 
-	z-index: ${({ theme }) => theme.zIndex.ARTICLE_ARROW_BUTTON};
 	transform: rotate(180deg);
 
 	&:hover,
 	&:active {
 		opacity: 1;
 	}
+	${({ theme }) => css`
+		right: ${theme.size.SIZE_002};
+
+		font-size: ${theme.size.SIZE_020};
+
+		color: ${theme.colors.BLACK_600};
+		z-index: ${theme.zIndex.ARTICLE_ARROW_BUTTON};
+	`}
 `;
 
 export const ArticleContent = styled.div<{ colorKey: keyof typeof articleColors }>`
@@ -112,26 +117,29 @@ export const ArticleContent = styled.div<{ colorKey: keyof typeof articleColors 
 	width: 80%;
 	height: 100%;
 
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
+	${({ theme, colorKey }) => css`
+		border-radius: ${theme.size.SIZE_010};
 
-	background-color: ${({ theme, colorKey }) => theme.articleColors[colorKey]};
+		background-color: ${theme.articleColors[colorKey]};
 
-	padding: ${({ theme }) => theme.size.SIZE_010};
-
-	z-index: ${({ theme }) => theme.zIndex.ARTICLE_POPULAR_CONTENT};
+		padding: ${theme.size.SIZE_010};
+		z-index: ${theme.zIndex.ARTICLE_POPULAR_CONTENT};
+	`}
 `;
 
 export const Title = styled.h2`
 	width: 100%;
-	height: ${({ theme }) => theme.size.SIZE_040};
-
-	font-size: ${({ theme }) => theme.size.SIZE_014};
 	line-height: normal;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
 
-	margin-top: ${({ theme }) => theme.size.SIZE_004};
+	${({ theme }) => css`
+		height: ${theme.size.SIZE_040};
+
+		font-size: ${theme.size.SIZE_014};
+		margin-top: ${theme.size.SIZE_004};
+	`}
 `;
 
 export const ArticleInfo = styled.div`
