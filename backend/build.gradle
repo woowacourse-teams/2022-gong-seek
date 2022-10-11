@@ -64,6 +64,7 @@ dependencies {
     // lombok
     annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'
+    implementation 'org.projectlombok:lombok:1.18.20'
 
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

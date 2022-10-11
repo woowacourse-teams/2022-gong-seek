@@ -21,7 +21,6 @@ import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.articletag.ArticleTag;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
-import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -31,9 +30,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
-public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
+@Repository
+public class PagingArticleRepositoryImpl implements PagingArticleRepository {
 
     private final JPAQueryFactory queryFactory;
 
@@ -101,26 +102,6 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
             return null;
         }
         return like.article.id.eq(articleId).and(like.member.id.eq(memberId));
-    }
-
-    @Override
-    public List<MyPageArticleDto> findAllByMemberIdWithCommentCount(Long memberId) {
-        return queryFactory
-                .select(Projections.constructor(
-                        MyPageArticleDto.class,
-                        article.id,
-                        article.title.value,
-                        article.category,
-                        count(comment.id),
-                        article.views.value,
-                        article.createdAt,
-                        article.updatedAt)
-                )
-                .from(article)
-                .leftJoin(comment).on(article.id.eq(comment.article.id))
-                .where(article.member.id.eq(memberId))
-                .groupBy(article)
-                .fetch();
     }
 
     @Override

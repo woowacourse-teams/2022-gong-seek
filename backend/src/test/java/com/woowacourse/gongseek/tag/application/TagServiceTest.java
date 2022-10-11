@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.support.DatabaseCleaner;
@@ -29,6 +30,9 @@ class TagServiceTest extends IntegrationTest {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private PagingArticleRepository pagingArticleRepository;
 
     @Autowired
     private TagRepository tagRepository;
@@ -126,8 +130,8 @@ class TagServiceTest extends IntegrationTest {
 
         tagService.deleteAll(List.of(spring.getId(), java.getId()));
 
-        assertThat(articleRepository.existsArticleByTagId(spring.getId())).isFalse();
-        assertThat(articleRepository.existsArticleByTagId(java.getId())).isFalse();
-        assertThat(articleRepository.existsArticleByTagId(react.getId())).isTrue();
+        assertThat(pagingArticleRepository.existsArticleByTagId(spring.getId())).isFalse();
+        assertThat(pagingArticleRepository.existsArticleByTagId(java.getId())).isFalse();
+        assertThat(pagingArticleRepository.existsArticleByTagId(react.getId())).isTrue();
     }
 }

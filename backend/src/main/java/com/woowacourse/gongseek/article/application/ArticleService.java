@@ -2,6 +2,7 @@ package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
@@ -36,8 +37,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-    private final TempArticleService tempArticleService;
+    private final PagingArticleRepository pagingArticleRepository;
     private final MemberRepository memberRepository;
+    private final TempArticleService tempArticleService;
     private final TagService tagService;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
@@ -66,14 +68,15 @@ public class ArticleService {
 
     public ArticleDto getOne(AppMember appMember, Long id) {
         articleRepository.addViews(id);
-        return articleRepository.findByIdWithAll(id, appMember.getPayload())
+        return pagingArticleRepository.findByIdWithAll(id, appMember.getPayload())
                 .orElseThrow(() -> new ArticleNotFoundException(id));
     }
 
     @Transactional(readOnly = true)
     public ArticlePageResponse getAll(Long cursorId, Integer cursorViews, String category, String sortType,
                                       Pageable pageable, AppMember appMember) {
-        Slice<ArticlePreviewDto> articles = articleRepository.findAllByPage(cursorId, cursorViews, category, sortType,
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(cursorId, cursorViews, category,
+                sortType,
                 appMember.getPayload(), pageable);
         Map<Long, List<String>> tags = findTagNames(articles);
         List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tags);
@@ -89,7 +92,7 @@ public class ArticleService {
 
     private Map<Long, List<String>> findTagNames(Slice<ArticlePreviewDto> articles) {
         List<Long> foundArticleIds = getArticleIds(articles);
-        return articleRepository.findTags(foundArticleIds);
+        return pagingArticleRepository.findTags(foundArticleIds);
     }
 
     private List<Long> getArticleIds(Slice<ArticlePreviewDto> articles) {
@@ -101,7 +104,7 @@ public class ArticleService {
     @Transactional(readOnly = true)
     public ArticlePageResponse getAllByLikes(Long cursorId, Long likes, String category, Pageable pageable,
                                              AppMember appMember) {
-        Slice<ArticlePreviewDto> articles = articleRepository.findAllByLikes(cursorId, likes, category,
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(cursorId, likes, category,
                 appMember.getPayload(),
                 pageable);
         Map<Long, List<String>> tagNames = findTagNames(articles);
@@ -115,7 +118,7 @@ public class ArticleService {
         if (searchText.isBlank()) {
             return new ArticlePageResponse(new ArrayList<>(), false);
         }
-        Slice<ArticlePreviewDto> articles = articleRepository.searchByContainingText(cursorId, searchText,
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByContainingText(cursorId, searchText,
                 appMember.getPayload(), pageable);
         Map<Long, List<String>> tagNames = findTagNames(articles);
         List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tagNames);
@@ -128,7 +131,7 @@ public class ArticleService {
         if (authorName.isBlank()) {
             return new ArticlePageResponse(new ArrayList<>(), false);
         }
-        Slice<ArticlePreviewDto> articles = articleRepository.searchByAuthor(cursorId, authorName,
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByAuthor(cursorId, authorName,
                 appMember.getPayload(), pageable);
         Map<Long, List<String>> tagNames = findTagNames(articles);
         List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tagNames);
@@ -137,7 +140,7 @@ public class ArticleService {
 
     @Transactional(readOnly = true)
     public ArticlePageResponse searchByTag(Long cursorId, Pageable pageable, String tagsText, AppMember appMember) {
-        Slice<ArticlePreviewDto> articles = articleRepository.searchByTag(cursorId, appMember.getPayload(),
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByTag(cursorId, appMember.getPayload(),
                 extract(tagsText), pageable);
         Map<Long, List<String>> tagNames = findTagNames(articles);
         List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tagNames);
@@ -167,7 +170,7 @@ public class ArticleService {
 
     private List<Long> getDeletedTagIds(List<Long> tagIds) {
         return tagIds.stream()
-                .filter(tagId -> !articleRepository.existsArticleByTagId(tagId))
+                .filter(tagId -> !pagingArticleRepository.existsArticleByTagId(tagId))
                 .collect(Collectors.toList());
     }
 

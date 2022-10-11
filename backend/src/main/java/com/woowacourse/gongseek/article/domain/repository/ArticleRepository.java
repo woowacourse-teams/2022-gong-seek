@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ArticleRepository extends JpaRepository<Article, Long>, ArticleRepositoryCustom {
+public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     List<Article> findAllByMemberId(Long memberId);
 

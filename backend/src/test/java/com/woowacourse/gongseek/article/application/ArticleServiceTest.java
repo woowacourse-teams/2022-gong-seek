@@ -11,6 +11,7 @@ import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.TempTags;
 import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
@@ -51,7 +52,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +64,9 @@ public class ArticleServiceTest extends IntegrationTest {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private PagingArticleRepository pagingArticleRepository;
 
     @Autowired
     private TempArticleRepository tempArticleRepository;
@@ -401,7 +404,8 @@ public class ArticleServiceTest extends IntegrationTest {
         articleService.update(loginMember, new ArticleUpdateRequest("하이", "하이", List.of("JAVA", "backend")),
                 firstSavedArticle.getId());
 
-        ArticleDto articleDto = articleRepository.findByIdWithAll(firstSavedArticle.getId(), member.getId()).get();
+        ArticleDto articleDto = pagingArticleRepository.findByIdWithAll(firstSavedArticle.getId(), member.getId())
+                .get();
         List<String> existTagNames = articleDto.getTag();
 
         assertAll(
@@ -479,7 +483,8 @@ public class ArticleServiceTest extends IntegrationTest {
 
         articleService.delete(loginMember, firstSavedArticle.getId());
 
-        Optional<ArticleDto> article = articleRepository.findByIdWithAll(firstSavedArticle.getId(), member.getId());
+        Optional<ArticleDto> article = pagingArticleRepository.findByIdWithAll(firstSavedArticle.getId(),
+                member.getId());
         assertAll(
                 () -> assertThat(article).isEmpty(),
                 () -> assertThat(tagRepository.findByNameIgnoreCase("SPRING")).isEmpty(),
