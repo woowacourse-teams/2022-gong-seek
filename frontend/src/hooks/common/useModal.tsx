@@ -1,7 +1,7 @@
 import { useRecoilState } from 'recoil';
 
 import { modalState } from '@/store/modalState';
-import { GetInsideRecoilState } from '@/types/util';
+import { GetInsideRecoilState } from '@/types/getInside';
 
 const useModal = () => {
 	const setModal = useRecoilState(modalState)[1];
