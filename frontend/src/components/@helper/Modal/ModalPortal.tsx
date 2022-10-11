@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { ModalStateType } from '@/store/modalState';
 
 type ModalPortalProps = {
-	modalId: ModalStateType['modalType'];
+	modalId: ModalStateType['modalType'] | 'snack-bar';
 };
 
 const ModalPortal = ({ modalId, children }: PropsWithStrictChildren<ModalPortalProps>) => {
