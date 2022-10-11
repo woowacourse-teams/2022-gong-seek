@@ -1,10 +1,10 @@
-import useModal from '../../../hooks/common/useModal';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import * as S from '@/components/@common/MenuSlider/MenuSlider.styles';
 import { ACCESSTOKEN_KEY } from '@/constants';
 import { URL } from '@/constants/url';
+import useModal from '@/hooks/common/useModal';
 import useDeleteRefreshToken from '@/hooks/login/useDeleteRefreshToken';
 import { getUserIsLogin } from '@/store/userState';
 

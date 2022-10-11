@@ -1,6 +1,4 @@
-import useModal from '../../../hooks/common/useModal';
 import { useEffect, useRef, useState } from 'react';
-import reactDom from 'react-dom';
 
 import { postImageUrlConverter } from '@/api/image';
 import AnonymousCheckBox from '@/components/@common/AnonymousCheckBox/AnonymousCheckBox';
@@ -8,6 +6,7 @@ import ToastUiEditor from '@/components/@common/ToastUiEditor/ToastUiEditor';
 import * as S from '@/components/comment/CommentInputModal/CommentInputModal.styles';
 import usePostCommentInputModal from '@/hooks/comment/usePostCommentInputModal';
 import usePutCommentInputModal from '@/hooks/comment/usePutCommentInputModal';
+import useModal from '@/hooks/common/useModal';
 import useSnackBar from '@/hooks/common/useSnackBar';
 import { queryClient } from '@/index';
 import { validatedCommentInput } from '@/utils/validateInput';
