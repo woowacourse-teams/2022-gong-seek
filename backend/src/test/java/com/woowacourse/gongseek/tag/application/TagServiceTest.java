@@ -20,21 +20,31 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestConstructor.AutowireMode;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
-@TestConstructor(autowireMode = AutowireMode.ALL)
-@RequiredArgsConstructor
 class TagServiceTest extends IntegrationTest {
 
-    private final MemberRepository memberRepository;
-    private final ArticleRepository articleRepository;
-    private final ArticleRepositoryCustom articleRepositoryCustom;
-    private final TagRepository tagRepository;
-    private final TagService tagService;
-    private final DatabaseCleaner databaseCleaner;
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private ArticleRepository articleRepository;
+
+    @Autowired
+    private ArticleRepositoryCustom articleRepositoryCustom;
+
+    @Autowired
+    private TagRepository tagRepository;
+
+    @Autowired
+    private TagService tagService;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
     private Member member;
 
