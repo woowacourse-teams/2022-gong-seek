@@ -11,6 +11,7 @@ import com.woowacourse.gongseek.auth.exception.EmptyTokenException;
 import com.woowacourse.gongseek.auth.exception.GithubAccessTokenLoadFailException;
 import com.woowacourse.gongseek.auth.exception.GithubUserProfileLoadFailException;
 import com.woowacourse.gongseek.auth.exception.HttpRequestNullException;
+import com.woowacourse.gongseek.auth.exception.InvalidAccessTokenAtRenewException;
 import com.woowacourse.gongseek.auth.exception.InvalidAccessTokenException;
 import com.woowacourse.gongseek.auth.exception.InvalidRefreshTokenException;
 import com.woowacourse.gongseek.auth.exception.InvalidTokenTypeException;
@@ -56,6 +57,8 @@ public enum ExceptionType {
     NOT_MEMBER_EXCEPTION("1008", "회원이 아니므로 권한이 없습니다.", NotMemberException.class),
     INVALID_REFRESH_TOKEN_EXCEPTION("1009", "리프레시 토큰이 유효하지 않습니다.", InvalidRefreshTokenException.class),
     UNAUTHORIZED_TOKEN_EXCEPTION("1010", "유효한 액세스 토큰으로 리프레시 토큰을 발급할 수 없습니다.", UnAuthorizedTokenException.class),
+    INVALID_ACCESS_TOKEN_AT_RENEW_EXCEPTION("1011", "유효하지 않는 액세스 토큰으로 권한이 없는 유저입니다. 재로그인을 해주세요",
+            InvalidAccessTokenAtRenewException.class),
 
     MEMBER_NOT_FOUND_EXCEPTION("2001", "회원이 존재하지 않습니다.", MemberNotFoundException.class),
     NAME_NULL_OR_EMPTY_EXCEPTION("2002", "회원의 이름은 1자 이상이어야 합니다.", NameNullOrEmptyException.class),
@@ -73,7 +76,7 @@ public enum ExceptionType {
 
     INVALID_VOTE_EXPIRY_DATE_EXCEPTION("5001", "투표 만료일 설정이 잘못되었습니다.", InvalidVoteExpiryDateException.class),
     VOTE_ITEM_NULL_OR_EMPTY_EXCEPTION("5002", "투표 항목 내용은 비어있을 수 없습니다.", VoteItemNullOrEmptyException.class),
-    VOTE_ITEM_TOO_LONG_EXCEPTION("5003", "투표 항목 내용은 500자를 초과할 수 없습니다.", VoteItemTooLongException.class),
+    VOTE_ITEM_TOO_LONG_EXCEPTION("5003", "투표 항목 내용은 300자를 초과할 수 없습니다.", VoteItemTooLongException.class),
     VOTE_NOT_FOUND_EXCEPTION("5004", "투표가 존재하지 않습니다.", VoteNotFoundException.class),
     UNAVAILABLE_ARTICLE_EXCEPTION("5005", "토론 게시글만 투표를 생성할 수 있습니다.", UnavailableArticleException.class),
     INVALID_VOTE_AMOUNT_EXCEPTION("5006", "투표수는 양수여야만 합니다.", InvalidVoteAmountException.class),

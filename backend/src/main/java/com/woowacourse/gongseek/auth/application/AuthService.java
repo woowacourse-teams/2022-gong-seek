@@ -8,6 +8,7 @@ import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -58,10 +59,11 @@ public class AuthService {
         RefreshToken refreshToken = refreshTokenRepository.findById(requestToken)
                 .orElseThrow(InvalidRefreshTokenException::new);
         if (refreshToken.isIssue() || refreshToken.isExpired()) {
-            refreshTokenRepository.deleteAllByMemberId(refreshToken.getMemberId());
+            List<RefreshToken> refreshTokens = refreshTokenRepository.findAllByMemberId(refreshToken.getMemberId());
+            refreshTokenRepository.deleteAll(refreshTokens);
             throw new InvalidRefreshTokenException();
         }
-        refreshToken.used();
+        updateIssue(refreshToken);
 
         RefreshToken newRefreshToken = refreshTokenRepository.save(RefreshToken.create(refreshToken.getMemberId()));
         String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(refreshToken.getMemberId()));
@@ -69,5 +71,16 @@ public class AuthService {
                 .accessToken(accessToken)
                 .refreshToken(newRefreshToken.getId())
                 .build();
+    }
+
+    public void updateRefreshToken(UUID value) {
+        RefreshToken refreshToken = refreshTokenRepository.findById(value)
+                .orElseThrow(InvalidRefreshTokenException::new);
+        updateIssue(refreshToken);
+    }
+
+    private void updateIssue(RefreshToken refreshToken) {
+        refreshToken.used();
+        refreshTokenRepository.save(refreshToken);
     }
 }

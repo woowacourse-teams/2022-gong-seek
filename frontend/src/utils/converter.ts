@@ -59,17 +59,25 @@ const convertIdxToTimeKey = (idx: number) => {
 	}
 };
 
-export const convertSort = (sort: '좋아요순' | '최신순' | '조회순') => {
+export const convertSort = (sort: '추천순' | '최신순' | '조회순') => {
 	switch (sort) {
 		case '조회순':
 			return 'views';
-		case '좋아요순':
+		case '추천순':
 			return 'likes';
 		case '최신순':
 			return 'latest';
 		default:
 			return 'latest';
 	}
+};
+
+export const convertGithubAvatarUrlForResize = (avatarUrl: string) => {
+	if (avatarUrl.includes('gongseek.png')) {
+		return avatarUrl;
+	}
+
+	return `${avatarUrl}&size=100`;
 };
 
 const timePicker = (timeArray: number[]) => {
@@ -101,4 +109,11 @@ export const dateTimeConverter = (dateTime: string) => {
 	const selectedTime = timePicker([yearGap, monthGap, dayGap, hourGap, minuteGap, secondGap]);
 
 	return `${selectedTime.value ? selectedTime.value : ''}${selectedTime.key}전`;
+};
+
+export const categoryNameConverter = (category: string) => {
+	if (category === 'question') {
+		return '질문';
+	}
+	return '토론';
 };

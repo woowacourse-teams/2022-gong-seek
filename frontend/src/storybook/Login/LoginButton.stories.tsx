@@ -1,4 +1,6 @@
-import LoginButton, { LoginButtonProps } from '@/pages/Login/LoginButton/LoginButton';
+import { PropsWithStrictChildren } from 'gongseek-types';
+
+import LoginButton, { LoginButtonProps } from '@/components/login/LoginButton/LoginButton';
 import { action } from '@storybook/addon-actions';
 import { Meta, Story } from '@storybook/react';
 
@@ -14,7 +16,9 @@ export default {
 	],
 } as Meta;
 
-const Template: Story<LoginButtonProps> = (args) => <LoginButton {...args} />;
+const Template: Story<PropsWithStrictChildren<LoginButtonProps, string>> = (args) => (
+	<LoginButton {...args} />
+);
 
 export const GithubLoginButton = Template.bind({});
 GithubLoginButton.args = {

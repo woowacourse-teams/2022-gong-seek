@@ -5,10 +5,6 @@ export const Container = styled.section`
 	flex-direction: column;
 
 	width: 100%;
-
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
-		gap: ${({ theme }) => theme.size.SIZE_100};
-	}
 `;
 
 export const Title = styled.h2`
@@ -23,9 +19,11 @@ export const ContentContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 
-	gap: ${({ theme }) => theme.size.SIZE_040};
+	min-height: ${({ theme }) => theme.size.SIZE_700};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
-		gap: ${({ theme }) => theme.size.SIZE_056};
-	}
+	padding: ${({ theme }) => theme.size.SIZE_006};
+
+	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
+	border-radius: 0 ${({ theme }) => theme.size.SIZE_004} ${({ theme }) => theme.size.SIZE_004}
+		${({ theme }) => theme.size.SIZE_004};
 `;

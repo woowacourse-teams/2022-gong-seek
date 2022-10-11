@@ -1,11 +1,11 @@
 import { useNavigate, useParams } from 'react-router-dom';
 
-import Loading from '@/components/common/Loading/Loading';
+import Loading from '@/components/@common/Loading/Loading';
+import Vote from '@/components/vote/Vote/Vote';
+import VoteGenerateButton from '@/components/vote/VoteGenerateButton/VoteGenerateButton';
 import useGetDetailArticle from '@/hooks/article/useGetDetailArticle';
 import useGetDetailComment from '@/hooks/comment/useGetDetailComment';
 import Detail from '@/pages/Detail';
-import Vote from '@/pages/Discussion/Vote/Vote';
-import VoteGenerateButton from '@/pages/DiscussionDetail/VoteGenerateButton/VoteGenerateButton';
 
 const DiscussionDetail = () => {
 	const { id } = useParams();

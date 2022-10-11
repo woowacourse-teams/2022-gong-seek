@@ -26,10 +26,10 @@ class ContentTest {
     }
 
     @Test
-    void 투표내용이_500자를_초과하면_예외를_발생한다() {
-        String content = "a".repeat(501);
+    void 투표내용이_300자를_초과하면_예외를_발생한다() {
+        String content = "a".repeat(301);
         assertThatThrownBy(() -> new Content(content))
                 .isExactlyInstanceOf(VoteItemTooLongException.class)
-                .hasMessageContaining("투표 항목 내용은 500자를 초과할 수 없습니다.");
+                .hasMessageContaining("투표 항목 내용은 300자를 초과할 수 없습니다.");
     }
 }

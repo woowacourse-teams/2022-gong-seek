@@ -5,6 +5,7 @@ import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
 import com.woowacourse.gongseek.tag.exception.TagNameLengthException;
 import com.woowacourse.gongseek.tag.exception.TagNameNullOrBlankException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -75,6 +76,9 @@ public class TempTags {
     }
 
     public List<String> toResponse() {
+        if (values.isBlank()) {
+            return Collections.emptyList();
+        }
         return Arrays.asList(values.split(TEMP_TAG_NAME_DELIMITER));
     }
 }

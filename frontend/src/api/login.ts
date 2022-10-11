@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { ACCESSTOKEN_KEY } from '@/constants';
 import { HOME_URL } from '@/constants/apiUrl';
 
 export const getGithubURL = async () => {
@@ -25,7 +26,7 @@ export const postLogin = (code: string) =>
 	);
 
 export const getAccessTokenByRefreshToken = async () => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
 	const response = await axios.get<{ accessToken: string }>(`${HOME_URL}/api/auth/refresh`, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
@@ -36,3 +37,12 @@ export const getAccessTokenByRefreshToken = async () => {
 	});
 	return response.data;
 };
+
+export const deleteRefreshToken = () =>
+	axios.delete(`${HOME_URL}/api/auth/logout`, {
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+			'Access-Control-Allow-Credentials': true,
+		},
+		withCredentials: true,
+	});

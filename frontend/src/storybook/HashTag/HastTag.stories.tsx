@@ -1,4 +1,4 @@
-import HashTag, { HashTagProps } from '@/components/common/HashTag/HashTag';
+import HashTag, { HashTagProps } from '@/components/hashTag/HashTag/HashTag';
 import { Meta, Story } from '@storybook/react';
 
 export default {

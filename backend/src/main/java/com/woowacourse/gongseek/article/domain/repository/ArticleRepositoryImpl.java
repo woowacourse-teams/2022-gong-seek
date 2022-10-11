@@ -3,6 +3,7 @@ package com.woowacourse.gongseek.article.domain.repository;
 import static com.woowacourse.gongseek.article.domain.QArticle.article;
 import static com.woowacourse.gongseek.article.domain.articletag.QArticleTag.articleTag;
 import static com.woowacourse.gongseek.like.domain.QLike.like;
+import static com.woowacourse.gongseek.member.domain.QMember.member;
 import static com.woowacourse.gongseek.tag.domain.QTag.tag;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -29,6 +30,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                                         Pageable pageable) {
         JPAQuery<Article> query = queryFactory
                 .selectFrom(article)
+                .leftJoin(article.member, member).fetchJoin()
                 .where(
                         cursorIdAndCursorViews(cursorId, cursorViews, sortType),
                         categoryEquals(category)
@@ -107,6 +109,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     public Slice<Article> searchByContainingText(Long cursorId, String searchText, Pageable pageable) {
         List<Article> fetch = queryFactory
                 .selectFrom(article)
+                .leftJoin(article.member, member).fetchJoin()
                 .where(
                         containsTitleOrContent(searchText),
                         isOverArticleId(cursorId)
@@ -129,6 +132,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     public Slice<Article> searchByAuthor(Long cursorId, String author, Pageable pageable) {
         List<Article> fetch = queryFactory
                 .selectFrom(article)
+                .leftJoin(article.member, member).fetchJoin()
                 .where(
                         article.member.name.value.eq(author),
                         article.isAnonymous.eq(false),

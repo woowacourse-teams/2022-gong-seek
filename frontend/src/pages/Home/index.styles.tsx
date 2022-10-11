@@ -3,11 +3,14 @@ import styled from '@emotion/styled';
 
 export const CategoryTitleContainer = styled.div`
 	display: flex;
+	position: relative;
 
 	justify-content: space-between;
 	align-items: center;
 
 	margin-top: ${({ theme }) => theme.size.SIZE_050};
+
+	z-index: ${({ theme }) => theme.zIndex.CATEGORY_TITLE_CONTAINER};
 `;
 
 export const CategoryTitleBox = styled.div`
@@ -51,31 +54,4 @@ export const PopularArticleTitle = styled.h2`
 	color: ${({ theme }) => theme.colors.BLACK_600};
 
 	margin-bottom: ${({ theme }) => theme.size.SIZE_030};
-`;
-
-export const ArticleItemList = styled.div`
-	display: flex;
-
-	flex-direction: column;
-	align-items: center;
-	gap: ${({ theme }) => theme.size.SIZE_018};
-
-	width: 100%;
-
-	margin-top: ${({ theme }) => theme.size.SIZE_024};
-
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
-		display: grid;
-		width: 100%;
-		grid-template-columns: 1fr 1fr 1fr;
-		place-items: center;
-		margin: 0 auto;
-		gap: ${({ theme }) => theme.size.SIZE_022};
-		margin-top: ${({ theme }) => theme.size.SIZE_040};
-	}
-`;
-
-export const EmptyText = styled.div`
-	margin: 0 auto;
-	font-size: ${({ theme }) => theme.size.SIZE_018};
 `;

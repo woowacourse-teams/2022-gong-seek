@@ -31,12 +31,6 @@ public class LikeService {
         saveByExistsLike(member, article);
     }
 
-    private void saveByExistsLike(Member member, Article article) {
-        if (!likeRepository.existsByArticleIdAndMemberId(article.getId(), member.getId())) {
-            likeRepository.save(new Like(article, member));
-        }
-    }
-
     private void validateGuest(AppMember appMember) {
         if (appMember.isGuest()) {
             throw new NotMemberException();
@@ -53,12 +47,17 @@ public class LikeService {
                 .orElseThrow(() -> new ArticleNotFoundException(id));
     }
 
+    private void saveByExistsLike(Member member, Article article) {
+        if (!likeRepository.existsByArticleIdAndMemberId(article.getId(), member.getId())) {
+            likeRepository.save(new Like(article, member));
+        }
+    }
+
     public void unlikeArticle(AppMember appMember, Long articleId) {
         validateGuest(appMember);
         Member member = getMember(appMember);
         Article article = getArticle(articleId);
 
-        likeRepository.findByArticleIdAndMemberId(article.getId(), member.getId())
-                .ifPresent(likeRepository::delete);
+        likeRepository.deleteByArticleAndMember(article, member);
     }
 }

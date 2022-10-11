@@ -9,6 +9,7 @@ import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.support.DatabaseCleaner;
+import com.woowacourse.gongseek.support.IntegrationTest;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
@@ -20,12 +21,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
-@SpringBootTest
-class TagServiceTest {
+class TagServiceTest extends IntegrationTest {
 
     @Autowired
     private MemberRepository memberRepository;
@@ -86,9 +85,7 @@ class TagServiceTest {
 
         assertAll(
                 () -> assertThat(response.getTag()).hasSize(3),
-                () -> assertThat(response.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(response.getTag().get(1)).isEqualTo("JAVA"),
-                () -> assertThat(response.getTag().get(2)).isEqualTo("REACT")
+                () -> assertThat(response.getTag()).contains("SPRING", "JAVA", "REACT")
         );
     }
 

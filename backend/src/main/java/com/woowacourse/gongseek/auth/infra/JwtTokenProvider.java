@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.auth.infra;
 
 import com.woowacourse.gongseek.auth.application.TokenProvider;
-import com.woowacourse.gongseek.auth.exception.InvalidAccessTokenException;
+import com.woowacourse.gongseek.auth.exception.InvalidAccessTokenAtRenewException;
 import com.woowacourse.gongseek.common.exception.UnAuthorizedTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -13,9 +13,11 @@ import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class JwtTokenProvider implements TokenProvider {
 
@@ -64,14 +66,14 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public boolean isValidAccessTokenWithTimeOut(String token) {
+    public void isValidAccessTokenWithTimeOut(String token) {
         try {
             getClaimsJws(token, tokenSecretKey).getBody();
             throw new UnAuthorizedTokenException();
-        } catch (ExpiredJwtException e) {
-            return true;
+        } catch (ExpiredJwtException ignored) {
+            log.info("input accessToken :{}", token);
         } catch (JwtException | IllegalArgumentException e) {
-            throw new InvalidAccessTokenException();
+            throw new InvalidAccessTokenAtRenewException();
         }
     }
 

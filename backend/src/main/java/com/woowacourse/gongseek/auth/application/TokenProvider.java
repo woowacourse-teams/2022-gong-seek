@@ -8,5 +8,5 @@ public interface TokenProvider {
 
     boolean isValidAccessToken(String token);
 
-    boolean isValidAccessTokenWithTimeOut(String token);
+    void isValidAccessTokenWithTimeOut(String token);
 }

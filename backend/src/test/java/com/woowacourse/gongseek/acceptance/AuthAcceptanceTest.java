@@ -64,8 +64,8 @@ public class AuthAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(errorResponse.getErrorCode()).isEqualTo("1005"),
-                () -> assertThat(errorResponse.getMessage()).isEqualTo("엑세스 토큰이 유효하지 않습니다.")
+                () -> assertThat(errorResponse.getErrorCode()).isEqualTo("1011"),
+                () -> assertThat(errorResponse.getMessage()).isEqualTo("유효하지 않는 액세스 토큰으로 권한이 없는 유저입니다. 재로그인을 해주세요")
         );
     }
 

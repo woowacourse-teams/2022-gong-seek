@@ -1,12 +1,14 @@
 import { useNavigate, useParams } from 'react-router-dom';
 
-import ArticleItem from '@/components/common/ArticleItem/ArticleItem';
-import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
-import Loading from '@/components/common/Loading/Loading';
-import SortDropdown from '@/components/common/SortDropdown/SortDropDown';
+import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
+import Loading from '@/components/@common/Loading/Loading';
+import ResponsiveInfiniteCardList from '@/components/@common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList';
+import SortDropdown from '@/components/@common/SortDropdown/SortDropDown';
+import ArticleItem from '@/components/article/ArticleItem/ArticleItem';
 import { URL } from '@/constants/url';
 import useGetCategoryArticles from '@/hooks/article/useGetCategoryArticles';
 import * as S from '@/pages/CategoryArticles/CategoryArticles.styles';
+import { categoryNameConverter } from '@/utils/converter';
 
 const CategoryArticles = () => {
 	const navigate = useNavigate();
@@ -32,20 +34,20 @@ const CategoryArticles = () => {
 		<S.Container>
 			<S.TitleBox>
 				<S.CategoryArticlesTitle category={category}>
-					{category === 'discussion' ? '토론' : '질문'}
+					{categoryNameConverter(category)}
 				</S.CategoryArticlesTitle>
 				<SortDropdown
-					sortList={['최신순', '조회순', '좋아요순']}
+					sortList={['최신순', '조회순', '추천순']}
 					sortIndex={sortIndex}
 					setSortIndex={setSortIndex}
 				/>
 			</S.TitleBox>
 			{data?.pages.length ? (
-				<InfiniteScrollObserver
-					hasNext={data?.pages[data.pages.length - 1].hasNext}
+				<ResponsiveInfiniteCardList
+					hasNext={data.pages[data.pages.length - 1].hasNext}
 					fetchNextPage={fetchNextPage}
 				>
-					<S.ArticleItemList>
+					<>
 						{data.pages.map(({ articles }) =>
 							articles.map((item) => (
 								<ArticleItem
@@ -57,10 +59,10 @@ const CategoryArticles = () => {
 								/>
 							)),
 						)}
-					</S.ArticleItemList>
-				</InfiniteScrollObserver>
+					</>
+				</ResponsiveInfiniteCardList>
 			) : (
-				<S.EmptyText>텅 비었어요..!</S.EmptyText>
+				<EmptyMessage>게시글이 존재하지 않습니다</EmptyMessage>
 			)}
 		</S.Container>
 	);

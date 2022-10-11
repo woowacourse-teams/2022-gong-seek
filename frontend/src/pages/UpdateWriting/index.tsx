@@ -1,11 +1,14 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import HashTag from '@/components/common/HashTag/HashTag';
-import Loading from '@/components/common/Loading/Loading';
-import ToastUiEditor from '@/components/common/ToastUiEditor/ToastUiEditor';
-import PageLayout from '@/components/layout/PageLayout/PageLayout';
+import { postImageUrlConverter } from '@/api/image';
+import Card from '@/components/@common/Card/Card';
+import Loading from '@/components/@common/Loading/Loading';
+import ToastUiEditor from '@/components/@common/ToastUiEditor/ToastUiEditor';
+import HashTag from '@/components/hashTag/HashTag/HashTag';
 import usePostWritingArticle from '@/hooks/article/usePostUpdateWritingArticle';
 import * as S from '@/pages/WritingArticles/index.styles';
+import { WritingCategoryCardStyle, WritingTitleCardStyle } from '@/styles/cardStyle';
 
 const UpdateWriting = () => {
 	const { id } = useParams();
@@ -28,6 +31,21 @@ const UpdateWriting = () => {
 		handleUpdateButtonClick,
 	} = usePostWritingArticle();
 
+	useEffect(() => {
+		if (content.current) {
+			content.current.getInstance().removeHook('addImageBlobHook');
+			content.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
+				(async () => {
+					const formData = new FormData();
+
+					formData.append('imageFile', blob);
+					const url = await postImageUrlConverter(formData);
+					callback(url, 'alt-text');
+				})();
+			});
+		}
+	}, [content]);
+
 	if (isLoading) {
 		return <Loading />;
 	}
@@ -35,7 +53,7 @@ const UpdateWriting = () => {
 	return (
 		<S.Container>
 			<S.SelectorBox>
-				<PageLayout width="100%" height="fit-content">
+				<Card {...WritingTitleCardStyle}>
 					<S.TitleInput
 						type="text"
 						placeholder="제목을 입력해주세요"
@@ -43,23 +61,25 @@ const UpdateWriting = () => {
 						onChange={(e) => setTitle(e.target.value)}
 						ref={titleInputRef}
 					/>
-				</PageLayout>
+				</Card>
 				{!isValidTitleInput && (
 					<S.TitleInputErrorMsgBox>제목은 1글자 이상 500자 이하여야 합니다</S.TitleInputErrorMsgBox>
 				)}
-				<PageLayout width="100%" height="fit-content">
-					<S.CategorySelectorBox>
-						<S.CategorySelector name="writing" required value={category} disabled>
-							<option value="" disabled>
-								카테고리를 선택해주세요
-							</option>
-							<option value="question">질문</option>
-							<option value="discussion">토론</option>
-						</S.CategorySelector>
-						<S.SelectorButton />
-					</S.CategorySelectorBox>
-				</PageLayout>
-				<HashTag hashTags={hashTag} setHashTags={setHashTag} />
+				<S.OptionBox>
+					<Card {...WritingCategoryCardStyle}>
+						<S.CategorySelectorBox>
+							<S.CategorySelector name="writing" required value={category} disabled>
+								<option value="" disabled>
+									카테고리를 선택해주세요
+								</option>
+								<option value="question">질문</option>
+								<option value="discussion">토론</option>
+							</S.CategorySelector>
+							<S.SelectorButton />
+						</S.CategorySelectorBox>
+					</Card>
+					<HashTag hashTags={hashTag} setHashTags={setHashTag} />
+				</S.OptionBox>
 			</S.SelectorBox>
 
 			<S.Content>

@@ -1,4 +1,4 @@
-import SearchBar from '@/components/common/SearchBar/SearchBar';
+import SearchBar from '@/components/search/SearchBar/SearchBar';
 import { Meta, Story } from '@storybook/react';
 
 export default {
