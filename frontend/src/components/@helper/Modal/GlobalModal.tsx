@@ -1,3 +1,4 @@
+import { hasModal } from '../../../utils/validateInput';
 import CreatePortal from './CreatePortal';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
@@ -22,7 +23,7 @@ const GlobalModal = () => {
 	const { modalProps, modalType, isMobileOnly } = modal ?? {};
 
 	useEffect(() => {
-		if (modalType) {
+		if (hasModal(modalType)) {
 			document.body.style.overflow = 'hidden';
 
 			return () => {
@@ -31,7 +32,7 @@ const GlobalModal = () => {
 		}
 	}, [modalType]);
 
-	if (!modalType) {
+	if (!hasModal(modalType)) {
 		return null;
 	}
 
