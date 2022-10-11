@@ -20,18 +20,14 @@ import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.TestConstructor;
-import org.springframework.test.context.TestConstructor.AutowireMode;
 
 @SuppressWarnings("NonAsciiCharacters")
-@TestConstructor(autowireMode = AutowireMode.ALL)
-@RequiredArgsConstructor
 @RepositoryTest
 class ArticleRepositoryTest {
 
@@ -40,13 +36,26 @@ class ArticleRepositoryTest {
 
     private final Member member = new Member("slo", "hanull", "avatar.com");
 
-    private final ArticleRepository articleRepository;
-    private final MemberRepository memberRepository;
-    private final TagRepository tagRepository;
-    private final VoteRepository voteRepository;
-    private final VoteHistoryRepository voteHistoryRepository;
-    private final VoteItemRepository voteItemRepository;
-    private final TestEntityManager testEntityManager;
+    @Autowired
+    private ArticleRepository articleRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
+
+    @Autowired
+    private VoteRepository voteRepository;
+
+    @Autowired
+    private VoteHistoryRepository voteHistoryRepository;
+
+    @Autowired
+    private VoteItemRepository voteItemRepository;
+
+    @Autowired
+    private TestEntityManager testEntityManager;
 
     @BeforeEach
     void setUp() {

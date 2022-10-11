@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -41,13 +42,26 @@ public class PagingArticleRepositoryTest {
 
     private final Member member = new Member("slo", "hanull", "avatar.com");
 
-    private final ArticleRepository articleRepository;
-    private final PagingArticleRepository pagingArticleRepository;
-    private final ArticleRepositoryCustom articleRepositoryCustom;
-    private final MemberRepository memberRepository;
-    private final TagRepository tagRepository;
-    private final LikeRepository likeRepository;
-    private final TestEntityManager testEntityManager;
+    @Autowired
+    private ArticleRepository articleRepository;
+
+    @Autowired
+    private PagingArticleRepository pagingArticleRepository;
+
+    @Autowired
+    private ArticleRepositoryCustom articleRepositoryCustom;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
+
+    @Autowired
+    private LikeRepository likeRepository;
+
+    @Autowired
+    private TestEntityManager testEntityManager;
 
     @BeforeEach
     void setUp() {
