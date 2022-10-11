@@ -106,9 +106,6 @@ test {
     outputs.dir snippetsDir
     useJUnitPlatform()
     finalizedBy 'jacocoTestReport'
-    testLogging {
-        showStandardStreams = true
-    }
 }
 
 asciidoctor {
