@@ -1,9 +1,9 @@
-import SearchResult from '@/pages/Search/SearchResult/SearchResult';
+import SearchResult from '@/components/search/SearchResult/SearchResult';
 import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'pages/SearchResult',
-	component: SearchResult ,
+	component: SearchResult,
 	decorators: [
 		(Story) => (
 			<div style={{ width: '320px' }}>
@@ -13,9 +13,11 @@ export default {
 	],
 } as Meta;
 
-const Template: Story<{target: string}> = (args) => <SearchResult  {...args} />;
+const Template: Story<{ target: string; searchIndex: string }> = (args) => (
+	<SearchResult {...args} />
+);
 
 export const DefaultSearchResult = Template.bind({});
 DefaultSearchResult.args = {
-    target: '검색 예시',
+	target: '검색 예시',
 };

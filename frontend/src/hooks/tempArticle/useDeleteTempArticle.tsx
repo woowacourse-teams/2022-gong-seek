@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { useMutation } from 'react-query';
 
 import { deleteArticleItem } from '@/api/tempArticle';
-import CustomError from '@/components/helper/CustomError';
+import CustomError from '@/components/@helper/errorBoundary/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useSnackBar from '@/hooks/common/useSnackBar';
 import { queryClient } from '@/index';
