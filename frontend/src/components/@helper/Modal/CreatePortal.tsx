@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 
 import { ModalStateType } from '@/store/modalState';
 
-type ModalPortalProps = {
+type CreatePortalProps = {
 	modalId: ModalStateType['modalType'] | 'snack-bar';
 };
 
-const ModalPortal = ({ modalId, children }: PropsWithStrictChildren<ModalPortalProps>) => {
+const CreatePortal = ({ modalId, children }: PropsWithStrictChildren<CreatePortalProps>) => {
 	const modalElement = document.getElementById(`${modalId}`);
 	if (modalElement === null) {
 		throw new Error('모달을 찾을 수 없습니다.');
@@ -15,4 +15,4 @@ const ModalPortal = ({ modalId, children }: PropsWithStrictChildren<ModalPortalP
 	return ReactDOM.createPortal(children, modalElement);
 };
 
-export default ModalPortal;
+export default CreatePortal;

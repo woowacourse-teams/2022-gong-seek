@@ -1,4 +1,4 @@
-import ModalPortal from './ModalPortal';
+import CreatePortal from './CreatePortal';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
@@ -43,7 +43,7 @@ const GlobalModal = () => {
 	return (
 		<S.Container isMobileOnly={isMobileOnly || false}>
 			<S.Dimmer onClick={() => setModal(null)} />
-			<ModalPortal modalId={modalType}>{renderComponent()}</ModalPortal>
+			<CreatePortal modalId={modalType}>{renderComponent()}</CreatePortal>
 		</S.Container>
 	);
 };
