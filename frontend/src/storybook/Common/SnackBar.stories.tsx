@@ -1,4 +1,4 @@
-import SnackBar from '@/components/common/SnackBar/SnackBar';
+import SnackBar from '@/components/@common/SnackBar/SnackBar';
 import { Meta, Story } from '@storybook/react';
 
 const modalRoot = document.createElement('div');

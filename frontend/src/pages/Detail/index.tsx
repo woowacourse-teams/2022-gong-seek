@@ -1,25 +1,31 @@
+import { PropsWithOptionalChildren } from 'gongseek-types';
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import ArticleContent from '@/components/common/ArticleContent/ArticleContent';
-import Comment from '@/components/common/Comment/Comment';
-import CommentInputModal from '@/components/common/CommentInputModal/CommentInputModal';
+import ArticleContent from '@/components/article/ArticleContent/ArticleContent';
+import Comment from '@/components/comment/Comment/Comment';
+import CommentInputModal from '@/components/comment/CommentInputModal/CommentInputModal';
 import { URL } from '@/constants/url';
 import * as S from '@/pages/Detail/index.styles';
 import { getUserIsLogin } from '@/store/userState';
 import { ArticleType } from '@/types/articleResponse';
 import { CommentType } from '@/types/commentResponse';
 
-interface DetailProps {
-	children?: React.ReactNode;
+export interface DetailProps {
 	article: ArticleType;
 	commentList: CommentType[];
 	articleId: string;
 	category: string;
 }
 
-const Detail = ({ children, article, commentList, articleId, category }: DetailProps) => {
+const Detail = ({
+	children,
+	article,
+	commentList,
+	articleId,
+	category,
+}: PropsWithOptionalChildren<DetailProps>) => {
 	const [isCommentOpen, setIsCommentOpen] = useState(false);
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const navigate = useNavigate();

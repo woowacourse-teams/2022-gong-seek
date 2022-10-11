@@ -4,18 +4,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.Content;
 import com.woowacourse.gongseek.article.domain.TempArticle;
-import com.woowacourse.gongseek.config.JpaAuditingConfig;
-import com.woowacourse.gongseek.config.QuerydslConfig;
+import com.woowacourse.gongseek.article.domain.TempTags;
+import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.support.RepositoryTest;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 
 @RepositoryTest
 class TempArticleRepositoryTest {
@@ -27,44 +30,67 @@ class TempArticleRepositoryTest {
     private TempArticleRepository tempArticleRepository;
 
     private Member member;
+    private TempArticle tempArticle;
 
     @BeforeEach
     public void setUp() {
         member = memberRepository.save(new Member("slow", "hanull", "avatarUrl"));
+        tempArticle = tempArticleRepository.save(TempArticle.builder()
+                .title(new Title("title"))
+                .content(new Content("content"))
+                .category(Category.QUESTION)
+                .member(member)
+                .tempTags(new TempTags(List.of("spring")))
+                .isAnonymous(false)
+                .build());
     }
 
-    @Test
-    void 임시_게시글을_저장한다() {
-        final TempArticle tempArticle = new TempArticle("title", "content", Category.DISCUSSION.getValue(),
-                member, List.of("spring"), false);
+    @MethodSource("provideTitles")
+    @ParameterizedTest
+    void 임시_게시글을_저장한다_제목_길이는_최소1에서_최대500자까지_가능하다(String title) {
+        final TempArticle tempArticle = TempArticle.builder()
+                .title(new Title(title))
+                .content(new Content("content"))
+                .category(Category.QUESTION)
+                .member(member)
+                .tempTags(new TempTags(List.of("spring")))
+                .isAnonymous(false)
+                .build();
 
         final TempArticle savedTempArticle = tempArticleRepository.save(tempArticle);
 
         assertThat(savedTempArticle).isEqualTo(tempArticle);
     }
 
+    private static Stream<Arguments> provideTitles() {
+        return Stream.of(
+                Arguments.of("a"),
+                Arguments.of("a".repeat(500))
+        );
+    }
+
     @Test
     void 전체_임시_게시글을_조회한다() {
-        final TempArticle request1 = new TempArticle("title", "content", Category.DISCUSSION.getValue(), member,
-                List.of("spring"), false);
-        final TempArticle request2 = new TempArticle("title2", "content2", Category.QUESTION.getValue(), member,
-                List.of("spring2"), false);
-        tempArticleRepository.save(request1);
-        tempArticleRepository.save(request2);
+        final TempArticle tempArticle2 = TempArticle.builder()
+                .title(new Title("title2"))
+                .content(new Content("content2"))
+                .category(Category.QUESTION)
+                .member(member)
+                .tempTags(new TempTags(List.of("spring2")))
+                .isAnonymous(false)
+                .build();
+        tempArticleRepository.save(tempArticle2);
 
         final List<TempArticle> tempArticles = tempArticleRepository.findAll();
 
         assertAll(
                 () -> assertThat(tempArticles).hasSize(2),
-                () -> assertThat(tempArticles).isEqualTo(List.of(request1, request2))
+                () -> assertThat(tempArticles).isEqualTo(List.of(tempArticle, tempArticle2))
         );
     }
 
     @Test
     void 단건_임시_게시글을_조회한다() {
-        final TempArticle tempArticle = tempArticleRepository.save(
-                new TempArticle("title", "content", Category.DISCUSSION.getValue(), member, List.of("spring"), false));
-
         final TempArticle foundTempArticle = tempArticleRepository.findById(tempArticle.getId())
                 .get();
 
@@ -73,9 +99,6 @@ class TempArticleRepositoryTest {
 
     @Test
     void 임시_게시글을_삭제한다() {
-        final TempArticle tempArticle = tempArticleRepository.save(
-                new TempArticle("title", "content", Category.DISCUSSION.getValue(), member, List.of("spring"), false));
-
         tempArticleRepository.delete(tempArticle);
 
         assertThat(tempArticleRepository.findById(tempArticle.getId())).isEmpty();

@@ -17,11 +17,15 @@ public class TempArticleResponse {
 
     private String title;
 
+    private String category;
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createAt;
 
     public static TempArticleResponse from(TempArticle tempArticle) {
-        return new TempArticleResponse(tempArticle.getId(), tempArticle.getTitle().getValue(),
+        return new TempArticleResponse(tempArticle.getId(),
+                tempArticle.getTitle().getValue(),
+                tempArticle.getCategory().getValue(),
                 tempArticle.getCreatedAt());
     }
 }

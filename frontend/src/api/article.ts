@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { ACCESSTOKEN_KEY } from '@/constants';
 import { HOME_URL } from '@/constants/apiUrl';
 import { AllArticleResponse, ArticleType } from '@/types/articleResponse';
 import { convertSort } from '@/utils/converter';
@@ -11,7 +12,7 @@ export interface WritingArticles {
 }
 
 export const postWritingArticle = (article: WritingArticles) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
 	return axios.post(`${HOME_URL}/api/articles`, article, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
@@ -26,7 +27,7 @@ export interface PopularArticles {
 }
 
 export const getPopularArticles = async () => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
 
 	const result = await axios.get<PopularArticles>(
 		`${HOME_URL}/api/articles?category=all&sort=views&size=10`,
@@ -41,7 +42,7 @@ export const getPopularArticles = async () => {
 };
 
 export const getDetailArticle = async (id: string) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
 	const { data } = await axios.get<ArticleType>(`${HOME_URL}/api/articles/${id}`, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
@@ -59,19 +60,25 @@ export const getAllArticle = async ({
 	cursorLikes,
 }: {
 	category: string;
-	sort: '좋아요순' | '조회순' | '최신순';
+	sort: '추천순' | '조회순' | '최신순';
 	cursorId: string;
 	cursorViews: string;
 	cursorLikes: string;
 }) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
 
-	if (sort === '좋아요순') {
+	if (sort === '추천순') {
 		const data = await getAllArticlesByLikes({ category, cursorId, cursorLikes, accessToken });
 		return data;
 	}
 
-	const data = getAllArticleByViewsOrLatest({ category, sort, cursorId, cursorViews, accessToken });
+	const data = await getAllArticleByViewsOrLatest({
+		category,
+		sort,
+		cursorId,
+		cursorViews,
+		accessToken,
+	});
 	return data;
 };
 
@@ -83,7 +90,7 @@ export const getAllArticleByViewsOrLatest = async ({
 	accessToken,
 }: {
 	category: string;
-	sort: '좋아요순' | '조회순' | '최신순';
+	sort: '추천순' | '조회순' | '최신순';
 	cursorId: string;
 	cursorViews: string;
 	accessToken: string | null;
@@ -103,15 +110,25 @@ export const getAllArticleByViewsOrLatest = async ({
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
-		cursorId: String(data.articles[data.articles.length - 1]?.id),
-		cursorViews: String(data.articles[data.articles.length - 1]?.views),
+		cursorId:
+			data.articles && data.articles[data.articles.length - 1]
+				? String(data.articles[data.articles.length - 1].id)
+				: '',
+		cursorViews:
+			data.articles && data.articles[data.articles.length - 1]
+				? String(data.articles[data.articles.length - 1].views)
+				: '',
+		cursorLikes:
+			data.articles && data.articles[data.articles.length - 1]
+				? String(data.articles[data.articles.length - 1].likeCount)
+				: '',
 	};
 };
 
 export const getAllArticlesByLikes = async ({
 	category,
 	cursorId,
-	cursorLikes,
+	cursorLikes = '',
 	accessToken,
 }: {
 	category: string;
@@ -132,13 +149,23 @@ export const getAllArticlesByLikes = async ({
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
-		cursorId: String(data.articles[data.articles.length - 1]?.id),
-		cursorLikes: String(data.articles[data.articles.length - 1]?.likeCount),
+		cursorId:
+			data && data.articles[data.articles.length - 1]
+				? String(data.articles[data.articles.length - 1].id)
+				: '',
+		cursorLikes:
+			data && data.articles[data.articles.length - 1]
+				? String(data.articles[data.articles.length - 1].likeCount)
+				: '',
+		cursorViews:
+			data.articles && data.articles[data.articles.length - 1]
+				? String(data.articles[data.articles.length - 1].views)
+				: '',
 	};
 };
 
 export const postArticle = (article: { id: string; title: string; content: string }) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
 
 	return axios.post<{ id: number; category: string }>(
 		`${HOME_URL}/api/articles/${article.id}`,
@@ -158,7 +185,7 @@ export const putArticle = (article: {
 	content: string;
 	tag: string[];
 }) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
 	return axios.put<{ id: number; category: string }>(
 		`${HOME_URL}/api/articles/${article.id}`,
 		{ title: article.title, content: article.content, tag: article.tag },
@@ -172,7 +199,7 @@ export const putArticle = (article: {
 };
 
 export const deleteArticle = (id: string) => {
-	const accessToken = localStorage.getItem('accessToken');
+	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
 	return axios.delete<never, unknown, unknown>(`${HOME_URL}/api/articles/${id}`, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',

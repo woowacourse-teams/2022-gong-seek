@@ -1,5 +1,7 @@
-import Detail from '@/pages/Detail/index';
-import Vote from '@/pages/Discussion/Vote/Vote';
+import { PropsWithOptionalChildren } from 'gongseek-types';
+
+import Vote from '@/components/vote/Vote/Vote';
+import Detail, { DetailProps } from '@/pages/Detail/index';
 import { Meta, Story } from '@storybook/react';
 
 export default {
@@ -14,7 +16,7 @@ export default {
 	],
 } as Meta;
 
-const Template: Story = (args) => <Detail {...args} />;
+const Template: Story<PropsWithOptionalChildren<DetailProps>> = (args) => <Detail {...args} />;
 
 export const ErrorDetail = Template.bind({});
 

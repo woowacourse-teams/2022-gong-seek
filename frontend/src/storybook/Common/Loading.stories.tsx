@@ -1,4 +1,4 @@
-import Loading from '@/components/common/Loading/Loading';
+import Loading from '@/components/@common/Loading/Loading';
 import { Meta, Story } from '@storybook/react';
 
 export default {

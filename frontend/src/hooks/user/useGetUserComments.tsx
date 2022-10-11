@@ -1,35 +1,23 @@
 import { AxiosError } from 'axios';
-import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 
 import { getUserComments } from '@/api/myPage';
-import CustomError from '@/components/helper/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
+import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { UserCommentResponse } from '@/types/commentResponse';
 
 const useGetUserComments = () => {
-	const { data, isSuccess, isLoading, isIdle, isError, error } = useQuery<
+	const { data, isSuccess, isError, isLoading, error } = useQuery<
 		UserCommentResponse,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('user-comments', getUserComments, { retry: 1, refetchOnWindowFocus: false });
 
-	useEffect(() => {
-		if (isError) {
-			if (!error.response) {
-				return;
-			}
-			throw new CustomError(
-				error.response.data.errorCode,
-				ErrorMessage[error.response.data.errorCode],
-			);
-		}
-	}, [isError]);
+	useThrowCustomError(isError, error);
 
 	return {
 		data,
 		isSuccess,
 		isLoading,
-		isIdle,
 	};
 };
 

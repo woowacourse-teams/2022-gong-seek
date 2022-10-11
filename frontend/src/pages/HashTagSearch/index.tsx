@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
+import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
+import HashTagSearchBox from '@/components/hashTag/HashTagSearchBox/HashTagSearchBox';
+import HashTagSearchResult from '@/components/hashTag/HashTagSearchResult/HashTagSearchResult';
 import useGetAllHashTags from '@/hooks/hashTag/useGetAllHashTags';
-import HashTagSearchBox from '@/pages/HashTagSearch/HashTagSearchBox/HashTagSearchBox';
-import HashTagSearchResult from '@/pages/HashTagSearch/HashTagSearchResult/HashTagSearchResult';
 import * as S from '@/pages/HashTagSearch/index.styles';
 
 const HashTagSearch = () => {
@@ -44,7 +45,7 @@ const HashTagSearch = () => {
 				{selectedHashTags && selectedHashTags.length >= 1 ? (
 					<HashTagSearchResult hashTags={selectedHashTags} />
 				) : (
-					<S.EmptyMsg>해시태그를 눌러주세요</S.EmptyMsg>
+					<EmptyMessage>해시태그를 눌러주세요</EmptyMessage>
 				)}
 			</S.HashTagSearchResultContainer>
 		</S.Container>

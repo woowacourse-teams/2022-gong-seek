@@ -2,7 +2,6 @@ package com.woowacourse.gongseek.auth.presentation;
 
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.utils.TokenExtractor;
-import com.woowacourse.gongseek.common.exception.UnAuthorizedTokenException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
@@ -24,13 +23,7 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
         }
 
         String accessToken = TokenExtractor.extract(request.getHeader(HttpHeaders.AUTHORIZATION));
-        validateAccessToken(accessToken);
+        jwtTokenProvider.isValidAccessTokenWithTimeOut(accessToken);
         return true;
-    }
-
-    private void validateAccessToken(String accessToken) {
-        if (!jwtTokenProvider.isValidAccessTokenWithTimeOut(accessToken)) {
-            throw new UnAuthorizedTokenException();
-        }
     }
 }

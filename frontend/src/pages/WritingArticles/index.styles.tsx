@@ -12,7 +12,8 @@ export const Container = styled.div`
 
 	width: 100%;
 	min-height: 100%;
-
+	max-width: 900px;
+	margin: 0 auto;
 	margin-bottom: ${({ theme }) => theme.size.SIZE_040};
 `;
 
@@ -20,7 +21,7 @@ export const Content = styled.div`
 	width: 100%;
 	margin-top: ${({ theme }) => theme.size.SIZE_028};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 100%;
 	}
 `;
@@ -31,9 +32,9 @@ export const SelectorBox = styled.div`
 	flex-direction: column;
 	gap: ${({ theme }) => theme.size.SIZE_010};
 
-	width: 90%;
+	width: 95%;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: 100%;
 	}
 `;
@@ -49,9 +50,9 @@ export const TitleInput = styled.input`
 
 	padding: 0.6rem 0.8rem;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		font-size: ${({ theme }) => theme.size.SIZE_020};
-		padding: 1.3rem 0.8rem;
+		padding: ${({ theme }) => theme.size.SIZE_008} ${({ theme }) => theme.size.SIZE_010};
 	}
 
 	&:focus {
@@ -86,7 +87,7 @@ export const OptionBox = styled.div`
 	flex-direction: column;
 	gap: ${({ theme }) => theme.size.SIZE_010};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		flex-direction: row-reverse;
 	}
 `;
@@ -161,7 +162,7 @@ export const SubmitButton = styled.button`
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
 	}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: ${({ theme }) => theme.size.SIZE_100};
 		height: ${({ theme }) => theme.size.SIZE_040};
 
@@ -175,7 +176,7 @@ export const UpdateSubmitBox = styled.div`
 	width: 100%;
 	justify-content: center;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		justify-content: flex-end;
 	}
 `;
@@ -202,7 +203,7 @@ export const UpdateSubmitButton = styled.button`
 		background-color: ${({ theme }) => theme.colors.PURPLE_400};
 	}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		width: ${({ theme }) => theme.size.SIZE_100};
 		height: ${({ theme }) => theme.size.SIZE_040};
 
@@ -243,8 +244,37 @@ export const SubmitBox = styled.div`
 	margin-top: ${({ theme }) => theme.size.SIZE_050};
 	width: 85%;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
 		margin-left: auto;
 		width: min-content;
+	}
+`;
+
+export const TemporaryStoreButtonBox = styled.div`
+	width: 90%;
+	display: flex;
+
+	justify-content: flex-end;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+		width: 100%;
+		margin-top: ${({ theme }) => theme.size.SIZE_020};
+	}
+`;
+
+export const TemporaryStoreButton = styled.button`
+	width: fit-content;
+	padding: ${({ theme }) => theme.size.SIZE_004};
+
+	border-radius: ${({ theme }) => theme.size.SIZE_004};
+	background-color: transparent;
+	border: none;
+
+	font-size: ${({ theme }) => theme.size.SIZE_014};
+
+	&:hover,
+	&:active {
+		background-color: ${({ theme }) => theme.colors.PURPLE_500};
+		color: ${({ theme }) => theme.colors.WHITE};
 	}
 `;

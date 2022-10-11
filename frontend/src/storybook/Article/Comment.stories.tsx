@@ -1,4 +1,4 @@
-import Comment, { CommentProps } from '@/components/common/Comment/Comment';
+import Comment, { CommentProps } from '@/components/comment/Comment/Comment';
 import { Meta, Story } from '@storybook/react';
 
 export default {

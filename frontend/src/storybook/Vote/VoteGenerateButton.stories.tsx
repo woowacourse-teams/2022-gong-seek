@@ -1,4 +1,4 @@
-import VoteGenerateButton from '@/pages/DiscussionDetail/VoteGenerateButton/VoteGenerateButton';
+import VoteGenerateButton from '@/components/vote/VoteGenerateButton/VoteGenerateButton';
 import { Meta, Story } from '@storybook/react';
 
 export default {

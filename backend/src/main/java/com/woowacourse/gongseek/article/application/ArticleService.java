@@ -71,6 +71,7 @@ public class ArticleService {
 
     public ArticleResponse getOne(AppMember appMember, Long id) {
         Article article = getArticle(id);
+
         List<String> tagNames = article.getTagNames();
         article.addViews();
         LikeResponse likeResponse = new LikeResponse(isLike(article, appMember), getLikeCount(article));
@@ -80,16 +81,16 @@ public class ArticleService {
     }
 
     private Article getArticle(Long id) {
-        return articleRepository.findById(id)
+        return articleRepository.findByIdWithAll(id)
                 .orElseThrow(() -> new ArticleNotFoundException(id));
-    }
-
-    private Long getLikeCount(Article article) {
-        return likeRepository.countByArticleId(article.getId());
     }
 
     private boolean isLike(Article article, AppMember appMember) {
         return likeRepository.existsByArticleIdAndMemberId(article.getId(), appMember.getPayload());
+    }
+
+    private Long getLikeCount(Article article) {
+        return likeRepository.countByArticleId(article.getId());
     }
 
     private ArticleResponse checkGuest(Article article, List<String> tagNames, AppMember appMember, boolean hasVote,

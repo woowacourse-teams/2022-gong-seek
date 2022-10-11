@@ -1,14 +1,20 @@
-export const todayGenerator = () => {
+import { VoteDateFormat } from 'gongseek-types';
+import { Day, Month } from 'gongseek-types/lib/util';
+
+export const todayGenerator = (): VoteDateFormat => {
 	const date = new Date();
 	date.setDate(date.getDate());
 	const year = date.getFullYear();
 	const month = date.getMonth() + 1;
 	const day = date.getDate();
 
-	return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+	const tMonth = String(month).padStart(2, '0') as Month;
+	const tDay = String(day).padStart(2, '0') as Day;
+
+	return `${year}-${tMonth}-${tDay}`;
 };
 
-export const afterWeekGenerator = () => {
+export const afterWeekGenerator = (): VoteDateFormat => {
 	const date = new Date();
 	date.setDate(date.getDate() + 6);
 
@@ -16,7 +22,10 @@ export const afterWeekGenerator = () => {
 	const month = date.getMonth() + 1;
 	const day = date.getDate();
 
-	return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+	const tMonth = String(month).padStart(2, '0') as Month;
+	const tDay = String(day).padStart(2, '0') as Day;
+
+	return `${year}-${tMonth}-${tDay}`;
 };
 
 export const currentTimeGenerator = () => {

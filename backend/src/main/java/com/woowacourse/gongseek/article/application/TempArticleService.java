@@ -61,7 +61,7 @@ public class TempArticleService {
     }
 
     private TempArticle getTempArticle(Long tempArticleId) {
-        return tempArticleRepository.findById(tempArticleId)
+        return tempArticleRepository.findByIdWithMember(tempArticleId)
                 .orElseThrow(() -> new TempArticleNotFoundException(tempArticleId));
     }
 
