@@ -1,4 +1,4 @@
-import Card from '@/components/common/Card/Card';
+import Card from '@/components/@common/Card/Card';
 import { mobileTitleSecondary } from '@/constants/titleType';
 import * as S from '@/pages/CategorySelector/CategorySelector.styles';
 import { CategorySelectorCardStyle } from '@/styles/cardStyle';

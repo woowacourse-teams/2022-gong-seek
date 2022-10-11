@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.acceptance;
 
 import com.woowacourse.gongseek.support.DatabaseCleaner;
+import com.woowacourse.gongseek.support.RedisContainerTest;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-public abstract class AcceptanceTest {
+public abstract class AcceptanceTest extends RedisContainerTest {
 
     @LocalServerPort
     private int port;

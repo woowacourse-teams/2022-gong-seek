@@ -26,6 +26,7 @@ import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
+import com.woowacourse.gongseek.support.ControllerTest;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -43,22 +44,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayName("회원 조회 문서화")
-@AutoConfigureRestDocs
-@WebMvcTest(MemberController.class)
-@Import(RestDocsConfig.class)
-public class MemberControllerTest {
-
-    @MockBean
-    private MemberService memberService;
-
-    @MockBean
-    private JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private MockMvc mockMvc;
+public class MemberControllerTest extends ControllerTest {
 
     @Test
     void 마이페이지에서_회원_조회_API_문서화() throws Exception {

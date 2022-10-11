@@ -1,6 +1,6 @@
 import TemporaryArticleItem, {
 	TemporaryArticleItemProps,
-} from '@/pages/TemporaryArticles/TemporaryArticleItem/TemporaryArticleItem';
+} from '@/components/tempArticle/TemporaryArticleItem/TemporaryArticleItem';
 import { action } from '@storybook/addon-actions';
 import { Meta, Story } from '@storybook/react';
 

@@ -1,4 +1,4 @@
-import LoginLoading from '@/pages/Login/LoginLoading/LoginLoading';
+import LoginLoading from '@/components/login/LoginLoading/LoginLoading';
 import { Meta, Story } from '@storybook/react';
 
 export default {

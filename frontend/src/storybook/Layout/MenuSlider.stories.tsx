@@ -1,4 +1,4 @@
-import MenuSlider, { MenuSliderProps } from '@/components/common/MenuSlider/MenuSlider';
+import MenuSlider, { MenuSliderProps } from '@/components/@common/MenuSlider/MenuSlider';
 import { Meta, Story } from '@storybook/react';
 
 const modalRoot = document.createElement('div');

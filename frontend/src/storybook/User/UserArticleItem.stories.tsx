@@ -1,4 +1,4 @@
-import UserArticleItem from '@/pages/MyPage/UserArticleItem/UserArticleItem';
+import UserArticleItem from '@/components/user/UserArticleItem/UserArticleItem';
 import { UserArticleItemType } from '@/types/articleResponse';
 import { Meta, Story } from '@storybook/react';
 
