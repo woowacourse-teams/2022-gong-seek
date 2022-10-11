@@ -1,8 +1,10 @@
 import { PropsWithStrictChildren } from 'gongseek-types';
 import ReactDOM from 'react-dom';
 
+import { ModalStateType } from '@/store/modalState';
+
 type ModalPortalProps = {
-	modalId: string;
+	modalId: ModalStateType['modalType'];
 };
 
 const ModalPortal = ({ modalId, children }: PropsWithStrictChildren<ModalPortalProps>) => {
