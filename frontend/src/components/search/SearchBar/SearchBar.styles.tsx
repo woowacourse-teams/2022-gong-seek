@@ -23,7 +23,7 @@ export const SearchBarBox = styled.form<{ isSearchOpen: boolean }>`
 	${({ theme, isSearchOpen }) => css`
 		width: ${isSearchOpen ? '75%' : '100%'};
 
-		border-radius: ${theme.size.SIZE_016}
+		border-radius: ${theme.size.SIZE_016};
 		border: ${theme.size.SIZE_001} solid transparent;
 
 		background-color: ${theme.colors.GRAY_500};
