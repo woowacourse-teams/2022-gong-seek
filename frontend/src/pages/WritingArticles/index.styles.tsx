@@ -1,6 +1,7 @@
 import { AiOutlineDown } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
@@ -44,20 +45,21 @@ export const TitleInput = styled.input`
 
 	border-style: none;
 
-	font-size: 0.8rem;
-
 	background-color: transparent;
-
-	padding: 0.6rem 0.8rem;
-
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
-		font-size: ${({ theme }) => theme.size.SIZE_020};
-		padding: ${({ theme }) => theme.size.SIZE_008} ${({ theme }) => theme.size.SIZE_010};
-	}
 
 	&:focus {
 		outline: none;
 	}
+
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_014};
+		padding: ${theme.size.SIZE_010} ${theme.size.SIZE_014};
+
+		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
+			font-size: ${theme.size.SIZE_020};
+			padding: ${theme.size.SIZE_008} ${theme.size.SIZE_010};
+		}
+	`}
 `;
 
 export const TitleInputErrorMsgBox = styled.div`
@@ -102,31 +104,24 @@ export const CategorySelectorBox = styled.div`
 
 export const SelectorButton = styled(AiOutlineDown)`
 	position: relative;
-
-	right: ${({ theme }) => theme.size.SIZE_004};
-
+	pointer-events: none;
 	border: none;
 
-	font-size: ${({ theme }) => theme.size.SIZE_018};
+	${({ theme }) => css`
+		right: ${theme.size.SIZE_004};
 
-	color: ${({ theme }) => theme.colors.PURPLE_500};
+		font-size: ${theme.size.SIZE_018};
+		color: ${theme.colors.PURPLE_500};
 
-	pointer-events: none;
-
-	z-index: -100;
+		z-index: ${theme.zIndex.SELECTOR_BUTTON};
+	`}
 `;
 
 export const CategorySelector = styled.select`
 	width: 100%;
 
 	border-color: transparent;
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
-
-	font-size: 0.8rem;
-
 	background-color: transparent;
-
-	padding: 0.6rem 0.8rem;
 
 	appearance: none;
 	-webkit-appearance: none;
@@ -136,38 +131,48 @@ export const CategorySelector = styled.select`
 		outline: none;
 	}
 
-	&:invalid {
-		color: rgb(117, 117, 117);
-	}
+	${({ theme }) => css`
+		border-radius: ${theme.size.SIZE_010};
+
+		font-size: ${theme.size.SIZE_014};
+
+		padding: ${theme.size.SIZE_010} ${theme.size.SIZE_014};
+
+		&:invalid {
+			color: ${theme.colors.BLACK_300};
+		}
+	`}
 `;
 
 export const SubmitButton = styled.button`
 	width: 90%;
 	height: fit-content;
 
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	border-color: transparent;
-
-	font-size: 0.8rem;
-
-	color: ${({ theme }) => theme.colors.WHITE};
-	background-color: ${({ theme }) => theme.colors.PURPLE_500};
-
-	padding: ${({ theme }) => theme.size.SIZE_004};
-
 	cursor: pointer;
 
-	&:hover,
-	&:active {
-		background-color: ${({ theme }) => theme.colors.PURPLE_400};
-	}
+	${({ theme }) => css`
+		border-radius: ${theme.size.SIZE_010};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
-		width: ${({ theme }) => theme.size.SIZE_100};
-		height: ${({ theme }) => theme.size.SIZE_040};
+		font-size: ${theme.size.SIZE_014};
 
-		font-size: ${({ theme }) => theme.size.SIZE_016};
-	}
+		color: ${theme.colors.WHITE};
+		background-color: ${theme.colors.PURPLE_500};
+
+		padding: ${theme.size.SIZE_004};
+
+		&:hover,
+		&:active {
+			background-color: ${theme.colors.PURPLE_400};
+		}
+
+		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
+			width: ${theme.size.SIZE_100};
+			height: ${theme.size.SIZE_040};
+
+			font-size: ${theme.size.SIZE_016};
+		}
+	`}
 `;
 
 export const UpdateSubmitBox = styled.div`
@@ -185,47 +190,40 @@ export const UpdateSubmitButton = styled.button`
 	width: 90%;
 	height: fit-content;
 
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	border-color: transparent;
-
-	font-size: 0.8rem;
-
-	color: ${({ theme }) => theme.colors.WHITE};
-	background-color: ${({ theme }) => theme.colors.PURPLE_500};
-
-	padding: ${({ theme }) => theme.size.SIZE_004};
-	margin-top: ${({ theme }) => theme.size.SIZE_020};
-
 	cursor: pointer;
 
-	&:hover,
-	&:active {
-		background-color: ${({ theme }) => theme.colors.PURPLE_400};
-	}
+	${({ theme }) => css`
+		border-radius: ${theme.size.SIZE_010};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
-		width: ${({ theme }) => theme.size.SIZE_100};
-		height: ${({ theme }) => theme.size.SIZE_040};
+		font-size: ${theme.size.SIZE_014};
 
-		font-size: ${({ theme }) => theme.size.SIZE_016};
-	}
+		color: ${theme.colors.WHITE};
+		background-color: ${theme.colors.PURPLE_500};
+
+		padding: ${theme.size.SIZE_004};
+		margin-top: ${theme.size.SIZE_020};
+
+		&:hover,
+		&:active {
+			background-color: ${theme.colors.PURPLE_400};
+		}
+
+		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
+			width: ${theme.size.SIZE_100};
+			height: ${theme.size.SIZE_040};
+
+			font-size: ${theme.size.SIZE_016};
+		}
+	`}
 `;
 
 export const LinkButton = styled(Link)`
 	width: 88%;
 
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	border-color: transparent;
-
-	font-size: 0.8rem;
 	text-align: center;
 	text-decoration: none;
-
-	color: ${({ theme }) => theme.colors.WHITE};
-	background-color: ${({ theme }) => theme.colors.GREEN_500};
-
-	padding: ${({ theme }) => theme.size.SIZE_004};
-	margin-top: ${({ theme }) => theme.size.SIZE_020};
 
 	cursor: pointer;
 
@@ -233,21 +231,36 @@ export const LinkButton = styled(Link)`
 	&:active {
 		filter: brightness(1.01);
 	}
+
+	${({ theme }) => css`
+		border-radius: ${theme.size.SIZE_010};
+
+		font-size: ${theme.size.SIZE_014};
+
+		color: ${theme.colors.WHITE};
+		background-color: ${theme.colors.GREEN_500};
+
+		padding: ${theme.size.SIZE_004};
+		margin-top: ${theme.size.SIZE_020};
+	`}
 `;
 
 export const SubmitBox = styled.div`
 	display: flex;
-	gap: ${({ theme }) => theme.size.SIZE_022};
 
 	align-items: center;
 	justify-content: end;
-	margin-top: ${({ theme }) => theme.size.SIZE_050};
+
 	width: 85%;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
-		margin-left: auto;
-		width: min-content;
-	}
+	${({ theme }) => css`
+		gap: ${theme.size.SIZE_022};
+		margin-top: ${theme.size.SIZE_050};
+		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
+			margin-left: auto;
+			width: min-content;
+		}
+	`}
 `;
 
 export const TemporaryStoreButtonBox = styled.div`
@@ -264,17 +277,20 @@ export const TemporaryStoreButtonBox = styled.div`
 
 export const TemporaryStoreButton = styled.button`
 	width: fit-content;
-	padding: ${({ theme }) => theme.size.SIZE_004};
-
-	border-radius: ${({ theme }) => theme.size.SIZE_004};
 	background-color: transparent;
 	border: none;
 
-	font-size: ${({ theme }) => theme.size.SIZE_014};
+	${({ theme }) => css`
+		padding: ${theme.size.SIZE_004};
 
-	&:hover,
-	&:active {
-		background-color: ${({ theme }) => theme.colors.PURPLE_500};
-		color: ${({ theme }) => theme.colors.WHITE};
-	}
+		border-radius: ${theme.size.SIZE_004};
+
+		font-size: ${theme.size.SIZE_014};
+
+		&:hover,
+		&:active {
+			background-color: ${theme.colors.PURPLE_500};
+			color: ${theme.colors.WHITE};
+		}
+	`}
 `;

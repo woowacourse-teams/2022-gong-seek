@@ -1,4 +1,4 @@
-import { keyframes } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const PopUpAnimation = keyframes`
@@ -39,23 +39,24 @@ export const MessageBox = styled.div`
 	text-align: center;
 	word-break: keep-all;
 
-	padding: ${({ theme }) => theme.size.SIZE_012};
-	font-size: ${({ theme }) => theme.size.SIZE_012};
-	color: ${({ theme }) => theme.colors.WHITE};
+	${({ theme }) => css`
+		padding: ${theme.size.SIZE_012};
+		font-size: ${theme.size.SIZE_012};
+		color: ${theme.colors.WHITE};
 
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
-	border-style: none;
+		border-radius: ${theme.size.SIZE_010};
+		border-style: none;
 
-	background-color: ${({ theme }) => theme.colors.PURPLE_500};
+		background-color: ${theme.colors.PURPLE_500};
 
-	transform: translateY(-${({ theme }) => theme.size.SIZE_100});
-	box-shadow: ${({ theme }) => theme.size.SIZE_010} ${({ theme }) => theme.size.SIZE_004}
-		${({ theme }) => theme.size.SIZE_004} #9c9c9c;
+		transform: translateY(-${theme.size.SIZE_100});
+		box-shadow: ${theme.size.SIZE_010} ${theme.size.SIZE_004} ${theme.size.SIZE_004}${theme.colors.BLACK_300};
 
-	animation: ${PopUpAnimation} 0.3s ease-in-out;
+		animation: ${PopUpAnimation} 0.3s ease-in-out;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints}) {
-		width: fit-content;
-		font-size: ${({ theme }) => theme.size.SIZE_016};
-	}
+		@media (min-width: ${theme.breakpoints}) {
+			width: fit-content;
+			font-size: ${theme.size.SIZE_016};
+		}
+	`}
 `;

@@ -1,35 +1,17 @@
-import { useEffect, useState } from 'react';
-
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import HashTagSearchBox from '@/components/hashTag/HashTagSearchBox/HashTagSearchBox';
 import HashTagSearchResult from '@/components/hashTag/HashTagSearchResult/HashTagSearchResult';
-import useGetAllHashTags from '@/hooks/hashTag/useGetAllHashTags';
+import useHandleHashTagState from '@/hooks/hashTag/useHandleHashTagState';
 import * as S from '@/pages/HashTagSearch/index.styles';
 
 const HashTagSearch = () => {
-	const [targetHashTags, setTargetHashTags] = useState<{ name: string; isChecked: boolean }[]>([]);
-	const [selectedHashTags, setSelectedHashTags] = useState<string[]>([]);
 	const {
-		data: tagsOption,
-		isSuccess: isTagsOptionSuccess,
-		isLoading: isTagsOptionLoading,
-	} = useGetAllHashTags();
-
-	useEffect(() => {
-		if (isTagsOptionSuccess && tagsOption && tagsOption?.tag.length >= 1) {
-			setTargetHashTags(
-				tagsOption.tag.map((item) => ({
-					name: item,
-					isChecked: false,
-				})),
-			);
-		}
-	}, [isTagsOptionSuccess]);
-
-	useEffect(() => {
-		setSelectedHashTags(targetHashTags.filter((item) => item.isChecked).map((item) => item.name));
-	}, [targetHashTags]);
-
+		isTagsOptionLoading,
+		isTagsOptionSuccess,
+		targetHashTags,
+		selectedHashTags,
+		setTargetHashTags,
+	} = useHandleHashTagState();
 	return (
 		<S.Container>
 			<S.HashTagSelectTitle>찾고 싶은 해시태그를 클릭해주세요 🔍</S.HashTagSelectTitle>

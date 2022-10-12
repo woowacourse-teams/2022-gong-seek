@@ -1,5 +1,6 @@
 import { AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const ArticleContent = styled.div`
@@ -11,24 +12,28 @@ export const ArticleContent = styled.div`
 	width: 80%;
 	height: 100%;
 
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
+	${({ theme }) => css`
+		border-radius: ${theme.size.SIZE_010};
+		padding: ${theme.size.SIZE_010};
 
-	padding: ${({ theme }) => theme.size.SIZE_010};
-
-	z-index: ${({ theme }) => theme.zIndex.ARTICLE_POPULAR_CONTENT};
+		z-index: ${theme.zIndex.ARTICLE_POPULAR_CONTENT};
+	`}
 `;
 
 export const Title = styled.h2`
 	width: 100%;
-	height: ${({ theme }) => theme.size.SIZE_040};
 
-	font-size: ${({ theme }) => theme.size.SIZE_014};
 	line-height: normal;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
 
-	margin-top: ${({ theme }) => theme.size.SIZE_004};
+	${({ theme }) => css`
+		height: ${theme.size.SIZE_040};
+
+		font-size: ${theme.size.SIZE_014};
+		margin-top: ${theme.size.SIZE_004};
+	`}
 `;
 
 export const ArticleInfo = styled.div`
@@ -55,14 +60,16 @@ export const UserImg = styled.img`
 `;
 
 export const UserName = styled.span`
-	width: ${({ theme }) => theme.size.SIZE_100};
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: normal;
 
-	font-size: ${({ theme }) => theme.size.SIZE_012};
+	${({ theme }) => css`
+		width: ${theme.size.SIZE_100};
+		font-size: ${theme.size.SIZE_012};
 
-	color: ${({ theme }) => theme.colors.BLACK_600};
+		color: ${theme.colors.BLACK_600};
+	`}
 `;
 
 export const SubInfoBox = styled.div`

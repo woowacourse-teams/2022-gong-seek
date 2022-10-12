@@ -8,9 +8,10 @@ const colors = {
 	BLUE_500: '#3AB0FF',
 	BLUE_400: 'rgba(58, 176, 255, 0.75)',
 	BLACK_200: '#C2C2C2',
-	BLACK_600: '#363636',
-	BLACK_500: '#141619',
+	BLACK_300: '#9c9c9c',
 	BLACK_400: 'rgba(20, 22, 25, 0.75)',
+	BLACK_500: '#141619',
+	BLACK_600: '#363636',
 	GRAY_100: '#f5f5f5',
 	GRAY_500: 'rgba(0, 0, 0, 0.11)',
 	GREEN_500: '#C4DFAA',
@@ -54,6 +55,7 @@ const boxShadows = {
 const size = {
 	SIZE_001: '0.063rem',
 	SIZE_002: '0.125rem',
+	SIZE_003: '0.0187rem',
 	SIZE_004: '0.25rem',
 	SIZE_006: '0.375rem',
 	SIZE_008: '0.5rem',
@@ -82,6 +84,7 @@ const size = {
 	SIZE_126: '7.875rem',
 	SIZE_140: '8.75rem',
 	SIZE_160: '10rem',
+	SIZE_170: '10.625rem',
 	SIZE_200: '12.5rem',
 	SIZE_220: '13.75rem',
 	SIZE_240: '15rem',
@@ -109,6 +112,7 @@ const zIndex = {
 	COMMON_INPUT_MODAL: 111,
 	ARTICLE_ITEM_LIST: 50,
 	CATEGORY_TITLE_CONTAINER: 90,
+	SELECTOR_BUTTON: -100,
 };
 
 export const theme = {

@@ -1,6 +1,7 @@
 import { AiFillEdit } from 'react-icons/ai';
 
 import Input from '@/components/@common/Input/Input';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
@@ -54,20 +55,23 @@ export const EditIcon = styled(AiFillEdit)`
 
 export const ConfirmButton = styled.button<{ disabled: boolean }>`
 	cursor: pointer;
-
-	border-radius: ${({ theme }) => theme.size.SIZE_008};
 	border-color: transparent;
-	color: ${({ theme }) => theme.colors.WHITE};
 
-	background-color: ${({ disabled, theme }) =>
-		disabled ? theme.colors.GRAY_500 : theme.colors.PURPLE_500};
-	pointer-events: ${({ disabled }) => disabled && 'none'};
-	font-size: ${({ theme }) => theme.size.SIZE_010};
-	padding: ${({ theme }) => theme.size.SIZE_006};
-	:hover,
-	:active {
-		background-color: ${({ theme }) => theme.colors.PURPLE_400};
-	}
+	${({ theme, disabled }) => css`
+		border-radius: ${theme.size.SIZE_008};
+
+		color: ${theme.colors.WHITE};
+
+		background-color: ${disabled ? `${theme.colors.GRAY_500}` : `${theme.colors.PURPLE_500}`};
+		pointer-events: ${disabled && 'none'};
+		font-size: ${theme.size.SIZE_010};
+		padding: ${theme.size.SIZE_006};
+
+		&:hover,
+		&:active {
+			background-color: ${theme.colors.PURPLE_400};
+		}
+	`}
 `;
 
 export const EditUserNameInput = styled(Input)`
