@@ -30,20 +30,20 @@ public class AuthService {
     }
 
     public TokenResponse generateToken(OAuthCodeRequest OAuthCodeRequest) {
-        GithubProfileResponse memberProfile = githubOAuthClient.getMemberProfile(OAuthCodeRequest.getCode());
+        GithubProfileResponse githubProfile = githubOAuthClient.getMemberProfile(OAuthCodeRequest.getCode());
 
-        return memberRepository.findByGithubId(memberProfile.getGithubId())
-                .map(foundMember -> updateMember(foundMember, memberProfile))
-                .orElseGet(() -> saveMember(memberProfile));
+        return memberRepository.findByGithubId(githubProfile.getGithubId())
+                .map(foundMember -> updateMember(foundMember, githubProfile))
+                .orElseGet(() -> saveMember(githubProfile));
     }
 
-    private TokenResponse updateMember(Member foundMember, GithubProfileResponse memberProfile) {
-        foundMember.updateAvatarUrl(memberProfile.getAvatarUrl());
+    private TokenResponse updateMember(Member foundMember, GithubProfileResponse githubProfile) {
+        foundMember.updateAvatarUrl(githubProfile.getAvatarUrl());
         return getTokenResponse(foundMember);
     }
 
-    private TokenResponse saveMember(GithubProfileResponse memberProfile) {
-        return getTokenResponse(memberRepository.save(memberProfile.toMember()));
+    private TokenResponse saveMember(GithubProfileResponse githubProfile) {
+        return getTokenResponse(memberRepository.save(githubProfile.toMember()));
     }
 
     private TokenResponse getTokenResponse(Member member) {
