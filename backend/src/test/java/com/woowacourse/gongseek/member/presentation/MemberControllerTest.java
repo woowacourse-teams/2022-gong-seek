@@ -14,11 +14,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateRequest;
 import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
+import com.woowacourse.gongseek.member.presentation.dto.MyPageArticleResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
@@ -63,9 +63,11 @@ public class MemberControllerTest extends ControllerTest {
     void 마이페이지에서_회원_게시글_조회_API_문서화() throws Exception {
         MyPageArticlesResponse myPageArticlesResponse = new MyPageArticlesResponse(
                 List.of(
-                        new MyPageArticleDto(1L, "title1", Category.QUESTION, 10L, 100, LocalDateTime.now(),
+                        new MyPageArticleResponse(1L, "title1", Category.QUESTION.getValue(), 10L, 100,
+                                LocalDateTime.now(),
                                 LocalDateTime.now()),
-                        new MyPageArticleDto(1L, "title2", Category.DISCUSSION, 20L, 100, LocalDateTime.now(),
+                        new MyPageArticleResponse(1L, "title2", Category.DISCUSSION.getValue(), 20L, 100,
+                                LocalDateTime.now(),
                                 LocalDateTime.now()))
         );
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);

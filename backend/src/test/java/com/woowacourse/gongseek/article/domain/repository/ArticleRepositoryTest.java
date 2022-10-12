@@ -26,6 +26,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
 @RepositoryTest
@@ -141,6 +142,7 @@ class ArticleRepositoryTest {
         );
     }
 
+    @Transactional
     @Test
     void 회원은_게시글에_해시태그를_수정할_수_있다() {
         Article article = articleRepository.save(
@@ -160,11 +162,11 @@ class ArticleRepositoryTest {
         testEntityManager.flush();
         testEntityManager.clear();
 
-        Article secondFoundArticle = articleRepository.findById(article.getId()).get();
+        Article foundArticle = articleRepository.findById(article.getId()).get();
 
         assertAll(
                 () -> assertThat(tagRepository.findAll()).hasSize(3),
-                () -> assertThat(secondFoundArticle.getArticleTags().getValue()).hasSize(1)
+                () -> assertThat(foundArticle.getArticleTags().getValue()).hasSize(1)
         );
     }
 
@@ -200,23 +202,5 @@ class ArticleRepositoryTest {
                 () -> assertThat(voteRepository.findByArticleId(article.getId())).isEmpty(),
                 () -> assertThat(voteHistoryRepository.findAll()).isEmpty()
         );
-    }
-
-    @Test
-    void 게시글의_조회수를_증가시킨다() {
-        Article article = articleRepository.save(
-                new Article("title1", "content1", Category.DISCUSSION, member, false));
-
-        testEntityManager.flush();
-        testEntityManager.clear();
-
-        articleRepository.addViews(article.getId());
-        articleRepository.addViews(article.getId());
-        articleRepository.addViews(article.getId());
-
-        Article foundArticle = articleRepository.findById(article.getId()).get();
-        int views = foundArticle.getViews();
-
-        assertThat(views).isEqualTo(3L);
     }
 }
