@@ -9,7 +9,7 @@ export const Container = styled.div`
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_080};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
 		flex-direction: row;
 		height: 60vh;
 		gap: ${({ theme }) => theme.size.SIZE_010};
