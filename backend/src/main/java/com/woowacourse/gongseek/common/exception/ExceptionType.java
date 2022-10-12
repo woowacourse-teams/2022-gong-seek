@@ -21,6 +21,7 @@ import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
 import com.woowacourse.gongseek.comment.exception.CommentNullOrEmptyException;
 import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
 import com.woowacourse.gongseek.image.exception.FileNameEmptyException;
+import com.woowacourse.gongseek.image.exception.FileUploadFailException;
 import com.woowacourse.gongseek.image.exception.UnsupportedFilExtensionException;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.member.exception.NameNullOrEmptyException;
@@ -91,7 +92,7 @@ public enum ExceptionType {
 
     UNSUPPORTED_FILE_EXTENSION_EXCEPTION("7001", "지원하지 않는 확장자 입니다.", UnsupportedFilExtensionException.class),
     FILE_NAME_EMPTY_EXCEPTION("7002", "파일 이름은 비어있을 수 없습니다.", FileNameEmptyException.class),
-
+    FILE_UPLOAD_FAIL_EXCEPTION("7003", "파일 업로드에 실패했습니다.", FileUploadFailException.class),
     UNHANDLED_EXCEPTION("0000", "알 수 없는 서버 에러가 발생했습니다."),
     METHOD_ARGUMENT_NOT_VALID_EXCEPTION("0001", "요청 데이터가 잘못되었습니다."),
     ;

@@ -1,5 +1,6 @@
 package com.woowacourse.gongseek.image.infra;
 
+import com.woowacourse.gongseek.image.exception.FileUploadFailException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class S3Uploader {
             s3Client.putObject(getPutObjectRequest(uploadImageFile), getRequestBody(uploadImageFile));
             return cloudFrontUrl + getUrl(uploadImageFile);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FileUploadFailException();
         }
     }
 
