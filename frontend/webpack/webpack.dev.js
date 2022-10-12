@@ -3,7 +3,6 @@ const common = require('./webpack.common');
 const path = require('path');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 dotenv.config({
 	path: path.join(__dirname, './.env.development'),
@@ -18,9 +17,6 @@ module.exports = merge(common, {
 				test: /\.(js|jsx|ts|tsx)?$/,
 				loader: 'ts-loader',
 				exclude: /node_modules/,
-				options: {
-					transpileOnly: true,
-				},
 			},
 		],
 	},
@@ -28,7 +24,6 @@ module.exports = merge(common, {
 		new webpack.DefinePlugin({
 			'process.env': JSON.stringify(process.env),
 		}),
-		new ForkTsCheckerWebpackPlugin(),
 	],
 	optimization: {
 		minimize: true,
