@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
 	entry: './src/index.tsx',
@@ -8,7 +9,6 @@ module.exports = {
 		filename: '[name].[contenthash].js',
 		publicPath: '/',
 		clean: true,
-		pathinfo: false,
 	},
 	resolve: {
 		alias: {
@@ -16,7 +16,6 @@ module.exports = {
 		},
 		modules: ['node_modules'],
 		extensions: ['.js', '.jsx', '.ts', '.tsx'],
-		symlinks: false,
 	},
 	devServer: {
 		historyApiFallback: true,
@@ -44,8 +43,6 @@ module.exports = {
 			template: './public/index.html',
 			favicon: './public/favicon-32x32.png',
 		}),
+		new CleanWebpackPlugin(),
 	],
-	optimization: {
-		runtimeChunk: true,
-	},
 };
