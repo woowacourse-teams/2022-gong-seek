@@ -24,16 +24,15 @@ import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
 import com.woowacourse.gongseek.support.DatabaseCleaner;
+import com.woowacourse.gongseek.support.IntegrationTest;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 @SuppressWarnings("NonAsciiCharacters")
-@SpringBootTest
-class MemberServiceTest {
+class MemberServiceTest extends IntegrationTest {
 
     @Autowired
     private MemberService memberService;

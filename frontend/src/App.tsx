@@ -2,19 +2,19 @@ import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import Loading from '@/components/common/Loading/Loading';
-import SnackBar from '@/components/common/SnackBar/SnackBar';
-import PrivateRouter from '@/components/helper/PrivateRouter';
-import PublicRouter from '@/components/helper/PublicRouter';
-import Header from '@/components/layout/Header/Header';
-import TabBar from '@/components/layout/TabBar/TabBar';
+import Loading from '@/components/@common/Loading/Loading';
+import SnackBar from '@/components/@common/SnackBar/SnackBar';
+import PrivateRouter from '@/components/@helper/router/PrivateRouter';
+import PublicRouter from '@/components/@helper/router/PublicRouter';
+import Header from '@/components/@layout/Header/Header';
+import TabBar from '@/components/@layout/TabBar/TabBar';
 import { URL } from '@/constants/url';
 import { dropdownState } from '@/store/dropdownState';
 import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
 import styled from '@emotion/styled';
 
-const MenuSlider = React.lazy(() => import('@/components/common/MenuSlider/MenuSlider'));
+const MenuSlider = React.lazy(() => import('@/components/@common/MenuSlider/MenuSlider'));
 const Home = React.lazy(() => import('@/pages/Home'));
 const CategoryArticles = React.lazy(() => import('@/pages/CategoryArticles/CategoryArticles'));
 const CategorySelector = React.lazy(() => import('@/pages/CategorySelector/CategorySelector'));
@@ -23,9 +23,9 @@ const QuestionDetail = React.lazy(() => import('@/pages/QuestionDetail'));
 const HashTagSearch = React.lazy(() => import('@/pages/HashTagSearch'));
 const InquirePage = React.lazy(() => import('@/pages/Inquire'));
 const Login = React.lazy(() => import('@/pages/Login'));
-const LoginController = React.lazy(() => import('@/pages/Login/LoginController/LoginController'));
+const LoginHandler = React.lazy(() => import('@/components/@helper/accessHandler/LoginHandler'));
 const RefreshTokenHandler = React.lazy(
-	() => import('@/pages/Login/RefreshTokenHandler/RefreshTokenHandler'),
+	() => import('@/components/@helper/accessHandler/RefreshTokenHandler'),
 );
 const MyPage = React.lazy(() => import('@/pages/MyPage'));
 const NotFound = React.lazy(() => import('@/pages/NotFound'));
@@ -102,7 +102,7 @@ const App = () => {
 			<Content>
 				<Suspense fallback={<Loading />}>
 					<Routes>
-						<Route path={URL.LOGIN_CONTROLLER} element={<LoginController />} />
+						<Route path={URL.LOGIN_CONTROLLER} element={<LoginHandler />} />
 						<Route path={URL.CATEGORY_SELECTOR} element={<CategorySelector />} />
 						<Route element={<PrivateRouter isAuthenticated={isLogin} />}>
 							<Route path={URL.WRITING_ARTICLE} element={<WritingArticles />} />

@@ -1,4 +1,4 @@
-import EmptyMessage from '@/components/common/EmptyMessage/EmptyMessage';
+import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import { Meta, Story } from '@storybook/react';
 
 export default {

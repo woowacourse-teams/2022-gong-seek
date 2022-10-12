@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 
 import { getPopularArticles, PopularArticles } from '@/api/article';
+import * as S from '@/components/article/PopularArticle/PopularArticle.styles';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
-import * as S from '@/pages/Home/PopularArticle/PopularArticle.styles';
 
 const useGetPopularArticles = () => {
 	const [currentIndex, setCurrentIndex] = useState(0);

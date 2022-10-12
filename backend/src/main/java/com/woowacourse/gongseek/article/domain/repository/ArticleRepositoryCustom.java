@@ -1,19 +1,20 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
-import com.woowacourse.gongseek.article.domain.Article;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
+import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
 import java.util.List;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
+import java.util.Map;
+import java.util.Optional;
 
 public interface ArticleRepositoryCustom {
 
-    Slice<Article> findAllByPage(Long cursorId, Integer views, String category, String sortType, Pageable pageable);
+    List<MyPageArticleDto> findAllByMemberIdWithCommentCount(Long memberId);
 
-    Slice<Article> findAllByLikes(Long cursorId, Long likes, String category, Pageable pageable);
+    Optional<ArticleDto> findByIdWithAll(Long id, Long memberId);
 
-    Slice<Article> searchByContainingText(Long cursorId, String searchText, Pageable pageable);
+    List<String> findTagNamesByArticleId(Long articleId);
 
-    Slice<Article> searchByAuthor(Long cursorId, String author, Pageable pageable);
+    boolean existsArticleByTagId(Long tagId);
 
-    Slice<Article> searchByTag(Long cursorId, List<String> tagNames, Pageable pageable);
+    Map<Long, List<String>> findTags(List<Long> articleIds);
 }

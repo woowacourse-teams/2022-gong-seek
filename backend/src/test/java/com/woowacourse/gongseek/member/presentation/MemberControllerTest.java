@@ -13,52 +13,28 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
+import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
-import com.woowacourse.gongseek.config.RestDocsConfig;
-import com.woowacourse.gongseek.member.application.MemberService;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateRequest;
 import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
-import com.woowacourse.gongseek.member.presentation.dto.MyPageArticleResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
+import com.woowacourse.gongseek.support.ControllerTest;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayName("회원 조회 문서화")
-@AutoConfigureRestDocs
-@WebMvcTest(MemberController.class)
-@Import(RestDocsConfig.class)
-public class MemberControllerTest {
-
-    @MockBean
-    private MemberService memberService;
-
-    @MockBean
-    private JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private MockMvc mockMvc;
+public class MemberControllerTest extends ControllerTest {
 
     @Test
     void 마이페이지에서_회원_조회_API_문서화() throws Exception {
@@ -87,9 +63,9 @@ public class MemberControllerTest {
     void 마이페이지에서_회원_게시글_조회_API_문서화() throws Exception {
         MyPageArticlesResponse myPageArticlesResponse = new MyPageArticlesResponse(
                 List.of(
-                        new MyPageArticleResponse(1L, "title1", "question", 10, 100, LocalDateTime.now(),
+                        new MyPageArticleDto(1L, "title1", Category.QUESTION, 10L, 100, LocalDateTime.now(),
                                 LocalDateTime.now()),
-                        new MyPageArticleResponse(1L, "title2", "discussion", 20, 100, LocalDateTime.now(),
+                        new MyPageArticleDto(1L, "title2", Category.DISCUSSION, 20L, 100, LocalDateTime.now(),
                                 LocalDateTime.now()))
         );
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);

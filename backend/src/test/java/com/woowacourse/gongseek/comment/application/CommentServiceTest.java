@@ -23,17 +23,16 @@ import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import com.woowacourse.gongseek.support.DatabaseCleaner;
+import com.woowacourse.gongseek.support.IntegrationTest;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 @SuppressWarnings("NonAsciiCharacters")
-@SpringBootTest
-class CommentServiceTest {
+class CommentServiceTest extends IntegrationTest {
 
     private static final String CONTENT = "content";
     private static final String ANONYMOUS_NAME = "익명";
@@ -162,7 +161,7 @@ class CommentServiceTest {
                 () -> assertThat(savedComments.get(0).getAuthor())
                         .usingRecursiveComparison()
                         .isEqualTo(new MemberDto(ANONYMOUS_NAME, ANONYMOUS_AVATAR_URL)),
-                () -> assertThat(savedComments.get(0).isAuthor()).isTrue()
+                () -> assertThat(savedComments.get(0).getIsAuthor()).isTrue()
         );
     }
 
@@ -176,7 +175,7 @@ class CommentServiceTest {
         List<CommentResponse> savedComments = commentService.getAllByArticleId(new LoginMember(newMember.getId()),
                 article.getId()).getComments();
         List<CommentResponse> authorizedComments = savedComments.stream()
-                .filter(CommentResponse::isAuthor)
+                .filter(CommentResponse::getIsAuthor)
                 .collect(Collectors.toList());
 
         assertAll(
@@ -193,7 +192,7 @@ class CommentServiceTest {
         List<CommentResponse> savedComments = commentService.getAllByArticleId(new GuestMember(),
                 article.getId()).getComments();
         List<CommentResponse> authorizedComments = savedComments.stream()
-                .filter(CommentResponse::isAuthor)
+                .filter(CommentResponse::getIsAuthor)
                 .collect(Collectors.toList());
 
         assertAll(

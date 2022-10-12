@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.member.domain.Member;
+import com.woowacourse.gongseek.tag.domain.Tags;
+import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -43,7 +45,7 @@ class ArticleTest {
         String updatedTitle = "updatedTitle";
         String updatedContent = "수정된 내용입니다~~";
 
-        article.update(updatedTitle, updatedContent);
+        article.update(updatedTitle, updatedContent, new Tags(new ArrayList<>()));
 
         assertAll(
                 () -> assertThat(article.getTitle()).isEqualTo(updatedTitle),

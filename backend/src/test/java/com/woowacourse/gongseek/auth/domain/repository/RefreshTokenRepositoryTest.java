@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.auth.domain.RefreshToken;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
+import com.woowacourse.gongseek.support.RedisContainerTest;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SuppressWarnings("NonAsciiCharacters")
 @SpringBootTest
-class RefreshTokenRepositoryTest {
+class RefreshTokenRepositoryTest extends RedisContainerTest {
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
@@ -65,5 +66,4 @@ class RefreshTokenRepositoryTest {
                 () -> assertThat(refreshTokenRepository.findById(sloRefreshToken.getId())).isNotEmpty()
         );
     }
-
 }

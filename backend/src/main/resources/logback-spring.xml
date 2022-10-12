@@ -47,12 +47,17 @@
         <logger name="com.woowacourse.gongseek.auth.presentation.AuthenticationInterceptor" level="DEBUG">
             <appender-ref ref="FILE-DEBUG"/>
         </logger>
+        <logger name="com.zaxxer.hikari" level="DEBUG" >
+            <appender-ref ref="FILE-INFO"/>
+            <appender-ref ref="FILE-DEBUG"/>
+        </logger>
     </springProfile>
 
     <springProfile name="prod">
         <include resource="logging/file-info-appender.xml"/>
         <include resource="logging/file-warn-appender.xml"/>
         <include resource="logging/file-error-appender.xml"/>
+        <include resource="logging/file-debug-appender.xml"/>
         <logger name="com.woowacourse.gongseek" level="INFO">
             <appender-ref ref="FILE-INFO"/>
             <appender-ref ref="FILE-WARN"/>
@@ -62,6 +67,10 @@
             <appender-ref ref="FILE-INFO"/>
             <appender-ref ref="FILE-WARN"/>
             <appender-ref ref="FILE-ERROR"/>
+        </logger>
+        <logger name="com.zaxxer.hikari" level="DEBUG" >
+            <appender-ref ref="FILE-INFO"/>
+            <appender-ref ref="FILE-DEBUG"/>
         </logger>
     </springProfile>
 

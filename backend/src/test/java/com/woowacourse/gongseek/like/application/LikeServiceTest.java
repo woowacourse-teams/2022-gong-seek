@@ -14,14 +14,13 @@ import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.support.DatabaseCleaner;
+import com.woowacourse.gongseek.support.IntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 @SuppressWarnings("NonAsciiCharacters")
-@SpringBootTest
-class LikeServiceTest {
+class LikeServiceTest extends IntegrationTest {
 
     @Autowired
     private LikeService likeService;

@@ -1,4 +1,4 @@
-import VoteItem, { VoteItemProps } from '@/pages/Discussion/VoteItem/VoteItem';
+import VoteItem, { VoteItemProps } from '@/components/vote/VoteItem/VoteItem';
 import { Meta, Story } from '@storybook/react';
 
 export default {

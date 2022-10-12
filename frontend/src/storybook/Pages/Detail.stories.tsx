@@ -1,7 +1,7 @@
 import { PropsWithOptionalChildren } from 'gongseek-types';
 
+import Vote from '@/components/vote/Vote/Vote';
 import Detail, { DetailProps } from '@/pages/Detail/index';
-import Vote from '@/pages/Discussion/Vote/Vote';
 import { Meta, Story } from '@storybook/react';
 
 export default {

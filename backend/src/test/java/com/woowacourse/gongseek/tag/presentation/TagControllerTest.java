@@ -11,42 +11,18 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
-import com.woowacourse.gongseek.config.RestDocsConfig;
-import com.woowacourse.gongseek.tag.application.TagService;
+import com.woowacourse.gongseek.support.ControllerTest;
 import com.woowacourse.gongseek.tag.presentation.dto.TagsResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayName("해시태그 문서화")
-@AutoConfigureRestDocs
-@WebMvcTest(TagController.class)
-@Import(RestDocsConfig.class)
-class TagControllerTest {
-
-    @MockBean
-    private TagService tagService;
-
-    @MockBean
-    private JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private MockMvc mockMvc;
+class TagControllerTest extends ControllerTest {
 
     @Test
     void 해시태그_조회_API_문서화() throws Exception {

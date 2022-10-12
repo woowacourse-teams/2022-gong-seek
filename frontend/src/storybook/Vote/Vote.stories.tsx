@@ -1,5 +1,5 @@
+import Vote from '@/components/vote/Vote/Vote';
 import { VoteHandler } from '@/mock/vote';
-import Vote from '@/pages/Discussion/Vote/Vote';
 import { Meta, Story } from '@storybook/react';
 
 export default {
