@@ -71,7 +71,7 @@ class TempArticleServiceTest extends IntegrationTest {
         final TempArticleIdResponse tempArticleIdResponse = tempArticleService.createOrUpdate(
                 new LoginMember(member.getId()), request);
 
-        assertThat(tempArticleIdResponse.getId()).isNotNull();
+        assertThat(tempArticleIdResponse.getId()).isNotZero();
     }
 
     @Transactional
