@@ -10,13 +10,14 @@ import static com.woowacourse.gongseek.tag.domain.QTag.tag;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +34,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
     @Override
     public Slice<ArticlePreviewDto> findAllByPage(Long cursorId, Integer cursorViews, String category, String sortType,
                                                   Long memberId, Pageable pageable) {
-        JPAQuery<ArticlePreviewDto> query = selectArticlePreviewDto(cursorId, memberId)
+        JPAQuery<ArticlePreviewDto> query = selectArticlePreviewDto(memberId)
                 .from(article)
                 .leftJoin(article.member, member)
                 .leftJoin(comment).on(article.id.eq(comment.article.id))
@@ -49,7 +50,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
         return convertToSliceFromArticle(fetch, pageable);
     }
 
-    private JPAQuery<ArticlePreviewDto> selectArticlePreviewDto(Long articleId, Long memberId) {
+    private JPAQuery<ArticlePreviewDto> selectArticlePreviewDto(Long memberId) {
         return queryFactory
                 .select(
                         Projections.constructor(
@@ -62,24 +63,24 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                                 article.category,
                                 count(comment.id),
                                 article.views.value,
-                                isLike(articleId, memberId),
+                                isLike(article.id, memberId),
                                 count(like.id),
                                 article.createdAt
                         )
                 );
     }
 
-    private BooleanExpression isLike(Long articleId, Long memberId) {
+    private BooleanExpression isLike(NumberPath<Long> articleId, Long memberId) {
+        if (memberId.equals(0L)) {
+            return Expressions.FALSE;
+        }
         return JPAExpressions.selectOne()
                 .from(like)
                 .where(eqLike(articleId, memberId))
                 .exists();
     }
 
-    private BooleanExpression eqLike(Long articleId, Long memberId) {
-        if (Objects.isNull(articleId) || memberId.equals(0L)) {
-            return null;
-        }
+    private BooleanExpression eqLike(NumberPath<Long> articleId, Long memberId) {
         return like.article.id.eq(articleId).and(like.member.id.eq(memberId));
     }
 
@@ -125,7 +126,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
     @Override
     public Slice<ArticlePreviewDto> findAllByLikes(Long cursorId, Long cursorLikes, String category, Long memberId,
                                                    Pageable pageable) {
-        List<ArticlePreviewDto> fetch = selectArticlePreviewDto(cursorId, memberId)
+        List<ArticlePreviewDto> fetch = selectArticlePreviewDto(memberId)
                 .from(article)
                 .leftJoin(article.member, member)
                 .leftJoin(comment).on(article.id.eq(comment.article.id))
@@ -140,7 +141,6 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
         return convertToSliceFromArticle(fetch, pageable);
     }
 
-
     private BooleanExpression cursorIdAndLikes(Long cursorId, Long likes) {
         if (cursorId == null || likes == null) {
             return null;
@@ -153,7 +153,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
     @Override
     public Slice<ArticlePreviewDto> searchByContainingText(Long cursorId, String searchText, Long memberId,
                                                            Pageable pageable) {
-        List<ArticlePreviewDto> fetch = selectArticlePreviewDto(cursorId, memberId)
+        List<ArticlePreviewDto> fetch = selectArticlePreviewDto(memberId)
                 .from(article)
                 .leftJoin(article.member, member)
                 .leftJoin(comment).on(article.id.eq(comment.article.id))
@@ -186,7 +186,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
 
     @Override
     public Slice<ArticlePreviewDto> searchByAuthor(Long cursorId, String author, Long memberId, Pageable pageable) {
-        List<ArticlePreviewDto> fetch = selectArticlePreviewDto(cursorId, memberId)
+        List<ArticlePreviewDto> fetch = selectArticlePreviewDto(memberId)
                 .from(article)
                 .leftJoin(article.member, member)
                 .leftJoin(comment).on(article.id.eq(comment.article.id))
@@ -206,7 +206,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
     @Override
     public Slice<ArticlePreviewDto> searchByTag(Long cursorId, Long memberId, List<String> tagNames,
                                                 Pageable pageable) {
-        List<ArticlePreviewDto> fetch = selectArticlePreviewDto(cursorId, memberId)
+        List<ArticlePreviewDto> fetch = selectArticlePreviewDto(memberId)
                 .from(articleTag)
                 .join(articleTag.article, article)
                 .join(article.member, member)
