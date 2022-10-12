@@ -1,6 +1,5 @@
 package com.woowacourse.gongseek.member.presentation.dto;
 
-import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Getter
 public class MyPageArticlesResponse {
 
-    private List<MyPageArticleDto> articles;
+    private List<MyPageArticleResponse> articles;
 }

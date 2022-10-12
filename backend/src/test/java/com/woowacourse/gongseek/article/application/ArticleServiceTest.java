@@ -12,14 +12,15 @@ import com.woowacourse.gongseek.article.domain.TempTags;
 import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepositoryCustom;
+import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
-import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
@@ -67,6 +68,9 @@ public class ArticleServiceTest extends IntegrationTest {
 
     @Autowired
     private ArticleRepositoryCustom articleRepositoryCustom;
+
+    @Autowired
+    private PagingArticleRepository pagingArticleRepository;
 
     @Autowired
     private TempArticleRepository tempArticleRepository;
@@ -199,15 +203,15 @@ public class ArticleServiceTest extends IntegrationTest {
                 List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
-        ArticleDto articleDto = articleService.getOne(new LoginMember(member.getId()), savedArticle.getId());
+        ArticleResponse articleResponse = articleService.getOne(new LoginMember(member.getId()), savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleDto.getTitle()).isEqualTo(articleRequest.getTitle()),
-                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
-                () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
-                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("slo"),
-                () -> assertThat(articleDto.getIsAuthor()).isTrue()
+                () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
+                () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
+                () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
+                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo"),
+                () -> assertThat(articleResponse.getIsAuthor()).isTrue()
         );
     }
 
@@ -217,15 +221,15 @@ public class ArticleServiceTest extends IntegrationTest {
                 List.of("Spring"), true);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
-        ArticleDto articleDto = articleService.getOne(new LoginMember(member.getId()), savedArticle.getId());
+        ArticleResponse articleResponse = articleService.getOne(new LoginMember(member.getId()), savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleDto.getTitle()).isEqualTo(articleRequest.getTitle()),
-                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
-                () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
-                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("익명"),
-                () -> assertThat(articleDto.getIsAuthor()).isTrue()
+                () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
+                () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
+                () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
+                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명"),
+                () -> assertThat(articleResponse.getIsAuthor()).isTrue()
         );
     }
 
@@ -236,16 +240,16 @@ public class ArticleServiceTest extends IntegrationTest {
                 List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(this.member.getId()), articleRequest);
 
-        ArticleDto articleDto = articleService.getOne(new LoginMember(notAuthorMember.getId()),
+        ArticleResponse articleResponse = articleService.getOne(new LoginMember(notAuthorMember.getId()),
                 savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleDto.getTitle()).isEqualTo(articleRequest.getTitle()),
-                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
-                () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
-                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("slo"),
-                () -> assertThat(articleDto.getIsAuthor()).isFalse()
+                () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
+                () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
+                () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
+                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo"),
+                () -> assertThat(articleResponse.getIsAuthor()).isFalse()
         );
     }
 
@@ -256,15 +260,15 @@ public class ArticleServiceTest extends IntegrationTest {
                 List.of("Spring"), true);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(notAuthorMember.getId()), articleRequest);
 
-        ArticleDto articleDto = articleService.getOne(new GuestMember(), savedArticle.getId());
+        ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleDto.getTitle()).isEqualTo(articleRequest.getTitle()),
-                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
-                () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
-                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("익명"),
-                () -> assertThat(articleDto.getIsAuthor()).isFalse()
+                () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
+                () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
+                () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
+                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명"),
+                () -> assertThat(articleResponse.getIsAuthor()).isFalse()
         );
     }
 
@@ -274,15 +278,15 @@ public class ArticleServiceTest extends IntegrationTest {
                 List.of("Spring"), false);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
-        ArticleDto articleDto = articleService.getOne(new GuestMember(), savedArticle.getId());
+        ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleDto.getTitle()).isEqualTo(articleRequest.getTitle()),
-                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
-                () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
-                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("slo"),
-                () -> assertThat(articleDto.getIsAuthor()).isFalse()
+                () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
+                () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
+                () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
+                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo"),
+                () -> assertThat(articleResponse.getIsAuthor()).isFalse()
         );
     }
 
@@ -292,15 +296,15 @@ public class ArticleServiceTest extends IntegrationTest {
                 List.of("Spring"), true);
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
-        ArticleDto articleDto = articleService.getOne(new GuestMember(), savedArticle.getId());
+        ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleDto.getTitle()).isEqualTo(articleRequest.getTitle()),
-                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
-                () -> assertThat(articleDto.getCreatedAt()).isNotNull(),
-                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("익명"),
-                () -> assertThat(articleDto.getIsAuthor()).isFalse()
+                () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
+                () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
+                () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
+                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명"),
+                () -> assertThat(articleResponse.getIsAuthor()).isFalse()
         );
     }
 
@@ -311,14 +315,14 @@ public class ArticleServiceTest extends IntegrationTest {
         ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
 
         articleService.getOne(new GuestMember(), savedArticle.getId());
-        ArticleDto articleDto = articleService.getOne(new GuestMember(), savedArticle.getId());
+        ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleDto.getTitle()).isEqualTo(articleRequest.getTitle()),
-                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("SPRING"),
-                () -> assertThat(articleDto.getContent()).isEqualTo(articleRequest.getContent()),
-                () -> assertThat(articleDto.getViews()).isEqualTo(2),
-                () -> assertThat(articleDto.getCreatedAt()).isNotNull()
+                () -> assertThat(articleResponse.getTitle()).isEqualTo(articleRequest.getTitle()),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("SPRING"),
+                () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
+                () -> assertThat(articleResponse.getViews()).isEqualTo(2),
+                () -> assertThat(articleResponse.getCreatedAt()).isNotNull()
         );
     }
 
@@ -332,14 +336,14 @@ public class ArticleServiceTest extends IntegrationTest {
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
         articleService.update(loginMember, request, savedArticle.getId());
 
-        ArticleDto articleDto = articleService.getOne(loginMember, savedArticle.getId());
+        ArticleResponse articleResponse = articleService.getOne(loginMember, savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleDto.getTitle()).isEqualTo(request.getTitle()),
-                () -> assertThat(articleDto.getTag()).hasSize(1),
-                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("JAVA"),
-                () -> assertThat(articleDto.getContent()).isEqualTo(request.getContent()),
-                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("slo")
+                () -> assertThat(articleResponse.getTitle()).isEqualTo(request.getTitle()),
+                () -> assertThat(articleResponse.getTag()).hasSize(1),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("JAVA"),
+                () -> assertThat(articleResponse.getContent()).isEqualTo(request.getContent()),
+                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo")
         );
     }
 
@@ -353,14 +357,14 @@ public class ArticleServiceTest extends IntegrationTest {
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
         articleService.update(loginMember, request, savedArticle.getId());
 
-        ArticleDto articleDto = articleService.getOne(loginMember, savedArticle.getId());
+        ArticleResponse articleResponse = articleService.getOne(loginMember, savedArticle.getId());
 
         assertAll(
-                () -> assertThat(articleDto.getTitle()).isEqualTo(request.getTitle()),
-                () -> assertThat(articleDto.getTag()).hasSize(1),
-                () -> assertThat(articleDto.getTag().get(0)).isEqualTo("JAVA"),
-                () -> assertThat(articleDto.getContent()).isEqualTo(request.getContent()),
-                () -> assertThat(articleDto.getAuthor().getName()).isEqualTo("익명")
+                () -> assertThat(articleResponse.getTitle()).isEqualTo(request.getTitle()),
+                () -> assertThat(articleResponse.getTag()).hasSize(1),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("JAVA"),
+                () -> assertThat(articleResponse.getContent()).isEqualTo(request.getContent()),
+                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명")
         );
     }
 
@@ -404,9 +408,9 @@ public class ArticleServiceTest extends IntegrationTest {
         articleService.update(loginMember, new ArticleUpdateRequest("하이", "하이", List.of("JAVA", "backend")),
                 firstSavedArticle.getId());
 
-        ArticleDto articleDto = articleRepositoryCustom.findByIdWithAll(firstSavedArticle.getId(), member.getId())
+        Article article = articleRepository.findByIdWithAll(firstSavedArticle.getId())
                 .get();
-        List<String> existTagNames = articleDto.getTag();
+        List<String> existTagNames = article.getTagNames();
 
         assertAll(
                 () -> assertThat(existTagNames).hasSize(2),
@@ -483,8 +487,7 @@ public class ArticleServiceTest extends IntegrationTest {
 
         articleService.delete(loginMember, firstSavedArticle.getId());
 
-        Optional<ArticleDto> article = articleRepositoryCustom.findByIdWithAll(firstSavedArticle.getId(),
-                member.getId());
+        Optional<Article> article = articleRepository.findByIdWithAll(firstSavedArticle.getId());
         assertAll(
                 () -> assertThat(article).isEmpty(),
                 () -> assertThat(tagRepository.findByNameIgnoreCase("SPRING")).isEmpty(),

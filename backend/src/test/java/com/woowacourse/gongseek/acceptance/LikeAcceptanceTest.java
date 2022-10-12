@@ -10,8 +10,8 @@ import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -57,7 +57,7 @@ public class LikeAcceptanceTest extends AcceptanceTest {
         //when
         게시글을_추천한다(엑세스토큰, 게시글);
         게시글을_추천한다(로그인을_한다(슬로), 게시글);
-        ArticleDto response = 로그인_후_게시글을_조회한다(엑세스토큰, 게시글).as(ArticleDto.class);
+        ArticleResponse response = 로그인_후_게시글을_조회한다(엑세스토큰, 게시글).as(ArticleResponse.class);
 
         //then
         assertAll(
@@ -76,7 +76,7 @@ public class LikeAcceptanceTest extends AcceptanceTest {
 
         //when
         게시글_추천을_취소한다(엑세스토큰, 게시글);
-        ArticleDto response = 로그인_후_게시글을_조회한다(엑세스토큰, 게시글).as(ArticleDto.class);
+        ArticleResponse response = 로그인_후_게시글을_조회한다(엑세스토큰, 게시글).as(ArticleResponse.class);
 
         //then
         assertAll(
@@ -94,7 +94,7 @@ public class LikeAcceptanceTest extends AcceptanceTest {
         //when
         게시글을_추천한다(엑세스토큰, 게시글);
         게시글을_추천한다(엑세스토큰, 게시글);
-        ArticleDto response = 로그인_후_게시글을_조회한다(엑세스토큰, 게시글).as(ArticleDto.class);
+        ArticleResponse response = 로그인_후_게시글을_조회한다(엑세스토큰, 게시글).as(ArticleResponse.class);
 
         //then
         assertAll(
@@ -113,7 +113,7 @@ public class LikeAcceptanceTest extends AcceptanceTest {
         게시글을_추천한다(엑세스토큰, 게시글);
         게시글_추천을_취소한다(엑세스토큰, 게시글);
         게시글_추천을_취소한다(엑세스토큰, 게시글);
-        ArticleDto response = 로그인_후_게시글을_조회한다(엑세스토큰, 게시글).as(ArticleDto.class);
+        ArticleResponse response = 로그인_후_게시글을_조회한다(엑세스토큰, 게시글).as(ArticleResponse.class);
 
         //then
         assertAll(

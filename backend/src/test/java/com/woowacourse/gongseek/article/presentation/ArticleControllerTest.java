@@ -22,12 +22,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
-import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
@@ -85,7 +84,7 @@ class ArticleControllerTest extends ControllerTest {
     void 로그인한_사용자일때_기명_게시글_단건_조회_API_문서화() throws Exception {
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
-        ArticleDto response = new ArticleDto(
+        ArticleResponse response = new ArticleResponse(
                 "title",
                 List.of("SPRING", "JAVA"),
                 new AuthorDto("rennon", "avatar.com"),
@@ -131,7 +130,7 @@ class ArticleControllerTest extends ControllerTest {
     void 로그인한_사용자일때_익명_게시글_단건_조회_API_문서화() throws Exception {
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
-        ArticleDto response = new ArticleDto(
+        ArticleResponse response = new ArticleResponse(
                 "title",
                 List.of("SPRING", "JAVA"),
                 new AuthorDto("익명",
@@ -178,7 +177,7 @@ class ArticleControllerTest extends ControllerTest {
     void 로그인_안한_사용자일때_기명_게시글_단건_조회_API_문서화() throws Exception {
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
-        ArticleDto response = new ArticleDto(
+        ArticleResponse response = new ArticleResponse(
                 "title",
                 List.of("SPRING", "JAVA"),
                 new AuthorDto("rennon", "avatar.com"),
@@ -336,11 +335,11 @@ class ArticleControllerTest extends ControllerTest {
     @Test
     void 게시글_제목_내용_검색_문서화() throws Exception {
         ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(
-                new ArticlePreviewDto(1L, "제목", new AuthorDto("작성자1", "작성자1 이미지 url"), "내용",
-                        Category.QUESTION.getValue(), 3L, 2, false, 0L, LocalDateTime.now()), List.of("TAG"));
+                1L, "제목", List.of("TAG"), new AuthorDto("작성자1", "작성자1 이미지 url"), "내용",
+                Category.QUESTION.getValue(), 3L, 2, false, 0L, LocalDateTime.now());
         ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(
-                new ArticlePreviewDto(2L, "제목", new AuthorDto("작성자2", "작성자2 이미지 url"), "내용",
-                        Category.DISCUSSION.getValue(), 10L, 5, false, 0L, LocalDateTime.now()), List.of("TAG"));
+                2L, "제목", List.of("TAG"), new AuthorDto("작성자2", "작성자2 이미지 url"), "내용",
+                Category.DISCUSSION.getValue(), 10L, 5, false, 0L, LocalDateTime.now());
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 

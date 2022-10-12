@@ -35,7 +35,7 @@ public class TagService {
         return TagsResponse.of(tags);
     }
 
-    public void deleteAll(List<Long> ids) {
-        tagRepository.deleteAllById(ids);
+    public void deleteAll(List<Long> deletedTagIds) {
+        tagRepository.deleteAllById(deletedTagIds);
     }
 }
