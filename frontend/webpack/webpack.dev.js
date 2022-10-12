@@ -30,4 +30,7 @@ module.exports = merge(common, {
 		}),
 		new ForkTsCheckerWebpackPlugin(),
 	],
+	optimization: {
+		minimize: true,
+	},
 });

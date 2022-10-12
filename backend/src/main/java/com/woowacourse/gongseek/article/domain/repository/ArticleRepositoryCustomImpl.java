@@ -14,6 +14,7 @@ import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.article.domain.articletag.ArticleTag;
@@ -21,7 +22,6 @@ import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -67,8 +67,8 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom {
                                         article.content.value,
                                         article.member.id.eq(memberId),
                                         article.views.value,
-                                        hasVote(articleId),
-                                        isLike(articleId, memberId),
+                                        hasVote(article.id),
+                                        isLike(article.id, memberId),
                                         article.isAnonymous,
                                         count(like.id),
                                         article.createdAt,
@@ -98,24 +98,24 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom {
                 .collect(Collectors.toList());
     }
 
-    private BooleanExpression hasVote(Long articleId) {
+    private BooleanExpression hasVote(NumberPath<Long> articleId) {
         return JPAExpressions.selectOne()
                 .from(vote)
                 .where(vote.article.id.eq(articleId))
                 .exists();
     }
 
-    private BooleanExpression isLike(Long articleId, Long memberId) {
+    private BooleanExpression isLike(NumberPath<Long> articleId, Long memberId) {
+        if (memberId.equals(0L)) {
+            return Expressions.FALSE;
+        }
         return JPAExpressions.selectOne()
                 .from(like)
                 .where(eqLike(articleId, memberId))
                 .exists();
     }
 
-    private BooleanExpression eqLike(Long articleId, Long memberId) {
-        if (Objects.isNull(articleId) || memberId.equals(0L)) {
-            return null;
-        }
+    private BooleanExpression eqLike(NumberPath<Long> articleId, Long memberId) {
         return like.article.id.eq(articleId).and(like.member.id.eq(memberId));
     }
 
