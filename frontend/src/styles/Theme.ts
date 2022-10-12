@@ -1,4 +1,4 @@
-const colors = {
+export const colors = {
 	PURPLE_100: '#EBB3FF',
 	PURPLE_500: '#5E0080',
 	PURPLE_400: 'rgba(94, 0, 128, 0.75)',
@@ -40,19 +40,19 @@ export const articleColors = {
 	ARTICLE_010: '#B2FFDA',
 };
 
-const breakpoints = {
+export const breakpoints = {
 	MOBIL: '320px',
 	DESKTOP_SMALL: '700px',
 	DESKTOP_MIDDLE: '1000px',
 	DESKTOP_LARGE: '1280px',
 };
 
-const boxShadows = {
+export const boxShadows = {
 	primary: 'rgba(0, 0, 0, 0.25)',
 	secondary: 'rgba(0, 0, 0, 0.15)',
 };
 
-const size = {
+export const size = {
 	SIZE_001: '0.063rem',
 	SIZE_002: '0.125rem',
 	SIZE_003: '0.0187rem',
@@ -98,7 +98,7 @@ const size = {
 	SIZE_700: '43.75rem',
 };
 
-const zIndex = {
+export const zIndex = {
 	HEADER: 100,
 	ARTICLE_POPULAR_CONTENT: 102,
 	ARTICLE_BACKGROUND_CONTENT: 101,
