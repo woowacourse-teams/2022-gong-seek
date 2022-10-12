@@ -269,7 +269,7 @@ export const TemporaryStoreButtonBox = styled.div`
 
 	justify-content: flex-end;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
 		width: 100%;
 		margin-top: ${({ theme }) => theme.size.SIZE_020};
 	}

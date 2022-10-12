@@ -8,7 +8,7 @@ export const Container = styled.div`
 	height: 100%;
 	flex-direction: column-reverse;
 	align-items: center;
-
+  
 	${({ theme }) => css`
 		gap: ${theme.size.SIZE_080};
 
