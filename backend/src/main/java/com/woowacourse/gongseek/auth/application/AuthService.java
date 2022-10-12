@@ -3,6 +3,7 @@ package com.woowacourse.gongseek.auth.application;
 import com.woowacourse.gongseek.auth.domain.RefreshToken;
 import com.woowacourse.gongseek.auth.domain.repository.RefreshTokenRepository;
 import com.woowacourse.gongseek.auth.exception.InvalidRefreshTokenException;
+import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
@@ -29,21 +30,20 @@ public class AuthService {
     }
 
     public TokenResponse generateToken(OAuthCodeRequest OAuthCodeRequest) {
-        Member member = githubOAuthClient.getMemberProfile(OAuthCodeRequest.getCode()).toMember();
+        GithubProfileResponse memberProfile = githubOAuthClient.getMemberProfile(OAuthCodeRequest.getCode());
 
-        return memberRepository.findByGithubId(member.getGithubId())
-                .map(foundMember -> updateMember(foundMember, member))
-                .orElseGet(() -> saveMember(member));
+        return memberRepository.findByGithubId(memberProfile.getGithubId())
+                .map(foundMember -> updateMember(foundMember, memberProfile))
+                .orElseGet(() -> saveMember(memberProfile));
     }
 
-    private TokenResponse updateMember(Member foundMember, Member newMember) {
-        foundMember.updateAvatarUrl(newMember.getAvatarUrl());
+    private TokenResponse updateMember(Member foundMember, GithubProfileResponse memberProfile) {
+        foundMember.updateAvatarUrl(memberProfile.getAvatarUrl());
         return getTokenResponse(foundMember);
     }
 
-    private TokenResponse saveMember(Member newMember) {
-        memberRepository.save(newMember);
-        return getTokenResponse(newMember);
+    private TokenResponse saveMember(GithubProfileResponse memberProfile) {
+        return getTokenResponse(memberRepository.save(memberProfile.toMember()));
     }
 
     private TokenResponse getTokenResponse(Member member) {
