@@ -9,8 +9,7 @@ const ServerErrorPage = () => (
 		<S.Message>잠시 후 다시 시도해주세요</S.Message>
 		<S.HomeButton
 			onClick={() => {
-				window.location.reload();
-				window.location.replace(URL.HOME);
+				window.location.href = `${URL.HOME}`;
 			}}
 		>
 			홈으로 가기
