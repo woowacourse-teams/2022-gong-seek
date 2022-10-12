@@ -21,29 +21,24 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
-import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import com.woowacourse.gongseek.support.ControllerTest;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -90,7 +85,7 @@ class ArticleControllerTest extends ControllerTest {
     void 로그인한_사용자일때_기명_게시글_단건_조회_API_문서화() throws Exception {
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
-        ArticleResponse response = new ArticleResponse(
+        ArticleDto response = new ArticleDto(
                 "title",
                 List.of("SPRING", "JAVA"),
                 new AuthorDto("rennon", "avatar.com"),
@@ -136,7 +131,7 @@ class ArticleControllerTest extends ControllerTest {
     void 로그인한_사용자일때_익명_게시글_단건_조회_API_문서화() throws Exception {
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
-        ArticleResponse response = new ArticleResponse(
+        ArticleDto response = new ArticleDto(
                 "title",
                 List.of("SPRING", "JAVA"),
                 new AuthorDto("익명",
@@ -183,7 +178,7 @@ class ArticleControllerTest extends ControllerTest {
     void 로그인_안한_사용자일때_기명_게시글_단건_조회_API_문서화() throws Exception {
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
-        ArticleResponse response = new ArticleResponse(
+        ArticleDto response = new ArticleDto(
                 "title",
                 List.of("SPRING", "JAVA"),
                 new AuthorDto("rennon", "avatar.com"),
@@ -279,11 +274,11 @@ class ArticleControllerTest extends ControllerTest {
     void 게시글_전체_조회_문서화() throws Exception {
         ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
                 new AuthorDto("기론", "프로필 이미지 url"),
-                "내용입니다", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
+                "내용입니다", Category.QUESTION.getValue(), 3L, 2, false, 0L, LocalDateTime.now());
 
         ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목2", List.of("SPRING"),
                 new AuthorDto("기론2", "프로필2 이미지 url"),
-                "내용입니다22", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
+                "내용입니다22", Category.DISCUSSION.getValue(), 10L, 5, false, 0L, LocalDateTime.now());
 
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
@@ -340,12 +335,12 @@ class ArticleControllerTest extends ControllerTest {
 
     @Test
     void 게시글_제목_내용_검색_문서화() throws Exception {
-        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
-                new AuthorDto("작성자1", "작성자1 이미지 url"),
-                "내용", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
-        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목", List.of("SPRING"),
-                new AuthorDto("작성자2", "작성자2 이미지 url"),
-                "내용", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
+        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(
+                new ArticlePreviewDto(1L, "제목", new AuthorDto("작성자1", "작성자1 이미지 url"), "내용",
+                        Category.QUESTION.getValue(), 3L, 2, false, 0L, LocalDateTime.now()), List.of("TAG"));
+        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(
+                new ArticlePreviewDto(2L, "제목", new AuthorDto("작성자2", "작성자2 이미지 url"), "내용",
+                        Category.DISCUSSION.getValue(), 10L, 5, false, 0L, LocalDateTime.now()), List.of("TAG"));
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 
@@ -399,7 +394,7 @@ class ArticleControllerTest extends ControllerTest {
     void 게시글_작성자이름_검색_문서화() throws Exception {
         ArticlePreviewResponse articlePreviewResponse = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
                 new AuthorDto("작성자", "작성자1 이미지 url"),
-                "내용", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
+                "내용", Category.QUESTION.getValue(), 3L, 2, false, 0L, LocalDateTime.now());
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse), false);
 
@@ -453,11 +448,11 @@ class ArticleControllerTest extends ControllerTest {
     void 게시글_추천수_전체_조회_문서화() throws Exception {
         ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
                 new AuthorDto("기론", "프로필 이미지 url"),
-                "내용입니다", Category.QUESTION.getValue(), 3, 2, false, 2L, LocalDateTime.now());
+                "내용입니다", Category.QUESTION.getValue(), 3L, 2, false, 2L, LocalDateTime.now());
 
         ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목2", List.of("SPRING"),
                 new AuthorDto("기론2", "프로필2 이미지 url"),
-                "내용입니다22", Category.DISCUSSION.getValue(), 10, 5, false, 1L, LocalDateTime.now());
+                "내용입니다22", Category.DISCUSSION.getValue(), 10L, 5, false, 1L, LocalDateTime.now());
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 
@@ -516,11 +511,11 @@ class ArticleControllerTest extends ControllerTest {
 
         ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
                 new AuthorDto("작성자1", "작성자1 이미지 url"),
-                "내용", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
+                "내용", Category.QUESTION.getValue(), 3L, 2, false, 0L, LocalDateTime.now());
         ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목",
                 List.of("SPRING", "JAVA"),
                 new AuthorDto("작성자2", "작성자2 이미지 url"),
-                "내용", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
+                "내용", Category.DISCUSSION.getValue(), 10L, 5, false, 0L, LocalDateTime.now());
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 
