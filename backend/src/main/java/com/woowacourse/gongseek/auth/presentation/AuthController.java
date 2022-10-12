@@ -1,7 +1,9 @@
 package com.woowacourse.gongseek.auth.presentation;
 
 import com.woowacourse.gongseek.auth.application.AuthService;
+import com.woowacourse.gongseek.auth.application.OAuthClient;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
+import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
@@ -26,17 +28,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 
+    private final OAuthClient githubOAuthClient;
     private final AuthService authService;
 
     @GetMapping("/github")
     public ResponseEntity<OAuthLoginUrlResponse> transferLoginUrl() {
-        return ResponseEntity.ok(authService.getLoginUrl());
+        return ResponseEntity.ok(new OAuthLoginUrlResponse(githubOAuthClient.getRedirectUrl()));
     }
 
     @PostMapping("/login")
     public ResponseEntity<AccessTokenResponse> login(@Valid @RequestBody OAuthCodeRequest OAuthCodeRequest,
                                                      HttpServletResponse httpServletResponse) {
-        TokenResponse tokenResponse = authService.generateToken(OAuthCodeRequest);
+        GithubProfileResponse githubProfile = githubOAuthClient.getMemberProfile(OAuthCodeRequest.getCode());
+        TokenResponse tokenResponse = authService.generateToken(githubProfile);
         ResponseCookie cookie = CookieUtils.create(tokenResponse.getRefreshToken());
         httpServletResponse.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
