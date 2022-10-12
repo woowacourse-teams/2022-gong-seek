@@ -50,7 +50,7 @@ const useHandleCommentInputModalState = ({
 		return () => clearInterval(commentTempSavedInterval);
 	}, []);
 
-	const onClickCommentPostButton = () => {
+	const handleClickCommentPostButton = () => {
 		if (modalType === 'register') {
 			handleCreateComment();
 			setTempSavedComment('');
@@ -92,7 +92,7 @@ const useHandleCommentInputModalState = ({
 	return {
 		commentContent,
 		setIsAnonymous,
-		onClickCommentPostButton,
+		handleClickCommentPostButton,
 		putIsLoading,
 		postIsLoading,
 	};

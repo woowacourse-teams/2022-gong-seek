@@ -24,7 +24,7 @@ const VoteItem = ({
 	isVoted,
 }: VoteItemProps) => {
 	const progressivePercent = Math.floor((itemVotes / totalVotes) * 100);
-	const { onChangeRadio } = usePostVoteItem(articleId);
+	const { handleChangeRadioButton } = usePostVoteItem(articleId);
 
 	return (
 		<S.Container>
@@ -33,7 +33,7 @@ const VoteItem = ({
 					type="radio"
 					name={articleId}
 					onChange={() => {
-						onChangeRadio(articleId, voteItemId);
+						handleChangeRadioButton(articleId, voteItemId);
 					}}
 					disabled={isExpired}
 					checked={isVoted}

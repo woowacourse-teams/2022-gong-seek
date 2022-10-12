@@ -15,13 +15,13 @@ const TabBar = () => {
 
 	const { showModal } = useModal();
 
+	const handleClickPostingLink = () => {
+		navigate(URL.CATEGORY_SELECTOR);
+	};
+
 	return (
 		<S.Section>
-			<S.PostingLink
-				onClick={() => {
-					navigate(URL.CATEGORY_SELECTOR);
-				}}
-			/>
+			<S.PostingLink onClick={handleClickPostingLink} />
 			{isLogin ? (
 				<S.MyPageLink to={URL.MY_PAGE}>
 					<UserProfileIcon />

@@ -6,6 +6,7 @@ import Loading from '@/components/@common/Loading/Loading';
 import SortDropdown from '@/components/@common/SortDropdown/SortDropDown';
 import useGetAllArticles from '@/hooks/article/useGetAllArticles';
 import * as S from '@/pages/Home/index.styles';
+import { CommonArticleType } from '@/types/articleResponse';
 
 const ResponsiveInfiniteCardList = React.lazy(
 	() => import('@/components/@common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList'),
@@ -22,6 +23,14 @@ const Home = () => {
 	const { data, currentCategory, setCurrentCategory, sortIndex, setSortIndex, fetchNextPage } =
 		useGetAllArticles();
 
+	const handleClickCategoryTitle = (category: 'question' | 'discussion') => {
+		setCurrentCategory(category);
+	};
+
+	const handleClickArticleItem = (item: CommonArticleType) => {
+		navigate(`/articles/${currentCategory}/${item.id}`);
+	};
+
 	return (
 		<S.Container ref={endFlag}>
 			<S.PopularArticleTitle>오늘의 인기글</S.PopularArticleTitle>
@@ -32,13 +41,13 @@ const Home = () => {
 				<S.CategoryTitleBox>
 					<S.CategoryTitle
 						isActive={currentCategory === 'question'}
-						onClick={() => setCurrentCategory('question')}
+						onClick={() => handleClickCategoryTitle('question')}
 					>
 						질문
 					</S.CategoryTitle>
 					<S.CategoryTitle
 						isActive={currentCategory === 'discussion'}
-						onClick={() => setCurrentCategory('discussion')}
+						onClick={() => handleClickCategoryTitle('discussion')}
 					>
 						토론
 					</S.CategoryTitle>
@@ -61,9 +70,7 @@ const Home = () => {
 									<ArticleItem
 										key={item.id}
 										article={item}
-										onClick={() => {
-											navigate(`/articles/${currentCategory}/${item.id}`);
-										}}
+										onClick={() => handleClickArticleItem(item)}
 									/>
 								)),
 							)}

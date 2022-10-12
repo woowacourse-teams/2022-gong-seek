@@ -1,10 +1,8 @@
-import { useState } from 'react';
-
 import Loading from '@/components/@common/Loading/Loading';
 import ToastUiViewer from '@/components/@common/ToastUiViewer/ToastUiViewer';
 import * as S from '@/components/comment/Comment/Comment.styles';
 import useDeleteComment from '@/hooks/comment/useDeleteComment';
-import useModal from '@/hooks/common/useModal';
+import useDetailCommentState from '@/hooks/comment/useDetailCommentState';
 import { CommentType } from '@/types/commentResponse';
 import { convertGithubAvatarUrlForResize } from '@/utils/converter';
 import { dateTimeConverter } from '@/utils/converter';
@@ -23,23 +21,12 @@ const Comment = ({
 	articleId,
 	tabIndex,
 }: CommentProps) => {
-	const [commentPlaceholder, setCommentPlaceHolder] = useState('');
-	const { isLoading, onDeleteButtonClick } = useDeleteComment();
-	const { showModal } = useModal();
-
-	const onUpdateButtonClick = () => {
-		setCommentPlaceHolder(content);
-		showModal({
-			modalType: 'comment-modal',
-			modalProps: {
-				articleId: String(articleId),
-				modalType: 'edit',
-				commentId: String(id),
-				placeholder: commentPlaceholder,
-			},
-			isMobileOnly: false,
-		});
-	};
+	const { handleClickEditButton } = useDetailCommentState({
+		articleId,
+		commentId: String(id),
+		content,
+	});
+	const { isLoading, handleClickDeleteButton } = useDeleteComment();
 
 	if (isLoading) return <Loading />;
 
@@ -66,12 +53,12 @@ const Comment = ({
 				</S.CommentInfo>
 				{isAuthor && (
 					<S.CommentAuthBox>
-						<S.Button onClick={onUpdateButtonClick} tabIndex={tabIndex}>
+						<S.Button onClick={handleClickEditButton} tabIndex={tabIndex}>
 							수정
 						</S.Button>
 						<S.Button
 							onClick={() => {
-								onDeleteButtonClick(id);
+								handleClickDeleteButton(id);
 							}}
 							tabIndex={tabIndex}
 						>

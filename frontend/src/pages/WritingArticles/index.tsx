@@ -50,7 +50,7 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 	} = useGetTempDetailArticles({ tempArticleId });
 
 	useEffect(() => {
-		const timerInterval = setInterval(handleTempSavedButtonClick, 120000);
+		const timerInterval = setInterval(handleClickTemporaryStoreButton, 120000);
 
 		return () => clearInterval(timerInterval);
 	}, []);
@@ -90,7 +90,7 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 
 	if (isLoading) return <Loading />;
 
-	const handleTempSavedButtonClick = () => {
+	const handleClickTemporaryStoreButton = () => {
 		if (titleInputRef.current && titleInputRef.current.value === '') {
 			showSnackBar('제목을 입력해주세요!');
 			titleInputRef.current.focus();
@@ -107,6 +107,10 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 				content: content.current?.getInstance().getMarkdown(),
 			});
 		}
+	};
+
+	const handleChangeCategorySelector = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		setCategoryOption(e.target.value);
 	};
 
 	const preventRefresh = (e: BeforeUnloadEvent) => {
@@ -136,7 +140,7 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 								name="writing"
 								required
 								value={categoryOption}
-								onChange={(e) => setCategoryOption(e.target.value)}
+								onChange={handleChangeCategorySelector}
 							>
 								<option value="" disabled>
 									카테고리를 선택해주세요
@@ -151,7 +155,7 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 				</S.OptionBox>
 			</S.SelectorBox>
 			<S.TemporaryStoreButtonBox>
-				<S.TemporaryStoreButton onClick={handleTempSavedButtonClick}>
+				<S.TemporaryStoreButton onClick={handleClickTemporaryStoreButton}>
 					임시저장
 				</S.TemporaryStoreButton>
 			</S.TemporaryStoreButtonBox>
