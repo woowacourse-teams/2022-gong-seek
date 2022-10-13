@@ -15,6 +15,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 @Getter
@@ -57,6 +59,7 @@ public class GithubOAuthClient implements OAuthClient {
     }
 
     @Override
+    @Transactional(propagation = Propagation.NEVER)
     public GithubProfileResponse getMemberProfile(String code) {
         GithubAccessTokenResponse accessTokenResponse = getGithubAccessToken(code);
         return getGithubProfile(accessTokenResponse);
