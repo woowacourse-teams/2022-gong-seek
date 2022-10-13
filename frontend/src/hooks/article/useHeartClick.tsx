@@ -66,12 +66,12 @@ const useHeartClick = ({
 
 	const handleClickFillHeart = (e: React.MouseEvent<SVGElement>) => {
 		e.stopPropagation();
-		postMutate(articleId);
+		deleteMutate(articleId);
 	};
 
 	const handleClickEmptyHeart = (e: React.MouseEvent<SVGElement>) => {
 		e.stopPropagation();
-		deleteMutate(articleId);
+		postMutate(articleId);
 	};
 
 	return {
