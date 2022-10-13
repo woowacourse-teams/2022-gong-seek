@@ -41,7 +41,7 @@ export const SelectorBox = styled.div`
 `;
 
 export const TitleInput = styled.input`
-	width: 100%;
+	width: 95%;
 
 	border-style: none;
 
@@ -53,7 +53,7 @@ export const TitleInput = styled.input`
 
 	${({ theme }) => css`
 		font-size: ${theme.size.SIZE_014};
-		padding: ${theme.size.SIZE_010} ${theme.size.SIZE_014};
+		padding: ${theme.size.SIZE_010};
 
 		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
 			font-size: ${theme.size.SIZE_020};
