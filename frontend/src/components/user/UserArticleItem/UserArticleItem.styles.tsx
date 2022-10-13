@@ -1,5 +1,6 @@
 import { AiOutlineMessage } from 'react-icons/ai';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
@@ -10,28 +11,32 @@ export const Container = styled.div`
 	width: 90%;
 	height: fit-content;
 
-	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
-	border-radius: ${({ theme }) => theme.size.SIZE_004};
+	${({ theme }) => css`
+		border: ${theme.size.SIZE_001} solid ${theme.colors.GRAY_500};
+		border-radius: ${theme.size.SIZE_004};
 
-	background-color: ${({ theme }) => theme.colors.GRAY_100};
+		background-color: ${theme.colors.GRAY_100};
 
-	padding: ${({ theme }) => theme.size.SIZE_006};
+		padding: ${theme.size.SIZE_006};
 
-	gap: ${({ theme }) => theme.size.SIZE_010};
+		gap: ${theme.size.SIZE_010};
+	`}
 `;
 
 export const CategoryName = styled.div<{ isQuestion: boolean }>`
 	width: fit-content;
 	height: fit-content;
 
-	color: ${({ theme }) => theme.colors.WHITE};
+	${({ theme, isQuestion }) => css`
+		color: ${theme.colors.WHITE};
 
-	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
+		border: ${theme.size.SIZE_001} solid ${theme.colors.GRAY_500};
+		border-radius: ${theme.size.SIZE_010};
 
-	background-color: ${(props) => (props.isQuestion ? '#FF0063' : '#3AB0FF')};
+		background-color: ${isQuestion ? `${theme.colors.RED_600}` : `${theme.colors.BLUE_500}`};
 
-	padding: ${({ theme }) => theme.size.SIZE_004};
+		padding: ${theme.size.SIZE_004};
+	`}
 `;
 
 export const ArticleTitleBox = styled.div`

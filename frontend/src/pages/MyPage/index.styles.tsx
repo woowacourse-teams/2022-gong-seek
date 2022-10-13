@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.section`
@@ -8,22 +9,25 @@ export const Container = styled.section`
 `;
 
 export const Title = styled.h2`
-	font-size: ${({ theme }) => theme.size.SIZE_018};
-	color: ${({ theme }) => theme.colors.PURPLE_500};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_018};
+		color: ${theme.colors.PURPLE_500};
 
-	margin-bottom: ${({ theme }) => theme.size.SIZE_020};
-	padding-left: ${({ theme }) => theme.size.SIZE_010};
+		margin-bottom: ${theme.size.SIZE_020};
+		padding-left: ${theme.size.SIZE_010};
+	`}
 `;
 
 export const ContentContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 
-	min-height: ${({ theme }) => theme.size.SIZE_700};
+	${({ theme }) => css`
+		min-height: ${theme.size.SIZE_700};
 
-	padding: ${({ theme }) => theme.size.SIZE_006};
+		padding: ${theme.size.SIZE_006};
 
-	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
-	border-radius: 0 ${({ theme }) => theme.size.SIZE_004} ${({ theme }) => theme.size.SIZE_004}
-		${({ theme }) => theme.size.SIZE_004};
+		border: ${theme.size.SIZE_001} solid ${theme.colors.GRAY_500};
+		border-radius: 0 ${theme.size.SIZE_004} ${theme.size.SIZE_004} ${theme.size.SIZE_004};
+	`}
 `;

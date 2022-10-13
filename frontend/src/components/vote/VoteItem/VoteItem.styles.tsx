@@ -1,5 +1,5 @@
 import { voteGradientColors } from '@/styles/Theme';
-import { keyframes } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const RadioButton = styled.input`
@@ -8,13 +8,14 @@ export const RadioButton = styled.input`
 
 export const Title = styled.h2<{ isVoted: boolean }>`
 	display: flex;
-
-	gap: ${({ theme }) => theme.size.SIZE_004};
 	align-items: center;
 
-	font-size: ${({ theme }) => theme.size.SIZE_014};
+	${({ theme, isVoted }) => css`
+		gap: ${theme.size.SIZE_004};
+		font-size: ${theme.size.SIZE_014};
 
-	color: ${({ isVoted, theme }) => isVoted && theme.colors.BLUE_500};
+		color: ${isVoted && `${theme.colors.BLUE_500}`};
+	`}
 `;
 
 export const TitleBox = styled.div`
@@ -41,29 +42,32 @@ export const ProgressiveBarAnimation = (percent: number) => keyframes`
 `;
 
 export const ProgressiveBar = styled.div`
-	width: 10.625rem;
-	height: ${({ theme }) => theme.size.SIZE_010};
+	${({ theme }) => css`
+		width: ${theme.size.SIZE_170};
+		height: ${theme.size.SIZE_010};
 
-	border-radius: ${({ theme }) => theme.size.SIZE_006};
+		border-radius: ${theme.size.SIZE_006};
 
-	background-color: ${({ theme }) => theme.colors.GRAY_500};
+		background-color: ${theme.colors.GRAY_500};
 
-	margin-left: ${({ theme }) => theme.size.SIZE_024};
+		margin-left: ${theme.size.SIZE_024};
+	`};
 `;
 
 export const ProgressiveBarContent = styled.div<{
 	percent: number;
 	colorKey: keyof typeof voteGradientColors;
 }>`
-	width: ${({ percent }) => `${percent}%`};
 	height: 100%;
+	${({ theme, percent, colorKey }) => css`
+		width: ${`${percent}%`};
 
-	border-radius: ${({ theme }) => theme.size.SIZE_006};
+		border-radius: ${theme.size.SIZE_006};
 
-	background-image: ${({ theme, colorKey }) => theme.voteGradientColors[colorKey]};
+		background-image: ${theme.voteGradientColors[colorKey]};
 
-	animation: ${({ percent }) => ProgressiveBarAnimation(percent)} 1.2s
-		cubic-bezier(0.23, 1, 0.32, 1);
+		animation: ${ProgressiveBarAnimation(percent)} 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+	`}
 `;
 
 export const Container = styled.div`

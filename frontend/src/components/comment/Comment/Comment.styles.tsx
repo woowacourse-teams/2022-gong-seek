@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
@@ -5,13 +6,14 @@ export const Container = styled.div`
 
 	flex-direction: column;
 	justify-content: space-between;
-	gap: ${({ theme }) => theme.size.SIZE_014};
 
 	width: 100%;
 
-	border-bottom: ${({ theme }) => theme.size.SIZE_001} solid
-		${({ theme }) => theme.colors.BLACK_200};
-	margin-bottom: ${({ theme }) => theme.size.SIZE_020};
+	${({ theme }) => css`
+		gap: ${theme.size.SIZE_014};
+		border-bottom: ${theme.size.SIZE_001} solid ${theme.colors.BLACK_200};
+		margin-bottom: ${theme.size.SIZE_020};
+	`}
 `;
 
 export const CommentHeader = styled.div`

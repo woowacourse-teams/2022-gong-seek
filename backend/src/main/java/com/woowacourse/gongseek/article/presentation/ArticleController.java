@@ -1,10 +1,10 @@
 package com.woowacourse.gongseek.article.presentation;
 
 import com.woowacourse.gongseek.article.application.ArticleService;
-import com.woowacourse.gongseek.article.domain.repository.dto.ArticleDto;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
+import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
@@ -41,7 +41,7 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArticleDto> getOne(@AuthenticationPrinciple AppMember appMember, @PathVariable Long id) {
+    public ResponseEntity<ArticleResponse> getOne(@AuthenticationPrinciple AppMember appMember, @PathVariable Long id) {
         return ResponseEntity.ok(articleService.getOne(appMember, id));
     }
 

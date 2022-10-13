@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.member.application;
 
-import com.woowacourse.gongseek.article.domain.repository.ArticleRepositoryCustom;
-import com.woowacourse.gongseek.article.domain.repository.dto.MyPageArticleDto;
+import com.woowacourse.gongseek.article.domain.Article;
+import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
@@ -11,6 +11,7 @@ import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateRequest;
 import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
+import com.woowacourse.gongseek.member.presentation.dto.MyPageArticleResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
@@ -26,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final ArticleRepositoryCustom articleRepositoryCustom;
+    private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
 
     public MemberDto getOne(AppMember appMember) {
@@ -41,9 +42,16 @@ public class MemberService {
 
     public MyPageArticlesResponse getArticles(AppMember appMember) {
         Member member = getMember(appMember);
-        List<MyPageArticleDto> myPageArticles = articleRepositoryCustom.findAllByMemberIdWithCommentCount(
-                member.getId());
-        return new MyPageArticlesResponse(myPageArticles);
+        List<Article> articles = articleRepository.findAllByMemberId(member.getId());
+
+        List<MyPageArticleResponse> myPageArticleResponses = getMyPageArticleResponses(articles);
+        return new MyPageArticlesResponse(myPageArticleResponses);
+    }
+
+    private List<MyPageArticleResponse> getMyPageArticleResponses(List<Article> articles) {
+        return articles.stream()
+                .map(article -> new MyPageArticleResponse(article, commentRepository.countByArticleId(article.getId())))
+                .collect(Collectors.toList());
     }
 
     public MyPageCommentsResponse getComments(AppMember appMember) {
