@@ -1,6 +1,5 @@
 import { AiOutlineMessage, AiOutlineLeft } from 'react-icons/ai';
 
-import { articleColors } from '@/styles/Theme';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -31,7 +30,7 @@ export const Container = styled.section`
 	z-index: ${({ theme }) => theme.zIndex.POPULAR_ARTICLES};
 `;
 
-export const LeftBackgroundArticle = styled.div<{ colorKey: keyof typeof articleColors }>`
+export const LeftBackgroundArticle = styled.div`
 	position: absolute;
 
 	top: 0;
@@ -40,15 +39,14 @@ export const LeftBackgroundArticle = styled.div<{ colorKey: keyof typeof article
 	width: 50%;
 	height: 100%;
 
-	${({ theme, colorKey }) => css`
+	${({ theme }) => css`
 		border-radius: ${theme.size.SIZE_010};
-		background-color: ${theme.articleColors[colorKey]};
 
 		z-index: ${theme.zIndex.ARTICLE_BACKGROUND_CONTENT};
 	`}
 `;
 
-export const RightBackgroundArticle = styled.div<{ colorKey: keyof typeof articleColors }>`
+export const RightBackgroundArticle = styled.div`
 	position: absolute;
 
 	top: 0;
@@ -57,9 +55,8 @@ export const RightBackgroundArticle = styled.div<{ colorKey: keyof typeof articl
 	width: 50%;
 	height: 100%;
 
-	${({ theme, colorKey }) => css`
+	${({ theme }) => css`
 		border-radius: ${theme.size.SIZE_010};
-		background-color: ${theme.articleColors[colorKey]};
 
 		z-index: ${theme.zIndex.ARTICLE_BACKGROUND_CONTENT};
 	`}
@@ -108,7 +105,7 @@ export const RightArrowButton = styled(AiOutlineLeft)`
 	`}
 `;
 
-export const ArticleContent = styled.div<{ colorKey: keyof typeof articleColors }>`
+export const ArticleContent = styled.div`
 	display: flex;
 
 	flex-direction: column;
@@ -117,10 +114,8 @@ export const ArticleContent = styled.div<{ colorKey: keyof typeof articleColors 
 	width: 80%;
 	height: 100%;
 
-	${({ theme, colorKey }) => css`
+	${({ theme }) => css`
 		border-radius: ${theme.size.SIZE_010};
-
-		background-color: ${theme.articleColors[colorKey]};
 
 		padding: ${theme.size.SIZE_010};
 		z-index: ${theme.zIndex.ARTICLE_POPULAR_CONTENT};

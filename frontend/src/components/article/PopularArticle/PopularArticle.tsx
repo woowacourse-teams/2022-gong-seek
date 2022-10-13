@@ -1,34 +1,19 @@
+import useCarousel from '../../../hooks/common/useCarousel';
+
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import * as S from '@/components/article/PopularArticle/PopularArticle.styles';
 import PopularArticleItem from '@/components/article/PopularArticleItem/PopularArticleItem';
 import useGetPopularArticles from '@/hooks/article/useGetPopularArticles';
-import { convertIdxToArticleColorKey } from '@/utils/converter';
 
 const PopularArticle = () => {
-	const {
-		data,
-		isLoading,
-		isIdle,
-		currentIndex,
-		handleClickLeftArrowButton,
-		handleClickRightArrowButton,
-		mainArticleContent,
-	} = useGetPopularArticles();
+	const { carouselElement, handleLeftSlideEvent, handleRightSlideEvent, initCarousel } =
+		useCarousel();
+	const { data, isLoading } = useGetPopularArticles(initCarousel);
 
-	if (isLoading || isIdle) {
+	if (isLoading) {
 		return <Loading />;
 	}
-
-	const getColorKey = (index: number) => {
-		if (index < 0) {
-			return convertIdxToArticleColorKey(9);
-		}
-		if (index > 9) {
-			return convertIdxToArticleColorKey(0);
-		}
-		return convertIdxToArticleColorKey(index);
-	};
 
 	if (!data?.articles.length) {
 		return <EmptyMessage>게시글이 존재하지 않습니다</EmptyMessage>;
@@ -36,13 +21,13 @@ const PopularArticle = () => {
 
 	return data ? (
 		<S.Container>
-			<S.LeftArrowButton onClick={handleClickLeftArrowButton} />
-			<S.LeftBackgroundArticle colorKey={getColorKey(currentIndex - 1)} />
-			<S.ArticleContent colorKey={getColorKey(currentIndex)} ref={mainArticleContent}>
-				<PopularArticleItem article={data.articles[currentIndex]} />
+			<S.LeftArrowButton onClick={handleLeftSlideEvent} />
+			<S.ArticleContent ref={carouselElement}>
+				{data.articles.map((article) => (
+					<PopularArticleItem article={article} key={article.id} />
+				))}
 			</S.ArticleContent>
-			<S.RightBackgroundArticle colorKey={getColorKey(currentIndex + 1)} />
-			<S.RightArrowButton onClick={handleClickRightArrowButton} />
+			<S.RightArrowButton onClick={handleRightSlideEvent} />
 		</S.Container>
 	) : null;
 };
