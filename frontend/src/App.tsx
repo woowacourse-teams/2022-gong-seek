@@ -1,4 +1,3 @@
-import usePageChange from './hooks/common/usePageChange';
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -11,6 +10,7 @@ import Header from '@/components/@layout/Header/Header';
 import TabBar from '@/components/@layout/TabBar/TabBar';
 import { URL } from '@/constants/url';
 import useHandleHeaderByScroll from '@/hooks/common/useHandleHeaderByScroll';
+import usePageChange from '@/hooks/common/usePageChange';
 import { dropdownState } from '@/store/dropdownState';
 import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
