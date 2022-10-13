@@ -36,6 +36,12 @@
 <hr>
 
 ## 아키텍쳐
+<img width="1028" alt="스크린샷 2022-10-12 오후 9 56 51" src="https://user-images.githubusercontent.com/60773373/195483475-41ffa01c-0267-4d1f-b10e-4bdf5701ed63.png">
+
+## CI / CD 
+
+<img width="1455" alt="스크린샷 2022-10-12 오후 9 56 20" src="https://user-images.githubusercontent.com/60773373/195483519-fde0f83b-b3ee-4ea2-8aa0-7f0c3854898c.png">
+
 
 <hr>
 
