@@ -26,7 +26,6 @@ const useGetPopularArticles = (initCarousel: (maxArticleLength: number) => void)
 	return {
 		data,
 		isLoading,
-		isSuccess,
 	};
 };
 
