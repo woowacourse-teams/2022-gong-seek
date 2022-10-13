@@ -36,10 +36,12 @@ export const DropdownBox = styled.ul`
 	align-items: center;
 
 	${({ theme }) => css`
-		top: ${theme.size.SIZE_020};
+		top: ${theme.size.SIZE_016};
+		padding: ${theme.size.SIZE_004};
 		border-bottom-left-radius: ${theme.size.SIZE_006};
 		border-bottom-right-radius: ${theme.size.SIZE_006};
 
+		background-color: ${theme.colors.WHITE};
 		box-shadow: 0 ${theme.size.SIZE_008} ${theme.size.SIZE_024} ${theme.boxShadows.secondary};
 	`}
 `;
@@ -48,7 +50,6 @@ export const DropdownItem = styled.li<{ idx: number }>`
 	width: 100%;
 	text-align: center;
 	margin: 0 auto;
-	opacity: 0;
 
 	overflow: hidden;
 
@@ -61,7 +62,7 @@ export const DropdownItem = styled.li<{ idx: number }>`
 
 		color: ${theme.colors.BLACK_600};
 		background-color: ${theme.colors.WHITE};
-		padding: ${theme.size.SIZE_008} ${theme.size.SIZE_004};
+		padding: ${theme.size.SIZE_008} ${theme.size.SIZE_003} ${theme.size.SIZE_008} 0;
 		animation: ${slideDown} 0.3s ease-in-out ${`${idx * 60}ms`};
 
 		&:hover {

@@ -9,14 +9,14 @@ export const Container = styled.button<Pick<LoginButtonProps, 'loginType'>>`
 	justify-content: center;
 	align-items: center;
 
-	width: 100%;
+	width: 80%;
 
 	height: fit-content;
 
 	border: none;
 	${({ theme, loginType }) => css`
 		gap: ${theme.size.SIZE_016}
-		max-width: ${theme.size.SIZE_260};
+		max-width: ${theme.size.SIZE_200};
 		border-radius: ${theme.size.SIZE_010};
 
 		background-color: ${LOGIN_TYPE[loginType].color};
