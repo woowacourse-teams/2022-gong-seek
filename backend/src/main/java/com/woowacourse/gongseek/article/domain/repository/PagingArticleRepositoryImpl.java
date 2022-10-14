@@ -110,9 +110,36 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
     }
 
     @Override
-    public Slice<ArticlePreviewDto> findAllByLikes(Long cursorId, Long likes, String category, Long payload,
+    public Slice<ArticlePreviewDto> findAllByLikes(Long cursorId, Long cursorLike, String category, Long memberId,
                                                    Pageable pageable) {
-        return null;
+        List<ArticlePreviewDto> fetch = queryFactory
+                .select(
+                        Projections.constructor(
+                                ArticlePreviewDto.class,
+                                article.id,
+                                article.title.value,
+                                article.member.name.value,
+                                article.member.avatarUrl,
+                                article.content.value,
+                                article.category,
+                                article.views.value,
+                                article.commentCount.value,
+                                article.likeCount.value,
+                                isLike(article.id, memberId),
+                                article.createdAt
+                        )
+                )
+                .from(article)
+                .join(article.member, member)
+                .where(
+                        cursorIdAndLikes(cursorId, cursorLike),
+                        categoryEquals(category)
+                )
+                .limit(pageable.getPageSize() + 1)
+                .orderBy(article.likeCount.value.desc(), article.id.desc())
+                .fetch();
+
+        return convertToSliceFromArticle(fetch, pageable);
     }
 
     @Override
@@ -130,24 +157,6 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
     public Slice<ArticlePreviewDto> searchByTag(Long cursorId, Long memberId, List<String> tagNames,
                                                 Pageable pageable) {
         return null;
-    }
-
-
-
-    @Override
-    public Slice<Article> findAllByPage(Long cursorId, Long cursorViews, String category, String sortType,
-                                        Pageable pageable) {
-        JPAQuery<Article> query = queryFactory
-                .selectFrom(article)
-                .leftJoin(article.member, member).fetchJoin()
-                .where(
-                        cursorIdAndCursorViews(cursorId, cursorViews, sortType),
-                        categoryEquals(category)
-                )
-                .limit(pageable.getPageSize() + 1);
-        List<Article> fetch = sort(sortType, query);
-
-        return convertToSlice(fetch, pageable);
     }
 
     private BooleanExpression cursorIdAndCursorViews(Long cursorId, Long cursorViews, String sortType) {
@@ -189,29 +198,13 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
         return "all".equals(category) ? null : article.category.eq(Category.from(category));
     }
 
-    @Override
-    public Slice<Article> findAllByLikes(Long cursorId, Long cursorLikes, String category, Pageable pageable) {
-        List<Article> fetch = queryFactory
-                .select(article)
-                .from(like)
-                .rightJoin(like.article, article)
-                .where(categoryEquals(category))
-                .groupBy(article)
-                .having(cursorIdAndLikes(cursorId, cursorLikes))
-                .limit(pageable.getPageSize() + 1)
-                .orderBy(like.count().desc(), article.id.desc())
-                .fetch();
-
-        return convertToSlice(fetch, pageable);
-    }
-
     private BooleanExpression cursorIdAndLikes(Long cursorId, Long likes) {
         if (cursorId == null || likes == null) {
             return null;
         }
-        return like.count().eq(likes)
+        return article.likeCount.value.eq(likes)
                 .and(article.id.lt(cursorId))
-                .or(like.count().lt(likes));
+                .or(article.likeCount.value.lt(likes));
     }
 
     @Override

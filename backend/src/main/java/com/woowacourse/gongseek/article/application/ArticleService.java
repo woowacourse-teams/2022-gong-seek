@@ -232,13 +232,13 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticlePageResponse getAllByLikes(Long cursorId, Long likes, String category, Pageable pageable,
+    public ArticlePageResponse getAllByLikes(Long cursorId, Long cursorLikes, String category, Pageable pageable,
                                              AppMember appMember) {
-        Slice<Article> articles = pagingArticleRepository.findAllByLikes(cursorId, likes, category, pageable);
-        List<ArticlePreviewResponse> response = articles.getContent().stream()
-                .map(it -> getArticlePreviewResponse(it, appMember))
-                .collect(Collectors.toList());
-
-        return new ArticlePageResponse(response, articles.hasNext());
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(cursorId, cursorLikes, category,
+                appMember.getPayload(),
+                pageable);
+        Map<Long, List<String>> tagNames = findTagNames(articles);
+        List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tagNames);
+        return new ArticlePageResponse(articleResponses, articles.hasNext());
     }
 }

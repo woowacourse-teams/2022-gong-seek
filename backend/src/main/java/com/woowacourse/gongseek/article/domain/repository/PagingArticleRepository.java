@@ -11,7 +11,7 @@ public interface PagingArticleRepository {
     Slice<ArticlePreviewDto> findAllByPage(Long cursorId, Long views, String category, String sortType, Long memberId,
                                            Pageable pageable);
 
-    Slice<ArticlePreviewDto> findAllByLikes(Long cursorId, Long likes, String category, Long payload,
+    Slice<ArticlePreviewDto> findAllByLikes(Long cursorId, Long cursorLikes, String category, Long memberId,
                                             Pageable pageable);
 
     Slice<ArticlePreviewDto> searchByContainingText(Long cursorId, String searchText, Long memberId, Pageable pageable);
@@ -19,10 +19,6 @@ public interface PagingArticleRepository {
     Slice<ArticlePreviewDto> searchByAuthor(Long cursorId, String author, Long payload, Pageable pageable);
 
     Slice<ArticlePreviewDto> searchByTag(Long cursorId, Long memberId, List<String> tagNames, Pageable pageable);
-
-    Slice<Article> findAllByPage(Long cursorId, Long views, String category, String sortType, Pageable pageable);
-
-    Slice<Article> findAllByLikes(Long cursorId, Long likes, String category, Pageable pageable);
 
     Slice<Article> searchByContainingText(Long cursorId, String searchText, Pageable pageable);
 

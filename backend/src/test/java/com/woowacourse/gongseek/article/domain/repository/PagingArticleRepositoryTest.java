@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
+import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
 @RepositoryTest
@@ -192,6 +193,7 @@ public class PagingArticleRepositoryTest {
         assertThat(articles.getContent()).hasSize(2);
     }
 
+    @Transactional
     @Test
     void 게시글을_추천순으로_조회하고_다음_데이터가_존재하지_않는다() {
         Article firstArticle = articleRepository.save(
@@ -203,11 +205,15 @@ public class PagingArticleRepositoryTest {
         Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
 
         likeRepository.save(new Like(firstArticle, member));
+        firstArticle.addLikeCount();
         likeRepository.save(new Like(firstArticle, newMember));
+        firstArticle.addLikeCount();
         likeRepository.save(new Like(secondArticle, member));
+        secondArticle.addLikeCount();
 
-        Slice<Article> articles = pagingArticleRepository.findAllByLikes(
-                null, null, Category.QUESTION.getValue(), PageRequest.ofSize(3));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(null, null,
+                Category.QUESTION.getValue(),
+                member.getId(), PageRequest.ofSize(3));
 
         assertAll(
                 () -> assertThat(articles.getContent().get(0).getId()).isEqualTo(firstArticle.getId()),
@@ -227,11 +233,15 @@ public class PagingArticleRepositoryTest {
         Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
 
         likeRepository.save(new Like(firstArticle, member));
+        firstArticle.addLikeCount();
         likeRepository.save(new Like(firstArticle, newMember));
+        firstArticle.addLikeCount();
         likeRepository.save(new Like(secondArticle, member));
+        secondArticle.addLikeCount();
 
-        Slice<Article> articles = pagingArticleRepository.findAllByLikes(
-                null, null, Category.QUESTION.getValue(), PageRequest.ofSize(2));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(null, null,
+                Category.QUESTION.getValue(),
+                member.getId(), PageRequest.ofSize(2));
 
         assertAll(
                 () -> assertThat(articles.getContent().get(0).getId()).isEqualTo(firstArticle.getId()),
