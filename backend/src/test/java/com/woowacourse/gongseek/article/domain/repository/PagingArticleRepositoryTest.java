@@ -24,7 +24,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +34,8 @@ public class PagingArticleRepositoryTest {
 
     private static final String TITLE = "title";
     private static final String CONTENT = "content";
+    private static final String ANONYMOUS_NAME = "익명";
+    private static final String ANONYMOUS_AVATAR_URL = "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png";
 
     private final Member member = new Member("slo", "hanull", "avatar.com");
 
@@ -56,9 +57,6 @@ public class PagingArticleRepositoryTest {
     @Autowired
     private LikeRepository likeRepository;
 
-    @Autowired
-    private TestEntityManager testEntityManager;
-
     @BeforeEach
     void setUp() {
         memberRepository.save(member);
@@ -76,14 +74,18 @@ public class PagingArticleRepositoryTest {
     @Test
     void 게시글을_5개씩_조회한다() {
         for (int i = 0; i < 5; i++) {
-            articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+            articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, true));
         }
         Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(null, 0L,
                 Category.QUESTION.getValue(),
                 "views",
                 member.getId(), PageRequest.ofSize(5));
 
-        assertThat(articles.getContent()).hasSize(5);
+        assertAll(
+                () -> assertThat(articles.getContent()).hasSize(5),
+                () -> assertThat(articles.getContent().get(0).getAuthor().getName()).isEqualTo(ANONYMOUS_NAME),
+                () -> assertThat(articles.getContent().get(0).getAuthor().getAvatarUrl()).isEqualTo(ANONYMOUS_AVATAR_URL)
+        );
     }
 
     @ParameterizedTest

@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.article.domain.repository.dto;
 
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -28,10 +29,10 @@ public class ArticlePreviewDto {
 
     public ArticlePreviewDto(Long id,
                              String title,
-                             String authorName,
-                             String authorAvatarUrl,
+                             Member member,
                              String content,
                              Category category,
+                             Boolean isAnonymous,
                              Long views,
                              Long commentCount,
                              Long likeCount,
@@ -40,7 +41,7 @@ public class ArticlePreviewDto {
         this(
                 id,
                 title,
-                new AuthorDto(authorName, authorAvatarUrl),
+                new AuthorDto(member.getMemberOrAnonymous(isAnonymous)),
                 content,
                 category.getValue(),
                 views,
