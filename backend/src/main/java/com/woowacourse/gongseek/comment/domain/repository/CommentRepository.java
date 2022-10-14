@@ -8,10 +8,11 @@ import org.springframework.data.repository.query.Param;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
+    @Query("select c from Comment c join fetch c.article where c.member.id = :memberId")
+    List<Comment> findAllByMemberId(@Param("memberId") Long memberId);
+
     @Query("select c from Comment c join fetch c.member where c.article.id = :articleId")
     List<Comment> findAllByArticleIdWithMember(@Param("articleId") Long articleId);
 
-    List<Comment> findAllByMemberId(Long memberId);
-
-    int countByArticleId(Long articleId);
+    long countByArticleId(Long articleId);
 }

@@ -9,10 +9,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @Embeddable
+@AllArgsConstructor
 public class ArticleTags {
 
     @OneToMany(mappedBy = "article", orphanRemoval = true, cascade = CascadeType.PERSIST)
@@ -30,6 +32,12 @@ public class ArticleTags {
 
     public void clear() {
         value.clear();
+    }
+
+    public List<Long> getTagIds() {
+        return value.stream()
+                .map(articleTag -> articleTag.getTag().getId())
+                .collect(Collectors.toList());
     }
 
     public List<String> getTagNames() {

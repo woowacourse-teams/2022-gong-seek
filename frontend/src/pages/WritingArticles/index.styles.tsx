@@ -33,7 +33,6 @@ export const SelectorBox = styled.div`
 	display: flex;
 	width: 95%;
 	flex-direction: column;
-	gap: ${({ theme }) => theme.size.SIZE_010};
 
 	${({ theme }) => css`
 		gap: ${theme.size.SIZE_010};
@@ -47,21 +46,22 @@ export const TitleInput = styled.input`
 	width: 95%;
 
 	border-style: none;
+
 	background-color: transparent;
 
+	&:focus {
+		outline: none;
+	}
+
 	${({ theme }) => css`
-		padding: ${theme.size.SIZE_010} ${theme.size.SIZE_018};
-		font-size: ${theme.size.SIZE_016};
+		font-size: ${theme.size.SIZE_014};
+		padding: ${theme.size.SIZE_010};
 
 		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
 			font-size: ${theme.size.SIZE_020};
 			padding: ${theme.size.SIZE_008} ${theme.size.SIZE_010};
 		}
 	`}
-
-	&:focus {
-		outline: none;
-	}
 `;
 
 export const TitleInputErrorMsgBox = styled.div`
@@ -133,16 +133,9 @@ export const SelectorButton = styled(AiOutlineDown)`
 export const CategorySelector = styled.select`
 	width: 100%;
 	border-color: transparent;
+	border-radius: ${({ theme }) => theme.size.SIZE_010};
 
-	${({ theme }) => css`
-		font-size: ${theme.size.SIZE_014};
-		border-radius: ${theme.size.SIZE_010};
-		padding: ${theme.size.SIZE_010} ${theme.size.SIZE_014};
-
-		&:invalid {
-			color: ${theme.colors.BLACK_400};
-		}
-	`}
+	font-size: 0.8rem;
 
 	background-color: transparent;
 
@@ -153,18 +146,32 @@ export const CategorySelector = styled.select`
 	&:focus {
 		outline: none;
 	}
+
+	${({ theme }) => css`
+		border-radius: ${theme.size.SIZE_010};
+
+		font-size: ${theme.size.SIZE_014};
+
+		padding: ${theme.size.SIZE_010} ${theme.size.SIZE_014};
+
+		&:invalid {
+			color: ${theme.colors.BLACK_300};
+		}
+	`}
 `;
 
 export const SubmitButton = styled.button`
 	width: 90%;
 	height: fit-content;
-	border-color: transparent;
 
+	border-color: transparent;
 	cursor: pointer;
 
 	${({ theme }) => css`
 		border-radius: ${theme.size.SIZE_010};
+
 		font-size: ${theme.size.SIZE_014};
+
 		color: ${theme.colors.WHITE};
 		background-color: ${theme.colors.PURPLE_500};
 
@@ -204,6 +211,7 @@ export const UpdateSubmitButton = styled.button`
 
 	${({ theme }) => css`
 		border-radius: ${theme.size.SIZE_010};
+
 		font-size: ${theme.size.SIZE_014};
 
 		color: ${theme.colors.WHITE};
@@ -229,23 +237,15 @@ export const UpdateSubmitButton = styled.button`
 export const LinkButton = styled(Link)`
 	width: 88%;
 
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	border-color: transparent;
-
-	font-size: 12.8px;
 	text-align: center;
 	text-decoration: none;
 
-	${({ theme }) => css`
-		border-radius: ${theme.size.SIZE_010};
-		font-size: ${theme.size.SIZE_014};
+	color: ${({ theme }) => theme.colors.WHITE};
+	background-color: ${({ theme }) => theme.colors.GREEN_500};
 
-		padding: ${theme.size.SIZE_004};
-		margin-top: ${theme.size.SIZE_020};
-
-		color: ${theme.colors.WHITE};
-		background-color: ${theme.colors.GREEN_500};
-	`}
+	padding: ${({ theme }) => theme.size.SIZE_004};
+	margin-top: ${({ theme }) => theme.size.SIZE_020};
 
 	cursor: pointer;
 
@@ -253,19 +253,31 @@ export const LinkButton = styled(Link)`
 	&:active {
 		filter: brightness(1.01);
 	}
+
+	${({ theme }) => css`
+		border-radius: ${theme.size.SIZE_010};
+
+		font-size: ${theme.size.SIZE_014};
+
+		color: ${theme.colors.WHITE};
+		background-color: ${theme.colors.GREEN_500};
+
+		padding: ${theme.size.SIZE_004};
+		margin-top: ${theme.size.SIZE_020};
+	`}
 `;
 
 export const SubmitBox = styled.div`
 	display: flex;
-	width: 85%;
 
 	align-items: center;
 	justify-content: end;
 
+	width: 85%;
+
 	${({ theme }) => css`
 		gap: ${theme.size.SIZE_022};
 		margin-top: ${theme.size.SIZE_050};
-
 		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
 			margin-left: auto;
 			width: min-content;
@@ -280,7 +292,7 @@ export const TemporaryStoreButtonBox = styled.div`
 	justify-content: flex-end;
 
 	${({ theme }) => css`
-		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
+		@media (min-width: ${theme.breakpoints.DESKTOP_SMALL}) {
 			width: 100%;
 			margin-top: ${theme.size.SIZE_010};
 		}
@@ -290,6 +302,7 @@ export const TemporaryStoreButtonBox = styled.div`
 export const TemporaryStoreButton = styled.button`
 	width: fit-content;
 	background-color: transparent;
+	border: none;
 
 	${({ theme }) => css`
 		padding: ${theme.size.SIZE_004};

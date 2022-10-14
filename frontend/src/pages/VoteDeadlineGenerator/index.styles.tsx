@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.form`
@@ -7,7 +8,7 @@ export const Container = styled.form`
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_056};
 
-	:invalid button {
+	&:invalid button {
 		pointer-events: none;
 		background-color: ${({ theme }) => theme.colors.GRAY_500};
 	}
@@ -31,14 +32,17 @@ export const VoteDeadlineInputBox = styled.div`
 export const DeadlineInput = styled.input`
 	width: 100%;
 
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
-	padding: ${({ theme }) => theme.size.SIZE_006} ${({ theme }) => theme.size.SIZE_004};
-	border-color: ${({ theme }) => theme.colors.PURPLE_500};
-	color: ${({ theme }) => theme.colors.BLACK_400};
-	font-size: ${({ theme }) => theme.size.SIZE_012};
-	::-webkit-datetime-edit-text {
-		color: ${({ theme }) => theme.colors.BLUE_500};
-	}
+	${({ theme }) => css`
+		border-radius: ${theme.size.SIZE_010};
+		padding: ${theme.size.SIZE_006} ${theme.size.SIZE_004};
+		border-color: ${theme.colors.PURPLE_500};
+		color: ${theme.colors.BLACK_400};
+		font-size: ${theme.size.SIZE_012};
+
+		&::-webkit-datetime-edit-text {
+			color: ${theme.colors.BLUE_500};
+		}
+	`}
 `;
 
 export const ValidateMessage = styled.span`
@@ -51,30 +55,31 @@ export const SubmitButton = styled.button`
 	width: 70%;
 	height: fit-content;
 
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
 	border-color: transparent;
-
-	font-size: 0.8rem;
-
-	color: ${({ theme }) => theme.colors.WHITE};
-	background-color: ${({ theme }) => theme.colors.PURPLE_500};
-
-	padding: ${({ theme }) => theme.size.SIZE_004};
-	margin-top: ${({ theme }) => theme.size.SIZE_050};
-
 	cursor: pointer;
 
-	&:hover,
-	&:active {
-		background-color: ${({ theme }) => theme.colors.PURPLE_400};
-	}
+	${({ theme }) => css`
+		border-radius: ${theme.size.SIZE_010};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
-		width: ${({ theme }) => theme.size.SIZE_100};
-		height: ${({ theme }) => theme.size.SIZE_040};
+		font-size: ${theme.size.SIZE_014};
+		color: ${theme.colors.WHITE};
+		background-color: ${theme.colors.PURPLE_500};
 
-		font-size: ${({ theme }) => theme.size.SIZE_016};
+		padding: ${theme.size.SIZE_004};
+		margin-top: ${theme.size.SIZE_050};
 
-		margin-left: auto;
-	}
+		&:hover,
+		&:active {
+			background-color: ${theme.colors.PURPLE_400};
+		}
+
+		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
+			width: ${theme.size.SIZE_100};
+			height: ${theme.size.SIZE_040};
+
+			font-size: ${theme.size.SIZE_016};
+
+			margin-left: auto;
+		}
+	`}
 `;

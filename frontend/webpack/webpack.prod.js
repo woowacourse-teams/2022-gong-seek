@@ -10,13 +10,18 @@ dotenv.config({
 
 module.exports = merge(common, {
 	mode: 'production',
-	devtool: 'source-map',
+	module: {
+		rules: [
+			{
+				test: /\.(js|jsx|ts|tsx)?$/,
+				loader: 'babel-loader',
+				exclude: /node_modules/,
+			},
+		],
+	},
 	plugins: [
 		new webpack.DefinePlugin({
 			'process.env': JSON.stringify(process.env),
 		}),
 	],
-	optimization: {
-		minimize: true,
-	},
 });

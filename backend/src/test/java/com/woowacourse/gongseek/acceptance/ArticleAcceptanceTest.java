@@ -134,12 +134,12 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> response = 로그인을_하지_않고_게시글을_조회한다(articleIdResponse);
-        ArticleResponse articleResponse = response.as(ArticleResponse.class);
+        ArticleResponse ArticleResponse = response.as(ArticleResponse.class);
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articleResponse)
+                () -> assertThat(ArticleResponse)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
                         .ignoringFields("updatedAt")
@@ -170,12 +170,12 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> response = 로그인을_하지_않고_게시글을_조회한다(articleIdResponse);
-        ArticleResponse articleResponse = response.as(ArticleResponse.class);
+        ArticleResponse ArticleResponse = response.as(ArticleResponse.class);
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articleResponse)
+                () -> assertThat(ArticleResponse)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
                         .ignoringFields("updatedAt")
@@ -206,12 +206,12 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> response = 로그인_후_게시글을_조회한다(tokenResponse, articleIdResponse);
-        ArticleResponse articleResponse = response.as(ArticleResponse.class);
+        ArticleResponse ArticleResponse = response.as(ArticleResponse.class);
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articleResponse)
+                () -> assertThat(ArticleResponse)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
                         .ignoringFields("updatedAt")
@@ -242,12 +242,12 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> response = 로그인_후_게시글을_조회한다(tokenResponse, articleIdResponse);
-        ArticleResponse articleResponse = response.as(ArticleResponse.class);
+        ArticleResponse ArticleResponse = response.as(ArticleResponse.class);
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articleResponse)
+                () -> assertThat(ArticleResponse)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
                         .ignoringFields("updatedAt")
@@ -279,12 +279,12 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         // when
         로그인_후_게시글을_조회한다(tokenResponse, articleIdResponse);
         ExtractableResponse<Response> response = 로그인_후_게시글을_조회한다(tokenResponse, articleIdResponse);
-        ArticleResponse articleResponse = response.as(ArticleResponse.class);
+        ArticleResponse ArticleResponse = response.as(ArticleResponse.class);
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articleResponse)
+                () -> assertThat(ArticleResponse)
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
                         .ignoringFields("updatedAt")
@@ -387,15 +387,15 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 로그인_후_게시글을_수정한다(tokenResponse, articleIdResponse);
         ArticleUpdateResponse articleUpdateResponse = response.as(ArticleUpdateResponse.class);
 
-        ArticleResponse articleResponse = 로그인을_하지_않고_게시글을_조회한다(articleIdResponse).as(ArticleResponse.class);
+        ArticleResponse ArticleResponse = 로그인을_하지_않고_게시글을_조회한다(articleIdResponse).as(ArticleResponse.class);
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(articleUpdateResponse.getId()).isEqualTo(articleIdResponse.getId()),
                 () -> assertThat(articleUpdateResponse.getCategory()).isEqualTo(Category.QUESTION.getValue()),
-                () -> assertThat(articleResponse.getTag()).hasSize(1),
-                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("JAVA")
+                () -> assertThat(ArticleResponse.getTag()).hasSize(1),
+                () -> assertThat(ArticleResponse.getTag().get(0)).isEqualTo("JAVA")
         );
     }
 
@@ -507,7 +507,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(secondResponse.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(secondArticles.hasNext()).isFalse(),
+                () -> assertThat(secondArticles.getHasNext()).isFalse(),
                 () -> assertThat(secondArticles.getArticles().get(9).getId()).isEqualTo(1L),
                 () -> assertThat(secondArticles.getArticles().get(0))
                         .usingRecursiveComparison()
@@ -520,7 +520,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         "discussion",
-                                        0,
+                                        0L,
                                         2,
                                         false,
                                         0L,
@@ -552,7 +552,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(secondResponse.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(secondArticles.hasNext()).isFalse(),
+                () -> assertThat(secondArticles.getHasNext()).isFalse(),
                 () -> assertThat(secondArticles.getArticles().get(9).getViews()).isEqualTo(0),
                 () -> assertThat(secondArticles.getArticles().get(0))
                         .usingRecursiveComparison()
@@ -565,7 +565,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         "question",
-                                        0,
+                                        0L,
                                         1,
                                         false,
                                         0L,
@@ -596,7 +596,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articlePageResponse.hasNext()).isTrue(),
+                () -> assertThat(articlePageResponse.getHasNext()).isTrue(),
                 () -> assertThat(articlePageResponse.getArticles().get(8).getCommentCount()).isEqualTo(0),
                 () -> assertThat(articlePageResponse.getArticles().get(0))
                         .usingRecursiveComparison()
@@ -609,7 +609,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         "discussion",
-                                        1,
+                                        1L,
                                         1,
                                         false,
                                         0L,
@@ -637,7 +637,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articlePageResponse.hasNext()).isTrue(),
+                () -> assertThat(articlePageResponse.getHasNext()).isTrue(),
                 () -> assertThat(ids).isEqualTo(List.of(20L, 19L, 18L, 17L, 16L, 15L, 14L, 13L, 12L, 11L))
         );
     }
@@ -662,7 +662,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articlePageResponse.hasNext()).isTrue(),
+                () -> assertThat(articlePageResponse.getHasNext()).isTrue(),
                 () -> assertThat(ids).containsAll(List.of(6L, 7L, 8L, 9L, 10L))
         );
     }
@@ -685,7 +685,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articlePageResponse.hasNext()).isFalse(),
+                () -> assertThat(articlePageResponse.getHasNext()).isFalse(),
                 () -> assertThat(ids).containsAll(List.of(10L, 9L, 8L, 7L, 6L, 5L, 4L, 3L, 2L, 1L))
         );
     }
@@ -709,7 +709,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articlePageResponse.hasNext()).isFalse(),
+                () -> assertThat(articlePageResponse.getHasNext()).isFalse(),
                 () -> assertThat(ids).containsAll(List.of(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L))
         );
     }
@@ -746,9 +746,9 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(firstPage.hasNext()).isTrue(),
+                () -> assertThat(firstPage.getHasNext()).isTrue(),
                 () -> assertThat(firstPage.getArticles()).hasSize(4),
-                () -> assertThat(secondPage.hasNext()).isFalse(),
+                () -> assertThat(secondPage.getHasNext()).isFalse(),
                 () -> assertThat(secondPage.getArticles()).hasSize(4),
                 () -> firstPage.getArticles()
                         .forEach(article -> assertThat(article.getTitle()).isEqualTo("제목")),
@@ -777,7 +777,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticlePageResponse pageResponse = 게시글을_유저이름으로_검색한다(cursorId, size, author);
 
         assertAll(
-                () -> assertThat(pageResponse.hasNext()).isFalse(),
+                () -> assertThat(pageResponse.getHasNext()).isFalse(),
                 () -> assertThat(pageResponse.getArticles()).hasSize(2),
                 () -> assertThat(pageResponse.getArticles().get(1).getTitle()).isEqualTo("커스텀 예외를 처리하는 방법"),
                 () -> assertThat(pageResponse.getArticles().get(0).getTitle()).isEqualTo("커스텀예외를 처리하는 방법")
@@ -821,7 +821,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(articlesResponse.getArticles()).hasSize(4),
-                () -> assertThat(articlesResponse.hasNext()).isTrue()
+                () -> assertThat(articlesResponse.getHasNext()).isTrue()
         );
     }
 
@@ -903,7 +903,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(articlesResponse.getArticles()).hasSize(4),
-                () -> assertThat(articlesResponse.hasNext()).isTrue()
+                () -> assertThat(articlesResponse.getHasNext()).isTrue()
         );
     }
 
@@ -932,7 +932,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articlePageResponse.hasNext()).isTrue(),
+                () -> assertThat(articlePageResponse.getHasNext()).isTrue(),
                 () -> assertThat(ids.containsAll(List.of(1L, 2L))).isTrue()
         );
     }
@@ -962,7 +962,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(articlePageResponse.hasNext()).isFalse(),
+                () -> assertThat(articlePageResponse.getHasNext()).isFalse(),
                 () -> assertThat(ids.containsAll(List.of(1L, 2L, 3L))).isTrue()
         );
     }
@@ -988,7 +988,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(articlePageResponse.hasNext()).isFalse(),
+                () -> assertThat(articlePageResponse.getHasNext()).isFalse(),
                 () -> assertThat(articlePageResponse.getArticles().get(0).getId()).isEqualTo(게시글3.getId())
         );
     }
