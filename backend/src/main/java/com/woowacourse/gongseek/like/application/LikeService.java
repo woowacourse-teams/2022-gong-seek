@@ -28,6 +28,7 @@ public class LikeService {
         Member member = getMember(appMember);
         Article article = getArticle(articleId);
 
+        article.addLikeCount();
         saveByExistsLike(member, article);
     }
 
@@ -59,5 +60,6 @@ public class LikeService {
         Article article = getArticle(articleId);
 
         likeRepository.deleteByArticleAndMember(article, member);
+        article.minusLikeCount();
     }
 }

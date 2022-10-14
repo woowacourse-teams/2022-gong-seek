@@ -37,6 +37,7 @@ public class CommentService {
         Article article = getArticle(articleId);
 
         commentRepository.save(commentRequest.toComment(member, article));
+        article.addCommentCount();
     }
 
     private void validateGuest(AppMember appMember) {
@@ -97,6 +98,8 @@ public class CommentService {
     public void delete(AppMember appMember, Long commentId) {
         Comment comment = checkAuthorization(appMember, commentId);
         commentRepository.delete(comment);
+        Article article = comment.getArticle();
+        article.minusCommentCount();
     }
 }
 
