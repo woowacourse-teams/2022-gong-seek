@@ -32,7 +32,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<ArticlePreviewDto> findAllByPage(Long cursorId, Integer views, String category, String sortType,
+    public Slice<ArticlePreviewDto> findAllByPage(Long cursorId, Long views, String category, String sortType,
                                                   Long memberId, Pageable pageable) {
         JPAQuery<ArticlePreviewDto> query = queryFactory
                 .select(
@@ -44,10 +44,10 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                                 article.member.avatarUrl,
                                 article.content.value,
                                 article.category,
-                                article.commentCount.value,
                                 article.views.value,
-                                isLike(article.id, memberId),
+                                article.commentCount.value,
                                 article.likeCount.value,
+                                isLike(article.id, memberId),
                                 article.createdAt
                         )
                 )
@@ -77,7 +77,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
         return like.article.id.eq(articleId).and(like.member.id.eq(memberId));
     }
 
-    private BooleanExpression cursorIdAndCursorViews1(Long cursorId, Integer cursorViews, String sortType) {
+    private BooleanExpression cursorIdAndCursorViews1(Long cursorId, Long cursorViews, String sortType) {
         if (sortType.equals("views")) {
             if (cursorId == null || cursorViews == null) {
                 return null;
@@ -132,8 +132,10 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
         return null;
     }
 
+
+
     @Override
-    public Slice<Article> findAllByPage(Long cursorId, Integer cursorViews, String category, String sortType,
+    public Slice<Article> findAllByPage(Long cursorId, Long cursorViews, String category, String sortType,
                                         Pageable pageable) {
         JPAQuery<Article> query = queryFactory
                 .selectFrom(article)
@@ -148,7 +150,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
         return convertToSlice(fetch, pageable);
     }
 
-    private BooleanExpression cursorIdAndCursorViews(Long cursorId, Integer cursorViews, String sortType) {
+    private BooleanExpression cursorIdAndCursorViews(Long cursorId, Long cursorViews, String sortType) {
         if (sortType.equals("views")) {
             if (cursorId == null || cursorViews == null) {
                 return null;

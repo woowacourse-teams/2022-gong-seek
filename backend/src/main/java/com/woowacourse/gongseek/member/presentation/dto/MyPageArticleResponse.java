@@ -21,7 +21,7 @@ public class MyPageArticleResponse {
 
     private long commentCount;
 
-    private int views;
+    private long views;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;

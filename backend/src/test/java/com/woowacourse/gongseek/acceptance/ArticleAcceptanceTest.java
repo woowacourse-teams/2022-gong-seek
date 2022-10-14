@@ -150,7 +150,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         false,
-                                        1,
+                                        1L,
                                         false,
                                         false,
                                         0L,
@@ -186,7 +186,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         anonymousAuthor,
                                         "content",
                                         false,
-                                        1,
+                                        1L,
                                         false,
                                         false,
                                         0L,
@@ -222,7 +222,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         true,
-                                        1,
+                                        1L,
                                         false,
                                         false,
                                         0L,
@@ -258,7 +258,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         anonymousAuthor,
                                         "content",
                                         true,
-                                        1,
+                                        1L,
                                         false,
                                         false,
                                         0L,
@@ -295,7 +295,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         true,
-                                        2,
+                                        2L,
                                         false,
                                         false,
                                         0L,
@@ -520,10 +520,10 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         "discussion",
+                                        2L,
                                         0L,
-                                        2,
+                                        0L,
                                         false,
-                                        0L,
                                         LocalDateTime.now()
                                 )
                         )
@@ -565,10 +565,10 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         "question",
+                                        1L,
                                         0L,
-                                        1,
+                                        0L,
                                         false,
-                                        0L,
                                         LocalDateTime.now()
                                 )
                         )
@@ -610,9 +610,9 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         "content",
                                         "discussion",
                                         1L,
-                                        1,
-                                        false,
+                                        1L,
                                         0L,
+                                        false,
                                         LocalDateTime.now()
                                 )
                         )

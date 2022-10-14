@@ -28,7 +28,7 @@ public class ArticleResponse {
 
     private Boolean isAuthor;
 
-    private Integer views;
+    private Long views;
 
     private Boolean hasVote;
 

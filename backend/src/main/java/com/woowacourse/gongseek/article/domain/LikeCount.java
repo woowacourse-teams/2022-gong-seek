@@ -11,7 +11,7 @@ public class LikeCount {
     private static final int INITIAL_VIEWS = 0;
 
     @Column(name = "like_count", nullable = false)
-    private int value;
+    private long value;
 
     public LikeCount() {
         this.value = INITIAL_VIEWS;

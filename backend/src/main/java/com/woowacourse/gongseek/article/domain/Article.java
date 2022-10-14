@@ -131,15 +131,15 @@ public class Article extends BaseTimeEntity {
         return member.getMemberOrAnonymous(isAnonymous);
     }
 
-    public int getViews() {
+    public long getViews() {
         return views.getValue();
     }
 
-    public int getLikeCount() {
+    public long getLikeCount() {
         return likeCount.getValue();
     }
 
-    public int getCommentCount() {
+    public long getCommentCount() {
         return commentCount.getValue();
     }
 

@@ -11,7 +11,7 @@ public class CommentCount {
     private static final int INITIAL_VIEWS = 0;
 
     @Column(name = "comment_count", nullable = false)
-    private int value;
+    private long value;
 
     public CommentCount() {
         this.value = INITIAL_VIEWS;

@@ -4,6 +4,7 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepositoryCustom;
 import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
@@ -27,6 +28,7 @@ import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -106,14 +108,34 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticlePageResponse getAll(Long cursorId, Integer cursorViews, String category, String sortType,
+    public ArticlePageResponse getAll(Long cursorId, Long cursorViews, String category, String sortType,
                                       Pageable pageable, AppMember appMember) {
-        Slice<Article> articles = pagingArticleRepository.findAllByPage(cursorId, cursorViews, category, sortType,
-                pageable);
-        List<ArticlePreviewResponse> responses = createResponse(appMember, articles);
-
-        return new ArticlePageResponse(responses, articles.hasNext());
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(cursorId, cursorViews, category,
+                sortType,
+                appMember.getPayload(), pageable);
+        Map<Long, List<String>> tags = findTagNames(articles);
+        List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tags);
+        return new ArticlePageResponse(articleResponses, articles.hasNext());
     }
+
+    private Map<Long, List<String>> findTagNames(Slice<ArticlePreviewDto> articles) {
+        List<Long> foundArticleIds = getArticleIds(articles);
+        return articleRepositoryCustom.findTags(foundArticleIds);
+    }
+
+    private List<Long> getArticleIds(Slice<ArticlePreviewDto> articles) {
+        return articles.stream()
+                .map(ArticlePreviewDto::getId)
+                .collect(Collectors.toList());
+    }
+
+    private List<ArticlePreviewResponse> getArticlePreviewResponses(Slice<ArticlePreviewDto> articles,
+                                                                    Map<Long, List<String>> tags) {
+        return articles.stream()
+                .map(article -> new ArticlePreviewResponse(article, tags.get(article.getId())))
+                .collect(Collectors.toList());
+    }
+
 
     private List<ArticlePreviewResponse> createResponse(AppMember appMember, Slice<Article> articles) {
         return articles.getContent().stream()

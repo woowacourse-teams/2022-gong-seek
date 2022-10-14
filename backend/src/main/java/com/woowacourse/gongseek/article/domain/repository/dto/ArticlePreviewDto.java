@@ -20,10 +20,10 @@ public class ArticlePreviewDto {
     private AuthorDto author;
     private String content;
     private String category;
+    private Long views;
     private Long commentCount;
-    private Integer views;
-    private Boolean isLike;
     private Long likeCount;
+    private Boolean isLike;
     private LocalDateTime createdAt;
 
     public ArticlePreviewDto(Long id,
@@ -32,10 +32,10 @@ public class ArticlePreviewDto {
                              String authorAvatarUrl,
                              String content,
                              Category category,
+                             Long views,
                              Long commentCount,
-                             Integer views,
-                             Boolean isLike,
                              Long likeCount,
+                             Boolean isLike,
                              LocalDateTime createdAt) {
         this(
                 id,
@@ -43,10 +43,10 @@ public class ArticlePreviewDto {
                 new AuthorDto(authorName, authorAvatarUrl),
                 content,
                 category.getValue(),
-                commentCount,
                 views,
-                isLike,
+                commentCount,
                 likeCount,
+                isLike,
                 createdAt
         );
     }

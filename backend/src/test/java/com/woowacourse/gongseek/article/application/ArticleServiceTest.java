@@ -508,7 +508,7 @@ public class ArticleServiceTest extends IntegrationTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(null, 0, Category.QUESTION.getValue(), "latest",
+        ArticlePageResponse response = articleService.getAll(null, 0L, Category.QUESTION.getValue(), "latest",
                 PageRequest.ofSize(10),
                 loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
@@ -532,7 +532,7 @@ public class ArticleServiceTest extends IntegrationTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(10L, 0, Category.QUESTION.getValue(), "latest",
+        ArticlePageResponse response = articleService.getAll(10L, 0L, Category.QUESTION.getValue(), "latest",
                 PageRequest.ofSize(10),
                 loginMember);
         List<ArticlePreviewResponse> responses = response.getArticles();
@@ -546,8 +546,8 @@ public class ArticleServiceTest extends IntegrationTest {
 
     @ParameterizedTest
     @NullSource
-    @ValueSource(ints = {0})
-    void 페이지가_10개씩_조회된_후_더이상_조회할_페이지가_없으면_hasNext는_false가_된다(Integer cursorViews) {
+    @ValueSource(longs = {0L})
+    void 페이지가_10개씩_조회된_후_더이상_조회할_페이지가_없으면_hasNext는_false가_된다(Long cursorViews) {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);

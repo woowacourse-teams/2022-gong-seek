@@ -11,7 +11,7 @@ public class Views {
     private static final int INITIAL_VIEWS = 0;
 
     @Column(name = "views", nullable = false)
-    private int value;
+    private long value;
 
     public Views() {
         this.value = INITIAL_VIEWS;

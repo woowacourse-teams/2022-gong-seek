@@ -8,7 +8,7 @@ import org.springframework.data.domain.Slice;
 
 public interface PagingArticleRepository {
 
-    Slice<ArticlePreviewDto> findAllByPage(Long cursorId, Integer views, String category, String sortType, Long memberId,
+    Slice<ArticlePreviewDto> findAllByPage(Long cursorId, Long views, String category, String sortType, Long memberId,
                                            Pageable pageable);
 
     Slice<ArticlePreviewDto> findAllByLikes(Long cursorId, Long likes, String category, Long payload,
@@ -20,7 +20,7 @@ public interface PagingArticleRepository {
 
     Slice<ArticlePreviewDto> searchByTag(Long cursorId, Long memberId, List<String> tagNames, Pageable pageable);
 
-    Slice<Article> findAllByPage(Long cursorId, Integer views, String category, String sortType, Pageable pageable);
+    Slice<Article> findAllByPage(Long cursorId, Long views, String category, String sortType, Pageable pageable);
 
     Slice<Article> findAllByLikes(Long cursorId, Long likes, String category, Pageable pageable);
 

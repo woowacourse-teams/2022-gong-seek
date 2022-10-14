@@ -63,7 +63,7 @@ public class PagingArticleRepositoryTest {
 
     @Test
     void 게시글이_없으면_빈_값을_반환한다() {
-        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(null, 0,
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(null, 0L,
                 Category.QUESTION.getValue(), "",
                 member.getId(), PageRequest.ofSize(5));
 
@@ -75,7 +75,7 @@ public class PagingArticleRepositoryTest {
         for (int i = 0; i < 5; i++) {
             articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         }
-        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(null, 0,
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(null, 0L,
                 Category.QUESTION.getValue(),
                 "views",
                 member.getId(), PageRequest.ofSize(5));
@@ -89,7 +89,7 @@ public class PagingArticleRepositoryTest {
         articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         articleRepository.save(new Article(TITLE, CONTENT, Category.DISCUSSION, member, false));
 
-        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(null, 0, category, "views",
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(null, 0L, category, "views",
                 member.getId(),
                 PageRequest.ofSize(5));
 
@@ -105,7 +105,7 @@ public class PagingArticleRepositoryTest {
         firstArticle.addViews();
         secondArticle.addViews();
 
-        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(null, 0,
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(null, 0L,
                 Category.QUESTION.getValue(),
                 "views",
                 member.getId(), PageRequest.ofSize(10));
