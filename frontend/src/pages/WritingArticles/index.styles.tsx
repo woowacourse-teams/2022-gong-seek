@@ -133,10 +133,6 @@ export const SelectorButton = styled(AiOutlineDown)`
 export const CategorySelector = styled.select`
 	width: 100%;
 	border-color: transparent;
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
-
-	font-size: 0.8rem;
-
 	background-color: transparent;
 
 	appearance: none;
@@ -240,13 +236,6 @@ export const LinkButton = styled(Link)`
 	border-color: transparent;
 	text-align: center;
 	text-decoration: none;
-
-	color: ${({ theme }) => theme.colors.WHITE};
-	background-color: ${({ theme }) => theme.colors.GREEN_500};
-
-	padding: ${({ theme }) => theme.size.SIZE_004};
-	margin-top: ${({ theme }) => theme.size.SIZE_020};
-
 	cursor: pointer;
 
 	&:hover,
