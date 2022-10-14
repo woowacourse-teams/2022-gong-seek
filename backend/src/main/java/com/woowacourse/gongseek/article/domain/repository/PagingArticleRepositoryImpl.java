@@ -54,7 +54,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                 .from(article)
                 .join(article.member, member)
                 .where(
-                        cursorIdAndCursorViews1(cursorId, views, sortType),
+                        cursorIdAndCursorViews(cursorId, views, sortType),
                         categoryEquals(category)
                 )
                 .limit(pageable.getPageSize() + 1);
@@ -76,21 +76,6 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
     private BooleanExpression eqLike(NumberPath<Long> articleId, Long memberId) {
         return like.article.id.eq(articleId).and(like.member.id.eq(memberId));
     }
-
-    private BooleanExpression cursorIdAndCursorViews1(Long cursorId, Long cursorViews, String sortType) {
-        if (sortType.equals("views")) {
-            if (cursorId == null || cursorViews == null) {
-                return null;
-            }
-
-            return article.views.value.eq(cursorViews)
-                    .and(article.id.lt(cursorId))
-                    .or(article.views.value.lt(cursorViews));
-        }
-
-        return isOverArticleId(cursorId);
-    }
-
 
     private List<ArticlePreviewDto> sort1(String sortType, JPAQuery<ArticlePreviewDto> query) {
         if (sortType.equals("views")) {
@@ -145,7 +130,44 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
     @Override
     public Slice<ArticlePreviewDto> searchByContainingText(Long cursorId, String searchText, Long memberId,
                                                            Pageable pageable) {
-        return null;
+        List<ArticlePreviewDto> fetch = queryFactory
+                .select(
+                        Projections.constructor(
+                                ArticlePreviewDto.class,
+                                article.id,
+                                article.title.value,
+                                article.member.name.value,
+                                article.member.avatarUrl,
+                                article.content.value,
+                                article.category,
+                                article.views.value,
+                                article.commentCount.value,
+                                article.likeCount.value,
+                                isLike(article.id, memberId),
+                                article.createdAt
+                        )
+                )
+                .from(article)
+                .leftJoin(article.member, member)
+                .where(
+                        containsTitleOrContent(searchText),
+                        isOverArticleId(cursorId)
+                )
+                .groupBy(article)
+                .limit(pageable.getPageSize() + 1)
+                .orderBy(article.id.desc())
+                .fetch();
+        return convertToSliceBySearch(fetch, pageable);
+    }
+
+    private SliceImpl<ArticlePreviewDto> convertToSliceBySearch(List<ArticlePreviewDto> fetch, Pageable pageable) {
+        boolean hasNext = false;
+
+        if (fetch.size() == pageable.getPageSize() + 1) {
+            fetch.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+        return new SliceImpl<>(fetch, pageable, hasNext);
     }
 
     @Override
@@ -177,13 +199,6 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
         return cursorId == null ? null : article.id.lt(cursorId);
     }
 
-    private List<Article> sort(String sortType, JPAQuery<Article> query) {
-        if (sortType.equals("views")) {
-            return query.orderBy(article.views.value.desc(), article.id.desc()).fetch();
-        }
-        return query.orderBy(article.id.desc()).fetch();
-    }
-
     private SliceImpl<Article> convertToSlice(List<Article> fetch, Pageable pageable) {
         boolean hasNext = false;
 
@@ -205,21 +220,6 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
         return article.likeCount.value.eq(likes)
                 .and(article.id.lt(cursorId))
                 .or(article.likeCount.value.lt(likes));
-    }
-
-    @Override
-    public Slice<Article> searchByContainingText(Long cursorId, String searchText, Pageable pageable) {
-        List<Article> fetch = queryFactory
-                .selectFrom(article)
-                .leftJoin(article.member, member).fetchJoin()
-                .where(
-                        containsTitleOrContent(searchText),
-                        isOverArticleId(cursorId)
-                )
-                .limit(pageable.getPageSize() + 1)
-                .orderBy(article.id.desc())
-                .fetch();
-        return convertToSlice(fetch, pageable);
     }
 
     private BooleanExpression containsTitleOrContent(String searchText) {

@@ -158,10 +158,11 @@ public class ArticleService {
         if (searchText.isBlank()) {
             return new ArticlePageResponse(new ArrayList<>(), false);
         }
-        Slice<Article> articles = pagingArticleRepository.searchByContainingText(cursorId, searchText, pageable);
-        List<ArticlePreviewResponse> responses = createResponse(appMember, articles);
-
-        return new ArticlePageResponse(responses, articles.hasNext());
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByContainingText(cursorId, searchText,
+                appMember.getPayload(), pageable);
+        Map<Long, List<String>> tagNames = findTagNames(articles);
+        List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tagNames);
+        return new ArticlePageResponse(articleResponses, articles.hasNext());
     }
 
     @Transactional(readOnly = true)

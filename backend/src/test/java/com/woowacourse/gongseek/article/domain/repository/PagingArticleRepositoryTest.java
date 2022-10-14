@@ -144,8 +144,8 @@ public class PagingArticleRepositoryTest {
                 new Article("this is wooteco", "wow", Category.QUESTION, member, false));
         articleRepository.save(new Article("i am judy", "hello", Category.QUESTION, member, false));
 
-        Slice<Article> articles = pagingArticleRepository.searchByContainingText(
-                null, searchText, PageRequest.ofSize(2));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByContainingText(null, searchText, 0L,
+                PageRequest.ofSize(2));
 
         assertThat(articles.getContent()).hasSize(1);
     }
@@ -157,8 +157,8 @@ public class PagingArticleRepositoryTest {
                 new Article("this is wooteco", "wow", Category.QUESTION, member, false));
         articleRepository.save(new Article("i am 주디", "hello", Category.QUESTION, member, false));
 
-        Slice<Article> articles = pagingArticleRepository.searchByContainingText(
-                null, searchText, PageRequest.ofSize(2));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByContainingText(null, searchText, 0L,
+                PageRequest.ofSize(2));
 
         assertThat(articles.getContent()).hasSize(1);
     }
@@ -168,16 +168,16 @@ public class PagingArticleRepositoryTest {
         for (int i = 0; i < 5; i++) {
             articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         }
-        Slice<Article> articles = pagingArticleRepository.searchByContainingText(
-                null, "title", PageRequest.ofSize(5));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByContainingText(null, "title", 0L,
+                PageRequest.ofSize(5));
 
         assertThat(articles.getContent()).hasSize(5);
     }
 
     @Test
     void 게시글이_없을_때_검색하면_빈_값을_반환한다() {
-        Slice<Article> articles = pagingArticleRepository.searchByContainingText(
-                null, "empty", PageRequest.ofSize(5));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByContainingText(null, "empty", 0L,
+                PageRequest.ofSize(5));
 
         assertThat(articles.getContent()).isEmpty();
     }

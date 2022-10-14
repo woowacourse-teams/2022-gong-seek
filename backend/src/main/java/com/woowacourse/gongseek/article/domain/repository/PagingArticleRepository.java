@@ -20,8 +20,6 @@ public interface PagingArticleRepository {
 
     Slice<ArticlePreviewDto> searchByTag(Long cursorId, Long memberId, List<String> tagNames, Pageable pageable);
 
-    Slice<Article> searchByContainingText(Long cursorId, String searchText, Pageable pageable);
-
     Slice<Article> searchByAuthor(Long cursorId, String author, Pageable pageable);
 
     Slice<Article> searchByTag(Long cursorId, List<String> tagNames, Pageable pageable);
