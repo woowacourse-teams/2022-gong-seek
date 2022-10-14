@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.like.domain.Like;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
 import com.woowacourse.gongseek.member.domain.Member;
@@ -62,8 +63,9 @@ public class PagingArticleRepositoryTest {
 
     @Test
     void 게시글이_없으면_빈_값을_반환한다() {
-        Slice<Article> articles = pagingArticleRepository.findAllByPage(
-                null, 0, Category.QUESTION.getValue(), "", PageRequest.ofSize(5));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(null, 0,
+                Category.QUESTION.getValue(), "",
+                member.getId(), PageRequest.ofSize(5));
 
         assertThat(articles).isEmpty();
     }
@@ -73,8 +75,10 @@ public class PagingArticleRepositoryTest {
         for (int i = 0; i < 5; i++) {
             articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         }
-        Slice<Article> articles = pagingArticleRepository.findAllByPage(
-                null, 0, Category.QUESTION.getValue(), "views", PageRequest.ofSize(5));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(null, 0,
+                Category.QUESTION.getValue(),
+                "views",
+                member.getId(), PageRequest.ofSize(5));
 
         assertThat(articles.getContent()).hasSize(5);
     }
@@ -85,8 +89,9 @@ public class PagingArticleRepositoryTest {
         articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         articleRepository.save(new Article(TITLE, CONTENT, Category.DISCUSSION, member, false));
 
-        Slice<Article> articles = pagingArticleRepository.findAllByPage(
-                null, 0, category, "views", PageRequest.ofSize(5));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(null, 0, category, "views",
+                member.getId(),
+                PageRequest.ofSize(5));
 
         assertThat(articles.getContent()).hasSize(expectedSize);
     }
@@ -100,8 +105,10 @@ public class PagingArticleRepositoryTest {
         firstArticle.addViews();
         secondArticle.addViews();
 
-        Slice<Article> articles = pagingArticleRepository.findAllByPage(
-                null, 0, Category.QUESTION.getValue(), "views", PageRequest.ofSize(10));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(null, 0,
+                Category.QUESTION.getValue(),
+                "views",
+                member.getId(), PageRequest.ofSize(10));
 
         assertAll(
                 () -> assertThat(articles.getContent().get(0).getId()).isEqualTo(firstArticle.getId()),
@@ -116,8 +123,10 @@ public class PagingArticleRepositoryTest {
         Article secondArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         Article firstArticle = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
 
-        Slice<Article> articles = pagingArticleRepository.findAllByPage(
-                null, null, Category.QUESTION.getValue(), "latest", PageRequest.ofSize(3));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(null, null,
+                Category.QUESTION.getValue(),
+                "latest",
+                member.getId(), PageRequest.ofSize(3));
 
         assertAll(
                 () -> assertThat(articles.getContent().get(0).getId()).isEqualTo(firstArticle.getId()),
@@ -125,6 +134,7 @@ public class PagingArticleRepositoryTest {
                 () -> assertThat(articles.getContent().get(2).getId()).isEqualTo(thirdArticle.getId())
         );
     }
+
 
     @ParameterizedTest
     @ValueSource(strings = {"this is wooteco", "is", "this", "wooteco"})

@@ -6,13 +6,17 @@ import static com.woowacourse.gongseek.like.domain.QLike.like;
 import static com.woowacourse.gongseek.member.domain.QMember.member;
 import static com.woowacourse.gongseek.tag.domain.QTag.tag;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +30,107 @@ import org.springframework.stereotype.Repository;
 public class PagingArticleRepositoryImpl implements PagingArticleRepository {
 
     private final JPAQueryFactory queryFactory;
+
+    @Override
+    public Slice<ArticlePreviewDto> findAllByPage(Long cursorId, Integer views, String category, String sortType,
+                                                  Long memberId, Pageable pageable) {
+        JPAQuery<ArticlePreviewDto> query = queryFactory
+                .select(
+                        Projections.constructor(
+                                ArticlePreviewDto.class,
+                                article.id,
+                                article.title.value,
+                                article.member.name.value,
+                                article.member.avatarUrl,
+                                article.content.value,
+                                article.category,
+                                article.commentCount.value,
+                                article.views.value,
+                                isLike(article.id, memberId),
+                                article.likeCount.value,
+                                article.createdAt
+                        )
+                )
+                .from(article)
+                .join(article.member, member)
+                .where(
+                        cursorIdAndCursorViews1(cursorId, views, sortType),
+                        categoryEquals(category)
+                )
+                .limit(pageable.getPageSize() + 1);
+        List<ArticlePreviewDto> fetch = sort1(sortType, query);
+
+        return convertToSliceFromArticle(fetch, pageable);
+    }
+
+    private BooleanExpression isLike(NumberPath<Long> articleId, Long memberId) {
+        if (memberId.equals(0L)) {
+            return Expressions.FALSE;
+        }
+        return JPAExpressions.selectOne()
+                .from(like)
+                .where(eqLike(articleId, memberId))
+                .exists();
+    }
+
+    private BooleanExpression eqLike(NumberPath<Long> articleId, Long memberId) {
+        return like.article.id.eq(articleId).and(like.member.id.eq(memberId));
+    }
+
+    private BooleanExpression cursorIdAndCursorViews1(Long cursorId, Integer cursorViews, String sortType) {
+        if (sortType.equals("views")) {
+            if (cursorId == null || cursorViews == null) {
+                return null;
+            }
+
+            return article.views.value.eq(cursorViews)
+                    .and(article.id.lt(cursorId))
+                    .or(article.views.value.lt(cursorViews));
+        }
+
+        return isOverArticleId(cursorId);
+    }
+
+
+    private List<ArticlePreviewDto> sort1(String sortType, JPAQuery<ArticlePreviewDto> query) {
+        if (sortType.equals("views")) {
+            return query.orderBy(article.views.value.desc(), article.id.desc()).fetch();
+        }
+        return query.orderBy(article.id.desc()).fetch();
+    }
+
+    private SliceImpl<ArticlePreviewDto> convertToSliceFromArticle(List<ArticlePreviewDto> fetch, Pageable pageable) {
+        boolean hasNext = false;
+
+        if (fetch.size() == pageable.getPageSize() + 1) {
+            fetch.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+        return new SliceImpl<>(fetch, pageable, hasNext);
+    }
+
+    @Override
+    public Slice<ArticlePreviewDto> findAllByLikes(Long cursorId, Long likes, String category, Long payload,
+                                                   Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public Slice<ArticlePreviewDto> searchByContainingText(Long cursorId, String searchText, Long memberId,
+                                                           Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public Slice<ArticlePreviewDto> searchByAuthor(Long cursorId, String author, Long payload, Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public Slice<ArticlePreviewDto> searchByTag(Long cursorId, Long memberId, List<String> tagNames,
+                                                Pageable pageable) {
+        return null;
+    }
 
     @Override
     public Slice<Article> findAllByPage(Long cursorId, Integer cursorViews, String category, String sortType,
