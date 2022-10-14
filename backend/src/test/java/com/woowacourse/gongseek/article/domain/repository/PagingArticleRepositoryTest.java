@@ -16,6 +16,8 @@ import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -136,11 +138,68 @@ public class PagingArticleRepositoryTest {
         );
     }
 
+    @Transactional
+    @Test
+    void 게시글을_추천순으로_조회하고_다음_데이터가_존재하지_않는다() {
+        Article firstArticle = articleRepository.save(
+                new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(
+                new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        Article thirdArticle = articleRepository.save(
+                new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
+
+        likeRepository.save(new Like(firstArticle, member));
+        firstArticle.addLikeCount();
+        likeRepository.save(new Like(firstArticle, newMember));
+        firstArticle.addLikeCount();
+        likeRepository.save(new Like(secondArticle, member));
+        secondArticle.addLikeCount();
+
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(null, null,
+                Category.QUESTION.getValue(),
+                member.getId(), PageRequest.ofSize(3));
+
+        assertAll(
+                () -> assertThat(articles.getContent().get(0).getId()).isEqualTo(firstArticle.getId()),
+                () -> assertThat(articles.getContent().get(1).getId()).isEqualTo(secondArticle.getId()),
+                () -> assertThat(articles.getContent().get(2).getId()).isEqualTo(thirdArticle.getId()),
+                () -> assertThat(articles.hasNext()).isFalse()
+        );
+    }
+
+    @Transactional
+    @Test
+    void 게시글을_추천순으로_조회하고_다음_데이터가_존재한다() {
+        Article firstArticle = articleRepository.save(
+                new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(
+                new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
+
+        likeRepository.save(new Like(firstArticle, member));
+        firstArticle.addLikeCount();
+        likeRepository.save(new Like(firstArticle, newMember));
+        firstArticle.addLikeCount();
+        likeRepository.save(new Like(secondArticle, member));
+        secondArticle.addLikeCount();
+
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(null, null,
+                Category.QUESTION.getValue(),
+                member.getId(), PageRequest.ofSize(2));
+
+        assertAll(
+                () -> assertThat(articles.getContent().get(0).getId()).isEqualTo(firstArticle.getId()),
+                () -> assertThat(articles.getContent().get(1).getId()).isEqualTo(secondArticle.getId()),
+                () -> assertThat(articles.hasNext()).isTrue()
+        );
+    }
 
     @ParameterizedTest
     @ValueSource(strings = {"this is wooteco", "is", "this", "wooteco"})
     void 제목으로_게시글을_검색한다(String searchText) {
-        Article article = articleRepository.save(
+        articleRepository.save(
                 new Article("this is wooteco", "wow", Category.QUESTION, member, false));
         articleRepository.save(new Article("i am judy", "hello", Category.QUESTION, member, false));
 
@@ -153,7 +212,7 @@ public class PagingArticleRepositoryTest {
     @ParameterizedTest
     @ValueSource(strings = {"wow", "w"})
     void 띄어쓰기와_대소문자_관계_없이_내용으로_게시글을_검색한다(String searchText) {
-        Article article = articleRepository.save(
+        articleRepository.save(
                 new Article("this is wooteco", "wow", Category.QUESTION, member, false));
         articleRepository.save(new Article("i am 주디", "hello", Category.QUESTION, member, false));
 
@@ -187,67 +246,11 @@ public class PagingArticleRepositoryTest {
         articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
         articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
 
-        Slice<Article> articles = pagingArticleRepository.searchByAuthor(
-                null, member.getName(), PageRequest.ofSize(2));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByAuthor(null, member.getName(),
+                member.getId(),
+                PageRequest.ofSize(2));
 
         assertThat(articles.getContent()).hasSize(2);
-    }
-
-    @Transactional
-    @Test
-    void 게시글을_추천순으로_조회하고_다음_데이터가_존재하지_않는다() {
-        Article firstArticle = articleRepository.save(
-                new Article(TITLE, CONTENT, Category.QUESTION, member, false));
-        Article secondArticle = articleRepository.save(
-                new Article(TITLE, CONTENT, Category.QUESTION, member, false));
-        Article thirdArticle = articleRepository.save(
-                new Article(TITLE, CONTENT, Category.QUESTION, member, false));
-        Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
-
-        likeRepository.save(new Like(firstArticle, member));
-        firstArticle.addLikeCount();
-        likeRepository.save(new Like(firstArticle, newMember));
-        firstArticle.addLikeCount();
-        likeRepository.save(new Like(secondArticle, member));
-        secondArticle.addLikeCount();
-
-        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(null, null,
-                Category.QUESTION.getValue(),
-                member.getId(), PageRequest.ofSize(3));
-
-        assertAll(
-                () -> assertThat(articles.getContent().get(0).getId()).isEqualTo(firstArticle.getId()),
-                () -> assertThat(articles.getContent().get(1).getId()).isEqualTo(secondArticle.getId()),
-                () -> assertThat(articles.getContent().get(2).getId()).isEqualTo(thirdArticle.getId()),
-                () -> assertThat(articles.hasNext()).isFalse()
-        );
-    }
-
-    @Test
-    void 게시글을_추천순으로_조회하고_다음_데이터가_존재한다() {
-        Article firstArticle = articleRepository.save(
-                new Article(TITLE, CONTENT, Category.QUESTION, member, false));
-        Article secondArticle = articleRepository.save(
-                new Article(TITLE, CONTENT, Category.QUESTION, member, false));
-        articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
-        Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
-
-        likeRepository.save(new Like(firstArticle, member));
-        firstArticle.addLikeCount();
-        likeRepository.save(new Like(firstArticle, newMember));
-        firstArticle.addLikeCount();
-        likeRepository.save(new Like(secondArticle, member));
-        secondArticle.addLikeCount();
-
-        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(null, null,
-                Category.QUESTION.getValue(),
-                member.getId(), PageRequest.ofSize(2));
-
-        assertAll(
-                () -> assertThat(articles.getContent().get(0).getId()).isEqualTo(firstArticle.getId()),
-                () -> assertThat(articles.getContent().get(1).getId()).isEqualTo(secondArticle.getId()),
-                () -> assertThat(articles.hasNext()).isTrue()
-        );
     }
 
     @ParameterizedTest
@@ -262,8 +265,8 @@ public class PagingArticleRepositoryTest {
         firstArticle.addTag(new Tags(tags));
         secondArticle.addTag(new Tags(tags));
 
-        Slice<Article> articles = pagingArticleRepository.searchByTag(
-                null, List.of(tag), PageRequest.ofSize(2));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByTag(null, member.getId(), List.of(tag),
+                PageRequest.ofSize(2));
 
         assertThat(articles.getContent()).hasSize(2);
     }
@@ -279,7 +282,9 @@ public class PagingArticleRepositoryTest {
         firstArticle.addTag(new Tags(tags));
         secondArticle.addTag(new Tags(tags));
 
-        Slice<Article> articles = pagingArticleRepository.searchByTag(null, new ArrayList<>(), PageRequest.ofSize(2));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByTag(null, member.getId(),
+                new ArrayList<>(),
+                PageRequest.ofSize(2));
 
         assertAll(
                 () -> assertThat(articles.getContent()).hasSize(0),
@@ -305,9 +310,35 @@ public class PagingArticleRepositoryTest {
         secondArticle.addTag(new Tags(secondTags));
         thirdArticle.addTag(new Tags(thirdTags));
 
-        Slice<Article> articles = pagingArticleRepository.searchByTag(null, List.of("spring", "java"),
-                PageRequest.ofSize(3));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByTag(null, member.getId(),
+                List.of("spring", "java"), PageRequest.ofSize(3));
 
         assertThat(articles.getContent()).hasSize(3);
+    }
+
+    @Test
+    void 조회한_게시글의_태그들을_검색한다() {
+        Article firstArticle = articleRepository.save(
+                new Article("title1", "content1", Category.QUESTION, member, false));
+        Article secondArticle = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
+        List<Tag> tags = List.of(new Tag("spring"), new Tag("java"));
+        tagRepository.saveAll(tags);
+        firstArticle.addTag(new Tags(tags));
+        secondArticle.addTag(new Tags(tags));
+
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByTag(null, member.getId(),
+                List.of("spring"),
+                PageRequest.ofSize(2));
+
+        List<Long> articleIds = articles.getContent().stream()
+                .map(ArticlePreviewDto::getId)
+                .collect(Collectors.toList());
+
+        Map<Long, List<String>> foundTags = articleRepositoryCustom.findTags(articleIds);
+        assertAll(
+                () -> assertThat(foundTags.get(firstArticle.getId()).containsAll(tags)),
+                () -> assertThat(foundTags.get(secondArticle.getId()).containsAll(tags))
+        );
     }
 }

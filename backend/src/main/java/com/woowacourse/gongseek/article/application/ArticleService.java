@@ -171,10 +171,11 @@ public class ArticleService {
         if (authorName.isBlank()) {
             return new ArticlePageResponse(new ArrayList<>(), false);
         }
-        Slice<Article> articles = pagingArticleRepository.searchByAuthor(cursorId, authorName, pageable);
-
-        List<ArticlePreviewResponse> response = createResponse(appMember, articles);
-        return new ArticlePageResponse(response, articles.hasNext());
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByAuthor(cursorId, authorName,
+                appMember.getPayload(), pageable);
+        Map<Long, List<String>> tagNames = findTagNames(articles);
+        List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tagNames);
+        return new ArticlePageResponse(articleResponses, articles.hasNext());
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
@@ -223,9 +224,11 @@ public class ArticleService {
 
     @Transactional(readOnly = true)
     public ArticlePageResponse searchByTag(Long cursorId, Pageable pageable, String tagsText, AppMember appMember) {
-        Slice<Article> articles = pagingArticleRepository.searchByTag(cursorId, extract(tagsText), pageable);
-        List<ArticlePreviewResponse> response = createResponse(appMember, articles);
-        return new ArticlePageResponse(response, articles.hasNext());
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByTag(cursorId, appMember.getPayload(),
+                extract(tagsText), pageable);
+        Map<Long, List<String>> tagNames = findTagNames(articles);
+        List<ArticlePreviewResponse> articleResponses = getArticlePreviewResponses(articles, tagNames);
+        return new ArticlePageResponse(articleResponses, articles.hasNext());
     }
 
     private List<String> extract(String tagsText) {
