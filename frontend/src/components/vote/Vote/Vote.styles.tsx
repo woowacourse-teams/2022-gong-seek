@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const VoteBox = styled.div`
@@ -13,16 +14,18 @@ export const Container = styled.div`
 	display: flex;
 
 	flex-direction: column;
-	gap: ${({ theme }) => theme.size.SIZE_024};
 
 	width: 90%;
 
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
+	${({ theme }) => css`
+		gap: ${theme.size.SIZE_024};
+		border-radius: ${theme.size.SIZE_010};
 
-	box-shadow: 0 8px 24px ${({ theme }) => theme.boxShadows.secondary};
+		box-shadow: 0 ${theme.size.SIZE_008} ${theme.size.SIZE_024} ${theme.boxShadows.secondary};
 
-	padding: ${({ theme }) => theme.size.SIZE_010};
-	margin-top: ${({ theme }) => theme.size.SIZE_026};
+		padding: ${theme.size.SIZE_010};
+		margin-top: ${theme.size.SIZE_026};
+	`}
 `;
 
 export const VoteTitleBox = styled.div`

@@ -42,6 +42,12 @@ public class Tags {
         }
     }
 
+    public List<Long> getTagIds() {
+        return tags.stream()
+                .map(Tag::getId)
+                .collect(Collectors.toList());
+    }
+
     public List<String> getTagNames() {
         return tags.stream()
                 .map(Tag::getName)

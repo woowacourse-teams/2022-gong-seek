@@ -10,6 +10,7 @@ const useHandleHeaderByScroll = () => {
 
 	const handleHeaderViewByScroll = () => {
 		const currentScroll = document.documentElement.scrollTop;
+
 		if (!headerElement.current) {
 			return;
 		}
@@ -42,7 +43,7 @@ const useHandleHeaderByScroll = () => {
 		lastScrollTop.current = currentScroll;
 	};
 
-	return { isActiveHeader, handleHeaderViewByScroll, headerElement };
+	return { isActiveHeader, handleHeaderViewByScroll, headerElement, setIsActiveHeader };
 };
 
 export default useHandleHeaderByScroll;

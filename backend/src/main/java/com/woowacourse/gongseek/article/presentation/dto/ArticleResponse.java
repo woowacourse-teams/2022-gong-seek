@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.article.presentation.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
@@ -12,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 @Builder
 @AllArgsConstructor
@@ -28,13 +26,11 @@ public class ArticleResponse {
 
     private String content;
 
-    @JsonProperty("isAuthor")
-    @Accessors(fluent = true)
-    private boolean isAuthor;
+    private Boolean isAuthor;
 
-    private int views;
+    private Integer views;
 
-    private boolean hasVote;
+    private Boolean hasVote;
 
     private Boolean isLike;
 
@@ -46,7 +42,7 @@ public class ArticleResponse {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime updatedAt;
 
-    public static ArticleResponse of(Article article, List<String> tag, boolean isAuthor, boolean hasVote,
+    public static ArticleResponse of(Article article, List<String> tag, Boolean isAuthor, Boolean hasVote,
                                      LikeResponse likeResponse) {
         return new ArticleResponseBuilder()
                 .title(article.getTitle())

@@ -19,7 +19,7 @@ public class MyPageArticleResponse {
 
     private String category;
 
-    private int commentCount;
+    private long commentCount;
 
     private int views;
 
@@ -29,7 +29,7 @@ public class MyPageArticleResponse {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime updatedAt;
 
-    public MyPageArticleResponse(Article article, int commentCount) {
+    public MyPageArticleResponse(Article article, long commentCount) {
         this(
                 article.getId(),
                 article.getTitle(),

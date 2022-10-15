@@ -23,13 +23,13 @@ public class ArticlePreviewResponse {
     private AuthorDto author;
     private String content;
     private String category;
-    private Integer commentCount;
+    private Long commentCount;
     private Integer views;
     private Boolean isLike;
     private Long likeCount;
     private LocalDateTime createdAt;
 
-    public static ArticlePreviewResponse of(Article article, List<String> tag, int commentCount,
+    public static ArticlePreviewResponse of(Article article, List<String> tag, Long commentCount,
                                             LikeResponse likeResponse) {
 
         return new ArticlePreviewResponseBuilder()

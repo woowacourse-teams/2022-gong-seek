@@ -15,6 +15,7 @@ export const Container = styled.section<{
 	flex-direction: column;
 
 	${({ theme }) => css`
+		min-width: ${theme.size.SIZE_200};
 		border-radius: ${theme.size.SIZE_010};
 		box-shadow: 0 ${theme.size.SIZE_008} ${theme.size.SIZE_024} ${theme.boxShadows.secondary};
 	`}

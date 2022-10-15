@@ -96,6 +96,6 @@ class CommentRepositoryTest {
 
         List<Comment> comments = commentRepository.findAllByMemberId(member.getId());
 
-        assertThat(comments).containsExactly(firstComment, secondComment);
+        assertThat(comments).contains(firstComment, secondComment);
     }
 }
