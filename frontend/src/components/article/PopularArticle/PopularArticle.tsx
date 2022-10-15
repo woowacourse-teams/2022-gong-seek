@@ -34,7 +34,14 @@ const PopularArticle = () => {
 			<S.ArticleContent>
 				<Card {...PopularArticleItemCardStyle} isActive={false}></Card>
 				{data.articles.map((article, idx) => (
-					<PopularArticleItem article={article} key={article.id} isActive={currentIndex === idx} />
+					<PopularArticleItem
+						article={article}
+						key={article.id}
+						isActive={currentIndex === idx}
+						onClick={() =>
+							handleClickArticleItem({ id: String(article.id), category: article.category })
+						}
+					/>
 				))}
 				<Card {...PopularArticleItemCardStyle} isActive={false}></Card>
 			</S.ArticleContent>
