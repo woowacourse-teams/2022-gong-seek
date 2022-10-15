@@ -58,12 +58,12 @@ export const HastTagInput = styled.input`
 	}
 
 	${({ theme }) => css`
-	padding: ${theme.size.SIZE_010} ${theme.size.SIZE_014}
-	font-size: ${theme.size.SIZE_010};
+		padding: ${theme.size.SIZE_010} ${theme.size.SIZE_014};
+		font-size: ${theme.size.SIZE_016};
 
-	&::placeholder {
-		font-size: ${theme.size.SIZE_012};
-	}
+		&::placeholder {
+			font-size: ${theme.size.SIZE_016};
+		}
 	`}
 `;
 

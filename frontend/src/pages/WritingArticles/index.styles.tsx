@@ -58,7 +58,7 @@ export const TitleInput = styled.input`
 		padding: ${theme.size.SIZE_010};
 
 		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
-			font-size: ${theme.size.SIZE_020};
+			font-size: ${theme.size.SIZE_018};
 			padding: ${theme.size.SIZE_008} ${theme.size.SIZE_010};
 		}
 	`}
@@ -83,7 +83,7 @@ export const HashTagInput = styled.input`
 
 	${({ theme }) => css`
 		font-size: ${theme.size.SIZE_016};
-		padding: ${theme.size.SIZE_010} ${theme.size.SIZE_012};
+		padding: ${theme.size.SIZE_010} ${theme.size.SIZE_014};
 
 		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
 			font-size: ${theme.size.SIZE_018};
