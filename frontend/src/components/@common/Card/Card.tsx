@@ -1,4 +1,4 @@
-import { PropsWithStrictChildren } from 'gongseek-types';
+import { PropsWithOptionalChildren } from 'gongseek-types';
 
 import * as S from '@/components/@common/Card/Card.styles';
 import { CardProps } from '@/types/card';
@@ -10,7 +10,7 @@ const Card = ({
 	hasActiveAnimation,
 	onClick,
 	children,
-}: PropsWithStrictChildren<CardProps>) => (
+}: PropsWithOptionalChildren<CardProps>) => (
 	<S.Container
 		css={css`
 			width: ${cssObject.width};
