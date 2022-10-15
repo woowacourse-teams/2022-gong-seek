@@ -84,13 +84,17 @@ export const LeftArrowButton = styled(AiOutlineLeft)`
 	}
 
 	${({ theme }) => css`
-		left: ${theme.size.SIZE_002};
+		left: ${theme.size.SIZE_004};
 
 		font-size: ${theme.size.SIZE_020};
 		color: ${theme.colors.BLACK_600};
 
 		z-index: ${theme.zIndex.ARTICLE_ARROW_BUTTON};
 	`}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
+		left: ${({ theme }) => theme.size.SIZE_140};
+	}
 `;
 
 export const RightArrowButton = styled(AiOutlineLeft)`
@@ -106,13 +110,17 @@ export const RightArrowButton = styled(AiOutlineLeft)`
 		opacity: 1;
 	}
 	${({ theme }) => css`
-		right: ${theme.size.SIZE_002};
+		right: ${theme.size.SIZE_004};
 
 		font-size: ${theme.size.SIZE_020};
 
 		color: ${theme.colors.BLACK_600};
 		z-index: ${theme.zIndex.ARTICLE_ARROW_BUTTON};
 	`}
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
+		right: ${({ theme }) => theme.size.SIZE_140};
+	}
 `;
 
 export const ArticleContent = styled.div`
@@ -120,7 +128,6 @@ export const ArticleContent = styled.div`
 
 	justify-content: space-between;
 	width: 100%;
-	height: 100%;
 	gap: 1rem;
 	padding: 1rem;
 	${({ theme }) => css`
