@@ -21,4 +21,5 @@ export interface CardProps {
 	};
 	hasActiveAnimation: true | false;
 	onClick?: () => void;
+	isActive?: boolean;
 }

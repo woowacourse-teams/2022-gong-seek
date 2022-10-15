@@ -66,6 +66,7 @@ const useCarousel = () => {
 		handleLeftSlideEvent,
 		handleRightSlideEvent,
 		handleCarouselElementRef,
+		currentIndex,
 	};
 };
 

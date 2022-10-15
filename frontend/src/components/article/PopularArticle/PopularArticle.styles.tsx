@@ -121,7 +121,7 @@ export const ArticleContent = styled.div`
 	justify-content: space-between;
 	width: 100%;
 	height: 100%;
-	gap: 2rem;
+	gap: 1rem;
 	padding: 1rem;
 	${({ theme }) => css`
 		border-radius: ${theme.size.SIZE_010};

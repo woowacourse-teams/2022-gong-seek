@@ -6,7 +6,13 @@ import { PopularArticleItemCardStyle } from '@/styles/cardStyle';
 import { CommonArticleType } from '@/types/articleResponse';
 import { convertGithubAvatarUrlForResize, dateTimeConverter } from '@/utils/converter';
 
-const PopularArticleItem = ({ article }: { article: CommonArticleType }) => {
+const PopularArticleItem = ({
+	article,
+	isActive,
+}: {
+	article: CommonArticleType;
+	isActive: boolean;
+}) => {
 	const navigate = useNavigate();
 	const { id, title, author, commentCount, views, likeCount, category } = article;
 
@@ -15,7 +21,7 @@ const PopularArticleItem = ({ article }: { article: CommonArticleType }) => {
 	};
 	return (
 		<>
-			<Card {...PopularArticleItemCardStyle}>
+			<Card {...PopularArticleItemCardStyle} isActive={isActive}>
 				<S.ArticleItemTitle>
 					<div>{article.title}</div>
 				</S.ArticleItemTitle>

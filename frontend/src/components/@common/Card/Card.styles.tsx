@@ -10,9 +10,11 @@ const scaleAnimation = keyframes`
 export const Container = styled.section<{
 	media: { minWidth: string; width?: string; height?: string } | '';
 	hasActiveAnimation: boolean;
+	isActive?: boolean;
 }>`
 	display: flex;
 	flex-direction: column;
+	transition: all 0.4s cubic-bezier(0.26, 0.71, 1, 0.46);
 
 	${({ theme }) => css`
 		// min-width: ${theme.size.SIZE_200};
@@ -37,5 +39,13 @@ export const Container = styled.section<{
 				width: ${media.width};
 				height: ${media.height};
 			}
+		`}
+
+		${({ isActive }) =>
+		isActive === false &&
+		css`
+			transform: scale(0.85);
+			pointer-events: none;
+			filter: blur(2px);
 		`}
 `;

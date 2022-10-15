@@ -10,6 +10,7 @@ const Card = ({
 	hasActiveAnimation,
 	onClick,
 	children,
+	isActive,
 }: PropsWithOptionalChildren<CardProps>) => (
 	<S.Container
 		css={css`
@@ -29,6 +30,7 @@ const Card = ({
 		`}
 		media={media ? media : ''}
 		hasActiveAnimation={hasActiveAnimation}
+		isActive={isActive}
 		onClick={onClick}
 	>
 		{children}
