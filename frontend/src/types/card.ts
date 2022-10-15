@@ -10,6 +10,9 @@ export interface CardProps {
 		flexWrap?: string;
 		flexDirection?: string;
 		margin?: string;
+		flexShrink?: string;
+		scrollSnapAlign?: string;
+		scrollSnapStop?: string;
 	};
 	media?: {
 		minWidth: string;

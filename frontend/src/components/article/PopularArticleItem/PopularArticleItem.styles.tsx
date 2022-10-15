@@ -26,6 +26,7 @@ export const Title = styled.h2`
 	line-height: normal;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	overflow: hidden;
 
 	${({ theme }) => css`
 		height: ${theme.size.SIZE_040};

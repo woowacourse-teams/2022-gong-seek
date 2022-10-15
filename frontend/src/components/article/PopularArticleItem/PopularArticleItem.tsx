@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 
-import * as S from '@/components/article/PopularArticleItem/PopularArticleItem.styles';
+import Card from '@/components/@common/Card/Card';
+import * as S from '@/components/article/ArticleItem/ArticleItem.styles';
+import { PopularArticleItemCardStyle } from '@/styles/cardStyle';
 import { CommonArticleType } from '@/types/articleResponse';
-import { convertGithubAvatarUrlForResize } from '@/utils/converter';
+import { convertGithubAvatarUrlForResize, dateTimeConverter } from '@/utils/converter';
 
 const PopularArticleItem = ({ article }: { article: CommonArticleType }) => {
 	const navigate = useNavigate();
@@ -13,32 +15,30 @@ const PopularArticleItem = ({ article }: { article: CommonArticleType }) => {
 	};
 	return (
 		<>
-			<S.Title onClick={handleClickTitle}>{title}</S.Title>
-			<S.ArticleInfo>
-				<S.ProfileBox>
-					<S.UserImg
-						alt="유저의 프로필 이미지가 보여지는 곳 입니다 "
-						src={convertGithubAvatarUrlForResize(author.avatarUrl)}
-					/>
-					<S.UserName>{author.name}</S.UserName>
-				</S.ProfileBox>
-				<S.SubInfoBox>
-					<S.ViewsBox>
-						<S.ViewsIcon>조회수</S.ViewsIcon>
-						<S.ViewsCount aria-label="조회수가 표시되는 곳입니다">{views}</S.ViewsCount>
-					</S.ViewsBox>
-					<S.LikeBox>
-						<S.LikeIcon />
-						<S.LikeCount aria-label="좋아요 수가 표시되는 곳입니다">{likeCount}</S.LikeCount>
-					</S.LikeBox>
-					<S.CommentBox>
-						<S.CommentIcon />
-						<S.CommentCount aria-label="댓글의 개수가 표시되는 곳입니다">
-							{commentCount}
-						</S.CommentCount>
-					</S.CommentBox>
-				</S.SubInfoBox>
-			</S.ArticleInfo>
+			<Card {...PopularArticleItemCardStyle}>
+				<S.ArticleItemTitle>
+					<div>{article.title}</div>
+				</S.ArticleItemTitle>
+				<S.ArticleInfoBox>
+					<S.ArticleTimeStamp>{dateTimeConverter(article.createdAt)}</S.ArticleTimeStamp>
+					<S.ArticleInfoSubBox>
+						<S.CommentCount>댓글 수 {article.commentCount}</S.CommentCount>
+						<S.Views>조회 수 {article.views}</S.Views>
+					</S.ArticleInfoSubBox>
+				</S.ArticleInfoBox>
+				<S.HashTagListBox>
+					{article.tag &&
+						article.tag.length >= 1 &&
+						article.tag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}
+				</S.HashTagListBox>
+				<S.FooterBox>
+					<S.ProfileBox>
+						<S.UserProfile src={convertGithubAvatarUrlForResize(article.author.avatarUrl)} />
+						<div>{article.author.name}</div>
+					</S.ProfileBox>
+					<S.RightFooterBox></S.RightFooterBox>
+				</S.FooterBox>
+			</Card>
 		</>
 	);
 };

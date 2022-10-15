@@ -15,9 +15,9 @@ export const Container = styled.section<{
 	flex-direction: column;
 
 	${({ theme }) => css`
-		min-width: ${theme.size.SIZE_200};
+		// min-width: ${theme.size.SIZE_200};
 		border-radius: ${theme.size.SIZE_010};
-		box-shadow: 0 ${theme.size.SIZE_008} ${theme.size.SIZE_024} ${theme.boxShadows.secondary};
+		box-shadow: 0 ${theme.size.SIZE_006} ${theme.size.SIZE_014} ${theme.boxShadows.secondary};
 	`}
 
 	${({ hasActiveAnimation }) =>

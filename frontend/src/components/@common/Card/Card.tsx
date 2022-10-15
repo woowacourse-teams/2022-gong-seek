@@ -23,6 +23,9 @@ const Card = ({
 			flex-direction: ${cssObject.flexDirection ? cssObject.flexDirection : 'column'};
 			flex-wrap: ${cssObject.flexWrap ? cssObject.flexWrap : 'nowrap'};
 			margin: ${cssObject.margin ? cssObject.margin : 0};
+			flex-shrink: ${cssObject.flexShrink};
+			scroll-snap-align: ${cssObject.scrollSnapAlign};
+			scroll-snap-stop: ${cssObject.scrollSnapStop};
 		`}
 		media={media ? media : ''}
 		hasActiveAnimation={hasActiveAnimation}
@@ -31,4 +34,5 @@ const Card = ({
 		{children}
 	</S.Container>
 );
+
 export default Card;

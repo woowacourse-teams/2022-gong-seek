@@ -19,15 +19,26 @@ export const animationTiming = {
 
 export const Container = styled.section`
 	display: flex;
-	position: relative;
 
-	justify-content: center;
+	// justify-content: center;
 	align-items: center;
-
-	width: 100%;
-	height: ${({ theme }) => theme.size.SIZE_080};
+	width: 90%;
+	height: ${({ theme }) => theme.size.SIZE_280};
 
 	z-index: ${({ theme }) => theme.zIndex.POPULAR_ARTICLES};
+	margin: 0 auto;
+	overflow: auto;
+	scroll-behavior: smooth;
+	scroll-snap-type: x proximity;
+	-webkit-overflow-scrolling: touch;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
+		width: 60%;
+		height: ${({ theme }) => theme.size.SIZE_280};
+	}
 `;
 
 export const LeftBackgroundArticle = styled.div`
@@ -108,12 +119,11 @@ export const RightArrowButton = styled(AiOutlineLeft)`
 export const ArticleContent = styled.div`
 	display: flex;
 
-	flex-direction: column;
 	justify-content: space-between;
-
-	width: 80%;
+	width: 100%;
 	height: 100%;
-
+	gap: 2rem;
+	padding: 1rem;
 	${({ theme }) => css`
 		border-radius: ${theme.size.SIZE_010};
 
