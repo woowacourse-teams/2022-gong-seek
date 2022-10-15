@@ -23,7 +23,7 @@ const useCarousel = () => {
 			carouselElementRef.addEventListener('scroll', handleScrollEnd);
 
 			carouselElementRef.scrollTo({
-				left: 300,
+				left: 340,
 				behavior: 'auto',
 			});
 		}
@@ -39,7 +39,7 @@ const useCarousel = () => {
 		}
 
 		carouselElementRef?.scrollBy({
-			left: -300,
+			left: -340,
 			behavior: 'smooth',
 		});
 		setCurrentIndex((prev) => prev - 1);
@@ -51,7 +51,7 @@ const useCarousel = () => {
 		}
 
 		carouselElementRef?.scrollBy({
-			left: 300,
+			left: 340,
 			behavior: 'smooth',
 		});
 

@@ -4,7 +4,6 @@ import { CardProps } from '@/types/card';
 export const PopularArticleItemCardStyle = {
 	cssObject: {
 		width: '85%',
-		padding: theme.size.SIZE_016,
 		height: 'fit-content',
 		flexShrink: '0',
 		scrollSnapAlign: 'center',
