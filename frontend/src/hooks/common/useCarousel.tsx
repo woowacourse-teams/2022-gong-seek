@@ -1,50 +1,71 @@
-import { useMemo, useRef, useState, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 
 const useCarousel = () => {
+	const [carouselElementRef, setCarouselElementRef] = useState<null | HTMLDivElement>(null);
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const [indexLimit, setIndexLimit] = useState(0);
-	const carouselElement = useRef<HTMLDivElement>(null);
+	const [isScroll, setIsScroll] = useState(false);
+	const timerId = useRef<number | null>();
 
-	const showPopularSlider = useMemo(
-		() => [{ transform: `translateX(calc((-270px) * ${currentIndex}))` }],
-		[currentIndex],
-	);
+	console.log(currentIndex);
 
-	const animationTiming = {
-		duration: 300,
-		fill: 'forwards',
-	} as const;
-
-	useEffect(() => {
-		carouselElement.current?.animate(showPopularSlider, animationTiming);
-	}, [currentIndex]);
-
-	const initCarousel = (maxArticleLength: number) => {
-		setCurrentIndex(0);
-		setIndexLimit(maxArticleLength);
+	const handleScrollEnd = () => {
+		setIsScroll(true);
+		if (timerId.current !== null) {
+			clearTimeout(timerId.current);
+		}
+		timerId.current = window.setTimeout(function () {
+			setIsScroll(false);
+		}, 100);
 	};
 
+	useEffect(() => {
+		if (carouselElementRef) {
+			carouselElementRef.addEventListener('scroll', handleScrollEnd);
+
+			carouselElementRef.scrollTo({
+				left: 300,
+				behavior: 'auto',
+			});
+		}
+
+		return () => {
+			carouselElementRef?.removeEventListener('scroll', handleScrollEnd);
+		};
+	}, [carouselElementRef]);
+
 	const handleLeftSlideEvent = () => {
-		if (currentIndex === 0) {
-			// 애니메이션
+		if (currentIndex === 0 || isScroll) {
 			return;
 		}
-		setCurrentIndex(currentIndex - 1);
+
+		carouselElementRef?.scrollBy({
+			left: -300,
+			behavior: 'smooth',
+		});
+		setCurrentIndex((prev) => prev - 1);
 	};
 
 	const handleRightSlideEvent = () => {
-		if (currentIndex === indexLimit - 1) {
-			// 애니메이션
+		if (currentIndex === 9 || isScroll) {
 			return;
 		}
-		setCurrentIndex(currentIndex + 1);
+
+		carouselElementRef?.scrollBy({
+			left: 300,
+			behavior: 'smooth',
+		});
+
+		setCurrentIndex((prev) => prev + 1);
 	};
+
+	const handleCarouselElementRef = useCallback((node: HTMLDivElement) => {
+		setCarouselElementRef(node);
+	}, []);
 
 	return {
 		handleLeftSlideEvent,
 		handleRightSlideEvent,
-		initCarousel,
-		carouselElement,
+		handleCarouselElementRef,
 	};
 };
 

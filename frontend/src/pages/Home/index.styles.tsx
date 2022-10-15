@@ -40,6 +40,7 @@ export const CategoryTitle = styled.div<{ isActive: boolean }>`
 
 export const Container = styled.div`
 	display: flex;
+	position: relative;
 
 	flex-direction: column;
 	justify-content: center;

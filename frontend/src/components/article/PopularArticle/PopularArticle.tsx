@@ -3,16 +3,17 @@ import { Category } from '../../../types/articleResponse';
 import PopularArticleItem from '../PopularArticleItem/PopularArticleItem';
 import { useNavigate } from 'react-router-dom';
 
+import Card from '@/components/@common/Card/Card';
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import ArticleItem from '@/components/article/ArticleItem/ArticleItem';
 import * as S from '@/components/article/PopularArticle/PopularArticle.styles';
 import useGetPopularArticles from '@/hooks/article/useGetPopularArticles';
+import { PopularArticleItemCardStyle } from '@/styles/cardStyle';
 
 const PopularArticle = () => {
-	const { carouselElement, handleLeftSlideEvent, handleRightSlideEvent, initCarousel } =
-		useCarousel();
-	const { data, isLoading } = useGetPopularArticles(initCarousel);
+	const { handleCarouselElementRef, handleLeftSlideEvent, handleRightSlideEvent } = useCarousel();
+	const { data, isLoading } = useGetPopularArticles();
 	const navigate = useNavigate();
 
 	if (isLoading) {
@@ -28,12 +29,14 @@ const PopularArticle = () => {
 	};
 
 	return data ? (
-		<S.Container>
+		<S.Container ref={handleCarouselElementRef}>
 			<S.LeftArrowButton onClick={handleLeftSlideEvent} />
-			<S.ArticleContent ref={carouselElement}>
+			<S.ArticleContent>
+				<Card {...PopularArticleItemCardStyle}></Card>
 				{data.articles.map((article) => (
 					<PopularArticleItem article={article} key={article.id} />
 				))}
+				<Card {...PopularArticleItemCardStyle}></Card>
 			</S.ArticleContent>
 			<S.RightArrowButton onClick={handleRightSlideEvent} />
 		</S.Container>

@@ -27,13 +27,12 @@ export const Container = styled.section`
 
 	z-index: ${({ theme }) => theme.zIndex.POPULAR_ARTICLES};
 	margin: 0 auto;
-	overflow: auto;
-	scroll-behavior: smooth;
+	overflow: hidden;
 	scroll-snap-type: x proximity;
 	-webkit-overflow-scrolling: touch;
 
 	&::-webkit-scrollbar {
-		display: none;
+		opacity: 0;
 	}
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
 		width: 60%;
