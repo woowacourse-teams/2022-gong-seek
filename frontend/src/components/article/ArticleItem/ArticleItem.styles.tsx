@@ -60,7 +60,7 @@ export const UserProfile = styled.img`
 
 export const ProfileBox = styled.div`
 	display: flex;
-
+	color: white;
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_012};
 `;
