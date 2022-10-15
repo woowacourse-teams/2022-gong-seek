@@ -2,6 +2,8 @@ package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.ArticleRepositoryCustom;
+import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
@@ -38,6 +40,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ArticleRepositoryCustom articleRepositoryCustom;
+    private final PagingArticleRepository pagingArticleRepository;
     private final TempArticleService tempArticleService;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
@@ -104,7 +108,8 @@ public class ArticleService {
     @Transactional(readOnly = true)
     public ArticlePageResponse getAll(Long cursorId, Integer cursorViews, String category, String sortType,
                                       Pageable pageable, AppMember appMember) {
-        Slice<Article> articles = articleRepository.findAllByPage(cursorId, cursorViews, category, sortType, pageable);
+        Slice<Article> articles = pagingArticleRepository.findAllByPage(cursorId, cursorViews, category, sortType,
+                pageable);
         List<ArticlePreviewResponse> responses = createResponse(appMember, articles);
 
         return new ArticlePageResponse(responses, articles.hasNext());
@@ -122,7 +127,7 @@ public class ArticleService {
                 new LikeResponse(isLike(article, appMember), getLikeCount(article)));
     }
 
-    private int getCommentCount(Article article) {
+    private long getCommentCount(Article article) {
         return commentRepository.countByArticleId(article.getId());
     }
 
@@ -131,7 +136,7 @@ public class ArticleService {
         if (searchText.isBlank()) {
             return new ArticlePageResponse(new ArrayList<>(), false);
         }
-        Slice<Article> articles = articleRepository.searchByContainingText(cursorId, searchText, pageable);
+        Slice<Article> articles = pagingArticleRepository.searchByContainingText(cursorId, searchText, pageable);
         List<ArticlePreviewResponse> responses = createResponse(appMember, articles);
 
         return new ArticlePageResponse(responses, articles.hasNext());
@@ -143,7 +148,7 @@ public class ArticleService {
         if (authorName.isBlank()) {
             return new ArticlePageResponse(new ArrayList<>(), false);
         }
-        Slice<Article> articles = articleRepository.searchByAuthor(cursorId, authorName, pageable);
+        Slice<Article> articles = pagingArticleRepository.searchByAuthor(cursorId, authorName, pageable);
 
         List<ArticlePreviewResponse> response = createResponse(appMember, articles);
         return new ArticlePageResponse(response, articles.hasNext());
@@ -151,30 +156,24 @@ public class ArticleService {
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
         Article article = checkAuthorization(appMember, id);
-        List<String> existingTagNames = article.getTagNames();
+        List<Long> existingTagIds = article.getTagIds();
         List<String> updatedTagNames = articleUpdateRequest.getTag();
-        Tags tags = Tags.from(updatedTagNames);
-        Tags foundTags = tagService.getOrCreateTags(tags);
-        article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent());
-        article.updateTag(foundTags);
-        deleteUnusedTags(existingTagNames, updatedTagNames);
+        Tags updatedTags = tagService.getOrCreateTags(Tags.from(updatedTagNames));
+        article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent(), updatedTags);
+        deleteUnusedTags(existingTagIds, updatedTags.getTagIds());
 
         return new ArticleUpdateResponse(article);
     }
 
-    private void deleteUnusedTags(List<String> existingTagNames, List<String> updatedTagNames) {
-        updatedTagNames = updatedTagNames.stream()
-                .map(String::toUpperCase)
-                .collect(Collectors.toList());
-
-        existingTagNames.removeAll(updatedTagNames);
-        List<String> deletedTagNames = getDeletedTagNames(existingTagNames);
-        tagService.delete(deletedTagNames);
+    private void deleteUnusedTags(List<Long> existingTagIds, List<Long> updatedTagIds) {
+        existingTagIds.removeAll(updatedTagIds);
+        List<Long> deletedTagIds = getDeletedTagIds(existingTagIds);
+        tagService.deleteAll(deletedTagIds);
     }
 
-    private List<String> getDeletedTagNames(List<String> tagNames) {
-        return tagNames.stream()
-                .filter(tagName -> !articleRepository.existsArticleByTagName(tagName))
+    private List<Long> getDeletedTagIds(List<Long> tagIds) {
+        return tagIds.stream()
+                .filter(tagId -> !articleRepositoryCustom.existsArticleByTagId(tagId))
                 .collect(Collectors.toList());
     }
 
@@ -195,14 +194,13 @@ public class ArticleService {
     public void delete(AppMember appMember, Long id) {
         Article article = checkAuthorization(appMember, id);
         articleRepository.delete(article);
-
-        List<String> deletedTagNames = getDeletedTagNames(article.getTagNames());
-        tagService.delete(deletedTagNames);
+        List<Long> deletedTagIds = getDeletedTagIds(article.getTagIds());
+        tagService.deleteAll(deletedTagIds);
     }
 
     @Transactional(readOnly = true)
     public ArticlePageResponse searchByTag(Long cursorId, Pageable pageable, String tagsText, AppMember appMember) {
-        Slice<Article> articles = articleRepository.searchByTag(cursorId, extract(tagsText), pageable);
+        Slice<Article> articles = pagingArticleRepository.searchByTag(cursorId, extract(tagsText), pageable);
         List<ArticlePreviewResponse> response = createResponse(appMember, articles);
         return new ArticlePageResponse(response, articles.hasNext());
     }
@@ -214,7 +212,7 @@ public class ArticleService {
     @Transactional(readOnly = true)
     public ArticlePageResponse getAllByLikes(Long cursorId, Long likes, String category, Pageable pageable,
                                              AppMember appMember) {
-        Slice<Article> articles = articleRepository.findAllByLikes(cursorId, likes, category, pageable);
+        Slice<Article> articles = pagingArticleRepository.findAllByLikes(cursorId, likes, category, pageable);
         List<ArticlePreviewResponse> response = articles.getContent().stream()
                 .map(it -> getArticlePreviewResponse(it, appMember))
                 .collect(Collectors.toList());

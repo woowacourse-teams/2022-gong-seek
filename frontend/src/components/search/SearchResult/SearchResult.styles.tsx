@@ -7,7 +7,6 @@ export const Container = styled.section`
 	width: 100vw;
 
 	padding: ${({ theme }) => theme.size.SIZE_010};
-
 	gap: ${({ theme }) => theme.size.SIZE_020};
 `;
 

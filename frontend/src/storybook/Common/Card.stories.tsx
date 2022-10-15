@@ -1,7 +1,7 @@
 import { PropsWithStrictChildren } from 'gongseek-types';
 
-import { CardProps } from '@/components/@common/Card/Card';
 import Card from '@/components/@common/Card/Card';
+import { CardProps } from '@/types/card';
 import { Meta, Story } from '@storybook/react';
 
 export default {
