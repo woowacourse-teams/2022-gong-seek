@@ -16,8 +16,6 @@ import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -76,15 +74,23 @@ public class PagingArticleRepositoryTest {
         for (int i = 0; i < 5; i++) {
             articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, true));
         }
-        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(null, 0L,
-                Category.QUESTION.getValue(),
-                "views",
-                member.getId(), PageRequest.ofSize(5));
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(
+                null, 0L, Category.QUESTION.getValue(), "views", member.getId(), PageRequest.ofSize(5));
 
         assertAll(
                 () -> assertThat(articles.getContent()).hasSize(5),
+                () -> assertThat(articles.getContent().get(0).getTitle()).isEqualTo(TITLE),
+                () -> assertThat(articles.getContent().get(0).getTag()).isEmpty(),
                 () -> assertThat(articles.getContent().get(0).getAuthor().getName()).isEqualTo(ANONYMOUS_NAME),
-                () -> assertThat(articles.getContent().get(0).getAuthor().getAvatarUrl()).isEqualTo(ANONYMOUS_AVATAR_URL)
+                () -> assertThat(articles.getContent().get(0).getAuthor().getAvatarUrl()).isEqualTo(
+                        ANONYMOUS_AVATAR_URL),
+                () -> assertThat(articles.getContent().get(0).getContent()).isEqualTo(CONTENT),
+                () -> assertThat(articles.getContent().get(0).getCategory()).isEqualTo(Category.QUESTION.getValue()),
+                () -> assertThat(articles.getContent().get(0).getViews()).isEqualTo(0L),
+                () -> assertThat(articles.getContent().get(0).getCommentCount()).isEqualTo(0L),
+                () -> assertThat(articles.getContent().get(0).getLikeCount()).isEqualTo(0L),
+                () -> assertThat(articles.getContent().get(0).getIsLike()).isFalse(),
+                () -> assertThat(articles.hasNext()).isFalse()
         );
     }
 
@@ -164,8 +170,11 @@ public class PagingArticleRepositoryTest {
 
         assertAll(
                 () -> assertThat(articles.getContent().get(0).getId()).isEqualTo(firstArticle.getId()),
+                () -> assertThat(articles.getContent().get(0).getIsLike()).isTrue(),
                 () -> assertThat(articles.getContent().get(1).getId()).isEqualTo(secondArticle.getId()),
+                () -> assertThat(articles.getContent().get(1).getIsLike()).isTrue(),
                 () -> assertThat(articles.getContent().get(2).getId()).isEqualTo(thirdArticle.getId()),
+                () -> assertThat(articles.getContent().get(2).getIsLike()).isFalse(),
                 () -> assertThat(articles.hasNext()).isFalse()
         );
     }
@@ -193,7 +202,9 @@ public class PagingArticleRepositoryTest {
 
         assertAll(
                 () -> assertThat(articles.getContent().get(0).getId()).isEqualTo(firstArticle.getId()),
+                () -> assertThat(articles.getContent().get(0).getIsLike()).isTrue(),
                 () -> assertThat(articles.getContent().get(1).getId()).isEqualTo(secondArticle.getId()),
+                () -> assertThat(articles.getContent().get(1).getIsLike()).isTrue(),
                 () -> assertThat(articles.hasNext()).isTrue()
         );
     }
@@ -270,7 +281,12 @@ public class PagingArticleRepositoryTest {
         Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByTag(null, member.getId(), List.of(tag),
                 PageRequest.ofSize(2));
 
-        assertThat(articles.getContent()).hasSize(2);
+        assertAll(
+                () -> assertThat(articles.getContent()).hasSize(2),
+                () -> assertThat(articles.getContent().get(0).getTag()).hasSameElementsAs(secondArticle.getTagNames()),
+                () -> assertThat(articles.getContent().get(1).getTag()).hasSameElementsAs(firstArticle.getTagNames()),
+                () -> assertThat(articles.hasNext()).isFalse()
+        );
     }
 
     @Test
@@ -316,31 +332,8 @@ public class PagingArticleRepositoryTest {
                 List.of("spring", "java"), PageRequest.ofSize(5));
 
         assertThat(articles.getContent()).hasSize(3);
-    }
-
-    @Test
-    void 조회한_게시글의_태그들을_검색한다() {
-        Article firstArticle = articleRepository.save(
-                new Article("title1", "content1", Category.QUESTION, member, false));
-        Article secondArticle = articleRepository.save(
-                new Article("title2", "content2", Category.DISCUSSION, member, false));
-        List<Tag> tags = List.of(new Tag("spring"), new Tag("java"));
-        tagRepository.saveAll(tags);
-        firstArticle.addTag(new Tags(tags));
-        secondArticle.addTag(new Tags(tags));
-
-        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByTag(null, member.getId(),
-                List.of("spring"),
-                PageRequest.ofSize(2));
-
-        List<Long> articleIds = articles.getContent().stream()
-                .map(ArticlePreviewDto::getId)
-                .collect(Collectors.toList());
-
-        Map<Long, List<String>> foundTags = articleTagRepository.findTags(articleIds);
-        assertAll(
-                () -> assertThat(foundTags.get(firstArticle.getId()).containsAll(tags)),
-                () -> assertThat(foundTags.get(secondArticle.getId()).containsAll(tags))
-        );
+        assertThat(articles.getContent().get(0).getTag()).hasSameElementsAs(thirdArticle.getTagNames());
+        assertThat(articles.getContent().get(1).getTag()).hasSameElementsAs(secondArticle.getTagNames());
+        assertThat(articles.getContent().get(2).getTag()).hasSameElementsAs(firstArticle.getTagNames());
     }
 }

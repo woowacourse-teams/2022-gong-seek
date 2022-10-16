@@ -14,11 +14,11 @@ import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
 import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
@@ -511,7 +511,7 @@ public class ArticleServiceTest extends IntegrationTest {
         ArticlePageResponse response = articleService.getAll(null, 0L, Category.QUESTION.getValue(), "latest",
                 PageRequest.ofSize(10),
                 loginMember);
-        List<ArticlePreviewResponse> responses = response.getArticles();
+        List<ArticlePreviewDto> responses = response.getArticles();
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
@@ -535,7 +535,7 @@ public class ArticleServiceTest extends IntegrationTest {
         ArticlePageResponse response = articleService.getAll(10L, 0L, Category.QUESTION.getValue(), "latest",
                 PageRequest.ofSize(10),
                 loginMember);
-        List<ArticlePreviewResponse> responses = response.getArticles();
+        List<ArticlePreviewDto> responses = response.getArticles();
 
         assertAll(
                 () -> assertThat(responses).hasSize(9),
@@ -561,7 +561,7 @@ public class ArticleServiceTest extends IntegrationTest {
 
         ArticlePageResponse response = articleService.getAll(null, cursorViews, Category.QUESTION.getValue(),
                 "latest", PageRequest.ofSize(10), loginMember);
-        List<ArticlePreviewResponse> responses = response.getArticles();
+        List<ArticlePreviewDto> responses = response.getArticles();
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
@@ -671,7 +671,7 @@ public class ArticleServiceTest extends IntegrationTest {
                 Pageable.ofSize(3), new LoginMember(member.getId()));
         List<Long> collect = articlePageResponse.getArticles()
                 .stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         assertAll(
@@ -720,7 +720,7 @@ public class ArticleServiceTest extends IntegrationTest {
                 Pageable.ofSize(2), new LoginMember(member.getId()));
         List<Long> collect = articlePageResponse.getArticles()
                 .stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         assertAll(

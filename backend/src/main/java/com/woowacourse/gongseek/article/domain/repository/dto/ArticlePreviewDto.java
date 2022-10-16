@@ -4,6 +4,7 @@ import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class ArticlePreviewDto {
 
     private Long id;
     private String title;
+    private List<String> tag;
     private AuthorDto author;
     private String content;
     private String category;
@@ -36,19 +38,27 @@ public class ArticlePreviewDto {
                              Long views,
                              Long commentCount,
                              Long likeCount,
-                             Boolean isLike,
                              LocalDateTime createdAt) {
         this(
                 id,
                 title,
+                null,
                 new AuthorDto(member.getMemberOrAnonymous(isAnonymous)),
                 content,
                 category.getValue(),
                 views,
                 commentCount,
                 likeCount,
-                isLike,
+                null,
                 createdAt
         );
+    }
+
+    public void setTagName(List<String> tagNames) {
+        this.tag = tagNames;
+    }
+
+    public void setIsLike(Boolean isLike) {
+        this.isLike = isLike;
     }
 }

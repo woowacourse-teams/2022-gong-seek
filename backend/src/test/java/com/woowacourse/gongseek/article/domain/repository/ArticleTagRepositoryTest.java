@@ -15,7 +15,6 @@ import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
@@ -103,24 +102,5 @@ public class ArticleTagRepositoryTest {
         Optional<Article> article = articleRepository.findByIdWithAll(500L);
 
         assertThat(article).isEmpty();
-    }
-
-    @Test
-    void 게시글의_태그들을_검색한다() {
-        Article firstArticle = articleRepository.save(
-                new Article("title1", "content1", Category.QUESTION, member, false));
-        Article secondArticle = articleRepository.save(
-                new Article("title2", "content2", Category.DISCUSSION, member, false));
-        List<Tag> tags = List.of(new Tag("spring"), new Tag("java"));
-        tagRepository.saveAll(tags);
-        firstArticle.addTag(new Tags(tags));
-        secondArticle.addTag(new Tags(tags));
-
-        Map<Long, List<String>> foundTags = articleTagRepository.findTags(
-                List.of(firstArticle.getId(), secondArticle.getId()));
-        assertAll(
-                () -> assertThat(foundTags.get(firstArticle.getId()).containsAll(tags)),
-                () -> assertThat(foundTags.get(secondArticle.getId()).containsAll(tags))
-        );
     }
 }

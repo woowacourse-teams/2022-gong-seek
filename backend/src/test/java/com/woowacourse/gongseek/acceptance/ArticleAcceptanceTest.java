@@ -31,9 +31,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
@@ -498,7 +498,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //when
         ExtractableResponse<Response> response = 게시글_전체를_조회한다("all", "latest", null, null);
         ArticlePageResponse firstResponse = response.as(ArticlePageResponse.class);
-        List<ArticlePreviewResponse> firstArticles = firstResponse.getArticles();
+        List<ArticlePreviewDto> firstArticles = firstResponse.getArticles();
 
         ExtractableResponse<Response> secondResponse = 게시글_전체를_조회한다("all", "latest",
                 firstArticles.get(firstArticles.size() - 1).getId(), null);
@@ -513,7 +513,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
                         .isEqualTo(
-                                new ArticlePreviewResponse(
+                                new ArticlePreviewDto(
                                         10L,
                                         "title",
                                         List.of("SPRING"),
@@ -542,9 +542,9 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //when
         ExtractableResponse<Response> response = 게시글_전체를_조회한다("all", "views", null, null);
         ArticlePageResponse firstResponse = response.as(ArticlePageResponse.class);
-        List<ArticlePreviewResponse> firstArticles = firstResponse.getArticles();
+        List<ArticlePreviewDto> firstArticles = firstResponse.getArticles();
 
-        ArticlePreviewResponse lastArticle = firstArticles.get(firstArticles.size() - 1);
+        ArticlePreviewDto lastArticle = firstArticles.get(firstArticles.size() - 1);
         ExtractableResponse<Response> secondResponse = 게시글_전체를_조회한다("all", "views",
                 lastArticle.getId(), lastArticle.getViews());
         ArticlePageResponse secondArticles = secondResponse.as(ArticlePageResponse.class);
@@ -558,7 +558,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt", "id")
                         .isEqualTo(
-                                new ArticlePreviewResponse(
+                                new ArticlePreviewDto(
                                         16L,
                                         "title",
                                         List.of("SPRING"),
@@ -602,7 +602,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt", "id")
                         .isEqualTo(
-                                new ArticlePreviewResponse(
+                                new ArticlePreviewDto(
                                         1L,
                                         "title",
                                         List.of("SPRING"),
@@ -632,7 +632,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
 
         List<Long> ids = articlePageResponse.getArticles().stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
         //then
         assertAll(
@@ -655,7 +655,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
 
         List<Long> ids = articlePageResponse.getArticles().stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .limit(5)
                 .collect(Collectors.toList());
 
@@ -679,7 +679,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
 
         List<Long> ids = articlePageResponse.getArticles().stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         //then
@@ -703,7 +703,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
 
         List<Long> ids = articlePageResponse.getArticles().stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         //then
@@ -926,7 +926,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
 
         List<Long> ids = articlePageResponse.getArticles().stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         //then
@@ -956,7 +956,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
 
         List<Long> ids = articlePageResponse.getArticles().stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         //then
