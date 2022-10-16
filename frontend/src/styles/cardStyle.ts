@@ -12,7 +12,7 @@ export const PopularArticleItemCardStyle = {
 	media: {
 		minWidth: theme.breakpoints.DESKTOP_LARGE,
 		width: '50%',
-		height: theme.size.SIZE_220,
+		height: 'fit-content',
 	},
 
 	hasActiveAnimation: true,

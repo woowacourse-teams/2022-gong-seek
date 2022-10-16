@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import Card from '@/components/@common/Card/Card';
 import * as S from '@/components/article/ArticleItem/ArticleItem.styles';
-import * as PopularS from '@/components/article/PopularArticle/PopularArticle.styles';
+import * as PopularS from '@/components/article/PopularArticleItem/PopularArticleItem.styles';
 import { theme } from '@/styles/Theme';
 import { PopularArticleItemCardStyle } from '@/styles/cardStyle';
 import { CommonArticleType } from '@/types/articleResponse';
@@ -20,8 +20,10 @@ const PopularArticleItem = ({
 	onClick?: () => void;
 	rightSlide?: () => void;
 }) => {
-	const { title, author, commentCount, views, createdAt, tag } = article;
+	const { title, author, commentCount, views, createdAt, tag, category, likeCount } = article;
 	const timerId = useRef<number | undefined>(undefined);
+	const 한글_카테고리 = category === 'question' ? '질문' : '토론';
+
 	useEffect(() => {
 		if (isActive && rightSlide) {
 			timerId.current = window.setTimeout(rightSlide, 5000);
@@ -64,6 +66,7 @@ const PopularArticleItem = ({
 						>
 							{author.name}
 						</div>
+						<PopularS.CategoryBox categoryType={category}>{한글_카테고리}</PopularS.CategoryBox>
 					</S.ProfileBox>
 				</div>
 				<div
@@ -81,13 +84,17 @@ const PopularArticleItem = ({
 					<S.ArticleInfoBox>
 						<S.ArticleTimeStamp>{dateTimeConverter(createdAt)}</S.ArticleTimeStamp>
 						<S.ArticleInfoSubBox>
-							<S.CommentCount>
+							<PopularS.IconContainer>
 								<PopularS.CommentIcon />
 								{commentCount}
-							</S.CommentCount>
-							<S.Views>
+							</PopularS.IconContainer>
+							<PopularS.IconContainer>
 								<PopularS.ViewIcon /> {views}
-							</S.Views>
+							</PopularS.IconContainer>
+							<PopularS.IconContainer>
+								<PopularS.HeartIcon />
+								{likeCount}
+							</PopularS.IconContainer>
 						</S.ArticleInfoSubBox>
 					</S.ArticleInfoBox>
 

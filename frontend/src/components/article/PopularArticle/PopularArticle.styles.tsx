@@ -1,4 +1,4 @@
-import { AiOutlineMessage, AiOutlineLeft, AiOutlineEye } from 'react-icons/ai';
+import { AiOutlineLeft } from 'react-icons/ai';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -191,18 +191,6 @@ export const CommentBox = styled.div`
 
 export const CommentCount = styled.span`
 	font-size: ${({ theme }) => theme.size.SIZE_012};
-
-	color: ${({ theme }) => theme.colors.BLACK_600};
-`;
-
-export const CommentIcon = styled(AiOutlineMessage)`
-	font-size: ${({ theme }) => theme.size.SIZE_016};
-
-	color: ${({ theme }) => theme.colors.BLACK_600};
-`;
-
-export const ViewIcon = styled(AiOutlineEye)`
-	font-size: ${({ theme }) => theme.size.SIZE_016};
 
 	color: ${({ theme }) => theme.colors.BLACK_600};
 `;

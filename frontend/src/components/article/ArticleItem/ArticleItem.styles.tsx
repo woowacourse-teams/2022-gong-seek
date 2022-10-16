@@ -26,11 +26,19 @@ export const ArticleItemTitle = styled.h2`
 `;
 
 export const Views = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: ${({ theme }) => theme.size.SIZE_006};
 	font-size: ${({ theme }) => theme.size.SIZE_010};
 	font-weight: 400;
 `;
 
 export const CommentCount = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: ${({ theme }) => theme.size.SIZE_006};
 	font-size: ${({ theme }) => theme.size.SIZE_010};
 	font-weight: 400;
 `;
@@ -45,6 +53,7 @@ export const ArticleInfoBox = styled.div`
 
 export const ArticleInfoSubBox = styled.div`
 	display: flex;
+	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_010};
 `;
 
@@ -60,7 +69,6 @@ export const UserProfile = styled.img`
 
 export const ProfileBox = styled.div`
 	display: flex;
-	color: white;
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_012};
 `;
