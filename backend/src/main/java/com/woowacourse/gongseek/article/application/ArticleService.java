@@ -2,7 +2,7 @@ package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
-import com.woowacourse.gongseek.article.domain.repository.ArticleRepositoryCustom;
+import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
 import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
@@ -42,7 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-    private final ArticleRepositoryCustom articleRepositoryCustom;
+    private final ArticleTagRepository articleTagRepository;
     private final PagingArticleRepository pagingArticleRepository;
     private final TempArticleService tempArticleService;
     private final MemberRepository memberRepository;
@@ -120,7 +120,7 @@ public class ArticleService {
 
     private Map<Long, List<String>> findTagNames(Slice<ArticlePreviewDto> articles) {
         List<Long> foundArticleIds = getArticleIds(articles);
-        return articleRepositoryCustom.findTags(foundArticleIds);
+        return articleTagRepository.findTags(foundArticleIds);
     }
 
     private List<Long> getArticleIds(Slice<ArticlePreviewDto> articles) {
@@ -197,7 +197,7 @@ public class ArticleService {
 
     private List<Long> getDeletedTagIds(List<Long> tagIds) {
         return tagIds.stream()
-                .filter(tagId -> !articleRepositoryCustom.existsArticleByTagId(tagId))
+                .filter(tagId -> !articleTagRepository.existsArticleByTagId(tagId))
                 .collect(Collectors.toList());
     }
 

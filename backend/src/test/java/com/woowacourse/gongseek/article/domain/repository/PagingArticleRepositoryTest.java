@@ -46,7 +46,7 @@ public class PagingArticleRepositoryTest {
     private PagingArticleRepository pagingArticleRepository;
 
     @Autowired
-    private ArticleRepositoryCustom articleRepositoryCustom;
+    private ArticleTagRepository articleTagRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -337,7 +337,7 @@ public class PagingArticleRepositoryTest {
                 .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
-        Map<Long, List<String>> foundTags = articleRepositoryCustom.findTags(articleIds);
+        Map<Long, List<String>> foundTags = articleTagRepository.findTags(articleIds);
         assertAll(
                 () -> assertThat(foundTags.get(firstArticle.getId()).containsAll(tags)),
                 () -> assertThat(foundTags.get(secondArticle.getId()).containsAll(tags))

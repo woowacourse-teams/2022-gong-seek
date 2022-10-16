@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.article.domain.repository;
+package com.woowacourse.gongseek.article.infra;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.woowacourse.gongseek.article.domain.QArticle.article;
@@ -7,6 +7,7 @@ import static com.woowacourse.gongseek.tag.domain.QTag.tag;
 
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
 @Repository
-public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom {
+public class ArticleTagRepositoryImpl implements ArticleTagRepository {
 
     private final JPAQueryFactory queryFactory;
 

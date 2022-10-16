@@ -3,7 +3,7 @@ package com.woowacourse.gongseek.article.domain.repository;
 import java.util.List;
 import java.util.Map;
 
-public interface ArticleRepositoryCustom {
+public interface ArticleTagRepository {
 
     boolean existsArticleByTagId(Long tagId);
 

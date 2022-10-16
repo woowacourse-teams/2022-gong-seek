@@ -11,7 +11,7 @@ import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.TempTags;
 import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
-import com.woowacourse.gongseek.article.domain.repository.ArticleRepositoryCustom;
+import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
 import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
@@ -67,7 +67,7 @@ public class ArticleServiceTest extends IntegrationTest {
     private ArticleRepository articleRepository;
 
     @Autowired
-    private ArticleRepositoryCustom articleRepositoryCustom;
+    private ArticleTagRepository articleTagRepository;
 
     @Autowired
     private PagingArticleRepository pagingArticleRepository;

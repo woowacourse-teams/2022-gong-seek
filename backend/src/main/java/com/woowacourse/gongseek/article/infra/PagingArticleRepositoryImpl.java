@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.article.domain.repository;
+package com.woowacourse.gongseek.article.infra;
 
 import static com.woowacourse.gongseek.article.domain.QArticle.article;
 import static com.woowacourse.gongseek.article.domain.articletag.QArticleTag.articleTag;
@@ -15,6 +15,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import java.util.List;
 import java.util.stream.Collectors;
