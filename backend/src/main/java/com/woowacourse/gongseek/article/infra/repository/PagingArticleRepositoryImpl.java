@@ -202,12 +202,11 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                         )
                 )
                 .from(article)
-                .leftJoin(article.member, member)
+                .join(article.member, member)
                 .where(
                         containsTitleOrContent(searchText),
                         isOverArticleId(cursorId)
                 )
-                .groupBy(article)
                 .limit(pageable.getPageSize() + 1)
                 .orderBy(article.id.desc())
                 .fetch();
@@ -253,7 +252,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                         )
                 )
                 .from(article)
-                .leftJoin(article.member, member)
+                .join(article.member, member)
                 .where(
                         article.member.name.value.eq(author),
                         article.isAnonymous.eq(false),
