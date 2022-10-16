@@ -28,7 +28,9 @@ const PopularArticle = () => {
 
 	return data ? (
 		<S.Container ref={handleCarouselElementRef}>
-			<S.LeftArrowButton onClick={handleLeftSlideEvent} />
+			<S.LeftArrowButton>
+				<S.LeftArrowIcon onClick={handleLeftSlideEvent} />
+			</S.LeftArrowButton>
 			<S.ArticleContent>
 				<PopularArticleItem article={data.articles[data.articles.length - 1]} isActive={false} />
 				{data.articles.map((article, idx) => (
@@ -44,7 +46,9 @@ const PopularArticle = () => {
 				))}
 				<PopularArticleItem article={data.articles[0]} isActive={false} />
 			</S.ArticleContent>
-			<S.RightArrowButton onClick={handleRightSlideEvent} />
+			<S.RightArrowButton>
+				<S.RightArrowIcon onClick={handleRightSlideEvent} />
+			</S.RightArrowButton>
 		</S.Container>
 	) : null;
 };

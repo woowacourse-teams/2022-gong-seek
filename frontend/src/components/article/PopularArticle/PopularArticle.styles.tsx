@@ -72,11 +72,17 @@ export const RightBackgroundArticle = styled.div`
 	`}
 `;
 
-export const LeftArrowButton = styled(AiOutlineLeft)`
+export const ArrowButton = styled.button`
+	width: ${({ theme }) => theme.size.SIZE_032};
+	height: ${({ theme }) => theme.size.SIZE_032};
+	display: flex;
 	position: absolute;
-	opacity: 0.5;
 
-	cursor: pointer;
+	justify-content: center;
+	align-items: center;
+
+	opacity: 0.5;
+	padding: 0;
 
 	&:hover,
 	&:active {
@@ -84,12 +90,22 @@ export const LeftArrowButton = styled(AiOutlineLeft)`
 	}
 
 	${({ theme }) => css`
-		left: ${theme.size.SIZE_004};
-
 		font-size: ${theme.size.SIZE_020};
-		color: ${theme.colors.BLACK_600};
 
+		color: ${theme.colors.WHITE};
 		z-index: ${theme.zIndex.ARTICLE_ARROW_BUTTON};
+	`}
+
+	border-color: transparent;
+	border-radius: ${({ theme }) => theme.size.SIZE_006};
+	background-color: ${({ theme }) => theme.colors.BLACK_400};
+	background-repeat: no-repeat;
+	cursor: pointer;
+`;
+
+export const LeftArrowButton = styled(ArrowButton)`
+	${({ theme }) => css`
+		left: ${theme.size.SIZE_004};
 	`}
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
@@ -97,30 +113,20 @@ export const LeftArrowButton = styled(AiOutlineLeft)`
 	}
 `;
 
-export const RightArrowButton = styled(AiOutlineLeft)`
-	position: absolute;
-	opacity: 0.5;
-
-	cursor: pointer;
-
-	transform: rotate(180deg);
-
-	&:hover,
-	&:active {
-		opacity: 1;
-	}
+export const RightArrowButton = styled(ArrowButton)`
 	${({ theme }) => css`
 		right: ${theme.size.SIZE_004};
-
-		font-size: ${theme.size.SIZE_020};
-
-		color: ${theme.colors.BLACK_600};
-		z-index: ${theme.zIndex.ARTICLE_ARROW_BUTTON};
 	`}
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
 		right: ${({ theme }) => theme.size.SIZE_110};
 	}
+`;
+
+export const LeftArrowIcon = styled(AiOutlineLeft)``;
+
+export const RightArrowIcon = styled(AiOutlineLeft)`
+	transform: rotate(180deg);
 `;
 
 export const ArticleContent = styled.div`
