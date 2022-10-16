@@ -1,3 +1,4 @@
+import { CAROUSEL_AUTO_PLAY_TIME } from '../../../constants/index';
 import { useEffect, useRef } from 'react';
 
 import Card from '@/components/@common/Card/Card';
@@ -26,7 +27,7 @@ const PopularArticleItem = ({
 
 	useEffect(() => {
 		if (isActive && rightSlide) {
-			timerId.current = window.setTimeout(rightSlide, 3000);
+			timerId.current = window.setTimeout(rightSlide, CAROUSEL_AUTO_PLAY_TIME);
 		}
 
 		return () => {

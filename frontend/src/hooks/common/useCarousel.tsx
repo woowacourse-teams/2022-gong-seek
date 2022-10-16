@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 
+import { CAROUSEL_ITEM_WIDTH, DEBOUNCE_SCROLL_TIME } from '@/constants';
+
 const useCarousel = () => {
 	const [carouselElementRef, setCarouselElementRef] = useState<null | HTMLDivElement>(null);
 	const [currentIndex, setCurrentIndex] = useState(0);
@@ -13,7 +15,7 @@ const useCarousel = () => {
 		}
 		timerId.current = window.setTimeout(function () {
 			setIsScroll(false);
-		}, 100);
+		}, DEBOUNCE_SCROLL_TIME);
 	};
 
 	useEffect(() => {
@@ -21,7 +23,7 @@ const useCarousel = () => {
 			carouselElementRef.addEventListener('scroll', handleScrollEnd);
 
 			carouselElementRef.scrollTo({
-				left: 335,
+				left: CAROUSEL_ITEM_WIDTH,
 				behavior: 'auto',
 			});
 		}
@@ -37,7 +39,7 @@ const useCarousel = () => {
 		}
 
 		carouselElementRef?.scrollBy({
-			left: -335,
+			left: -CAROUSEL_ITEM_WIDTH,
 			behavior: 'smooth',
 		});
 		setCurrentIndex((prev) => prev - 1);
@@ -51,14 +53,14 @@ const useCarousel = () => {
 		if (currentIndex === 9) {
 			setCurrentIndex(0);
 			carouselElementRef?.scrollTo({
-				left: 335,
+				left: CAROUSEL_ITEM_WIDTH,
 				behavior: 'smooth',
 			});
 			return;
 		}
 
 		carouselElementRef?.scrollBy({
-			left: 335,
+			left: CAROUSEL_ITEM_WIDTH,
 			behavior: 'smooth',
 		});
 
