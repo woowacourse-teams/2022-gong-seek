@@ -26,7 +26,7 @@ const PopularArticleItem = ({
 
 	useEffect(() => {
 		if (isActive && rightSlide) {
-			timerId.current = window.setTimeout(rightSlide, 5000);
+			timerId.current = window.setTimeout(rightSlide, 3000);
 		}
 
 		return () => {
