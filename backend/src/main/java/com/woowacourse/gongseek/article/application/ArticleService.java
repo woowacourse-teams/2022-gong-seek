@@ -16,7 +16,6 @@ import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
-import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -52,7 +51,6 @@ public class ArticleService {
         Member member = getMember(appMember);
 
         Tags foundTags = tagService.getOrCreateTags(Tags.from(articleRequest.getTag()));
-
         Article article = articleRepository.save(articleRequest.toArticle(member));
         article.addTag(foundTags);
 
@@ -73,13 +71,9 @@ public class ArticleService {
 
     public ArticleResponse getOne(AppMember appMember, Long id) {
         Article article = getArticle(id);
-
-        List<String> tagNames = article.getTagNames();
         article.addViews();
-        LikeResponse likeResponse = new LikeResponse(isLike(article, appMember), getLikeCount(article));
 
-        return checkGuest(article, tagNames, appMember, voteRepository.existsByArticleId(article.getId()),
-                likeResponse);
+        return checkGuest(article, appMember, voteRepository.existsByArticleId(article.getId()), isLike(article, appMember));
     }
 
     private Article getArticle(Long id) {
@@ -91,16 +85,11 @@ public class ArticleService {
         return likeRepository.existsByArticleIdAndMemberId(article.getId(), appMember.getPayload());
     }
 
-    private Long getLikeCount(Article article) {
-        return likeRepository.countByArticleId(article.getId());
-    }
-
-    private ArticleResponse checkGuest(Article article, List<String> tagNames, AppMember appMember, boolean hasVote,
-                                       LikeResponse likeResponse) {
+    private ArticleResponse checkGuest(Article article, AppMember appMember, boolean hasVote, boolean isLike) {
         if (appMember.isGuest()) {
-            return ArticleResponse.of(article, tagNames, false, hasVote, likeResponse);
+            return ArticleResponse.of(article, false, hasVote, isLike);
         }
-        return ArticleResponse.of(article, tagNames, article.isAuthor(getMember(appMember)), hasVote, likeResponse);
+        return ArticleResponse.of(article, article.isAuthor(getMember(appMember)), hasVote, isLike);
     }
 
     @Transactional(readOnly = true)
