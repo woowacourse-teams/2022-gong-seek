@@ -15,9 +15,9 @@ export const Container = styled.section<{
 	display: flex;
 	flex-direction: column;
 	transition: all 0.4s cubic-bezier(0.26, 0.71, 1, 0.46);
-
+	position: relative;
 	${({ theme }) => css`
-		// min-width: ${theme.size.SIZE_200};
+		min-width: ${theme.size.SIZE_200};
 		border-radius: ${theme.size.SIZE_010};
 		box-shadow: 0 ${theme.size.SIZE_006} ${theme.size.SIZE_014} ${theme.boxShadows.secondary};
 	`}
