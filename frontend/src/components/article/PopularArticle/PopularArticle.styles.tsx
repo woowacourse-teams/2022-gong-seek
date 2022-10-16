@@ -1,4 +1,4 @@
-import { AiOutlineMessage, AiOutlineLeft } from 'react-icons/ai';
+import { AiOutlineMessage, AiOutlineLeft, AiOutlineEye } from 'react-icons/ai';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -93,7 +93,7 @@ export const LeftArrowButton = styled(AiOutlineLeft)`
 	`}
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
-		left: ${({ theme }) => theme.size.SIZE_140};
+		left: ${({ theme }) => theme.size.SIZE_110};
 	}
 `;
 
@@ -119,7 +119,7 @@ export const RightArrowButton = styled(AiOutlineLeft)`
 	`}
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
-		right: ${({ theme }) => theme.size.SIZE_140};
+		right: ${({ theme }) => theme.size.SIZE_110};
 	}
 `;
 
@@ -196,6 +196,12 @@ export const CommentCount = styled.span`
 `;
 
 export const CommentIcon = styled(AiOutlineMessage)`
+	font-size: ${({ theme }) => theme.size.SIZE_016};
+
+	color: ${({ theme }) => theme.colors.BLACK_600};
+`;
+
+export const ViewIcon = styled(AiOutlineEye)`
 	font-size: ${({ theme }) => theme.size.SIZE_016};
 
 	color: ${({ theme }) => theme.colors.BLACK_600};
