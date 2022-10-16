@@ -6,8 +6,6 @@ const useCarousel = () => {
 	const [isScroll, setIsScroll] = useState(false);
 	const timerId = useRef<number | null>();
 
-	console.log(currentIndex);
-
 	const handleScrollEnd = () => {
 		setIsScroll(true);
 		if (timerId.current !== null) {
@@ -23,7 +21,7 @@ const useCarousel = () => {
 			carouselElementRef.addEventListener('scroll', handleScrollEnd);
 
 			carouselElementRef.scrollTo({
-				left: 340,
+				left: 335,
 				behavior: 'auto',
 			});
 		}
@@ -39,19 +37,28 @@ const useCarousel = () => {
 		}
 
 		carouselElementRef?.scrollBy({
-			left: -340,
+			left: -335,
 			behavior: 'smooth',
 		});
 		setCurrentIndex((prev) => prev - 1);
 	};
 
 	const handleRightSlideEvent = () => {
-		if (currentIndex === 9 || isScroll) {
+		if (isScroll) {
+			return;
+		}
+
+		if (currentIndex === 9) {
+			setCurrentIndex(0);
+			carouselElementRef?.scrollTo({
+				left: 335,
+				behavior: 'smooth',
+			});
 			return;
 		}
 
 		carouselElementRef?.scrollBy({
-			left: 340,
+			left: 335,
 			behavior: 'smooth',
 		});
 
