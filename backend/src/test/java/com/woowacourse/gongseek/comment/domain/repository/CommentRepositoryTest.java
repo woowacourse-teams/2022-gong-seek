@@ -98,4 +98,14 @@ class CommentRepositoryTest {
 
         assertThat(comments).contains(firstComment, secondComment);
     }
+
+    @Test
+    void 게시글에_작성된_댓글_수를_조회한다() {
+        commentRepository.save(new Comment("content1", member, article, false));
+        commentRepository.save(new Comment("content2", member, article, false));
+
+        Long count = commentRepository.countByArticleId(article.getId());
+
+        assertThat(count).isEqualTo(2);
+    }
 }

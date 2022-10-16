@@ -15,6 +15,7 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
+import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
@@ -44,6 +45,7 @@ public class ArticleService {
     private final MemberRepository memberRepository;
     private final VoteRepository voteRepository;
     private final TagService tagService;
+    private final CommentRepository commentRepository;
     private final LikeRepository likeRepository;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
@@ -73,7 +75,8 @@ public class ArticleService {
         Article article = getArticle(id);
         article.addViews();
 
-        return checkGuest(article, appMember, voteRepository.existsByArticleId(article.getId()), isLike(article, appMember));
+        return checkGuest(article, appMember, voteRepository.existsByArticleId(article.getId()),
+                isLike(article, appMember));
     }
 
     private Article getArticle(Long id) {
@@ -183,5 +186,14 @@ public class ArticleService {
                 appMember.getPayload(),
                 pageable);
         return ArticlePageResponse.of(articles);
+    }
+
+    public void synchronizeLikeCountAndCommentCount() {
+        List<Article> articles = articleRepository.findAll();
+        articles.forEach(
+                article -> article.updateLikeCountAndCommentCount(
+                                likeRepository.countByArticleId(article.getId()),
+                                commentRepository.countByArticleId(article.getId()))
+        );
     }
 }
