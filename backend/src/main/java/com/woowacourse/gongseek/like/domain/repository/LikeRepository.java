@@ -4,10 +4,8 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.like.domain.Like;
 import com.woowacourse.gongseek.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface LikeRepository extends JpaRepository<Like, Long> {
+public interface LikeRepository extends JpaRepository<Like, Long>, LikeRepositoryCustom {
 
     void deleteByArticleAndMember(Article article, Member member);
 

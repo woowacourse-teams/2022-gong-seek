@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.article.infra;
+package com.woowacourse.gongseek.article.infra.repository;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.woowacourse.gongseek.article.domain.QArticle.article;
