@@ -261,6 +261,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                                 article.createdAt
                         )
                 )
+                .distinct()
                 .from(articleTag)
                 .join(articleTag.article, article)
                 .join(article.member, member)

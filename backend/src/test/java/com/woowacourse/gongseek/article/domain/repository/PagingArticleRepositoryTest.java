@@ -313,7 +313,7 @@ public class PagingArticleRepositoryTest {
         thirdArticle.addTag(new Tags(thirdTags));
 
         Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByTag(null, member.getId(),
-                List.of("spring", "java"), PageRequest.ofSize(3));
+                List.of("spring", "java"), PageRequest.ofSize(5));
 
         assertThat(articles.getContent()).hasSize(3);
     }
