@@ -46,6 +46,7 @@ export const Container = styled.section<{
 		css`
 			transform: scale(0.85);
 			pointer-events: none;
+			opacity: 0.7;
 			filter: blur(2px);
 		`}
 `;
