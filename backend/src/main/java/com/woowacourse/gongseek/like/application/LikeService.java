@@ -3,7 +3,6 @@ package com.woowacourse.gongseek.like.application;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
-import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.like.domain.Like;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
@@ -24,17 +23,10 @@ public class LikeService {
     private final ArticleRepository articleRepository;
 
     public void likeArticle(AppMember appMember, Long articleId) {
-        validateGuest(appMember);
         Member member = getMember(appMember);
         Article article = getArticle(articleId);
 
         saveByExistsLike(member, article);
-    }
-
-    private void validateGuest(AppMember appMember) {
-        if (appMember.isGuest()) {
-            throw new NotMemberException();
-        }
     }
 
     private Member getMember(AppMember appMember) {
@@ -54,7 +46,6 @@ public class LikeService {
     }
 
     public void unlikeArticle(AppMember appMember, Long articleId) {
-        validateGuest(appMember);
         Member member = getMember(appMember);
         Article article = getArticle(articleId);
 

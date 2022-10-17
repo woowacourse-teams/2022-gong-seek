@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
+import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,23 @@ public class LikeAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    void 유저가_로그인을_하지_않고_추천을_할_수_없다() {
+        //given
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        ArticleIdResponse 게시글 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
+        AccessTokenResponse 비회원 = new AccessTokenResponse(null);
+
+        //when
+        ErrorResponse response = 게시글을_추천한다(비회원, 게시글).as(ErrorResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.getErrorCode()).isEqualTo("1008"),
+                () -> assertThat(response.getMessage()).isEqualTo("회원이 아니므로 권한이 없습니다.")
+        );
+    }
+
+    @Test
     void 로그인_후_게시글_추천을_취소한다() {
         //given
         AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
@@ -46,6 +64,23 @@ public class LikeAcceptanceTest extends AcceptanceTest {
 
         //then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Test
+    void 유저가_로그인을_하지_않고_추천취소를_할_수_없다() {
+        //given
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        ArticleIdResponse 게시글 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
+        AccessTokenResponse 비회원 = new AccessTokenResponse(null);
+
+        //when
+        ErrorResponse response = 게시글_추천을_취소한다(비회원, 게시글).as(ErrorResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.getErrorCode()).isEqualTo("1008"),
+                () -> assertThat(response.getMessage()).isEqualTo("회원이 아니므로 권한이 없습니다.")
+        );
     }
 
     @Test

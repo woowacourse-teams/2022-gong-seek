@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.like.presentation;
 
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
+import com.woowacourse.gongseek.auth.presentation.LoginUser;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.like.application.LikeService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class LikeController {
 
     private final LikeService likeService;
 
+    @LoginUser
     @PostMapping
     public ResponseEntity<Void> likeArticle(
             @PathVariable Long articleId,
@@ -27,6 +29,7 @@ public class LikeController {
         return ResponseEntity.ok().build();
     }
 
+    @LoginUser
     @DeleteMapping
     public ResponseEntity<Void> unlikeArticle(
             @PathVariable Long articleId,
