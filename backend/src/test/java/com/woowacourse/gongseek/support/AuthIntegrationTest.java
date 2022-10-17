@@ -5,7 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest
-public abstract class AuthIntegrationTest extends RedisContainerTest{
+public abstract class AuthIntegrationTest extends RedisContainerTest {
 
     @MockBean
     protected OAuthClient githubOAuthClient;
