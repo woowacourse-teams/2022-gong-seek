@@ -5,7 +5,7 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleDetailResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.TempArticlesResponse;
-import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
+import com.woowacourse.gongseek.auth.presentation.anntation.AuthenticationPrinciple;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;

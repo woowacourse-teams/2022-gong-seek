@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.comment.presentation;
 
-import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
-import com.woowacourse.gongseek.auth.presentation.LoginUser;
+import com.woowacourse.gongseek.auth.presentation.anntation.AuthenticationPrinciple;
+import com.woowacourse.gongseek.auth.presentation.anntation.LoginUser;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.application.CommentService;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;

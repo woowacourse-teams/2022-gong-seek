@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.vote.presentation;
 
-import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
-import com.woowacourse.gongseek.auth.presentation.LoginUser;
+import com.woowacourse.gongseek.auth.presentation.anntation.AuthenticationPrinciple;
+import com.woowacourse.gongseek.auth.presentation.anntation.LoginUser;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.vote.application.VoteService;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;

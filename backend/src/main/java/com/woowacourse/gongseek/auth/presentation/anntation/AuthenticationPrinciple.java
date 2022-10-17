@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.auth.presentation;
+package com.woowacourse.gongseek.auth.presentation.anntation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

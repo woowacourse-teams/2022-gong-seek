@@ -15,7 +15,7 @@ public class UserCheckAspect {
 
     private static final String GUEST_ACCESS_TOKEN = "Bearer null";
 
-    @Before("@annotation(com.woowacourse.gongseek.auth.presentation.LoginUser)")
+    @Before("@annotation(com.woowacourse.gongseek.auth.presentation.anntation.LoginUser)")
     public void checkLoginUser() {
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
