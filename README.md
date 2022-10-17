@@ -42,13 +42,14 @@
 
 
 ### 백엔드 🔥
-![기술스택 ](https://user-images.githubusercontent.com/70756680/190581698-e61245a7-75fd-4d5c-923c-8fbca232887b.png)
-
+![기술스택 001 (1)](https://user-images.githubusercontent.com/60773373/196128715-79a97d37-ad05-480c-a190-d3d4a9ba59d0.jpeg)
 
 <hr>
 
 ## 아키텍쳐
 <img width="1028" alt="스크린샷 2022-10-12 오후 9 56 51" src="https://user-images.githubusercontent.com/60773373/195483475-41ffa01c-0267-4d1f-b10e-4bdf5701ed63.png">
+
+<hr> 
 
 ## CI / CD 
 
