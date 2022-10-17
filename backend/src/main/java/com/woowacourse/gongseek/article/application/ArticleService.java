@@ -183,8 +183,7 @@ public class ArticleService {
     public ArticlePageResponse getAllByLikes(Long cursorId, Long cursorLikes, String category, Pageable pageable,
                                              AppMember appMember) {
         Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(cursorId, cursorLikes, category,
-                appMember.getPayload(),
-                pageable);
+                appMember.getPayload(), pageable);
         return ArticlePageResponse.of(articles);
     }
 
@@ -192,8 +191,8 @@ public class ArticleService {
         List<Article> articles = articleRepository.findAll();
         articles.forEach(
                 article -> article.updateLikeCountAndCommentCount(
-                                likeRepository.countByArticleId(article.getId()),
-                                commentRepository.countByArticleId(article.getId()))
+                        likeRepository.countByArticleId(article.getId()),
+                        commentRepository.countByArticleId(article.getId()))
         );
     }
 }
