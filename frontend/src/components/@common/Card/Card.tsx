@@ -18,7 +18,7 @@ const Card = ({
 	const carouselRef = useRef<HTMLElement | null>(null);
 
 	useEffect(() => {
-		if (carouselRef.current) {
+		if (carouselRef.current && isActive !== undefined) {
 			carouselRef.current.inert = !isActive;
 		}
 	}, [carouselRef, isActive]);
