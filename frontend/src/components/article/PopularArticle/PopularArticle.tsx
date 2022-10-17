@@ -28,8 +28,12 @@ const PopularArticle = () => {
 
 	return data ? (
 		<S.Container ref={handleCarouselElementRef} role="tablist">
-			<S.LeftArrowButton aria-label="이전" aria-disabled={currentIndex === 0}>
-				<S.LeftArrowIcon onClick={handleLeftSlideEvent} />
+			<S.LeftArrowButton
+				aria-label="이전"
+				aria-disabled={currentIndex === 0}
+				onClick={handleLeftSlideEvent}
+			>
+				<S.LeftArrowIcon />
 			</S.LeftArrowButton>
 			<S.ArticleContent>
 				<PopularArticleItem article={data.articles[data.articles.length - 1]} isActive={false} />
@@ -46,8 +50,8 @@ const PopularArticle = () => {
 				))}
 				<PopularArticleItem article={data.articles[0]} isActive={false} />
 			</S.ArticleContent>
-			<S.RightArrowButton aria-label="다음">
-				<S.RightArrowIcon onClick={handleRightSlideEvent} />
+			<S.RightArrowButton aria-label="다음" onClick={handleRightSlideEvent}>
+				<S.RightArrowIcon />
 			</S.RightArrowButton>
 		</S.Container>
 	) : null;
