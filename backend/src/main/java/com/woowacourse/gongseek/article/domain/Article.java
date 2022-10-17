@@ -80,18 +80,15 @@ public class Article extends BaseTimeEntity {
         views.addValue();
     }
 
-    public void update(String title, String content) {
+    public void update(String title, String content, Tags tags) {
         this.title = new Title(title);
         this.content = new Content(content);
+        articleTags.clear();
+        addTag(tags);
     }
 
     public void addTag(Tags tags) {
         articleTags.add(this, tags);
-    }
-
-    public void updateTag(Tags tags) {
-        articleTags.clear();
-        addTag(tags);
     }
 
     public boolean cannotCreateVote() {
@@ -112,6 +109,10 @@ public class Article extends BaseTimeEntity {
 
     public int getViews() {
         return views.getValue();
+    }
+
+    public List<Long> getTagIds() {
+        return this.articleTags.getTagIds();
     }
 
     public List<String> getTagNames() {

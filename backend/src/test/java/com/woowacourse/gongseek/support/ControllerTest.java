@@ -6,6 +6,7 @@ import com.woowacourse.gongseek.article.application.TempArticleService;
 import com.woowacourse.gongseek.article.presentation.ArticleController;
 import com.woowacourse.gongseek.article.presentation.TempArticleController;
 import com.woowacourse.gongseek.auth.application.AuthService;
+import com.woowacourse.gongseek.auth.infra.GithubOAuthClient;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.presentation.AuthController;
 import com.woowacourse.gongseek.comment.application.CommentService;
@@ -39,6 +40,9 @@ public abstract class ControllerTest {
 
     @MockBean
     protected ArticleService articleService;
+
+    @MockBean
+    protected GithubOAuthClient oAuthClient;
 
     @MockBean
     protected JwtTokenProvider jwtTokenProvider;

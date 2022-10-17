@@ -161,7 +161,7 @@ class CommentServiceTest extends IntegrationTest {
                 () -> assertThat(savedComments.get(0).getAuthor())
                         .usingRecursiveComparison()
                         .isEqualTo(new MemberDto(ANONYMOUS_NAME, ANONYMOUS_AVATAR_URL)),
-                () -> assertThat(savedComments.get(0).isAuthor()).isTrue()
+                () -> assertThat(savedComments.get(0).getIsAuthor()).isTrue()
         );
     }
 
@@ -175,7 +175,7 @@ class CommentServiceTest extends IntegrationTest {
         List<CommentResponse> savedComments = commentService.getAllByArticleId(new LoginMember(newMember.getId()),
                 article.getId()).getComments();
         List<CommentResponse> authorizedComments = savedComments.stream()
-                .filter(CommentResponse::isAuthor)
+                .filter(CommentResponse::getIsAuthor)
                 .collect(Collectors.toList());
 
         assertAll(
@@ -192,7 +192,7 @@ class CommentServiceTest extends IntegrationTest {
         List<CommentResponse> savedComments = commentService.getAllByArticleId(new GuestMember(),
                 article.getId()).getComments();
         List<CommentResponse> authorizedComments = savedComments.stream()
-                .filter(CommentResponse::isAuthor)
+                .filter(CommentResponse::getIsAuthor)
                 .collect(Collectors.toList());
 
         assertAll(

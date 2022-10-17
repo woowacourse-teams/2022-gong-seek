@@ -9,6 +9,8 @@ import PublicRouter from '@/components/@helper/router/PublicRouter';
 import Header from '@/components/@layout/Header/Header';
 import TabBar from '@/components/@layout/TabBar/TabBar';
 import { URL } from '@/constants/url';
+import useHandleHeaderByScroll from '@/hooks/common/useHandleHeaderByScroll';
+import usePageChange from '@/hooks/common/usePageChange';
 import { dropdownState } from '@/store/dropdownState';
 import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
@@ -91,6 +93,13 @@ const App = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const [sliderState, setSliderState] = useRecoilState(menuSliderState);
 	const [dropdown, setDropdown] = useRecoilState(dropdownState);
+	const { setIsActiveHeader } = useHandleHeaderByScroll();
+
+	const handleChangePage = () => {
+		setIsActiveHeader(true);
+	};
+
+	usePageChange(handleChangePage);
 
 	return (
 		<Layout
