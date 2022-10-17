@@ -8,7 +8,7 @@ export const CategoryTitleContainer = styled.div`
 	justify-content: space-between;
 	align-items: center;
 
-	margin-top: ${({ theme }) => theme.size.SIZE_050};
+	margin-top: ${({ theme }) => theme.size.SIZE_022};
 
 	z-index: ${({ theme }) => theme.zIndex.CATEGORY_TITLE_CONTAINER};
 `;
