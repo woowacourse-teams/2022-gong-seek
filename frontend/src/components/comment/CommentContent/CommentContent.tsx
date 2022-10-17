@@ -21,11 +21,13 @@ const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
 						aria-label="댓글을 입력하는 창으로 이동하는 링크 입니다"
 						onClick={handleCommentPlusButton}
 						disabled={!isLogin}
+						tabIndex={0}
 					/>
 					<S.CreateCommentButton
 						aria-label="댓글을 입력하는 창으로 이동하는 링크입니다."
 						onClick={handleCommentPlusButton}
 						disabled={!isLogin}
+						tabIndex={0}
 					/>
 				</S.CommentInputBox>
 
@@ -33,7 +35,9 @@ const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
 					<S.CommentTitle>댓글</S.CommentTitle>
 					<S.CommentTotal>
 						<S.CommentIcon />
-						<div>{commentList.length || 0}개</div>
+						<div aria-label={`댓글 갯수 ${commentList.length}`} tabIndex={0}>
+							{commentList.length || 0}개
+						</div>
 					</S.CommentTotal>
 				</S.CommentHeader>
 
@@ -47,6 +51,7 @@ const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
 							content={item.content}
 							createdAt={item.createdAt}
 							isAuthor={item.isAuthor}
+							tabIndex={0}
 						/>
 					))
 				) : (
