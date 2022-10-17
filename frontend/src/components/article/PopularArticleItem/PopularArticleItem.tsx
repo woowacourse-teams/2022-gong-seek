@@ -37,7 +37,7 @@ const PopularArticleItem = ({
 
 	return (
 		<>
-			<Card {...PopularArticleItemCardStyle} isActive={isActive} onClick={onClick}>
+			<Card {...PopularArticleItemCardStyle} isActive={isActive} onClick={onClick} role="link">
 				<div
 					css={css`
 						background: #ba55d3;
@@ -52,6 +52,7 @@ const PopularArticleItem = ({
 					<S.ProfileBox>
 						<S.UserProfile
 							src={convertGithubAvatarUrlForResize(author.avatarUrl)}
+							alt="프로필 이미지"
 							css={css`
 								border: 2px solid transparent;
 								background-image: linear-gradient(to bottom, #ffffcc 7%, #ff9900 96%),
@@ -86,15 +87,16 @@ const PopularArticleItem = ({
 						<S.ArticleTimeStamp>{dateTimeConverter(createdAt)}</S.ArticleTimeStamp>
 						<S.ArticleInfoSubBox>
 							<PopularS.IconContainer>
-								<PopularS.CommentIcon />
-								{commentCount}
+								<PopularS.CommentIcon aria-label="댓글수" />
+								{commentCount.toLocaleString()}
 							</PopularS.IconContainer>
 							<PopularS.IconContainer>
-								<PopularS.ViewIcon /> {views}
+								<PopularS.ViewIcon aria-label="조회수" />
+								{views.toLocaleString()}
 							</PopularS.IconContainer>
 							<PopularS.IconContainer>
-								<PopularS.HeartIcon />
-								{likeCount}
+								<PopularS.HeartIcon aria-label="좋아요수" />
+								{likeCount.toLocaleString()}
 							</PopularS.IconContainer>
 						</S.ArticleInfoSubBox>
 					</S.ArticleInfoBox>
@@ -107,7 +109,12 @@ const PopularArticleItem = ({
 					>
 						{tag &&
 							tag.length >= 1 &&
-							tag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}
+							tag.map((item) => (
+								<S.HashTagItem key={item}>
+									<span aria-label="해시태그">#</span>
+									{item}
+								</S.HashTagItem>
+							))}
 					</S.HashTagListBox>
 				</div>
 			</Card>

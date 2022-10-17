@@ -27,8 +27,8 @@ const PopularArticle = () => {
 	};
 
 	return data ? (
-		<S.Container ref={handleCarouselElementRef}>
-			<S.LeftArrowButton>
+		<S.Container ref={handleCarouselElementRef} role="tablist">
+			<S.LeftArrowButton aria-label="이전" aria-disabled={currentIndex === 0}>
 				<S.LeftArrowIcon onClick={handleLeftSlideEvent} />
 			</S.LeftArrowButton>
 			<S.ArticleContent>
@@ -46,7 +46,7 @@ const PopularArticle = () => {
 				))}
 				<PopularArticleItem article={data.articles[0]} isActive={false} />
 			</S.ArticleContent>
-			<S.RightArrowButton>
+			<S.RightArrowButton aria-label="다음">
 				<S.RightArrowIcon onClick={handleRightSlideEvent} />
 			</S.RightArrowButton>
 		</S.Container>
