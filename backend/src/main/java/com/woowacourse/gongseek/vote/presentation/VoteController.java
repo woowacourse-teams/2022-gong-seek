@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.vote.presentation;
 
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
+import com.woowacourse.gongseek.auth.presentation.LoginUser;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.vote.application.VoteService;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
@@ -25,6 +26,7 @@ public class VoteController {
 
     private final VoteService voteService;
 
+    @LoginUser
     @PostMapping
     public ResponseEntity<VoteCreateResponse> create(
             @AuthenticationPrinciple AppMember appMember,
@@ -42,6 +44,7 @@ public class VoteController {
         return ResponseEntity.ok(voteService.getOne(articleId, appMember));
     }
 
+    @LoginUser
     @PostMapping("/do")
     public ResponseEntity<Void> doVote(
             @AuthenticationPrinciple AppMember appMember,

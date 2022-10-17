@@ -185,7 +185,7 @@ class VoteServiceTest extends IntegrationTest {
     }
 
     @Test
-    void 비회원이_투표를_하면_예외를_발생한다() {
+    void 존재하지_않는_회원이_투표를_하면_예외를_발생한다() {
         assertThatThrownBy(() -> voteService.doVote(discussionArticle.getId(), new GuestMember(),
                 new SelectVoteItemIdRequest(voteItems.get(0).getId())))
                 .isExactlyInstanceOf(MemberNotFoundException.class)

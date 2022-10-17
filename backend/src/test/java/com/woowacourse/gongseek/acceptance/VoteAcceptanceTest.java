@@ -211,8 +211,8 @@ public class VoteAcceptanceTest extends AcceptanceTest {
                 new SelectVoteItemIdRequest(votedItemId)).as(
                 ErrorResponse.class);
         assertAll(
-                () -> assertThat(response.getErrorCode()).isEqualTo("2001"),
-                () -> assertThat(response.getMessage()).contains("회원이 존재하지 않습니다.")
+                () -> assertThat(response.getErrorCode()).isEqualTo("1008"),
+                () -> assertThat(response.getMessage()).contains("회원이 아니므로 권한이 없습니다.")
         );
     }
 }
