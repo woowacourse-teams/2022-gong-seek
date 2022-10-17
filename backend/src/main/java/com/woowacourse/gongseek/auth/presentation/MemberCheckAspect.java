@@ -11,11 +11,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Component
 @Aspect
-public class UserCheckAspect {
+public class MemberCheckAspect {
 
     private static final String GUEST_ACCESS_TOKEN = "Bearer null";
 
-    @Before("@annotation(com.woowacourse.gongseek.auth.presentation.anntation.LoginUser)")
+    @Before("@annotation(com.woowacourse.gongseek.auth.presentation.anntation.LoginMember)")
     public void checkLoginUser() {
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
