@@ -5,6 +5,7 @@ import * as S from '@/components/@layout/Header/Header.styles';
 import SearchBar from '@/components/search/SearchBar/SearchBar';
 import UserProfileIcon from '@/components/user/UserProfileIcon/UserProfileIcon';
 import { URL } from '@/constants/url';
+import useEnterToClick from '@/hooks/common/useEnterToClick';
 import useHandleHeaderByScroll from '@/hooks/common/useHandleHeaderByScroll';
 import useScroll from '@/hooks/common/useScroll';
 import { searchState } from '@/store/searchState';
@@ -14,6 +15,8 @@ const Header = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const { isSearchOpen } = useRecoilValue(searchState);
 	const { handleHeaderViewByScroll, headerElement, isActiveHeader } = useHandleHeaderByScroll();
+	const { ref } = useEnterToClick();
+
 	useScroll(handleHeaderViewByScroll);
 
 	if (isSearchOpen) {
@@ -54,7 +57,7 @@ const Header = () => {
 					<S.NavBarItem to={URL.INQUIRE}>문의하기</S.NavBarItem>
 				</S.NavBarItemBox>
 				{isLogin ? (
-					<S.ProfileIconBox>
+					<S.ProfileIconBox ref={ref}>
 						<UserProfileIcon />
 					</S.ProfileIconBox>
 				) : (
