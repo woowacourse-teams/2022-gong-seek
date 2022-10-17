@@ -3,15 +3,6 @@ import { AiOutlineLeft } from 'react-icons/ai';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-export const showPopularSlider = [
-	{
-		transform: 'rotateY(-0.2turn)',
-	},
-	{
-		transform: 'rotateY(0)',
-	},
-];
-
 export const animationTiming = {
 	duration: 500,
 	iterations: 1,
@@ -29,7 +20,6 @@ export const Container = styled.section`
 	margin: 0 auto;
 	overflow: hidden;
 	scroll-snap-type: x proximity;
-	-webkit-overflow-scrolling: touch;
 
 	&::-webkit-scrollbar {
 		opacity: 0;
@@ -136,6 +126,7 @@ export const ArticleContent = styled.div`
 	width: 100%;
 	gap: 1rem;
 	padding: 1rem;
+
 	${({ theme }) => css`
 		border-radius: ${theme.size.SIZE_010};
 
