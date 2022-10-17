@@ -40,23 +40,23 @@ const Home = () => {
 				<PopularArticle />
 			</Suspense>
 			<S.CategoryTitleContainer>
-				<S.CategoryTitleBox role="tablist">
+				<S.CategoryTitleBox>
 					<S.CategoryTitle
 						isActive={currentCategory === 'question'}
 						onClick={() => handleClickCategoryTitle('question')}
-						role="tab"
 						tabIndex={0}
 						aria-pressed={currentCategory === 'question'}
+						role="button"
 						aria-live="polite"
 					>
 						질문
 					</S.CategoryTitle>
 					<S.CategoryTitle
 						isActive={currentCategory === 'discussion'}
-						onClick={() => handleClickCategoryTitle('discussion')}
-						role="tab"
+						onClick={() => setCurrentCategory('discussion')}
 						tabIndex={0}
 						aria-pressed={currentCategory === 'discussion'}
+						role="button"
 						aria-live="polite"
 					>
 						토론

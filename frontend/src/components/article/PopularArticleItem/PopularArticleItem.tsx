@@ -37,7 +37,7 @@ const PopularArticleItem = ({
 
 	return (
 		<>
-			<Card {...PopularArticleItemCardStyle} isActive={isActive} onClick={onClick} role="link">
+			<Card {...PopularArticleItemCardStyle} isActive={isActive} onClick={onClick} role="tab">
 				<div
 					css={css`
 						background: #ba55d3;
