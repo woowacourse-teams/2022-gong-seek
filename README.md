@@ -62,25 +62,5 @@
 | <img src="https://avatars.githubusercontent.com/u/60054318?v=4" width=400px alt="기론"/> | <img src="https://avatars.githubusercontent.com/u/70756680?v=4" width=400px alt="레넌"/> | <img src="https://avatars.githubusercontent.com/u/46413629?v=4" width=400px alt="슬로"/> | <img src="https://avatars.githubusercontent.com/u/78091011?v=4" width=400px alt="주디"> | <img src="https://avatars.githubusercontent.com/u/60773373?v=4" width=400px alt="샐리"> | <img src="https://avatars.githubusercontent.com/u/85891751?v=4" width=400px alt="자스민"> |
 |                           [기론](https://github.com/Gyuchool)                            |                            [레넌](https://github.com/brorae)                             |                            [슬로](https://github.com/hanull)                             |                           [주디](https://github.com/jurlring)                           |                           [샐리](https://github.com/liswktjs)                           |                         [자스민](https://github.com/hwangstar156)                         |
 
-- ## 팀 문화 🌈
-  1. 데일리 스크럼은 오전 11시에, 오후 5시 30분에 각각 30분씩 진행
-     - 오전 : 안건, 각자 할 일을 공유
-     - 오후 : 오전의 할 일을 얼마나 진행했는지 공유, 회의 이후 진행할 사항이 있다면 공유
-  2. 하고 싶은 말 쌓아두지 않기
-     - 매주 금요일 아침 11시 찐하게 회고하기
-     - 스프린트 데모 주간에는 공식적인 시간에 하기
-  3. 모두의 시간은 소중!
-     - 회의 안건에 대해서 생각해보기
-     - 안건이 생기면 미리 공유하기
-     - 자신의 의견에 대한 근거 준비하기
-     - 18시 이후로는 큰 일이 아닌 이상 터치 금지
-     - 주말에 같이 놀자하는거 빼고는 노터치!
-  4. 세상에 바보같은 질문은 없다
-  5. 어떠한 질문이나 의견에 대해서도 잘 들어주기
-  6. 회의 시간, 쉬는 시간 지키기
-     - 진행 시간 : 45분
-     - 쉬는 시간 : 10분
-  7. 11시 1분은 11시가 아니다
-     - 5분에 커피 한 잔
-  8. 매 회의마다 사진을 남기자….❤️‍🔥
-  9. 매주 수요일 아침 10시에 공식데이(지식공유)를 진행한다.
+## 팀 문화 🌈
+ ![image](https://user-images.githubusercontent.com/78091011/196090934-8ff40491-3c4c-4c1f-9e57-5e2ebc877391.png)
