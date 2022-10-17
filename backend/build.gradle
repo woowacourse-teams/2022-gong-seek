@@ -48,6 +48,7 @@ dependencies {
     // spring-boot
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
 
     // jwt
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
