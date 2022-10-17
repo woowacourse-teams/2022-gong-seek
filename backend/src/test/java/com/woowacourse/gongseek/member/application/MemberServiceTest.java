@@ -107,8 +107,8 @@ class MemberServiceTest extends IntegrationTest {
     @Test
     void 회원이_작성한_게시글의_댓글수를_확인한다() {
         Article article = articleRepository.save(new Article("title1", "content1", Category.QUESTION, member, false));
-        commentRepository.save(new Comment("hi1", member, article, false));
-        commentRepository.save(new Comment("hi2", member, article, false));
+        commentService.save(new LoginMember(member.getId()), article.getId(), new CommentRequest("hi1", false));
+        commentService.save(new LoginMember(member.getId()), article.getId(), new CommentRequest("hi2", false));
 
         MyPageArticlesResponse myPageArticlesResponse = memberService.getArticles(new LoginMember(member.getId()));
 

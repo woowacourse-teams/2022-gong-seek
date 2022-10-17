@@ -51,13 +51,19 @@ public class Article extends BaseTimeEntity {
     private Member member;
 
     @Embedded
-    private Views views;
-
-    @Embedded
     private ArticleTags articleTags;
 
     @Column(nullable = false)
     private boolean isAnonymous;
+
+    @Embedded
+    private Views views;
+
+    @Embedded
+    private LikeCount likeCount;
+
+    @Embedded
+    private CommentCount commentCount;
 
     public Article(String title, String content, Category category, Member member, boolean isAnonymous) {
         this(
@@ -66,9 +72,11 @@ public class Article extends BaseTimeEntity {
                 new Content(content),
                 category,
                 member,
-                new Views(),
                 new ArticleTags(),
-                isAnonymous
+                isAnonymous,
+                new Views(),
+                new LikeCount(),
+                new CommentCount()
         );
     }
 
@@ -80,11 +88,32 @@ public class Article extends BaseTimeEntity {
         views.addValue();
     }
 
+    public void addLikeCount() {
+        likeCount.addValue();
+    }
+
+    public void minusLikeCount() {
+        likeCount.minusValue();
+    }
+
+    public void addCommentCount() {
+        commentCount.addValue();
+    }
+
+    public void minusCommentCount() {
+        commentCount.minusValue();
+    }
+
     public void update(String title, String content, Tags tags) {
         this.title = new Title(title);
         this.content = new Content(content);
         articleTags.clear();
         addTag(tags);
+    }
+
+    public void updateLikeCountAndCommentCount(long likeCount, long commentCount) {
+        this.likeCount.updateValue(likeCount);
+        this.commentCount.updateValue(commentCount);
     }
 
     public void addTag(Tags tags) {
@@ -107,8 +136,16 @@ public class Article extends BaseTimeEntity {
         return member.getMemberOrAnonymous(isAnonymous);
     }
 
-    public int getViews() {
+    public long getViews() {
         return views.getValue();
+    }
+
+    public long getLikeCount() {
+        return likeCount.getValue();
+    }
+
+    public long getCommentCount() {
+        return commentCount.getValue();
     }
 
     public List<Long> getTagIds() {

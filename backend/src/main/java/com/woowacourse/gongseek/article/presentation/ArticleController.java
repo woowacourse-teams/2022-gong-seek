@@ -69,7 +69,7 @@ public class ArticleController {
             @RequestParam String category,
             @RequestParam String sort,
             @RequestParam(required = false) Long cursorId,
-            @RequestParam(required = false) Integer cursorViews,
+            @RequestParam(required = false) Long cursorViews,
             Pageable pageable,
             @AuthenticationPrinciple AppMember appMember
     ) {

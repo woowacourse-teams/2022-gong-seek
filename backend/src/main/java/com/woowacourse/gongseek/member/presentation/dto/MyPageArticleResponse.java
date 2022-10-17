@@ -21,7 +21,7 @@ public class MyPageArticleResponse {
 
     private long commentCount;
 
-    private int views;
+    private long views;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
@@ -29,12 +29,12 @@ public class MyPageArticleResponse {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime updatedAt;
 
-    public MyPageArticleResponse(Article article, long commentCount) {
+    public MyPageArticleResponse(Article article) {
         this(
                 article.getId(),
                 article.getTitle(),
                 article.getCategory().getValue(),
-                commentCount,
+                article.getCommentCount(),
                 article.getViews(),
                 article.getCreatedAt(),
                 article.getUpdatedAt()

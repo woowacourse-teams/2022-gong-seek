@@ -91,7 +91,7 @@ public class ArticleFixture {
     }
 
     public static ExtractableResponse<Response> 게시글_전체를_조회한다(String category, String sort, Long cursorId,
-                                                             Integer cursorViews) {
+                                                             Long cursorViews) {
         return RestAssured
                 .given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + null)

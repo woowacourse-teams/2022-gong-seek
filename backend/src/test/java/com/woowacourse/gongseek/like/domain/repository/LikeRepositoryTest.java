@@ -48,4 +48,17 @@ class LikeRepositoryTest {
 
         assertThat(likeRepository.existsById(like.getId())).isFalse();
     }
+
+    @Test
+    void 게시글의_추천수를_조회한다() {
+        Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
+        Member otherMember = memberRepository.save(new Member("rennon", "brorae", "avatarUrl"));
+        Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
+        likeRepository.save(new Like(article, member));
+        likeRepository.save(new Like(article, otherMember));
+
+        Long count = likeRepository.countByArticleId(article.getId());
+
+        assertThat(count).isEqualTo(2);
+    }
 }
