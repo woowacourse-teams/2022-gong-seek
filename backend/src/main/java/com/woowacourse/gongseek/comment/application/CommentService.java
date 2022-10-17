@@ -4,7 +4,6 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
-import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
@@ -32,17 +31,10 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     public void save(AppMember appMember, Long articleId, CommentRequest commentRequest) {
-        validateGuest(appMember);
         Member member = getMember(appMember);
         Article article = getArticle(articleId);
 
         commentRepository.save(commentRequest.toComment(member, article));
-    }
-
-    private void validateGuest(AppMember appMember) {
-        if (appMember.isGuest()) {
-            throw new NotMemberException();
-        }
     }
 
     private Member getMember(AppMember appMember) {
@@ -76,7 +68,6 @@ public class CommentService {
     }
 
     private Comment checkAuthorization(AppMember appMember, Long commentId) {
-        validateGuest(appMember);
         Comment comment = getComment(commentId);
         Member member = getMember(appMember);
         validateAuthor(comment, member);

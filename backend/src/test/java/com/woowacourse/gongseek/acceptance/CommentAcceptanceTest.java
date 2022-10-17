@@ -145,6 +145,25 @@ public class CommentAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    void 유저가_로그인을_하지_않고_댓글을_수정할_수_없다() {
+        //given
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        ArticleIdResponse 게시글번호 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
+        익명으로_댓글을_등록한다(엑세스토큰, 게시글번호);
+        List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호).getComments();
+        AccessTokenResponse 비회원 = new AccessTokenResponse(null);
+
+        //when
+        ErrorResponse response = 댓글을_수정한다(비회원, 댓글리스트).as(ErrorResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.getErrorCode()).isEqualTo("1008"),
+                () -> assertThat(response.getMessage()).isEqualTo("회원이 아니므로 권한이 없습니다.")
+        );
+    }
+
+    @Test
     void 기명_댓글의_작성자가_아닌_경우_수정할_수_없다() {
         //given
         AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
@@ -201,6 +220,25 @@ public class CommentAcceptanceTest extends AcceptanceTest {
 
         //then
         assertThat(삭제된댓글.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    void 유저가_로그인을_하지_않고_댓글을_삭제할_수_없다() {
+        //given
+        AccessTokenResponse 엑세스토큰 = 로그인을_한다(주디);
+        ArticleIdResponse 게시글번호 = 토론_게시글을_기명으로_등록한다(엑세스토큰);
+        익명으로_댓글을_등록한다(엑세스토큰, 게시글번호);
+        List<CommentResponse> 댓글리스트 = 댓글을_조회한다(엑세스토큰, 게시글번호).getComments();
+        AccessTokenResponse 비회원 = new AccessTokenResponse(null);
+
+        //when
+        ErrorResponse response = 댓글을_삭제한다(비회원, 댓글리스트).as(ErrorResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.getErrorCode()).isEqualTo("1008"),
+                () -> assertThat(response.getMessage()).isEqualTo("회원이 아니므로 권한이 없습니다.")
+        );
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.comment.presentation;
 
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
+import com.woowacourse.gongseek.auth.presentation.LoginUser;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.application.CommentService;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
@@ -26,6 +27,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    @LoginUser
     @PostMapping("/{articleId}/comments")
     public ResponseEntity<Void> create(
             @AuthenticationPrinciple AppMember appMember,
@@ -44,6 +46,7 @@ public class CommentController {
         return ResponseEntity.ok(commentService.getAllByArticleId(appMember, articleId));
     }
 
+    @LoginUser
     @PutMapping("/comments/{commentId}")
     public ResponseEntity<Void> update(
             @AuthenticationPrinciple AppMember appMember,
@@ -53,6 +56,7 @@ public class CommentController {
         return ResponseEntity.ok().build();
     }
 
+    @LoginUser
     @DeleteMapping("/comments/{commentId}")
     public ResponseEntity<Void> delete(
             @AuthenticationPrinciple AppMember appMember,
