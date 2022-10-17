@@ -32,12 +32,7 @@ const Dropdown = ({ onCloseDropdown }: { onCloseDropdown: () => void }) => {
 	};
 
 	return (
-		<S.Container
-			role="tablist"
-			aria-orientation="vertical"
-			aria-controls="user-dropdown"
-			tabIndex={0}
-		>
+		<S.Container role="tablist" aria-orientation="vertical" tabIndex={0}>
 			<S.DropdownItem
 				onClick={handleClickNavigateMypage}
 				role="tab"

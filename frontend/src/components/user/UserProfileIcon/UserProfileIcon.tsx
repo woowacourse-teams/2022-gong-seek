@@ -45,10 +45,9 @@ const UserProfileIcon = () => {
 				}))
 			}
 			onKeyDown={handleUserProfileIconKeydown}
-			id="user-dropdown"
 		>
-			{isLoading && <S.UserProfile src={gongseek} alt="작성자 프로필" />}
-			{isSuccess && <S.UserProfile src={data?.avatarUrl} />}
+			{isLoading && <S.UserProfile src={gongseek} alt="임시 작성자 프로필" />}
+			{isSuccess && <S.UserProfile src={data?.avatarUrl} alt="작성자 프로필" />}
 			{dropdown.isOpen && <Dropdown onCloseDropdown={handleClickUserProfile} />}
 			{isLog && <S.SrOnlyContainer role="alert">닫힘</S.SrOnlyContainer>}
 		</S.Container>
