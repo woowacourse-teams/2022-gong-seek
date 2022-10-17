@@ -14,6 +14,7 @@ const Card = ({
 	children,
 	isActive,
 	role,
+	as,
 }: PropsWithOptionalChildren<CardProps>) => {
 	const carouselRef = useRef<HTMLElement | null>(null);
 
@@ -47,6 +48,7 @@ const Card = ({
 			tabIndex={0}
 			role={role}
 			ref={carouselRef}
+			as={as}
 		>
 			{children}
 		</S.Container>

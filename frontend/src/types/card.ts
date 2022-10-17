@@ -1,3 +1,5 @@
+import { ElementType } from 'react';
+
 export interface CardProps {
 	cssObject: {
 		width: string;
@@ -23,4 +25,5 @@ export interface CardProps {
 	onClick?: () => void;
 	isActive?: boolean;
 	role?: string;
+	as?: ElementType;
 }

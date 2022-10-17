@@ -32,7 +32,7 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 	});
 
 	return (
-		<Card {...ArticleItemCardStyle} onClick={onClick}>
+		<Card {...ArticleItemCardStyle} onClick={onClick} as="li">
 			<S.ArticleItemTitle>
 				<div>{article.title}</div>
 			</S.ArticleItemTitle>
