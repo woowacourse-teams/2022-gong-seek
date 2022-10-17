@@ -27,7 +27,7 @@ const PopularArticle = () => {
 	};
 
 	return data ? (
-		<S.Container ref={handleCarouselElementRef} role="tablist">
+		<S.Container ref={handleCarouselElementRef} role="tablist" aria-labelledby="popular-articles">
 			<S.LeftArrowButton
 				aria-label="이전"
 				aria-disabled={currentIndex === 0}

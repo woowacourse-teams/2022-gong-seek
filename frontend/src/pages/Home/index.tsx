@@ -35,7 +35,7 @@ const Home = () => {
 
 	return (
 		<S.Container ref={ref}>
-			<S.PopularArticleTitle>오늘의 인기글</S.PopularArticleTitle>
+			<S.PopularArticleTitle id="popular-articles">오늘의 인기글</S.PopularArticleTitle>
 			<Suspense fallback={<Loading />}>
 				<PopularArticle />
 			</Suspense>
