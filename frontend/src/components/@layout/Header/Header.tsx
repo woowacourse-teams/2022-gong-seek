@@ -43,7 +43,7 @@ const Header = () => {
 					<S.LogoLink>공식</S.LogoLink>
 				</S.StyledLink>
 				<S.SearchBarBox>
-					<S.StyledLink to={URL.SEARCH_RESULT} aria-label="검색하기 페이지로 이동하기">
+					<S.StyledLink to={URL.SEARCH_RESULT} aria-label="엔터를 눌러 검색을 진행하세요">
 						<SearchBar isValid={true} />
 					</S.StyledLink>
 				</S.SearchBarBox>
