@@ -108,7 +108,9 @@ export const Footer = styled.div`
 	margin-bottom: ${({ theme }) => theme.size.SIZE_020};
 `;
 
-export const WritingOrderBox = styled.div``;
+export const WritingOrderBox = styled.div`
+	margin-top: ${({ theme }) => theme.size.SIZE_018};
+`;
 
 export const ButtonWrapper = styled.div`
 	display: flex;
@@ -116,7 +118,7 @@ export const ButtonWrapper = styled.div`
 	gap: ${({ theme }) => theme.size.SIZE_010};
 `;
 
-export const ModifyButton = styled(AiOutlineEdit)`
+export const EditButton = styled(AiOutlineEdit)`
 	${({ theme }) => css`
 		font-size: ${theme.size.SIZE_024};
 		color: ${theme.colors.BLACK_600};

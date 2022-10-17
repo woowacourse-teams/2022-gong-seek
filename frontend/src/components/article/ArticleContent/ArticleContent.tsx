@@ -55,7 +55,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 					<S.WritingOrderBox>
 						{article.isAuthor && (
 							<S.ButtonWrapper>
-								<S.ModifyButton onClick={navigateUpdateArticle} />
+								<S.EditButton onClick={navigateUpdateArticle} />
 								<S.DeleteButton
 									onClick={() => {
 										handleDeleteArticle(articleId);
