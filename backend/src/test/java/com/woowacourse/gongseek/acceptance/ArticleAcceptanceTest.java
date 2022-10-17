@@ -10,6 +10,7 @@ import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixtur
 import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.로그인_후_게시글을_수정한다;
 import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.로그인_후_게시글을_조회한다;
 import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.로그인_후_해시태그로_게시글들을_검색한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.로그인을_하지_않고_게시글을_삭제한다;
 import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.로그인을_하지_않고_게시글을_수정한다;
 import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.로그인을_하지_않고_게시글을_조회한다;
 import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixture.익명으로_게시글을_등록한다;
@@ -419,6 +420,40 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(articleUpdateResponse.getCategory()).isEqualTo(Category.QUESTION.getValue()),
                 () -> assertThat(articleResponse.getTag()).hasSize(1),
                 () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("JAVA")
+        );
+    }
+
+    @Test
+    void 로그인_하지_않으면_기명_게시글을_삭제할_수_없다() {
+        // given
+        AccessTokenResponse tokenResponse = 로그인을_한다(주디);
+        ArticleIdResponse articleIdResponse = 기명으로_게시글을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
+
+        //when
+        ErrorResponse response = 로그인을_하지_않고_게시글을_삭제한다(articleIdResponse).as(ErrorResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.getErrorCode()).isEqualTo("1008"),
+                () -> assertThat(response.getMessage()).isEqualTo("회원이 아니므로 권한이 없습니다.")
+        );
+    }
+
+    @Test
+    void 로그인_하지_않으면_익명_게시글을_삭제할_수_없다() {
+        // given
+        AccessTokenResponse tokenResponse = 로그인을_한다(주디);
+        ArticleIdResponse articleIdResponse = 익명으로_게시글을_등록한다(tokenResponse, Category.QUESTION).as(
+                ArticleIdResponse.class);
+
+        //when
+        ErrorResponse response = 로그인을_하지_않고_게시글을_삭제한다(articleIdResponse).as(ErrorResponse.class);
+
+        //then
+        assertAll(
+                () -> assertThat(response.getErrorCode()).isEqualTo("1008"),
+                () -> assertThat(response.getMessage()).isEqualTo("회원이 아니므로 권한이 없습니다.")
         );
     }
 

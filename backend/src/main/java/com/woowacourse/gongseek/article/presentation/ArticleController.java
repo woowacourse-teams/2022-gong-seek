@@ -8,6 +8,7 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
+import com.woowacourse.gongseek.auth.presentation.LoginUser;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
+    @LoginUser
     @PostMapping
     public ResponseEntity<ArticleIdResponse> create(
             @AuthenticationPrinciple AppMember appMember,
@@ -45,6 +47,7 @@ public class ArticleController {
         return ResponseEntity.ok(articleService.getOne(appMember, id));
     }
 
+    @LoginUser
     @PutMapping("/{id}")
     public ResponseEntity<ArticleUpdateResponse> update(
             @AuthenticationPrinciple AppMember appMember,
@@ -54,6 +57,7 @@ public class ArticleController {
         return ResponseEntity.ok(articleService.update(appMember, articleUpdateRequest, id));
     }
 
+    @LoginUser
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@AuthenticationPrinciple AppMember appMember, @PathVariable Long id) {
         articleService.delete(appMember, id);

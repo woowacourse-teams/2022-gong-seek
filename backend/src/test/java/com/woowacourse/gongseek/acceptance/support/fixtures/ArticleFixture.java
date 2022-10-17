@@ -148,16 +148,24 @@ public class ArticleFixture {
         return 게시글을_수정한다(null, articleIdResponse);
     }
 
-    public static ExtractableResponse<Response> 로그인_후_게시글을_삭제한다(AccessTokenResponse tokenResponse,
-                                                                ArticleIdResponse articleIdResponse) {
+    private static ExtractableResponse<Response> 게시글을_삭제한다(String accessToken, ArticleIdResponse articleIdResponse) {
         return RestAssured
                 .given().log().all()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.getAccessToken())
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .delete("/api/articles/{id}", articleIdResponse.getId())
+                .delete("/api/articles/{articleId}", articleIdResponse.getId())
                 .then().log().all()
                 .extract();
+    }
+
+    public static ExtractableResponse<Response> 로그인_후_게시글을_삭제한다(AccessTokenResponse tokenResponse,
+                                                                ArticleIdResponse articleIdResponse) {
+        return 게시글을_삭제한다(tokenResponse.getAccessToken(), articleIdResponse);
+    }
+
+    public static ExtractableResponse<Response> 로그인을_하지_않고_게시글을_삭제한다(ArticleIdResponse articleIdResponse) {
+        return 게시글을_삭제한다(null, articleIdResponse);
     }
 
     public static ArticlePageResponse 게시글을_제목과_내용으로_처음_검색한다(int size, String text) {

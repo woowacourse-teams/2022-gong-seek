@@ -13,7 +13,6 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
-import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
@@ -50,7 +49,6 @@ public class ArticleService {
     private final LikeRepository likeRepository;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
-        validateGuest(appMember);
         Member member = getMember(appMember);
 
         Tags foundTags = tagService.getOrCreateTags(Tags.from(articleRequest.getTag()));
@@ -60,12 +58,6 @@ public class ArticleService {
 
         tempArticleService.delete(articleRequest.getTempArticleId(), appMember);
         return new ArticleIdResponse(article);
-    }
-
-    private void validateGuest(AppMember appMember) {
-        if (appMember.isGuest()) {
-            throw new NotMemberException();
-        }
     }
 
     private Member getMember(AppMember appMember) {
@@ -178,7 +170,6 @@ public class ArticleService {
     }
 
     private Article checkAuthorization(AppMember appMember, Long id) {
-        validateGuest(appMember);
         Member member = getMember(appMember);
         Article article = getArticle(id);
         validateAuthor(article, member);
