@@ -45,7 +45,6 @@ export const Container = styled.section<{
 		${({ isActive }) =>
 		isActive === false &&
 		css`
-			pointer-events: none;
 			opacity: 0.7;
 			filter: blur(2px) brightness(50%);
 		`}
