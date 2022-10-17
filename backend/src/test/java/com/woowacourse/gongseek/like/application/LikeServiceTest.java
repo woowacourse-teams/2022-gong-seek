@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.like.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
@@ -43,8 +43,10 @@ class LikeServiceTest extends IntegrationTest {
     void 게시글을_추천한다() {
         Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
         Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
+        likeService.likeArticle(new LoginMember(member.getId()), article.getId());
+        Article foundArticle = articleRepository.findById(article.getId()).get();
 
-        assertDoesNotThrow(() -> likeService.likeArticle(new LoginMember(member.getId()), article.getId()));
+        assertThat(foundArticle.getLikeCount()).isEqualTo(1);
     }
 
     @Test
@@ -82,8 +84,10 @@ class LikeServiceTest extends IntegrationTest {
         Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
         LoginMember appMember = new LoginMember(member.getId());
         likeService.likeArticle(appMember, article.getId());
+        likeService.unlikeArticle(appMember, article.getId());
+        Article foundArticle = articleRepository.findById(article.getId()).get();
 
-        assertDoesNotThrow(() -> likeService.unlikeArticle(new LoginMember(member.getId()), article.getId()));
+        assertThat(foundArticle.getLikeCount()).isEqualTo(0);
     }
 
     @Test

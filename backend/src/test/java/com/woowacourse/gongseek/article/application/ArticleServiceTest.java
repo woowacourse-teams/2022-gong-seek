@@ -11,14 +11,14 @@ import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.TempTags;
 import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
-import com.woowacourse.gongseek.article.domain.repository.ArticleRepositoryCustom;
+import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
 import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
@@ -67,7 +67,7 @@ public class ArticleServiceTest extends IntegrationTest {
     private ArticleRepository articleRepository;
 
     @Autowired
-    private ArticleRepositoryCustom articleRepositoryCustom;
+    private ArticleTagRepository articleTagRepository;
 
     @Autowired
     private PagingArticleRepository pagingArticleRepository;
@@ -508,10 +508,10 @@ public class ArticleServiceTest extends IntegrationTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(null, 0, Category.QUESTION.getValue(), "latest",
+        ArticlePageResponse response = articleService.getAll(null, 0L, Category.QUESTION.getValue(), "latest",
                 PageRequest.ofSize(10),
                 loginMember);
-        List<ArticlePreviewResponse> responses = response.getArticles();
+        List<ArticlePreviewDto> responses = response.getArticles();
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
@@ -532,10 +532,10 @@ public class ArticleServiceTest extends IntegrationTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(10L, 0, Category.QUESTION.getValue(), "latest",
+        ArticlePageResponse response = articleService.getAll(10L, 0L, Category.QUESTION.getValue(), "latest",
                 PageRequest.ofSize(10),
                 loginMember);
-        List<ArticlePreviewResponse> responses = response.getArticles();
+        List<ArticlePreviewDto> responses = response.getArticles();
 
         assertAll(
                 () -> assertThat(responses).hasSize(9),
@@ -546,8 +546,8 @@ public class ArticleServiceTest extends IntegrationTest {
 
     @ParameterizedTest
     @NullSource
-    @ValueSource(ints = {0})
-    void 페이지가_10개씩_조회된_후_더이상_조회할_페이지가_없으면_hasNext는_false가_된다(Integer cursorViews) {
+    @ValueSource(longs = {0L})
+    void 페이지가_10개씩_조회된_후_더이상_조회할_페이지가_없으면_hasNext는_false가_된다(Long cursorViews) {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
@@ -561,7 +561,7 @@ public class ArticleServiceTest extends IntegrationTest {
 
         ArticlePageResponse response = articleService.getAll(null, cursorViews, Category.QUESTION.getValue(),
                 "latest", PageRequest.ofSize(10), loginMember);
-        List<ArticlePreviewResponse> responses = response.getArticles();
+        List<ArticlePreviewDto> responses = response.getArticles();
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
@@ -671,7 +671,7 @@ public class ArticleServiceTest extends IntegrationTest {
                 Pageable.ofSize(3), new LoginMember(member.getId()));
         List<Long> collect = articlePageResponse.getArticles()
                 .stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         assertAll(
@@ -720,7 +720,7 @@ public class ArticleServiceTest extends IntegrationTest {
                 Pageable.ofSize(2), new LoginMember(member.getId()));
         List<Long> collect = articlePageResponse.getArticles()
                 .stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         assertAll(
@@ -790,5 +790,21 @@ public class ArticleServiceTest extends IntegrationTest {
         articleService.save(new LoginMember(member.getId()), articleRequest);
 
         assertThat(tempArticleRepository.existsById(tempArticle.getId())).isFalse();
+    }
+
+    @Transactional
+    @Test
+    void 게시글의_좋아요수와_댓글수를_동기화한다() {
+        ArticleIdResponse response = articleService.save(new LoginMember(member.getId()),
+                new ArticleRequest("title", "content", "question", new ArrayList<>(), false));
+        Article article = articleRepository.findById(response.getId()).get();
+        article.updateLikeCountAndCommentCount(10L, 10L);
+
+        articleService.synchronizeLikeCountAndCommentCount();
+
+        assertAll(
+                () -> assertThat(article.getLikeCount()).isEqualTo(0),
+                () -> assertThat(article.getCommentCount()).isEqualTo(0)
+        );
     }
 }
