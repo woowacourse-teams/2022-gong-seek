@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 export const Container = styled.section`
 	display: flex;
 	justify-content: center;
+	align-items: center;
 
 	width: 100%;
 `;
@@ -36,6 +37,7 @@ export const ArticleListBox = styled.div`
 export const ArticleItemBox = styled.div`
 	display: flex;
 	align-items: center;
+	justify-content: center;
 
-	width: 90%;
+	width: 80%;
 `;

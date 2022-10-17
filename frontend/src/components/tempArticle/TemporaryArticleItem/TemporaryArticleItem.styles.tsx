@@ -5,7 +5,7 @@ export const Container = styled.section`
 	display: flex;
 	flex-direction: column;
 
-	width: 85%;
+	width: 80%;
 	height: ${({ theme }) => theme.size.SIZE_050};
 
 	${({ theme }) => css`
