@@ -1,4 +1,3 @@
-import { theme } from '@/styles/Theme';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
