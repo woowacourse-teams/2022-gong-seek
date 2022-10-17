@@ -1,23 +1,22 @@
 package com.woowacourse.gongseek.config;
 
-import com.woowacourse.gongseek.article.application.ArticleService;
-import com.woowacourse.gongseek.article.domain.scheduler.CountScheduler;
-import org.springframework.context.annotation.Bean;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.SchedulingConfigurer;
+import org.springframework.scheduling.config.ScheduledTaskRegistrar;
+import org.springframework.scheduling.config.TriggerTask;
 
+@RequiredArgsConstructor
 @Configuration
-@EnableScheduling
-public class SchedulerConfig {
+public class SchedulerConfig implements SchedulingConfigurer {
 
-    private final ArticleService articleService;
+    private final List<TriggerTask> tasks;
 
-    public SchedulerConfig(ArticleService articleService) {
-        this.articleService = articleService;
-    }
-
-    @Bean
-    public CountScheduler countScheduler() {
-        return new CountScheduler(articleService);
+    @Override
+    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+        for (TriggerTask task : tasks) {
+            taskRegistrar.addTriggerTask(task);
+        }
     }
 }
