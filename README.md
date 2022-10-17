@@ -18,7 +18,19 @@
 <hr>
 
 ## 기능
+![공식- 전체게시물 조회(질문, 토론) 기능소개](https://user-images.githubusercontent.com/60773373/196126044-f15969ce-3bf9-4c1a-a0cc-c1fb15fce5a9.gif)
 
+![공식 전체 게시물 조회(정렬) 기능소개](https://user-images.githubusercontent.com/60773373/196126071-90e48fa3-31b2-4a00-afc4-a3b2e0a28fac.gif)
+
+
+![공식 - 게시물 조회 기능소개](https://user-images.githubusercontent.com/60773373/196126130-3fb5e6c3-d855-402e-b33c-353d59b596c8.gif)
+
+![공식 - 글 작성하기 기능소개](https://user-images.githubusercontent.com/60773373/196126158-7ff95695-09a7-4881-8251-2c75b2edbbd7.gif)
+
+![공식 - 투표 만들기 기능소개](https://user-images.githubusercontent.com/60773373/196126224-5b7e8773-f93f-4ce3-930b-182160d51391.gif)
+
+![공식 - 검색기능(작성자, 게시글) 기능소갸](https://user-images.githubusercontent.com/60773373/196126260-31593bfb-a920-4cba-9529-382eab7c35a6.gif)
+![공식 - 검색기능(해시태그) 기능소개](https://user-images.githubusercontent.com/60773373/196126283-edff851b-8654-487b-a146-e9eeb3df45f9.gif)
 
 <hr>
 
