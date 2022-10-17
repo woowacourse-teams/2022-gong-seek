@@ -99,24 +99,26 @@ public class VoteService {
         if (Objects.isNull(voteHistory)) {
             return null;
         }
-        return voteHistory.getVoteItem().getId();
+        return voteHistory.getVoteItemId();
     }
 
     public void doVote(Long articleId, AppMember appMember, SelectVoteItemIdRequest selectVoteItemIdRequest) {
-        Vote vote = getVoteByArticleId(articleId);
         Member member = getMember(appMember);
-        VoteItem selectedVoteItem = getVoteItem(selectVoteItemIdRequest.getVoteItemId());
 
-        voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(),
+        voteHistoryRepository.findByVoteIdAndMemberId(selectVoteItemIdRequest.getVoteItemId(),
                 member.getId()).ifPresentOrElse(
-                voteHistory -> voteHistory.changeVoteItem(selectedVoteItem),
-                () -> saveVoteHistory(member, selectedVoteItem)
+                voteHistory -> {
+                    voteItemRepository.decreaseAmount(voteHistory.getVoteItemId());
+                    voteHistory.changeVoteItem(selectVoteItemIdRequest.getVoteItemId());
+                    voteItemRepository.increaseAmount(selectVoteItemIdRequest.getVoteItemId());
+                },
+                () -> saveVoteHistory(member, selectVoteItemIdRequest)
         );
     }
 
-    private void saveVoteHistory(Member member, VoteItem selectedVoteItem) {
-        selectedVoteItem.increaseAmount();
-        voteHistoryRepository.save(new VoteHistory(member, selectedVoteItem));
+    private void saveVoteHistory(Member member, SelectVoteItemIdRequest selectVoteItemIdRequest) {
+        voteItemRepository.increaseAmount(selectVoteItemIdRequest.getVoteItemId());
+        voteHistoryRepository.save(new VoteHistory(member, selectVoteItemIdRequest.getVoteItemId()));
     }
 
     private VoteItem getVoteItem(Long voteItemId) {

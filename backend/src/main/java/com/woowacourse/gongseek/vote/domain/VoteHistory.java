@@ -30,18 +30,14 @@ public class VoteHistory {
     @JoinColumn(nullable = false)
     private Member member;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    private VoteItem voteItem;
+    private Long voteItemId;
 
-    public VoteHistory(Member member, VoteItem voteItem) {
-        this(null, member, voteItem);
+    public VoteHistory(Member member, Long voteItemId) {
+        this(null, member, voteItemId);
     }
 
-    public void changeVoteItem(VoteItem newVoteItem) {
-        voteItem.decreaseAmount();
-        this.voteItem = newVoteItem;
-        voteItem.increaseAmount();
+    public void changeVoteItem(Long newVoteItemId) {
+        this.voteItemId = newVoteItemId;
     }
 }

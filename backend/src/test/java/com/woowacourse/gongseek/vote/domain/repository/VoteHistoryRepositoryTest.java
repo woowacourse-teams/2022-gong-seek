@@ -53,16 +53,16 @@ public class VoteHistoryRepositoryTest {
         VoteItem voteItem3 = voteItemRepository.save(new VoteItem("3333", vote2));
         voteItemRepository.save(new VoteItem("4444", vote2));
 
-        voteHistoryRepository.save(new VoteHistory(savedMember1, voteItem1));
-        voteHistoryRepository.save(new VoteHistory(savedMember1, voteItem3));
-        voteHistoryRepository.save(new VoteHistory(savedMember2, voteItem1));
+        voteHistoryRepository.save(new VoteHistory(savedMember1, voteItem1.getId()));
+        voteHistoryRepository.save(new VoteHistory(savedMember1, voteItem3.getId()));
+        voteHistoryRepository.save(new VoteHistory(savedMember2, voteItem1.getId()));
 
         VoteHistory foundVoteHistory = voteHistoryRepository.findByVoteIdAndMemberId(vote1.getId(),
                 member1.getId()).get();
 
         assertAll(
                 () -> assertThat(foundVoteHistory.getMember()).isEqualTo(savedMember1),
-                () -> assertThat(foundVoteHistory.getVoteItem()).isEqualTo(voteItem1)
+                () -> assertThat(foundVoteHistory.getVoteItemId()).isEqualTo(voteItem1.getId())
         );
     }
 }

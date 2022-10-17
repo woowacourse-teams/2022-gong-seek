@@ -1,27 +1,26 @@
 package com.woowacourse.gongseek.vote.domain.repository;
 
-import static com.woowacourse.gongseek.vote.domain.QVote.vote;
 import static com.woowacourse.gongseek.vote.domain.QVoteHistory.voteHistory;
-import static com.woowacourse.gongseek.vote.domain.QVoteItem.voteItem;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.vote.domain.VoteHistory;
 import java.util.Optional;
+import javax.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Lock;
 
 @RequiredArgsConstructor
 public class VoteHistoryRepositoryImpl implements VoteHistoryRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Override
-    public Optional<VoteHistory> findByVoteIdAndMemberId(Long voteId, Long memberId) {
+    public Optional<VoteHistory> findByVoteIdAndMemberId(Long voteItemId, Long memberId) {
         return Optional.ofNullable(queryFactory
                 .selectFrom(voteHistory)
-                .join(voteHistory.voteItem, voteItem).fetchJoin()
-                .join(voteItem.vote, vote).fetchJoin()
                 .where(
-                        voteItem.vote.id.eq(voteId)
+                        voteHistory.voteItemId.eq(voteItemId)
                                 .and(voteHistory.member.id.eq(memberId))
                 )
                 .fetchFirst());
