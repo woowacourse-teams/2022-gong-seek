@@ -9,6 +9,7 @@ import HashTag from '@/components/hashTag/HashTag/HashTag';
 import usePostWritingArticle from '@/hooks/article/usePostUpdateWritingArticle';
 import * as S from '@/pages/WritingArticles/index.styles';
 import { WritingCategoryCardStyle, WritingTitleCardStyle } from '@/styles/cardStyle';
+import { takeToastImgEditor } from '@/utils/takeToastImgEditor';
 
 const UpdateWriting = () => {
 	const { id } = useParams();
@@ -32,18 +33,7 @@ const UpdateWriting = () => {
 	} = usePostWritingArticle();
 
 	useEffect(() => {
-		if (content.current) {
-			content.current.getInstance().removeHook('addImageBlobHook');
-			content.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
-				(async () => {
-					const formData = new FormData();
-
-					formData.append('imageFile', blob);
-					const url = await postImageUrlConverter(formData);
-					callback(url, 'alt-text');
-				})();
-			});
-		}
+		takeToastImgEditor(content);
 	}, [content]);
 
 	if (isLoading) {

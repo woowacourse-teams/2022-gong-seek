@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import reactDom from 'react-dom';
 
-import { postImageUrlConverter } from '@/api/image';
 import AnonymousCheckBox from '@/components/@common/AnonymousCheckBox/AnonymousCheckBox';
 import ToastUiEditor from '@/components/@common/ToastUiEditor/ToastUiEditor';
 import * as S from '@/components/comment/CommentInputModal/CommentInputModal.styles';
@@ -9,6 +8,7 @@ import usePostCommentInputModal from '@/hooks/comment/usePostCommentInputModal';
 import usePutCommentInputModal from '@/hooks/comment/usePutCommentInputModal';
 import useSnackBar from '@/hooks/common/useSnackBar';
 import { queryClient } from '@/index';
+import { takeToastImgEditor } from '@/utils/takeToastImgEditor';
 import { validatedCommentInput } from '@/utils/validateInput';
 import { Editor } from '@toast-ui/react-editor';
 
@@ -60,17 +60,7 @@ const CommentInputModal = ({
 	});
 
 	useEffect(() => {
-		if (commentContent.current) {
-			commentContent.current.getInstance().removeHook('addImageBlobHook');
-			commentContent.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
-				(async () => {
-					const formData = new FormData();
-					formData.append('imageFile', blob);
-					const url = await postImageUrlConverter(formData);
-					callback(url, 'alt-text');
-				})();
-			});
-		}
+		takeToastImgEditor(commentContent);
 	}, [commentContent]);
 
 	if (commentModal === null) {
@@ -78,6 +68,14 @@ const CommentInputModal = ({
 	}
 
 	const onClickCommentPostButton = () => {
+		if (modalType === 'register') {
+			handleCreateComment();
+			return;
+		}
+		handleEditComment();
+	};
+
+	const handleCreateComment = () => {
 		if (commentContent.current == null) {
 			return;
 		}
@@ -85,15 +83,21 @@ const CommentInputModal = ({
 			showSnackBar('댓글은 1자 이상, 10000자 이하로 작성해주세요');
 			return;
 		}
-		if (commentContent.current)
-			if (modalType === 'register') {
-				postMutate({
-					content: commentContent.current.getInstance().getMarkdown(),
-					id: articleId,
-					isAnonymous,
-				});
-				return;
-			}
+		postMutate({
+			content: commentContent.current.getInstance().getMarkdown(),
+			id: articleId,
+			isAnonymous,
+		});
+	};
+
+	const handleEditComment = () => {
+		if (commentContent.current == null) {
+			return;
+		}
+		if (!validatedCommentInput(commentContent.current.getInstance().getMarkdown())) {
+			showSnackBar('댓글은 1자 이상, 10000자 이하로 작성해주세요');
+			return;
+		}
 		if (typeof commentId === 'undefined') {
 			throw new Error('댓글을 찾지 못하였습니다');
 		}
