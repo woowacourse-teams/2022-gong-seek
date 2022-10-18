@@ -28,6 +28,7 @@ const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
 					modalType: 'register',
 					placeholder: '',
 				},
+				isMobileOnly: false,
 			});
 			return;
 		}
