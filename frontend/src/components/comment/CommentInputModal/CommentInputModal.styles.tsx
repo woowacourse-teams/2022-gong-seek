@@ -56,6 +56,10 @@ export const CommentContainer = styled.div`
 			margin: 0 auto;
 			left: 0;
 			right: 0;
+
+			::-webkit-scrollbar {
+				display: none;
+			}
 		}
 	`}
 `;
@@ -134,6 +138,6 @@ export const SubmitBox = styled.div`
 			gap: ${theme.size.SIZE_016};
 
 			margin: ${theme.size.SIZE_040} ${theme.size.SIZE_026} ${theme.size.SIZE_020} 0;
-		}
+			
 	`}
 `;
