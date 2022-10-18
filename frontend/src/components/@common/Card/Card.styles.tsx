@@ -42,10 +42,10 @@ export const Container = styled.section<{
 			}
 		`} 
 		
-		${({ isActive }) =>
+		${({ isActive, theme }) =>
 		isActive === false &&
 		css`
 			opacity: 0.7;
-			filter: blur(2px) brightness(50%);
+			filter: blur(${theme.size.SIZE_002}) brightness(50%);
 		`}
 `;
