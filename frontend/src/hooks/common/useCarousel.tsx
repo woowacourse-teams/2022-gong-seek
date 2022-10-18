@@ -1,8 +1,8 @@
-import useDebounce from './useDebounce';
-import usePrevState from './usePrevState';
 import { useState, useCallback, useEffect, useRef } from 'react';
 
 import { DEBOUNCE_RESIZE_TIME, DEBOUNCE_SCROLL_TIME } from '@/constants';
+import useDebounce from '@/hooks/common/useDebounce';
+import usePrevState from '@/hooks/common/usePrevState';
 
 const MIN_CAROUSEL_INDEX = 0;
 const MAX_CAROUSEL_INDEX = 9;

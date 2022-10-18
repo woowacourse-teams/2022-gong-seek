@@ -1,9 +1,9 @@
-import { CAROUSEL_AUTO_PLAY_TIME } from '../../../constants/index';
 import { useEffect, useRef } from 'react';
 
 import Card from '@/components/@common/Card/Card';
 import * as S from '@/components/article/ArticleItem/ArticleItem.styles';
 import * as PopularS from '@/components/article/PopularArticleItem/PopularArticleItem.styles';
+import { CAROUSEL_AUTO_PLAY_TIME } from '@/constants/index';
 import { theme } from '@/styles/Theme';
 import { PopularArticleItemCardStyle } from '@/styles/cardStyle';
 import { CommonArticleType } from '@/types/articleResponse';
