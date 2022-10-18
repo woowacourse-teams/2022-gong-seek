@@ -1,8 +1,12 @@
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Comment from '@/components/comment/Comment/Comment';
 import * as S from '@/components/comment/CommentContent/CommentContent.styles';
-import CommentInputModal from '@/components/comment/CommentInputModal/CommentInputModal';
-import useDetailArticleState from '@/hooks/article/useDetailArticleState';
+import { URL } from '@/constants/url';
+import useModal from '@/hooks/common/useModal';
+import { getUserIsLogin } from '@/store/userState';
 import { CommentType } from '@/types/commentResponse';
 
 export interface CommentContentProps {
@@ -11,20 +15,41 @@ export interface CommentContentProps {
 }
 
 const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
-	const { handleCommentPlusButton, isLogin, isCommentOpen, setIsCommentOpen } =
-		useDetailArticleState();
+	const navigate = useNavigate();
+	const { showModal } = useModal();
+	const isLogin = useRecoilValue(getUserIsLogin);
+
+	const handleClickCommentButton = () => {
+		if (isLogin) {
+			showModal({
+				modalType: 'comment-modal',
+				modalProps: {
+					articleId,
+					modalType: 'register',
+					placeholder: '',
+				},
+				isMobileOnly: false,
+			});
+			return;
+		}
+
+		if (window.confirm('로그인이 필요한 서비스입니다. 로그인 창으로 이동하시겠습니까?')) {
+			navigate(URL.LOGIN);
+		}
+	};
+
 	return (
 		<>
 			<S.CommentSection>
 				<S.CommentInputBox>
 					<S.CommentInput
 						aria-label="댓글을 입력하는 창으로 이동하는 링크 입니다"
-						onClick={handleCommentPlusButton}
+						onClick={handleClickCommentButton}
 						disabled={!isLogin}
 					/>
 					<S.CreateCommentButton
 						aria-label="댓글을 입력하는 창으로 이동하는 링크입니다."
-						onClick={handleCommentPlusButton}
+						onClick={handleClickCommentButton}
 						disabled={!isLogin}
 					/>
 				</S.CommentInputBox>
@@ -53,17 +78,6 @@ const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
 					<EmptyMessage>첫 번째 댓글을 달아주세요!</EmptyMessage>
 				)}
 			</S.CommentSection>
-			{isCommentOpen && (
-				<>
-					<S.DimmerContainer onClick={() => setIsCommentOpen(false)} />
-					<CommentInputModal
-						closeModal={() => setIsCommentOpen(false)}
-						articleId={articleId}
-						modalType="register"
-						placeholder=""
-					/>
-				</>
-			)}
 		</>
 	);
 };
