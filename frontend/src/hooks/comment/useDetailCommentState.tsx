@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { URL } from '@/constants/url';
 import { getUserIsLogin } from '@/store/userState';
 
-const useDetailArticleState = () => {
+const useDetailCommentState = () => {
 	const [isCommentOpen, setIsCommentOpen] = useState(false);
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const navigate = useNavigate();
@@ -28,4 +28,4 @@ const useDetailArticleState = () => {
 	};
 };
 
-export default useDetailArticleState;
+export default useDetailCommentState;

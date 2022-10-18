@@ -2,7 +2,7 @@ import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Comment from '@/components/comment/Comment/Comment';
 import * as S from '@/components/comment/CommentContent/CommentContent.styles';
 import CommentInputModal from '@/components/comment/CommentInputModal/CommentInputModal';
-import useDetailArticleState from '@/hooks/article/useDetailArticleState';
+import useDetailCommentState from '@/hooks/comment/useDetailCommentState';
 import { CommentType } from '@/types/commentResponse';
 
 export interface CommentContentProps {
@@ -12,7 +12,7 @@ export interface CommentContentProps {
 
 const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
 	const { handleCommentPlusButton, isLogin, isCommentOpen, setIsCommentOpen } =
-		useDetailArticleState();
+		useDetailCommentState();
 	return (
 		<>
 			<S.CommentSection>
