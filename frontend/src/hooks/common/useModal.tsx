@@ -1,12 +1,12 @@
 import { useRecoilState } from 'recoil';
 
 import { modalState } from '@/store/modalState';
-import { GetInsideRecoilState } from '@/types/getInside';
+import { RecoilStateInnerType } from '@/types/innerType';
 
 const useModal = () => {
 	const setModal = useRecoilState(modalState)[1];
 
-	const showModal = (modalInfo: NonNullable<GetInsideRecoilState<typeof modalState>>) => {
+	const showModal = (modalInfo: NonNullable<RecoilStateInnerType<typeof modalState>>) => {
 		setModal(modalInfo);
 	};
 
