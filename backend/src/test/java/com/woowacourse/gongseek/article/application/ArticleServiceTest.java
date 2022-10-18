@@ -46,7 +46,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -100,13 +99,15 @@ public class ArticleServiceTest extends IntegrationTest {
 
     @BeforeEach
     void setUp() {
+        articleRepository.deleteAll();
+        memberRepository.deleteAll();
+
         member = memberRepository.save(new Member("slo", "hanull", "avatar.com"));
     }
-
-    @AfterEach
-    void tearDown() {
-        databaseCleaner.tableClear();
-    }
+//
+//    @AfterEach
+//    void tearDown() {
+//    }
 
     @Transactional
     @Test

@@ -78,8 +78,8 @@ public class ArticleService {
     }
 
     public ArticleResponse getOne(AppMember appMember, Long id) {
+        articleRepository.addViews(id);
         Article article = getArticle(id);
-        article.addViews();
 
         return checkGuest(article, appMember, voteRepository.existsByArticleId(article.getId()),
                 isLike(article, appMember));

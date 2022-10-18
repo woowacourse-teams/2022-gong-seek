@@ -16,6 +16,7 @@ import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.support.DatabaseCleaner;
 import com.woowacourse.gongseek.support.IntegrationTest;
 import com.woowacourse.gongseek.vote.domain.Vote;
+import com.woowacourse.gongseek.vote.domain.VoteHistory;
 import com.woowacourse.gongseek.vote.domain.VoteItem;
 import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
@@ -29,6 +30,9 @@ import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -188,5 +192,34 @@ class VoteServiceTest extends IntegrationTest {
                 () -> voteService.doVote(new GuestMember(), new SelectVoteItemIdRequest(voteItems.get(0).getId())))
                 .isExactlyInstanceOf(MemberNotFoundException.class)
                 .hasMessageContaining("회원이 존재하지 않습니다.");
+    }
+
+    @Test
+    void 투표하기_동시성_테스트() throws InterruptedException {
+        Member other = memberRepository.save(new Member("다른이", "gittt", "avater.url"));
+        LoginMember loginMember1 = new LoginMember(member.getId());
+        LoginMember loginMember2 = new LoginMember(other.getId());
+
+        final var numberOfThreads = 10;
+        ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
+        CountDownLatch latch = new CountDownLatch(numberOfThreads);
+        voteHistoryRepository.save(new VoteHistory(member, voteItems.get(0)));
+        voteHistoryRepository.save(new VoteHistory(other, voteItems.get(0)));
+        executorService.execute(() -> {
+            voteService.doVote(loginMember1, new SelectVoteItemIdRequest(voteItems.get(1).getId()));
+            latch.countDown();
+        });
+
+        executorService.execute(() -> {
+            voteService.doVote(loginMember2, new SelectVoteItemIdRequest(voteItems.get(1).getId()));
+            latch.countDown();
+        });
+
+        Thread.sleep(1000);
+
+        VoteItem voteItem = voteItemRepository.findById(voteItems.get(0).getId())
+                .orElseThrow(() -> new RuntimeException("Not Found"));
+        //정상 경우
+        assertThat(voteItem.getAmount().getValue()).isEqualTo(0);
     }
 }
