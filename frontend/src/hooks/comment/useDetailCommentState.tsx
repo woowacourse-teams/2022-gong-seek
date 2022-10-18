@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
@@ -7,6 +7,8 @@ import { getUserIsLogin } from '@/store/userState';
 
 const useDetailCommentState = () => {
 	const [isCommentOpen, setIsCommentOpen] = useState(false);
+	const [tempSavedComment, setTempSavedComment] = useState('');
+
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const navigate = useNavigate();
 
@@ -25,6 +27,8 @@ const useDetailCommentState = () => {
 		isLogin,
 		isCommentOpen,
 		setIsCommentOpen,
+		tempSavedComment,
+		setTempSavedComment,
 	};
 };
 

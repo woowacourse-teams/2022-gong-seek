@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import reactDom from 'react-dom';
 
 import AnonymousCheckBox from '@/components/@common/AnonymousCheckBox/AnonymousCheckBox';
@@ -18,6 +18,7 @@ export interface CommentInputModalProps {
 	modalType: 'edit' | 'register';
 	commentId?: string;
 	placeholder: string;
+	setTempSavedComment: Dispatch<SetStateAction<string>>;
 }
 
 const modalStatus = {
@@ -37,6 +38,7 @@ const CommentInputModal = ({
 	modalType,
 	commentId,
 	placeholder = '',
+	setTempSavedComment,
 }: CommentInputModalProps) => {
 	const commentModal = document.getElementById('comment-portal');
 	const [isAnonymous, setIsAnonymous] = useState(false);
@@ -62,6 +64,15 @@ const CommentInputModal = ({
 	useEffect(() => {
 		takeToastImgEditor(commentContent);
 	}, [commentContent]);
+
+	useEffect(() => {
+		const commentTempSavedInterval = setInterval(() => {
+			if (commentContent.current !== null) {
+				setTempSavedComment(commentContent.current.getInstance().getMarkdown());
+			}
+		}, 1000);
+		return () => clearInterval(commentTempSavedInterval);
+	}, []);
 
 	if (commentModal === null) {
 		throw new Error('모달을 찾지 못하였습니다.');

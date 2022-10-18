@@ -11,8 +11,14 @@ export interface CommentContentProps {
 }
 
 const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
-	const { handleCommentPlusButton, isLogin, isCommentOpen, setIsCommentOpen } =
-		useDetailCommentState();
+	const {
+		handleCommentPlusButton,
+		isLogin,
+		isCommentOpen,
+		setIsCommentOpen,
+		tempSavedComment,
+		setTempSavedComment,
+	} = useDetailCommentState();
 	return (
 		<>
 			<S.CommentSection>
@@ -60,7 +66,8 @@ const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
 						closeModal={() => setIsCommentOpen(false)}
 						articleId={articleId}
 						modalType="register"
-						placeholder=""
+						placeholder={tempSavedComment}
+						setTempSavedComment={setTempSavedComment}
 					/>
 				</>
 			)}
