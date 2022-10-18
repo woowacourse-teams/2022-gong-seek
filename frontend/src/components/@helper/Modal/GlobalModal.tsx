@@ -1,12 +1,12 @@
-import { hasModal } from '../../../utils/validateInput';
-import CreatePortal from './CreatePortal';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 import MenuSlider from '@/components/@common/MenuSlider/MenuSlider';
+import CreatePortal from '@/components/@helper/Modal/CreatePortal';
 import * as S from '@/components/@helper/Modal/Modal.styles';
 import CommentInputModal from '@/components/comment/CommentInputModal/CommentInputModal';
 import { modalState } from '@/store/modalState';
+import { hasModal } from '@/utils/validateInput';
 
 export const MODAL_TYPES = {
 	MENU_SLIDER: 'menu-slider',

@@ -1,4 +1,4 @@
-import { ModalStateType } from '../store/modalState';
+import { ModalStateType } from '@/store/modalState';
 
 export const validatedSearchInput = (target: string) => target.length >= 2 && target.length <= 200;
 
