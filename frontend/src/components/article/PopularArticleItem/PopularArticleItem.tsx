@@ -40,7 +40,7 @@ const PopularArticleItem = ({
 			<Card {...PopularArticleItemCardStyle} isActive={isActive} onClick={onClick} role="tab">
 				<div
 					css={css`
-						background: #ba55d3;
+						background: ${category === 'question' ? theme.colors.RED_500 : theme.colors.BLUE_500};
 						opacity: 0.8;
 						box-shadow: 0, 0, 0, inset 0 0 4px #5e0080;
 						padding: ${theme.size.SIZE_012};
