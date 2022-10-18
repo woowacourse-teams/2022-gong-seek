@@ -16,9 +16,14 @@ export const Container = styled.div`
 
 		background-color: ${theme.colors.GRAY_100};
 
-		padding: ${theme.size.SIZE_006};
+		padding: ${theme.size.SIZE_002};
 
 		gap: ${theme.size.SIZE_010};
+
+		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
+			width: 80%;
+			justify-content: center;
+		}
 	`}
 `;
 
@@ -68,6 +73,8 @@ export const CommentTime = styled.div`
 	width: 100%;
 	text-align: right;
 
-	font-size: ${({ theme }) => theme.size.SIZE_012};
-	color: ${({ theme }) => theme.colors.BLACK_400};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_012};
+		color: ${theme.colors.BLACK_400};
+	`}
 `;
