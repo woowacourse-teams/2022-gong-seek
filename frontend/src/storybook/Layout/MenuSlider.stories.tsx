@@ -1,4 +1,5 @@
-import MenuSlider, { MenuSliderProps } from '@/components/@common/MenuSlider/MenuSlider';
+import MenuSlider from '@/components/@common/MenuSlider/MenuSlider';
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { Meta, Story } from '@storybook/react';
 
 const modalRoot = document.createElement('div');
@@ -8,20 +9,16 @@ document.body.append(modalRoot);
 export default {
 	title: 'Layout/MenuSlider',
 	component: MenuSlider,
-	decorators: [
-		(Story) => (
-			<div style={{ width: '320px' }}>
-				<Story />
-			</div>
-		),
-	],
+	decorators: [(Story) => <Story />],
+	parameters: {
+		viewport: {
+			viewports: INITIAL_VIEWPORTS,
+			defaultViewport: 'iphone6',
+		},
+	},
 } as Meta;
 
-const Template: Story<MenuSliderProps> = (args) => <MenuSlider {...args} />;
+const Template: Story = (args) => <MenuSlider {...args} />;
 
 export const DefaultMenuSlider = Template.bind({});
-DefaultMenuSlider.args = {
-	closeSlider: () => {
-		console.log('menuslider 닫기');
-	},
-};
+DefaultMenuSlider.args = {};
