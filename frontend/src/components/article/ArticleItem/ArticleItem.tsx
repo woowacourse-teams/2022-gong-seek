@@ -68,7 +68,7 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 						) : (
 							<S.EmptyHeart onClick={handleClickEmptyHeart} aria-pressed="false" role="button" />
 						)}
-						<div aria-label="좋아요수">{likeCount}</div>
+						<div aria-label={`좋아요수 ${likeCount}`}>{likeCount}</div>
 					</S.HeartBox>
 				</S.RightFooterBox>
 			</S.FooterBox>
