@@ -1,5 +1,4 @@
-import { theme } from './Theme';
-
+import { theme } from '@/styles/Theme';
 import { CardProps } from '@/types/card';
 
 export const ArticleItemCardStyle: CardProps = {
@@ -72,11 +71,12 @@ export const WritingCategoryCardStyle: CardProps = {
 	cssObject: {
 		width: '100%',
 		height: 'fit-content',
+		margin: `${theme.size.SIZE_006} 0 0 0`,
 	},
 	hasActiveAnimation: false,
 	media: {
 		minWidth: theme.breakpoints.DESKTOP_LARGE,
-		width: '10%',
+		width: '25%',
 		height: 'fit-content',
 	},
 };
@@ -93,7 +93,7 @@ export const WritingHashTagCardStyle: CardProps = {
 	hasActiveAnimation: false,
 	media: {
 		minWidth: theme.breakpoints.DESKTOP_LARGE,
-		width: '95%',
+		width: '97%',
 		height: 'fit-content',
 	},
 };
