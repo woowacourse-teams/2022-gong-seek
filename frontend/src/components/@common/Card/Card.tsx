@@ -1,6 +1,5 @@
 import { PropsWithOptionalChildren } from 'gongseek-types';
-import { useRef } from 'react';
-import { useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 
 import * as S from '@/components/@common/Card/Card.styles';
 import { CardProps } from '@/types/card';
