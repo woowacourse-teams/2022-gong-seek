@@ -52,9 +52,11 @@ const useHandleCommentInputModalState = ({
 	const onClickCommentPostButton = () => {
 		if (modalType === 'register') {
 			handleCreateComment();
+			setTempSavedComment('');
 			return;
 		}
 		handleEditComment();
+		setTempSavedComment('');
 	};
 
 	const handleCreateComment = () => {
