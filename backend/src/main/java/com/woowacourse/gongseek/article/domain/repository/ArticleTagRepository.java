@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.article.domain.repository;
 
-public interface ArticleRepositoryCustom {
+public interface ArticleTagRepository {
 
     boolean existsArticleByTagId(Long tagId);
 }

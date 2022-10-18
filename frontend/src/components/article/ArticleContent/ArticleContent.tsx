@@ -34,7 +34,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 	return (
 		<S.Container>
 			<S.Header>
-				<S.CategoryTitle category={category}>{category}</S.CategoryTitle>
+				<S.CategoryTitle isQuestion={category === '질문'}>{category}</S.CategoryTitle>
 				<S.UserProfile>
 					<S.UserProfileImg src={author.avatarUrl} />
 					<div>{author.name}</div>
@@ -55,14 +55,12 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 					<S.WritingOrderBox>
 						{article.isAuthor && (
 							<S.ButtonWrapper>
-								<S.Button onClick={navigateUpdateArticle}>수정</S.Button>
-								<S.Button
+								<S.EditButton onClick={navigateUpdateArticle} />
+								<S.DeleteButton
 									onClick={() => {
 										handleDeleteArticle(articleId);
 									}}
-								>
-									삭제
-								</S.Button>
+								/>
 							</S.ButtonWrapper>
 						)}
 					</S.WritingOrderBox>

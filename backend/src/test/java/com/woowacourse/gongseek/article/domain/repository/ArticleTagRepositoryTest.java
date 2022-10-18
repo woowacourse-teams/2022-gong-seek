@@ -24,7 +24,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 @SuppressWarnings("NonAsciiCharacters")
 @RepositoryTest
-public class ArticleRepositoryCustomTest {
+public class ArticleTagRepositoryTest {
 
     private final Member member = new Member("slo", "hanull", "avatar.com");
 
@@ -32,7 +32,7 @@ public class ArticleRepositoryCustomTest {
     private ArticleRepository articleRepository;
 
     @Autowired
-    private ArticleRepositoryCustom articleRepositoryCustom;
+    private ArticleTagRepository articleTagRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -86,9 +86,9 @@ public class ArticleRepositoryCustomTest {
                 .collect(Collectors.toList());
         article.addTag(new Tags(tags));
 
-        boolean firstResult = articleRepositoryCustom.existsArticleByTagId(tagIds.get(0));
-        boolean secondResult = articleRepositoryCustom.existsArticleByTagId(tagIds.get(1));
-        boolean thirdResult = articleRepositoryCustom.existsArticleByTagId(999L);
+        boolean firstResult = articleTagRepository.existsArticleByTagId(tagIds.get(0));
+        boolean secondResult = articleTagRepository.existsArticleByTagId(tagIds.get(1));
+        boolean thirdResult = articleTagRepository.existsArticleByTagId(999L);
 
         assertAll(
                 () -> assertThat(firstResult).isTrue(),

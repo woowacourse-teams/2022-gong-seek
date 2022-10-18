@@ -1,25 +1,17 @@
-package com.woowacourse.gongseek.article.domain.repository;
+package com.woowacourse.gongseek.article.infra.repository;
 
 import static com.woowacourse.gongseek.article.domain.articletag.QArticleTag.articleTag;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.woowacourse.gongseek.article.domain.articletag.ArticleTag;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
 @Repository
-public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom {
+public class ArticleTagRepositoryImpl implements ArticleTagRepository {
 
     private final JPAQueryFactory queryFactory;
-
-    private List<String> getTagNames(List<ArticleTag> articleTags) {
-        return articleTags.stream()
-                .map(articleTag -> articleTag.getTag().getName())
-                .collect(Collectors.toList());
-    }
 
     @Override
     public boolean existsArticleByTagId(Long tagId) {

@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
-import com.woowacourse.gongseek.article.domain.repository.ArticleRepositoryCustom;
+import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.support.DatabaseCleaner;
@@ -32,7 +32,7 @@ class TagServiceTest extends IntegrationTest {
     private ArticleRepository articleRepository;
 
     @Autowired
-    private ArticleRepositoryCustom articleRepositoryCustom;
+    private ArticleTagRepository articleTagRepository;
 
     @Autowired
     private TagRepository tagRepository;
@@ -130,8 +130,8 @@ class TagServiceTest extends IntegrationTest {
 
         tagService.deleteAll(List.of(spring.getId(), java.getId()));
 
-        assertThat(articleRepositoryCustom.existsArticleByTagId(spring.getId())).isFalse();
-        assertThat(articleRepositoryCustom.existsArticleByTagId(java.getId())).isFalse();
-        assertThat(articleRepositoryCustom.existsArticleByTagId(react.getId())).isTrue();
+        assertThat(articleTagRepository.existsArticleByTagId(spring.getId())).isFalse();
+        assertThat(articleTagRepository.existsArticleByTagId(java.getId())).isFalse();
+        assertThat(articleTagRepository.existsArticleByTagId(react.getId())).isTrue();
     }
 }
