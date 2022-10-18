@@ -15,19 +15,19 @@ export interface UserProfileProps {
 const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 	const [isEdit, setIsEdit] = useState(false);
 	const [editedName, setEditedName] = useState(name);
-	const { isLoading, isSuccess, handleClickConfirmIcon } = usePutUserProfile();
+	const { isLoading, isSuccess, handleClickUserConfirmButton } = usePutUserProfile();
 	const isValidInput = validatedEditInput(editedName);
 
-	const handleClickEditIcon = () => {
+	const handleClickUserNameEditButton = () => {
 		setIsEdit(true);
 	};
 
-	const handleChangeUserEditInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChangeUserNameEditInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setEditedName(e.target.value);
 	};
 
-	const handleClickConfirmButton = ({ editedName }: { editedName: string }) => {
-		handleClickConfirmIcon({ name: editedName });
+	const handleClickUserNameConfirmButton = ({ editedName }: { editedName: string }) => {
+		handleClickUserConfirmButton({ name: editedName });
 		setIsEdit(false);
 	};
 
@@ -46,11 +46,11 @@ const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 				{isEdit ? (
 					<S.UserNameContainer>
 						<S.EditUserNameBox>
-							<S.EditUserNameInput value={editedName} onChange={handleChangeUserEditInput} />
+							<S.EditUserNameInput value={editedName} onChange={handleChangeUserNameEditInput} />
 							<S.ConfirmButton
 								disabled={!isValidInput}
 								onClick={() => {
-									handleClickConfirmButton({ editedName });
+									handleClickUserNameConfirmButton({ editedName });
 									setIsEdit(false);
 								}}
 							>
@@ -65,7 +65,7 @@ const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 				) : (
 					<S.UserName>{name}</S.UserName>
 				)}
-				{!isEdit && <S.EditIcon onClick={handleClickEditIcon} />}
+				{!isEdit && <S.EditIcon onClick={handleClickUserNameEditButton} />}
 			</S.UserNameBox>
 		</S.Container>
 	);

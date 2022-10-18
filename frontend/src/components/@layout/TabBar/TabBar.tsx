@@ -19,6 +19,14 @@ const TabBar = () => {
 		navigate(URL.CATEGORY_SELECTOR);
 	};
 
+	const handleClickUserProfile = () => {
+		navigate(URL.LOGIN);
+	};
+
+	const handleOpenSlider = () => {
+		showModal({ modalType: 'menu-slider', modalProps: {}, isMobileOnly: true });
+	};
+
 	return (
 		<S.Section>
 			<S.PostingLink onClick={handleClickPostingLink} />
@@ -27,19 +35,9 @@ const TabBar = () => {
 					<UserProfileIcon />
 				</S.MyPageLink>
 			) : (
-				<UserProfile
-					src={gongseek}
-					alt="공식 이미지"
-					onClick={() => {
-						navigate('/login');
-					}}
-				/>
+				<UserProfile src={gongseek} alt="공식 이미지" onClick={handleClickUserProfile} />
 			)}
-			<S.MenuLink
-				onClick={() => {
-					showModal({ modalType: 'menu-slider', modalProps: {}, isMobileOnly: true });
-				}}
-			/>
+			<S.MenuLink onClick={handleOpenSlider} />
 		</S.Section>
 	);
 };

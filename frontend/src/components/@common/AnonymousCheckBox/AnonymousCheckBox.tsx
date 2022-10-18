@@ -7,13 +7,13 @@ const AnonymousCheckBox = ({
 }: {
 	setIsAnonymous: Dispatch<SetStateAction<boolean>>;
 }) => {
-	const handleChangeAnonymouseCheckInput = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleToggleAnoymouseCheck = (e: ChangeEvent<HTMLInputElement>) => {
 		setIsAnonymous(e.target.checked);
 	};
 
 	return (
 		<S.AnonymousBox>
-			<S.AnonymousCheckInput type="checkbox" onChange={handleChangeAnonymouseCheckInput} />
+			<S.AnonymousCheckInput type="checkbox" onChange={handleToggleAnoymouseCheck} />
 			<S.AnonymousText>익명</S.AnonymousText>
 		</S.AnonymousBox>
 	);

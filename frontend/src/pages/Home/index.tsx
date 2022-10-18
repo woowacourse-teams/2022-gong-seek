@@ -27,7 +27,7 @@ const Home = () => {
 		setCurrentCategory(category);
 	};
 
-	const handleClickArticleItem = (item: CommonArticleType) => {
+	const handleLinkToArticleDetail = (item: CommonArticleType) => {
 		navigate(`/articles/${currentCategory}/${item.id}`);
 	};
 
@@ -70,7 +70,7 @@ const Home = () => {
 									<ArticleItem
 										key={item.id}
 										article={item}
-										onClick={() => handleClickArticleItem(item)}
+										onClick={() => handleLinkToArticleDetail(item)}
 									/>
 								)),
 							)}

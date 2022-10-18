@@ -14,11 +14,11 @@ const usePutUserProfile = () => {
 
 	useThrowCustomError(isError, error);
 
-	const handleClickConfirmIcon = ({ name }: { name: string }) => {
+	const handleClickUserConfirmButton = ({ name }: { name: string }) => {
 		mutate({ name });
 	};
 
-	return { handleClickConfirmIcon, isLoading, isSuccess, data };
+	return { handleClickUserConfirmButton, isLoading, isSuccess, data };
 };
 
 export default usePutUserProfile;

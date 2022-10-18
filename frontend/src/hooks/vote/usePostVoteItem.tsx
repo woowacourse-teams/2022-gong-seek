@@ -22,11 +22,11 @@ const usePostVoteItem = (articleId: string) => {
 
 	useThrowCustomError(isError, error);
 
-	const handleChangeRadioButton = (articleId: string, idx: number) => {
+	const handleChangeVoteSelectButton = (articleId: string, idx: number) => {
 		mutate({ articleId, voteItemId: String(idx) });
 	};
 
-	return { handleChangeRadioButton, isLoading, isSuccess };
+	return { handleChangeVoteSelectButton, isLoading, isSuccess };
 };
 
 export default usePostVoteItem;

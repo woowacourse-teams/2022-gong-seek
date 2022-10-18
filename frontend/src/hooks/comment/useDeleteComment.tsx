@@ -16,7 +16,7 @@ const useDeleteComment = () => {
 
 	useThrowCustomError(isError, error);
 
-	const handleClickDeleteButton = (id: number) => {
+	const handleClickCommentDeleteButton = (id: number) => {
 		if (confirm('정말로 삭제하시겠습니까?')) {
 			mutate({ commentId: String(id) });
 		}
@@ -28,7 +28,7 @@ const useDeleteComment = () => {
 		}
 	}, [isSuccess]);
 
-	return { isLoading, handleClickDeleteButton };
+	return { isLoading, handleClickCommentDeleteButton };
 };
 
 export default useDeleteComment;

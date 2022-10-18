@@ -21,12 +21,12 @@ const Comment = ({
 	articleId,
 	tabIndex,
 }: CommentProps) => {
-	const { handleClickEditButton } = useDetailCommentState({
+	const { handleClickCommentEditButton } = useDetailCommentState({
 		articleId,
 		commentId: String(id),
 		content,
 	});
-	const { isLoading, handleClickDeleteButton } = useDeleteComment();
+	const { isLoading, handleClickCommentDeleteButton } = useDeleteComment();
 
 	if (isLoading) return <Loading />;
 
@@ -53,12 +53,12 @@ const Comment = ({
 				</S.CommentInfo>
 				{isAuthor && (
 					<S.CommentAuthBox>
-						<S.Button onClick={handleClickEditButton} tabIndex={tabIndex}>
+						<S.Button onClick={handleClickCommentEditButton} tabIndex={tabIndex}>
 							수정
 						</S.Button>
 						<S.Button
 							onClick={() => {
-								handleClickDeleteButton(id);
+								handleClickCommentDeleteButton(id);
 							}}
 							tabIndex={tabIndex}
 						>

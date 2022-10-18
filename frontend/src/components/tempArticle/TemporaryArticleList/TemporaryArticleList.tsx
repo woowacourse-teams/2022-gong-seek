@@ -16,7 +16,7 @@ const TemporaryArticleList = () => {
 		return <Loading />;
 	}
 
-	const handleClickDeleteButton = (id: number) => {
+	const handleClickTemporaryArticlekDeleteButton = (id: number) => {
 		if (window.confirm('해당 임시 저장 글을 삭제하시겠습니까?')) {
 			deleteTempArticleId(id);
 		}
@@ -37,7 +37,7 @@ const TemporaryArticleList = () => {
 								article={item}
 								onClick={() => handleClickTemporaryArticleItem(item)}
 							/>
-							<S.DeleteButton onClick={() => handleClickDeleteButton(item.id)} />
+							<S.DeleteButton onClick={() => handleClickTemporaryArticlekDeleteButton(item.id)} />
 						</S.ArticleItemBox>
 					))
 				) : (

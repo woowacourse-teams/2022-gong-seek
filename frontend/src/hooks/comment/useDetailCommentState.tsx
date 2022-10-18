@@ -40,7 +40,7 @@ const useDetailCommentState = ({ articleId, commentId, content }: useDetailComme
 		}
 	};
 
-	const handleClickEditButton = () => {
+	const handleClickCommentEditButton = () => {
 		if (!content) {
 			return;
 		}
@@ -62,7 +62,7 @@ const useDetailCommentState = ({ articleId, commentId, content }: useDetailComme
 	return {
 		handleClickCommentPlusButton,
 		isLogin,
-		handleClickEditButton,
+		handleClickCommentEditButton,
 	};
 };
 
