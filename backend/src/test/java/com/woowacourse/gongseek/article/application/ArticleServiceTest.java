@@ -764,7 +764,7 @@ public class ArticleServiceTest extends IntegrationTest {
         voteService.create(loginMember, article.getId(),
                 new VoteCreateRequest(Set.of("A번", "B번", "C번"), LocalDateTime.now().plusDays(4)));
 
-        voteService.doVote(article.getId(), loginMember, new SelectVoteItemIdRequest(1L));
+        voteService.doVote(loginMember, new SelectVoteItemIdRequest(1L));
         articleService.delete(loginMember, article.getId());
         assertAll(
                 () -> assertThat(articleRepository.findById(article.getId())).isEmpty(),

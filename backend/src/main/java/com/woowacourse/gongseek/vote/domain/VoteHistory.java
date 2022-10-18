@@ -1,8 +1,10 @@
 package com.woowacourse.gongseek.vote.domain;
 
 import com.woowacourse.gongseek.member.domain.Member;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,14 +32,17 @@ public class VoteHistory {
     @JoinColumn(nullable = false)
     private Member member;
 
-    @JoinColumn(nullable = false)
-    private Long voteItemId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private VoteItem voteItem;
 
-    public VoteHistory(Member member, Long voteItemId) {
-        this(null, member, voteItemId);
+    public VoteHistory(Member member, VoteItem voteItem) {
+        this(null, member, voteItem);
     }
 
-    public void changeVoteItem(Long newVoteItemId) {
-        this.voteItemId = newVoteItemId;
+    public void changeVoteItem(VoteItem voteItem) {
+        this.voteItem.decreaseAmount();
+        this.voteItem = voteItem;
+        this.voteItem.increaseAmount();
     }
 }

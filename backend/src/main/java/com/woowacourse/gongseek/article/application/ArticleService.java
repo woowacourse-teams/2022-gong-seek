@@ -22,7 +22,11 @@ import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.tag.application.TagService;
 import com.woowacourse.gongseek.tag.domain.Tags;
+import com.woowacourse.gongseek.vote.domain.Vote;
+import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
+import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
+import com.woowacourse.gongseek.vote.exception.VoteNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,6 +51,8 @@ public class ArticleService {
     private final TagService tagService;
     private final CommentRepository commentRepository;
     private final LikeRepository likeRepository;
+    private final VoteHistoryRepository voteHistoryRepository;
+    private final VoteItemRepository voteItemRepository;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
@@ -163,9 +169,16 @@ public class ArticleService {
 
     public void delete(AppMember appMember, Long id) {
         Article article = checkAuthorization(appMember, id);
+        deleteVoteHistory(article);
         articleRepository.delete(article);
         List<Long> deletedTagIds = getDeletedTagIds(article.getTagIds());
         tagService.deleteAll(deletedTagIds);
+    }
+
+    private void deleteVoteHistory(Article article) {
+        Vote vote = voteRepository.findByArticleId(article.getId())
+                .orElseThrow(() -> new VoteNotFoundException(article.getId()));
+        voteHistoryRepository.deleteAllByVoteItemIn(voteItemRepository.findAllByVoteId(vote.getId()));
     }
 
     @Transactional(readOnly = true)
