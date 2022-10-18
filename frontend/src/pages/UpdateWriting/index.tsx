@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { postImageUrlConverter } from '@/api/image';
 import Card from '@/components/@common/Card/Card';
 import Loading from '@/components/@common/Loading/Loading';
 import ToastUiEditor from '@/components/@common/ToastUiEditor/ToastUiEditor';
