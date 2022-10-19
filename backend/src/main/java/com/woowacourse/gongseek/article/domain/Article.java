@@ -155,4 +155,8 @@ public class Article extends BaseTimeEntity {
     public List<String> getTagNames() {
         return this.articleTags.getTagNames();
     }
+
+    public void updateLikeCountBatch(long likeCount) {
+        this.likeCount.updateValue(likeCount);
+    }
 }

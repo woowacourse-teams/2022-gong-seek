@@ -79,8 +79,8 @@ public class ArticleService {
     }
 
     public ArticleResponse getOne(AppMember appMember, Long id) {
-        articleRepository.addViews(id);
         Article article = getArticle(id);
+        article.addViews();
 
         return checkGuest(article, appMember, voteRepository.existsByArticleId(article.getId()),
                 isLike(article, appMember));
@@ -212,5 +212,10 @@ public class ArticleService {
         Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(cursorId, cursorLikes, category,
                 appMember.getPayload(), pageable);
         return ArticlePageResponse.of(articles);
+    }
+
+    public void synchronizeLikeCountAndCommentCount() {
+        articleRepository.findAll()
+                .forEach(article -> article.updateLikeCountBatch(likeRepository.countByArticleId(article.getId())));
     }
 }
