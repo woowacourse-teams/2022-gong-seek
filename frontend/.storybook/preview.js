@@ -6,6 +6,8 @@ import { theme } from '@/styles/Theme';
 import { reset } from '@/styles/reset';
 import { ThemeProvider, Global } from '@emotion/react';
 
+initialize();
+
 const queryClient = new QueryClient();
 export const parameters = {
 	actions: { argTypesRegex: '^on[A-Z].*' },
@@ -30,4 +32,8 @@ export const decorators = [
 		</ThemeProvider>
 	),
 ];
-initialize();
+
+if (typeof global.process === 'undefined') {
+	const { worker } = require('../src/mock/browser');
+	worker.start();
+}

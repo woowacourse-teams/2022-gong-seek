@@ -1,4 +1,5 @@
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = ({ config }) => {
 	config.resolve.alias = {
@@ -14,5 +15,12 @@ module.exports = ({ config }) => {
 	});
 
 	config.resolve.extensions.push('.ts', '.tsx');
+
+	config.plugins.push(
+		new Dotenv({
+			path: path.join(__dirname, '../webpack/.env.development'),
+		}),
+	);
+
 	return config;
 };
