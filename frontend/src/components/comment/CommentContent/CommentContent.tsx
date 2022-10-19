@@ -1,10 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Comment from '@/components/comment/Comment/Comment';
 import * as S from '@/components/comment/CommentContent/CommentContent.styles';
-import CommentInputModal from '@/components/comment/CommentInputModal/CommentInputModal';
 import useDetailCommentState from '@/hooks/comment/useDetailCommentState';
 import { CommentType } from '@/types/commentResponse';
 
@@ -14,26 +10,19 @@ export interface CommentContentProps {
 }
 
 const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
-	const {
-		handleCommentPlusButton,
-		isLogin,
-		isCommentOpen,
-		setIsCommentOpen,
-		tempSavedComment,
-		setTempSavedComment,
-	} = useDetailCommentState();
+	const { handleClickCommentPlusButton, isLogin } = useDetailCommentState({ articleId });
 	return (
 		<>
 			<S.CommentSection>
 				<S.CommentInputBox>
 					<S.CommentInput
 						aria-label="댓글을 입력하는 창으로 이동하는 링크 입니다"
-						onClick={handleClickCommentButton}
+						onClick={handleClickCommentPlusButton}
 						disabled={!isLogin}
 					/>
 					<S.CreateCommentButton
 						aria-label="댓글을 입력하는 창으로 이동하는 링크입니다."
-						onClick={handleClickCommentButton}
+						onClick={handleClickCommentPlusButton}
 						disabled={!isLogin}
 					/>
 				</S.CommentInputBox>

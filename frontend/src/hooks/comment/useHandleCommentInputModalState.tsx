@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from 'react';
 import { CommentInputModalProps } from '@/components/comment/CommentInputModal/CommentInputModal';
 import usePostCommentInputModal from '@/hooks/comment/usePostCommentInputModal';
 import usePutCommentInputModal from '@/hooks/comment/usePutCommentInputModal';
+import useModal from '@/hooks/common/useModal';
 import useSnackBar from '@/hooks/common/useSnackBar';
 import { queryClient } from '@/index';
 import { takeToastImgEditor } from '@/utils/takeToastImgEditor';
@@ -10,7 +11,6 @@ import { validatedCommentInput } from '@/utils/validateInput';
 import { Editor } from '@toast-ui/react-editor';
 
 const useHandleCommentInputModalState = ({
-	closeModal,
 	articleId,
 	modalType,
 	commentId,
@@ -19,16 +19,17 @@ const useHandleCommentInputModalState = ({
 	const [isAnonymous, setIsAnonymous] = useState(false);
 	const commentContent = useRef<Editor | null>(null);
 	const { showSnackBar } = useSnackBar();
+	const { hideModal } = useModal();
 	const {
 		isLoading: postIsLoading,
 		mutate: postMutate,
 		isSuccess: postIsSuccess,
-	} = usePostCommentInputModal(closeModal);
+	} = usePostCommentInputModal(hideModal);
 	const {
 		isLoading: putIsLoading,
 		mutate: putMutate,
 		isSuccess: putIsSuccess,
-	} = usePutCommentInputModal(closeModal);
+	} = usePutCommentInputModal(hideModal);
 
 	useEffect(() => {
 		if (postIsSuccess || putIsSuccess) {

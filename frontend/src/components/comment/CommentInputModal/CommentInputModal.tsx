@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction } from 'react';
-import reactDom from 'react-dom';
 
 import AnonymousCheckBox from '@/components/@common/AnonymousCheckBox/AnonymousCheckBox';
 import ToastUiEditor from '@/components/@common/ToastUiEditor/ToastUiEditor';
@@ -32,34 +31,14 @@ const CommentInputModal = ({
 	placeholder = '',
 	setTempSavedComment,
 }: CommentInputModalProps) => {
-	const commentModal = document.getElementById('comment-portal');
-
 	const { commentContent, setIsAnonymous, onClickCommentPostButton, putIsLoading, postIsLoading } =
 		useHandleCommentInputModalState({
-			closeModal,
 			articleId,
 			modalType,
 			commentId,
 			setTempSavedComment,
 		});
 
-	useEffect(() => {
-		if (commentContent.current) {
-			commentContent.current.getInstance().removeHook('addImageBlobHook');
-			commentContent.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
-				(async () => {
-					const formData = new FormData();
-					formData.append('imageFile', blob);
-					const url = await postImageUrlConverter(formData);
-					callback(url, 'alt-text');
-				})();
-			});
-		}
-	}, [commentContent]);
-
-	if (commentModal === null) {
-		throw new Error('모달을 찾지 못하였습니다.');
-	}
 	if (putIsLoading || postIsLoading) return <div>로딩중...</div>;
 
 	return (
