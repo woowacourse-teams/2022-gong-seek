@@ -4,6 +4,8 @@ import usePostVoteItem from '@/hooks/vote/usePostVoteItem';
 import { theme } from '@/styles/Theme';
 import { convertIdxToVoteColorKey } from '@/utils/converter';
 
+const VOTE_ITEM_PROGRESSIVE_TIEM = 1;
+
 export interface VoteItemProps {
 	voteItemId: number;
 	title: string;
@@ -50,7 +52,7 @@ const VoteItem = ({
 			<ProgressiveBar
 				percent={progressivePercent}
 				gradientColor={gradientColor}
-				time={1}
+				time={VOTE_ITEM_PROGRESSIVE_TIEM}
 				width={theme.size.SIZE_170}
 				height={theme.size.SIZE_010}
 			/>
