@@ -11,11 +11,12 @@ import styled from '@emotion/styled';
 
 export const CategoryBox = styled.div<{ categoryType: 'question' | 'discussion' }>`
 	background-color: white;
-	border-radius: ${({ theme }) => theme.size.SIZE_006};
-	color: ${({ categoryType, theme }) =>
-		categoryType === 'question' ? theme.colors.RED_500 : theme.colors.BLUE_500};
-	padding: 0.5rem;
 	margin-left: auto;
+	${({ theme, categoryType }) => css`
+		border-radius: ${theme.size.SIZE_006};
+		color: ${categoryType === 'question' ? theme.colors.RED_500 : theme.colors.BLUE_500};
+		padding: ${theme.size.SIZE_008};
+	`}
 `;
 
 export const CommentIcon = styled(AiOutlineMessage)`
@@ -65,7 +66,7 @@ export const PopularArticleHeader = styled.div<{ category: Category }>`
 		padding: ${theme.size.SIZE_012};
 		border-top-left-radius: ${theme.size.SIZE_010};
 		border-top-right-radius: ${theme.size.SIZE_010};
-		margin-bottom: 1rem;
+		margin-bottom: ${theme.size.SIZE_016};
 	`}
 `;
 
@@ -74,7 +75,7 @@ export const PopularArticleContent = styled.div`
 `;
 
 export const PopularArticleHashTagListBox = styled(HashTagListBox)`
-	margin: 1rem 0;
+	margin: ${({ theme }) => theme.size.SIZE_016} 0;
 	height: inherit;
 `;
 

@@ -128,10 +128,10 @@ export const ArticleContent = styled.div`
 
 	justify-content: space-between;
 	width: 100%;
-	gap: 1rem;
-	padding: 1rem;
 
 	${({ theme }) => css`
+		gap: ${theme.size.SIZE_016};
+		padding: ${theme.size.SIZE_016};
 		border-radius: ${theme.size.SIZE_010};
 
 		padding: ${theme.size.SIZE_010};
