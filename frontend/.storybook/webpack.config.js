@@ -1,6 +1,11 @@
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 
+const envPath =
+	process.env.NODE_ENV === 'development'
+		? path.join(__dirname, '../webpack/.env.development')
+		: path.join(__dirname, '../webpack/.env.production');
+
 module.exports = ({ config }) => {
 	config.resolve.alias = {
 		'@': path.resolve(__dirname, '../src'),
@@ -18,7 +23,7 @@ module.exports = ({ config }) => {
 
 	config.plugins.push(
 		new Dotenv({
-			path: path.join(__dirname, '../webpack/.env.development'),
+			path: envPath,
 		}),
 	);
 
