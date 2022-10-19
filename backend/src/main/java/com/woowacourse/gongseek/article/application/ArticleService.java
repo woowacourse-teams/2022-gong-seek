@@ -176,6 +176,9 @@ public class ArticleService {
     }
 
     private void deleteVoteHistory(Article article) {
+        if (article.getCategory().equals(Category.QUESTION)) {
+            return;
+        }
         Vote vote = voteRepository.findByArticleId(article.getId())
                 .orElseThrow(() -> new VoteNotFoundException(article.getId()));
         voteHistoryRepository.deleteAllByVoteItemIn(voteItemRepository.findAllByVoteId(vote.getId()));
