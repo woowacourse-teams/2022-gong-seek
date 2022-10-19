@@ -5,10 +5,16 @@ import * as S from '@/components/hashTag/HashTagClickSearchBox/HashTagClickSearc
 export interface HashTagClickSearchBoxProps {
 	targets: { name: string; isChecked: boolean }[];
 	setTargets: React.Dispatch<React.SetStateAction<{ name: string; isChecked: boolean }[]>>;
+	setSelectedTargets?: React.Dispatch<React.SetStateAction<{ name: string; isChecked: boolean }[]>>;
 }
 
-const HashTagClickSearchBox = ({ targets, setTargets }: HashTagClickSearchBoxProps) => {
+const HashTagClickSearchBox = ({
+	targets,
+	setTargets,
+	setSelectedTargets,
+}: HashTagClickSearchBoxProps) => {
 	const [isOpen, setIsOpen] = useState(false);
+
 	const handleClickHashTagItem = (target: string) => {
 		setTargets(
 			targets.map((item) => {
@@ -24,11 +30,31 @@ const HashTagClickSearchBox = ({ targets, setTargets }: HashTagClickSearchBoxPro
 				};
 			}),
 		);
+		if (setSelectedTargets) {
+			setSelectedTargets(
+				targets.map((item) => {
+					if (item.name === target) {
+						return {
+							name: item.name,
+							isChecked: !item.isChecked,
+						};
+					}
+					return {
+						name: item.name,
+						isChecked: item.isChecked,
+					};
+				}),
+			);
+		}
 	};
 
 	const handleClickHashTagButton = () => {
 		setIsOpen((prev) => !prev);
 	};
+
+	if (targets.length === 0) {
+		return <div>해시테그가 존재하지 않습니다</div>;
+	}
 
 	return (
 		<S.Container>

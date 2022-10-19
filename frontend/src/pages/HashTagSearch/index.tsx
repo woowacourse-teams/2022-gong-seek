@@ -9,22 +9,23 @@ const HashTagSearch = () => {
 	const {
 		isTagsOptionLoading,
 		isTagsOptionSuccess,
-		targetHashTags,
+		totalHashTags,
 		selectedHashTags,
 		setTargetHashTags,
+		setTotalHashTags,
 	} = useHandleHashTagState();
 	return (
 		<S.Container>
 			<S.HashTagSearchBox>
-				<HashTagSearchBox targets={targetHashTags} setTargets={setTargetHashTags} />
+				<HashTagSearchBox targets={totalHashTags} setTargets={setTargetHashTags} />
 			</S.HashTagSearchBox>
 
-			<S.HashTagSelectTitle>찾고 싶은 해시태그를 클릭해주세요 🔍</S.HashTagSelectTitle>
+			<S.HashTagSelectTitle>전체 해시태그 살펴보기</S.HashTagSelectTitle>
 
 			<S.HashTagSearchBoxContainer>
 				{isTagsOptionLoading && <S.EmptyMsg>해시태그 조회 중</S.EmptyMsg>}
 				{isTagsOptionSuccess && (
-					<HashTagClickSearchBox targets={targetHashTags} setTargets={setTargetHashTags} />
+					<HashTagClickSearchBox targets={totalHashTags} setTargets={setTotalHashTags} />
 				)}
 			</S.HashTagSearchBoxContainer>
 

@@ -11,6 +11,11 @@ export const Container = styled.section`
 	min-height: 100%;
 `;
 
+export const HashTagSearchBox = styled.div`
+	width: 100%;
+	margin-bottom: ${({ theme }) => theme.size.SIZE_040};
+`;
+
 export const HashTagSelectTitle = styled.div`
 	width: 100%;
 	text-align: center;

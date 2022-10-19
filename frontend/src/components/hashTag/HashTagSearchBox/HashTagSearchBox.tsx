@@ -17,8 +17,9 @@ const isHashTagSearchResultType = (
 const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 	const [hashTagSearchText, setHashTagSearchText] = useState('');
 	const [hashTagSearchResult, setHashTagSearchResult] = useState<
-		{ name: string; isChecked: boolean }[] | string
+		{ name: string; isChecked: boolean }[]
 	>([]);
+	const [hashTagResultDescription, setHashTagResultDescription] = useState('');
 	const handleChangeHashTagSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setHashTagSearchText(e.target.value);
 	};
@@ -29,17 +30,17 @@ const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 
 	const searchTargetHashTag = () => {
 		if (targets.length === 0) {
-			setHashTagSearchResult('해시태그가 존재하지 않습니다');
+			setHashTagResultDescription('해시태그가 존재하지 않습니다');
 		}
 		if (targets.length >= 1) {
 			const searchedHashTags = targets.filter((item) => {
-				const names = item.name.toUpperCase();
-				if (names.includes(hashTagSearchText.toUpperCase())) {
+				const names = item.name.trim();
+				if (names.includes(hashTagSearchText)) {
 					return item;
 				}
 			}) as HashTagSearchResultType;
 			if (searchedHashTags.length < 1) {
-				setHashTagSearchResult('해시태그가 존재하지 않습니다');
+				setHashTagResultDescription('해시태그가 존재하지 않습니다');
 				return;
 			}
 			setHashTagSearchResult(searchedHashTags);
@@ -61,13 +62,19 @@ const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 				/>
 			</S.SearchBarBox>
 			<S.HashTagListBox>
-				{typeof hashTagSearchResult === 'string' && (
-					<S.HashTagSearchResultDescription>{hashTagSearchResult}</S.HashTagSearchResultDescription>
+				{hashTagSearchResult.length < 1 && (
+					<S.HashTagSearchResultDescription>
+						{hashTagResultDescription}
+					</S.HashTagSearchResultDescription>
 				)}
 				{hashTagSearchResult.length >= 1 &&
 					typeof hashTagSearchResult !== 'string' &&
 					isHashTagSearchResultType(hashTagSearchResult) && (
-						<HashTagClickSearchBox targets={hashTagSearchResult} setTargets={setTargets} />
+						<HashTagClickSearchBox
+							targets={hashTagSearchResult}
+							setTargets={setTargets}
+							setSelectedTargets={setHashTagSearchResult}
+						/>
 					)}
 			</S.HashTagListBox>
 		</S.Container>
