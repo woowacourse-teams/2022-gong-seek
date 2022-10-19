@@ -52,8 +52,7 @@ export const AuthorNameText = styled.div`
 
 export const PopularArticleUserProfile = styled(UserProfile)`
 	border: 2px solid transparent;
-	background-image: linear-gradient(to bottom, #ffffcc 7%, #ff9900 96%),
-		linear-gradient(to bottom, #ff3300 7%, #66ffcc 96%);
+	background-image: ${({ theme }) => theme.GradientColors.POPULAR_PROFILE_BORDER};
 	background-origin: border-box;
 	background-clip: content-box, border-box;
 `;
