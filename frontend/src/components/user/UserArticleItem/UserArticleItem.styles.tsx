@@ -19,7 +19,12 @@ export const Container = styled.div`
 
 		padding: ${theme.size.SIZE_006};
 
-		gap: ${theme.size.SIZE_010};
+		gap: ${theme.size.SIZE_020};
+
+		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
+			width: 80%;
+			justify-content: center;
+		}
 	`}
 `;
 
@@ -46,14 +51,16 @@ export const ArticleTitleBox = styled.div`
 
 export const ArticleTitle = styled.div`
 	width: 80%;
-	font-size: ${({ theme }) => theme.size.SIZE_016};
 
 	overflow: hidden;
 	word-break: break-all;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 
-	margin-left: ${({ theme }) => theme.size.SIZE_008};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_016};
+		margin-left: ${theme.size.SIZE_008};
+	`}
 `;
 
 export const ArticleSubInfo = styled.div`
@@ -62,8 +69,10 @@ export const ArticleSubInfo = styled.div`
 `;
 
 export const ArticleTime = styled.div`
-	font-size: ${({ theme }) => theme.size.SIZE_012};
-	color: ${({ theme }) => theme.colors.BLACK_400};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_012};
+		color: ${theme.colors.BLACK_400};
+	`}
 `;
 
 export const ArticleRightBox = styled.div`
@@ -77,8 +86,10 @@ export const CommentBox = styled.div`
 	gap: ${({ theme }) => theme.size.SIZE_006};
 `;
 export const CommentIcon = styled(AiOutlineMessage)`
-	font-size: ${({ theme }) => theme.size.SIZE_020};
-	margin-top: -${({ theme }) => theme.size.SIZE_006};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_020};
+		margin-top: -${theme.size.SIZE_006};
+	`}
 `;
 export const CommentCount = styled.div`
 	font-size: ${({ theme }) => theme.size.SIZE_014};

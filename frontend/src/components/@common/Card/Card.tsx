@@ -22,6 +22,7 @@ const Card = ({
 			gap: ${cssObject.gap ? cssObject.gap : 0};
 			flex-direction: ${cssObject.flexDirection ? cssObject.flexDirection : 'column'};
 			flex-wrap: ${cssObject.flexWrap ? cssObject.flexWrap : 'nowrap'};
+			margin: ${cssObject.margin ? cssObject.margin : 0};
 		`}
 		media={media ? media : ''}
 		hasActiveAnimation={hasActiveAnimation}

@@ -1,3 +1,5 @@
+import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
+
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -22,7 +24,20 @@ export const HashTagLists = styled.div`
 export const HashTagItem = styled.button<{ isChecked: boolean }>`
 	width: fit-content;
 	height: fit-content;
+
+	border: ${({ theme }) => theme.size.SIZE_001} solid;
+	border-color: ${({ theme, isChecked }) =>
+		isChecked ? theme.colors.PURPLE_500 : theme.colors.BLACK_400};
+	border-radius: ${({ theme }) => theme.size.SIZE_004};
+
 	background-color: transparent;
+
+	padding: ${({ theme }) => theme.size.SIZE_004};
+
+	background-color: ${({ isChecked, theme }) =>
+		isChecked ? theme.colors.PURPLE_500 : 'transparent'};
+
+	color: ${({ isChecked, theme }) => (isChecked ? theme.colors.WHITE : theme.colors.BLACK_500)};
 
 	&:hover,
 	&:active {
@@ -31,13 +46,14 @@ export const HashTagItem = styled.button<{ isChecked: boolean }>`
 
 	${({ theme, isChecked }) => css`
 		border: ${theme.size.SIZE_001} solid;
-		border-color: ${isChecked ? `${theme.colors.PURPLE_500}` : `${theme.colors.BLACK_400}`};
+		border-color: ${isChecked ? theme.colors.PURPLE_500 : theme.colors.BLACK_400};
 		border-radius: ${theme.size.SIZE_004};
 
 		padding: ${theme.size.SIZE_004};
 
-		background-color: ${isChecked ? `${theme.colors.PURPLE_500}` : 'transparent'};
-		color: ${isChecked ? `${theme.colors.WHITE}` : `${theme.colors.BLACK_500}`};
+		background-color: ${isChecked ? theme.colors.PURPLE_500 : 'transparent'};
+
+		color: ${isChecked ? theme.colors.WHITE : theme.colors.BLACK_500};
 	`}
 `;
 
@@ -60,3 +76,35 @@ export const HashTagButton = styled.button`
 `;
 
 export const EmptyMsg = styled.div``;
+
+export const OpenButton = styled(AiOutlineDown)`
+	border: none;
+	background-color: transparent;
+
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_024};
+		margin-left: ${theme.size.SIZE_010};
+
+		&:hover,
+		&:active {
+			color: ${theme.colors.PURPLE_500};
+			cursor: pointer;
+		}
+	`}
+`;
+
+export const CloseButton = styled(AiOutlineUp)`
+	border: none;
+	background-color: transparent;
+
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_024};
+		margin-left: ${theme.size.SIZE_010};
+
+		&:hover,
+		&:active {
+			color: ${theme.colors.PURPLE_500};
+			cursor: pointer;
+		}
+	`}
+`;

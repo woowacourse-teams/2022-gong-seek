@@ -29,5 +29,9 @@ export const ContentContainer = styled.div`
 
 		border: ${theme.size.SIZE_001} solid ${theme.colors.GRAY_500};
 		border-radius: 0 ${theme.size.SIZE_004} ${theme.size.SIZE_004} ${theme.size.SIZE_004};
+
+		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
+			width: 90%;
+		}
 	`}
 `;
