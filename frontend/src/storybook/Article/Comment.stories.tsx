@@ -1,3 +1,5 @@
+import { BrowserRouter } from 'react-router-dom';
+
 import Comment, { CommentProps } from '@/components/comment/Comment/Comment';
 import { Meta, Story } from '@storybook/react';
 
@@ -6,9 +8,11 @@ export default {
 	component: Comment,
 	decorators: [
 		(Story) => (
-			<div style={{ width: '320px' }}>
-				<Story />
-			</div>
+			<BrowserRouter>
+				<div style={{ width: '320px' }}>
+					<Story />
+				</div>
+			</BrowserRouter>
 		),
 	],
 } as Meta;
