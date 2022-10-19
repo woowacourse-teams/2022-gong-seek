@@ -10,6 +10,12 @@ const UserProfileIcon = () => {
 	const { data, isLoading, isSuccess } = useGetUserInfo();
 	const [dropdown, setDropdown] = useRecoilState(dropdownState);
 
+	const handleClickUserProfile = () => {
+		setDropdown((prev) => ({
+			isOpen: !prev.isOpen,
+		}));
+	};
+
 	return (
 		<S.Container>
 			{isLoading && <S.UserProfile src={gongseek} />}
@@ -24,7 +30,7 @@ const UserProfileIcon = () => {
 					}
 				/>
 			)}
-			{dropdown.isOpen && <Dropdown onClickCloseDropdown={() => setDropdown({ isOpen: false })} />}
+			{dropdown.isOpen && <Dropdown onCloseDropdown={handleClickUserProfile} />}
 		</S.Container>
 	);
 };

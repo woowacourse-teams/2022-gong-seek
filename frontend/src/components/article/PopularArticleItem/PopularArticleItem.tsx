@@ -7,9 +7,13 @@ import { convertGithubAvatarUrlForResize } from '@/utils/converter';
 const PopularArticleItem = ({ article }: { article: CommonArticleType }) => {
 	const navigate = useNavigate();
 	const { id, title, author, commentCount, views, likeCount, category } = article;
+
+	const handleClickTitle = () => {
+		navigate(`/articles/${category}/${id}`);
+	};
 	return (
 		<>
-			<S.Title onClick={() => navigate(`/articles/${category}/${id}`)}>{title}</S.Title>
+			<S.Title onClick={handleClickTitle}>{title}</S.Title>
 			<S.ArticleInfo>
 				<S.ProfileBox>
 					<S.UserImg

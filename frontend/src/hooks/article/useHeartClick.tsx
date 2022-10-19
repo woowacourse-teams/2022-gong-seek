@@ -64,19 +64,19 @@ const useHeartClick = ({
 		}
 	}, [postIsSuccess]);
 
-	const onLikeButtonClick = (e: React.MouseEvent<SVGElement>) => {
-		e.stopPropagation();
-		postMutate(articleId);
-	};
-
-	const onUnlikeButtonClick = (e: React.MouseEvent<SVGElement>) => {
+	const handleClickFillHeart = (e: React.MouseEvent<SVGElement>) => {
 		e.stopPropagation();
 		deleteMutate(articleId);
 	};
 
+	const handleClickEmptyHeart = (e: React.MouseEvent<SVGElement>) => {
+		e.stopPropagation();
+		postMutate(articleId);
+	};
+
 	return {
-		onLikeButtonClick,
-		onUnlikeButtonClick,
+		handleClickFillHeart,
+		handleClickEmptyHeart,
 		isLike,
 		likeCount,
 		postIsSuccess,

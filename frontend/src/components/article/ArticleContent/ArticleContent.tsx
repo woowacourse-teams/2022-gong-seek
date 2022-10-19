@@ -18,7 +18,7 @@ export interface ArticleContentProps {
 }
 
 const ArticleContent = ({ category, article, author, articleId }: ArticleContentProps) => {
-	const { onLikeButtonClick, onUnlikeButtonClick, isLike, likeCount } = useHeartClick({
+	const { handleClickFillHeart, handleClickEmptyHeart, isLike, likeCount } = useHeartClick({
 		prevIsLike: article.isLike,
 		prevLikeCount: article.likeCount,
 		articleId,
@@ -26,7 +26,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 	const { handleDeleteArticle } = useDeleteArticleContent();
 	const navigate = useNavigate();
 
-	const navigateUpdateArticle = () => {
+	const handleClickEditButton = () => {
 		const categoryName = category === '질문' ? 'question' : 'discussion';
 		navigate(`/articles/modify/${categoryName}/${articleId}`);
 	};
@@ -65,7 +65,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 						{article.isAuthor && (
 							<S.ButtonWrapper>
 								<S.EditButton
-									onClick={navigateUpdateArticle}
+									onClick={handleClickEditButton}
 									aria-label="글 수정하기 버튼"
 									role="button"
 									tabIndex={0}
@@ -84,12 +84,16 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 					<S.LikeContentBox>
 						{isLike ? (
 							<S.FillHeart
-								onClick={onUnlikeButtonClick}
+								onClick={handleClickFillHeart}
 								aria-label="하트를 취소합니다"
 								tabIndex={0}
 							/>
 						) : (
-							<S.EmptyHeart onClick={onLikeButtonClick} aria-label="하트를 누릅니다" tabIndex={0} />
+							<S.EmptyHeart
+								onClick={handleClickEmptyHeart}
+								aria-label="하트를 누릅니다"
+								tabIndex={0}
+							/>
 						)}
 						<div aria-label="좋아요 수">{likeCount}</div>
 					</S.LikeContentBox>

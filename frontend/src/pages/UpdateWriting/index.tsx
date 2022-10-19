@@ -28,7 +28,7 @@ const UpdateWriting = () => {
 		setHashTag,
 		titleInputRef,
 		isValidTitleInput,
-		handleUpdateButtonClick,
+		handleClickUpdateSubmitButton,
 	} = usePostWritingArticle();
 
 	useEffect(() => {
@@ -78,7 +78,7 @@ const UpdateWriting = () => {
 				<S.UpdateSubmitButton
 					type="button"
 					onClick={() => {
-						handleUpdateButtonClick(id);
+						handleClickUpdateSubmitButton(id);
 					}}
 				>
 					수정하기

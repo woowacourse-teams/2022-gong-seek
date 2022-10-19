@@ -31,13 +31,18 @@ const CommentInputModal = ({
 	placeholder = '',
 	setTempSavedComment,
 }: CommentInputModalProps) => {
-	const { commentContent, setIsAnonymous, onClickCommentPostButton, putIsLoading, postIsLoading } =
-		useHandleCommentInputModalState({
-			articleId,
-			modalType,
-			commentId,
-			setTempSavedComment,
-		});
+	const {
+		commentContent,
+		setIsAnonymous,
+		handleClickCommentPostButton,
+		putIsLoading,
+		postIsLoading,
+	} = useHandleCommentInputModalState({
+		articleId,
+		modalType,
+		commentId,
+		setTempSavedComment,
+	});
 
 	if (putIsLoading || postIsLoading) return <div>로딩중...</div>;
 
@@ -49,7 +54,7 @@ const CommentInputModal = ({
 			</S.CommentContentBox>
 			<S.SubmitBox>
 				{modalType === 'register' && <AnonymousCheckBox setIsAnonymous={setIsAnonymous} />}
-				<S.CommentPostButton onClick={onClickCommentPostButton}>
+				<S.CommentPostButton onClick={handleClickCommentPostButton}>
 					{modalStatus[modalType].buttonText}
 				</S.CommentPostButton>
 			</S.SubmitBox>

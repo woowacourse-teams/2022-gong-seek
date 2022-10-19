@@ -15,11 +15,11 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 
 	const { showSnackBar } = useSnackBar();
 
-	const onChangeInputValue = (e: { target: HTMLInputElement }) => {
+	const handleChangeSearchInput = (e: { target: HTMLInputElement }) => {
 		setSearchInput(e.target.value);
 	};
 
-	const onSubmitSearchTarget = () => {
+	const handleClickSearchButton = () => {
 		if (!validatedSearchInput(searchInput)) {
 			showSnackBar('검색어는 2글자 이상 200글자 이하이여야 합니다');
 			return;
@@ -53,14 +53,12 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 					readOnly={isValid}
 					value={searchInput}
 					ref={searchInputRef}
-					onChange={(e) => {
-						onChangeInputValue(e);
-					}}
+					onChange={handleChangeSearchInput}
 					minLength={2}
 					maxLength={200}
 					aria-label="검색을 입력하는 창입니다"
 				/>
-				<S.SearchButtonBox disabled={isValid} onClick={onSubmitSearchTarget}>
+				<S.SearchButtonBox disabled={isValid} onClick={handleClickSearchButton}>
 					<S.SearchButton role="button" aria-label="검색하기 버튼" />
 				</S.SearchButtonBox>
 			</S.SearchBarBox>

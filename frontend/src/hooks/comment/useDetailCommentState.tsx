@@ -8,10 +8,14 @@ import { getUserIsLogin } from '@/store/userState';
 
 interface useDetailCommentStateProp {
 	articleId: string;
+	commentId?: string;
+	content?: string;
 }
 
-const useDetailCommentState = ({ articleId }: useDetailCommentStateProp) => {
+const useDetailCommentState = ({ articleId, commentId, content }: useDetailCommentStateProp) => {
 	const [tempSavedComment, setTempSavedComment] = useState('');
+	const [isFirstEdit, setIsFirstEdit] = useState(true);
+
 	const { showModal } = useModal();
 
 	const isLogin = useRecoilValue(getUserIsLogin);
@@ -36,11 +40,29 @@ const useDetailCommentState = ({ articleId }: useDetailCommentStateProp) => {
 		}
 	};
 
+	const handleClickCommentEditButton = () => {
+		if (!content) {
+			return;
+		}
+
+		setIsFirstEdit(false);
+		showModal({
+			modalType: 'comment-modal',
+			modalProps: {
+				articleId,
+				modalType: 'edit',
+				commentId,
+				placeholder: isFirstEdit ? content : tempSavedComment,
+				setTempSavedComment,
+			},
+			isMobileOnly: false,
+		});
+	};
+
 	return {
 		handleClickCommentPlusButton,
 		isLogin,
-		tempSavedComment,
-		setTempSavedComment,
+		handleClickCommentEditButton,
 	};
 };
 

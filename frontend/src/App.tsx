@@ -80,12 +80,12 @@ const App = () => {
 
 	usePageChange(handleChangePage);
 
+	const handleClickLayout = () => {
+		dropdown.isOpen && setDropdown({ isOpen: false });
+	};
+
 	return (
-		<Layout
-			onClick={() => {
-				dropdown.isOpen && setDropdown({ isOpen: false });
-			}}
-		>
+		<Layout onClick={handleClickLayout}>
 			<Header />
 			<Content>
 				<Suspense fallback={<Loading />}>

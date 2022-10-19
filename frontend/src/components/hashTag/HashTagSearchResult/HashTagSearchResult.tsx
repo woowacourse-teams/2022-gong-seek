@@ -6,6 +6,7 @@ import ArticleItem from '@/components/article/ArticleItem/ArticleItem';
 import * as S from '@/components/hashTag/HashTagSearchResult/HashTagSearchResult.styles';
 import useGetArticleByHashTag from '@/hooks/hashTag/useGetArticleByHashTag';
 import { EmptyMessage } from '@/pages/Search/index.styles';
+import { CommonArticleType } from '@/types/articleResponse';
 
 export interface HashTagSearchResultProps {
 	hashTags: string[];
@@ -15,6 +16,10 @@ const HashTagSearchResult = ({ hashTags }: HashTagSearchResultProps) => {
 	const navigate = useNavigate();
 
 	const { data, isLoading, fetchNextPage } = useGetArticleByHashTag(hashTags);
+
+	const handleClickArticleItem = (article: CommonArticleType) => {
+		navigate(`/articles/${article.category}/${article.id}`);
+	};
 
 	if (isLoading) {
 		return <Loading />;
@@ -34,7 +39,7 @@ const HashTagSearchResult = ({ hashTags }: HashTagSearchResultProps) => {
 								<ArticleItem
 									key={article.id}
 									article={article}
-									onClick={() => navigate(`/articles/${article.category}/${article.id}`)}
+									onClick={() => handleClickArticleItem(article)}
 								/>
 							)),
 						)}
