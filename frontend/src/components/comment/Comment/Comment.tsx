@@ -11,9 +11,18 @@ import { dateTimeConverter } from '@/utils/converter';
 
 export interface CommentProps extends CommentType {
 	articleId: string;
+	tabIndex: number;
 }
 
-const Comment = ({ id, author, content, createdAt, isAuthor, articleId }: CommentProps) => {
+const Comment = ({
+	id,
+	author,
+	content,
+	createdAt,
+	isAuthor,
+	articleId,
+	tabIndex,
+}: CommentProps) => {
 	const [commentPlaceholder, setCommentPlaceHolder] = useState('');
 	const { isLoading, onDeleteButtonClick } = useDeleteComment();
 	const { showModal } = useModal();
@@ -35,32 +44,43 @@ const Comment = ({ id, author, content, createdAt, isAuthor, articleId }: Commen
 	if (isLoading) return <Loading />;
 
 	return (
-		<S.Container>
+		<S.Container tabIndex={tabIndex}>
 			<S.CommentHeader>
 				<S.CommentInfo>
 					<S.UserProfile
-						alt="유저 프로필이 보여지는 곳입니다"
+						alt="작성자의 프로필"
 						src={convertGithubAvatarUrlForResize(author.avatarUrl)}
+						tabIndex={tabIndex}
 					/>
 					<S.CommentInfoSub>
-						<S.UserName>{author.name}</S.UserName>
-						<S.CreateTime>{dateTimeConverter(createdAt)}</S.CreateTime>
+						<S.UserName aria-label={`댓글 작성자 ${author.name}`} tabIndex={tabIndex}>
+							{author.name}
+						</S.UserName>
+						<S.CreateTime
+							aria-label={`댓글 작성시간 ${dateTimeConverter(createdAt)}`}
+							tabIndex={tabIndex}
+						>
+							{dateTimeConverter(createdAt)}
+						</S.CreateTime>
 					</S.CommentInfoSub>
 				</S.CommentInfo>
 				{isAuthor && (
 					<S.CommentAuthBox>
-						<S.Button onClick={onUpdateButtonClick}>수정</S.Button>
+						<S.Button onClick={onUpdateButtonClick} tabIndex={tabIndex}>
+							수정
+						</S.Button>
 						<S.Button
 							onClick={() => {
 								onDeleteButtonClick(id);
 							}}
+							tabIndex={tabIndex}
 						>
 							삭제
 						</S.Button>
 					</S.CommentAuthBox>
 				)}
 			</S.CommentHeader>
-			<S.CommentContent>
+			<S.CommentContent tabIndex={tabIndex}>
 				<ToastUiViewer initContent={content} />
 			</S.CommentContent>
 		</S.Container>

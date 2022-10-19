@@ -29,6 +29,7 @@ const TabBar = () => {
 			) : (
 				<UserProfile
 					src={gongseek}
+					alt="공식 이미지"
 					onClick={() => {
 						navigate('/login');
 					}}
