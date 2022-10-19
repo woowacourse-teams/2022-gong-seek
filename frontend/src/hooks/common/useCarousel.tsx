@@ -6,6 +6,7 @@ import usePrevState from '@/hooks/common/usePrevState';
 
 const MIN_CAROUSEL_INDEX = 0;
 const MAX_CAROUSEL_INDEX = 9;
+const CAROUSEL_ITEMS_LENGTH = 10;
 
 const useCarousel = () => {
 	const [carouselElementRef, setCarouselElementRef] = useState<null | HTMLDivElement>(null);
@@ -36,7 +37,7 @@ const useCarousel = () => {
 
 	const setCarouselItemWidth = useDebounce(() => {
 		if (carouselElementRef) {
-			carouselItemWidth.current = carouselElementRef.scrollWidth / 15;
+			carouselItemWidth.current = carouselElementRef.scrollWidth / CAROUSEL_ITEMS_LENGTH;
 		}
 	}, DEBOUNCE_RESIZE_TIME);
 
@@ -52,7 +53,7 @@ const useCarousel = () => {
 
 	useEffect(() => {
 		if (carouselElementRef) {
-			carouselItemWidth.current = carouselElementRef.scrollWidth / 15;
+			carouselItemWidth.current = carouselElementRef.scrollWidth / (CAROUSEL_ITEMS_LENGTH * 2);
 			carouselElementRef.addEventListener('scroll', handleScrollEnd);
 			window.addEventListener('resize', setCarouselItemWidth);
 
@@ -63,7 +64,10 @@ const useCarousel = () => {
 		}
 
 		return () => {
-			carouselElementRef?.removeEventListener('scroll', handleScrollEnd);
+			if (carouselElementRef === null) {
+				return;
+			}
+			carouselElementRef.removeEventListener('scroll', handleScrollEnd);
 			window.removeEventListener('resize', setCarouselItemWidth);
 		};
 	}, [carouselElementRef]);
@@ -73,9 +77,13 @@ const useCarousel = () => {
 			return;
 		}
 
+		if (carouselElementRef === null) {
+			return;
+		}
+
 		const isRightSlide = prevCurrentIndex < currentIndex;
 
-		carouselElementRef?.scrollBy({
+		carouselElementRef.scrollBy({
 			left: carouselItemWidth.current * (isRightSlide ? 1 : -1),
 			behavior: 'smooth',
 		});
@@ -96,10 +104,14 @@ const useCarousel = () => {
 			return;
 		}
 
+		if (carouselElementRef === null) {
+			return;
+		}
+
 		if (currentIndex === MAX_CAROUSEL_INDEX) {
 			setCurrentIndex(MIN_CAROUSEL_INDEX);
 
-			carouselElementRef?.scrollTo({
+			carouselElementRef.scrollTo({
 				left: carouselItemWidth.current,
 				behavior: 'smooth',
 			});
