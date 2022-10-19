@@ -11,7 +11,7 @@ export const Container = styled.section`
 	align-items: center;
 `;
 
-export const SearchBarBox = styled.div`
+export const SearchBarBox = styled.form`
 	width: 100%;
 	display: flex;
 	justify-content: center;
@@ -25,6 +25,11 @@ export const SearchBar = styled.input`
 		border-radius: ${theme.size.SIZE_004};
 		padding: ${theme.size.SIZE_004};
 	`}
+`;
+
+export const SearchButtonBox = styled.button`
+	border: none;
+	background: transparent;
 `;
 
 export const SearchButton = styled(AiOutlineSearch)`

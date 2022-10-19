@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { FormEvent, FormEventHandler, useState } from 'react';
 
 import HashTagClickSearchBox from '@/components/hashTag/HashTagClickSearchBox/HashTagClickSearchBox';
 import * as S from '@/components/hashTag/HashTagSearchBox/HashTagSearchBox.styles';
@@ -31,6 +31,7 @@ const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 	const searchTargetHashTag = () => {
 		if (targets.length === 0) {
 			setHashTagResultDescription('해시태그가 존재하지 않습니다');
+			setHashTagSearchResult([]);
 		}
 		if (targets.length >= 1) {
 			const searchedHashTags = targets.filter((item) => {
@@ -38,9 +39,10 @@ const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 				if (names.includes(hashTagSearchText)) {
 					return item;
 				}
-			}) as HashTagSearchResultType;
+			});
 			if (searchedHashTags.length < 1) {
 				setHashTagResultDescription('해시태그가 존재하지 않습니다');
+				setHashTagSearchResult([]);
 				return;
 			}
 			setHashTagSearchResult(searchedHashTags);
@@ -48,18 +50,25 @@ const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 	};
 	return (
 		<S.Container>
-			<S.SearchBarBox>
+			<S.SearchBarBox
+				onSubmit={(e) => {
+					e.preventDefault();
+					handleSubmitHashTagSearch();
+				}}
+			>
 				<S.SearchBar
 					role="search"
 					placeholder="찾고 싶으신 해시태그를 입력해주세요"
 					value={hashTagSearchText}
 					onChange={handleChangeHashTagSearchInput}
 				/>
-				<S.SearchButton
-					role="button"
-					aria-label="해시태그가 존재하는지 검색합니다"
-					onClick={handleSubmitHashTagSearch}
-				/>
+				<S.SearchButtonBox type="button">
+					<S.SearchButton
+						role="button"
+						aria-label="해시태그가 존재하는지 검색합니다"
+						onClick={handleSubmitHashTagSearch}
+					/>
+				</S.SearchButtonBox>
 			</S.SearchBarBox>
 			<S.HashTagListBox>
 				{hashTagSearchResult.length < 1 && (
