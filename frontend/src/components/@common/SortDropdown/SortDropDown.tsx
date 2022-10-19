@@ -11,7 +11,7 @@ export interface SortPropDownProps {
 
 const SortDropdown = ({ sortList, sortIndex, setSortIndex }: SortPropDownProps) => {
 	const [onDropdown, setOnDropdown] = useState(false);
-	const [isLog, setIsLog] = useState(false);
+	const [isShowAlertLog, setIsShowAlertLog] = useState(false);
 
 	const handleClickSortBox = () => {
 		setOnDropdown((prevOnDropdown) => !prevOnDropdown);
@@ -23,14 +23,14 @@ const SortDropdown = ({ sortList, sortIndex, setSortIndex }: SortPropDownProps) 
 	};
 
 	useEffect(() => {
-		if (isLog) {
-			setIsLog(false);
+		if (isShowAlertLog) {
+			setIsShowAlertLog(false);
 		}
-	}, [isLog]);
+	}, [isShowAlertLog]);
 
 	const handleSortDropdownKeydown = (e: React.KeyboardEvent<HTMLDivElement>) => {
 		if (e.key === 'Escape') {
-			setIsLog(true);
+			setIsShowAlertLog(true);
 			setOnDropdown(false);
 		}
 	};
