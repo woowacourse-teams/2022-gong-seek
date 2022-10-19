@@ -138,6 +138,6 @@ export const SubmitBox = styled.div`
 			gap: ${theme.size.SIZE_016};
 
 			margin: ${theme.size.SIZE_040} ${theme.size.SIZE_026} ${theme.size.SIZE_020} 0;
-			
+		}
 	`}
 `;
