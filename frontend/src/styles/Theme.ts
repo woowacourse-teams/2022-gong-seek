@@ -78,6 +78,7 @@ export const size = {
 	SIZE_030: '1.875rem',
 	SIZE_032: '2rem',
 	SIZE_035: '2.1875rem',
+	SIZE_038: '2.375rem',
 	SIZE_040: '2.5rem',
 	SIZE_050: '3.125rem',
 	SIZE_056: '3.5rem',

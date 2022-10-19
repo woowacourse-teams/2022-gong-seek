@@ -1,3 +1,4 @@
+import { TextOverflow } from '@/styles/mixin';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -35,10 +36,7 @@ export const ArticleBox = styled.div`
 export const ArticleTitle = styled.div`
 	width: 80%;
 	margin-left: ${({ theme }) => theme.size.SIZE_008};
-	overflow: hidden;
-	word-break: break-all;
-	white-space: nowrap;
-	text-overflow: ellipsis;
+	${TextOverflow}
 `;
 
 export const ArticleCategory = styled.div<{ isQuestion: boolean }>`

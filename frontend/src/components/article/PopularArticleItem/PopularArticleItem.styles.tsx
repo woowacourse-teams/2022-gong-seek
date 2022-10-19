@@ -5,6 +5,7 @@ import {
 	ArticleItemTitle,
 	HashTagListBox,
 } from '@/components/article/ArticleItem/ArticleItem.styles';
+import { TextOverflow } from '@/styles/mixin';
 import { Category } from '@/types/articleResponse';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -62,11 +63,14 @@ export const PopularArticleHeader = styled.div<{ category: Category }>`
 		background: ${category === 'question' ? theme.colors.RED_500 : theme.colors.BLUE_500};
 		opacity: 0.8;
 		box-shadow: 0, 0, 0, inset 0 0 4px #5e0080;
-		padding: ${theme.size.SIZE_012};
+		padding: ${theme.size.SIZE_014} ${theme.size.SIZE_012};
 		border-top-left-radius: ${theme.size.SIZE_010};
 		border-top-right-radius: ${theme.size.SIZE_010};
-		margin-bottom: ${theme.size.SIZE_016};
+		margin-bottom: ${theme.size.SIZE_006};
+		line-height: ${theme.size.SIZE_024};
 	`}
+
+	${TextOverflow}
 `;
 
 export const PopularArticleContent = styled.div`
@@ -79,5 +83,8 @@ export const PopularArticleHashTagListBox = styled(HashTagListBox)`
 `;
 
 export const PopularArticleItemTitle = styled(ArticleItemTitle)`
-	height: inherit;
+	display: flex;
+	height: ${({ theme }) => theme.size.SIZE_038};
+
+	${TextOverflow}
 `;

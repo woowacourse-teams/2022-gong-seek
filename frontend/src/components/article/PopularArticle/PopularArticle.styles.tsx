@@ -1,5 +1,6 @@
 import { AiOutlineLeft } from 'react-icons/ai';
 
+import { TextOverflow } from '@/styles/mixin';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -12,11 +13,11 @@ export const Container = styled.section`
 	display: flex;
 
 	align-items: center;
-	width: 90%;
+	width: 85%;
 
 	margin: 0 auto;
-	overflow: hidden;
-	scroll-snap-type: x proximity;
+	overflow: auto;
+	scroll-snap-type: x mandatory;
 
 	&::-webkit-scrollbar {
 		opacity: 0;
@@ -27,7 +28,7 @@ export const Container = styled.section`
 		z-index: ${theme.zIndex.POPULAR_ARTICLES};
 
 		@media (min-width: ${theme.breakpoints.DESKTOP_SMALL}) {
-			width: 60%;
+			width: 75%;
 			height: ${theme.size.SIZE_280};
 		}
 	`}
@@ -102,7 +103,7 @@ export const LeftArrowButton = styled(ArrowButton)`
 	`}
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
-		left: ${({ theme }) => theme.size.SIZE_110};
+		left: ${({ theme }) => theme.size.SIZE_050};
 	}
 `;
 
@@ -112,7 +113,7 @@ export const RightArrowButton = styled(ArrowButton)`
 	`}
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
-		right: ${({ theme }) => theme.size.SIZE_110};
+		right: ${({ theme }) => theme.size.SIZE_050};
 	}
 `;
 
@@ -140,10 +141,7 @@ export const ArticleContent = styled.div`
 
 export const Title = styled.h2`
 	width: 100%;
-	line-height: normal;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
+	${TextOverflow}
 
 	${({ theme }) => css`
 		height: ${theme.size.SIZE_040};
