@@ -37,7 +37,7 @@ const useCarousel = () => {
 
 	const setCarouselItemWidth = useDebounce(() => {
 		if (carouselElementRef) {
-			carouselItemWidth.current = carouselElementRef.scrollWidth / CAROUSEL_ITEMS_LENGTH;
+			carouselItemWidth.current = carouselElementRef.scrollWidth / (CAROUSEL_ITEMS_LENGTH * 2);
 		}
 	}, DEBOUNCE_RESIZE_TIME);
 
