@@ -213,13 +213,4 @@ public class ArticleService {
                 appMember.getPayload(), pageable);
         return ArticlePageResponse.of(articles);
     }
-
-    public void synchronizeLikeCountAndCommentCount() {
-        List<Article> articles = articleRepository.findAll();
-        articles.forEach(
-                article -> article.updateLikeCountAndCommentCount(
-                        likeRepository.countByArticleId(article.getId()),
-                        commentRepository.countByArticleId(article.getId()))
-        );
-    }
 }
