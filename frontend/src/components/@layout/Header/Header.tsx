@@ -15,7 +15,7 @@ const Header = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const { isSearchOpen } = useRecoilValue(searchState);
 	const { handleHeaderViewByScroll, headerElement, isActiveHeader } = useHandleHeaderByScroll();
-	const { ref } = useEnterToClick();
+	const [enterRef] = useEnterToClick();
 
 	useScroll(handleHeaderViewByScroll);
 
@@ -57,7 +57,7 @@ const Header = () => {
 					<S.NavBarItem to={URL.INQUIRE}>문의하기</S.NavBarItem>
 				</S.NavBarItemBox>
 				{isLogin ? (
-					<S.ProfileIconBox ref={ref}>
+					<S.ProfileIconBox ref={enterRef}>
 						<UserProfileIcon />
 					</S.ProfileIconBox>
 				) : (

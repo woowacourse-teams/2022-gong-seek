@@ -18,7 +18,7 @@ const PopularArticle = React.lazy(
 );
 
 const Home = () => {
-	const { ref } = useEnterToClick();
+	const [enterRef] = useEnterToClick();
 
 	const navigate = useNavigate();
 
@@ -34,7 +34,7 @@ const Home = () => {
 	};
 
 	return (
-		<S.Container ref={ref}>
+		<S.Container ref={enterRef}>
 			<S.PopularArticleTitle id="popular-articles">오늘의 인기글</S.PopularArticleTitle>
 			<Suspense fallback={<Loading />}>
 				<PopularArticle />

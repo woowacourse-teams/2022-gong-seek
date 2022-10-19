@@ -19,7 +19,7 @@ const useEnterToClick = () => {
 		};
 	}, [ref.current]);
 
-	return { ref };
+	return [ref];
 };
 
 export default useEnterToClick;

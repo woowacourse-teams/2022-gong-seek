@@ -61,7 +61,7 @@ const SortDropdown = ({ sortList, sortIndex, setSortIndex }: SortPropDownProps) 
 					))}
 				</S.DropdownBox>
 			)}
-			{isLog && <SrOnlyContainer role="alert">닫힘</SrOnlyContainer>}
+			{isShowAlertLog && <SrOnlyContainer role="alert">닫힘</SrOnlyContainer>}
 		</S.Container>
 	);
 };
