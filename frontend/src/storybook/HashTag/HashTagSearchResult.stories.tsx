@@ -1,3 +1,5 @@
+import { BrowserRouter } from 'react-router-dom';
+
 import HashTagSearchResult, {
 	HashTagSearchResultProps,
 } from '@/components/hashTag/HashTagSearchResult/HashTagSearchResult';
@@ -8,9 +10,11 @@ export default {
 	component: HashTagSearchResult,
 	decorators: [
 		(Story) => (
-			<div style={{ width: '320px' }}>
-				<Story />
-			</div>
+			<BrowserRouter>
+				<div style={{ width: '320px' }}>
+					<Story />
+				</div>
+			</BrowserRouter>
 		),
 	],
 } as Meta;

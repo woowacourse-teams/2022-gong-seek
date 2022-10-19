@@ -1,3 +1,5 @@
+import { BrowserRouter } from 'react-router-dom';
+
 import TabBar from '@/components/@layout/TabBar/TabBar';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { Story, Meta } from '@storybook/react';
@@ -5,7 +7,13 @@ import { Story, Meta } from '@storybook/react';
 export default {
 	title: 'Layout/TabBar',
 	component: TabBar,
-	decorators: [(Story) => <Story />],
+	decorators: [
+		(Story) => (
+			<BrowserRouter>
+				<Story />
+			</BrowserRouter>
+		),
+	],
 	parameters: {
 		viewport: {
 			viewports: INITIAL_VIEWPORTS,

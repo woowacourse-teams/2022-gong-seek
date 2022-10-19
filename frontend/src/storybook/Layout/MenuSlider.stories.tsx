@@ -1,3 +1,5 @@
+import { BrowserRouter } from 'react-router-dom';
+
 import MenuSlider from '@/components/@common/MenuSlider/MenuSlider';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { Meta, Story } from '@storybook/react';
@@ -9,7 +11,13 @@ document.body.append(modalRoot);
 export default {
 	title: 'Layout/MenuSlider',
 	component: MenuSlider,
-	decorators: [(Story) => <Story />],
+	decorators: [
+		(Story) => (
+			<BrowserRouter>
+				<Story />
+			</BrowserRouter>
+		),
+	],
 	parameters: {
 		viewport: {
 			viewports: INITIAL_VIEWPORTS,
