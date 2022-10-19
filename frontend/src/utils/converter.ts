@@ -77,7 +77,7 @@ export const convertGithubAvatarUrlForResize = (avatarUrl: string) => {
 		return avatarUrl;
 	}
 
-	if (process.env.NODE_ENV === 'development') {
+	if (process.env.STORYBOOK) {
 		return avatarUrl;
 	}
 
