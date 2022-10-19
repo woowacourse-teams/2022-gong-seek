@@ -1,3 +1,6 @@
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Comment from '@/components/comment/Comment/Comment';
 import * as S from '@/components/comment/CommentContent/CommentContent.styles';
@@ -25,12 +28,12 @@ const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
 				<S.CommentInputBox>
 					<S.CommentInput
 						aria-label="댓글을 입력하는 창으로 이동하는 링크 입니다"
-						onClick={handleCommentPlusButton}
+						onClick={handleClickCommentButton}
 						disabled={!isLogin}
 					/>
 					<S.CreateCommentButton
 						aria-label="댓글을 입력하는 창으로 이동하는 링크입니다."
-						onClick={handleCommentPlusButton}
+						onClick={handleClickCommentButton}
 						disabled={!isLogin}
 					/>
 				</S.CommentInputBox>
@@ -59,18 +62,6 @@ const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
 					<EmptyMessage>첫 번째 댓글을 달아주세요!</EmptyMessage>
 				)}
 			</S.CommentSection>
-			{isCommentOpen && (
-				<>
-					<S.DimmerContainer onClick={() => setIsCommentOpen(false)} />
-					<CommentInputModal
-						closeModal={() => setIsCommentOpen(false)}
-						articleId={articleId}
-						modalType="register"
-						placeholder={tempSavedComment}
-						setTempSavedComment={setTempSavedComment}
-					/>
-				</>
-			)}
 		</>
 	);
 };
