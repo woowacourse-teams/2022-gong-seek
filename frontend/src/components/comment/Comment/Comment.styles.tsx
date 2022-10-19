@@ -32,16 +32,20 @@ export const CommentInfo = styled.div`
 
 	justify-content: center;
 	gap: ${({ theme }) => theme.size.SIZE_004};
+	padding: ${({ theme }) => theme.size.SIZE_004};
 `;
 
 export const UserProfile = styled.img`
-	width: ${({ theme }) => theme.size.SIZE_050};
-	height: ${({ theme }) => theme.size.SIZE_050};
-
 	border-radius: 50%;
 
 	object-fit: cover;
 	object-position: center;
+
+	${({ theme }) => css`
+		width: ${theme.size.SIZE_035};
+		height: ${theme.size.SIZE_035};
+		padding: ${theme.size.SIZE_006};
+	`}
 `;
 
 export const CommentInfoSub = styled.div`
