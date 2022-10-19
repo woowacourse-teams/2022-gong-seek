@@ -44,12 +44,14 @@ const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
 				<S.CommentInputBox>
 					<S.CommentInput
 						aria-label="댓글을 입력하는 창으로 이동하는 링크 입니다"
+						role="link"
 						onClick={handleClickCommentButton}
 						disabled={!isLogin}
 						tabIndex={0}
 					/>
 					<S.CreateCommentButton
 						aria-label="댓글을 입력하는 창으로 이동하는 링크입니다."
+						role="link"
 						onClick={handleClickCommentButton}
 						disabled={!isLogin}
 						tabIndex={0}
