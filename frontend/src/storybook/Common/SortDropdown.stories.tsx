@@ -20,4 +20,5 @@ export const DefaultSortDropdown = Template.bind({});
 DefaultSortDropdown.args = {
 	sortIndex: '최신순',
 	setSortIndex: () => action('setSortIndex'),
+	sortList: ['최신순', '조회순', '좋아요순'],
 };
