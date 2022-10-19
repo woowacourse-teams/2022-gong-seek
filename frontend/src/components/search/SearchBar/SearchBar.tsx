@@ -58,9 +58,10 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 					}}
 					minLength={2}
 					maxLength={200}
+					aria-label="검색을 입력하는 창입니다"
 				/>
 				<S.SearchButtonBox disabled={isValid} onClick={onSubmitSearchTarget}>
-					<S.SearchButton />
+					<S.SearchButton role="button" aria-label="검색하기 버튼" />
 				</S.SearchButtonBox>
 			</S.SearchBarBox>
 		</S.Container>

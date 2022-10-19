@@ -28,7 +28,7 @@ const Detail = ({
 	}
 
 	return (
-		<S.Container>
+		<S.Container tabIndex={0}>
 			<ArticleContent
 				article={article}
 				author={article.author}

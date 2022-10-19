@@ -16,6 +16,7 @@ const UserProfileIcon = () => {
 			{isSuccess && (
 				<S.UserProfile
 					src={data?.avatarUrl}
+					alt="유저의 프로필 이미지"
 					onClick={() =>
 						setDropdown((prev) => ({
 							isOpen: !prev.isOpen,
