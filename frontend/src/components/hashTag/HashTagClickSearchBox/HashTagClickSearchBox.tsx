@@ -9,7 +9,6 @@ export interface HashTagClickSearchBoxProps {
 
 const HashTagClickSearchBox = ({ targets, setTargets }: HashTagClickSearchBoxProps) => {
 	const [isOpen, setIsOpen] = useState(false);
-
 	const handleClickHashTagItem = (target: string) => {
 		setTargets(
 			targets.map((item) => {

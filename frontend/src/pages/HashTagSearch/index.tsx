@@ -1,5 +1,6 @@
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import HashTagClickSearchBox from '@/components/hashTag/HashTagClickSearchBox/HashTagClickSearchBox';
+import HashTagSearchBox from '@/components/hashTag/HashTagSearchBox/HashTagSearchBox';
 import HashTagSearchResult from '@/components/hashTag/HashTagSearchResult/HashTagSearchResult';
 import useHandleHashTagState from '@/hooks/hashTag/useHandleHashTagState';
 import * as S from '@/pages/HashTagSearch/index.styles';
@@ -14,6 +15,10 @@ const HashTagSearch = () => {
 	} = useHandleHashTagState();
 	return (
 		<S.Container>
+			<S.HashTagSearchBox>
+				<HashTagSearchBox targets={targetHashTags} setTargets={setTargetHashTags} />
+			</S.HashTagSearchBox>
+
 			<S.HashTagSelectTitle>찾고 싶은 해시태그를 클릭해주세요 🔍</S.HashTagSelectTitle>
 
 			<S.HashTagSearchBoxContainer>
