@@ -55,7 +55,7 @@ public class ArticleService {
     private final VoteHistoryRepository voteHistoryRepository;
     private final VoteItemRepository voteItemRepository;
 
-    public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
+    public ArticleIdResponse create(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
         Member member = getMember(appMember);
 

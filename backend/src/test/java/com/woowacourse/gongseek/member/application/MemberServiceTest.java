@@ -86,7 +86,7 @@ class MemberServiceTest extends IntegrationTest {
 
     @Test
     void 회원이_작성한_게시글들을_조회할_수_있다() {
-        articleService.save(new LoginMember(member.getId()),
+        articleService.create(new LoginMember(member.getId()),
                 new ArticleRequest("cipherTitle", "cipherContent", Category.QUESTION.getValue(), List.of("SPRING"),
                         true));
         articleRepository.save(new Article("title1", "content1", Category.QUESTION, member, false));
