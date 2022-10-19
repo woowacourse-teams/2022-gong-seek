@@ -13,9 +13,7 @@ export const Container = styled.section`
 
 	align-items: center;
 	width: 90%;
-	height: ${({ theme }) => theme.size.SIZE_280};
 
-	z-index: ${({ theme }) => theme.zIndex.POPULAR_ARTICLES};
 	margin: 0 auto;
 	overflow: hidden;
 	scroll-snap-type: x proximity;
@@ -24,10 +22,16 @@ export const Container = styled.section`
 	&::-webkit-scrollbar {
 		opacity: 0;
 	}
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
-		width: 60%;
-		height: ${({ theme }) => theme.size.SIZE_280};
-	}
+
+	${({ theme }) => css`
+		height: ${theme.size.SIZE_280};
+		z-index: ${theme.zIndex.POPULAR_ARTICLES};
+
+		@media (min-width: ${theme.breakpoints.DESKTOP_SMALL}) {
+			width: 60%;
+			height: ${theme.size.SIZE_280};
+		}
+	`}
 `;
 
 export const LeftBackgroundArticle = styled.div`
