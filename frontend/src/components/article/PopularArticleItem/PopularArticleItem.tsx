@@ -70,12 +70,15 @@ const PopularArticleItem = ({
 
 					<PopularS.PopularArticleHashTagListBox>
 						{tag &&
-							tag.length >= 1 &&
-							tag.map((item) => (
-								<S.HashTagItem key={item}>
-									<span aria-label="해시태그">#</span>
-									{item}
-								</S.HashTagItem>
+							(tag.length >= 1 ? (
+								tag.map((item) => (
+									<S.HashTagItem key={item}>
+										<span aria-label="해시태그">#</span>
+										{item}
+									</S.HashTagItem>
+								))
+							) : (
+								<div>&nbsp;</div>
 							))}
 					</PopularS.PopularArticleHashTagListBox>
 				</PopularS.PopularArticleContent>
