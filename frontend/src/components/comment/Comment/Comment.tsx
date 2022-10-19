@@ -23,7 +23,6 @@ const Comment = ({
 	articleId,
 	tabIndex,
 }: CommentProps) => {
-	const [isEditCommentOpen, setIsEditCommentOpen] = useState(false);
 	const [commentPlaceholder, setCommentPlaceHolder] = useState('');
 	const { isLoading, onDeleteButtonClick } = useDeleteComment();
 	const { showModal } = useModal();

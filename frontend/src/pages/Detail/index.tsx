@@ -28,7 +28,7 @@ const Detail = ({
 	}
 
 	return (
-		<S.Container role="tabpanel" tabIndex={1}>
+		<S.Container tabIndex={0}>
 			<ArticleContent
 				article={article}
 				author={article.author}

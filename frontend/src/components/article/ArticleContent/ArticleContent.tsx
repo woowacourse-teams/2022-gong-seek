@@ -100,7 +100,8 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 						article.tag.length >= 1 &&
 						article.tag.map((item) => (
 							<S.HashTagItem key={item} tabIndex={0}>
-								#{item}
+								<span aria-label="해시태그">#</span>
+								{item}
 							</S.HashTagItem>
 						))}
 				</S.HashTagListBox>
