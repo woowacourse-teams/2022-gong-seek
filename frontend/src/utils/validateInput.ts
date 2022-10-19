@@ -1,3 +1,5 @@
+import { ModalStateType } from '@/store/modalState';
+
 export const validatedSearchInput = (target: string) => target.length >= 2 && target.length <= 200;
 
 export const validatedTitleInput = (titleInput: string) =>
@@ -23,3 +25,7 @@ export const validatedVoteItemsQuantity = (options: string[]) =>
 
 export const validatedCommentInput = (targetInput: string) =>
 	targetInput.length >= 1 && targetInput.length <= 10000;
+
+export const hasModal = (
+	modalType: ModalStateType['modalType'] | undefined,
+): modalType is ModalStateType['modalType'] => typeof modalType !== 'undefined';

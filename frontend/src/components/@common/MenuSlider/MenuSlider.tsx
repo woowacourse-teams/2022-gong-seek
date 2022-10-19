@@ -1,32 +1,18 @@
-import { useEffect } from 'react';
-import reactDom from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import * as S from '@/components/@common/MenuSlider/MenuSlider.styles';
 import { ACCESSTOKEN_KEY } from '@/constants';
 import { URL } from '@/constants/url';
+import useModal from '@/hooks/common/useModal';
 import useDeleteRefreshToken from '@/hooks/login/useDeleteRefreshToken';
 import { getUserIsLogin } from '@/store/userState';
 
-export interface MenuSliderProps {
-	closeSlider: () => void;
-}
-
-const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
-	const menuSlider = document.getElementById('menu-slider');
+const MenuSlider = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
 	const { mutate: mutateDeleteRefreshToken } = useDeleteRefreshToken();
-
+	const { hideModal } = useModal();
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		document.body.style.overflow = 'hidden';
-
-		return () => {
-			document.body.style.overflow = 'auto';
-		};
-	}, []);
 
 	const onLogoutClick = () => {
 		if (confirm('정말로 로그아웃 하시겠습니까?')) {
@@ -36,14 +22,10 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 		}
 	};
 
-	if (menuSlider === null) {
-		throw new Error('슬라이더를 찾지 못하였습니다');
-	}
-
-	return reactDom.createPortal(
+	return (
 		<S.MenuBox>
 			<S.Header>
-				<S.BackButtonBox onClick={closeSlider}>
+				<S.BackButtonBox onClick={hideModal}>
 					<S.BackButton />
 				</S.BackButtonBox>
 			</S.Header>
@@ -52,7 +34,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 					<S.LinkItem
 						onClick={() => {
 							onLogoutClick();
-							closeSlider();
+							hideModal();
 						}}
 					>
 						로그아웃
@@ -62,7 +44,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 					<S.LinkItem
 						onClick={() => {
 							navigate(URL.LOGIN);
-							closeSlider();
+							hideModal();
 						}}
 					>
 						로그인
@@ -71,7 +53,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 				<S.LinkItem
 					onClick={() => {
 						navigate(URL.CATEGORY_SELECTOR);
-						closeSlider();
+						hideModal();
 					}}
 				>
 					글 쓰러 가기
@@ -79,7 +61,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 				<S.LinkItem
 					onClick={() => {
 						navigate(URL.CATEGORY_QUESTION);
-						closeSlider();
+						hideModal();
 					}}
 				>
 					질문 카테고리
@@ -87,7 +69,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 				<S.LinkItem
 					onClick={() => {
 						navigate(URL.CATEGORY_DISCUSSION);
-						closeSlider();
+						hideModal();
 					}}
 				>
 					토론 카테고리
@@ -95,7 +77,7 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 				<S.LinkItem
 					onClick={() => {
 						navigate(URL.HASH_TAG_SEARCH);
-						closeSlider();
+						hideModal();
 					}}
 				>
 					해시태그로 검색하기
@@ -103,14 +85,13 @@ const MenuSlider = ({ closeSlider }: MenuSliderProps) => {
 				<S.LinkItem
 					onClick={() => {
 						navigate(URL.INQUIRE);
-						closeSlider();
+						hideModal();
 					}}
 				>
 					문의하기
 				</S.LinkItem>
 			</S.LinkBox>
-		</S.MenuBox>,
-		menuSlider,
+		</S.MenuBox>
 	);
 };
 

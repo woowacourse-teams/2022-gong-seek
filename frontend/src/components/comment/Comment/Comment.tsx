@@ -3,8 +3,8 @@ import { useState } from 'react';
 import Loading from '@/components/@common/Loading/Loading';
 import ToastUiViewer from '@/components/@common/ToastUiViewer/ToastUiViewer';
 import * as S from '@/components/comment/Comment/Comment.styles';
-import CommentInputModal from '@/components/comment/CommentInputModal/CommentInputModal';
 import useDeleteComment from '@/hooks/comment/useDeleteComment';
+import useModal from '@/hooks/common/useModal';
 import { CommentType } from '@/types/commentResponse';
 import { convertGithubAvatarUrlForResize } from '@/utils/converter';
 import { dateTimeConverter } from '@/utils/converter';
@@ -26,10 +26,20 @@ const Comment = ({
 	const [isEditCommentOpen, setIsEditCommentOpen] = useState(false);
 	const [commentPlaceholder, setCommentPlaceHolder] = useState('');
 	const { isLoading, onDeleteButtonClick } = useDeleteComment();
+	const { showModal } = useModal();
 
 	const onUpdateButtonClick = () => {
 		setCommentPlaceHolder(content);
-		setIsEditCommentOpen(true);
+		showModal({
+			modalType: 'comment-modal',
+			modalProps: {
+				articleId: String(articleId),
+				modalType: 'edit',
+				commentId: String(id),
+				placeholder: commentPlaceholder,
+			},
+			isMobileOnly: false,
+		});
 	};
 
 	if (isLoading) return <Loading />;
@@ -74,19 +84,6 @@ const Comment = ({
 			<S.CommentContent tabIndex={tabIndex}>
 				<ToastUiViewer initContent={content} />
 			</S.CommentContent>
-
-			{isEditCommentOpen && (
-				<>
-					<S.DimmerContainer onClick={() => setIsEditCommentOpen(false)} />
-					<CommentInputModal
-						closeModal={() => setIsEditCommentOpen(false)}
-						articleId={String(articleId)}
-						modalType="edit"
-						commentId={String(id)}
-						placeholder={commentPlaceholder}
-					/>
-				</>
-			)}
 		</S.Container>
 	);
 };
