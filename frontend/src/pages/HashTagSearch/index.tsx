@@ -1,5 +1,5 @@
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
-import HashTagSearchBox from '@/components/hashTag/HashTagSearchBox/HashTagSearchBox';
+import HashTagClickSearchBox from '@/components/hashTag/HashTagClickSearchBox/HashTagClickSearchBox';
 import HashTagSearchResult from '@/components/hashTag/HashTagSearchResult/HashTagSearchResult';
 import useHandleHashTagState from '@/hooks/hashTag/useHandleHashTagState';
 import * as S from '@/pages/HashTagSearch/index.styles';
@@ -19,7 +19,7 @@ const HashTagSearch = () => {
 			<S.HashTagSearchBoxContainer>
 				{isTagsOptionLoading && <S.EmptyMsg>해시태그 조회 중</S.EmptyMsg>}
 				{isTagsOptionSuccess && (
-					<HashTagSearchBox targets={targetHashTags} setTargets={setTargetHashTags} />
+					<HashTagClickSearchBox targets={targetHashTags} setTargets={setTargetHashTags} />
 				)}
 			</S.HashTagSearchBoxContainer>
 

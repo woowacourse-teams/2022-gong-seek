@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
-import * as S from '@/components/hashTag/HashTagSearchBox/HashTagSearchBox.styles';
+import * as S from '@/components/hashTag/HashTagClickSearchBox/HashTagClickSearchBox.styles';
 
-export interface HashTagSearchBoxProps {
+export interface HashTagClickSearchBoxProps {
 	targets: { name: string; isChecked: boolean }[];
 	setTargets: React.Dispatch<React.SetStateAction<{ name: string; isChecked: boolean }[]>>;
 }
 
-const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
+const HashTagClickSearchBox = ({ targets, setTargets }: HashTagClickSearchBoxProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const handleClickHashTagItem = (target: string) => {
@@ -68,4 +68,4 @@ const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 	);
 };
 
-export default HashTagSearchBox;
+export default HashTagClickSearchBox;
