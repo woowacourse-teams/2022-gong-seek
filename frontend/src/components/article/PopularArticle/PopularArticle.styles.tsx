@@ -17,7 +17,6 @@ export const Container = styled.section`
 	margin: 0 auto;
 	overflow: hidden;
 	scroll-snap-type: x proximity;
-	scroll-behavior: smooth;
 
 	&::-webkit-scrollbar {
 		opacity: 0;
