@@ -83,8 +83,7 @@ public class VoteService {
         Vote foundVote = getVoteByArticleId(articleId);
         List<VoteItem> voteItems = voteItemRepository.findAllByVoteArticleId(articleId);
 
-        VoteHistory voteHistory = voteHistoryRepository.findByVoteIdAndMemberId(foundVote.getId(),
-                        appMember.getPayload())
+        VoteHistory voteHistory = voteHistoryRepository.findByVoteItemsAndMemberId(voteItems, appMember.getPayload())
                 .orElse(null);
         return VoteResponse.of(foundVote.getArticle().getId(), voteItems, getVotedItemIdOrNull(voteHistory),
                 foundVote.isExpired());
@@ -102,14 +101,14 @@ public class VoteService {
         return voteHistory.getVoteItem().getId();
     }
 
-    public void doVote(AppMember appMember, SelectVoteItemIdRequest selectVoteItemIdRequest) {
+    public void doVote(Long articleId, AppMember appMember, SelectVoteItemIdRequest selectVoteItemIdRequest) {
+        Vote vote = getVoteByArticleId(articleId);
         Member member = getMember(appMember);
         VoteItem voteItem = getVoteItem(selectVoteItemIdRequest.getVoteItemId());
-        voteHistoryRepository.findByVoteItemIdAndMemberId(selectVoteItemIdRequest.getVoteItemId(), member.getId())
+
+        voteHistoryRepository.findByVoteIdInAndMemberId(vote.getId(), member.getId())
                 .ifPresentOrElse(
-                        voteHistory -> {
-                            voteHistory.changeVoteItem(voteItem);
-                        },
+                        voteHistory -> voteHistory.changeVoteItem(voteItem),
                         () -> saveVoteHistory(member, voteItem)
                 );
     }

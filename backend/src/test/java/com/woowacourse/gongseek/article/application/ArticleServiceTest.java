@@ -11,8 +11,6 @@ import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.TempTags;
 import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
-import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
-import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
@@ -46,6 +44,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -64,12 +63,6 @@ public class ArticleServiceTest extends IntegrationTest {
 
     @Autowired
     private ArticleRepository articleRepository;
-
-    @Autowired
-    private ArticleTagRepository articleTagRepository;
-
-    @Autowired
-    private PagingArticleRepository pagingArticleRepository;
 
     @Autowired
     private TempArticleRepository tempArticleRepository;
@@ -95,19 +88,17 @@ public class ArticleServiceTest extends IntegrationTest {
     @Autowired
     private DatabaseCleaner databaseCleaner;
 
-    private Member member;
+    private final Member member = new Member("slo", "hanull", "avatar.com");
 
     @BeforeEach
     void setUp() {
-        articleRepository.deleteAll();
-        memberRepository.deleteAll();
-
-        member = memberRepository.save(new Member("slo", "hanull", "avatar.com"));
+        memberRepository.save(member);
     }
-//
-//    @AfterEach
-//    void tearDown() {
-//    }
+
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.tableClear();
+    }
 
     @Transactional
     @Test
@@ -765,7 +756,7 @@ public class ArticleServiceTest extends IntegrationTest {
         voteService.create(loginMember, article.getId(),
                 new VoteCreateRequest(Set.of("A번", "B번", "C번"), LocalDateTime.now().plusDays(4)));
 
-        voteService.doVote(loginMember, new SelectVoteItemIdRequest(1L));
+        voteService.doVote(article.getId(), loginMember, new SelectVoteItemIdRequest(1L));
         articleService.delete(loginMember, article.getId());
         assertAll(
                 () -> assertThat(articleRepository.findById(article.getId())).isEmpty(),

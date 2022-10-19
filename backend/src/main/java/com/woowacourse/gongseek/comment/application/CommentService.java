@@ -31,7 +31,7 @@ public class CommentService {
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
 
-    public void save(AppMember appMember, Long articleId, CommentRequest commentRequest) {
+    public void create(AppMember appMember, Long articleId, CommentRequest commentRequest) {
         validateGuest(appMember);
         Member member = getMember(appMember);
         Article article = getArticle(articleId);

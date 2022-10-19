@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
@@ -30,9 +31,6 @@ import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,6 +50,9 @@ class VoteServiceTest extends IntegrationTest {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private ArticleService articleService;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -129,7 +130,7 @@ class VoteServiceTest extends IntegrationTest {
     @Test
     void 투표를_한_사용자가_투표를_조회한다() {
         Long selectVoteItemId = voteItems.get(0).getId();
-        voteService.doVote(new LoginMember(member.getId()), new SelectVoteItemIdRequest(selectVoteItemId));
+        voteService.doVote(discussionArticle.getId(), new LoginMember(member.getId()), new SelectVoteItemIdRequest(selectVoteItemId));
 
         VoteResponse voteResponse = voteService.getOne(discussionArticle.getId(), new LoginMember(member.getId()));
 
@@ -146,7 +147,7 @@ class VoteServiceTest extends IntegrationTest {
         LoginMember loginMember = new LoginMember(member.getId());
         int selectIndex = 0;
 
-        voteService.doVote(loginMember, new SelectVoteItemIdRequest(voteItems.get(selectIndex).getId()));
+        voteService.doVote(discussionArticle.getId(), loginMember, new SelectVoteItemIdRequest(voteItems.get(selectIndex).getId()));
 
         List<VoteItemResponse> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember)
                 .getVoteItems();
@@ -159,9 +160,8 @@ class VoteServiceTest extends IntegrationTest {
     @Test
     void 다른_항목을_투표하면_기존의_투표수는_감소하고_선택한_투표수가_증가한다() {
         LoginMember loginMember = new LoginMember(member.getId());
-        voteService.doVote(loginMember, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
-
-        voteService.doVote(loginMember, new SelectVoteItemIdRequest(voteItems.get(1).getId()));
+        voteService.doVote(discussionArticle.getId(), loginMember, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
+        voteService.doVote(discussionArticle.getId(), loginMember, new SelectVoteItemIdRequest(voteItems.get(1).getId()));
 
         List<VoteItemResponse> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember)
                 .getVoteItems();
@@ -177,8 +177,8 @@ class VoteServiceTest extends IntegrationTest {
         LoginMember loginMember1 = new LoginMember(member.getId());
         LoginMember loginMember2 = new LoginMember(other.getId());
 
-        voteService.doVote(loginMember1, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
-        voteService.doVote(loginMember2, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
+        voteService.doVote(discussionArticle.getId(), loginMember1, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
+        voteService.doVote(discussionArticle.getId(), loginMember2, new SelectVoteItemIdRequest(voteItems.get(0).getId()));
 
         List<VoteItemResponse> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember1)
                 .getVoteItems();
@@ -189,37 +189,29 @@ class VoteServiceTest extends IntegrationTest {
     @Test
     void 비회원이_투표를_하면_예외를_발생한다() {
         assertThatThrownBy(
-                () -> voteService.doVote(new GuestMember(), new SelectVoteItemIdRequest(voteItems.get(0).getId())))
+                () -> voteService.doVote(discussionArticle.getId(), new GuestMember(), new SelectVoteItemIdRequest(voteItems.get(0).getId())))
                 .isExactlyInstanceOf(MemberNotFoundException.class)
                 .hasMessageContaining("회원이 존재하지 않습니다.");
     }
 
     @Test
-    void 투표하기_동시성_테스트() throws InterruptedException {
-        Member other = memberRepository.save(new Member("다른이", "gittt", "avater.url"));
-        LoginMember loginMember1 = new LoginMember(member.getId());
-        LoginMember loginMember2 = new LoginMember(other.getId());
+    void 투표중인_토론게시글을_삭제하면_투표도_삭제된다() {
+        Article article = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
 
-        final var numberOfThreads = 10;
-        ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
-        CountDownLatch latch = new CountDownLatch(numberOfThreads);
-        voteHistoryRepository.save(new VoteHistory(member, voteItems.get(0)));
-        voteHistoryRepository.save(new VoteHistory(other, voteItems.get(0)));
-        executorService.execute(() -> {
-            voteService.doVote(loginMember1, new SelectVoteItemIdRequest(voteItems.get(1).getId()));
-            latch.countDown();
-        });
+        Vote vote = new Vote(article, LocalDateTime.now().plusDays(3));
+        voteRepository.save(vote);
+        VoteItem firstVoteItem = new VoteItem("A번", vote);
+        VoteItem secondVoteItem = new VoteItem("B번", vote);
+        VoteItem thirdVoteItem = new VoteItem("C번", vote);
+        voteItemRepository.saveAll(List.of(firstVoteItem, secondVoteItem, thirdVoteItem));
 
-        executorService.execute(() -> {
-            voteService.doVote(loginMember2, new SelectVoteItemIdRequest(voteItems.get(1).getId()));
-            latch.countDown();
-        });
+        voteHistoryRepository.save(new VoteHistory(member, firstVoteItem));
+        articleService.delete(new LoginMember(member.getId()), article.getId());
 
-        Thread.sleep(1000);
-
-        VoteItem voteItem = voteItemRepository.findById(voteItems.get(0).getId())
-                .orElseThrow(() -> new RuntimeException("Not Found"));
-        //정상 경우
-        assertThat(voteItem.getAmount().getValue()).isEqualTo(0);
+        assertAll(
+                () -> assertThat(voteRepository.findByArticleId(article.getId())).isEmpty(),
+                () -> assertThat(voteHistoryRepository.findAll()).isEmpty()
+        );
     }
 }

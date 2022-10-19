@@ -108,9 +108,9 @@ class VoteControllerTest extends ControllerTest {
 
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
-        doNothing().when(voteService).doVote(any(), any());
+        doNothing().when(voteService).doVote(any(), any(), any());
 
-        ResultActions results = mockMvc.perform(post("/api/articles/votes/do")
+        ResultActions results = mockMvc.perform(post("/api/articles/{articleId}/votes/do", 1L)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer token")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))

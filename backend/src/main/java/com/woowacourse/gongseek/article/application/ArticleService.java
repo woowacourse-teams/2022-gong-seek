@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
+import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
 import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
@@ -170,9 +171,19 @@ public class ArticleService {
     public void delete(AppMember appMember, Long id) {
         Article article = checkAuthorization(appMember, id);
         deleteVoteHistory(article);
+        deleteComment(article);
+        deleteLikes(article);
         articleRepository.delete(article);
         List<Long> deletedTagIds = getDeletedTagIds(article.getTagIds());
         tagService.deleteAll(deletedTagIds);
+    }
+
+    private void deleteLikes(Article article) {
+        likeRepository.deleteAllByArticleId(article.getId());
+    }
+
+    private void deleteComment(Article article) {
+        commentRepository.deleteAllByArticleId(article.getId());
     }
 
     private void deleteVoteHistory(Article article) {

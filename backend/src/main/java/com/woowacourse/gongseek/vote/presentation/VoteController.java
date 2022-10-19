@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/articles")
+@RequestMapping("/api/articles/{articleId}/votes")
 @RestController
 public class VoteController {
 
     private final VoteService voteService;
 
-    @PostMapping("/{articleId}/votes")
+    @PostMapping
     public ResponseEntity<VoteCreateResponse> create(
             @AuthenticationPrinciple AppMember appMember,
             @PathVariable Long articleId,
@@ -35,18 +35,19 @@ public class VoteController {
                 .body(voteService.create(appMember, articleId, voteCreateRequest));
     }
 
-    @GetMapping("/{articleId}/votes")
+    @GetMapping
     public ResponseEntity<VoteResponse> getOne(
             @AuthenticationPrinciple AppMember appMember,
             @PathVariable Long articleId) {
         return ResponseEntity.ok(voteService.getOne(articleId, appMember));
     }
 
-    @PostMapping("/votes/do")
+    @PostMapping("/do")
     public ResponseEntity<Void> doVote(
             @AuthenticationPrinciple AppMember appMember,
+            @PathVariable Long articleId,
             @RequestBody SelectVoteItemIdRequest request) {
-        voteService.doVote(appMember, request);
+        voteService.doVote(articleId, appMember, request);
         return ResponseEntity.noContent().build();
     }
 }

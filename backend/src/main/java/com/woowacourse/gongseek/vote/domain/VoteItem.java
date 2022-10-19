@@ -38,7 +38,7 @@ public class VoteItem {
     private Vote vote;
 
     @Version
-    private Long version;
+    private long version;
 
     public VoteItem(String content, Vote vote) {
         this(null, new Content(content), new Amount(), vote, 0L);

@@ -40,9 +40,9 @@ public class VoteHistory {
         this(null, member, voteItem);
     }
 
-    public void changeVoteItem(VoteItem voteItem) {
-        this.voteItem.decreaseAmount();
-        this.voteItem = voteItem;
-        this.voteItem.increaseAmount();
+    public void changeVoteItem(VoteItem newVoteItem) {
+        voteItem.decreaseAmount();
+        this.voteItem = newVoteItem;
+        voteItem.increaseAmount();
     }
 }
