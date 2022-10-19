@@ -11,7 +11,6 @@ export const animationTiming = {
 export const Container = styled.section`
 	display: flex;
 
-	// justify-content: center;
 	align-items: center;
 	width: 90%;
 	height: ${({ theme }) => theme.size.SIZE_280};
