@@ -783,20 +783,4 @@ public class ArticleServiceTest extends IntegrationTest {
 
         assertThat(tempArticleRepository.existsById(tempArticle.getId())).isFalse();
     }
-
-    @Transactional
-    @Test
-    void 게시글의_좋아요수와_댓글수를_동기화한다() {
-        ArticleIdResponse response = articleService.save(new LoginMember(member.getId()),
-                new ArticleRequest("title", "content", "question", new ArrayList<>(), false));
-        Article article = articleRepository.findById(response.getId()).get();
-        article.updateLikeCountAndCommentCount(10L, 10L);
-
-        articleService.synchronizeLikeCountAndCommentCount();
-
-        assertAll(
-                () -> assertThat(article.getLikeCount()).isEqualTo(0),
-                () -> assertThat(article.getCommentCount()).isEqualTo(0)
-        );
-    }
 }

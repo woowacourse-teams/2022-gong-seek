@@ -116,11 +116,6 @@ public class Article extends BaseTimeEntity {
         addTag(tags);
     }
 
-    public void updateLikeCountAndCommentCount(long likeCount, long commentCount) {
-        this.likeCount.updateValue(likeCount);
-        this.commentCount.updateValue(commentCount);
-    }
-
     public void addTag(Tags tags) {
         articleTags.add(this, tags);
     }
