@@ -59,14 +59,14 @@ export const VoteHandler = [
 			const mockVotes = data ? (JSON.parse(data) as TVote[]) : [];
 
 			const { articleId } = req.params;
-			const { votedItemId } = req.body;
+			const { voteItemId } = req.body;
 
 			const vote = mockVotes.find((mockVote) => mockVote.articleId === articleId);
 			if (typeof vote === 'undefined') {
 				throw new Error('투표를 찾지 못하였습니다');
 			}
 
-			const votedItem = vote.voteItems.find((voteItem) => String(voteItem.id) === votedItemId);
+			const votedItem = vote.voteItems.find((voteItem) => String(voteItem.id) === voteItemId);
 			if (typeof votedItem === 'undefined') {
 				throw new Error('투표 항목을 찾을수 없습니다.');
 			}
