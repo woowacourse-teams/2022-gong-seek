@@ -8,10 +8,6 @@ export interface HashTagSearchBoxProps {
 	setTargets: React.Dispatch<React.SetStateAction<{ name: string; isChecked: boolean }[]>>;
 }
 
-const isHashTagSearchResultType = (
-	searchResult: unknown,
-): searchResult is HashTagSearchBoxProps['targets'] => true;
-
 const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 	const [hashTagSearchText, setHashTagSearchText] = useState('');
 	const [hashTagSearchResult, setHashTagSearchResult] = useState<
@@ -79,20 +75,17 @@ const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 				</S.SearchButtonBox>
 			</S.SearchBarBox>
 			<S.HashTagListBox>
-				{hashTagSearchResult.length < 1 && (
+				{hashTagSearchResult.length < 1 ? (
 					<S.HashTagSearchResultDescription>
 						{hashTagResultDescription}
 					</S.HashTagSearchResultDescription>
+				) : (
+					<HashTagClickSearchBox
+						targets={hashTagSearchResult}
+						setTargets={setTargets}
+						setSelectedTargets={setHashTagSearchResult}
+					/>
 				)}
-				{hashTagSearchResult.length >= 1 &&
-					typeof hashTagSearchResult !== 'string' &&
-					isHashTagSearchResultType(hashTagSearchResult) && (
-						<HashTagClickSearchBox
-							targets={hashTagSearchResult}
-							setTargets={setTargets}
-							setSelectedTargets={setHashTagSearchResult}
-						/>
-					)}
 			</S.HashTagListBox>
 		</S.Container>
 	);
