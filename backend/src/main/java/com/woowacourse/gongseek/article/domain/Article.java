@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -65,6 +66,9 @@ public class Article extends BaseTimeEntity {
     @Embedded
     private CommentCount commentCount;
 
+    @Version
+    private long version;
+
     public Article(String title, String content, Category category, Member member, boolean isAnonymous) {
         this(
                 null,
@@ -76,7 +80,8 @@ public class Article extends BaseTimeEntity {
                 isAnonymous,
                 new Views(),
                 new LikeCount(),
-                new CommentCount()
+                new CommentCount(),
+                0
         );
     }
 
@@ -109,11 +114,6 @@ public class Article extends BaseTimeEntity {
         this.content = new Content(content);
         articleTags.clear();
         addTag(tags);
-    }
-
-    public void updateLikeCountAndCommentCount(long likeCount, long commentCount) {
-        this.likeCount.updateValue(likeCount);
-        this.commentCount.updateValue(commentCount);
     }
 
     public void addTag(Tags tags) {
@@ -154,5 +154,9 @@ public class Article extends BaseTimeEntity {
 
     public List<String> getTagNames() {
         return this.articleTags.getTagNames();
+    }
+
+    public void updateLikeCountBatch(long likeCount) {
+        this.likeCount.updateValue(likeCount);
     }
 }

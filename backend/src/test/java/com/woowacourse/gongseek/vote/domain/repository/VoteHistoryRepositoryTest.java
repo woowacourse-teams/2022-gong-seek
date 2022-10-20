@@ -14,6 +14,7 @@ import com.woowacourse.gongseek.vote.domain.Vote;
 import com.woowacourse.gongseek.vote.domain.VoteHistory;
 import com.woowacourse.gongseek.vote.domain.VoteItem;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,7 +58,8 @@ public class VoteHistoryRepositoryTest {
         voteHistoryRepository.save(new VoteHistory(savedMember1, voteItem3));
         voteHistoryRepository.save(new VoteHistory(savedMember2, voteItem1));
 
-        VoteHistory foundVoteHistory = voteHistoryRepository.findByVoteIdAndMemberId(vote1.getId(),
+
+        VoteHistory foundVoteHistory = voteHistoryRepository.findByVoteItemsAndMemberId(List.of(voteItem1, voteItem3),
                 member1.getId()).get();
 
         assertAll(

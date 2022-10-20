@@ -36,7 +36,7 @@ public class ArticleController {
             @AuthenticationPrinciple AppMember appMember,
             @Valid @RequestBody ArticleRequest articleRequest
     ) {
-        ArticleIdResponse articleIdResponse = articleService.save(appMember, articleRequest);
+        ArticleIdResponse articleIdResponse = articleService.create(appMember, articleRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(articleIdResponse);
     }
 

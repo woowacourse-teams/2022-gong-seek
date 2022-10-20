@@ -3,6 +3,7 @@ package com.woowacourse.gongseek.like.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
@@ -10,6 +11,7 @@ import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -26,10 +28,16 @@ class LikeServiceTest extends IntegrationTest {
     private LikeService likeService;
 
     @Autowired
+    private LikeRepository likeRepository;
+
+    @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private ArticleService articleService;
 
     @Autowired
     private DatabaseCleaner databaseCleaner;
@@ -117,5 +125,16 @@ class LikeServiceTest extends IntegrationTest {
         assertThatThrownBy(() -> likeService.unlikeArticle(new LoginMember(-1L), article.getId()))
                 .isExactlyInstanceOf(MemberNotFoundException.class)
                 .hasMessageContaining("회원이 존재하지 않습니다.");
+    }
+
+    @Test
+    void 추천한_게시글이_삭제된_경우_추천도_삭제된다() {
+        Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
+        Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
+        likeService.likeArticle(new LoginMember(member.getId()), article.getId());
+
+        articleService.delete(new LoginMember(member.getId()), article.getId());
+
+        assertThat(likeRepository.existsById(1L)).isFalse();
     }
 }

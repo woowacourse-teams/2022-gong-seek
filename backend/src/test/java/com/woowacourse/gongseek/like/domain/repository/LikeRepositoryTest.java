@@ -26,18 +26,6 @@ class LikeRepositoryTest {
     private MemberRepository memberRepository;
 
     @Test
-    void 추천한_게시글이_삭제된_경우_추천도_삭제된다() {
-        Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
-        Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
-        Like like = likeRepository.save(new Like(article, member));
-
-        articleRepository.delete(article);
-        likeRepository.flush();
-
-        assertThat(likeRepository.existsById(like.getId())).isFalse();
-    }
-
-    @Test
     void 추천한_유저가_삭제된_경우_추천도_삭제된다() {
         Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
         Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
