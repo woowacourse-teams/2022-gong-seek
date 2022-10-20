@@ -49,6 +49,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    // aws s3
+    implementation platform('software.amazon.awssdk:bom:2.17.276')
+    implementation 'software.amazon.awssdk:s3'
+
+    // testcontainers
+    testImplementation "org.testcontainers:junit-jupiter:1.17.3"
+    testImplementation group: 'org.testcontainers', name: 'localstack', version: '1.17.3'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+
     // jwt
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
@@ -82,9 +91,6 @@ dependencies {
 
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
-    // testcontainers
-    testImplementation "org.testcontainers:junit-jupiter:1.17.3"
 }
 
 tasks.named('test') {
