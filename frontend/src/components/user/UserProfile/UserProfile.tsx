@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import Loading from '@/components/@common/Loading/Loading';
 import * as S from '@/components/user/UserProfile/UserProfile.styles';
+import useSnackBar from '@/hooks/common/useSnackBar';
 import usePutUserProfile from '@/hooks/user/usePutUserProfile';
 import { queryClient } from '@/index';
 import { convertGithubAvatarUrlForResize } from '@/utils/converter';
-import { validatedEditInput } from '@/utils/validateInput';
+import { validatedUserNameInput } from '@/utils/validateInput';
 
 export interface UserProfileProps {
 	name: string;
@@ -16,7 +17,8 @@ const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 	const [isEdit, setIsEdit] = useState(false);
 	const [editedName, setEditedName] = useState(name);
 	const { isLoading, isSuccess, handleClickUserConfirmButton } = usePutUserProfile();
-	const isValidInput = validatedEditInput(editedName);
+	const isValidInput = validatedUserNameInput(editedName);
+	const { showSnackBar } = useSnackBar();
 
 	const handleClickUserNameEditButton = () => {
 		setIsEdit(true);
@@ -27,8 +29,12 @@ const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 	};
 
 	const handleClickUserNameConfirmButton = ({ editedName }: { editedName: string }) => {
-		handleClickUserConfirmButton({ name: editedName });
-		setIsEdit(false);
+		if (validatedUserNameInput(editedName)) {
+			handleClickUserConfirmButton({ name: editedName });
+			setIsEdit(false);
+			return;
+		}
+		showSnackBar('유저의 이름은 최소 한글자 이상 255자 미만이여야 합니다');
 	};
 
 	useEffect(() => {
@@ -46,7 +52,12 @@ const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 				{isEdit ? (
 					<S.UserNameContainer>
 						<S.EditUserNameBox>
-							<S.EditUserNameInput value={editedName} onChange={handleChangeUserNameEditInput} />
+							<S.EditUserNameInput
+								value={editedName}
+								onChange={handleChangeUserNameEditInput}
+								minLength={1}
+								maxLength={255}
+							/>
 							<S.ConfirmButton
 								disabled={!isValidInput}
 								onClick={() => {

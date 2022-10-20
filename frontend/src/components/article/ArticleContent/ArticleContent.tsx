@@ -39,7 +39,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 				</S.CategoryTitle>
 				<S.UserProfile tabIndex={0}>
 					<S.UserProfileImg src={author.avatarUrl} alt="작성자의 프로필 이미지입니다" />
-					<div>{author.name}</div>
+					<S.UserName>{author.name}</S.UserName>
 				</S.UserProfile>
 			</S.Header>
 			<Card {...ArticleContentCardStyle}>

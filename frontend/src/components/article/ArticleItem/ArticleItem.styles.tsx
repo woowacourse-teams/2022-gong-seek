@@ -1,6 +1,5 @@
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
-import { TextOverflow } from '@/styles/mixin';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -71,6 +70,14 @@ export const ProfileBox = styled.div`
 	display: flex;
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_012};
+	max-width: 80%;
+`;
+
+export const UserName = styled.span`
+	overflow: hidden;
+	width: 80%;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 `;
 
 export const FooterBox = styled.div`

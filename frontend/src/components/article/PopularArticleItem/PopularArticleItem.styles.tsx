@@ -11,9 +11,9 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const CategoryBox = styled.div<{ categoryType: 'question' | 'discussion' }>`
-	background-color: white;
 	margin-left: auto;
 	${({ theme, categoryType }) => css`
+		background-color: ${theme.colors.WHITE};
 		border-radius: ${theme.size.SIZE_006};
 		color: ${categoryType === 'question' ? theme.colors.RED_500 : theme.colors.BLUE_500};
 		padding: ${theme.size.SIZE_008};
@@ -47,12 +47,30 @@ export const IconContainer = styled.div`
 	font-weight: 400;
 `;
 
+export const ProfileBox = styled.div`
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+`;
+
+export const SubInfoBox = styled.div`
+	display: flex;
+	width: 80%;
+	justify-content: space-between;
+	align-items: center;
+`;
+
 export const AuthorNameText = styled.div`
-	color: white;
+	color: ${({ theme }) => theme.colors.WHITE};
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	max-width: 80%;
+	text-align: center;
 `;
 
 export const PopularArticleUserProfile = styled(UserProfile)`
-	border: 2px solid transparent;
+	border: ${({ theme }) => theme.size.SIZE_002} solid transparent;
 	background-image: ${({ theme }) => theme.GradientColors.POPULAR_PROFILE_BORDER};
 	background-origin: border-box;
 	background-clip: content-box, border-box;
@@ -62,7 +80,7 @@ export const PopularArticleHeader = styled.div<{ category: Category }>`
 	${({ theme, category }) => css`
 		background: ${category === 'question' ? theme.colors.RED_500 : theme.colors.BLUE_500};
 		opacity: 0.8;
-		box-shadow: 0, 0, 0, inset 0 0 4px #5e0080;
+		box-shadow: 0, 0, 0, inset 0 0 ${theme.size.SIZE_004} ${theme.colors.PURPLE_500};
 		padding: ${theme.size.SIZE_014} ${theme.size.SIZE_012};
 		border-top-left-radius: ${theme.size.SIZE_010};
 		border-top-right-radius: ${theme.size.SIZE_010};

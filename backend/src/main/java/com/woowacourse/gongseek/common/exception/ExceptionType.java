@@ -25,6 +25,7 @@ import com.woowacourse.gongseek.image.exception.FileUploadFailException;
 import com.woowacourse.gongseek.image.exception.UnsupportedFilExtensionException;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.member.exception.NameNullOrEmptyException;
+import com.woowacourse.gongseek.member.exception.NameTooLongException;
 import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
 import com.woowacourse.gongseek.tag.exception.TagNameLengthException;
 import com.woowacourse.gongseek.tag.exception.TagNameNullOrBlankException;
@@ -63,6 +64,7 @@ public enum ExceptionType {
 
     MEMBER_NOT_FOUND_EXCEPTION("2001", "회원이 존재하지 않습니다.", MemberNotFoundException.class),
     NAME_NULL_OR_EMPTY_EXCEPTION("2002", "회원의 이름은 1자 이상이어야 합니다.", NameNullOrEmptyException.class),
+    NAME_LENGTH_EXCEPTION("2003", "회원의 이름은 255자를 초과할 수 없습니다.", NameTooLongException.class),
 
     ARTICLE_NOT_FOUND_EXCEPTION("3001", "게시글이 존재하지 않습니다.", ArticleNotFoundException.class),
     ARTICLE_TITLE_LENGTH_EXCEPTION("3002", "게시글 제목은 500자를 초과할 수 없습니다.", ArticleTitleTooLongException.class),

@@ -129,8 +129,8 @@ export const SearchOpenBox = styled.div`
 	}
 `;
 
-export const StyledLink = styled(Link)`
-	text-decoration: none;
+export const StyledLink = styled.div`
+	cursor: pointer;
 `;
 
 export const NavBar = styled.nav`

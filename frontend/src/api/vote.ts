@@ -13,7 +13,7 @@ export interface TVote {
 	articleId: string;
 	voteItems: VoteItems[];
 	votedItemId: number | null;
-	isExpired: boolean;
+	expired: boolean;
 }
 
 export const getVoteItems = async (articleId: string) => {
@@ -54,16 +54,16 @@ export const registerVoteItems = ({
 
 export const checkVoteItems = ({
 	articleId,
-	votedItemId,
+	voteItemId,
 }: {
 	articleId: string;
-	votedItemId: string;
+	voteItemId: string;
 }) => {
 	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
 
 	return axios.post(
 		`${HOME_URL}/api/articles/${articleId}/votes/do`,
-		{ votedItemId },
+		{ voteItemId },
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',

@@ -34,7 +34,7 @@ const VoteGenerator = () => {
 		setInput('');
 	};
 
-	const handleSubmitVoteGeneratorContentForm = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmitVoteGeneratorContentForm = (e: React.FormEvent) => {
 		e.preventDefault();
 
 		if (!validatedVoteItemsQuantity(options)) {
@@ -107,7 +107,7 @@ const VoteGenerator = () => {
 						</AddedOption>
 					))}
 				</S.Content>
-				<S.SubmitButton disabled={!validatedVoteItemsQuantity(options)}>등록하기</S.SubmitButton>
+				<S.SubmitButton>등록하기</S.SubmitButton>
 			</S.ContentForm>
 		</S.Container>
 	);

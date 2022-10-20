@@ -9,7 +9,7 @@ export const takeToastImgEditor = (content: MutableRefObject<Editor | null>) => 
 		content.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
 			(async () => {
 				const formData = new FormData();
-				formData.append('imageFile', blob);
+				formData.append('file', blob);
 				const url = await postImageUrlConverter(formData);
 				callback(url, 'alt-text');
 			})();

@@ -37,14 +37,16 @@ const PopularArticleItem = ({
 		<>
 			<Card {...PopularArticleItemCardStyle} isActive={isActive} onClick={onClick} role="tab">
 				<PopularS.PopularArticleHeader category={category}>
-					<S.ProfileBox>
+					<PopularS.ProfileBox>
 						<PopularS.PopularArticleUserProfile
 							src={convertGithubAvatarUrlForResize(author.avatarUrl)}
 							alt="프로필 이미지"
 						/>
-						<PopularS.AuthorNameText>{author.name}</PopularS.AuthorNameText>
-						<PopularS.CategoryBox categoryType={category}>{한글_카테고리}</PopularS.CategoryBox>
-					</S.ProfileBox>
+						<PopularS.SubInfoBox>
+							<PopularS.AuthorNameText>{author.name}</PopularS.AuthorNameText>
+							<PopularS.CategoryBox categoryType={category}>{한글_카테고리}</PopularS.CategoryBox>
+						</PopularS.SubInfoBox>
+					</PopularS.ProfileBox>
 				</PopularS.PopularArticleHeader>
 				<PopularS.PopularArticleContent>
 					<PopularS.PopularArticleItemTitle>

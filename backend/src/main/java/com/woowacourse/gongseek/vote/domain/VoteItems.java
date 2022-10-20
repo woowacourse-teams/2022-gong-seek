@@ -22,7 +22,6 @@ public class VoteItems {
         Set<VoteItem> collect = voteItems.stream()
                 .map(voteItem -> new VoteItem(voteItem, vote))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
-
         return new VoteItems(collect);
     }
 
