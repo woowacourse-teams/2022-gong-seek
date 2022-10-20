@@ -6,8 +6,8 @@ import { useRecoilValue } from 'recoil';
 
 import { putArticle } from '@/api/article';
 import { ErrorMessage } from '@/constants/ErrorMessage';
-import { queryClient } from '@/index';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
+import { queryClient } from '@/index';
 import { articleState } from '@/store/articleState';
 import { validatedTitleInput } from '@/utils/validateInput';
 import { Editor } from '@toast-ui/react-editor';
@@ -38,7 +38,7 @@ const usePostUpdateWritingArticle = () => {
 
 	useThrowCustomError(isError, error);
 
-	const handleUpdateButtonClick = (id: string) => {
+	const handleClickUpdateSubmitButton = (id: string) => {
 		if (content.current === null) {
 			return;
 		}
@@ -72,7 +72,7 @@ const usePostUpdateWritingArticle = () => {
 		setHashTag,
 		titleInputRef,
 		isValidTitleInput,
-		handleUpdateButtonClick,
+		handleClickUpdateSubmitButton,
 	};
 };
 

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.support.DatabaseCleaner;
@@ -18,8 +19,6 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +30,9 @@ class TagServiceTest extends IntegrationTest {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private ArticleTagRepository articleTagRepository;
 
     @Autowired
     private TagRepository tagRepository;
@@ -89,14 +91,13 @@ class TagServiceTest extends IntegrationTest {
         );
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"SPRING", "spring", "Spring"})
-    void 대소문자_상관없이_태그를_삭제한다(String name) {
-        tagRepository.save(new Tag("SPRING"));
+    @Test
+    void 태그를_삭제한다() {
+        Tag spring = tagRepository.save(new Tag("SPRING"));
         tagRepository.save(new Tag("Java"));
         tagRepository.save(new Tag("React"));
 
-        tagService.delete(List.of(name));
+        tagService.deleteAll(List.of(spring.getId()));
 
         TagsResponse response = tagService.getAll();
 
@@ -127,12 +128,10 @@ class TagServiceTest extends IntegrationTest {
                 new Article("title", "content", Category.QUESTION, member, false));
         fourthArticle.addTag(new Tags(List.of(spring, java)));
 
-        tagService.delete(List.of("spring", "java"));
+        tagService.deleteAll(List.of(spring.getId(), java.getId()));
 
-        assertAll(
-                () -> assertThat(articleRepository.existsArticleByTagName("SPRING")).isFalse(),
-                () -> assertThat(articleRepository.existsArticleByTagName("java")).isFalse(),
-                () -> assertThat(articleRepository.existsArticleByTagName("REACT")).isTrue()
-        );
+        assertThat(articleTagRepository.existsArticleByTagId(spring.getId())).isFalse();
+        assertThat(articleTagRepository.existsArticleByTagId(java.getId())).isFalse();
+        assertThat(articleTagRepository.existsArticleByTagId(react.getId())).isTrue();
     }
 }

@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
@@ -5,13 +6,14 @@ export const Container = styled.div`
 
 	flex-direction: column;
 	justify-content: space-between;
-	gap: ${({ theme }) => theme.size.SIZE_014};
 
 	width: 100%;
 
-	border-bottom: ${({ theme }) => theme.size.SIZE_001} solid
-		${({ theme }) => theme.colors.BLACK_200};
-	margin-bottom: ${({ theme }) => theme.size.SIZE_020};
+	${({ theme }) => css`
+		gap: ${theme.size.SIZE_014};
+		border-bottom: ${theme.size.SIZE_001} solid ${theme.colors.BLACK_200};
+		margin-bottom: ${theme.size.SIZE_020};
+	`}
 `;
 
 export const CommentHeader = styled.div`
@@ -30,16 +32,20 @@ export const CommentInfo = styled.div`
 
 	justify-content: center;
 	gap: ${({ theme }) => theme.size.SIZE_004};
+	padding: ${({ theme }) => theme.size.SIZE_004};
 `;
 
 export const UserProfile = styled.img`
-	width: ${({ theme }) => theme.size.SIZE_050};
-	height: ${({ theme }) => theme.size.SIZE_050};
-
 	border-radius: 50%;
 
 	object-fit: cover;
 	object-position: center;
+
+	${({ theme }) => css`
+		width: ${theme.size.SIZE_035};
+		height: ${theme.size.SIZE_035};
+		padding: ${theme.size.SIZE_006};
+	`}
 `;
 
 export const CommentInfoSub = styled.div`

@@ -20,4 +20,4 @@ export const URL = {
 	NOT_FOUND: '/*',
 	TEMP_ARTICLE_LIST: '/temp-articles',
 	UPDATE_TEMP_ARTICLE: '/temp-article/:category/:id',
-};
+} as const;

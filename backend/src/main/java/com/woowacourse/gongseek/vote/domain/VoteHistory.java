@@ -1,8 +1,10 @@
 package com.woowacourse.gongseek.vote.domain;
 
 import com.woowacourse.gongseek.member.domain.Member;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,9 +32,8 @@ public class VoteHistory {
     @JoinColumn(nullable = false)
     private Member member;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private VoteItem voteItem;
 
     public VoteHistory(Member member, VoteItem voteItem) {

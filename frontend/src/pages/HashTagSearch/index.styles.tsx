@@ -11,6 +11,11 @@ export const Container = styled.section`
 	min-height: 100%;
 `;
 
+export const HashTagSearchBox = styled.div`
+	width: 100%;
+	margin-bottom: ${({ theme }) => theme.size.SIZE_040};
+`;
+
 export const HashTagSelectTitle = styled.div`
 	width: 100%;
 	text-align: center;
@@ -19,7 +24,7 @@ export const HashTagSelectTitle = styled.div`
 `;
 
 export const HashTagSearchBoxContainer = styled.div`
-	width: 90%;
+	width: 80%;
 
 	margin-bottom: ${({ theme }) => theme.size.SIZE_020};
 `;

@@ -3,7 +3,9 @@ package com.woowacourse.gongseek.article.presentation.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.CommentCount;
 import com.woowacourse.gongseek.article.domain.Content;
+import com.woowacourse.gongseek.article.domain.LikeCount;
 import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.TempTags;
 import com.woowacourse.gongseek.article.domain.Title;
@@ -51,9 +53,11 @@ public class ArticleRequest {
                 .content(new Content(content))
                 .category(Category.from(category))
                 .member(member)
-                .views(new Views())
                 .articleTags(new ArticleTags())
                 .isAnonymous(isAnonymous)
+                .views(new Views())
+                .likeCount(new LikeCount())
+                .commentCount(new CommentCount())
                 .build();
     }
 

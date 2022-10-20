@@ -18,7 +18,7 @@ export interface ArticleContentProps {
 }
 
 const ArticleContent = ({ category, article, author, articleId }: ArticleContentProps) => {
-	const { onLikeButtonClick, onUnlikeButtonClick, isLike, likeCount } = useHeartClick({
+	const { handleClickFillHeart, handleClickEmptyHeart, isLike, likeCount } = useHeartClick({
 		prevIsLike: article.isLike,
 		prevLikeCount: article.likeCount,
 		articleId,
@@ -26,7 +26,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 	const { handleDeleteArticle } = useDeleteArticleContent();
 	const navigate = useNavigate();
 
-	const navigateUpdateArticle = () => {
+	const handleClickEditButton = () => {
 		const categoryName = category === '질문' ? 'question' : 'discussion';
 		navigate(`/articles/modify/${categoryName}/${articleId}`);
 	};
@@ -34,52 +34,80 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 	return (
 		<S.Container>
 			<S.Header>
-				<S.CategoryTitle category={category}>{category}</S.CategoryTitle>
-				<S.UserProfile>
-					<S.UserProfileImg src={author.avatarUrl} />
+				<S.CategoryTitle tabIndex={0} aria-label={`${category}`} isQuestion={category === '질문'}>
+					{category}
+				</S.CategoryTitle>
+				<S.UserProfile tabIndex={0}>
+					<S.UserProfileImg src={author.avatarUrl} alt="작성자의 프로필 이미지입니다" />
 					<div>{author.name}</div>
 				</S.UserProfile>
 			</S.Header>
 			<Card {...ArticleContentCardStyle}>
 				<S.ArticleInfo>
-					<S.ArticleTitle>{article.title}</S.ArticleTitle>
+					<S.ArticleTitle aria-label={`글 제목, ${article.title}`} tabIndex={0}>
+						{article.title}
+					</S.ArticleTitle>
 					<S.ArticleDetailInfo>
-						<S.DetailBox>{dateTimeConverter(article.createdAt)}</S.DetailBox>
-						<S.DetailBox>조회수 {article.views}</S.DetailBox>
+						<S.DetailBox
+							aria-label={`글 작성시간, ${dateTimeConverter(article.createdAt)}`}
+							tabIndex={0}
+						>
+							{dateTimeConverter(article.createdAt)}
+						</S.DetailBox>
+						<S.DetailBox tabIndex={0}>조회수 {article.views}</S.DetailBox>
 					</S.ArticleDetailInfo>
 				</S.ArticleInfo>
-				<S.TextViewerBox>
+				<S.TextViewerBox tabIndex={0}>
 					<ToastUiViewer initContent={article.content} />
 				</S.TextViewerBox>
 				<S.Footer>
 					<S.WritingOrderBox>
 						{article.isAuthor && (
 							<S.ButtonWrapper>
-								<S.Button onClick={navigateUpdateArticle}>수정</S.Button>
-								<S.Button
+								<S.EditButton
+									onClick={handleClickEditButton}
+									aria-label="글 수정하기 버튼"
+									role="button"
+									tabIndex={0}
+								/>
+								<S.DeleteButton
 									onClick={() => {
 										handleDeleteArticle(articleId);
 									}}
-								>
-									삭제
-								</S.Button>
+									aria-label="글 삭제하기 버튼"
+									role="button"
+									tabIndex={0}
+								/>
 							</S.ButtonWrapper>
 						)}
 					</S.WritingOrderBox>
 					<S.LikeContentBox>
 						{isLike ? (
-							<S.FillHeart onClick={onUnlikeButtonClick} />
+							<S.FillHeart
+								onClick={handleClickFillHeart}
+								aria-label="하트를 취소합니다"
+								tabIndex={0}
+							/>
 						) : (
-							<S.EmptyHeart onClick={onLikeButtonClick} />
+							<S.EmptyHeart
+								onClick={handleClickEmptyHeart}
+								aria-label="하트를 누릅니다"
+								tabIndex={0}
+							/>
 						)}
-						<div>{likeCount}</div>
+						<div aria-label="좋아요 수">{likeCount}</div>
 					</S.LikeContentBox>
 				</S.Footer>
 				<S.HashTagListBox>
 					<h2 hidden>hash tag가 있다면 보여지는 곳입니다</h2>
 					{article.tag &&
 						article.tag.length >= 1 &&
-						article.tag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}
+						article.tag.map((item) => (
+							<S.HashTagItem key={item} tabIndex={0}>
+								<span aria-label="해시태그">#</span>
+								{item}
+							</S.HashTagItem>
+						))}
 				</S.HashTagListBox>
 			</Card>
 		</S.Container>

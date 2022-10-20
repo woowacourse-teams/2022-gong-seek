@@ -6,6 +6,7 @@ import TemporaryArticleItem from '@/components/tempArticle/TemporaryArticleItem/
 import * as S from '@/components/tempArticle/TemporaryArticleList/TemporaryArticleList.styles';
 import useDeleteTempArticle from '@/hooks/tempArticle/useDeleteTempArticle';
 import useGetTempArticles from '@/hooks/tempArticle/useGetTempArticles';
+import { TempArticleItem } from '@/types/articleResponse';
 
 const TemporaryArticleList = () => {
 	const { data, isLoading } = useGetTempArticles();
@@ -15,10 +16,14 @@ const TemporaryArticleList = () => {
 		return <Loading />;
 	}
 
-	const handleTempArticleDeleteClick = (id: number) => {
+	const handleClickTemporaryArticlekDeleteButton = (id: number) => {
 		if (window.confirm('해당 임시 저장 글을 삭제하시겠습니까?')) {
 			deleteTempArticleId(id);
 		}
+	};
+
+	const handleClickTemporaryArticleItem = (item: TempArticleItem) => {
+		navigate(`/temp-article/${item.category}/${item.id}`);
 	};
 
 	return (
@@ -30,9 +35,9 @@ const TemporaryArticleList = () => {
 						<S.ArticleItemBox key={item.id}>
 							<TemporaryArticleItem
 								article={item}
-								onClick={() => navigate(`/temp-article/${item.category}/${item.id}`)}
+								onClick={() => handleClickTemporaryArticleItem(item)}
 							/>
-							<S.DeleteButton onClick={() => handleTempArticleDeleteClick(item.id)} />
+							<S.DeleteButton onClick={() => handleClickTemporaryArticlekDeleteButton(item.id)} />
 						</S.ArticleItemBox>
 					))
 				) : (

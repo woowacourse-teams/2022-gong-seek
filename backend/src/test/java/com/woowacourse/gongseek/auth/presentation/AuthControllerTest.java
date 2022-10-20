@@ -17,7 +17,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
-import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.support.ControllerTest;
 import java.util.UUID;
@@ -33,7 +32,7 @@ class AuthControllerTest extends ControllerTest {
 
     @Test
     void 로그인_URL_조회_API_문서화() throws Exception {
-        given(authService.getLoginUrl()).willReturn(new OAuthLoginUrlResponse("login url"));
+        given(oAuthClient.getRedirectUrl()).willReturn("login url");
         mockMvc.perform(get("/api/auth/github"))
                 .andExpect(status().isOk())
                 .andDo(print())

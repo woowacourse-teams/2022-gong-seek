@@ -2,8 +2,10 @@ package com.woowacourse.gongseek.like.domain;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.member.domain.Member;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,9 +30,8 @@ public class Like {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id", nullable = false)
+    @JoinColumn(name = "article_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Article article;
 
     @OnDelete(action = OnDeleteAction.CASCADE)

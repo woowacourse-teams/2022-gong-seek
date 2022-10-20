@@ -1,3 +1,5 @@
+import { BrowserRouter } from 'react-router-dom';
+
 import UserArticleItem from '@/components/user/UserArticleItem/UserArticleItem';
 import { UserArticleItemType } from '@/types/articleResponse';
 import { Meta, Story } from '@storybook/react';
@@ -7,9 +9,11 @@ export default {
 	component: UserArticleItem,
 	decorators: [
 		(Story) => (
-			<div style={{ width: '320px' }}>
-				<Story />
-			</div>
+			<BrowserRouter>
+				<div style={{ width: '320px' }}>
+					<Story />
+				</div>
+			</BrowserRouter>
 		),
 	],
 } as Meta;

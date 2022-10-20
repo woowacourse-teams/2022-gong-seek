@@ -1,5 +1,6 @@
 import { AiFillPlusCircle, AiOutlineComment } from 'react-icons/ai';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.article`
@@ -20,8 +21,10 @@ export const CommentSection = styled.section`
 
 	width: 90%;
 
-	margin-top: ${({ theme }) => theme.size.SIZE_050};
-	padding: 0 ${({ theme }) => theme.size.SIZE_010};
+	${({ theme }) => css`
+		margin-top: ${theme.size.SIZE_050};
+		padding: 0 ${theme.size.SIZE_010};
+	`}
 `;
 
 export const CommentInputBox = styled.div`
@@ -38,13 +41,16 @@ export const CommentInput = styled.div<{ disabled: boolean }>`
 	width: 90%;
 
 	border-style: none;
-	border-radius: ${({ theme }) => theme.size.SIZE_008};
 
-	background-color: ${({ theme }) => theme.colors.GRAY_500};
+	${({ theme, disabled }) => css`
+		border-radius: ${theme.size.SIZE_008};
 
-	padding: 0.5rem 0;
+		background-color: ${theme.colors.GRAY_500};
 
-	opacity: ${({ disabled }) => disabled && 0.5};
+		padding: ${theme.size.SIZE_008} 0;
+
+		opacity: ${disabled && 0.5};
+	`}
 `;
 
 export const CommentHeader = styled.div`
@@ -59,15 +65,17 @@ export const CommentHeader = styled.div`
 `;
 
 export const CreateCommentButton = styled(AiFillPlusCircle)<{ disabled: boolean }>`
-	width: ${({ theme }) => theme.size.SIZE_024};
-	height: ${({ theme }) => theme.size.SIZE_024};
+	${({ theme, disabled }) => css`
+		width: ${theme.size.SIZE_024};
+		height: ${theme.size.SIZE_024};
 
-	color: ${({ theme, disabled }) => (disabled ? theme.colors.GRAY_500 : theme.colors.PURPLE_500)};
+		color: ${disabled ? `${theme.colors.GRAY_500}` : `${theme.colors.PURPLE_500}`};
 
-	&:hover,
-	&:active {
-		color: ${({ theme, disabled }) => !disabled && theme.colors.PURPLE_400};
-	}
+		&:hover,
+		&:active {
+			color: ${!disabled && `${theme.colors.PURPLE_400}`};
+		}
+	`}
 `;
 
 export const CommentTitle = styled.h2`
@@ -75,8 +83,10 @@ export const CommentTitle = styled.h2`
 `;
 
 export const CommentIcon = styled(AiOutlineComment)`
-	font-size: ${({ theme }) => theme.size.SIZE_024};
-	margin-top: -${({ theme }) => theme.size.SIZE_006};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_024};
+		margin-top: -${theme.size.SIZE_006};
+	`}
 `;
 
 export const CommentTotal = styled.div`

@@ -4,7 +4,7 @@ import * as S from '@/pages/Inquire/index.styles';
 import { InquireCardStyle } from '@/styles/cardStyle';
 
 const InquirePage = () => {
-	const onClickInquireButton = () => {
+	const handleClickInquireButton = () => {
 		window.location.href = 'https://github.com/woowacourse-teams/2022-gong-seek/issues';
 	};
 
@@ -13,7 +13,7 @@ const InquirePage = () => {
 			<Card {...InquireCardStyle}>
 				<h2 css={mobileTitleSecondary}>문의하기</h2>
 				<p>문의는 깃허브 이슈를 통해서 남겨주세요.</p>
-				<S.InquireButton onClick={onClickInquireButton}>문의하기</S.InquireButton>
+				<S.InquireButton onClick={handleClickInquireButton}>문의하기</S.InquireButton>
 			</Card>
 		</S.Container>
 	);

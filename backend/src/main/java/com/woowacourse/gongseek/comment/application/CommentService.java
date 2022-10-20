@@ -31,12 +31,13 @@ public class CommentService {
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
 
-    public void save(AppMember appMember, Long articleId, CommentRequest commentRequest) {
+    public void create(AppMember appMember, Long articleId, CommentRequest commentRequest) {
         validateGuest(appMember);
         Member member = getMember(appMember);
         Article article = getArticle(articleId);
 
         commentRepository.save(commentRequest.toComment(member, article));
+        article.addCommentCount();
     }
 
     private void validateGuest(AppMember appMember) {
@@ -97,6 +98,8 @@ public class CommentService {
     public void delete(AppMember appMember, Long commentId) {
         Comment comment = checkAuthorization(appMember, commentId);
         commentRepository.delete(comment);
+        Article article = comment.getArticle();
+        article.minusCommentCount();
     }
 }
 

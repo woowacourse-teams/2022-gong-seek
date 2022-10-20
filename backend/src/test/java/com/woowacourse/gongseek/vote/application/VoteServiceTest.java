@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
@@ -16,7 +17,9 @@ import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.support.DatabaseCleaner;
 import com.woowacourse.gongseek.support.IntegrationTest;
 import com.woowacourse.gongseek.vote.domain.Vote;
+import com.woowacourse.gongseek.vote.domain.VoteHistory;
 import com.woowacourse.gongseek.vote.domain.VoteItem;
+import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import com.woowacourse.gongseek.vote.exception.UnavailableArticleException;
@@ -49,7 +52,13 @@ class VoteServiceTest extends IntegrationTest {
     private ArticleRepository articleRepository;
 
     @Autowired
+    private ArticleService articleService;
+
+    @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private VoteHistoryRepository voteHistoryRepository;
 
     @Autowired
     private DatabaseCleaner databaseCleaner;
@@ -155,7 +164,6 @@ class VoteServiceTest extends IntegrationTest {
         LoginMember loginMember = new LoginMember(member.getId());
         voteService.doVote(discussionArticle.getId(), loginMember,
                 new SelectVoteItemIdRequest(voteItems.get(0).getId()));
-
         voteService.doVote(discussionArticle.getId(), loginMember,
                 new SelectVoteItemIdRequest(voteItems.get(1).getId()));
 
@@ -186,9 +194,31 @@ class VoteServiceTest extends IntegrationTest {
 
     @Test
     void 비회원이_투표를_하면_예외를_발생한다() {
-        assertThatThrownBy(() -> voteService.doVote(discussionArticle.getId(), new GuestMember(),
-                new SelectVoteItemIdRequest(voteItems.get(0).getId())))
+        assertThatThrownBy(
+                () -> voteService.doVote(discussionArticle.getId(), new GuestMember(),
+                        new SelectVoteItemIdRequest(voteItems.get(0).getId())))
                 .isExactlyInstanceOf(MemberNotFoundException.class)
                 .hasMessageContaining("회원이 존재하지 않습니다.");
+    }
+
+    @Test
+    void 투표중인_토론게시글을_삭제하면_투표도_삭제된다() {
+        Article article = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
+
+        Vote vote = new Vote(article, LocalDateTime.now().plusDays(3));
+        voteRepository.save(vote);
+        VoteItem firstVoteItem = new VoteItem("A번", vote);
+        VoteItem secondVoteItem = new VoteItem("B번", vote);
+        VoteItem thirdVoteItem = new VoteItem("C번", vote);
+        voteItemRepository.saveAll(List.of(firstVoteItem, secondVoteItem, thirdVoteItem));
+
+        voteHistoryRepository.save(new VoteHistory(member, firstVoteItem));
+        articleService.delete(new LoginMember(member.getId()), article.getId());
+
+        assertAll(
+                () -> assertThat(voteRepository.findByArticleId(article.getId())).isEmpty(),
+                () -> assertThat(voteHistoryRepository.findAll()).isEmpty()
+        );
     }
 }

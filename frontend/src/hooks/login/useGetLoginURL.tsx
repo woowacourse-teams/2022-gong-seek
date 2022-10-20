@@ -25,11 +25,11 @@ const useGetLoginURL = () => {
 		}
 	}, [isSuccess]);
 
-	const handleLoginButtonClick = () => {
+	const handleClickLoginButton = () => {
 		refetch();
 	};
 
-	return { isLoading: isLoading && pageLoading, handleLoginButtonClick };
+	return { isLoading: isLoading && pageLoading, handleLoginButtonClick: handleClickLoginButton };
 };
 
 export default useGetLoginURL;

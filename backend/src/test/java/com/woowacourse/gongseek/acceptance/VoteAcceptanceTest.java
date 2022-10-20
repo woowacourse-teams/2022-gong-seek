@@ -208,8 +208,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
                 .get()
                 .getId();
         ErrorResponse response = 투표를_한다(new AccessTokenResponse(null), articleId,
-                new SelectVoteItemIdRequest(votedItemId)).as(
-                ErrorResponse.class);
+                new SelectVoteItemIdRequest(votedItemId)).as(ErrorResponse.class);
         assertAll(
                 () -> assertThat(response.getErrorCode()).isEqualTo("2001"),
                 () -> assertThat(response.getMessage()).contains("회원이 존재하지 않습니다.")

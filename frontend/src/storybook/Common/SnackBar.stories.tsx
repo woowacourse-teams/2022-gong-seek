@@ -1,4 +1,7 @@
+import { useSetRecoilState } from 'recoil';
+
 import SnackBar from '@/components/@common/SnackBar/SnackBar';
+import { snackBarState } from '@/store/snackBarState';
 import { Meta, Story } from '@storybook/react';
 
 const modalRoot = document.createElement('div');
@@ -15,8 +18,24 @@ export default {
 			</div>
 		),
 	],
+	recoilFlow: {
+		filter: {
+			keys: ['snackBarState'],
+			isOpen: true,
+		},
+	},
 } as Meta;
 
-const Template: Story = () => <SnackBar />;
+const MockSnackBar = () => {
+	const setSnackBarState = useSetRecoilState(snackBarState);
+	setSnackBarState({
+		isOpen: true,
+		message: '테스트입니다.',
+	});
 
-export const DefaultMenuSlider = Template.bind({});
+	return <SnackBar />;
+};
+
+const Template: Story = () => <MockSnackBar />;
+
+export const DefaultSnackBar = Template.bind({});

@@ -10,20 +10,10 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
-import com.woowacourse.gongseek.config.RestDocsConfig;
-import com.woowacourse.gongseek.like.application.LikeService;
-import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import com.woowacourse.gongseek.support.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -32,7 +22,6 @@ class LikeControllerTest extends ControllerTest {
 
     @Test
     void 추천_API_문서화() throws Exception {
-        LikeResponse likeResponse = new LikeResponse(true, 1L);
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
         ResultActions results = mockMvc.perform(post("/api/articles/{articleId}/like", 1L)
@@ -51,7 +40,6 @@ class LikeControllerTest extends ControllerTest {
 
     @Test
     void 추천_취소_API_문서화() throws Exception {
-        LikeResponse likeResponse = new LikeResponse(false, 0L);
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
         ResultActions results = mockMvc.perform(delete("/api/articles/{articleId}/like", 1L)
