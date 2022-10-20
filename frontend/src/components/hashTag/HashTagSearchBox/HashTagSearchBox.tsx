@@ -1,4 +1,4 @@
-import React, { FormEvent, FormEventHandler, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import HashTagClickSearchBox from '@/components/hashTag/HashTagClickSearchBox/HashTagClickSearchBox';
 import * as S from '@/components/hashTag/HashTagSearchBox/HashTagSearchBox.styles';
@@ -8,27 +8,35 @@ export interface HashTagSearchBoxProps {
 	setTargets: React.Dispatch<React.SetStateAction<{ name: string; isChecked: boolean }[]>>;
 }
 
-type HashTagSearchResultType = { name: string; isChecked: boolean }[];
-
 const isHashTagSearchResultType = (
 	searchResult: unknown,
-): searchResult is HashTagSearchResultType => true;
+): searchResult is HashTagSearchBoxProps['targets'] => true;
 
 const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 	const [hashTagSearchText, setHashTagSearchText] = useState('');
 	const [hashTagSearchResult, setHashTagSearchResult] = useState<
-		{ name: string; isChecked: boolean }[]
+		HashTagSearchBoxProps['targets'] | []
 	>([]);
 	const [hashTagResultDescription, setHashTagResultDescription] = useState('');
+
+	useEffect(() => {
+		searchTargetHashTag();
+	}, [hashTagSearchText]);
+
 	const handleChangeHashTagSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setHashTagSearchText(e.target.value);
 	};
+
 	const handleSubmitHashTagSearch = () => {
 		setHashTagSearchText('');
 		searchTargetHashTag();
 	};
 
 	const searchTargetHashTag = () => {
+		if (hashTagSearchText.length === 0) {
+			setHashTagSearchResult([]);
+			return;
+		}
 		if (targets.length === 0) {
 			setHashTagResultDescription('해시태그가 존재하지 않습니다');
 			setHashTagSearchResult([]);
