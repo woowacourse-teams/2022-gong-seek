@@ -6,7 +6,7 @@ module.exports = {
 	entry: './src/index.tsx',
 	output: {
 		path: path.join(__dirname, '../dist'),
-		filename: '[name].bundle.js',
+		filename: '[name].[contenthash].js',
 		publicPath: '/',
 		clean: true,
 	},
@@ -22,19 +22,8 @@ module.exports = {
 		port: 3000,
 		hot: true,
 	},
-	devtool: 'source-map',
 	module: {
 		rules: [
-			{
-				test: /\.(js|jsx|ts|tsx)$/,
-				exclude: /node_modules/,
-				use: {
-					loader: 'babel-loader',
-				},
-				generator: {
-					filename: '[name].[contenthash].js',
-				},
-			},
 			{
 				test: /\.css$/,
 				use: ['style-loader', 'css-loader'],
@@ -56,7 +45,4 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin(),
 	],
-	optimization: {
-		minimize: true,
-	},
 };

@@ -11,12 +11,14 @@ import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.TempTags;
 import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
+import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
@@ -41,6 +43,7 @@ import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
@@ -50,7 +53,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +65,12 @@ public class ArticleServiceTest extends IntegrationTest {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private ArticleTagRepository articleTagRepository;
+
+    @Autowired
+    private PagingArticleRepository pagingArticleRepository;
 
     @Autowired
     private TempArticleRepository tempArticleRepository;
@@ -203,7 +211,7 @@ public class ArticleServiceTest extends IntegrationTest {
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo"),
-                () -> assertThat(articleResponse.isAuthor()).isTrue()
+                () -> assertThat(articleResponse.getIsAuthor()).isTrue()
         );
     }
 
@@ -221,7 +229,7 @@ public class ArticleServiceTest extends IntegrationTest {
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명"),
-                () -> assertThat(articleResponse.isAuthor()).isTrue()
+                () -> assertThat(articleResponse.getIsAuthor()).isTrue()
         );
     }
 
@@ -241,7 +249,7 @@ public class ArticleServiceTest extends IntegrationTest {
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo"),
-                () -> assertThat(articleResponse.isAuthor()).isFalse()
+                () -> assertThat(articleResponse.getIsAuthor()).isFalse()
         );
     }
 
@@ -260,7 +268,7 @@ public class ArticleServiceTest extends IntegrationTest {
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명"),
-                () -> assertThat(articleResponse.isAuthor()).isFalse()
+                () -> assertThat(articleResponse.getIsAuthor()).isFalse()
         );
     }
 
@@ -278,7 +286,7 @@ public class ArticleServiceTest extends IntegrationTest {
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo"),
-                () -> assertThat(articleResponse.isAuthor()).isFalse()
+                () -> assertThat(articleResponse.getIsAuthor()).isFalse()
         );
     }
 
@@ -296,7 +304,7 @@ public class ArticleServiceTest extends IntegrationTest {
                 () -> assertThat(articleResponse.getContent()).isEqualTo(articleRequest.getContent()),
                 () -> assertThat(articleResponse.getCreatedAt()).isNotNull(),
                 () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명"),
-                () -> assertThat(articleResponse.isAuthor()).isFalse()
+                () -> assertThat(articleResponse.getIsAuthor()).isFalse()
         );
     }
 
@@ -318,7 +326,6 @@ public class ArticleServiceTest extends IntegrationTest {
         );
     }
 
-    @Transactional
     @Test
     void 작성자인_회원이_기명_게시글을_수정한다() {
         AppMember loginMember = new LoginMember(member.getId());
@@ -329,14 +336,14 @@ public class ArticleServiceTest extends IntegrationTest {
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
         articleService.update(loginMember, request, savedArticle.getId());
 
-        ArticleResponse response = articleService.getOne(loginMember, savedArticle.getId());
+        ArticleResponse articleResponse = articleService.getOne(loginMember, savedArticle.getId());
 
         assertAll(
-                () -> assertThat(response.getTitle()).isEqualTo(request.getTitle()),
-                () -> assertThat(response.getTag()).hasSize(1),
-                () -> assertThat(response.getTag().get(0)).isEqualTo("JAVA"),
-                () -> assertThat(response.getContent()).isEqualTo(request.getContent()),
-                () -> assertThat(response.getAuthor().getName()).isEqualTo("slo")
+                () -> assertThat(articleResponse.getTitle()).isEqualTo(request.getTitle()),
+                () -> assertThat(articleResponse.getTag()).hasSize(1),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("JAVA"),
+                () -> assertThat(articleResponse.getContent()).isEqualTo(request.getContent()),
+                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("slo")
         );
     }
 
@@ -350,14 +357,14 @@ public class ArticleServiceTest extends IntegrationTest {
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
         articleService.update(loginMember, request, savedArticle.getId());
 
-        ArticleResponse response = articleService.getOne(loginMember, savedArticle.getId());
+        ArticleResponse articleResponse = articleService.getOne(loginMember, savedArticle.getId());
 
         assertAll(
-                () -> assertThat(response.getTitle()).isEqualTo(request.getTitle()),
-                () -> assertThat(response.getTag()).hasSize(1),
-                () -> assertThat(response.getTag().get(0)).isEqualTo("JAVA"),
-                () -> assertThat(response.getContent()).isEqualTo(request.getContent()),
-                () -> assertThat(response.getAuthor().getName()).isEqualTo("익명")
+                () -> assertThat(articleResponse.getTitle()).isEqualTo(request.getTitle()),
+                () -> assertThat(articleResponse.getTag()).hasSize(1),
+                () -> assertThat(articleResponse.getTag().get(0)).isEqualTo("JAVA"),
+                () -> assertThat(articleResponse.getContent()).isEqualTo(request.getContent()),
+                () -> assertThat(articleResponse.getAuthor().getName()).isEqualTo("익명")
         );
     }
 
@@ -401,10 +408,14 @@ public class ArticleServiceTest extends IntegrationTest {
         articleService.update(loginMember, new ArticleUpdateRequest("하이", "하이", List.of("JAVA", "backend")),
                 firstSavedArticle.getId());
 
+        Article article = articleRepository.findByIdWithAll(firstSavedArticle.getId())
+                .get();
+        List<String> existTagNames = article.getTagNames();
+
         assertAll(
-                () -> assertThat(articleRepository.existsArticleByTagName("SPRING")).isFalse(),
-                () -> assertThat(articleRepository.existsArticleByTagName("JAVA")).isTrue(),
-                () -> assertThat(articleRepository.existsArticleByTagName("BACKEND")).isTrue(),
+                () -> assertThat(existTagNames).hasSize(2),
+                () -> assertThat(existTagNames.get(0)).isEqualTo("JAVA"),
+                () -> assertThat(existTagNames.get(1)).isEqualTo("BACKEND"),
                 () -> assertThat(tagRepository.findByNameIgnoreCase("SPRING")).isEmpty(),
                 () -> assertThat(tagRepository.findByNameIgnoreCase("JAVA")).isNotEmpty(),
                 () -> assertThat(tagRepository.findByNameIgnoreCase("BACKEND")).isNotEmpty()
@@ -476,9 +487,9 @@ public class ArticleServiceTest extends IntegrationTest {
 
         articleService.delete(loginMember, firstSavedArticle.getId());
 
+        Optional<Article> article = articleRepository.findByIdWithAll(firstSavedArticle.getId());
         assertAll(
-                () -> assertThat(articleRepository.existsArticleByTagName("SPRING")).isFalse(),
-                () -> assertThat(articleRepository.existsArticleByTagName("JAVA")).isTrue(),
+                () -> assertThat(article).isEmpty(),
                 () -> assertThat(tagRepository.findByNameIgnoreCase("SPRING")).isEmpty(),
                 () -> assertThat(tagRepository.findByNameIgnoreCase("JAVA")).isNotEmpty()
         );
@@ -497,14 +508,14 @@ public class ArticleServiceTest extends IntegrationTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(null, 0, Category.QUESTION.getValue(), "latest",
+        ArticlePageResponse response = articleService.getAll(null, 0L, Category.QUESTION.getValue(), "latest",
                 PageRequest.ofSize(10),
                 loginMember);
-        List<ArticlePreviewResponse> responses = response.getArticles();
+        List<ArticlePreviewDto> responses = response.getArticles();
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
-                () -> assertThat(response.hasNext()).isEqualTo(true)
+                () -> assertThat(response.getHasNext()).isEqualTo(true)
         );
     }
 
@@ -521,22 +532,22 @@ public class ArticleServiceTest extends IntegrationTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(10L, 0, Category.QUESTION.getValue(), "latest",
+        ArticlePageResponse response = articleService.getAll(10L, 0L, Category.QUESTION.getValue(), "latest",
                 PageRequest.ofSize(10),
                 loginMember);
-        List<ArticlePreviewResponse> responses = response.getArticles();
+        List<ArticlePreviewDto> responses = response.getArticles();
 
         assertAll(
                 () -> assertThat(responses).hasSize(9),
                 () -> assertThat(responses.get(0).getId()).isEqualTo(9L),
-                () -> assertThat(response.hasNext()).isFalse()
+                () -> assertThat(response.getHasNext()).isFalse()
         );
     }
 
     @ParameterizedTest
     @NullSource
-    @ValueSource(ints = {0})
-    void 페이지가_10개씩_조회된_후_더이상_조회할_페이지가_없으면_hasNext는_false가_된다(Integer cursorViews) {
+    @ValueSource(longs = {0L})
+    void 페이지가_10개씩_조회된_후_더이상_조회할_페이지가_없으면_hasNext는_false가_된다(Long cursorViews) {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
@@ -550,11 +561,11 @@ public class ArticleServiceTest extends IntegrationTest {
 
         ArticlePageResponse response = articleService.getAll(null, cursorViews, Category.QUESTION.getValue(),
                 "latest", PageRequest.ofSize(10), loginMember);
-        List<ArticlePreviewResponse> responses = response.getArticles();
+        List<ArticlePreviewDto> responses = response.getArticles();
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
-                () -> assertThat(response.hasNext()).isFalse()
+                () -> assertThat(response.getHasNext()).isFalse()
         );
     }
 
@@ -566,7 +577,7 @@ public class ArticleServiceTest extends IntegrationTest {
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).isEmpty(),
-                () -> assertThat(articlePageResponse.hasNext()).isFalse()
+                () -> assertThat(articlePageResponse.getHasNext()).isFalse()
         );
     }
 
@@ -586,7 +597,7 @@ public class ArticleServiceTest extends IntegrationTest {
 
         assertAll(
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(10),
-                () -> assertThat(articlePageResponse.hasNext()).isFalse()
+                () -> assertThat(articlePageResponse.getHasNext()).isFalse()
         );
     }
 
@@ -608,9 +619,9 @@ public class ArticleServiceTest extends IntegrationTest {
 
         assertAll(
                 () -> assertThat(firstPageResponse.getArticles()).hasSize(10),
-                () -> assertThat(firstPageResponse.hasNext()).isTrue(),
+                () -> assertThat(firstPageResponse.getHasNext()).isTrue(),
                 () -> assertThat(secondPageResponse.getArticles()).hasSize(10),
-                () -> assertThat(secondPageResponse.hasNext()).isFalse()
+                () -> assertThat(secondPageResponse.getHasNext()).isFalse()
         );
     }
 
@@ -660,11 +671,11 @@ public class ArticleServiceTest extends IntegrationTest {
                 Pageable.ofSize(3), new LoginMember(member.getId()));
         List<Long> collect = articlePageResponse.getArticles()
                 .stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         assertAll(
-                () -> assertThat(articlePageResponse.hasNext()).isTrue(),
+                () -> assertThat(articlePageResponse.getHasNext()).isTrue(),
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(3),
                 () -> assertThat(collect).containsExactly(3L, 2L, 1L)
         );
@@ -684,7 +695,7 @@ public class ArticleServiceTest extends IntegrationTest {
 
         assertAll(
                 () -> assertThat(pageResponse.getArticles()).hasSize(15),
-                () -> assertThat(pageResponse.hasNext()).isFalse()
+                () -> assertThat(pageResponse.getHasNext()).isFalse()
         );
     }
 
@@ -709,11 +720,11 @@ public class ArticleServiceTest extends IntegrationTest {
                 Pageable.ofSize(2), new LoginMember(member.getId()));
         List<Long> collect = articlePageResponse.getArticles()
                 .stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         assertAll(
-                () -> assertThat(articlePageResponse.hasNext()).isTrue(),
+                () -> assertThat(articlePageResponse.getHasNext()).isTrue(),
                 () -> assertThat(articlePageResponse.getArticles()).hasSize(2),
                 () -> assertThat(collect).containsExactly(1L, 10L)
         );
@@ -740,7 +751,7 @@ public class ArticleServiceTest extends IntegrationTest {
 
         assertAll(
                 () -> assertThat(pageResponse.getArticles()).hasSize(2),
-                () -> assertThat(pageResponse.hasNext()).isTrue()
+                () -> assertThat(pageResponse.getHasNext()).isTrue()
         );
     }
 
@@ -779,5 +790,21 @@ public class ArticleServiceTest extends IntegrationTest {
         articleService.save(new LoginMember(member.getId()), articleRequest);
 
         assertThat(tempArticleRepository.existsById(tempArticle.getId())).isFalse();
+    }
+
+    @Transactional
+    @Test
+    void 게시글의_좋아요수와_댓글수를_동기화한다() {
+        ArticleIdResponse response = articleService.save(new LoginMember(member.getId()),
+                new ArticleRequest("title", "content", "question", new ArrayList<>(), false));
+        Article article = articleRepository.findById(response.getId()).get();
+        article.updateLikeCountAndCommentCount(10L, 10L);
+
+        articleService.synchronizeLikeCountAndCommentCount();
+
+        assertAll(
+                () -> assertThat(article.getLikeCount()).isEqualTo(0),
+                () -> assertThat(article.getCommentCount()).isEqualTo(0)
+        );
     }
 }

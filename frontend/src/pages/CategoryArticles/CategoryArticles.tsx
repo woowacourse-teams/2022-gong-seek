@@ -8,6 +8,7 @@ import ArticleItem from '@/components/article/ArticleItem/ArticleItem';
 import { URL } from '@/constants/url';
 import useGetCategoryArticles from '@/hooks/article/useGetCategoryArticles';
 import * as S from '@/pages/CategoryArticles/CategoryArticles.styles';
+import { CommonArticleType } from '@/types/articleResponse';
 import { categoryNameConverter } from '@/utils/converter';
 
 const CategoryArticles = () => {
@@ -25,6 +26,10 @@ const CategoryArticles = () => {
 
 	const { data, fetchNextPage, sortIndex, setSortIndex, isLoading } =
 		useGetCategoryArticles(category);
+
+	const handleClickArticleItem = (item: CommonArticleType) => {
+		navigate(`/articles/${category}/${item.id}`);
+	};
 
 	if (isLoading) {
 		return <Loading />;
@@ -53,9 +58,7 @@ const CategoryArticles = () => {
 								<ArticleItem
 									key={item.id}
 									article={item}
-									onClick={() => {
-										navigate(`/articles/${category}/${item.id}`);
-									}}
+									onClick={() => handleClickArticleItem(item)}
 								/>
 							)),
 						)}

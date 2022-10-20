@@ -35,7 +35,7 @@ describe('useHeartClick 테스트', () => {
 			() => useHeartClick({ prevIsLike: false, prevLikeCount: 0, articleId: '1' }),
 			{ wrapper },
 		);
-		result.current.onLikeButtonClick({
+		result.current.handleClickEmptyHeart({
 			stopPropagation: () => {
 				console.log('이벤트 버블링 방지');
 			},
@@ -53,7 +53,7 @@ describe('useHeartClick 테스트', () => {
 			{ wrapper },
 		);
 
-		result.current.onUnlikeButtonClick({
+		result.current.handleClickFillHeart({
 			stopPropagation: () => {
 				console.log('이벤트 버블링 방지');
 			},

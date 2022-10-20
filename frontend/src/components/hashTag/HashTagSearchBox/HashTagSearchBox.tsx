@@ -10,7 +10,7 @@ export interface HashTagSearchBoxProps {
 const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 
-	const onTargetClick = (target: string) => {
+	const handleClickHashTagItem = (target: string) => {
 		setTargets(
 			targets.map((item) => {
 				if (item.name === target) {
@@ -27,6 +27,10 @@ const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 		);
 	};
 
+	const handleClickHashTagButton = () => {
+		setIsOpen((prev) => !prev);
+	};
+
 	return (
 		<S.Container>
 			<h2 hidden>해시태그들을 보여주는 곳입니다</h2>
@@ -35,7 +39,7 @@ const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 					<S.HashTagItem
 						key={item.name}
 						isChecked={item.isChecked}
-						onClick={() => onTargetClick(item.name)}
+						onClick={() => handleClickHashTagItem(item.name)}
 					>
 						{item.name}
 					</S.HashTagItem>
@@ -45,22 +49,20 @@ const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
 						<S.HashTagItem
 							key={item.name}
 							isChecked={item.isChecked}
-							onClick={() => onTargetClick(item.name)}
+							onClick={() => handleClickHashTagItem(item.name)}
 						>
 							{item.name}
 						</S.HashTagItem>
 					))}
 
 				{targets.length > 5 && !isOpen && (
-					<S.HashTagButton
+					<S.OpenButton
 						onClick={() => {
 							setIsOpen(!isOpen);
 						}}
-					>
-						더보기
-					</S.HashTagButton>
+					/>
 				)}
-				{isOpen && <S.HashTagButton onClick={() => setIsOpen(!isOpen)}>닫기</S.HashTagButton>}
+				{isOpen && <S.CloseButton onClick={handleClickHashTagButton} />}
 			</S.HashTagLists>
 		</S.Container>
 	);

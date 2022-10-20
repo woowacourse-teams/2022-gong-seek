@@ -1,6 +1,6 @@
 import { AiOutlineLeft } from 'react-icons/ai';
 
-import { keyframes } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const showSlider = keyframes`
@@ -21,24 +21,26 @@ export const MenuBox = styled.div`
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
-	gap: ${({ theme }) => theme.size.SIZE_018};
 
 	width: 70%;
 	height: 100vh;
 
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
+	${({ theme }) => css`
+		gap: ${theme.size.SIZE_018};
+		padding-top: ${theme.size.SIZE_030};
 
-	background-color: ${({ theme }) => theme.colors.WHITE};
+		border-radius: ${theme.size.SIZE_010};
 
-	padding-top: ${({ theme }) => theme.size.SIZE_030};
+		background-color: ${theme.colors.WHITE};
 
-	z-index: ${({ theme }) => theme.zIndex.MENU_SLIDER_CONTENT};
+		z-index: ${theme.zIndex.MENU_SLIDER_CONTENT};
 
-	animation: ${showSlider} 0.2s ease-in-out;
+		animation: ${showSlider} 0.2s ease-in-out;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
-		display: none;
-	}
+		@media (min-width: ${theme.breakpoints.DESKTOP_SMALL}) {
+			display: none;
+		}
+	`}
 `;
 
 export const Header = styled.header`
@@ -62,12 +64,14 @@ export const BackButtonBox = styled.button`
 `;
 
 export const BackButton = styled(AiOutlineLeft)`
-	font-size: ${({ theme }) => theme.size.SIZE_024};
+	${({ theme }) => css`
+	font-size: ${theme.size.SIZE_024};
 
 	&:hover,
 	&:active {
-		color: ${({ theme }) => theme.colors.PURPLE_500};
+		color: $ {theme.colors.PURPLE_500};
 	}
+	`};
 `;
 
 export const LinkBox = styled.div`
@@ -80,13 +84,15 @@ export const LinkBox = styled.div`
 `;
 
 export const LinkItem = styled.div`
-	font-size: ${({ theme }) => theme.size.SIZE_016};
-
 	cursor: pointer;
 
-	&:hover,
-	&:active {
-		color: ${({ theme }) => theme.colors.PURPLE_500};
-		font-weight: 600;
-	}
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_016};
+
+		&:hover,
+		&:active {
+			color: ${theme.colors.PURPLE_500};
+			font-weight: 600;
+		}
+	`}
 `;

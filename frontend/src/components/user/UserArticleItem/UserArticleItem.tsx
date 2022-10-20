@@ -8,12 +8,12 @@ const UserArticleItem = ({ article }: { article: UserArticleItemType }) => {
 	const navigate = useNavigate();
 	const { id, title, category, commentCount, createdAt, updatedAt, views } = article;
 
+	const handleClickUserArticleItem = () => {
+		navigate(`/articles/${category}/${id}`);
+	};
+
 	return (
-		<S.Container
-			onClick={() => {
-				navigate(`/articles/${category}/${id}`);
-			}}
-		>
+		<S.Container onClick={handleClickUserArticleItem}>
 			<S.ArticleTitleBox>
 				<S.CategoryName isQuestion={category === 'question'}>
 					{categoryNameConverter(category)}

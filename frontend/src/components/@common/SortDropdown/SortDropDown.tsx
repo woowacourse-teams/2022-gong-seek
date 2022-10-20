@@ -11,18 +11,18 @@ export interface SortPropDownProps {
 const SortDropdown = ({ sortList, sortIndex, setSortIndex }: SortPropDownProps) => {
 	const [onDropdown, setOnDropdown] = useState(false);
 
-	const onClickDropdownItem = (sort: string) => {
+	const handleClickSortBox = () => {
+		setOnDropdown((prevOnDropdown) => !prevOnDropdown);
+	};
+
+	const handleClickDropdownItem = (sort: string) => {
 		setSortIndex(sort);
 		setOnDropdown(false);
 	};
 
 	return (
 		<S.Container>
-			<S.SortBox
-				onClick={() => {
-					setOnDropdown((prevOnDropdown) => !prevOnDropdown);
-				}}
-			>
+			<S.SortBox onClick={handleClickSortBox}>
 				<div>{sortIndex}</div>
 				<S.ArrowDown />
 			</S.SortBox>
@@ -30,7 +30,7 @@ const SortDropdown = ({ sortList, sortIndex, setSortIndex }: SortPropDownProps) 
 			{onDropdown && (
 				<S.DropdownBox>
 					{sortList.map((sort, idx) => (
-						<S.DropdownItem key={idx} idx={idx} onClick={() => onClickDropdownItem(sort)}>
+						<S.DropdownItem key={idx} idx={idx} onClick={() => handleClickDropdownItem(sort)}>
 							{sort}
 						</S.DropdownItem>
 					))}

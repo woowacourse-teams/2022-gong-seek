@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ArticleRepository extends JpaRepository<Article, Long>, ArticleRepositoryCustom {
+public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query("select distinct a from Article a "
             + "join fetch a.member "
@@ -17,7 +17,4 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
     Optional<Article> findByIdWithAll(@Param("id") Long id);
 
     List<Article> findAllByMemberId(Long memberId);
-
-    @Query("SELECT case WHEN (count(at) > 0) THEN true ELSE false END FROM ArticleTag at WHERE upper(at.tag.name) = upper(:name)")
-    boolean existsArticleByTagName(@Param("name") String name);
 }

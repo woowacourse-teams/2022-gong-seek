@@ -3,8 +3,7 @@ package com.woowacourse.gongseek.auth.application;
 import com.woowacourse.gongseek.auth.domain.RefreshToken;
 import com.woowacourse.gongseek.auth.domain.repository.RefreshTokenRepository;
 import com.woowacourse.gongseek.auth.exception.InvalidRefreshTokenException;
-import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
-import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
+import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
@@ -19,31 +18,23 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AuthService {
 
-    private final OAuthClient githubOAuthClient;
     private final MemberRepository memberRepository;
     private final TokenProvider jwtTokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public OAuthLoginUrlResponse getLoginUrl() {
-        return new OAuthLoginUrlResponse(githubOAuthClient.getRedirectUrl());
+    public TokenResponse generateToken(GithubProfileResponse githubProfile) {
+        return memberRepository.findByGithubId(githubProfile.getGithubId())
+                .map(foundMember -> updateMember(foundMember, githubProfile))
+                .orElseGet(() -> saveMember(githubProfile));
     }
 
-    public TokenResponse generateToken(OAuthCodeRequest OAuthCodeRequest) {
-        Member member = githubOAuthClient.getMemberProfile(OAuthCodeRequest.getCode()).toMember();
-
-        return memberRepository.findByGithubId(member.getGithubId())
-                .map(foundMember -> updateMember(foundMember, member))
-                .orElseGet(() -> saveMember(member));
-    }
-
-    private TokenResponse updateMember(Member foundMember, Member newMember) {
-        foundMember.updateAvatarUrl(newMember.getAvatarUrl());
+    private TokenResponse updateMember(Member foundMember, GithubProfileResponse githubProfile) {
+        foundMember.updateAvatarUrl(githubProfile.getAvatarUrl());
         return getTokenResponse(foundMember);
     }
 
-    private TokenResponse saveMember(Member newMember) {
-        memberRepository.save(newMember);
-        return getTokenResponse(newMember);
+    private TokenResponse saveMember(GithubProfileResponse githubProfile) {
+        return getTokenResponse(memberRepository.save(githubProfile.toMember()));
     }
 
     private TokenResponse getTokenResponse(Member member) {

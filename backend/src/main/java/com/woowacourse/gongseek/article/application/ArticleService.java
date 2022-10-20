@@ -2,10 +2,12 @@ package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
+import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
@@ -15,7 +17,6 @@ import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
-import com.woowacourse.gongseek.like.presentation.dto.LikeResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -38,11 +39,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ArticleTagRepository articleTagRepository;
+    private final PagingArticleRepository pagingArticleRepository;
     private final TempArticleService tempArticleService;
     private final MemberRepository memberRepository;
-    private final CommentRepository commentRepository;
     private final VoteRepository voteRepository;
     private final TagService tagService;
+    private final CommentRepository commentRepository;
     private final LikeRepository likeRepository;
 
     public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
@@ -50,7 +53,6 @@ public class ArticleService {
         Member member = getMember(appMember);
 
         Tags foundTags = tagService.getOrCreateTags(Tags.from(articleRequest.getTag()));
-
         Article article = articleRepository.save(articleRequest.toArticle(member));
         article.addTag(foundTags);
 
@@ -71,13 +73,10 @@ public class ArticleService {
 
     public ArticleResponse getOne(AppMember appMember, Long id) {
         Article article = getArticle(id);
-
-        List<String> tagNames = article.getTagNames();
         article.addViews();
-        LikeResponse likeResponse = new LikeResponse(isLike(article, appMember), getLikeCount(article));
 
-        return checkGuest(article, tagNames, appMember, voteRepository.existsByArticleId(article.getId()),
-                likeResponse);
+        return checkGuest(article, appMember, voteRepository.existsByArticleId(article.getId()),
+                isLike(article, appMember));
     }
 
     private Article getArticle(Long id) {
@@ -89,41 +88,19 @@ public class ArticleService {
         return likeRepository.existsByArticleIdAndMemberId(article.getId(), appMember.getPayload());
     }
 
-    private Long getLikeCount(Article article) {
-        return likeRepository.countByArticleId(article.getId());
-    }
-
-    private ArticleResponse checkGuest(Article article, List<String> tagNames, AppMember appMember, boolean hasVote,
-                                       LikeResponse likeResponse) {
+    private ArticleResponse checkGuest(Article article, AppMember appMember, boolean hasVote, boolean isLike) {
         if (appMember.isGuest()) {
-            return ArticleResponse.of(article, tagNames, false, hasVote, likeResponse);
+            return ArticleResponse.of(article, false, hasVote, isLike);
         }
-        return ArticleResponse.of(article, tagNames, article.isAuthor(getMember(appMember)), hasVote, likeResponse);
+        return ArticleResponse.of(article, article.isAuthor(getMember(appMember)), hasVote, isLike);
     }
 
     @Transactional(readOnly = true)
-    public ArticlePageResponse getAll(Long cursorId, Integer cursorViews, String category, String sortType,
+    public ArticlePageResponse getAll(Long cursorId, Long cursorViews, String category, String sortType,
                                       Pageable pageable, AppMember appMember) {
-        Slice<Article> articles = articleRepository.findAllByPage(cursorId, cursorViews, category, sortType, pageable);
-        List<ArticlePreviewResponse> responses = createResponse(appMember, articles);
-
-        return new ArticlePageResponse(responses, articles.hasNext());
-    }
-
-    private List<ArticlePreviewResponse> createResponse(AppMember appMember, Slice<Article> articles) {
-        return articles.getContent().stream()
-                .map(it -> getArticlePreviewResponse(it, appMember))
-                .collect(Collectors.toList());
-    }
-
-    private ArticlePreviewResponse getArticlePreviewResponse(Article article, AppMember appMember) {
-        List<String> tagNames = article.getTagNames();
-        return ArticlePreviewResponse.of(article, tagNames, getCommentCount(article),
-                new LikeResponse(isLike(article, appMember), getLikeCount(article)));
-    }
-
-    private int getCommentCount(Article article) {
-        return commentRepository.countByArticleId(article.getId());
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(cursorId, cursorViews, category,
+                sortType, appMember.getPayload(), pageable);
+        return ArticlePageResponse.of(articles);
     }
 
     @Transactional(readOnly = true)
@@ -131,10 +108,9 @@ public class ArticleService {
         if (searchText.isBlank()) {
             return new ArticlePageResponse(new ArrayList<>(), false);
         }
-        Slice<Article> articles = articleRepository.searchByContainingText(cursorId, searchText, pageable);
-        List<ArticlePreviewResponse> responses = createResponse(appMember, articles);
-
-        return new ArticlePageResponse(responses, articles.hasNext());
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByContainingText(cursorId, searchText,
+                appMember.getPayload(), pageable);
+        return ArticlePageResponse.of(articles);
     }
 
     @Transactional(readOnly = true)
@@ -143,38 +119,31 @@ public class ArticleService {
         if (authorName.isBlank()) {
             return new ArticlePageResponse(new ArrayList<>(), false);
         }
-        Slice<Article> articles = articleRepository.searchByAuthor(cursorId, authorName, pageable);
-
-        List<ArticlePreviewResponse> response = createResponse(appMember, articles);
-        return new ArticlePageResponse(response, articles.hasNext());
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByAuthor(cursorId, authorName,
+                appMember.getPayload(), pageable);
+        return ArticlePageResponse.of(articles);
     }
 
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
         Article article = checkAuthorization(appMember, id);
-        List<String> existingTagNames = article.getTagNames();
+        List<Long> existingTagIds = article.getTagIds();
         List<String> updatedTagNames = articleUpdateRequest.getTag();
-        Tags tags = Tags.from(updatedTagNames);
-        Tags foundTags = tagService.getOrCreateTags(tags);
-        article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent());
-        article.updateTag(foundTags);
-        deleteUnusedTags(existingTagNames, updatedTagNames);
+        Tags updatedTags = tagService.getOrCreateTags(Tags.from(updatedTagNames));
+        article.update(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent(), updatedTags);
+        deleteUnusedTags(existingTagIds, updatedTags.getTagIds());
 
         return new ArticleUpdateResponse(article);
     }
 
-    private void deleteUnusedTags(List<String> existingTagNames, List<String> updatedTagNames) {
-        updatedTagNames = updatedTagNames.stream()
-                .map(String::toUpperCase)
-                .collect(Collectors.toList());
-
-        existingTagNames.removeAll(updatedTagNames);
-        List<String> deletedTagNames = getDeletedTagNames(existingTagNames);
-        tagService.delete(deletedTagNames);
+    private void deleteUnusedTags(List<Long> existingTagIds, List<Long> updatedTagIds) {
+        existingTagIds.removeAll(updatedTagIds);
+        List<Long> deletedTagIds = getDeletedTagIds(existingTagIds);
+        tagService.deleteAll(deletedTagIds);
     }
 
-    private List<String> getDeletedTagNames(List<String> tagNames) {
-        return tagNames.stream()
-                .filter(tagName -> !articleRepository.existsArticleByTagName(tagName))
+    private List<Long> getDeletedTagIds(List<Long> tagIds) {
+        return tagIds.stream()
+                .filter(tagId -> !articleTagRepository.existsArticleByTagId(tagId))
                 .collect(Collectors.toList());
     }
 
@@ -195,30 +164,35 @@ public class ArticleService {
     public void delete(AppMember appMember, Long id) {
         Article article = checkAuthorization(appMember, id);
         articleRepository.delete(article);
-
-        List<String> deletedTagNames = getDeletedTagNames(article.getTagNames());
-        tagService.delete(deletedTagNames);
+        List<Long> deletedTagIds = getDeletedTagIds(article.getTagIds());
+        tagService.deleteAll(deletedTagIds);
     }
 
     @Transactional(readOnly = true)
     public ArticlePageResponse searchByTag(Long cursorId, Pageable pageable, String tagsText, AppMember appMember) {
-        Slice<Article> articles = articleRepository.searchByTag(cursorId, extract(tagsText), pageable);
-        List<ArticlePreviewResponse> response = createResponse(appMember, articles);
-        return new ArticlePageResponse(response, articles.hasNext());
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByTag(cursorId, appMember.getPayload(),
+                extractTagName(tagsText), pageable);
+        return ArticlePageResponse.of(articles);
     }
 
-    private List<String> extract(String tagsText) {
+    private List<String> extractTagName(String tagsText) {
         return Arrays.asList(tagsText.split(","));
     }
 
     @Transactional(readOnly = true)
-    public ArticlePageResponse getAllByLikes(Long cursorId, Long likes, String category, Pageable pageable,
+    public ArticlePageResponse getAllByLikes(Long cursorId, Long cursorLikes, String category, Pageable pageable,
                                              AppMember appMember) {
-        Slice<Article> articles = articleRepository.findAllByLikes(cursorId, likes, category, pageable);
-        List<ArticlePreviewResponse> response = articles.getContent().stream()
-                .map(it -> getArticlePreviewResponse(it, appMember))
-                .collect(Collectors.toList());
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(cursorId, cursorLikes, category,
+                appMember.getPayload(), pageable);
+        return ArticlePageResponse.of(articles);
+    }
 
-        return new ArticlePageResponse(response, articles.hasNext());
+    public void synchronizeLikeCountAndCommentCount() {
+        List<Article> articles = articleRepository.findAll();
+        articles.forEach(
+                article -> article.updateLikeCountAndCommentCount(
+                        likeRepository.countByArticleId(article.getId()),
+                        commentRepository.countByArticleId(article.getId()))
+        );
     }
 }

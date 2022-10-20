@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.article.presentation;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -21,29 +20,23 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
-import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import com.woowacourse.gongseek.support.ControllerTest;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -96,7 +89,7 @@ class ArticleControllerTest extends ControllerTest {
                 new AuthorDto("rennon", "avatar.com"),
                 "content",
                 false,
-                1,
+                1L,
                 false,
                 false,
                 0L,
@@ -143,7 +136,7 @@ class ArticleControllerTest extends ControllerTest {
                         "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"),
                 "content",
                 false,
-                1,
+                1L,
                 false,
                 false,
                 0L,
@@ -189,7 +182,7 @@ class ArticleControllerTest extends ControllerTest {
                 new AuthorDto("rennon", "avatar.com"),
                 "content",
                 false,
-                1,
+                1L,
                 false,
                 false,
                 0L,
@@ -277,20 +270,20 @@ class ArticleControllerTest extends ControllerTest {
 
     @Test
     void 게시글_전체_조회_문서화() throws Exception {
-        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
+        ArticlePreviewDto articlePreviewResponse1 = new ArticlePreviewDto(1L, "제목", List.of("SPRING"),
                 new AuthorDto("기론", "프로필 이미지 url"),
-                "내용입니다", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
+                "내용입니다", Category.QUESTION.getValue(), 3L, 2L, 0L, false, LocalDateTime.now());
 
-        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목2", List.of("SPRING"),
+        ArticlePreviewDto articlePreviewResponse2 = new ArticlePreviewDto(2L, "제목2", List.of("SPRING"),
                 new AuthorDto("기론2", "프로필2 이미지 url"),
-                "내용입니다22", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
+                "내용입니다22", Category.DISCUSSION.getValue(), 10L, 5L, 0L, false, LocalDateTime.now());
 
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
-        given(articleService.getAll(anyLong(), anyInt(), any(), any(), any(), any())).willReturn(response);
+        given(articleService.getAll(anyLong(), anyLong(), any(), any(), any(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(get("/api/articles")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer token")
@@ -340,12 +333,12 @@ class ArticleControllerTest extends ControllerTest {
 
     @Test
     void 게시글_제목_내용_검색_문서화() throws Exception {
-        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
-                new AuthorDto("작성자1", "작성자1 이미지 url"),
-                "내용", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
-        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목", List.of("SPRING"),
-                new AuthorDto("작성자2", "작성자2 이미지 url"),
-                "내용", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
+        ArticlePreviewDto articlePreviewResponse1 = new ArticlePreviewDto(
+                1L, "제목", List.of("TAG"), new AuthorDto("작성자1", "작성자1 이미지 url"), "내용",
+                Category.QUESTION.getValue(), 3L, 2L, 0L, false, LocalDateTime.now());
+        ArticlePreviewDto articlePreviewResponse2 = new ArticlePreviewDto(
+                2L, "제목", List.of("TAG"), new AuthorDto("작성자2", "작성자2 이미지 url"), "내용",
+                Category.DISCUSSION.getValue(), 10L, 5L, 0L, false, LocalDateTime.now());
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 
@@ -397,9 +390,9 @@ class ArticleControllerTest extends ControllerTest {
 
     @Test
     void 게시글_작성자이름_검색_문서화() throws Exception {
-        ArticlePreviewResponse articlePreviewResponse = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
+        ArticlePreviewDto articlePreviewResponse = new ArticlePreviewDto(1L, "제목", List.of("SPRING"),
                 new AuthorDto("작성자", "작성자1 이미지 url"),
-                "내용", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
+                "내용", Category.QUESTION.getValue(), 3L, 2L, 0L, false, LocalDateTime.now());
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse), false);
 
@@ -451,13 +444,13 @@ class ArticleControllerTest extends ControllerTest {
 
     @Test
     void 게시글_추천수_전체_조회_문서화() throws Exception {
-        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
+        ArticlePreviewDto articlePreviewResponse1 = new ArticlePreviewDto(1L, "제목", List.of("SPRING"),
                 new AuthorDto("기론", "프로필 이미지 url"),
-                "내용입니다", Category.QUESTION.getValue(), 3, 2, false, 2L, LocalDateTime.now());
+                "내용입니다", Category.QUESTION.getValue(), 3L, 2L, 2L, false, LocalDateTime.now());
 
-        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목2", List.of("SPRING"),
+        ArticlePreviewDto articlePreviewResponse2 = new ArticlePreviewDto(2L, "제목2", List.of("SPRING"),
                 new AuthorDto("기론2", "프로필2 이미지 url"),
-                "내용입니다22", Category.DISCUSSION.getValue(), 10, 5, false, 1L, LocalDateTime.now());
+                "내용입니다22", Category.DISCUSSION.getValue(), 10L, 5L, 1L, false, LocalDateTime.now());
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 
@@ -514,13 +507,13 @@ class ArticleControllerTest extends ControllerTest {
     void 해시태그로_게시글_조회_문서화() throws Exception {
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
 
-        ArticlePreviewResponse articlePreviewResponse1 = new ArticlePreviewResponse(1L, "제목", List.of("SPRING"),
+        ArticlePreviewDto articlePreviewResponse1 = new ArticlePreviewDto(1L, "제목", List.of("SPRING"),
                 new AuthorDto("작성자1", "작성자1 이미지 url"),
-                "내용", Category.QUESTION.getValue(), 3, 2, false, 0L, LocalDateTime.now());
-        ArticlePreviewResponse articlePreviewResponse2 = new ArticlePreviewResponse(2L, "제목",
+                "내용", Category.QUESTION.getValue(), 3L, 2L, 0L, false, LocalDateTime.now());
+        ArticlePreviewDto articlePreviewResponse2 = new ArticlePreviewDto(2L, "제목",
                 List.of("SPRING", "JAVA"),
                 new AuthorDto("작성자2", "작성자2 이미지 url"),
-                "내용", Category.DISCUSSION.getValue(), 10, 5, false, 0L, LocalDateTime.now());
+                "내용", Category.DISCUSSION.getValue(), 10L, 5L, 0L, false, LocalDateTime.now());
         ArticlePageResponse response = new ArticlePageResponse(
                 List.of(articlePreviewResponse1, articlePreviewResponse2), false);
 

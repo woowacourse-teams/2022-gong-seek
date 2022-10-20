@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
@@ -28,17 +29,18 @@ export const LogoImage = styled.img`
 `;
 
 export const NavigateLink = styled(Link)`
-	border: 3px solid ${({ theme }) => theme.colors.PURPLE_500};
-
 	text-decoration: none;
 	font-weight: 600;
 
-	padding: ${({ theme }) => theme.size.SIZE_010} ${({ theme }) => theme.size.SIZE_024};
-	margin-top: ${({ theme }) => theme.size.SIZE_030};
+	${({ theme }) => css`
+		border: ${theme.size.SIZE_003} solid ${theme.colors.PURPLE_500};
+		padding: ${theme.size.SIZE_010} ${theme.size.SIZE_024};
+		margin-top: ${theme.size.SIZE_030};
 
-	&:hover,
-	&:active {
-		color: white;
-		background-color: ${({ theme }) => theme.colors.PURPLE_500};
-	}
+		&:hover,
+		&:active {
+			color: ${theme.colors.WHITE};
+			background-color: ${theme.colors.PURPLE_500};
+		}
+	`}
 `;

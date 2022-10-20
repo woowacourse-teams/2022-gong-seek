@@ -74,11 +74,14 @@ class CommentServiceTest extends IntegrationTest {
 
         commentService.save(member, article.getId(), request);
         List<CommentResponse> savedComments = commentService.getAllByArticleId(member, article.getId()).getComments();
+        CommentResponse firstCommentResponse = savedComments.get(0);
+        Article foundArticle = articleRepository.findById(article.getId()).get();
 
         assertAll(
                 () -> assertThat(savedComments).hasSize(1),
-                () -> assertThat(savedComments.get(0).getAuthor().getName()).isEqualTo(this.member.getName()),
-                () -> assertThat(savedComments.get(0).getContent()).isEqualTo(request.getContent())
+                () -> assertThat(firstCommentResponse.getAuthor().getName()).isEqualTo(this.member.getName()),
+                () -> assertThat(firstCommentResponse.getContent()).isEqualTo(request.getContent()),
+                () -> assertThat(foundArticle.getCommentCount()).isEqualTo(1)
         );
     }
 
@@ -89,11 +92,14 @@ class CommentServiceTest extends IntegrationTest {
 
         commentService.save(member, article.getId(), request);
         List<CommentResponse> savedComments = commentService.getAllByArticleId(member, article.getId()).getComments();
+        CommentResponse firstCommentResponse = savedComments.get(0);
+        Article foundArticle = articleRepository.findById(article.getId()).get();
 
         assertAll(
                 () -> assertThat(savedComments).hasSize(1),
-                () -> assertThat(savedComments.get(0).getAuthor().getName()).isEqualTo("익명"),
-                () -> assertThat(savedComments.get(0).getContent()).isEqualTo(request.getContent())
+                () -> assertThat(firstCommentResponse.getAuthor().getName()).isEqualTo("익명"),
+                () -> assertThat(firstCommentResponse.getContent()).isEqualTo(request.getContent()),
+                () -> assertThat(foundArticle.getCommentCount()).isEqualTo(1)
         );
     }
 
@@ -161,7 +167,7 @@ class CommentServiceTest extends IntegrationTest {
                 () -> assertThat(savedComments.get(0).getAuthor())
                         .usingRecursiveComparison()
                         .isEqualTo(new MemberDto(ANONYMOUS_NAME, ANONYMOUS_AVATAR_URL)),
-                () -> assertThat(savedComments.get(0).isAuthor()).isTrue()
+                () -> assertThat(savedComments.get(0).getIsAuthor()).isTrue()
         );
     }
 
@@ -175,7 +181,7 @@ class CommentServiceTest extends IntegrationTest {
         List<CommentResponse> savedComments = commentService.getAllByArticleId(new LoginMember(newMember.getId()),
                 article.getId()).getComments();
         List<CommentResponse> authorizedComments = savedComments.stream()
-                .filter(CommentResponse::isAuthor)
+                .filter(CommentResponse::getIsAuthor)
                 .collect(Collectors.toList());
 
         assertAll(
@@ -192,7 +198,7 @@ class CommentServiceTest extends IntegrationTest {
         List<CommentResponse> savedComments = commentService.getAllByArticleId(new GuestMember(),
                 article.getId()).getComments();
         List<CommentResponse> authorizedComments = savedComments.stream()
-                .filter(CommentResponse::isAuthor)
+                .filter(CommentResponse::getIsAuthor)
                 .collect(Collectors.toList());
 
         assertAll(
@@ -290,8 +296,12 @@ class CommentServiceTest extends IntegrationTest {
         commentService.delete(appMember, comment.getId());
 
         List<CommentResponse> responses = commentService.getAllByArticleId(appMember, article.getId()).getComments();
+        Article foundArticle = articleRepository.findById(this.article.getId()).get();
 
-        assertThat(responses).isEmpty();
+        assertAll(
+                () -> assertThat(responses).isEmpty(),
+                () -> assertThat(foundArticle.getCommentCount()).isEqualTo(0)
+        );
     }
 
     @Test
@@ -302,8 +312,12 @@ class CommentServiceTest extends IntegrationTest {
         commentService.delete(appMember, comment.getId());
 
         List<CommentResponse> responses = commentService.getAllByArticleId(appMember, article.getId()).getComments();
+        Article foundArticle = articleRepository.findById(this.article.getId()).get();
 
-        assertThat(responses).isEmpty();
+        assertAll(
+                () -> assertThat(responses).isEmpty(),
+                () -> assertThat(foundArticle.getCommentCount()).isEqualTo(0)
+        );
     }
 
     @Test

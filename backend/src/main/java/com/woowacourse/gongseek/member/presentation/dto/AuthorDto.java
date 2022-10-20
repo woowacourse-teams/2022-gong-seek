@@ -15,7 +15,6 @@ public class AuthorDto {
     private String avatarUrl;
 
     public AuthorDto(Member member) {
-        this.name = member.getName();
-        this.avatarUrl = member.getAvatarUrl();
+        this(member.getName(), member.getAvatarUrl());
     }
 }
