@@ -1,4 +1,4 @@
-import { AiOutlineSearch } from 'react-icons/ai';
+import { AiOutlineSearch, AiOutlineDown } from 'react-icons/ai';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -119,7 +119,7 @@ export const OpenButton = styled(AiOutlineDown)`
 	`}
 `;
 
-export const CloseButton = styled(AiOutlineUp)`
+export const CloseButton = styled(AiOutlineDown)`
 	border: none;
 	background-color: transparent;
 
