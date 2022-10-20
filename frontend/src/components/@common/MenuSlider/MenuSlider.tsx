@@ -18,7 +18,7 @@ const MenuSlider = () => {
 		if (confirm('정말로 로그아웃 하시겠습니까?')) {
 			mutateDeleteRefreshToken();
 			localStorage.removeItem(ACCESSTOKEN_KEY);
-			navigate(URL.HOME);
+			window.location.href = URL.HOME;
 		}
 	};
 
