@@ -38,7 +38,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -751,7 +750,7 @@ public class ArticleServiceTest extends IntegrationTest {
 
         LoginMember loginMember = new LoginMember(member.getId());
         voteService.create(loginMember, article.getId(),
-                new VoteCreateRequest(Set.of("A번", "B번", "C번"), LocalDateTime.now().plusDays(4)));
+                new VoteCreateRequest(List.of("A번", "B번", "C번"), LocalDateTime.now().plusDays(4)));
 
         voteService.doVote(article.getId(), loginMember, new SelectVoteItemIdRequest(1L));
         articleService.delete(loginMember, article.getId());

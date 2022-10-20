@@ -46,7 +46,6 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -1000,7 +999,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticleIdResponse articleIdResponse = 기명으로_게시글을_등록한다(tokenResponse, Category.DISCUSSION).as(
                 ArticleIdResponse.class);
         투표를_생성한다(tokenResponse, articleIdResponse.getId(),
-                new VoteCreateRequest(Set.of("1번 주제", "2번 주제"), LocalDateTime.now().plusDays(7)));
+                new VoteCreateRequest(List.of("1번 주제", "2번 주제"), LocalDateTime.now().plusDays(7)));
 
         // when
         ExtractableResponse<Response> response = 로그인_후_게시글을_삭제한다(tokenResponse, articleIdResponse);
@@ -1016,7 +1015,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticleIdResponse articleIdResponse = 기명으로_게시글을_등록한다(tokenResponse, Category.DISCUSSION).as(
                 ArticleIdResponse.class);
         투표를_생성한다(tokenResponse, articleIdResponse.getId(),
-                new VoteCreateRequest(Set.of("1번 주제", "2번 주제"), LocalDateTime.now().plusDays(7)));
+                new VoteCreateRequest(List.of("1번 주제", "2번 주제"), LocalDateTime.now().plusDays(7)));
         투표를_한다(tokenResponse, articleIdResponse.getId(), new SelectVoteItemIdRequest(1L));
         // when
         ExtractableResponse<Response> response = 로그인_후_게시글을_삭제한다(tokenResponse, articleIdResponse);
