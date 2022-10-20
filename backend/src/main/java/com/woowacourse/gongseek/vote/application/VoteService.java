@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -101,6 +104,7 @@ public class VoteService {
         return voteHistory.getVoteItem().getId();
     }
 
+    @Retryable(value = ObjectOptimisticLockingFailureException.class, backoff = @Backoff(100))
     public void doVote(Long articleId, AppMember appMember, SelectVoteItemIdRequest selectVoteItemIdRequest) {
         Vote vote = getVoteByArticleId(articleId);
         Member member = getMember(appMember);
