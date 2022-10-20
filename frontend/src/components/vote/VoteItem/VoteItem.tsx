@@ -13,7 +13,7 @@ export interface VoteItemProps {
 	totalVotes: number;
 	colorIdx: number;
 	articleId: string;
-	isExpired: boolean;
+	expired: boolean;
 	isVoted: boolean;
 }
 
@@ -24,7 +24,7 @@ const VoteItem = ({
 	totalVotes,
 	colorIdx,
 	articleId,
-	isExpired,
+	expired,
 	isVoted,
 }: VoteItemProps) => {
 	const progressivePercent = Math.floor((itemVotes / totalVotes) * 100) || 0;
@@ -40,10 +40,10 @@ const VoteItem = ({
 					onChange={() => {
 						handleChangeVoteSelectButton(articleId, voteItemId);
 					}}
-					disabled={isExpired}
+					disabled={expired}
 					checked={isVoted}
 				/>
-				<S.Title isVoted={isVoted}>
+				<S.Title isVoted={isVoted} expired={expired}>
 					<p>{title}</p>
 					<S.ItemVotes>{`(${itemVotes}표)`}</S.ItemVotes>
 				</S.Title>

@@ -6,15 +6,19 @@ export const RadioButton = styled.input`
 	margin: 0;
 `;
 
-export const Title = styled.h2<{ isVoted: boolean }>`
+export const Title = styled.h2<{ isVoted: boolean; expired: boolean }>`
 	display: flex;
 	align-items: center;
 
-	${({ theme, isVoted }) => css`
+	${({ theme, isVoted, expired }) => css`
 		gap: ${theme.size.SIZE_004};
 		font-size: ${theme.size.SIZE_014};
 
-		color: ${isVoted && `${theme.colors.BLUE_500}`};
+		color: ${isVoted
+			? `${theme.colors.BLUE_500}`
+			: expired
+			? theme.colors.BLACK_300
+			: theme.colors.BLACK_600};
 	`}
 `;
 
