@@ -1,3 +1,4 @@
+import { registerVoteItems } from '@/api/vote';
 import Vote from '@/components/vote/Vote/Vote';
 import { VoteHandler } from '@/mock/vote';
 import { Meta, Story } from '@storybook/react';
@@ -14,12 +15,20 @@ export default {
 	],
 } as Meta;
 
-const Template: Story<{ articleId: string }> = (args) => <Vote {...args} />;
+const StoryVote = ({ articleId }: { articleId: string }) => {
+	const items = ['투표 1', '투표 2', '투표 3'];
+	registerVoteItems({ items, articleId: '0', expiryDate: '2022-10-21T10:10:00' });
+
+	return <Vote articleId={articleId} />;
+};
+
+const Template: Story<{ articleId: string }> = (args) => <StoryVote {...args} />;
 
 export const DefaultVote = Template.bind({});
 DefaultVote.args = {
-	articleId: '1',
+	articleId: '0',
 };
+
 DefaultVote.parameters = {
 	msw: {
 		handlers: VoteHandler,

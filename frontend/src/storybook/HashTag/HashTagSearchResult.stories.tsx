@@ -1,6 +1,9 @@
+import { BrowserRouter } from 'react-router-dom';
+
 import HashTagSearchResult, {
 	HashTagSearchResultProps,
 } from '@/components/hashTag/HashTagSearchResult/HashTagSearchResult';
+import { HashTagHandler, SearchHandler } from '@/mock';
 import { Meta, Story } from '@storybook/react';
 
 export default {
@@ -8,9 +11,11 @@ export default {
 	component: HashTagSearchResult,
 	decorators: [
 		(Story) => (
-			<div style={{ width: '320px' }}>
-				<Story />
-			</div>
+			<BrowserRouter>
+				<div style={{ width: '320px' }}>
+					<Story />
+				</div>
+			</BrowserRouter>
 		),
 	],
 } as Meta;
@@ -20,4 +25,9 @@ const Template: Story<HashTagSearchResultProps> = (args) => <HashTagSearchResult
 export const DefaultHashTagResult = Template.bind({});
 DefaultHashTagResult.args = {
 	hashTags: ['12', '23', '33'],
+};
+DefaultHashTagResult.parameters = {
+	msw: {
+		handlers: SearchHandler,
+	},
 };

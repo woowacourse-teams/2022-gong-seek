@@ -17,5 +17,5 @@ const Template: Story<{ initContent: string }> = (args) => <ToastUiEditor {...ar
 
 export const DefaultEditor = Template.bind({});
 DefaultEditor.args = {
-	initContent: 'dwdw',
+	initContent: '토스트 에디터입니다.',
 };
