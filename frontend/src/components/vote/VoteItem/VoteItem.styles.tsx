@@ -6,9 +6,11 @@ export const RadioButton = styled.input`
 	margin: 0;
 `;
 
-export const Title = styled.h2<{ isVoted: boolean; expired: boolean }>`
+export const Title = styled.div<{ isVoted: boolean; expired: boolean }>`
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
+	width: 100%;
 
 	${({ theme, isVoted, expired }) => css`
 		gap: ${theme.size.SIZE_004};
@@ -22,9 +24,16 @@ export const Title = styled.h2<{ isVoted: boolean; expired: boolean }>`
 	`}
 `;
 
+export const VoteName = styled.span`
+	width: 80%;
+	white-space: normal;
+	word-break: break-all;
+	line-height: ${({ theme }) => theme.size.SIZE_022};
+`;
+
 export const TitleBox = styled.div`
 	display: flex;
-
+	width: 100%;
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_014};
 `;
@@ -82,6 +91,9 @@ export const Container = styled.div`
 `;
 
 export const ItemVotes = styled.p`
+	width: fit-content;
+	display: block;
+	white-space: nowrap;
 	font-size: ${({ theme }) => theme.size.SIZE_010};
 
 	color: ${({ theme }) => theme.colors.PURPLE_400};
