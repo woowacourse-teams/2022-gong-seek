@@ -25,7 +25,7 @@ export const VoteHandler = [
 						content: item,
 						amount: 0,
 					})),
-					voteItemId: null,
+					votedItemId: null,
 					isExpired: false,
 				}),
 			),

@@ -4,7 +4,7 @@ import usePostVoteItem from '@/hooks/vote/usePostVoteItem';
 import { theme } from '@/styles/Theme';
 import { convertIdxToVoteColorKey } from '@/utils/converter';
 
-const VOTE_ITEM_PROGRESSIVE_TIEM = 1;
+const VOTE_ITEM_PROGRESSIVE_TIEM = 0.3;
 
 export interface VoteItemProps {
 	voteItemId: number;
@@ -27,7 +27,7 @@ const VoteItem = ({
 	isExpired,
 	isVoted,
 }: VoteItemProps) => {
-	const progressivePercent = Math.floor((itemVotes / totalVotes) * 100);
+	const progressivePercent = Math.floor((itemVotes / totalVotes) * 100) || 0;
 	const { handleChangeVoteSelectButton } = usePostVoteItem(articleId);
 	const gradientColor = theme.voteGradientColors[convertIdxToVoteColorKey(colorIdx)];
 
