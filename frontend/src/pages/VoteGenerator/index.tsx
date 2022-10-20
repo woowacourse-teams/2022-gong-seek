@@ -20,7 +20,7 @@ const VoteGenerator = () => {
 	const { showSnackBar } = useSnackBar();
 	const navigate = useNavigate();
 
-	const onSubmitAddOption = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmitAddOptionForm = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (input.length === 0) {
 			showSnackBar('입력은 공백이 될수 없습니다.');
@@ -34,7 +34,7 @@ const VoteGenerator = () => {
 		setInput('');
 	};
 
-	const onSubmitVoteForm = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmitVoteGeneratorContentForm = (e: React.FormEvent) => {
 		e.preventDefault();
 
 		if (!validatedVoteItemsQuantity(options)) {
@@ -48,7 +48,7 @@ const VoteGenerator = () => {
 		navigate(URL.VOTE_DEADLINE_GENERATOR, { state: { articleId, items: options } });
 	};
 
-	const onClickDeleteOptionButton = (id: number) => {
+	const handleClickDeleteAddOption = (id: number) => {
 		const filteredOptions = options.filter((_, idx) => idx !== id);
 		setOptions(filteredOptions);
 	};
@@ -67,7 +67,7 @@ const VoteGenerator = () => {
 
 	return (
 		<S.Container>
-			<S.AddOptionForm onSubmit={onSubmitAddOption}>
+			<S.AddOptionForm onSubmit={handleSubmitAddOptionForm}>
 				<S.OptionInputBox>
 					<Input
 						width="70%"
@@ -97,17 +97,17 @@ const VoteGenerator = () => {
 				</S.InputValidMessage>
 			</S.AddOptionForm>
 
-			<S.ContentForm onSubmit={onSubmitVoteForm}>
+			<S.ContentForm onSubmit={handleSubmitVoteGeneratorContentForm}>
 				<S.RegisteredOptionTitle>등록된 항목</S.RegisteredOptionTitle>
 
 				<S.Content>
 					{options.map((option, idx) => (
-						<AddedOption key={idx} onClick={() => onClickDeleteOptionButton(idx)}>
+						<AddedOption key={idx} onClick={() => handleClickDeleteAddOption(idx)}>
 							{option}
 						</AddedOption>
 					))}
 				</S.Content>
-				<S.SubmitButton disabled={!validatedVoteItemsQuantity(options)}>등록하기</S.SubmitButton>
+				<S.SubmitButton>등록하기</S.SubmitButton>
 			</S.ContentForm>
 		</S.Container>
 	);

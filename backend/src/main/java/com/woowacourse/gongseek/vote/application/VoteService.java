@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,8 +86,7 @@ public class VoteService {
         Vote foundVote = getVoteByArticleId(articleId);
         List<VoteItem> voteItems = voteItemRepository.findAllByVoteArticleId(articleId);
 
-        VoteHistory voteHistory = voteHistoryRepository.findByVoteIdAndMemberId(foundVote.getId(),
-                        appMember.getPayload())
+        VoteHistory voteHistory = voteHistoryRepository.findByVoteItemsAndMemberId(voteItems, appMember.getPayload())
                 .orElse(null);
         return VoteResponse.of(foundVote.getArticle().getId(), voteItems, getVotedItemIdOrNull(voteHistory),
                 foundVote.isExpired());
@@ -102,21 +104,22 @@ public class VoteService {
         return voteHistory.getVoteItem().getId();
     }
 
+    @Retryable(value = ObjectOptimisticLockingFailureException.class, backoff = @Backoff(100))
     public void doVote(Long articleId, AppMember appMember, SelectVoteItemIdRequest selectVoteItemIdRequest) {
         Vote vote = getVoteByArticleId(articleId);
         Member member = getMember(appMember);
-        VoteItem selectedVoteItem = getVoteItem(selectVoteItemIdRequest.getVoteItemId());
+        VoteItem voteItem = getVoteItem(selectVoteItemIdRequest.getVoteItemId());
 
-        voteHistoryRepository.findByVoteIdAndMemberId(vote.getId(),
-                member.getId()).ifPresentOrElse(
-                voteHistory -> voteHistory.changeVoteItem(selectedVoteItem),
-                () -> saveVoteHistory(member, selectedVoteItem)
-        );
+        voteHistoryRepository.findByVoteIdInAndMemberId(vote.getId(), member.getId())
+                .ifPresentOrElse(
+                        voteHistory -> voteHistory.changeVoteItem(voteItem),
+                        () -> saveVoteHistory(member, voteItem)
+                );
     }
 
-    private void saveVoteHistory(Member member, VoteItem selectedVoteItem) {
-        selectedVoteItem.increaseAmount();
-        voteHistoryRepository.save(new VoteHistory(member, selectedVoteItem));
+    private void saveVoteHistory(Member member, VoteItem voteItem) {
+        voteItem.increaseAmount();
+        voteHistoryRepository.save(new VoteHistory(member, voteItem));
     }
 
     private VoteItem getVoteItem(Long voteItemId) {

@@ -14,10 +14,9 @@ export const ArticleItemTitle = styled.h2`
 	white-space: pre-wrap;
 	line-height: 2;
 	word-break: break-all;
-
 	&:hover,
 	&:active {
-		text-decoration: underline;
+		color: ${({ theme }) => theme.colors.BLACK_600};
 	}
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
@@ -26,11 +25,19 @@ export const ArticleItemTitle = styled.h2`
 `;
 
 export const Views = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: ${({ theme }) => theme.size.SIZE_006};
 	font-size: ${({ theme }) => theme.size.SIZE_010};
 	font-weight: 400;
 `;
 
 export const CommentCount = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: ${({ theme }) => theme.size.SIZE_006};
 	font-size: ${({ theme }) => theme.size.SIZE_010};
 	font-weight: 400;
 `;
@@ -45,6 +52,7 @@ export const ArticleInfoBox = styled.div`
 
 export const ArticleInfoSubBox = styled.div`
 	display: flex;
+	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_010};
 `;
 
@@ -60,9 +68,16 @@ export const UserProfile = styled.img`
 
 export const ProfileBox = styled.div`
 	display: flex;
-
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_012};
+	max-width: 80%;
+`;
+
+export const UserName = styled.span`
+	overflow: hidden;
+	width: 80%;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 `;
 
 export const FooterBox = styled.div`

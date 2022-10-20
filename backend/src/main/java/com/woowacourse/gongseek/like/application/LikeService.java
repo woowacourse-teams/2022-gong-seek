@@ -50,6 +50,7 @@ public class LikeService {
     private void saveByExistsLike(Member member, Article article) {
         if (!likeRepository.existsByArticleIdAndMemberId(article.getId(), member.getId())) {
             likeRepository.save(new Like(article, member));
+            article.addLikeCount();
         }
     }
 
@@ -58,6 +59,13 @@ public class LikeService {
         Member member = getMember(appMember);
         Article article = getArticle(articleId);
 
-        likeRepository.deleteByArticleAndMember(article, member);
+        deleteByExistsLike(member, article);
+    }
+
+    private void deleteByExistsLike(Member member, Article article) {
+        if (likeRepository.existsByArticleIdAndMemberId(article.getId(), member.getId())) {
+            likeRepository.deleteByArticleAndMember(article, member);
+            article.minusLikeCount();
+        }
     }
 }

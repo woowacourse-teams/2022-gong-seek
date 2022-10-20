@@ -77,6 +77,10 @@ export const convertGithubAvatarUrlForResize = (avatarUrl: string) => {
 		return avatarUrl;
 	}
 
+	if (typeof global.process === 'undefined') {
+		return avatarUrl;
+	}
+
 	return `${avatarUrl}&size=100`;
 };
 

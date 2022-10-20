@@ -6,19 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.article.domain.Content;
-import com.woowacourse.gongseek.article.domain.TempArticle;
-import com.woowacourse.gongseek.article.domain.TempTags;
-import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
-import com.woowacourse.gongseek.article.domain.repository.ArticleRepositoryCustom;
-import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
@@ -44,7 +38,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,12 +58,6 @@ public class ArticleServiceTest extends IntegrationTest {
 
     @Autowired
     private ArticleRepository articleRepository;
-
-    @Autowired
-    private ArticleRepositoryCustom articleRepositoryCustom;
-
-    @Autowired
-    private PagingArticleRepository pagingArticleRepository;
 
     @Autowired
     private TempArticleRepository tempArticleRepository;
@@ -96,11 +83,11 @@ public class ArticleServiceTest extends IntegrationTest {
     @Autowired
     private DatabaseCleaner databaseCleaner;
 
-    private Member member;
+    private final Member member = new Member("slo", "hanull", "avatar.com");
 
     @BeforeEach
     void setUp() {
-        member = memberRepository.save(new Member("slo", "hanull", "avatar.com"));
+        memberRepository.save(member);
     }
 
     @AfterEach
@@ -114,7 +101,7 @@ public class ArticleServiceTest extends IntegrationTest {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
 
-        ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleIdResponse articleIdResponse = articleService.create(new LoginMember(member.getId()), articleRequest);
         Article foundArticle = articleRepository.findById(articleIdResponse.getId()).get();
 
         assertAll(
@@ -128,7 +115,7 @@ public class ArticleServiceTest extends IntegrationTest {
     void 회원이_익명_게시글을_저장한다() {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true);
-        ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleIdResponse articleIdResponse = articleService.create(new LoginMember(member.getId()), articleRequest);
         Article foundArticle = articleRepository.findById(articleIdResponse.getId()).get();
 
         assertAll(
@@ -142,7 +129,7 @@ public class ArticleServiceTest extends IntegrationTest {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring", "spring"), true);
 
-        assertThatThrownBy(() -> articleService.save(new LoginMember(member.getId()), articleRequest))
+        assertThatThrownBy(() -> articleService.create(new LoginMember(member.getId()), articleRequest))
                 .isInstanceOf(DuplicateTagException.class)
                 .hasMessage("해시태그 이름은 중복될 수 없습니다.");
     }
@@ -152,7 +139,7 @@ public class ArticleServiceTest extends IntegrationTest {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("aa", "bb", "cc", "dd", "ee", "ff"), true);
 
-        assertThatThrownBy(() -> articleService.save(new LoginMember(member.getId()), articleRequest))
+        assertThatThrownBy(() -> articleService.create(new LoginMember(member.getId()), articleRequest))
                 .isInstanceOf(ExceededTagSizeException.class)
                 .hasMessage("해시태그는 한 게시글 당 최대 5개입니다.");
     }
@@ -162,7 +149,7 @@ public class ArticleServiceTest extends IntegrationTest {
     void 회원이_게시글에_해시태그를_달지_않고_저장한다() {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of(), true);
-        ArticleIdResponse articleIdResponse = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleIdResponse articleIdResponse = articleService.create(new LoginMember(member.getId()), articleRequest);
         Article foundArticle = articleRepository.findById(articleIdResponse.getId()).get();
 
         assertAll(
@@ -177,8 +164,8 @@ public class ArticleServiceTest extends IntegrationTest {
                 List.of("Spring"), true);
         ArticleRequest secondArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true);
-        articleService.save(new LoginMember(member.getId()), firstArticleRequest);
-        articleService.save(new LoginMember(member.getId()), secondArticleRequest);
+        articleService.create(new LoginMember(member.getId()), firstArticleRequest);
+        articleService.create(new LoginMember(member.getId()), secondArticleRequest);
 
         List<Tag> tags = tagRepository.findAll();
         assertAll(
@@ -192,7 +179,7 @@ public class ArticleServiceTest extends IntegrationTest {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
 
-        assertThatThrownBy(() -> articleService.save(new GuestMember(), articleRequest))
+        assertThatThrownBy(() -> articleService.create(new GuestMember(), articleRequest))
                 .isExactlyInstanceOf(NotMemberException.class)
                 .hasMessage("회원이 아니므로 권한이 없습니다.");
     }
@@ -201,7 +188,7 @@ public class ArticleServiceTest extends IntegrationTest {
     void 작성자인_회원이_기명_게시글을_조회한다() {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
-        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(new LoginMember(member.getId()), articleRequest);
 
         ArticleResponse articleResponse = articleService.getOne(new LoginMember(member.getId()), savedArticle.getId());
 
@@ -219,7 +206,7 @@ public class ArticleServiceTest extends IntegrationTest {
     void 작성자인_회원이_익명_게시글을_조회한다() {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true);
-        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(new LoginMember(member.getId()), articleRequest);
 
         ArticleResponse articleResponse = articleService.getOne(new LoginMember(member.getId()), savedArticle.getId());
 
@@ -238,7 +225,7 @@ public class ArticleServiceTest extends IntegrationTest {
         Member notAuthorMember = memberRepository.save(new Member("judy", "juriring", "avatar.com"));
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
-        ArticleIdResponse savedArticle = articleService.save(new LoginMember(this.member.getId()), articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(new LoginMember(this.member.getId()), articleRequest);
 
         ArticleResponse articleResponse = articleService.getOne(new LoginMember(notAuthorMember.getId()),
                 savedArticle.getId());
@@ -258,7 +245,8 @@ public class ArticleServiceTest extends IntegrationTest {
         Member notAuthorMember = memberRepository.save(new Member("judy", "juriring", "avatar.com"));
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true);
-        ArticleIdResponse savedArticle = articleService.save(new LoginMember(notAuthorMember.getId()), articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(new LoginMember(notAuthorMember.getId()),
+                articleRequest);
 
         ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
 
@@ -276,7 +264,7 @@ public class ArticleServiceTest extends IntegrationTest {
     void 비회원이_기명_게시글을_조회한다() {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
-        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(new LoginMember(member.getId()), articleRequest);
 
         ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
 
@@ -294,7 +282,7 @@ public class ArticleServiceTest extends IntegrationTest {
     void 비회원이_익명_게시글을_조회한다() {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true);
-        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(new LoginMember(member.getId()), articleRequest);
 
         ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
 
@@ -312,7 +300,7 @@ public class ArticleServiceTest extends IntegrationTest {
     void 게시글을_조회하면_조회수가_올라간다() {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
-        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(new LoginMember(member.getId()), articleRequest);
 
         articleService.getOne(new GuestMember(), savedArticle.getId());
         ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
@@ -331,7 +319,7 @@ public class ArticleServiceTest extends IntegrationTest {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
-        ArticleIdResponse savedArticle = articleService.save(loginMember, articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(loginMember, articleRequest);
 
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
         articleService.update(loginMember, request, savedArticle.getId());
@@ -352,7 +340,7 @@ public class ArticleServiceTest extends IntegrationTest {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true);
-        ArticleIdResponse savedArticle = articleService.save(loginMember, articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(loginMember, articleRequest);
 
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
         articleService.update(loginMember, request, savedArticle.getId());
@@ -373,7 +361,7 @@ public class ArticleServiceTest extends IntegrationTest {
         Member noAuthor = memberRepository.save(new Member("작성자아닌사람이름", "giithub", "www.avatar.cax"));
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
-        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(new LoginMember(member.getId()), articleRequest);
         AppMember noAuthorMember = new LoginMember(noAuthor.getId());
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
 
@@ -387,7 +375,7 @@ public class ArticleServiceTest extends IntegrationTest {
         AppMember guestMember = new GuestMember();
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
-        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(new LoginMember(member.getId()), articleRequest);
         ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
 
         assertThatThrownBy(() -> articleService.update(guestMember, request, savedArticle.getId()))
@@ -402,8 +390,8 @@ public class ArticleServiceTest extends IntegrationTest {
                 List.of("Spring", "Java"), false);
         ArticleRequest secondArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Java"), false);
-        ArticleIdResponse firstSavedArticle = articleService.save(loginMember, firstArticleRequest);
-        articleService.save(loginMember, secondArticleRequest);
+        ArticleIdResponse firstSavedArticle = articleService.create(loginMember, firstArticleRequest);
+        articleService.create(loginMember, secondArticleRequest);
 
         articleService.update(loginMember, new ArticleUpdateRequest("하이", "하이", List.of("JAVA", "backend")),
                 firstSavedArticle.getId());
@@ -427,7 +415,7 @@ public class ArticleServiceTest extends IntegrationTest {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
-        ArticleIdResponse savedArticle = articleService.save(loginMember, articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(loginMember, articleRequest);
 
         articleService.delete(loginMember, savedArticle.getId());
 
@@ -441,7 +429,7 @@ public class ArticleServiceTest extends IntegrationTest {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true);
-        ArticleIdResponse savedArticle = articleService.save(loginMember, articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(loginMember, articleRequest);
 
         articleService.delete(loginMember, savedArticle.getId());
 
@@ -455,7 +443,7 @@ public class ArticleServiceTest extends IntegrationTest {
         Member noAuthor = memberRepository.save(new Member("작성자아닌사람이름", "giithub", "www.avatar.cax"));
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
-        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(new LoginMember(member.getId()), articleRequest);
         AppMember noAuthorMember = new LoginMember(noAuthor.getId());
 
         assertThatThrownBy(() -> articleService.delete(noAuthorMember, savedArticle.getId()))
@@ -468,7 +456,7 @@ public class ArticleServiceTest extends IntegrationTest {
         AppMember guestMember = new GuestMember();
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
-        ArticleIdResponse savedArticle = articleService.save(new LoginMember(member.getId()), articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(new LoginMember(member.getId()), articleRequest);
 
         assertThatThrownBy(() -> articleService.delete(guestMember, savedArticle.getId()))
                 .isExactlyInstanceOf(NotMemberException.class)
@@ -482,8 +470,8 @@ public class ArticleServiceTest extends IntegrationTest {
                 List.of("Spring", "Java"), false);
         ArticleRequest secondArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Java"), false);
-        ArticleIdResponse firstSavedArticle = articleService.save(loginMember, firstArticleRequest);
-        articleService.save(loginMember, secondArticleRequest);
+        ArticleIdResponse firstSavedArticle = articleService.create(loginMember, firstArticleRequest);
+        articleService.create(loginMember, secondArticleRequest);
 
         articleService.delete(loginMember, firstSavedArticle.getId());
 
@@ -508,10 +496,10 @@ public class ArticleServiceTest extends IntegrationTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(null, 0, Category.QUESTION.getValue(), "latest",
+        ArticlePageResponse response = articleService.getAll(null, 0L, Category.QUESTION.getValue(), "latest",
                 PageRequest.ofSize(10),
                 loginMember);
-        List<ArticlePreviewResponse> responses = response.getArticles();
+        List<ArticlePreviewDto> responses = response.getArticles();
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
@@ -532,10 +520,10 @@ public class ArticleServiceTest extends IntegrationTest {
         }
         articleRepository.saveAll(articles);
 
-        ArticlePageResponse response = articleService.getAll(10L, 0, Category.QUESTION.getValue(), "latest",
+        ArticlePageResponse response = articleService.getAll(10L, 0L, Category.QUESTION.getValue(), "latest",
                 PageRequest.ofSize(10),
                 loginMember);
-        List<ArticlePreviewResponse> responses = response.getArticles();
+        List<ArticlePreviewDto> responses = response.getArticles();
 
         assertAll(
                 () -> assertThat(responses).hasSize(9),
@@ -546,8 +534,8 @@ public class ArticleServiceTest extends IntegrationTest {
 
     @ParameterizedTest
     @NullSource
-    @ValueSource(ints = {0})
-    void 페이지가_10개씩_조회된_후_더이상_조회할_페이지가_없으면_hasNext는_false가_된다(Integer cursorViews) {
+    @ValueSource(longs = {0L})
+    void 페이지가_10개씩_조회된_후_더이상_조회할_페이지가_없으면_hasNext는_false가_된다(Long cursorViews) {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), false);
@@ -561,7 +549,7 @@ public class ArticleServiceTest extends IntegrationTest {
 
         ArticlePageResponse response = articleService.getAll(null, cursorViews, Category.QUESTION.getValue(),
                 "latest", PageRequest.ofSize(10), loginMember);
-        List<ArticlePreviewResponse> responses = response.getArticles();
+        List<ArticlePreviewDto> responses = response.getArticles();
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
@@ -631,17 +619,17 @@ public class ArticleServiceTest extends IntegrationTest {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true);
         for (int i = 0; i < 5; i++) {
-            articleService.save(loginMember, articleRequest);
+            articleService.create(loginMember, articleRequest);
         }
         articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(), List.of("Spring"),
                 false);
         for (int i = 0; i < 5; i++) {
-            articleService.save(loginMember, articleRequest);
+            articleService.create(loginMember, articleRequest);
         }
         Member newMember = memberRepository.save(new Member("slow", "slow", "avatarUrl"));
         loginMember = new LoginMember(newMember.getId());
         for (int i = 0; i < 5; i++) {
-            articleService.save(loginMember, articleRequest);
+            articleService.create(loginMember, articleRequest);
         }
 
         ArticlePageResponse pageResponse = articleService.searchByAuthor(null, PageRequest.ofSize(15),
@@ -671,7 +659,7 @@ public class ArticleServiceTest extends IntegrationTest {
                 Pageable.ofSize(3), new LoginMember(member.getId()));
         List<Long> collect = articlePageResponse.getArticles()
                 .stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         assertAll(
@@ -687,7 +675,7 @@ public class ArticleServiceTest extends IntegrationTest {
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true);
         for (int i = 0; i < 15; i++) {
-            articleService.save(loginMember, articleRequest);
+            articleService.create(loginMember, articleRequest);
         }
 
         ArticlePageResponse pageResponse = articleService.searchByTag(null, PageRequest.ofSize(15), "spring",
@@ -720,7 +708,7 @@ public class ArticleServiceTest extends IntegrationTest {
                 Pageable.ofSize(2), new LoginMember(member.getId()));
         List<Long> collect = articlePageResponse.getArticles()
                 .stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         assertAll(
@@ -737,13 +725,13 @@ public class ArticleServiceTest extends IntegrationTest {
                 Category.QUESTION.getValue(),
                 List.of("Spring"), true);
         for (int i = 0; i < 5; i++) {
-            articleService.save(loginMember, firstArticleRequest);
+            articleService.create(loginMember, firstArticleRequest);
         }
         ArticleRequest secondArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!",
                 Category.QUESTION.getValue(),
                 List.of("java"), true);
         for (int i = 0; i < 5; i++) {
-            articleService.save(loginMember, secondArticleRequest);
+            articleService.create(loginMember, secondArticleRequest);
         }
 
         ArticlePageResponse pageResponse = articleService.searchByTag(5L, PageRequest.ofSize(2), "spring,java",
@@ -762,7 +750,7 @@ public class ArticleServiceTest extends IntegrationTest {
 
         LoginMember loginMember = new LoginMember(member.getId());
         voteService.create(loginMember, article.getId(),
-                new VoteCreateRequest(Set.of("A번", "B번", "C번"), LocalDateTime.now().plusDays(4)));
+                new VoteCreateRequest(List.of("A번", "B번", "C번"), LocalDateTime.now().plusDays(4)));
 
         voteService.doVote(article.getId(), loginMember, new SelectVoteItemIdRequest(1L));
         articleService.delete(loginMember, article.getId());
@@ -773,22 +761,14 @@ public class ArticleServiceTest extends IntegrationTest {
         );
     }
 
-    @Transactional
     @Test
-    void 게시글을_생성하면_임시_게시글은_삭제된다() {
-        final TempArticle tempArticle = tempArticleRepository.save(TempArticle.builder()
-                .title(new Title("title"))
-                .content(new Content("content"))
-                .category(Category.QUESTION)
-                .member(member)
-                .tempTags(new TempTags(List.of("spring")))
-                .isAnonymous(false)
-                .build());
-        final ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
-                List.of("Spring"), true, tempArticle.getId());
+    void 투표가_없는_토론게시글을_삭제한다() {
+        Article article = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
 
-        articleService.save(new LoginMember(member.getId()), articleRequest);
+        LoginMember loginMember = new LoginMember(member.getId());
+        articleService.delete(loginMember, article.getId());
 
-        assertThat(tempArticleRepository.existsById(tempArticle.getId())).isFalse();
+        assertThat(articleRepository.findById(article.getId())).isEmpty();
     }
 }

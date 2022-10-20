@@ -19,7 +19,7 @@ import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
@@ -36,7 +36,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 투표를_생성한다(
                 tokenResponse,
                 articleId,
-                new VoteCreateRequest(Set.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
+                new VoteCreateRequest(List.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
         );
         VoteCreateResponse voteCreateResponse = response.as(VoteCreateResponse.class);
 
@@ -55,7 +55,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 투표를_생성한다(
                 tokenResponse,
                 articleId,
-                new VoteCreateRequest(Set.of("DTO를 반환해야 한다."), LocalDateTime.now().plusDays(2))
+                new VoteCreateRequest(List.of("DTO를 반환해야 한다."), LocalDateTime.now().plusDays(2))
         );
 
         ErrorResponse errorResponse = response.as(ErrorResponse.class);
@@ -89,7 +89,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = 투표를_생성한다(
                 tokenResponse,
                 articleId,
-                new VoteCreateRequest(Set.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
+                new VoteCreateRequest(List.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
         );
         VoteCreateResponse voteCreateResponse = response.as(VoteCreateResponse.class);
 
@@ -108,7 +108,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
 
         투표를_생성한다(
                 tokenResponse, articleId,
-                new VoteCreateRequest(Set.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
+                new VoteCreateRequest(List.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
         );
 
         //when
@@ -133,7 +133,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
         투표를_생성한다(
                 tokenResponse,
                 articleId,
-                new VoteCreateRequest(Set.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
+                new VoteCreateRequest(List.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
         );
         VoteResponse firstGetResponse = 투표를_조회한다(tokenResponse, articleId).as(VoteResponse.class);
 
@@ -165,7 +165,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
         투표를_생성한다(
                 tokenResponse,
                 articleId,
-                new VoteCreateRequest(Set.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
+                new VoteCreateRequest(List.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
         );
         VoteResponse firstGetResponse = 투표를_조회한다(tokenResponse, articleId).as(VoteResponse.class);
 
@@ -197,7 +197,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
         투표를_생성한다(
                 tokenResponse,
                 articleId,
-                new VoteCreateRequest(Set.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
+                new VoteCreateRequest(List.of("DTO를 반환해야 한다.", "도메인을 반환해야 한다."), LocalDateTime.now().plusDays(2))
         );
         VoteResponse firstGetResponse = 투표를_조회한다(tokenResponse, articleId).as(VoteResponse.class);
 
@@ -208,8 +208,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
                 .get()
                 .getId();
         ErrorResponse response = 투표를_한다(new AccessTokenResponse(null), articleId,
-                new SelectVoteItemIdRequest(votedItemId)).as(
-                ErrorResponse.class);
+                new SelectVoteItemIdRequest(votedItemId)).as(ErrorResponse.class);
         assertAll(
                 () -> assertThat(response.getErrorCode()).isEqualTo("2001"),
                 () -> assertThat(response.getMessage()).contains("회원이 존재하지 않습니다.")

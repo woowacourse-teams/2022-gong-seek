@@ -50,7 +50,7 @@ public class MemberService {
 
     private List<MyPageArticleResponse> getMyPageArticleResponses(List<Article> articles) {
         return articles.stream()
-                .map(article -> new MyPageArticleResponse(article, commentRepository.countByArticleId(article.getId())))
+                .map(MyPageArticleResponse::new)
                 .collect(Collectors.toList());
     }
 

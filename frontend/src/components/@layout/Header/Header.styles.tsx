@@ -55,7 +55,7 @@ export const Container = styled.div<{ active: boolean }>`
 
 		${active
 			? css`
-					transform: tranlate(0);
+					transform: translate(0);
 					opacity: 1;
 			  `
 			: css`
@@ -129,8 +129,8 @@ export const SearchOpenBox = styled.div`
 	}
 `;
 
-export const StyledLink = styled(Link)`
-	text-decoration: none;
+export const StyledLink = styled.div`
+	cursor: pointer;
 `;
 
 export const NavBar = styled.nav`

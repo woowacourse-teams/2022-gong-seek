@@ -1,3 +1,5 @@
+import { BrowserRouter } from 'react-router-dom';
+
 import CategorySelector from '@/pages/CategorySelector/CategorySelector';
 import { Meta, Story } from '@storybook/react';
 
@@ -6,9 +8,11 @@ export default {
 	component: CategorySelector,
 	decorators: [
 		(Story) => (
-			<div style={{ width: '320px' }}>
-				<Story />
-			</div>
+			<BrowserRouter>
+				<div style={{ width: '320px' }}>
+					<Story />
+				</div>
+			</BrowserRouter>
 		),
 	],
 } as Meta;

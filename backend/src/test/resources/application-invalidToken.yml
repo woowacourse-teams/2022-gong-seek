@@ -1,7 +1,3 @@
-spring:
-  profiles:
-    group:
-     - test
 security:
   jwt:
     access:

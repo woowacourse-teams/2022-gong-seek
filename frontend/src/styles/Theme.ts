@@ -27,6 +27,11 @@ export const voteGradientColors = {
 	VOTE_005: 'linear-gradient(-45deg, #F06966,#FAD6A6)',
 };
 
+export const GradientColors = {
+	POPULAR_PROFILE_BORDER:
+		'linear-gradient(to bottom, #ffffcc 7%, #ff9900 96%),linear-gradient(to bottom, #ff3300 7%, #66ffcc 96%)',
+};
+
 export const articleColors = {
 	ARTICLE_001: '#9055FF',
 	ARTICLE_002: '#13E2DA',
@@ -73,6 +78,7 @@ export const size = {
 	SIZE_030: '1.875rem',
 	SIZE_032: '2rem',
 	SIZE_035: '2.1875rem',
+	SIZE_038: '2.375rem',
 	SIZE_040: '2.5rem',
 	SIZE_050: '3.125rem',
 	SIZE_056: '3.5rem',
@@ -122,5 +128,6 @@ export const theme = {
 	size,
 	zIndex,
 	voteGradientColors,
+	GradientColors,
 	articleColors,
 } as const;

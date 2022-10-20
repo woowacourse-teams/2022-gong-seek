@@ -24,7 +24,7 @@ DefaultCard.args = {
 		width: '1000px',
 		height: '600px',
 	},
-	children: <div>하이</div>,
+	children: <div></div>,
 	media: {
 		minWidth: '700px',
 		width: '300px',

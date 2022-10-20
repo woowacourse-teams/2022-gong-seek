@@ -20,8 +20,12 @@ import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
 import com.woowacourse.gongseek.comment.exception.CommentNullOrEmptyException;
 import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
+import com.woowacourse.gongseek.image.exception.FileNameEmptyException;
+import com.woowacourse.gongseek.image.exception.FileUploadFailException;
+import com.woowacourse.gongseek.image.exception.UnsupportedFilExtensionException;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.member.exception.NameNullOrEmptyException;
+import com.woowacourse.gongseek.member.exception.NameTooLongException;
 import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
 import com.woowacourse.gongseek.tag.exception.TagNameLengthException;
 import com.woowacourse.gongseek.tag.exception.TagNameNullOrBlankException;
@@ -60,6 +64,7 @@ public enum ExceptionType {
 
     MEMBER_NOT_FOUND_EXCEPTION("2001", "회원이 존재하지 않습니다.", MemberNotFoundException.class),
     NAME_NULL_OR_EMPTY_EXCEPTION("2002", "회원의 이름은 1자 이상이어야 합니다.", NameNullOrEmptyException.class),
+    NAME_LENGTH_EXCEPTION("2003", "회원의 이름은 255자를 초과할 수 없습니다.", NameTooLongException.class),
 
     ARTICLE_NOT_FOUND_EXCEPTION("3001", "게시글이 존재하지 않습니다.", ArticleNotFoundException.class),
     ARTICLE_TITLE_LENGTH_EXCEPTION("3002", "게시글 제목은 500자를 초과할 수 없습니다.", ArticleTitleTooLongException.class),
@@ -87,6 +92,9 @@ public enum ExceptionType {
     DUPLICATE_TAG_EXCEPTION("6003", "해시태그 이름은 중복될 수 없습니다.", DuplicateTagException.class),
     EXCEEDED_TAGS_EXCEPTION("6004", "해시태그는 한 게시글 당 최대 5개입니다.", ExceededTagSizeException.class),
 
+    UNSUPPORTED_FILE_EXTENSION_EXCEPTION("7001", "지원하지 않는 확장자 입니다.", UnsupportedFilExtensionException.class),
+    FILE_NAME_EMPTY_EXCEPTION("7002", "파일 이름은 비어있을 수 없습니다.", FileNameEmptyException.class),
+    FILE_UPLOAD_FAIL_EXCEPTION("7003", "파일 업로드에 실패했습니다.", FileUploadFailException.class),
     UNHANDLED_EXCEPTION("0000", "알 수 없는 서버 에러가 발생했습니다."),
     METHOD_ARGUMENT_NOT_VALID_EXCEPTION("0001", "요청 데이터가 잘못되었습니다."),
     ;

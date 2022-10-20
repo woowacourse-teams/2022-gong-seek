@@ -1,3 +1,5 @@
+import { BrowserRouter } from 'react-router-dom';
+
 import VoteGenerator from '@/pages/VoteGenerator';
 import { Meta, Story } from '@storybook/react';
 
@@ -6,9 +8,11 @@ export default {
 	component: VoteGenerator,
 	decorators: [
 		(Story) => (
-			<div style={{ width: '320px' }}>
-				<Story />
-			</div>
+			<BrowserRouter>
+				<div>
+					<Story />
+				</div>
+			</BrowserRouter>
 		),
 	],
 } as Meta;

@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    options {
+        timeout(time: 5, unit: 'MINUTES')
+    }
+
+    stages {
+        stage('Checkout SCM') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[credentialsId: 'github_token', url: 'https://github.com/woowacourse-teams/2022-gong-seek']]])
+            }
+        }
+
+        stage('Build and Test') {
+            steps {
+                dir('frontend') {
+                    nodejs('NodeJS 17.4.0') {
+                        sh '''
+                            yarn install && yarn run test && yarn build-dev
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                dir('frontend') {
+                    sshagent(['gongseek-frontend-dev']) {
+                        sh 'scp -r -o StrictHostKeyChecking=no dist ubuntu@${front_dev_ip}:/home/ubuntu/'
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@${front_dev_ip} "sh deploy.sh" &'
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            slackSend (channel: 'jenkins', color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+        failure {
+            slackSend (channel: 'jenkins', color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+        aborted {
+            slackSend (channel: 'jenkins', color: '#000000', message: "ABORTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+    }
+}

@@ -1,4 +1,4 @@
-import { theme } from '@/styles/Theme';
+import { TextOverflow } from '@/styles/mixin';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -6,23 +6,25 @@ export const Container = styled.section`
 	display: flex;
 	flex-direction: column;
 
-	width: 85%;
+	width: 80%;
+	height: ${({ theme }) => theme.size.SIZE_050};
+
 	${({ theme }) => css`
 		height: ${theme.size.SIZE_050};
 
 		border: ${theme.size.SIZE_001} solid ${theme.colors.BLACK_200};
 		border-radius: ${theme.size.SIZE_004};
+
+		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
+			width: 80%;
+		}
 	`}
 `;
 
 export const Title = styled.h2`
 	display: block;
 	width: 90%;
-
-	text-overflow: ellipsis;
-	overflow: hidden;
-	word-break: break-all;
-	white-space: nowrap;
+	${TextOverflow}
 
 	${({ theme }) => css`
 		font-size: ${theme.size.SIZE_016};
@@ -38,10 +40,12 @@ export const CreatedAt = styled.div`
 
 export const SubInfo = styled.div`
 	display: flex;
-	gap: ${({ theme }) => theme.size.SIZE_010};
-	padding: ${({ theme }) => theme.size.SIZE_002};
-
 	align-items: center;
+
+	${({ theme }) => css`
+		gap: ${theme.size.SIZE_010};
+		padding: ${theme.size.SIZE_002};
+	`}
 `;
 
 export const Category = styled.div<{ isQuestion: boolean }>`

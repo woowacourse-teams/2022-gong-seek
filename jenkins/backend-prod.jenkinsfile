@@ -1,0 +1,100 @@
+pipeline {
+    agent any
+
+    options {
+        timeout(time: 5, unit: 'MINUTES')
+    }
+
+    stages {
+        stage('Checkout SCM') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [[$class: 'SubmoduleOption', disableSubmodules: false, parentCredentials: true, recursiveSubmodules: true, reference: '', trackingSubmodules: true]], userRemoteConfigs: [[credentialsId: 'github_token', url: 'https://github.com/woowacourse-teams/2022-gong-seek.git']]])
+            }
+        }
+
+        stage('Build and Test') {
+            steps {
+                dir('./backend') {
+                    sh '''
+                        ./gradlew clean bootjar
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                dir('backend/build/libs') {
+                    sshagent(['gongseek-backend-prod']) {
+                        sh '''#!/bin/bash
+
+                    if curl -s "http://${blue_ip}:8080" > /dev/null
+                    then
+                        deployment_target_ip=$green_ip
+                    else
+                        deployment_target_ip=$blue_ip
+                    fi
+
+                    scp -o StrictHostKeyChecking=no gongseek-0.0.1-SNAPSHOT.jar ubuntu@${deployment_target_ip}:/home/ubuntu
+                    ssh -o StrictHostKeyChecking=no ubuntu@${deployment_target_ip} "nohup java -jar -Dspring.profiles.active=prod gongseek-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &" &
+
+                    for retry_count in \$(seq 10)
+                    do
+                      if curl -s "http://${deployment_target_ip}:8080" > /dev/null
+                      then
+                          echo "Health check success ✅"
+                          break
+                      fi
+
+                      if [ $retry_count -eq 10 ]
+                      then
+                        echo "Health check failed ❌"
+                        exit 1
+                      fi
+
+                      echo "The server is not alive yet. Retry health check in 10 seconds..."
+                      sleep 10
+                    done
+
+                    ssh ubuntu@${nginx_ip} "echo 'set \\\$service_url http://${deployment_target_ip}:8080;' > /etc/nginx/conf.d/service-url.inc && service nginx reload"
+                    echo "Switch the reverse proxy direction of nginx to ${deployment_target_ip} 🔄"
+
+                    if [ "${deployment_target_ip}" == "${blue_ip}" ]
+                    then
+                        ssh root@${green_ip} "fuser -s -k 8080/tcp"
+                    else
+                        ssh root@${blue_ip} "fuser -s -k 8080/tcp"
+                    fi
+                    echo "Kill the process on the opposite server."
+                '''
+                    }
+                }
+            }
+        }
+
+        stage('Deploy Performance') {
+            steps {
+                dir('backend/build/libs') {
+                    sshagent(['gongseek-backend-prod']) {
+                        sh '''#!/bin/bash
+                    scp -o StrictHostKeyChecking=no gongseek-0.0.1-SNAPSHOT.jar ubuntu@${backend_performance_ip}:/home/ubuntu
+                    ssh -o StrictHostKeyChecking=no ubuntu@${backend_performance_ip} "fuser -s -k 8080/tcp & nohup java -jar -Dspring.profiles.active=prod gongseek-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &" &
+                '''
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            slackSend (channel: 'jenkins', color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+        failure {
+            slackSend (channel: 'jenkins', color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+        aborted {
+            slackSend (channel: 'jenkins', color: '#000000', message: "ABORTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+    }
+}

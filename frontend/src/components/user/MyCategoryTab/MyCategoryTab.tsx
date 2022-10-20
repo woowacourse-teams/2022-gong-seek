@@ -9,22 +9,19 @@ export interface MyCategoryTabProps {
 }
 
 const MyCategoryTab = ({ category, setCategory }: MyCategoryTabProps) => {
-	const onChangeCategoryClick = (value: CategoryType) => {
+	const handleChangeTab = (value: CategoryType) => {
 		setCategory(value);
 	};
 
 	return (
 		<S.Container>
-			<S.Tab isClicked={category === 'article'} onClick={() => onChangeCategoryClick('article')}>
+			<S.Tab isClicked={category === 'article'} onClick={() => handleChangeTab('article')}>
 				내가 작성한 글
 			</S.Tab>
-			<S.Tab isClicked={category === 'comment'} onClick={() => onChangeCategoryClick('comment')}>
+			<S.Tab isClicked={category === 'comment'} onClick={() => handleChangeTab('comment')}>
 				내가 작성한 댓글
 			</S.Tab>
-			<S.Tab
-				isClicked={category === 'tempArticle'}
-				onClick={() => onChangeCategoryClick('tempArticle')}
-			>
+			<S.Tab isClicked={category === 'tempArticle'} onClick={() => handleChangeTab('tempArticle')}>
 				임시 저장 글
 			</S.Tab>
 		</S.Container>

@@ -1,72 +1,75 @@
-import { useState } from 'react';
-
 import Loading from '@/components/@common/Loading/Loading';
 import ToastUiViewer from '@/components/@common/ToastUiViewer/ToastUiViewer';
 import * as S from '@/components/comment/Comment/Comment.styles';
-import CommentInputModal from '@/components/comment/CommentInputModal/CommentInputModal';
 import useDeleteComment from '@/hooks/comment/useDeleteComment';
+import useDetailCommentState from '@/hooks/comment/useDetailCommentState';
 import { CommentType } from '@/types/commentResponse';
 import { convertGithubAvatarUrlForResize } from '@/utils/converter';
 import { dateTimeConverter } from '@/utils/converter';
 
 export interface CommentProps extends CommentType {
 	articleId: string;
+	tabIndex: number;
 }
 
-const Comment = ({ id, author, content, createdAt, isAuthor, articleId }: CommentProps) => {
-	const [isEditCommentOpen, setIsEditCommentOpen] = useState(false);
-	const [commentPlaceholder, setCommentPlaceHolder] = useState('');
-	const { isLoading, onDeleteButtonClick } = useDeleteComment();
-
-	const onUpdateButtonClick = () => {
-		setCommentPlaceHolder(content);
-		setIsEditCommentOpen(true);
-	};
+const Comment = ({
+	id,
+	author,
+	content,
+	createdAt,
+	isAuthor,
+	articleId,
+	tabIndex,
+}: CommentProps) => {
+	const { handleClickCommentEditButton } = useDetailCommentState({
+		articleId,
+		commentId: String(id),
+		content,
+	});
+	const { isLoading, handleClickCommentDeleteButton } = useDeleteComment();
 
 	if (isLoading) return <Loading />;
 
 	return (
-		<S.Container>
+		<S.Container tabIndex={tabIndex}>
 			<S.CommentHeader>
 				<S.CommentInfo>
 					<S.UserProfile
-						alt="유저 프로필이 보여지는 곳입니다"
+						alt="작성자의 프로필"
 						src={convertGithubAvatarUrlForResize(author.avatarUrl)}
+						tabIndex={tabIndex}
 					/>
 					<S.CommentInfoSub>
-						<S.UserName>{author.name}</S.UserName>
-						<S.CreateTime>{dateTimeConverter(createdAt)}</S.CreateTime>
+						<S.UserName aria-label={`댓글 작성자 ${author.name}`} tabIndex={tabIndex}>
+							{author.name}
+						</S.UserName>
+						<S.CreateTime
+							aria-label={`댓글 작성시간 ${dateTimeConverter(createdAt)}`}
+							tabIndex={tabIndex}
+						>
+							{dateTimeConverter(createdAt)}
+						</S.CreateTime>
 					</S.CommentInfoSub>
 				</S.CommentInfo>
 				{isAuthor && (
 					<S.CommentAuthBox>
-						<S.Button onClick={onUpdateButtonClick}>수정</S.Button>
+						<S.Button onClick={handleClickCommentEditButton} tabIndex={tabIndex}>
+							수정
+						</S.Button>
 						<S.Button
 							onClick={() => {
-								onDeleteButtonClick(id);
+								handleClickCommentDeleteButton(id);
 							}}
+							tabIndex={tabIndex}
 						>
 							삭제
 						</S.Button>
 					</S.CommentAuthBox>
 				)}
 			</S.CommentHeader>
-			<S.CommentContent>
+			<S.CommentContent tabIndex={tabIndex}>
 				<ToastUiViewer initContent={content} />
 			</S.CommentContent>
-
-			{isEditCommentOpen && (
-				<>
-					<S.DimmerContainer onClick={() => setIsEditCommentOpen(false)} />
-					<CommentInputModal
-						closeModal={() => setIsEditCommentOpen(false)}
-						articleId={String(articleId)}
-						modalType="edit"
-						commentId={String(id)}
-						placeholder={commentPlaceholder}
-					/>
-				</>
-			)}
 		</S.Container>
 	);
 };
