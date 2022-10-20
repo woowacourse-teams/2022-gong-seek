@@ -1,9 +1,6 @@
-import axios from 'axios';
-
-import { ACCESSTOKEN_KEY } from '@/constants';
-import { HOME_URL } from '@/constants/apiUrl';
 import { AllArticleResponse, ArticleType } from '@/types/articleResponse';
 import { convertSort } from '@/utils/converter';
+import { generateAxiosInstanceWithAccessToken } from '@/utils/generateAxiosInstance';
 
 export interface WritingArticles {
 	title: string;
@@ -12,13 +9,8 @@ export interface WritingArticles {
 }
 
 export const postWritingArticle = (article: WritingArticles) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
-	return axios.post(`${HOME_URL}/api/articles`, article, {
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			Authorization: `Bearer ${accessToken}`,
-		},
-	});
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+	return axiosInstance.post('/api/articles', article);
 };
 
 export interface PopularArticles {
@@ -27,28 +19,17 @@ export interface PopularArticles {
 }
 
 export const getPopularArticles = async () => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
-
-	const result = await axios.get<PopularArticles>(
-		`${HOME_URL}/api/articles?category=all&sort=views&size=10`,
-		{
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				Authorization: `Bearer ${accessToken}`,
-			},
-		},
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+	const { data } = await axiosInstance.get<PopularArticles>(
+		'/api/articles?category=all&sort=views&size=10',
 	);
-	return result.data;
+	return data;
 };
 
 export const getDetailArticle = async (id: string) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
-	const { data } = await axios.get<ArticleType>(`${HOME_URL}/api/articles/${id}`, {
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			Authorization: `Bearer ${accessToken}`,
-		},
-	});
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+	const { data } = await axiosInstance.get<ArticleType>(`/api/articles/${id}`);
+
 	return data;
 };
 
@@ -65,10 +46,8 @@ export const getAllArticle = async ({
 	cursorViews: string;
 	cursorLikes: string;
 }) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
-
 	if (sort === '추천순') {
-		const data = await getAllArticlesByLikes({ category, cursorId, cursorLikes, accessToken });
+		const data = await getAllArticlesByLikes({ category, cursorId, cursorLikes });
 		return data;
 	}
 
@@ -77,7 +56,6 @@ export const getAllArticle = async ({
 		sort,
 		cursorId,
 		cursorViews,
-		accessToken,
 	});
 	return data;
 };
@@ -87,26 +65,17 @@ export const getAllArticleByViewsOrLatest = async ({
 	sort,
 	cursorId,
 	cursorViews,
-	accessToken,
 }: {
 	category: string;
 	sort: '추천순' | '조회순' | '최신순';
 	cursorId: string;
 	cursorViews: string;
-	accessToken: string | null;
 }) => {
 	const currentSort = convertSort(sort);
-
-	const { data } = await axios.get<AllArticleResponse>(
-		`${HOME_URL}/api/articles?category=${category}&sort=${currentSort}&cursorId=${cursorId}&cursorViews=${cursorViews}&size=6`,
-		{
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				Authorization: `Bearer ${accessToken}`,
-			},
-		},
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+	const { data } = await axiosInstance.get<AllArticleResponse>(
+		`/api/articles?category=${category}&sort=${currentSort}&cursorId=${cursorId}&cursorViews=${cursorViews}&size=6`,
 	);
-
 	return {
 		articles: data.articles,
 		hasNext: data.hasNext,
@@ -129,21 +98,15 @@ export const getAllArticlesByLikes = async ({
 	category,
 	cursorId,
 	cursorLikes = '',
-	accessToken,
 }: {
 	category: string;
 	cursorId: string;
 	cursorLikes: string;
-	accessToken: string | null;
 }) => {
-	const { data } = await axios.get<AllArticleResponse>(
-		`${HOME_URL}/api/articles/likes?category=${category}&cursorId=${cursorId}&cursorLikes=${cursorLikes}&size=6`,
-		{
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				Authorization: `Bearer ${accessToken}`,
-			},
-		},
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+
+	const { data } = await axiosInstance.get<AllArticleResponse>(
+		`/api/articles/likes?category=${category}&cursorId=${cursorId}&cursorLikes=${cursorLikes}&size=6`,
 	);
 
 	return {
@@ -165,18 +128,11 @@ export const getAllArticlesByLikes = async ({
 };
 
 export const postArticle = (article: { id: string; title: string; content: string }) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
-
-	return axios.post<{ id: number; category: string }>(
-		`${HOME_URL}/api/articles/${article.id}`,
-		{ title: article.title, content: article.content },
-		{
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				Authorization: `Bearer ${accessToken}`,
-			},
-		},
-	);
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+	return axiosInstance.post<{ id: number; category: string }>(`/api/articles/${article.id}`, {
+		title: article.title,
+		content: article.content,
+	});
 };
 
 export const putArticle = (article: {
@@ -185,25 +141,15 @@ export const putArticle = (article: {
 	content: string;
 	tag: string[];
 }) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
-	return axios.put<{ id: number; category: string }>(
-		`${HOME_URL}/api/articles/${article.id}`,
-		{ title: article.title, content: article.content, tag: article.tag },
-		{
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				Authorization: `Bearer ${accessToken}`,
-			},
-		},
-	);
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+	return axiosInstance.put<{ id: number; category: string }>(`/api/articles/${article.id}`, {
+		title: article.title,
+		content: article.content,
+		tag: article.tag,
+	});
 };
 
 export const deleteArticle = (id: string) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
-	return axios.delete<never, unknown, unknown>(`${HOME_URL}/api/articles/${id}`, {
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			Authorization: `Bearer ${accessToken}`,
-		},
-	});
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+	return axiosInstance.delete<never, unknown, unknown>(`/api/articles/${id}`);
 };

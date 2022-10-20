@@ -1,8 +1,5 @@
-import axios from 'axios';
-
-import { ACCESSTOKEN_KEY } from '@/constants';
-import { HOME_URL } from '@/constants/apiUrl';
 import { CommentType } from '@/types/commentResponse';
+import { generateAxiosInstanceWithAccessToken } from '@/utils/generateAxiosInstance';
 
 export const postComments = ({
 	content,
@@ -13,56 +10,26 @@ export const postComments = ({
 	id: string;
 	isAnonymous: boolean;
 }) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
-	return axios.post(
-		`${HOME_URL}/api/articles/${id}/comments`,
-		{ content, isAnonymous },
-		{
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				Authorization: `Bearer ${accessToken}`,
-			},
-		},
-	);
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+
+	return axiosInstance.post(`/api/articles/${id}/comments`, { content, isAnonymous });
 };
 
 export const getComments = async (id: string) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
 
-	const { data } = await axios.get<{ comments: CommentType[] }>(
-		`${HOME_URL}/api/articles/${id}/comments`,
-		{
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				Authorization: `Bearer ${accessToken}`,
-			},
-		},
+	const { data } = await axiosInstance.get<{ comments: CommentType[] }>(
+		`/api/articles/${id}/comments`,
 	);
 	return data;
 };
 
 export const putComments = ({ content, commentId }: { content: string; commentId: string }) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
-
-	return axios.put(
-		`${HOME_URL}/api/articles/comments/${commentId}`,
-		{ content },
-		{
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				Authorization: `Bearer ${accessToken}`,
-			},
-		},
-	);
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+	return axiosInstance.put(`/api/articles/comments/${commentId}`, { content });
 };
 
 export const deleteComments = ({ commentId }: { commentId: string }) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
-
-	return axios.delete(`${HOME_URL}/api/articles/comments/${commentId}`, {
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			Authorization: `Bearer ${accessToken}`,
-		},
-	});
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+	return axiosInstance.delete(`/api/articles/comments/${commentId}`);
 };

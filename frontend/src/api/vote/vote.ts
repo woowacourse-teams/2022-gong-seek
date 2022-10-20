@@ -1,7 +1,4 @@
-import axios from 'axios';
-
-import { ACCESSTOKEN_KEY } from '@/constants';
-import { HOME_URL } from '@/constants/apiUrl';
+import { generateAxiosInstanceWithAccessToken } from '@/utils/generateAxiosInstance';
 
 export interface VoteItems {
 	id: number;
@@ -17,14 +14,9 @@ export interface TVote {
 }
 
 export const getVoteItems = async (articleId: string) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
 
-	const { data } = await axios.get<TVote>(`${HOME_URL}/api/articles/${articleId}/votes`, {
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			Authorization: `Bearer ${accessToken}`,
-		},
-	});
+	const { data } = await axiosInstance.get<TVote>(`/api/articles/${articleId}/votes`);
 
 	return data;
 };
@@ -38,18 +30,12 @@ export const registerVoteItems = ({
 	items: string[];
 	expiryDate: string;
 }) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
 
-	return axios.post<{ articleId: string }>(
-		`${HOME_URL}/api/articles/${articleId}/votes`,
-		{ items, expiryDate },
-		{
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				Authorization: `Bearer ${accessToken}`,
-			},
-		},
-	);
+	return axiosInstance.post<{ articleId: string }>(`/api/articles/${articleId}/votes`, {
+		items,
+		expiryDate,
+	});
 };
 
 export const checkVoteItems = ({
@@ -59,16 +45,7 @@ export const checkVoteItems = ({
 	articleId: string;
 	votedItemId: string;
 }) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
 
-	return axios.post(
-		`${HOME_URL}/api/articles/${articleId}/votes/do`,
-		{ votedItemId },
-		{
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				Authorization: `Bearer ${accessToken}`,
-			},
-		},
-	);
+	return axiosInstance.post(`/api/articles/${articleId}/votes/do`, { votedItemId });
 };

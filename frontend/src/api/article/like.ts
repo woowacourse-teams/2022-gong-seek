@@ -1,24 +1,12 @@
-import axios from 'axios';
-
-import { ACCESSTOKEN_KEY } from '@/constants';
-import { HOME_URL } from '@/constants/apiUrl';
+import { generateAxiosInstanceWithAccessToken } from '@/utils/generateAxiosInstance';
 
 export const postAddLikeArticle = (articleId: string) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
-	return axios.post(`${HOME_URL}/api/articles/${articleId}/like`, null, {
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			Authorization: `Bearer ${accessToken}`,
-		},
-	});
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+	return axiosInstance.post(`/api/articles/${articleId}/like`, null);
 };
 
 export const deleteLikeArticle = (articleId: string) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
-	return axios.delete(`${HOME_URL}/api/articles/${articleId}/like`, {
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			Authorization: `Bearer ${accessToken}`,
-		},
-	});
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+
+	return axiosInstance.delete(`/api/articles/${articleId}/like`);
 };

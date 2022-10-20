@@ -1,15 +1,7 @@
-import axios from 'axios';
-
-import { ACCESSTOKEN_KEY } from '@/constants';
-import { HOME_URL } from '@/constants/apiUrl';
+import { generateAxiosInstanceWithAccessToken } from '@/utils/generateAxiosInstance';
 
 export const getAllHashTag = async () => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
-	const data = await axios.get<{ tag: string[] }>(`${HOME_URL}/api/tags`, {
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			Authorization: `Bearer ${accessToken}`,
-		},
-	});
-	return data.data;
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+	const { data } = await axiosInstance.get<{ tag: string[] }>('/api/tags');
+	return data;
 };

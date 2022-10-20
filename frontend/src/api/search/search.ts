@@ -1,29 +1,19 @@
-import axios from 'axios';
-
-import { ACCESSTOKEN_KEY } from '@/constants';
-import { HOME_URL } from '@/constants/apiUrl';
 import { SearchResultType } from '@/types/searchResponse';
+import { generateAxiosInstanceWithAccessToken } from '@/utils/generateAxiosInstance';
 
 export const getUserSearchResult = async ({
-	accessToken,
 	target,
 	cursorId,
 	searchIndex,
 }: {
-	accessToken: string | null;
 	target: string;
 	cursorId: string;
 	searchIndex: string;
 }) => {
 	const encodedTarget = encodeURIComponent(target);
-	const { data } = await axios.get<SearchResultType>(
-		`${HOME_URL}/api/articles/search/author?author=${encodedTarget}&cursorId=${cursorId}&size=6`,
-		{
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				Authorization: `Bearer ${accessToken}`,
-			},
-		},
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+	const { data } = await axiosInstance.get<SearchResultType>(
+		`/api/articles/search/author?author=${encodedTarget}&cursorId=${cursorId}&size=6`,
 	);
 	return {
 		articles: data.articles,
@@ -38,25 +28,18 @@ export const getUserSearchResult = async ({
 };
 
 export const getArticleSearchResult = async ({
-	accessToken,
 	target,
 	cursorId,
 	searchIndex,
 }: {
-	accessToken: string | null;
 	target: string;
 	cursorId: string;
 	searchIndex: string;
 }) => {
 	const encodedTarget = encodeURIComponent(target);
-	const { data } = await axios.get<SearchResultType>(
-		`${HOME_URL}/api/articles/search/text?text=${encodedTarget}&cursorId=${cursorId}&size=6`,
-		{
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				Authorization: `Bearer ${accessToken}`,
-			},
-		},
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+	const { data } = await axiosInstance.get<SearchResultType>(
+		`/api/articles/search/text?text=${encodedTarget}&cursorId=${cursorId}&size=6`,
 	);
 
 	return {
@@ -78,16 +61,10 @@ export const getArticleByHashTag = async ({
 	hashTags: string;
 	cursorId: string;
 }) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
 	const encodedTarget = encodeURIComponent(hashTags);
-	const { data } = await axios.get<SearchResultType>(
-		`${HOME_URL}/api/articles/search/tags?tagsText=${encodedTarget}&cursorId=${cursorId}&size=6`,
-		{
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				Authorization: `Bearer ${accessToken}`,
-			},
-		},
+	const axiosInstance = generateAxiosInstanceWithAccessToken();
+	const { data } = await axiosInstance.get<SearchResultType>(
+		`/api/articles/search/tags?tagsText=${encodedTarget}&cursorId=${cursorId}&size=6`,
 	);
 	return {
 		articles: data.articles,
@@ -109,13 +86,11 @@ export const getSearchResult = async ({
 	searchIndex: string;
 	cursorId: string;
 }) => {
-	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
-
 	if (searchIndex === '유저') {
-		const data = await getUserSearchResult({ accessToken, target, searchIndex, cursorId });
+		const data = await getUserSearchResult({ target, searchIndex, cursorId });
 		return data;
 	}
 
-	const data = await getArticleSearchResult({ accessToken, target, searchIndex, cursorId });
+	const data = await getArticleSearchResult({ target, searchIndex, cursorId });
 	return data;
 };
