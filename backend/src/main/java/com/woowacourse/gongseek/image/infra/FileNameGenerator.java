@@ -4,7 +4,9 @@ import com.woowacourse.gongseek.image.domain.FileExtension;
 import com.woowacourse.gongseek.image.exception.UnsupportedFilExtensionException;
 import java.util.UUID;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FileNameGenerator {
 
     public String generate(final String originalFilename) {
