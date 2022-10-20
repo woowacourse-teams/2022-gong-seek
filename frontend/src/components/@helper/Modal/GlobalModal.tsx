@@ -5,6 +5,7 @@ import MenuSlider from '@/components/@common/MenuSlider/MenuSlider';
 import CreatePortal from '@/components/@helper/Modal/CreatePortal';
 import * as S from '@/components/@helper/Modal/Modal.styles';
 import CommentInputModal from '@/components/comment/CommentInputModal/CommentInputModal';
+import usePageChange from '@/hooks/common/usePageChange';
 import { modalState } from '@/store/modalState';
 import { hasModal } from '@/utils/validateInput';
 
@@ -21,6 +22,7 @@ const MODAL_COMPONENTS: any = {
 const GlobalModal = () => {
 	const [modal, setModal] = useRecoilState(modalState);
 	const { modalProps, modalType, isMobileOnly } = modal ?? {};
+	usePageChange(() => setModal(null));
 
 	useEffect(() => {
 		if (hasModal(modalType)) {
