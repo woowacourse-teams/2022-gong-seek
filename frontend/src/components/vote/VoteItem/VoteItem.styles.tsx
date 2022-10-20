@@ -28,6 +28,7 @@ export const VoteName = styled.span`
 	width: 80%;
 	white-space: normal;
 	word-break: break-all;
+	line-height: ${({ theme }) => theme.size.SIZE_022};
 `;
 
 export const TitleBox = styled.div`
