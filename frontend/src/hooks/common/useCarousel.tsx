@@ -43,6 +43,7 @@ const useCarousel = () => {
 
 	const handleScrollEnd = useCallback(() => {
 		setIsScroll(true);
+
 		if (timerId.current !== null) {
 			clearTimeout(timerId.current);
 		}
@@ -53,7 +54,7 @@ const useCarousel = () => {
 
 	useEffect(() => {
 		if (carouselElementRef) {
-			carouselItemWidth.current = carouselElementRef.scrollWidth / (CAROUSEL_ITEMS_LENGTH * 2);
+			carouselItemWidth.current = carouselElementRef.scrollWidth / (CAROUSEL_ITEMS_LENGTH * 1.5);
 			carouselElementRef.addEventListener('scroll', handleScrollEnd);
 			window.addEventListener('resize', setCarouselItemWidth);
 
@@ -90,7 +91,7 @@ const useCarousel = () => {
 	}, [currentIndex]);
 
 	const handleLeftSlideEvent = () => {
-		if (currentIndex === MIN_CAROUSEL_INDEX || isScroll) {
+		if (prevCurrentIndex === MIN_CAROUSEL_INDEX || isScroll) {
 			return;
 		}
 

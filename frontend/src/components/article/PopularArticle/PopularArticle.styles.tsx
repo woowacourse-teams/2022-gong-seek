@@ -16,12 +16,8 @@ export const Container = styled.section`
 	width: 85%;
 
 	margin: 0 auto;
-	overflow: auto;
+	overflow: hidden;
 	scroll-snap-type: x mandatory;
-
-	&::-webkit-scrollbar {
-		opacity: 0;
-	}
 
 	${({ theme }) => css`
 		height: ${theme.size.SIZE_280};
