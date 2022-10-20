@@ -1,6 +1,23 @@
 import { theme } from '@/styles/Theme';
 import { CardProps } from '@/types/card';
 
+export const PopularArticleItemCardStyle = {
+	cssObject: {
+		width: '85%',
+		height: 'fit-content',
+		flexShrink: '0',
+		scrollSnapAlign: 'center',
+		scrollSnapStop: 'always',
+	},
+	media: {
+		minWidth: theme.breakpoints.DESKTOP_LARGE,
+		width: '50%',
+		height: 'fit-content',
+	},
+
+	hasActiveAnimation: true,
+};
+
 export const ArticleItemCardStyle: CardProps = {
 	cssObject: {
 		width: '80%',

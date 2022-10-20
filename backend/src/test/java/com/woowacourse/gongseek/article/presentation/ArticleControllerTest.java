@@ -50,7 +50,7 @@ class ArticleControllerTest extends ControllerTest {
 
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
-        given(articleService.save(any(), any())).willReturn(response);
+        given(articleService.create(any(), any())).willReturn(response);
 
         ResultActions results = mockMvc.perform(post("/api/articles")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer token")

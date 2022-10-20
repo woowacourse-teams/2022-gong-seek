@@ -1,3 +1,5 @@
+import { ElementType } from 'react';
+
 export interface CardProps {
 	cssObject: {
 		width: string;
@@ -10,6 +12,9 @@ export interface CardProps {
 		flexWrap?: string;
 		flexDirection?: string;
 		margin?: string;
+		flexShrink?: string;
+		scrollSnapAlign?: string;
+		scrollSnapStop?: string;
 	};
 	media?: {
 		minWidth: string;
@@ -18,4 +23,7 @@ export interface CardProps {
 	};
 	hasActiveAnimation: true | false;
 	onClick?: () => void;
+	isActive?: boolean;
+	role?: string;
+	as?: ElementType;
 }

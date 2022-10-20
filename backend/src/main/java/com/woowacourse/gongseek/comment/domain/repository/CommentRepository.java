@@ -15,4 +15,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByArticleIdWithMember(@Param("articleId") Long articleId);
 
     Long countByArticleId(Long articleId);
+
+    void deleteAllByArticleId(Long articleId);
 }

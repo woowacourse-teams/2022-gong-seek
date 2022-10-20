@@ -8,7 +8,7 @@ export const CategoryTitleContainer = styled.div`
 	justify-content: space-between;
 	align-items: center;
 
-	margin-top: ${({ theme }) => theme.size.SIZE_050};
+	margin-top: ${({ theme }) => theme.size.SIZE_022};
 
 	z-index: ${({ theme }) => theme.zIndex.CATEGORY_TITLE_CONTAINER};
 `;
@@ -40,6 +40,7 @@ export const CategoryTitle = styled.div<{ isActive: boolean }>`
 
 export const Container = styled.div`
 	display: flex;
+	position: relative;
 
 	flex-direction: column;
 	justify-content: center;

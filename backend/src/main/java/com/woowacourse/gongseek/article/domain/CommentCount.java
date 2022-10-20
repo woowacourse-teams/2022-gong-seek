@@ -24,8 +24,4 @@ public class CommentCount {
     public void minusValue() {
         value--;
     }
-
-    public void updateValue(long value) {
-        this.value = value;
-    }
 }

@@ -1,11 +1,12 @@
-import { ThemeProvider, Global } from '@emotion/react';
-import { RecoilRoot } from 'recoil';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { RecoilRoot } from 'recoil';
 
-import { BrowserRouter } from 'react-router-dom';
 import { theme } from '@/styles/Theme';
 import { reset } from '@/styles/reset';
+import { ThemeProvider, Global } from '@emotion/react';
+
+initialize();
 
 const queryClient = new QueryClient();
 export const parameters = {
@@ -25,12 +26,14 @@ export const decorators = [
 			<Global styles={reset} />
 			<QueryClientProvider client={queryClient}>
 				<RecoilRoot>
-					<BrowserRouter>
-						<Story />
-					</BrowserRouter>
+					<Story />
 				</RecoilRoot>
 			</QueryClientProvider>
 		</ThemeProvider>
 	),
 ];
-initialize();
+
+if (typeof global.process === 'undefined') {
+	const { worker } = require('../src/mock/browser');
+	worker.start();
+}

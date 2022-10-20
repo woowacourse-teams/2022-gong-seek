@@ -23,10 +23,36 @@ const Dropdown = ({ onCloseDropdown }: { onCloseDropdown: () => void }) => {
 		}
 	};
 
+	const handleFocusDropdownItem = (e: React.FocusEvent<HTMLDivElement>) => {
+		(e.target as HTMLDivElement).ariaSelected = 'true';
+	};
+
+	const handleBlurDropdownItem = (e: React.FocusEvent<HTMLDivElement>) => {
+		(e.target as HTMLDivElement).ariaSelected = 'false';
+	};
+
 	return (
-		<S.Container>
-			<S.DropdownItem onClick={handleClickNavigateMypage}>마이페이지</S.DropdownItem>
-			<S.DropdownItem onClick={handleClickNavigateLogout}>로그아웃</S.DropdownItem>
+		<S.Container role="tablist" aria-orientation="vertical" tabIndex={0}>
+			<S.DropdownItem
+				onClick={handleClickNavigateMypage}
+				role="tab"
+				tabIndex={0}
+				onFocus={handleFocusDropdownItem}
+				onBlur={handleBlurDropdownItem}
+				aria-selected="true"
+			>
+				마이페이지
+			</S.DropdownItem>
+			<S.DropdownItem
+				onClick={handleClickNavigateLogout}
+				role="tab"
+				tabIndex={0}
+				onFocus={handleFocusDropdownItem}
+				onBlur={handleBlurDropdownItem}
+				aria-selected="false"
+			>
+				로그아웃
+			</S.DropdownItem>
 		</S.Container>
 	);
 };

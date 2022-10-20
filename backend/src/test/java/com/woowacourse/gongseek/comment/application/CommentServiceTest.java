@@ -72,7 +72,7 @@ class CommentServiceTest extends IntegrationTest {
         CommentRequest request = new CommentRequest("content2", false);
         LoginMember member = new LoginMember(this.member.getId());
 
-        commentService.save(member, article.getId(), request);
+        commentService.create(member, this.article.getId(), request);
         List<CommentResponse> savedComments = commentService.getAllByArticleId(member, article.getId()).getComments();
         CommentResponse firstCommentResponse = savedComments.get(0);
         Article foundArticle = articleRepository.findById(article.getId()).get();
@@ -90,7 +90,7 @@ class CommentServiceTest extends IntegrationTest {
         CommentRequest request = new CommentRequest("content2", true);
         LoginMember member = new LoginMember(this.member.getId());
 
-        commentService.save(member, article.getId(), request);
+        commentService.create(member, article.getId(), request);
         List<CommentResponse> savedComments = commentService.getAllByArticleId(member, article.getId()).getComments();
         CommentResponse firstCommentResponse = savedComments.get(0);
         Article foundArticle = articleRepository.findById(article.getId()).get();
@@ -107,7 +107,7 @@ class CommentServiceTest extends IntegrationTest {
     void 비회원은_기명_댓글을_생성할_수_없다() {
         CommentRequest request = new CommentRequest(CONTENT, false);
 
-        assertThatThrownBy(() -> commentService.save(new GuestMember(), article.getId(), request))
+        assertThatThrownBy(() -> commentService.create(new GuestMember(), article.getId(), request))
                 .isExactlyInstanceOf(NotMemberException.class)
                 .hasMessage("회원이 아니므로 권한이 없습니다.");
     }
@@ -116,7 +116,7 @@ class CommentServiceTest extends IntegrationTest {
     void 비회원은_익명_댓글을_생성할_수_없다() {
         CommentRequest request = new CommentRequest(CONTENT, true);
 
-        assertThatThrownBy(() -> commentService.save(new GuestMember(), article.getId(), request))
+        assertThatThrownBy(() -> commentService.create(new GuestMember(), article.getId(), request))
                 .isExactlyInstanceOf(NotMemberException.class)
                 .hasMessage("회원이 아니므로 권한이 없습니다.");
     }
@@ -125,7 +125,7 @@ class CommentServiceTest extends IntegrationTest {
     void 회원이_존재하지_않는_경우_댓글을_생성할_수_없다() {
         CommentRequest request = new CommentRequest(CONTENT, false);
 
-        assertThatThrownBy(() -> commentService.save(new LoginMember(-1L), article.getId(), request))
+        assertThatThrownBy(() -> commentService.create(new LoginMember(-1L), article.getId(), request))
                 .isExactlyInstanceOf(MemberNotFoundException.class)
                 .hasMessageContaining("회원이 존재하지 않습니다.");
     }
@@ -134,14 +134,14 @@ class CommentServiceTest extends IntegrationTest {
     void 게시글이_존재하지_않는_경우_댓글을_생성할_수_없다() {
         CommentRequest request = new CommentRequest(CONTENT, true);
 
-        assertThatThrownBy(() -> commentService.save(new LoginMember(member.getId()), -1L, request))
+        assertThatThrownBy(() -> commentService.create(new LoginMember(member.getId()), -1L, request))
                 .isExactlyInstanceOf(ArticleNotFoundException.class)
                 .hasMessageContaining("게시글이 존재하지 않습니다.");
     }
 
     @Test
     void 회원이_작성한_기명_댓글을_조회한다() {
-        commentService.save(new LoginMember(member.getId()), article.getId(), new CommentRequest(CONTENT, false));
+        commentService.create(new LoginMember(member.getId()), article.getId(), new CommentRequest(CONTENT, false));
 
         List<CommentResponse> savedComments = commentService.getAllByArticleId(new LoginMember(member.getId()),
                 article.getId()).getComments();
@@ -157,7 +157,7 @@ class CommentServiceTest extends IntegrationTest {
 
     @Test
     void 회원이_작성한_익명_댓글을_조회한다() {
-        commentService.save(new LoginMember(member.getId()), article.getId(), new CommentRequest(CONTENT, true));
+        commentService.create(new LoginMember(member.getId()), article.getId(), new CommentRequest(CONTENT, true));
 
         List<CommentResponse> savedComments = commentService.getAllByArticleId(new LoginMember(member.getId()),
                 article.getId()).getComments();
@@ -225,7 +225,7 @@ class CommentServiceTest extends IntegrationTest {
     @Test
     void 작성자인_회원이_익명_댓글을_수정한다() {
         LoginMember appMember = new LoginMember(member.getId());
-        commentService.save(appMember, article.getId(), new CommentRequest(CONTENT, true));
+        commentService.create(appMember, article.getId(), new CommentRequest(CONTENT, true));
         List<CommentResponse> comments = commentService.getAllByArticleId(appMember, article.getId()).getComments();
         String updateContent = "update";
         CommentUpdateRequest updateRequest = new CommentUpdateRequest(updateContent);
@@ -291,7 +291,7 @@ class CommentServiceTest extends IntegrationTest {
     @Test
     void 회원이_작성한_기명_댓글을_삭제한다() {
         LoginMember appMember = new LoginMember(member.getId());
-        commentService.save(appMember, article.getId(), new CommentRequest(CONTENT, true));
+        commentService.create(appMember, article.getId(), new CommentRequest(CONTENT, true));
         CommentResponse comment = commentService.getAllByArticleId(appMember, article.getId()).getComments().get(0);
         commentService.delete(appMember, comment.getId());
 
@@ -307,7 +307,7 @@ class CommentServiceTest extends IntegrationTest {
     @Test
     void 회원이_작성한_익명_댓글을_삭제한다() {
         LoginMember appMember = new LoginMember(member.getId());
-        commentService.save(appMember, article.getId(), new CommentRequest(CONTENT, true));
+        commentService.create(appMember, article.getId(), new CommentRequest(CONTENT, true));
         CommentResponse comment = commentService.getAllByArticleId(appMember, article.getId()).getComments().get(0);
         commentService.delete(appMember, comment.getId());
 

@@ -8,7 +8,7 @@ export const Container = styled.div`
 	height: 100%;
 	flex-direction: column-reverse;
 	align-items: center;
-  
+
 	${({ theme }) => css`
 		gap: ${theme.size.SIZE_080};
 
@@ -79,7 +79,7 @@ export const SubmitButton = styled.button`
 
 	${({ theme }) => css`
 		border-radius: ${theme.size.SIZE_010};
-		font-size: ${theme.size.SIZE_014}
+		font-size: ${theme.size.SIZE_014};
 
 		color: ${theme.colors.WHITE};
 		background-color: ${theme.colors.PURPLE_500};

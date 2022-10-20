@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
+import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
 import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
@@ -22,7 +23,11 @@ import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.tag.application.TagService;
 import com.woowacourse.gongseek.tag.domain.Tags;
+import com.woowacourse.gongseek.vote.domain.Vote;
+import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
+import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
+import com.woowacourse.gongseek.vote.exception.VoteNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,8 +52,10 @@ public class ArticleService {
     private final TagService tagService;
     private final CommentRepository commentRepository;
     private final LikeRepository likeRepository;
+    private final VoteHistoryRepository voteHistoryRepository;
+    private final VoteItemRepository voteItemRepository;
 
-    public ArticleIdResponse save(AppMember appMember, ArticleRequest articleRequest) {
+    public ArticleIdResponse create(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
         Member member = getMember(appMember);
 
@@ -163,9 +170,29 @@ public class ArticleService {
 
     public void delete(AppMember appMember, Long id) {
         Article article = checkAuthorization(appMember, id);
+        deleteVoteHistory(article);
+        deleteComment(article);
+        deleteLikes(article);
         articleRepository.delete(article);
         List<Long> deletedTagIds = getDeletedTagIds(article.getTagIds());
         tagService.deleteAll(deletedTagIds);
+    }
+
+    private void deleteLikes(Article article) {
+        likeRepository.deleteAllByArticleId(article.getId());
+    }
+
+    private void deleteComment(Article article) {
+        commentRepository.deleteAllByArticleId(article.getId());
+    }
+
+    private void deleteVoteHistory(Article article) {
+        if (article.getCategory().equals(Category.QUESTION)) {
+            return;
+        }
+        Vote vote = voteRepository.findByArticleId(article.getId())
+                .orElseThrow(() -> new VoteNotFoundException(article.getId()));
+        voteHistoryRepository.deleteAllByVoteItemIn(voteItemRepository.findAllByVoteId(vote.getId()));
     }
 
     @Transactional(readOnly = true)
@@ -185,14 +212,5 @@ public class ArticleService {
         Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(cursorId, cursorLikes, category,
                 appMember.getPayload(), pageable);
         return ArticlePageResponse.of(articles);
-    }
-
-    public void synchronizeLikeCountAndCommentCount() {
-        List<Article> articles = articleRepository.findAll();
-        articles.forEach(
-                article -> article.updateLikeCountAndCommentCount(
-                        likeRepository.countByArticleId(article.getId()),
-                        commentRepository.countByArticleId(article.getId()))
-        );
     }
 }

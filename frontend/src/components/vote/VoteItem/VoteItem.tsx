@@ -1,6 +1,10 @@
+import ProgressiveBar from '@/components/@common/ProgressiveBar/ProgressiveBar';
 import * as S from '@/components/vote/VoteItem/VoteItem.styles';
 import usePostVoteItem from '@/hooks/vote/usePostVoteItem';
+import { theme } from '@/styles/Theme';
 import { convertIdxToVoteColorKey } from '@/utils/converter';
+
+const VOTE_ITEM_PROGRESSIVE_TIEM = 1;
 
 export interface VoteItemProps {
 	voteItemId: number;
@@ -25,6 +29,7 @@ const VoteItem = ({
 }: VoteItemProps) => {
 	const progressivePercent = Math.floor((itemVotes / totalVotes) * 100);
 	const { handleChangeVoteSelectButton } = usePostVoteItem(articleId);
+	const gradientColor = theme.voteGradientColors[convertIdxToVoteColorKey(colorIdx)];
 
 	return (
 		<S.Container>
@@ -44,12 +49,13 @@ const VoteItem = ({
 				</S.Title>
 			</S.TitleBox>
 
-			<S.ProgressiveBar>
-				<S.ProgressiveBarContent
-					percent={progressivePercent || 0}
-					colorKey={convertIdxToVoteColorKey(colorIdx)}
-				/>
-			</S.ProgressiveBar>
+			<ProgressiveBar
+				percent={progressivePercent}
+				gradientColor={gradientColor}
+				time={VOTE_ITEM_PROGRESSIVE_TIEM}
+				width={theme.size.SIZE_170}
+				height={theme.size.SIZE_010}
+			/>
 		</S.Container>
 	);
 };

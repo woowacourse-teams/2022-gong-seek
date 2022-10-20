@@ -12,7 +12,7 @@ export interface VoteItems {
 export interface TVote {
 	articleId: string;
 	voteItems: VoteItems[];
-	votedItemId: number | null;
+	voteItemId: number | null;
 	isExpired: boolean;
 }
 

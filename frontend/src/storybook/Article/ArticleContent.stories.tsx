@@ -1,3 +1,5 @@
+import { BrowserRouter } from 'react-router-dom';
+
 import ArticleContent, {
 	ArticleContentProps,
 } from '@/components/article/ArticleContent/ArticleContent';
@@ -8,9 +10,11 @@ export default {
 	component: ArticleContent,
 	decorators: [
 		(Story) => (
-			<div style={{ width: '320px' }}>
-				<Story />
-			</div>
+			<BrowserRouter>
+				<div style={{ width: '320px' }}>
+					<Story />
+				</div>
+			</BrowserRouter>
 		),
 	],
 } as Meta;
