@@ -26,7 +26,7 @@ const useGetPopularArticles = () => {
 		}
 	}, [isSuccess]);
 
-	const handleLeftSlideEvent = () => {
+	const handleClickLeftArrowButton = () => {
 		if (currentIndex === 0) {
 			// 애니메이션
 			return;
@@ -35,7 +35,7 @@ const useGetPopularArticles = () => {
 		mainArticleContent.current?.animate(S.showPopularSlider, S.animationTiming);
 	};
 
-	const handleRightSlideEvent = () => {
+	const handleClickRightArrowButton = () => {
 		if (currentIndex === indexLimit - 1 || currentIndex === 9) {
 			// 애니메이션
 			return;
@@ -50,8 +50,8 @@ const useGetPopularArticles = () => {
 		isIdle,
 		isSuccess,
 		currentIndex,
-		handleLeftSlideEvent,
-		handleRightSlideEvent,
+		handleClickLeftArrowButton,
+		handleClickRightArrowButton,
 		mainArticleContent,
 	};
 };

@@ -55,3 +55,9 @@ cors:
 
 server:
   port: 8888
+
+application:
+  bucket:
+    name: gongseek-image
+  cloudfront:
+    url: https://dknikgq2g8qtc.cloudfront.net/

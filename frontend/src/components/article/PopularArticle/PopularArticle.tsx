@@ -11,8 +11,8 @@ const PopularArticle = () => {
 		isLoading,
 		isIdle,
 		currentIndex,
-		handleLeftSlideEvent,
-		handleRightSlideEvent,
+		handleClickLeftArrowButton,
+		handleClickRightArrowButton,
 		mainArticleContent,
 	} = useGetPopularArticles();
 
@@ -36,13 +36,13 @@ const PopularArticle = () => {
 
 	return data ? (
 		<S.Container>
-			<S.LeftArrowButton onClick={handleLeftSlideEvent} />
+			<S.LeftArrowButton onClick={handleClickLeftArrowButton} />
 			<S.LeftBackgroundArticle colorKey={getColorKey(currentIndex - 1)} />
 			<S.ArticleContent colorKey={getColorKey(currentIndex)} ref={mainArticleContent}>
 				<PopularArticleItem article={data.articles[currentIndex]} />
 			</S.ArticleContent>
 			<S.RightBackgroundArticle colorKey={getColorKey(currentIndex + 1)} />
-			<S.RightArrowButton onClick={handleRightSlideEvent} />
+			<S.RightArrowButton onClick={handleClickRightArrowButton} />
 		</S.Container>
 	) : null;
 };

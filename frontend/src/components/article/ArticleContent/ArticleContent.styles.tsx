@@ -62,7 +62,8 @@ export const ArticleInfo = styled.div`
 	gap: ${({ theme }) => theme.size.SIZE_010};
 `;
 
-export const ArticleTitle = styled.h3`
+export const ArticleTitle = styled.title`
+	display: block;
 	word-break: break-all;
 
 	${({ theme }) => css`

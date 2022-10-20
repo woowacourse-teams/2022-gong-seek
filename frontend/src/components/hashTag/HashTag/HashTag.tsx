@@ -22,7 +22,7 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 			return acc;
 		}, false);
 
-	const onHashTagEnterEventHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
+	const handleSubmithashTagForm = (e: React.ChangeEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (hashTags.length === 5) {
 			setErrorMsg('해시태그는 최대 5개까지 등록이 가능합니다');
@@ -44,7 +44,11 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 		setHashInput('');
 	};
 
-	const onHashTagDeleteEventHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+	const handleChangeHashTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setHashInput(e.target.value);
+	};
+
+	const handleKeydownHashTagInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.code === 'Backspace' && hashTags.length >= 1 && hashTagInput.length === 0) {
 			if (hashTags.length <= 1) {
 				setHashTags([]);
@@ -60,7 +64,7 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 		<S.Container>
 			<S.HashTagForm
 				aria-label="해시태그가 보여지고 입력하는 곳입니다"
-				onSubmit={onHashTagEnterEventHandler}
+				onSubmit={handleSubmithashTagForm}
 			>
 				<Card {...WritingHashTagCardStyle}>
 					<S.HashTagItemBox>
@@ -73,12 +77,8 @@ const HashTag = ({ hashTags, setHashTags }: HashTagProps) => {
 						aria-label="해시태그를 입력하는 곳입니다"
 						placeholder="해시태그를 입력 후 엔터를 눌러주세요"
 						value={hashTagInput}
-						onChange={(e) => {
-							setHashInput(e.target.value);
-						}}
-						onKeyDown={(e) => {
-							onHashTagDeleteEventHandler(e);
-						}}
+						onChange={handleChangeHashTagInput}
+						onKeyDown={handleKeydownHashTagInput}
 					/>
 				</Card>
 				<S.ErrorMessage>{errorMsg}</S.ErrorMessage>

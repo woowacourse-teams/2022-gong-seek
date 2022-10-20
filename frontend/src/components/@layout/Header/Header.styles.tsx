@@ -55,7 +55,7 @@ export const Container = styled.div<{ active: boolean }>`
 
 		${active
 			? css`
-					transform: tranlate(0);
+					transform: translate(0);
 					opacity: 1;
 			  `
 			: css`

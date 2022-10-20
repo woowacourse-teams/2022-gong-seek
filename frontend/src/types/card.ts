@@ -9,6 +9,7 @@ export interface CardProps {
 		padding?: string;
 		flexWrap?: string;
 		flexDirection?: string;
+		margin?: string;
 	};
 	media?: {
 		minWidth: string;

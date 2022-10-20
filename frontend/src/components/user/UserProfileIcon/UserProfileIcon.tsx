@@ -10,12 +10,19 @@ const UserProfileIcon = () => {
 	const { data, isLoading, isSuccess } = useGetUserInfo();
 	const [dropdown, setDropdown] = useRecoilState(dropdownState);
 
+	const handleClickUserProfile = () => {
+		setDropdown((prev) => ({
+			isOpen: !prev.isOpen,
+		}));
+	};
+
 	return (
 		<S.Container>
 			{isLoading && <S.UserProfile src={gongseek} />}
 			{isSuccess && (
 				<S.UserProfile
 					src={data?.avatarUrl}
+					alt="유저의 프로필 이미지"
 					onClick={() =>
 						setDropdown((prev) => ({
 							isOpen: !prev.isOpen,
@@ -23,7 +30,7 @@ const UserProfileIcon = () => {
 					}
 				/>
 			)}
-			{dropdown.isOpen && <Dropdown onClickCloseDropdown={() => setDropdown({ isOpen: false })} />}
+			{dropdown.isOpen && <Dropdown onCloseDropdown={handleClickUserProfile} />}
 		</S.Container>
 	);
 };

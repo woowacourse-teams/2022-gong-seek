@@ -18,7 +18,7 @@ const DiscussionDetail = () => {
 	const { data: articleData, isLoading: isArticleLoading } = useGetDetailArticle(id);
 	const { data: commentData, isLoading: isCommentLoading } = useGetDetailComment(id);
 
-	const onClickVoteGenerateButton = () => {
+	const handleClickVoteGenerateButton = () => {
 		navigate(`/votes/${id}`);
 	};
 
@@ -38,7 +38,9 @@ const DiscussionDetail = () => {
 					{articleData.hasVote ? (
 						<Vote articleId={id} />
 					) : articleData.isAuthor ? (
-						<VoteGenerateButton onClick={onClickVoteGenerateButton}>투표 만들기</VoteGenerateButton>
+						<VoteGenerateButton onClick={handleClickVoteGenerateButton}>
+							투표 만들기
+						</VoteGenerateButton>
 					) : null}
 				</Detail>
 			)}

@@ -25,7 +25,7 @@ export interface ArticleItemProps {
 }
 
 const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
-	const { onLikeButtonClick, onUnlikeButtonClick, isLike, likeCount } = useHeartClick({
+	const { handleClickEmptyHeart, handleClickFillHeart, isLike, likeCount } = useHeartClick({
 		prevIsLike: article.isLike,
 		prevLikeCount: article.likeCount,
 		articleId: String(article.id),
@@ -56,9 +56,9 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 				<S.RightFooterBox>
 					<S.HeartBox>
 						{isLike ? (
-							<S.FillHeart onClick={onUnlikeButtonClick} />
+							<S.FillHeart onClick={handleClickFillHeart} />
 						) : (
-							<S.EmptyHeart onClick={onLikeButtonClick} />
+							<S.EmptyHeart onClick={handleClickEmptyHeart} />
 						)}
 						<div aria-label="좋아요 수가 표기 되는 곳입니다">{likeCount}</div>
 					</S.HeartBox>
