@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import gongseek from '@/assets/gongseek.png';
@@ -16,18 +17,25 @@ const Header = () => {
 	const { isSearchOpen } = useRecoilValue(searchState);
 	const { handleHeaderViewByScroll, headerElement, isActiveHeader } = useHandleHeaderByScroll();
 	const [enterRef] = useEnterToClick();
-
+	const navigate = useNavigate();
 	useScroll(handleHeaderViewByScroll);
+
+	const handleNavigate = (url: typeof URL[keyof typeof URL]) => {
+		navigate(url);
+	};
 
 	if (isSearchOpen) {
 		return (
 			<S.Container ref={headerElement} active={isActiveHeader}>
 				<S.HeaderSection>
-					<S.StyledLink to={URL.HOME}>
+					<S.StyledLink onClick={() => handleNavigate(URL.HOME)}>
 						<S.LogoImage src={gongseek} />
 					</S.StyledLink>
 					<S.SearchOpenBox>
-						<S.StyledLink to={URL.SEARCH_RESULT} aria-label="검색 결과 페이지로 전환하는 링크">
+						<S.StyledLink
+							onClick={() => handleNavigate(URL.SEARCH_RESULT)}
+							aria-label="검색 결과 페이지로 전환하는 링크"
+						>
 							<SearchBar isValid={false} />
 						</S.StyledLink>
 					</S.SearchOpenBox>
@@ -39,11 +47,14 @@ const Header = () => {
 	return (
 		<S.Container ref={headerElement} active={isActiveHeader}>
 			<S.HeaderSection>
-				<S.StyledLink to={URL.HOME}>
+				<S.StyledLink onClick={() => handleNavigate(URL.HOME)}>
 					<S.LogoLink>공식</S.LogoLink>
 				</S.StyledLink>
 				<S.SearchBarBox>
-					<S.StyledLink to={URL.SEARCH_RESULT} aria-label="엔터를 눌러 검색을 진행하세요">
+					<S.StyledLink
+						onClick={() => handleNavigate(URL.SEARCH_RESULT)}
+						aria-label="엔터를 눌러 검색을 진행하세요"
+					>
 						<SearchBar isValid={true} />
 					</S.StyledLink>
 				</S.SearchBarBox>

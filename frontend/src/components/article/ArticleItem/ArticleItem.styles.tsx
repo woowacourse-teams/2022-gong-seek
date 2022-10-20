@@ -1,6 +1,5 @@
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
-import { TextOverflow } from '@/styles/mixin';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
