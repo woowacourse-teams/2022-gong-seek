@@ -4,6 +4,7 @@ import useGetAllHashTags from '@/hooks/hashTag/useGetAllHashTags';
 
 const useHandleHashTagState = () => {
 	const [targetHashTags, setTargetHashTags] = useState<{ name: string; isChecked: boolean }[]>([]);
+	const [totalHashTags, setTotalHashTags] = useState<{ name: string; isChecked: boolean }[]>([]);
 	const [selectedHashTags, setSelectedHashTags] = useState<string[]>([]);
 	const {
 		data: tagsOption,
@@ -19,19 +20,35 @@ const useHandleHashTagState = () => {
 					isChecked: false,
 				})),
 			);
+			setTotalHashTags(
+				tagsOption.tag.map((item) => ({
+					name: item,
+					isChecked: false,
+				})),
+			);
 		}
 	}, [isTagsOptionSuccess]);
 
 	useEffect(() => {
-		setSelectedHashTags(targetHashTags.filter((item) => item.isChecked).map((item) => item.name));
-	}, [targetHashTags]);
+		const selectedTargetHashTags = targetHashTags
+			.filter((item) => item.isChecked)
+			.map((item) => item.name);
+		const selectedTotalHashTags = totalHashTags
+			.filter((item) => item.isChecked)
+			.map((item) => item.name);
+
+		const selectedHashTagResult = new Set(selectedTargetHashTags.concat(selectedTotalHashTags));
+		setSelectedHashTags([...selectedHashTagResult]);
+	}, [targetHashTags, totalHashTags]);
 
 	return {
 		isTagsOptionLoading,
 		isTagsOptionSuccess,
 		targetHashTags,
+		totalHashTags,
 		selectedHashTags,
 		setTargetHashTags,
+		setTotalHashTags,
 	};
 };
 

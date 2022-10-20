@@ -22,7 +22,6 @@ import com.woowacourse.gongseek.vote.presentation.dto.VoteItemResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -36,7 +35,7 @@ class VoteControllerTest extends ControllerTest {
     @Test
     void 투표_생성_API_문서화() throws Exception {
         VoteCreateResponse response = new VoteCreateResponse(1L);
-        VoteCreateRequest request = new VoteCreateRequest(Set.of("오점 제육", "오점 편의점", "오점 서브웨이"),
+        VoteCreateRequest request = new VoteCreateRequest(List.of("오점 제육", "오점 편의점", "오점 서브웨이"),
                 LocalDateTime.now().plusDays(5));
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);
         given(jwtTokenProvider.getAccessTokenPayload(any())).willReturn("1");
@@ -70,7 +69,7 @@ class VoteControllerTest extends ControllerTest {
         List<VoteItemResponse> voteItemResponses = List.of(new VoteItemResponse(1L, "오점 제육", 10),
                 new VoteItemResponse(2L, "오점 서브웨이", 2));
         VoteResponse response = new VoteResponse(1L, voteItemResponses, 1L, false);
-        VoteCreateRequest request = new VoteCreateRequest(Set.of("오점 제육", "오점 편의점", "오점 서브웨이"),
+        VoteCreateRequest request = new VoteCreateRequest(List.of("오점 제육", "오점 편의점", "오점 서브웨이"),
                 LocalDateTime.now().plusDays(5));
 
         given(jwtTokenProvider.isValidAccessToken(any())).willReturn(true);

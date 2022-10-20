@@ -36,6 +36,9 @@ class TempArticleServiceTest extends IntegrationTest {
     private TempArticleRepository tempArticleRepository;
 
     @Autowired
+    private ArticleService articleService;
+
+    @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
@@ -148,5 +151,24 @@ class TempArticleServiceTest extends IntegrationTest {
         assertThatThrownBy(() -> tempArticleService.getOne(new LoginMember(member.getId()), tempArticle.getId()))
                 .isExactlyInstanceOf(TempArticleNotFoundException.class)
                 .hasMessageContaining("임시 게시글이 존재하지 않습니다.");
+    }
+
+    @Transactional
+    @Test
+    void 게시글을_생성하면_임시_게시글은_삭제된다() {
+        final TempArticle tempArticle = tempArticleRepository.save(TempArticle.builder()
+                .title(new Title("title"))
+                .content(new Content("content"))
+                .category(Category.QUESTION)
+                .member(member)
+                .tempTags(new TempTags(List.of("spring")))
+                .isAnonymous(false)
+                .build());
+        final ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), true, tempArticle.getId());
+
+        articleService.create(new LoginMember(member.getId()), articleRequest);
+
+        assertThat(tempArticleRepository.existsById(tempArticle.getId())).isFalse();
     }
 }

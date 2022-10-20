@@ -13,7 +13,7 @@ const Vote = ({ articleId }: { articleId: string }) => {
 	return (
 		<S.Container>
 			<S.VoteTitleBox>
-				<S.VoteTitle>{`투표(${data?.isExpired ? '만료' : '진행중'})`}</S.VoteTitle>
+				<S.VoteTitle>{`투표(${data?.expired ? '만료됨' : '진행중'})`}</S.VoteTitle>
 				<S.TotalVotesBox>
 					<MdOutlineHowToVote />
 					<S.TotalVotes>총 {totalCount}표</S.TotalVotes>
@@ -31,7 +31,7 @@ const Vote = ({ articleId }: { articleId: string }) => {
 							itemVotes={datum.amount}
 							articleId={articleId}
 							colorIdx={idx}
-							isExpired={data.isExpired}
+							expired={data.expired}
 						/>
 					))}
 			</S.VoteBox>

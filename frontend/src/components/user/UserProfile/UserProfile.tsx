@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import Loading from '@/components/@common/Loading/Loading';
 import * as S from '@/components/user/UserProfile/UserProfile.styles';
+import useSnackBar from '@/hooks/common/useSnackBar';
 import usePutUserProfile from '@/hooks/user/usePutUserProfile';
 import { queryClient } from '@/index';
 import { convertGithubAvatarUrlForResize } from '@/utils/converter';
-import { validatedEditInput } from '@/utils/validateInput';
+import { validatedUserNameInput } from '@/utils/validateInput';
 
 export interface UserProfileProps {
 	name: string;
@@ -15,11 +16,25 @@ export interface UserProfileProps {
 const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 	const [isEdit, setIsEdit] = useState(false);
 	const [editedName, setEditedName] = useState(name);
-	const { data, isLoading, isSuccess, onClickConfirmButton } = usePutUserProfile();
-	const isValidInput = validatedEditInput(editedName);
+	const { isLoading, isSuccess, handleClickUserConfirmButton } = usePutUserProfile();
+	const isValidInput = validatedUserNameInput(editedName);
+	const { showSnackBar } = useSnackBar();
 
-	const onClickEditIcon = () => {
+	const handleClickUserNameEditButton = () => {
 		setIsEdit(true);
+	};
+
+	const handleChangeUserNameEditInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setEditedName(e.target.value);
+	};
+
+	const handleClickUserNameConfirmButton = ({ editedName }: { editedName: string }) => {
+		if (validatedUserNameInput(editedName)) {
+			handleClickUserConfirmButton({ name: editedName });
+			setIsEdit(false);
+			return;
+		}
+		showSnackBar('유저의 이름은 최소 한글자 이상 255자 미만이여야 합니다');
 	};
 
 	useEffect(() => {
@@ -39,14 +54,14 @@ const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 						<S.EditUserNameBox>
 							<S.EditUserNameInput
 								value={editedName}
-								onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-									setEditedName(e.target.value);
-								}}
+								onChange={handleChangeUserNameEditInput}
+								minLength={1}
+								maxLength={255}
 							/>
 							<S.ConfirmButton
 								disabled={!isValidInput}
 								onClick={() => {
-									onClickConfirmButton({ name: editedName });
+									handleClickUserNameConfirmButton({ editedName });
 									setIsEdit(false);
 								}}
 							>
@@ -61,7 +76,7 @@ const UserProfile = ({ name, avatarUrl }: UserProfileProps) => {
 				) : (
 					<S.UserName>{name}</S.UserName>
 				)}
-				{!isEdit && <S.EditIcon onClick={onClickEditIcon} />}
+				{!isEdit && <S.EditIcon onClick={handleClickUserNameEditButton} />}
 			</S.UserNameBox>
 		</S.Container>
 	);

@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 export const Section = styled.section`
 	display: flex;
 	position: fixed;
-
+	left: 0;
 	bottom: 0;
 
 	justify-content: space-between;
@@ -55,7 +55,7 @@ export const MenuLink = styled(AiOutlineMenu)`
 
 		color: ${theme.colors.BLACK_500};
 
-		margin: ${theme.size.SIZE_016} ${theme.size.SIZE_016} ${theme.size.SIZE_016}0;
+		margin: ${theme.size.SIZE_016} ${theme.size.SIZE_016} ${theme.size.SIZE_016} 0;
 
 		cursor: pointer;
 

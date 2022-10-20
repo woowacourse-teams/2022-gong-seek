@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,13 +52,22 @@ public class Article extends BaseTimeEntity {
     private Member member;
 
     @Embedded
-    private Views views;
-
-    @Embedded
     private ArticleTags articleTags;
 
     @Column(nullable = false)
     private boolean isAnonymous;
+
+    @Embedded
+    private Views views;
+
+    @Embedded
+    private LikeCount likeCount;
+
+    @Embedded
+    private CommentCount commentCount;
+
+    @Version
+    private long version;
 
     public Article(String title, String content, Category category, Member member, boolean isAnonymous) {
         this(
@@ -66,9 +76,12 @@ public class Article extends BaseTimeEntity {
                 new Content(content),
                 category,
                 member,
-                new Views(),
                 new ArticleTags(),
-                isAnonymous
+                isAnonymous,
+                new Views(),
+                new LikeCount(),
+                new CommentCount(),
+                0
         );
     }
 
@@ -78,6 +91,22 @@ public class Article extends BaseTimeEntity {
 
     public void addViews() {
         views.addValue();
+    }
+
+    public void addLikeCount() {
+        likeCount.addValue();
+    }
+
+    public void minusLikeCount() {
+        likeCount.minusValue();
+    }
+
+    public void addCommentCount() {
+        commentCount.addValue();
+    }
+
+    public void minusCommentCount() {
+        commentCount.minusValue();
     }
 
     public void update(String title, String content, Tags tags) {
@@ -107,8 +136,16 @@ public class Article extends BaseTimeEntity {
         return member.getMemberOrAnonymous(isAnonymous);
     }
 
-    public int getViews() {
+    public long getViews() {
         return views.getValue();
+    }
+
+    public long getLikeCount() {
+        return likeCount.getValue();
+    }
+
+    public long getCommentCount() {
+        return commentCount.getValue();
     }
 
     public List<Long> getTagIds() {
@@ -117,5 +154,9 @@ public class Article extends BaseTimeEntity {
 
     public List<String> getTagNames() {
         return this.articleTags.getTagNames();
+    }
+
+    public void updateLikeCountBatch(long likeCount) {
+        this.likeCount.updateValue(likeCount);
     }
 }

@@ -31,9 +31,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePreviewResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
@@ -46,7 +46,6 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -150,7 +149,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         false,
-                                        1,
+                                        1L,
                                         false,
                                         false,
                                         0L,
@@ -186,7 +185,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         anonymousAuthor,
                                         "content",
                                         false,
-                                        1,
+                                        1L,
                                         false,
                                         false,
                                         0L,
@@ -222,7 +221,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         true,
-                                        1,
+                                        1L,
                                         false,
                                         false,
                                         0L,
@@ -258,7 +257,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         anonymousAuthor,
                                         "content",
                                         true,
-                                        1,
+                                        1L,
                                         false,
                                         false,
                                         0L,
@@ -295,7 +294,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         true,
-                                        2,
+                                        2L,
                                         false,
                                         false,
                                         0L,
@@ -498,7 +497,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //when
         ExtractableResponse<Response> response = 게시글_전체를_조회한다("all", "latest", null, null);
         ArticlePageResponse firstResponse = response.as(ArticlePageResponse.class);
-        List<ArticlePreviewResponse> firstArticles = firstResponse.getArticles();
+        List<ArticlePreviewDto> firstArticles = firstResponse.getArticles();
 
         ExtractableResponse<Response> secondResponse = 게시글_전체를_조회한다("all", "latest",
                 firstArticles.get(firstArticles.size() - 1).getId(), null);
@@ -513,17 +512,17 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt")
                         .isEqualTo(
-                                new ArticlePreviewResponse(
+                                new ArticlePreviewDto(
                                         10L,
                                         "title",
                                         List.of("SPRING"),
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         "discussion",
+                                        2L,
                                         0L,
-                                        2,
+                                        0L,
                                         false,
-                                        0L,
                                         LocalDateTime.now()
                                 )
                         )
@@ -542,9 +541,9 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         //when
         ExtractableResponse<Response> response = 게시글_전체를_조회한다("all", "views", null, null);
         ArticlePageResponse firstResponse = response.as(ArticlePageResponse.class);
-        List<ArticlePreviewResponse> firstArticles = firstResponse.getArticles();
+        List<ArticlePreviewDto> firstArticles = firstResponse.getArticles();
 
-        ArticlePreviewResponse lastArticle = firstArticles.get(firstArticles.size() - 1);
+        ArticlePreviewDto lastArticle = firstArticles.get(firstArticles.size() - 1);
         ExtractableResponse<Response> secondResponse = 게시글_전체를_조회한다("all", "views",
                 lastArticle.getId(), lastArticle.getViews());
         ArticlePageResponse secondArticles = secondResponse.as(ArticlePageResponse.class);
@@ -558,17 +557,17 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt", "id")
                         .isEqualTo(
-                                new ArticlePreviewResponse(
+                                new ArticlePreviewDto(
                                         16L,
                                         "title",
                                         List.of("SPRING"),
                                         new AuthorDto("주디", "https://avatars.githubusercontent.com/u/78091011?v=4"),
                                         "content",
                                         "question",
+                                        1L,
                                         0L,
-                                        1,
+                                        0L,
                                         false,
-                                        0L,
                                         LocalDateTime.now()
                                 )
                         )
@@ -602,7 +601,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                         .usingRecursiveComparison()
                         .ignoringFields("createdAt", "id")
                         .isEqualTo(
-                                new ArticlePreviewResponse(
+                                new ArticlePreviewDto(
                                         1L,
                                         "title",
                                         List.of("SPRING"),
@@ -610,9 +609,9 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                                         "content",
                                         "discussion",
                                         1L,
-                                        1,
-                                        false,
+                                        1L,
                                         0L,
+                                        false,
                                         LocalDateTime.now()
                                 )
                         )
@@ -632,7 +631,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
 
         List<Long> ids = articlePageResponse.getArticles().stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
         //then
         assertAll(
@@ -655,7 +654,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
 
         List<Long> ids = articlePageResponse.getArticles().stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .limit(5)
                 .collect(Collectors.toList());
 
@@ -679,7 +678,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
 
         List<Long> ids = articlePageResponse.getArticles().stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         //then
@@ -703,7 +702,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
 
         List<Long> ids = articlePageResponse.getArticles().stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         //then
@@ -919,14 +918,14 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         게시글을_추천한다(엑세스토큰, 게시글2);
 
         토론_게시글을_기명으로_등록한다(엑세스토큰);
-        //when
 
+        //when
         ExtractableResponse<Response> response = 게시글_전체를_추천순으로_조회한다(Category.DISCUSSION.getValue(), null,
                 null, 2);
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
 
         List<Long> ids = articlePageResponse.getArticles().stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         //then
@@ -956,7 +955,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);
 
         List<Long> ids = articlePageResponse.getArticles().stream()
-                .map(ArticlePreviewResponse::getId)
+                .map(ArticlePreviewDto::getId)
                 .collect(Collectors.toList());
 
         //then
@@ -1000,7 +999,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticleIdResponse articleIdResponse = 기명으로_게시글을_등록한다(tokenResponse, Category.DISCUSSION).as(
                 ArticleIdResponse.class);
         투표를_생성한다(tokenResponse, articleIdResponse.getId(),
-                new VoteCreateRequest(Set.of("1번 주제", "2번 주제"), LocalDateTime.now().plusDays(7)));
+                new VoteCreateRequest(List.of("1번 주제", "2번 주제"), LocalDateTime.now().plusDays(7)));
 
         // when
         ExtractableResponse<Response> response = 로그인_후_게시글을_삭제한다(tokenResponse, articleIdResponse);
@@ -1016,7 +1015,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         ArticleIdResponse articleIdResponse = 기명으로_게시글을_등록한다(tokenResponse, Category.DISCUSSION).as(
                 ArticleIdResponse.class);
         투표를_생성한다(tokenResponse, articleIdResponse.getId(),
-                new VoteCreateRequest(Set.of("1번 주제", "2번 주제"), LocalDateTime.now().plusDays(7)));
+                new VoteCreateRequest(List.of("1번 주제", "2번 주제"), LocalDateTime.now().plusDays(7)));
         투표를_한다(tokenResponse, articleIdResponse.getId(), new SelectVoteItemIdRequest(1L));
         // when
         ExtractableResponse<Response> response = 로그인_후_게시글을_삭제한다(tokenResponse, articleIdResponse);

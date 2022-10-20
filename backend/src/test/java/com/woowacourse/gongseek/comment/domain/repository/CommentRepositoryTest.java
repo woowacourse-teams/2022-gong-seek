@@ -20,8 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @RepositoryTest
 class CommentRepositoryTest {
 
-    private final Member member = new Member("jurl", "jurlring", "");
-    private final Article article = new Article("title", "content", Category.QUESTION, member, false);
+    private Member member;
+    private Article article;
 
     @Autowired
     private CommentRepository commentRepository;
@@ -34,8 +34,8 @@ class CommentRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        memberRepository.save(member);
-        articleRepository.save(article);
+        member = memberRepository.save(new Member("jurl", "jurlring", ""));
+        article = articleRepository.save(new Article("title", "content", Category.QUESTION, this.member, false));
     }
 
     @Test
@@ -97,5 +97,15 @@ class CommentRepositoryTest {
         List<Comment> comments = commentRepository.findAllByMemberId(member.getId());
 
         assertThat(comments).contains(firstComment, secondComment);
+    }
+
+    @Test
+    void 게시글에_작성된_댓글_수를_조회한다() {
+        commentRepository.save(new Comment("content1", member, article, false));
+        commentRepository.save(new Comment("content2", member, article, false));
+
+        Long count = commentRepository.countByArticleId(article.getId());
+
+        assertThat(count).isEqualTo(2);
     }
 }

@@ -6,6 +6,7 @@ import Loading from '@/components/@common/Loading/Loading';
 import ArticleItem from '@/components/article/ArticleItem/ArticleItem';
 import * as S from '@/components/search/SearchResult/SearchResult.styles';
 import useGetSearch from '@/hooks/search/useGetSearch';
+import { CommonArticleType } from '@/types/articleResponse';
 
 const ResponsiveInfiniteCardList = React.lazy(
 	() => import('@/components/@common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList'),
@@ -18,6 +19,10 @@ const SearchResult = ({ target, searchIndex }: { target: string; searchIndex: st
 	useEffect(() => {
 		refetch();
 	}, [target, searchIndex]);
+
+	const handleClickArticleItem = (article: CommonArticleType) => {
+		navigate(`/articles/${article.category}/${article.id}`);
+	};
 
 	if (isLoading || isIdle) {
 		return <Loading />;
@@ -38,9 +43,7 @@ const SearchResult = ({ target, searchIndex }: { target: string; searchIndex: st
 									<ArticleItem
 										key={article.id}
 										article={article}
-										onClick={() => {
-											navigate(`/articles/${article.category}/${article.id}`);
-										}}
+										onClick={() => handleClickArticleItem(article)}
 									/>
 								)),
 							)}

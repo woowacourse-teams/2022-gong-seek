@@ -29,10 +29,14 @@ export const UserProfile = styled.img`
 export const UserName = styled.div`
 	text-align: center;
 	font-size: ${({ theme }) => theme.size.SIZE_014};
+	overflow: hidden;
+	width: 80%;
+	text-overflow: ellipsis;
 `;
 
 export const UserNameBox = styled.div`
 	display: flex;
+	justify-content: center;
 	gap: ${({ theme }) => theme.size.SIZE_016};
 
 	align-items: center;

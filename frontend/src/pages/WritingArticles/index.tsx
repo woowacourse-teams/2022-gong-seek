@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { postImageUrlConverter } from '@/api/image';
 import AnonymousCheckBox from '@/components/@common/AnonymousCheckBox/AnonymousCheckBox';
 import Card from '@/components/@common/Card/Card';
 import Loading from '@/components/@common/Loading/Loading';
@@ -13,6 +12,7 @@ import useGetTempDetailArticles from '@/hooks/tempArticle/useGetTempDetailArticl
 import usePostTempArticle from '@/hooks/tempArticle/usePostTempArticle';
 import * as S from '@/pages/WritingArticles/index.styles';
 import { WritingCategoryCardStyle, WritingTitleCardStyle } from '@/styles/cardStyle';
+import { takeToastImgEditor } from '@/utils/takeToastImgEditor';
 
 const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 	const { category } = useParams();
@@ -50,7 +50,7 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 	} = useGetTempDetailArticles({ tempArticleId });
 
 	useEffect(() => {
-		const timerInterval = setInterval(handleTempSavedButtonClick, 120000);
+		const timerInterval = setInterval(handleClickTemporaryStoreButton, 120000);
 
 		return () => clearInterval(timerInterval);
 	}, []);
@@ -85,23 +85,12 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 	}, [isTempDetailArticleSuccess]);
 
 	useEffect(() => {
-		if (content.current) {
-			content.current.getInstance().removeHook('addImageBlobHook');
-			content.current.getInstance().addHook('addImageBlobHook', (blob, callback) => {
-				(async () => {
-					const formData = new FormData();
-
-					formData.append('imageFile', blob);
-					const url = await postImageUrlConverter(formData);
-					callback(url, 'alt-text');
-				})();
-			});
-		}
+		takeToastImgEditor(content);
 	}, [content]);
 
 	if (isLoading) return <Loading />;
 
-	const handleTempSavedButtonClick = () => {
+	const handleClickTemporaryStoreButton = () => {
 		if (titleInputRef.current && titleInputRef.current.value === '') {
 			showSnackBar('제목을 입력해주세요!');
 			titleInputRef.current.focus();
@@ -118,6 +107,10 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 				content: content.current?.getInstance().getMarkdown(),
 			});
 		}
+	};
+
+	const handleChangeCategorySelector = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		setCategoryOption(e.target.value);
 	};
 
 	const preventRefresh = (e: BeforeUnloadEvent) => {
@@ -147,7 +140,7 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 								name="writing"
 								required
 								value={categoryOption}
-								onChange={(e) => setCategoryOption(e.target.value)}
+								onChange={handleChangeCategorySelector}
 							>
 								<option value="" disabled>
 									카테고리를 선택해주세요
@@ -162,7 +155,7 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 				</S.OptionBox>
 			</S.SelectorBox>
 			<S.TemporaryStoreButtonBox>
-				<S.TemporaryStoreButton onClick={handleTempSavedButtonClick}>
+				<S.TemporaryStoreButton onClick={handleClickTemporaryStoreButton}>
 					임시저장
 				</S.TemporaryStoreButton>
 			</S.TemporaryStoreButtonBox>

@@ -36,7 +36,7 @@ public class ArticleController {
             @AuthenticationPrinciple AppMember appMember,
             @Valid @RequestBody ArticleRequest articleRequest
     ) {
-        ArticleIdResponse articleIdResponse = articleService.save(appMember, articleRequest);
+        ArticleIdResponse articleIdResponse = articleService.create(appMember, articleRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(articleIdResponse);
     }
 
@@ -65,7 +65,7 @@ public class ArticleController {
             @RequestParam String category,
             @RequestParam String sort,
             @RequestParam(required = false) Long cursorId,
-            @RequestParam(required = false) Integer cursorViews,
+            @RequestParam(required = false) Long cursorViews,
             Pageable pageable,
             @AuthenticationPrinciple AppMember appMember
     ) {
