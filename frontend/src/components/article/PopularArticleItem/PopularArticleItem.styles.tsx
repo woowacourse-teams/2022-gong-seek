@@ -47,8 +47,26 @@ export const IconContainer = styled.div`
 	font-weight: 400;
 `;
 
+export const ProfileBox = styled.div`
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+`;
+
+export const SubInfoBox = styled.div`
+	display: flex;
+	width: 80%;
+	justify-content: space-between;
+	align-items: center;
+`;
+
 export const AuthorNameText = styled.div`
 	color: ${({ theme }) => theme.colors.WHITE};
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	max-width: 80%;
+	text-align: center;
 `;
 
 export const PopularArticleUserProfile = styled(UserProfile)`

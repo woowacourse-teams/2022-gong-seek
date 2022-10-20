@@ -8,8 +8,6 @@ export const validatedTitleInput = (titleInput: string) =>
 export const validatedHashTagInput = (targetInput: string) =>
 	targetInput.length >= 2 && targetInput.length <= 20;
 
-export const validatedEditInput = (targetInput: string) => targetInput.length >= 1;
-
 export const validatedVoteItemInputLength = (targetInput: string) =>
 	targetInput.length > 0 && targetInput.length <= 300;
 
@@ -25,6 +23,9 @@ export const validatedVoteItemsQuantity = (options: string[]) =>
 
 export const validatedCommentInput = (targetInput: string) =>
 	targetInput.length >= 1 && targetInput.length <= 10000;
+
+export const validatedUserNameInput = (targetInput: string) =>
+	targetInput.length >= 1 && targetInput.length < 255;
 
 export const hasModal = (
 	modalType: ModalStateType['modalType'] | undefined,
