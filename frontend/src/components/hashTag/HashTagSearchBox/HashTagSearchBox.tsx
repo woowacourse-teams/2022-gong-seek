@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import HashTagClickSearchBox from '@/components/hashTag/HashTagClickSearchBox/HashTagClickSearchBox';
 import * as S from '@/components/hashTag/HashTagSearchBox/HashTagSearchBox.styles';
 
 export interface HashTagSearchBoxProps {
@@ -8,62 +9,84 @@ export interface HashTagSearchBoxProps {
 }
 
 const HashTagSearchBox = ({ targets, setTargets }: HashTagSearchBoxProps) => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [hashTagSearchText, setHashTagSearchText] = useState('');
+	const [hashTagSearchResult, setHashTagSearchResult] = useState<
+		HashTagSearchBoxProps['targets'] | []
+	>([]);
+	const [hashTagResultDescription, setHashTagResultDescription] = useState('');
 
-	const handleClickHashTagItem = (target: string) => {
-		setTargets(
-			targets.map((item) => {
-				if (item.name === target) {
-					return {
-						name: item.name,
-						isChecked: !item.isChecked,
-					};
+	useEffect(() => {
+		searchTargetHashTag();
+	}, [hashTagSearchText]);
+
+	const handleChangeHashTagSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setHashTagSearchText(e.target.value);
+	};
+
+	const handleSubmitHashTagSearch = () => {
+		setHashTagSearchText('');
+		searchTargetHashTag();
+	};
+
+	const searchTargetHashTag = () => {
+		if (hashTagSearchText.length === 0) {
+			setHashTagSearchResult([]);
+			return;
+		}
+		if (targets.length === 0) {
+			setHashTagResultDescription('해시태그가 존재하지 않습니다');
+			setHashTagSearchResult([]);
+		}
+		if (targets.length >= 1) {
+			const searchedHashTags = targets.filter((item) => {
+				const names = item.name.trim();
+				if (names.includes(hashTagSearchText)) {
+					return item;
 				}
-				return {
-					name: item.name,
-					isChecked: item.isChecked,
-				};
-			}),
-		);
+			});
+			if (searchedHashTags.length < 1) {
+				setHashTagResultDescription('해시태그가 존재하지 않습니다');
+				setHashTagSearchResult([]);
+				return;
+			}
+			setHashTagSearchResult(searchedHashTags);
+		}
 	};
-
-	const handleClickHashTagButton = () => {
-		setIsOpen((prev) => !prev);
-	};
-
 	return (
 		<S.Container>
-			<h2 hidden>해시태그들을 보여주는 곳입니다</h2>
-			<S.HashTagLists aria-label="검색하고 싶은 해시태그들을 클릭해주세요">
-				{targets.slice(0, 5).map((item) => (
-					<S.HashTagItem
-						key={item.name}
-						isChecked={item.isChecked}
-						onClick={() => handleClickHashTagItem(item.name)}
-					>
-						{item.name}
-					</S.HashTagItem>
-				))}
-				{isOpen &&
-					targets.slice(5).map((item) => (
-						<S.HashTagItem
-							key={item.name}
-							isChecked={item.isChecked}
-							onClick={() => handleClickHashTagItem(item.name)}
-						>
-							{item.name}
-						</S.HashTagItem>
-					))}
-
-				{targets.length > 5 && !isOpen && (
-					<S.OpenButton
-						onClick={() => {
-							setIsOpen(!isOpen);
-						}}
+			<S.SearchBarBox
+				onSubmit={(e) => {
+					e.preventDefault();
+					handleSubmitHashTagSearch();
+				}}
+			>
+				<S.SearchBar
+					role="search"
+					placeholder="찾고 싶으신 해시태그를 입력해주세요"
+					value={hashTagSearchText}
+					onChange={handleChangeHashTagSearchInput}
+				/>
+				<S.SearchButtonBox type="button">
+					<S.SearchButton
+						role="button"
+						aria-label="해시태그가 존재하는지 검색합니다"
+						onClick={handleSubmitHashTagSearch}
+					/>
+				</S.SearchButtonBox>
+			</S.SearchBarBox>
+			<S.HashTagListBox>
+				{hashTagSearchResult.length < 1 ? (
+					<S.HashTagSearchResultDescription>
+						{hashTagResultDescription}
+					</S.HashTagSearchResultDescription>
+				) : (
+					<HashTagClickSearchBox
+						targets={hashTagSearchResult}
+						setTargets={setTargets}
+						setSelectedTargets={setHashTagSearchResult}
 					/>
 				)}
-				{isOpen && <S.CloseButton onClick={handleClickHashTagButton} />}
-			</S.HashTagLists>
+			</S.HashTagListBox>
 		</S.Container>
 	);
 };

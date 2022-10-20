@@ -1,11 +1,11 @@
-import HashTagSearchBox, {
-	HashTagSearchBoxProps,
-} from '@/components/hashTag/HashTagSearchBox/HashTagSearchBox';
+import HashTagClickSearchBox, {
+	HashTagClickSearchBoxProps,
+} from '@/components/hashTag/HashTagClickSearchBox/HashTagClickSearchBox';
 import { Meta, Story } from '@storybook/react';
 
 export default {
-	title: 'HashTag/HashTagSearchBox',
-	component: HashTagSearchBox,
+	title: 'HashTag/HashTagClickSearchBox',
+	component: HashTagClickSearchBox,
 	decorators: [
 		(Story) => (
 			<div style={{ width: '320px' }}>
@@ -15,7 +15,7 @@ export default {
 	],
 } as Meta;
 
-const Template: Story<HashTagSearchBoxProps> = (args) => <HashTagSearchBox {...args} />;
+const Template: Story<HashTagClickSearchBoxProps> = (args) => <HashTagClickSearchBox {...args} />;
 
 export const DefaultHashTagSearchBox = Template.bind({});
 DefaultHashTagSearchBox.args = {
