@@ -24,7 +24,7 @@ export const HashTagSelectTitle = styled.div`
 `;
 
 export const HashTagSearchBoxContainer = styled.div`
-	width: 90%;
+	width: 80%;
 
 	margin-bottom: ${({ theme }) => theme.size.SIZE_020};
 `;
