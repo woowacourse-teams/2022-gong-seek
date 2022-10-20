@@ -10,7 +10,7 @@ export const takeToastImgEditor = (content: MutableRefObject<Editor | null>) => 
 			(async () => {
 				const formData = new FormData();
 				formData.append('file', blob);
-				const { url } = await postImageUrlConverter(formData);
+				const url = await postImageUrlConverter(formData);
 				callback(url, 'alt-text');
 			})();
 		});

@@ -13,5 +13,5 @@ export const postImageUrlConverter = async (formData: FormData) => {
 		},
 	});
 
-	return response.data.imageUrl;
+	return response.data.url;
 };
