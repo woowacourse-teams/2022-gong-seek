@@ -1,4 +1,7 @@
-import { AllArticleResponse, ArticleType } from '@/types/articleResponse';
+import {
+	DetailArticleResponseType,
+	TotalArticleInquiredResponseType,
+} from '@/api/article/articleType';
 import { convertSort } from '@/utils/converter';
 import { generateAxiosInstanceWithAccessToken } from '@/utils/generateAxiosInstance';
 
@@ -13,14 +16,9 @@ export const postWritingArticle = (article: WritingArticles) => {
 	return axiosInstance.post('/api/articles', article);
 };
 
-export interface PopularArticles {
-	articles: ArticleType[];
-	hastNext: boolean;
-}
-
 export const getPopularArticles = async () => {
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
-	const { data } = await axiosInstance.get<PopularArticles>(
+	const { data } = await axiosInstance.get<TotalArticleInquiredResponseType>(
 		'/api/articles?category=all&sort=views&size=10',
 	);
 	return data;
@@ -28,7 +26,7 @@ export const getPopularArticles = async () => {
 
 export const getDetailArticle = async (id: string) => {
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
-	const { data } = await axiosInstance.get<ArticleType>(`/api/articles/${id}`);
+	const { data } = await axiosInstance.get<DetailArticleResponseType>(`/api/articles/${id}`);
 
 	return data;
 };
@@ -73,7 +71,7 @@ export const getAllArticleByViewsOrLatest = async ({
 }) => {
 	const currentSort = convertSort(sort);
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
-	const { data } = await axiosInstance.get<AllArticleResponse>(
+	const { data } = await axiosInstance.get<TotalArticleInquiredResponseType>(
 		`/api/articles?category=${category}&sort=${currentSort}&cursorId=${cursorId}&cursorViews=${cursorViews}&size=6`,
 	);
 	return {
@@ -105,7 +103,7 @@ export const getAllArticlesByLikes = async ({
 }) => {
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
 
-	const { data } = await axiosInstance.get<AllArticleResponse>(
+	const { data } = await axiosInstance.get<TotalArticleInquiredResponseType>(
 		`/api/articles/likes?category=${category}&cursorId=${cursorId}&cursorLikes=${cursorLikes}&size=6`,
 	);
 
