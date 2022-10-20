@@ -54,16 +54,16 @@ export const registerVoteItems = ({
 
 export const checkVoteItems = ({
 	articleId,
-	voteItemId,
+	votedItemId,
 }: {
 	articleId: string;
-	voteItemId: string;
+	votedItemId: string;
 }) => {
 	const accessToken = localStorage.getItem(ACCESSTOKEN_KEY);
 
 	return axios.post(
 		`${HOME_URL}/api/articles/${articleId}/votes/do`,
-		{ voteItemId },
+		{ votedItemId },
 		{
 			headers: {
 				'Access-Control-Allow-Origin': '*',

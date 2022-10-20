@@ -7,7 +7,7 @@ import { convertIdxToVoteColorKey } from '@/utils/converter';
 const VOTE_ITEM_PROGRESSIVE_TIEM = 1;
 
 export interface VoteItemProps {
-	voteItemId: number;
+	votedItemId: number;
 	title: string;
 	itemVotes: number;
 	totalVotes: number;
@@ -18,7 +18,7 @@ export interface VoteItemProps {
 }
 
 const VoteItem = ({
-	voteItemId,
+	votedItemId,
 	title,
 	itemVotes,
 	totalVotes,
@@ -38,7 +38,7 @@ const VoteItem = ({
 					type="radio"
 					name={articleId}
 					onChange={() => {
-						handleChangeVoteSelectButton(articleId, voteItemId);
+						handleChangeVoteSelectButton(articleId, votedItemId);
 					}}
 					disabled={isExpired}
 					checked={isVoted}

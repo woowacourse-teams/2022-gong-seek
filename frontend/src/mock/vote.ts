@@ -59,7 +59,7 @@ export const VoteHandler = [
 			const mockVotes = data ? (JSON.parse(data) as TVote[]) : [];
 
 			const { articleId } = req.params;
-			const { voteItemId } = req.body;
+			const { votedItemId } = req.body;
 
 			const vote = mockVotes.find((mockVote) => mockVote.articleId === articleId);
 			if (typeof vote === 'undefined') {

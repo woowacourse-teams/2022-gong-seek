@@ -11,7 +11,7 @@ const usePostVoteItem = (articleId: string) => {
 	const { error, mutate, isError, isSuccess, isLoading } = useMutation<
 		unknown,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
-		{ articleId: string; voteItemId: string }
+		{ articleId: string; votedItemId: string }
 	>(checkVoteItems);
 
 	useEffect(() => {
@@ -23,7 +23,7 @@ const usePostVoteItem = (articleId: string) => {
 	useThrowCustomError(isError, error);
 
 	const handleChangeVoteSelectButton = (articleId: string, idx: number) => {
-		mutate({ articleId, voteItemId: String(idx) });
+		mutate({ articleId, votedItemId: String(idx) });
 	};
 
 	return { handleChangeVoteSelectButton, isLoading, isSuccess };
