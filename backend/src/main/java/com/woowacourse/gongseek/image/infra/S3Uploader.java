@@ -1,22 +1,20 @@
 package com.woowacourse.gongseek.image.infra;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.woowacourse.gongseek.image.exception.FileUploadFailException;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetUrlRequest;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @RequiredArgsConstructor
 @Component
 public class S3Uploader {
 
-    private final S3Client s3Client;
+    private final AmazonS3 amazonS3;
 
     @Value("${application.bucket.name}")
     private String bucket;
@@ -24,38 +22,30 @@ public class S3Uploader {
     @Value("${application.cloudfront.url}")
     private String cloudFrontUrl;
 
-    public String upload(final MultipartFile uploadImageFile) {
+    public String upload(final MultipartFile uploadImageFile, final String fileName) {
+        putImageFileToS3(uploadImageFile, fileName);
+        return createUploadUrl(fileName);
+    }
+
+    private void putImageFileToS3(final MultipartFile uploadImageFile, final String fileName) {
         try {
-            s3Client.putObject(getPutObjectRequest(uploadImageFile), getRequestBody(uploadImageFile));
-            return cloudFrontUrl + getUrl(uploadImageFile);
+            amazonS3.putObject(new PutObjectRequest(bucket,
+                    fileName,
+                    uploadImageFile.getInputStream(),
+                    createObjectMetaData(uploadImageFile)));
         } catch (IOException e) {
             throw new FileUploadFailException();
         }
     }
 
-    private PutObjectRequest getPutObjectRequest(final MultipartFile uploadImageFile) {
-        return PutObjectRequest.builder()
-                .bucket(bucket)
-                .key(uploadImageFile.getOriginalFilename())
-                .contentType(uploadImageFile.getContentType())
-                .contentLength(uploadImageFile.getSize())
-                .build();
+    private String createUploadUrl(final String fileName) {
+        return cloudFrontUrl.concat(fileName);
     }
 
-    private static RequestBody getRequestBody(final MultipartFile uploadImageFile) throws IOException {
-        return RequestBody.fromByteBuffer(ByteBuffer.wrap(uploadImageFile.getBytes()));
-    }
-
-    private String getUrl(final MultipartFile uploadImageFile) {
-        return s3Client.utilities()
-                .getUrl(getUrlRequest(uploadImageFile))
-                .getPath();
-    }
-
-    private GetUrlRequest getUrlRequest(final MultipartFile uploadImageFile) {
-        return GetUrlRequest.builder()
-                .bucket(bucket)
-                .key(uploadImageFile.getOriginalFilename())
-                .build();
+    private ObjectMetadata createObjectMetaData(final MultipartFile uploadImageFile) {
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType(uploadImageFile.getContentType());
+        objectMetadata.setContentLength(uploadImageFile.getSize());
+        return objectMetadata;
     }
 }
