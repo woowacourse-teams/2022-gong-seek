@@ -23,8 +23,8 @@ const Vote = ({ articleId }: { articleId: string }) => {
 				{data &&
 					data.voteItems.map((datum, idx) => (
 						<VoteItem
-							votedItemId={datum.id}
-							isVoted={data.votedItemId === datum.id}
+							voteItemId={datum.id}
+							isVoted={data.voteItemId === datum.id}
 							key={datum.id}
 							title={datum.content}
 							totalVotes={totalCount}
