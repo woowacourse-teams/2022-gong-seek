@@ -44,7 +44,7 @@ const VoteItem = ({
 					checked={isVoted}
 				/>
 				<S.Title isVoted={isVoted} expired={expired}>
-					<p>{title}</p>
+					<S.VoteName>{title}</S.VoteName>
 					<S.ItemVotes>{`(${itemVotes}표)`}</S.ItemVotes>
 				</S.Title>
 			</S.TitleBox>
