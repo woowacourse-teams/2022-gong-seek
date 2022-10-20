@@ -20,10 +20,7 @@ const UserCommentItem = ({ comment }: { comment: UserComment }) => {
 				<S.ArticleTitle>{articleTitle}</S.ArticleTitle>
 			</S.ArticleBox>
 
-			<S.ContentBox>
-				<S.ContentLabel>댓글: </S.ContentLabel>
-				{content}
-			</S.ContentBox>
+			<S.ContentBox>{`댓글: ${content}`}</S.ContentBox>
 			<S.CommentTime>
 				{updatedAt.length !== 0 ? dateTimeConverter(updatedAt) : dateTimeConverter(createdAt)}
 			</S.CommentTime>

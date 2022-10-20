@@ -18,3 +18,10 @@ export const TwoLineTextOverFlow = css`
 	line-height: 1.5;
 	height: 3rem;
 `;
+
+export const OneLineTextOverFlow = css`
+	${TextOverflow}
+	-webkit-line-clamp: 1;
+	line-height: 1.5;
+	height: 1.5rem;
+`;

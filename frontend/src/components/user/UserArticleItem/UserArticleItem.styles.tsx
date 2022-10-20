@@ -1,6 +1,6 @@
 import { AiOutlineMessage } from 'react-icons/ai';
 
-import { TextOverflow } from '@/styles/mixin';
+import { OneLineTextOverFlow } from '@/styles/mixin';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -53,7 +53,7 @@ export const ArticleTitleBox = styled.div`
 export const ArticleTitle = styled.div`
 	width: 80%;
 
-	${TextOverflow}
+	${OneLineTextOverFlow}
 
 	${({ theme }) => css`
 		font-size: ${theme.size.SIZE_016};

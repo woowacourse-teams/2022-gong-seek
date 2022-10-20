@@ -1,6 +1,7 @@
 import { AiOutlineDelete, AiOutlineEdit, AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
 
+import { OneLineTextOverFlow } from '@/styles/mixin';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -53,9 +54,7 @@ export const UserProfileImg = styled.img`
 `;
 
 export const UserName = styled.span`
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
+	${OneLineTextOverFlow}
 	width: fit-content;
 `;
 
