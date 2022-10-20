@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { useQuery } from 'react-query';
 
-import { getUserInfo } from '@/api/myPage';
+import { getUserInfo } from '@/api/user/myPage';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { Author } from '@/types/author';

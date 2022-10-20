@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
-import { postWritingArticle } from '@/api/article';
+import { postWritingArticle } from '@/api/article/article';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { CATEGORY } from '@/constants/categoryType';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';

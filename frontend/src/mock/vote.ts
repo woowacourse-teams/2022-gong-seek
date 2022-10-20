@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-import { TVote } from '@/api/vote';
+import { TVote } from '@/api/vote/vote';
 import { HOME_URL } from '@/constants/apiUrl';
 
 export const VoteHandler = [

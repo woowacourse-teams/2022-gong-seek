@@ -2,7 +2,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 
-import { deleteLikeArticle, postAddLikeArticle } from '@/api/like';
+import { deleteLikeArticle, postAddLikeArticle } from '@/api/article/like';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 

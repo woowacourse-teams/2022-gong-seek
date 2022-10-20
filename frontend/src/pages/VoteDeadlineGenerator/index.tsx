@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
-import { registerVoteItems } from '@/api/vote';
+import { registerVoteItems } from '@/api/vote/vote';
 import Loading from '@/components/@common/Loading/Loading';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useLocationState from '@/hooks/common/useLocationState';

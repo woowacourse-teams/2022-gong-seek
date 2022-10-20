@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useInfiniteQuery } from 'react-query';
 
-import { getArticleByHashTag } from '@/api/search';
+import { getArticleByHashTag } from '@/api/search/search';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { InfiniteHashTagSearchResultType } from '@/types/searchResponse';

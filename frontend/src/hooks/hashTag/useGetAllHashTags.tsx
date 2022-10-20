@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { useQuery } from 'react-query';
 
-import { getAllHashTag } from '@/api/hashTag';
+import { getAllHashTag } from '@/api/hashTag/hashTag';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 

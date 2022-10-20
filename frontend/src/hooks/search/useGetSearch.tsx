@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { useInfiniteQuery } from 'react-query';
 
-import { getSearchResult } from '@/api/search';
+import { getSearchResult } from '@/api/search/search';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { InfiniteSearchResultType } from '@/types/searchResponse';

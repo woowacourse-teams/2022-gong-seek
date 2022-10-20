@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
 
-import { getAllArticle } from '@/api/article';
+import { getAllArticle } from '@/api/article/article';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { infiniteArticleResponse } from '@/types/articleResponse';

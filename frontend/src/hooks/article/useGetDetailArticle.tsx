@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { useSetRecoilState } from 'recoil';
 
-import { getDetailArticle } from '@/api/article';
+import { getDetailArticle } from '@/api/article/article';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { articleState } from '@/store/articleState';

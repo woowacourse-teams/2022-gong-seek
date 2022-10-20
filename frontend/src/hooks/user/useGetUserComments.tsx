@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { useQuery } from 'react-query';
 
-import { getUserComments } from '@/api/myPage';
+import { getUserComments } from '@/api/user/myPage';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { UserCommentResponse } from '@/types/commentResponse';

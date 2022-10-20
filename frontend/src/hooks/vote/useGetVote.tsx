@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
-import { getVoteItems, TVote } from '@/api/vote';
+import { getVoteItems, TVote } from '@/api/vote/vote';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 

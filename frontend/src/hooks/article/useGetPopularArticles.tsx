@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { useQuery } from 'react-query';
 
-import { getPopularArticles, PopularArticles } from '@/api/article';
+import { getPopularArticles, PopularArticles } from '@/api/article/article';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 
