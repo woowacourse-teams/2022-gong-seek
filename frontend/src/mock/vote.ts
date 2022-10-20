@@ -66,7 +66,7 @@ export const VoteHandler = [
 				throw new Error('투표를 찾지 못하였습니다');
 			}
 
-			const votedItem = vote.voteItems.find((voteItem) => String(voteItem.id) === voteItemId);
+			const votedItem = vote.voteItems.find((voteItem) => String(voteItem.id) === votedItemId);
 			if (typeof votedItem === 'undefined') {
 				throw new Error('투표 항목을 찾을수 없습니다.');
 			}
