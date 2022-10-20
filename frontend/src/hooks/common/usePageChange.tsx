@@ -6,7 +6,7 @@ const usePageChange = (callback: (...args: unknown[]) => void) => {
 
 	useEffect(() => {
 		callback();
-	}, [location]);
+	}, [location.pathname]);
 };
 
 export default usePageChange;

@@ -114,11 +114,11 @@ export const reset = css`
 	:root {
 		font-size: 4vw;
 		@media (min-width: 420px) {
-			font-size: 3vw;
+			font-size: 2.5vw;
 		}
 
 		@media (min-width: 700px) {
-			font-size: 2vw;
+			font-size: 1.6vw;
 		}
 		@media (min-width: 1000px) {
 			font-size: 100%;

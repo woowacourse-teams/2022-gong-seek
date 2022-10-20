@@ -48,6 +48,7 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 				/>
 			)}
 			<S.SearchBarBox isSearchOpen={searchInputState.isSearchOpen}>
+				<S.SrOnlyLabel htmlFor="search-input">검색</S.SrOnlyLabel>
 				<S.SearchInput
 					type="text"
 					readOnly={isValid}
@@ -56,10 +57,15 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 					onChange={handleChangeSearchInput}
 					minLength={2}
 					maxLength={200}
-					aria-label="검색을 입력하는 창입니다"
+					id="search-input"
 				/>
-				<S.SearchButtonBox disabled={isValid} onClick={handleClickSearchButton}>
-					<S.SearchButton role="button" aria-label="검색하기 버튼" />
+				<S.SearchButtonBox
+					disabled={isValid}
+					onClick={handleClickSearchButton}
+					aria-label="검색하기"
+					type="button"
+				>
+					<S.SearchButton />
 				</S.SearchButtonBox>
 			</S.SearchBarBox>
 		</S.Container>

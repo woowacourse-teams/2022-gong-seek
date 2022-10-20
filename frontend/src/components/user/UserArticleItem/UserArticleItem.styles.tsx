@@ -1,5 +1,6 @@
 import { AiOutlineMessage } from 'react-icons/ai';
 
+import { TextOverflow } from '@/styles/mixin';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -52,10 +53,7 @@ export const ArticleTitleBox = styled.div`
 export const ArticleTitle = styled.div`
 	width: 80%;
 
-	overflow: hidden;
-	word-break: break-all;
-	white-space: nowrap;
-	text-overflow: ellipsis;
+	${TextOverflow}
 
 	${({ theme }) => css`
 		font-size: ${theme.size.SIZE_016};
