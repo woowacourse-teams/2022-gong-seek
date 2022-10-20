@@ -34,9 +34,7 @@ const VoteGenerator = () => {
 		setInput('');
 	};
 
-	const handleSubmitVoteGeneratorContentForm = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
+	const handleSubmitVoteGeneratorContentForm = () => {
 		if (!validatedVoteItemsQuantity(options)) {
 			showSnackBar('투표목록은 최소 2개이상 최대 5이상이여야 합니다.');
 			if (inputRef.current) {
@@ -97,7 +95,12 @@ const VoteGenerator = () => {
 				</S.InputValidMessage>
 			</S.AddOptionForm>
 
-			<S.ContentForm onSubmit={handleSubmitVoteGeneratorContentForm}>
+			<S.ContentForm
+				onSubmit={(e) => {
+					e.preventDefault();
+					handleSubmitVoteGeneratorContentForm();
+				}}
+			>
 				<S.RegisteredOptionTitle>등록된 항목</S.RegisteredOptionTitle>
 
 				<S.Content>
@@ -107,7 +110,7 @@ const VoteGenerator = () => {
 						</AddedOption>
 					))}
 				</S.Content>
-				<S.SubmitButton disabled={!validatedVoteItemsQuantity(options)}>등록하기</S.SubmitButton>
+				<S.SubmitButton onClick={handleSubmitVoteGeneratorContentForm}>등록하기</S.SubmitButton>
 			</S.ContentForm>
 		</S.Container>
 	);
