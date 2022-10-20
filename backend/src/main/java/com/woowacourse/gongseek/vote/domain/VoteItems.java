@@ -1,11 +1,10 @@
 package com.woowacourse.gongseek.vote.domain;
 
 import com.woowacourse.gongseek.vote.exception.InvalidVoteItemCountException;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lombok.Getter;
 
-@Getter
 public class VoteItems {
 
     private static final int MIN_VOTE_ITEM_COUNT = 2;
@@ -15,14 +14,13 @@ public class VoteItems {
 
     public VoteItems(Set<VoteItem> voteItems) {
         validateCount(voteItems);
-        this.voteItems = voteItems;
+        this.voteItems = new LinkedHashSet<>(voteItems);
     }
 
     public static VoteItems of(Set<String> voteItems, Vote vote) {
         Set<VoteItem> collect = voteItems.stream()
                 .map(voteItem -> new VoteItem(voteItem, vote))
-                .collect(Collectors.toSet());
-
+                .collect(Collectors.toCollection(LinkedHashSet::new));
         return new VoteItems(collect);
     }
 
@@ -30,5 +28,9 @@ public class VoteItems {
         if (voteItems.size() < MIN_VOTE_ITEM_COUNT || voteItems.size() > MAX_VOTE_ITEM_COUNT) {
             throw new InvalidVoteItemCountException(voteItems.size());
         }
+    }
+
+    public Set<VoteItem> getVoteItems() {
+        return new LinkedHashSet<>(voteItems);
     }
 }
