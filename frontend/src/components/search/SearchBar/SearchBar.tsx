@@ -16,7 +16,6 @@ const SearchBar = ({ isValid }: { isValid: boolean }) => {
 	const { showSnackBar } = useSnackBar();
 
 	const handleChangeSearchInput = (e: { target: HTMLInputElement }) => {
-		console.log(e.target.value);
 		setSearchInput(e.target.value);
 	};
 
