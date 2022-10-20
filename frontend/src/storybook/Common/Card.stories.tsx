@@ -1,7 +1,7 @@
 import { PropsWithStrictChildren } from 'gongseek-types';
 
-import { CardProps } from '@/components/@common/Card/Card';
 import Card from '@/components/@common/Card/Card';
+import { CardProps } from '@/types/card';
 import { Meta, Story } from '@storybook/react';
 
 export default {
@@ -24,7 +24,7 @@ DefaultCard.args = {
 		width: '1000px',
 		height: '600px',
 	},
-	children: <div>하이</div>,
+	children: <div></div>,
 	media: {
 		minWidth: '700px',
 		width: '300px',

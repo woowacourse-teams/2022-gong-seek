@@ -1,6 +1,22 @@
-import { theme } from './Theme';
-
+import { theme } from '@/styles/Theme';
 import { CardProps } from '@/types/card';
+
+export const PopularArticleItemCardStyle = {
+	cssObject: {
+		width: '85%',
+		height: 'fit-content',
+		flexShrink: '0',
+		scrollSnapAlign: 'center',
+		scrollSnapStop: 'always',
+	},
+	media: {
+		minWidth: theme.breakpoints.DESKTOP_LARGE,
+		width: '50%',
+		height: 'fit-content',
+	},
+
+	hasActiveAnimation: true,
+};
 
 export const ArticleItemCardStyle: CardProps = {
 	cssObject: {
@@ -72,11 +88,12 @@ export const WritingCategoryCardStyle: CardProps = {
 	cssObject: {
 		width: '100%',
 		height: 'fit-content',
+		margin: `${theme.size.SIZE_006} 0 0 0`,
 	},
 	hasActiveAnimation: false,
 	media: {
 		minWidth: theme.breakpoints.DESKTOP_LARGE,
-		width: '10%',
+		width: '25%',
 		height: 'fit-content',
 	},
 };
@@ -93,7 +110,7 @@ export const WritingHashTagCardStyle: CardProps = {
 	hasActiveAnimation: false,
 	media: {
 		minWidth: theme.breakpoints.DESKTOP_LARGE,
-		width: '95%',
+		width: '97%',
 		height: 'fit-content',
 	},
 };

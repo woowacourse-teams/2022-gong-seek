@@ -1,5 +1,7 @@
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
+import { TextOverflow } from '@/styles/mixin';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const ArticleItemTitle = styled.h2`
@@ -13,10 +15,9 @@ export const ArticleItemTitle = styled.h2`
 	white-space: pre-wrap;
 	line-height: 2;
 	word-break: break-all;
-
 	&:hover,
 	&:active {
-		text-decoration: underline;
+		color: ${({ theme }) => theme.colors.BLACK_600};
 	}
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
@@ -25,11 +26,19 @@ export const ArticleItemTitle = styled.h2`
 `;
 
 export const Views = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: ${({ theme }) => theme.size.SIZE_006};
 	font-size: ${({ theme }) => theme.size.SIZE_010};
 	font-weight: 400;
 `;
 
 export const CommentCount = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: ${({ theme }) => theme.size.SIZE_006};
 	font-size: ${({ theme }) => theme.size.SIZE_010};
 	font-weight: 400;
 `;
@@ -44,6 +53,7 @@ export const ArticleInfoBox = styled.div`
 
 export const ArticleInfoSubBox = styled.div`
 	display: flex;
+	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_010};
 `;
 
@@ -59,7 +69,6 @@ export const UserProfile = styled.img`
 
 export const ProfileBox = styled.div`
 	display: flex;
-
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_012};
 `;
@@ -105,28 +114,31 @@ export const RightFooterBox = styled.div`
 export const HashTagListBox = styled.div`
 	display: flex;
 	height: 70%;
-	gap: ${({ theme }) => theme.size.SIZE_004};
 
 	flex-wrap: nowrap;
 	overflow: hidden;
 
-	margin: ${({ theme }) => theme.size.SIZE_020} 0;
+	${({ theme }) => css`
+		gap: ${theme.size.SIZE_004};
+		margin: ${theme.size.SIZE_020} 0;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_LARGE}) {
-		flex-wrap: wrap;
-	}
+		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
+			flex-wrap: wrap;
+		}
+	`}
 `;
 
 export const HashTagItem = styled.div`
 	height: fit-content;
-
-	max-width: ${({ theme }) => theme.size.SIZE_110};
-	font-size: ${({ theme }) => theme.size.SIZE_014};
-	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
-	border-radius: ${({ theme }) => theme.size.SIZE_004};
-
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
-	padding: ${({ theme }) => theme.size.SIZE_004};
+
+	${({ theme }) => css`
+		max-width: ${theme.size.SIZE_110};
+		font-size: ${theme.size.SIZE_014};
+		border: ${theme.size.SIZE_001} solid ${theme.colors.GRAY_500};
+		border-radius: ${theme.size.SIZE_004};
+		padding: ${theme.size.SIZE_004};
+	`}
 `;

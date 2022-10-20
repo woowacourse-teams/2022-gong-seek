@@ -18,10 +18,9 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Member {
 
-    private static final Long ANONYMOUS_ID = 0L;
     private static final String ANONYMOUS_NAME = "익명";
-    private static final String ANONYMOUS_GITHUB_ID = "githubId";
     private static final String ANONYMOUS_AVATAR_URL = "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png";
+    private static final String ANONYMOUS_GITHUB_ID = "githubId";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

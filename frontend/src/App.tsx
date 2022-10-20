@@ -9,12 +9,12 @@ import PublicRouter from '@/components/@helper/router/PublicRouter';
 import Header from '@/components/@layout/Header/Header';
 import TabBar from '@/components/@layout/TabBar/TabBar';
 import { URL } from '@/constants/url';
+import useHandleHeaderByScroll from '@/hooks/common/useHandleHeaderByScroll';
+import usePageChange from '@/hooks/common/usePageChange';
 import { dropdownState } from '@/store/dropdownState';
-import { menuSliderState } from '@/store/menuSliderState';
 import { getUserIsLogin } from '@/store/userState';
 import styled from '@emotion/styled';
 
-const MenuSlider = React.lazy(() => import('@/components/@common/MenuSlider/MenuSlider'));
 const Home = React.lazy(() => import('@/pages/Home'));
 const CategoryArticles = React.lazy(() => import('@/pages/CategoryArticles/CategoryArticles'));
 const CategorySelector = React.lazy(() => import('@/pages/CategorySelector/CategorySelector'));
@@ -69,35 +69,23 @@ const Content = styled.main`
 	}
 `;
 
-const Dimmer = styled.div`
-	position: fixed;
-
-	height: 100vh;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-
-	background-color: ${({ theme }) => theme.colors.GRAY_500};
-
-	z-index: ${({ theme }) => theme.zIndex.MENU_SLIDER_BACKGROUND};
-
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
-		display: none;
-	}
-`;
-
 const App = () => {
 	const isLogin = useRecoilValue(getUserIsLogin);
-	const [sliderState, setSliderState] = useRecoilState(menuSliderState);
 	const [dropdown, setDropdown] = useRecoilState(dropdownState);
+	const { setIsActiveHeader } = useHandleHeaderByScroll();
+
+	const handleChangePage = () => {
+		setIsActiveHeader(true);
+	};
+
+	usePageChange(handleChangePage);
+
+	const handleClickLayout = () => {
+		dropdown.isOpen && setDropdown({ isOpen: false });
+	};
 
 	return (
-		<Layout
-			onClick={() => {
-				dropdown.isOpen && setDropdown({ isOpen: false });
-			}}
-		>
+		<Layout onClick={handleClickLayout}>
 			<Header />
 			<Content>
 				<Suspense fallback={<Loading />}>
@@ -130,12 +118,6 @@ const App = () => {
 			</Content>
 			<TabBar />
 			<SnackBar />
-			{sliderState.isOpen && <Dimmer onClick={() => setSliderState({ isOpen: false })} />}
-			{sliderState.isOpen && (
-				<Suspense fallback={<Loading />}>
-					<MenuSlider closeSlider={() => setSliderState({ isOpen: false })} />
-				</Suspense>
-			)}
 		</Layout>
 	);
 };

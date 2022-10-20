@@ -47,7 +47,7 @@ const VoteDeadlineGenerator = () => {
 		});
 	};
 
-	const onChangeDeadlineDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChangeDeadlineInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setDeadlineDate({
 			...deadlineDate,
 			[e.target.name]: e.target.value,
@@ -80,7 +80,7 @@ const VoteDeadlineGenerator = () => {
 					min={today}
 					max={afterWeek}
 					value={deadlineDate.date}
-					onChange={onChangeDeadlineDate}
+					onChange={handleChangeDeadlineInput}
 				/>
 				<br />
 				<S.DeadlineInput
@@ -90,7 +90,7 @@ const VoteDeadlineGenerator = () => {
 					min={isToday ? currentTimeGenerator() : undefined}
 					max={isExpireDate ? '23:59' : undefined}
 					value={deadlineDate.time}
-					onChange={onChangeDeadlineDate}
+					onChange={handleChangeDeadlineInput}
 				/>
 				<S.ValidateMessage>{`투표 마감기간은 ${today}에서 ${afterWeek} 11:59분까지 설정할수 있습니다.`}</S.ValidateMessage>
 			</S.VoteDeadlineInputBox>

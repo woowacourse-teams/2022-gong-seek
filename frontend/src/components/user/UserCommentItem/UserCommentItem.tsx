@@ -8,8 +8,13 @@ const UserCommentItem = ({ comment }: { comment: UserComment }) => {
 	const { id, content, createdAt, updatedAt, articleId, category, articleTitle } = comment;
 	const navigate = useNavigate();
 	const 한글_카테고리 = category === 'question' ? '질문' : '토론';
+
+	const handleClickUserCommentItem = () => {
+		navigate(`/articles/${category}/${articleId}`);
+	};
+
 	return (
-		<S.Container onClick={() => navigate(`/articles/${category}/${articleId}`)}>
+		<S.Container onClick={handleClickUserCommentItem}>
 			<S.ArticleBox>
 				<S.ArticleCategory isQuestion={category === 'question'}>{한글_카테고리}</S.ArticleCategory>
 				<S.ArticleTitle>{articleTitle}</S.ArticleTitle>

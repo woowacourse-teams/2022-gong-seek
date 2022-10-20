@@ -1,3 +1,5 @@
+import { TextOverflow } from '@/styles/mixin';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
@@ -6,16 +8,24 @@ export const Container = styled.div`
 	justify-content: center;
 
 	width: 90%;
-	height: ${({ theme }) => theme.size.SIZE_090};
 
-	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
-	border-radius: ${({ theme }) => theme.size.SIZE_004};
+	${({ theme }) => css`
+		height: ${theme.size.SIZE_090};
 
-	background-color: ${({ theme }) => theme.colors.GRAY_100};
+		border: ${theme.size.SIZE_001} solid ${theme.colors.GRAY_500};
+		border-radius: ${theme.size.SIZE_004};
 
-	padding: ${({ theme }) => theme.size.SIZE_006};
+		background-color: ${theme.colors.GRAY_100};
 
-	gap: ${({ theme }) => theme.size.SIZE_010};
+		padding: ${theme.size.SIZE_002};
+
+		gap: ${theme.size.SIZE_010};
+
+		@media (min-width: ${theme.breakpoints.DESKTOP_LARGE}) {
+			width: 80%;
+			justify-content: center;
+		}
+	`}
 `;
 
 export const ArticleBox = styled.div`
@@ -26,24 +36,23 @@ export const ArticleBox = styled.div`
 export const ArticleTitle = styled.div`
 	width: 80%;
 	margin-left: ${({ theme }) => theme.size.SIZE_008};
-	overflow: hidden;
-	word-break: break-all;
-	white-space: nowrap;
-	text-overflow: ellipsis;
+	${TextOverflow}
 `;
 
 export const ArticleCategory = styled.div<{ isQuestion: boolean }>`
 	width: fit-content;
 	height: fit-content;
 
-	color: ${({ theme }) => theme.colors.WHITE};
+	${({ theme, isQuestion }) => css`
+		color: ${theme.colors.WHITE};
 
-	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.GRAY_500};
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
+		border: ${theme.size.SIZE_001} solid ${theme.colors.GRAY_500};
+		border-radius: ${theme.size.SIZE_010};
 
-	background-color: ${(props) => (props.isQuestion ? '#FF0063' : '#3AB0FF')};
+		background-color: ${isQuestion ? `${theme.colors.RED_600}` : `${theme.colors.BLUE_500}`};
 
-	padding: ${({ theme }) => theme.size.SIZE_004};
+		padding: ${theme.size.SIZE_004};
+	`}
 `;
 
 export const ContentLabel = styled.span`
@@ -62,6 +71,8 @@ export const CommentTime = styled.div`
 	width: 100%;
 	text-align: right;
 
-	font-size: ${({ theme }) => theme.size.SIZE_012};
-	color: ${({ theme }) => theme.colors.BLACK_400};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_012};
+		color: ${theme.colors.BLACK_400};
+	`}
 `;

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import { CATEGORY_TYPE } from '@/constants/categoryType';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
@@ -21,25 +22,28 @@ export const CategoryButtonBox = styled.div`
 `;
 
 export const CategoryButton = styled.button<{ categoryType: 'question' | 'discussion' }>`
-	width: ${({ theme }) => theme.size.SIZE_080};
-	height: ${({ theme }) => theme.size.SIZE_080};
-
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
-
-	font-size: ${({ theme }) => theme.size.SIZE_016};
-
-	color: white;
-	box-shadow: 0px 8px 24px ${({ theme }) => theme.boxShadows.secondary};
-	background-color: ${({ categoryType }) => CATEGORY_TYPE[categoryType].color};
 	border-color: transparent;
 
 	cursor: pointer;
 
-	&:hover,
-	&:active {
-		background-color: ${({ categoryType }) => CATEGORY_TYPE[categoryType].hoverColor};
-		transform: scale(1.02);
-	}
+	${({ theme, categoryType }) => css`
+		width: ${theme.size.SIZE_080};
+		height: ${theme.size.SIZE_080};
+
+		border-radius: ${theme.size.SIZE_010};
+
+		font-size: ${theme.size.SIZE_016};
+
+		color: ${theme.colors.WHITE};
+		box-shadow: 0 ${theme.size.SIZE_008} ${theme.size.SIZE_024} ${theme.boxShadows.secondary};
+		background-color: ${CATEGORY_TYPE[categoryType].color};
+
+		&:hover,
+		&:active {
+			background-color: ${CATEGORY_TYPE[categoryType].hoverColor};
+			transform: scale(1.02);
+		}
+	`}
 `;
 
 export const StyledLink = styled(Link)`

@@ -1,59 +1,67 @@
 import { AiFillEdit, AiOutlineMenu } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Section = styled.section`
 	display: flex;
 	position: fixed;
-
+	left: 0;
 	bottom: 0;
 
 	justify-content: space-between;
 	align-items: center;
 
 	width: 100vw;
-	height: ${({ theme }) => theme.size.SIZE_056};
 
-	border-radius: ${({ theme }) => theme.size.SIZE_010} ${({ theme }) => theme.size.SIZE_010} 0 0;
+	${({ theme }) => css`
+		height: ${theme.size.SIZE_056};
 
-	box-shadow: 0px -4px 15px ${({ theme }) => theme.boxShadows.secondary};
-	background-color: ${({ theme }) => theme.colors.WHITE};
+		border-radius: ${theme.size.SIZE_010} ${theme.size.SIZE_010} 0 0;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.DESKTOP_SMALL}) {
-		display: none;
-		visibility: hidden;
-	}
+		box-shadow: 0 -${theme.size.SIZE_004} 15px ${theme.boxShadows.secondary};
+		background-color: ${theme.colors.WHITE};
+
+		@media (min-width: ${theme.breakpoints.DESKTOP_SMALL}) {
+			display: none;
+			visibility: hidden;
+		}
+	`}
 `;
 
 export const PostingLink = styled(AiFillEdit)`
-	font-size: ${({ theme }) => theme.size.SIZE_026};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_026};
 
-	color: ${({ theme }) => theme.colors.BLACK_500};
+		color: ${theme.colors.BLACK_500};
 
-	margin: 16px 0 16px 16px;
+		margin: ${theme.size.SIZE_016} 0 ${theme.size.SIZE_016} ${theme.size.SIZE_016};
 
-	cursor: pointer;
+		cursor: pointer;
 
-	&:hover,
-	&:active {
-		color: ${({ theme }) => theme.colors.PURPLE_500};
-	}
+		&:hover,
+		&:active {
+			color: ${theme.colors.PURPLE_500};
+		}
+	`}
 `;
 
 export const MyPageLink = styled(Link)``;
 
 export const MenuLink = styled(AiOutlineMenu)`
-	font-size: ${({ theme }) => theme.size.SIZE_024};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_024};
 
-	color: ${({ theme }) => theme.colors.BLACK_500};
+		color: ${theme.colors.BLACK_500};
 
-	margin: 16px 16px 16px 0;
+		margin: ${theme.size.SIZE_016} ${theme.size.SIZE_016} ${theme.size.SIZE_016} 0;
 
-	cursor: pointer;
+		cursor: pointer;
 
-	&:hover,
-	&:active {
-		color: ${({ theme }) => theme.colors.PURPLE_500};
-	}
+		&:hover,
+		&:active {
+			color: ${theme.colors.PURPLE_500};
+		}
+	`}
 `;

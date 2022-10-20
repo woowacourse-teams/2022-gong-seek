@@ -25,42 +25,50 @@ export interface ArticleItemProps {
 }
 
 const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
-	const { onLikeButtonClick, onUnlikeButtonClick, isLike, likeCount } = useHeartClick({
+	const { handleClickEmptyHeart, handleClickFillHeart, isLike, likeCount } = useHeartClick({
 		prevIsLike: article.isLike,
 		prevLikeCount: article.likeCount,
 		articleId: String(article.id),
 	});
 
 	return (
-		<Card {...ArticleItemCardStyle} onClick={onClick}>
+		<Card {...ArticleItemCardStyle} onClick={onClick} as="li">
 			<S.ArticleItemTitle>
 				<div>{article.title}</div>
 			</S.ArticleItemTitle>
 			<S.ArticleInfoBox>
 				<S.ArticleTimeStamp>{dateTimeConverter(article.createdAt)}</S.ArticleTimeStamp>
 				<S.ArticleInfoSubBox>
-					<S.CommentCount>댓글 수 {article.commentCount}</S.CommentCount>
-					<S.Views>조회 수 {article.views}</S.Views>
+					<S.CommentCount>댓글 수 {article.commentCount.toLocaleString()}</S.CommentCount>
+					<S.Views>조회 수 {article.views.toLocaleString()}</S.Views>
 				</S.ArticleInfoSubBox>
 			</S.ArticleInfoBox>
 			<S.HashTagListBox>
 				{article.tag &&
 					article.tag.length >= 1 &&
-					article.tag.map((item) => <S.HashTagItem key={item}>#{item}</S.HashTagItem>)}
+					article.tag.map((item) => (
+						<S.HashTagItem key={item}>
+							<span aria-label="해시태그">#</span>
+							{item}
+						</S.HashTagItem>
+					))}
 			</S.HashTagListBox>
 			<S.FooterBox>
 				<S.ProfileBox>
-					<S.UserProfile src={convertGithubAvatarUrlForResize(article.author.avatarUrl)} />
+					<S.UserProfile
+						src={convertGithubAvatarUrlForResize(article.author.avatarUrl)}
+						alt="프로필 이미지"
+					/>
 					<div>{article.author.name}</div>
 				</S.ProfileBox>
 				<S.RightFooterBox>
 					<S.HeartBox>
 						{isLike ? (
-							<S.FillHeart onClick={onUnlikeButtonClick} />
+							<S.FillHeart onClick={handleClickFillHeart} aria-pressed="true" role="button" />
 						) : (
-							<S.EmptyHeart onClick={onLikeButtonClick} />
+							<S.EmptyHeart onClick={handleClickEmptyHeart} aria-pressed="false" role="button" />
 						)}
-						<div aria-label="좋아요 수가 표기 되는 곳입니다">{likeCount}</div>
+						<div aria-label={`좋아요수 ${likeCount}`}>{likeCount}</div>
 					</S.HeartBox>
 				</S.RightFooterBox>
 			</S.FooterBox>

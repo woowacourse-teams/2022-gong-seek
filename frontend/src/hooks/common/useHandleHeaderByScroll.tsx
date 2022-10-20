@@ -1,15 +1,18 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
+import { useRecoilState } from 'recoil';
 
+import { headerState } from '@/store/headerState';
 import { isScrollDown, isScrollUp, isMinDeltaScroll } from '@/utils/scrollObserver';
 
 const useHandleHeaderByScroll = () => {
-	const [isActiveHeader, setIsActiveHeader] = useState(true);
+	const [isActiveHeader, setIsActiveHeader] = useRecoilState(headerState);
 	const headerElement = useRef<HTMLDivElement>(null);
 	const lastScrollTop = useRef(0);
 	const minDeltaScroll = useRef(10);
 
 	const handleHeaderViewByScroll = () => {
 		const currentScroll = document.documentElement.scrollTop;
+
 		if (!headerElement.current) {
 			return;
 		}
@@ -42,7 +45,7 @@ const useHandleHeaderByScroll = () => {
 		lastScrollTop.current = currentScroll;
 	};
 
-	return { isActiveHeader, handleHeaderViewByScroll, headerElement };
+	return { isActiveHeader, handleHeaderViewByScroll, headerElement, setIsActiveHeader };
 };
 
 export default useHandleHeaderByScroll;

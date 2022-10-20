@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface VoteItemRepository extends JpaRepository<VoteItem, Long> {
 
     List<VoteItem> findAllByVoteArticleId(Long articleId);
+
+    List<VoteItem> findAllByVoteId(Long voteId);
 }

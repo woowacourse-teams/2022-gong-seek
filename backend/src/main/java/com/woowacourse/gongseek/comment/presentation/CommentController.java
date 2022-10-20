@@ -32,7 +32,7 @@ public class CommentController {
             @PathVariable Long articleId,
             @Valid @RequestBody CommentRequest commentRequest
     ) {
-        commentService.save(appMember, articleId, commentRequest);
+        commentService.create(appMember, articleId, commentRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

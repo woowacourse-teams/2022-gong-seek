@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+
+    options {
+        timeout(time: 5, unit: 'MINUTES')
+    }
+
+    stages {
+        stage('Checkout SCM') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/develop']], extensions: [[$class: 'SubmoduleOption', disableSubmodules: false, parentCredentials: true, recursiveSubmodules: true, reference: '', trackingSubmodules: true]], userRemoteConfigs: [[credentialsId: 'github_token', url: 'https://github.com/woowacourse-teams/2022-gong-seek.git']]])
+            }
+        }
+
+        stage('Build and Test') {
+            steps {
+                dir('backend') {
+                    sh '''
+                        ./gradlew clean bootjar
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                dir('backend/build/libs') {
+                    sshagent(['gongseek-backend-dev']) {
+                        sh 'scp -o StrictHostKeyChecking=no gongseek-0.0.1-SNAPSHOT.jar ubuntu@${backend_dev_ip}:/home/ubuntu/'
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@${backend_dev_ip} "sh deploy.sh" &'
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            slackSend (channel: 'jenkins', color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+        failure {
+            slackSend (channel: 'jenkins', color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+        aborted {
+            slackSend (channel: 'jenkins', color: '#000000', message: "ABORTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+    }
+}

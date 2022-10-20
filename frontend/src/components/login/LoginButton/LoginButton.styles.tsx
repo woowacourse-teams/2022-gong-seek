@@ -1,5 +1,6 @@
 import { LoginButtonProps } from '@/components/login/LoginButton/LoginButton';
 import { LOGIN_TYPE } from '@/constants/loginType';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.button<Pick<LoginButtonProps, 'loginType'>>`
@@ -7,33 +8,37 @@ export const Container = styled.button<Pick<LoginButtonProps, 'loginType'>>`
 
 	justify-content: center;
 	align-items: center;
-	gap: 1rem;
 
-	width: 100%;
-	max-width: ${({ theme }) => theme.size.SIZE_260};
+	width: 80%;
+
 	height: fit-content;
 
 	border: none;
-	border-radius: ${({ theme }) => theme.size.SIZE_010};
+	${({ theme, loginType }) => css`
+		gap: ${theme.size.SIZE_016}
+		max-width: ${theme.size.SIZE_200};
+		border-radius: ${theme.size.SIZE_010};
 
-	background-color: ${({ loginType }) => LOGIN_TYPE[loginType].color};
+		background-color: ${LOGIN_TYPE[loginType].color};
 
-	padding: ${({ theme }) => theme.size.SIZE_004};
+		padding: ${theme.size.SIZE_004};
+
+		&:hover,
+		&active {
+			background-color: ${theme.colors.BLACK_400};
+		}
+	`}
 
 	cursor: pointer;
-
-	&:hover,
-	&active {
-		background-color: ${({ theme }) => theme.colors.BLACK_400};
-	}
 `;
 
 export const IconBox = styled.div`
-	font-size: ${({ theme }) => theme.size.SIZE_022};
+	${({ theme }) => css`
+		font-size: ${theme.size.SIZE_022};
 
-	color: white;
-
-	margin-top: ${({ theme }) => theme.size.SIZE_002};
+		color: ${theme.colors.WHITE};
+		margin-top: ${theme.size.SIZE_002};
+	`}
 `;
 
 export const ContentBox = styled.div<Pick<LoginButtonProps, 'loginType'>>`

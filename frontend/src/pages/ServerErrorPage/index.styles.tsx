@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Container = styled.section`
@@ -24,17 +25,22 @@ export const Message = styled.div`
 `;
 
 export const HomeButton = styled.button`
-	margin-top: ${({ theme }) => theme.size.SIZE_020};
 	width: fit-content;
-	padding: ${({ theme }) => theme.size.SIZE_004};
 	background-color: transparent;
-	border: ${({ theme }) => theme.size.SIZE_001} solid ${({ theme }) => theme.colors.PURPLE_500};
-	border-radius: ${({ theme }) => theme.size.SIZE_004};
 
-	&:hover,
-	&:active {
-		cursor: pointer;
-		background-color: ${({ theme }) => theme.colors.PURPLE_500};
-		color: ${({ theme }) => theme.colors.WHITE};
-	}
+	${({ theme }) => css`
+		margin-top: ${theme.size.SIZE_020};
+
+		padding: ${theme.size.SIZE_004};
+
+		border: ${theme.size.SIZE_001} solid ${theme.colors.PURPLE_500};
+		border-radius: ${theme.size.SIZE_004};
+
+		&:hover,
+		&:active {
+			cursor: pointer;
+			background-color: ${theme.colors.PURPLE_500};
+			color: ${theme.colors.WHITE};
+		}
+	`}
 `;
