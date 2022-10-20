@@ -59,7 +59,7 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 						src={convertGithubAvatarUrlForResize(article.author.avatarUrl)}
 						alt="프로필 이미지"
 					/>
-					<div>{article.author.name}</div>
+					<S.UserName>{article.author.name}</S.UserName>
 				</S.ProfileBox>
 				<S.RightFooterBox>
 					<S.HeartBox>

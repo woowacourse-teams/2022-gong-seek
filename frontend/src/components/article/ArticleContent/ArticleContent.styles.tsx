@@ -36,6 +36,7 @@ export const UserProfile = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	max-width: 80%;
 `;
 
 export const UserProfileImg = styled.img`
@@ -51,7 +52,12 @@ export const UserProfileImg = styled.img`
 	`}
 `;
 
-export const UserName = styled.span``;
+export const UserName = styled.span`
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	width: fit-content;
+`;
 
 export const ArticleInfo = styled.div`
 	display: flex;
