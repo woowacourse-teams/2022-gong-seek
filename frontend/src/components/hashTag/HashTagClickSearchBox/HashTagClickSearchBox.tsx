@@ -15,36 +15,24 @@ const HashTagClickSearchBox = ({
 }: HashTagClickSearchBoxProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 
-	const handleClickHashTagItem = (target: string) => {
-		setTargets(
-			targets.map((item) => {
-				if (item.name === target) {
-					return {
-						name: item.name,
-						isChecked: !item.isChecked,
-					};
-				}
+	const filterCheckedHashTags = (target: string) =>
+		targets.map((item) => {
+			if (item.name === target) {
 				return {
 					name: item.name,
-					isChecked: item.isChecked,
+					isChecked: !item.isChecked,
 				};
-			}),
-		);
+			}
+			return {
+				name: item.name,
+				isChecked: item.isChecked,
+			};
+		});
+
+	const handleClickHashTagItem = (target: string) => {
+		setTargets(filterCheckedHashTags(target));
 		if (setSelectedTargets) {
-			setSelectedTargets(
-				targets.map((item) => {
-					if (item.name === target) {
-						return {
-							name: item.name,
-							isChecked: !item.isChecked,
-						};
-					}
-					return {
-						name: item.name,
-						isChecked: item.isChecked,
-					};
-				}),
-			);
+			setSelectedTargets(filterCheckedHashTags(target));
 		}
 	};
 
