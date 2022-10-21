@@ -47,6 +47,7 @@ public class AuthService {
     }
 
     public TokenResponse renewToken(UUID requestToken) {
+        validateRefreshToken(requestToken);
         RefreshToken refreshToken = refreshTokenRepository.findById(requestToken)
                 .orElseThrow(InvalidRefreshTokenException::new);
         if (refreshToken.isIssue() || refreshToken.isExpired()) {
@@ -62,6 +63,12 @@ public class AuthService {
                 .accessToken(accessToken)
                 .refreshToken(newRefreshToken.getId())
                 .build();
+    }
+
+    private void validateRefreshToken(UUID requestToken) {
+        if (requestToken == null) {
+            throw new InvalidRefreshTokenException();
+        }
     }
 
     public void updateRefreshToken(UUID value) {
