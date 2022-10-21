@@ -37,7 +37,9 @@ const TemporaryArticleList = () => {
 								article={item}
 								onClick={() => handleClickTemporaryArticleItem(item)}
 							/>
-							<S.DeleteButton onClick={() => handleClickTemporaryArticlekDeleteButton(item.id)} />
+							<S.DeleteButton onClick={() => handleClickTemporaryArticlekDeleteButton(item.id)}>
+								<S.DeleteIcon />
+							</S.DeleteButton>
 						</S.ArticleItemBox>
 					))
 				) : (

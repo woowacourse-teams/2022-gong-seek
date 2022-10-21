@@ -77,7 +77,7 @@ class LogicErrorBoundary extends CommonErrorBoundary<LogicErrorBoundaryProps> {
 		if (isInvalidRefreshTokenError(errorCode)) {
 			localStorage.removeItem(ACCESSTOKEN_KEY);
 			mutateDeleteRefreshToken();
-			window.location.href = URL.HOME;
+			window.location.href = URL.LOGIN;
 		}
 		showSnackBar(errorMessage);
 
