@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.image.infra;
 
-import com.woowacourse.gongseek.image.domain.FileExtension;
-import com.woowacourse.gongseek.image.exception.UnsupportedFilExtensionException;
+import com.woowacourse.gongseek.image.exception.InvalidFileFormatException;
 import java.util.UUID;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
@@ -15,15 +14,15 @@ public class FileNameGenerator {
         return fileName + "." + extension;
     }
 
-    private static String getExtension(final String originalFilename) {
-        final String extension = FilenameUtils.getExtension(originalFilename);
-        if (FileExtension.isSupport(extension)) {
-            return extension;
-        }
-        throw new UnsupportedFilExtensionException(extension);
-    }
-
     private static String createNewName() {
         return UUID.randomUUID().toString();
+    }
+
+    private static String getExtension(final String originalFilename) {
+        final String extension = FilenameUtils.getExtension(originalFilename);
+        if (extension == null) {
+            throw new InvalidFileFormatException();
+        }
+        return extension;
     }
 }
