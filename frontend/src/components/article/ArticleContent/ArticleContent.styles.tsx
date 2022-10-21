@@ -124,7 +124,12 @@ export const ButtonWrapper = styled.div`
 	gap: ${({ theme }) => theme.size.SIZE_010};
 `;
 
-export const EditButton = styled(AiOutlineEdit)`
+export const EditButton = styled.button`
+	border: none;
+	background-color: transparent;
+`;
+
+export const EditIcon = styled(AiOutlineEdit)`
 	${({ theme }) => css`
 		font-size: ${theme.size.SIZE_024};
 		color: ${theme.colors.BLACK_600};
@@ -138,7 +143,12 @@ export const EditButton = styled(AiOutlineEdit)`
 	`}
 `;
 
-export const DeleteButton = styled(AiOutlineDelete)`
+export const DeleteButton = styled.button`
+	border: none;
+	background-color: transparent;
+`;
+
+export const DeleteIcon = styled(AiOutlineDelete)`
 	${({ theme }) => css`
 		font-size: ${theme.size.SIZE_024};
 		color: ${theme.colors.BLACK_600};
@@ -158,6 +168,11 @@ export const LikeContentBox = styled.div`
 	justify-content: center;
 	align-items: center;
 	gap: ${({ theme }) => theme.size.SIZE_004};
+`;
+
+export const HeartButton = styled.button`
+	border: none;
+	background-color: transparent;
 `;
 
 export const EmptyHeart = styled(AiOutlineHeart)`

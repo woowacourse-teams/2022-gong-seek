@@ -104,6 +104,11 @@ export const HeartBox = styled.div`
 	gap: ${({ theme }) => theme.size.SIZE_010};
 `;
 
+export const HeartButton = styled.button`
+	border: none;
+	background-color: transparent;
+`;
+
 export const ArticleTimeStamp = styled.div`
 	font-size: ${({ theme }) => theme.size.SIZE_010};
 	font-weight: 400;
