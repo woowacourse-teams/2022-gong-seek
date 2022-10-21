@@ -58,7 +58,6 @@ public class VoteHistoryRepositoryTest {
         voteHistoryRepository.save(new VoteHistory(savedMember1, voteItem3));
         voteHistoryRepository.save(new VoteHistory(savedMember2, voteItem1));
 
-
         VoteHistory foundVoteHistory = voteHistoryRepository.findByVoteItemsAndMemberId(List.of(voteItem1, voteItem3),
                 member1.getId()).get();
 

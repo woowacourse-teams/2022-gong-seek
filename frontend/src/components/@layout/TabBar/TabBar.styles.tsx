@@ -49,6 +49,11 @@ export const PostingLink = styled(AiFillEdit)`
 
 export const MyPageLink = styled(Link)``;
 
+export const MenuBox = styled.button`
+	background-color: transparent;
+	border: none;
+`;
+
 export const MenuLink = styled(AiOutlineMenu)`
 	${({ theme }) => css`
 		font-size: ${theme.size.SIZE_024};

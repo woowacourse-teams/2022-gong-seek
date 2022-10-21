@@ -1,6 +1,7 @@
 import { AiFillEdit } from 'react-icons/ai';
 
 import Input from '@/components/@common/Input/Input';
+import { OneLineTextOverFlow } from '@/styles/mixin';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -29,10 +30,13 @@ export const UserProfile = styled.img`
 export const UserName = styled.div`
 	text-align: center;
 	font-size: ${({ theme }) => theme.size.SIZE_014};
+	width: 80%;
+	${OneLineTextOverFlow}
 `;
 
 export const UserNameBox = styled.div`
 	display: flex;
+	justify-content: center;
 	gap: ${({ theme }) => theme.size.SIZE_016};
 
 	align-items: center;

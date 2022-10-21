@@ -1,14 +1,16 @@
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
+import { useRecoilState } from 'recoil';
 
 import { getAllArticle } from '@/api/article/article';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
+import { categoryState } from '@/store/categoryState';
 import { infiniteArticleResponse } from '@/types/articleResponse';
 
 const useGetAllArticles = () => {
-	const [currentCategory, setCurrentCategory] = useState('question');
+	const [currentCategory, setCurrentCategory] = useRecoilState(categoryState);
 	const [sortIndex, setSortIndex] = useState('최신순');
 
 	const { data, isLoading, isError, isSuccess, error, refetch, fetchNextPage } = useInfiniteQuery<

@@ -4,30 +4,30 @@ import usePostVoteItem from '@/hooks/vote/usePostVoteItem';
 import { theme } from '@/styles/Theme';
 import { convertIdxToVoteColorKey } from '@/utils/converter';
 
-const VOTE_ITEM_PROGRESSIVE_TIEM = 1;
+const VOTE_ITEM_PROGRESSIVE_TIEM = 0.3;
 
 export interface VoteItemProps {
-	votedItemId: number;
+	voteItemId: number;
 	title: string;
 	itemVotes: number;
 	totalVotes: number;
 	colorIdx: number;
 	articleId: string;
-	isExpired: boolean;
+	expired: boolean;
 	isVoted: boolean;
 }
 
 const VoteItem = ({
-	votedItemId,
+	voteItemId,
 	title,
 	itemVotes,
 	totalVotes,
 	colorIdx,
 	articleId,
-	isExpired,
+	expired,
 	isVoted,
 }: VoteItemProps) => {
-	const progressivePercent = Math.floor((itemVotes / totalVotes) * 100);
+	const progressivePercent = Math.floor((itemVotes / totalVotes) * 100) || 0;
 	const { handleChangeVoteSelectButton } = usePostVoteItem(articleId);
 	const gradientColor = theme.voteGradientColors[convertIdxToVoteColorKey(colorIdx)];
 
@@ -38,13 +38,13 @@ const VoteItem = ({
 					type="radio"
 					name={articleId}
 					onChange={() => {
-						handleChangeVoteSelectButton(articleId, votedItemId);
+						handleChangeVoteSelectButton(articleId, voteItemId);
 					}}
-					disabled={isExpired}
+					disabled={expired}
 					checked={isVoted}
 				/>
-				<S.Title isVoted={isVoted}>
-					<p>{title}</p>
+				<S.Title isVoted={isVoted} expired={expired}>
+					<S.VoteName>{title}</S.VoteName>
 					<S.ItemVotes>{`(${itemVotes}표)`}</S.ItemVotes>
 				</S.Title>
 			</S.TitleBox>

@@ -1,4 +1,4 @@
-import { TextOverflow } from '@/styles/mixin';
+import { OneLineTextOverFlow, TwoLineTextOverFlow } from '@/styles/mixin';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -10,8 +10,6 @@ export const Container = styled.div`
 	width: 90%;
 
 	${({ theme }) => css`
-		height: ${theme.size.SIZE_090};
-
 		border: ${theme.size.SIZE_001} solid ${theme.colors.GRAY_500};
 		border-radius: ${theme.size.SIZE_004};
 
@@ -36,7 +34,7 @@ export const ArticleBox = styled.div`
 export const ArticleTitle = styled.div`
 	width: 80%;
 	margin-left: ${({ theme }) => theme.size.SIZE_008};
-	${TextOverflow}
+	${OneLineTextOverFlow}
 `;
 
 export const ArticleCategory = styled.div<{ isQuestion: boolean }>`
@@ -55,15 +53,8 @@ export const ArticleCategory = styled.div<{ isQuestion: boolean }>`
 	`}
 `;
 
-export const ContentLabel = styled.span`
-	margin-right: ${({ theme }) => theme.size.SIZE_010};
-`;
-
 export const ContentBox = styled.div`
-	overflow: hidden;
-	word-break: break-all;
-	white-space: wrap;
-
+	${TwoLineTextOverFlow}
 	padding: ${({ theme }) => theme.size.SIZE_002};
 `;
 

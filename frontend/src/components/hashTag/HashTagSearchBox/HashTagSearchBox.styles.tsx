@@ -1,4 +1,4 @@
-import { AiOutlineSearch, AiOutlineDown } from 'react-icons/ai';
+import { AiOutlineSearch, AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';

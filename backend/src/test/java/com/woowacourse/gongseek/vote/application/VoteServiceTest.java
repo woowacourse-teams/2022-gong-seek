@@ -30,7 +30,6 @@ import com.woowacourse.gongseek.vote.presentation.dto.VoteItemResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -87,7 +86,7 @@ class VoteServiceTest extends IntegrationTest {
         VoteCreateResponse voteCreateResponse = voteService.create(
                 new LoginMember(member.getId()),
                 discussionArticle.getId(),
-                new VoteCreateRequest(Set.of("Dto 최고다.", "VO 최고다"), LocalDateTime.now().plusDays(5))
+                new VoteCreateRequest(List.of("Dto 최고다.", "VO 최고다"), LocalDateTime.now().plusDays(5))
         );
 
         assertThat(voteCreateResponse.getArticleId()).isEqualTo(discussionArticle.getId());
@@ -97,7 +96,7 @@ class VoteServiceTest extends IntegrationTest {
     void 게시글의_작성자가_아닌_사용자가_투표를_생성하면_예외가_발생한다() {
         LoginMember member = new LoginMember(
                 memberRepository.save(new Member("jurl", "jurlring", "avatarUrl")).getId());
-        VoteCreateRequest voteCreateRequest = new VoteCreateRequest(Set.of("Dto 최고다.", "VO 최고다"),
+        VoteCreateRequest voteCreateRequest = new VoteCreateRequest(List.of("Dto 최고다.", "VO 최고다"),
                 LocalDateTime.now().plusDays(5));
 
         assertThatThrownBy(() -> voteService.create(member, discussionArticle.getId(), voteCreateRequest))
@@ -110,7 +109,7 @@ class VoteServiceTest extends IntegrationTest {
         Article article = articleRepository.save(new Article("토론입니당", "내용입니다..", Category.QUESTION, member, false));
 
         assertThatThrownBy(() -> voteService.create(new LoginMember(member.getId()), article.getId(),
-                new VoteCreateRequest(Set.of("Dto 최고다.", "VO 최고다"), LocalDateTime.now().plusDays(5)))
+                new VoteCreateRequest(List.of("Dto 최고다.", "VO 최고다"), LocalDateTime.now().plusDays(5)))
         ).isExactlyInstanceOf(UnavailableArticleException.class)
                 .hasMessageContaining("토론 게시글만 투표를 생성할 수 있습니다.");
     }

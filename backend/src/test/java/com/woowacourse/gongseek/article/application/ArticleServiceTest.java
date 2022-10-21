@@ -6,10 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.article.domain.Content;
-import com.woowacourse.gongseek.article.domain.TempArticle;
-import com.woowacourse.gongseek.article.domain.TempTags;
-import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
@@ -42,7 +38,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -250,7 +245,8 @@ public class ArticleServiceTest extends IntegrationTest {
         Member notAuthorMember = memberRepository.save(new Member("judy", "juriring", "avatar.com"));
         ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
                 List.of("Spring"), true);
-        ArticleIdResponse savedArticle = articleService.create(new LoginMember(notAuthorMember.getId()), articleRequest);
+        ArticleIdResponse savedArticle = articleService.create(new LoginMember(notAuthorMember.getId()),
+                articleRequest);
 
         ArticleResponse articleResponse = articleService.getOne(new GuestMember(), savedArticle.getId());
 
@@ -754,7 +750,7 @@ public class ArticleServiceTest extends IntegrationTest {
 
         LoginMember loginMember = new LoginMember(member.getId());
         voteService.create(loginMember, article.getId(),
-                new VoteCreateRequest(Set.of("A번", "B번", "C번"), LocalDateTime.now().plusDays(4)));
+                new VoteCreateRequest(List.of("A번", "B번", "C번"), LocalDateTime.now().plusDays(4)));
 
         voteService.doVote(article.getId(), loginMember, new SelectVoteItemIdRequest(1L));
         articleService.delete(loginMember, article.getId());
@@ -765,22 +761,14 @@ public class ArticleServiceTest extends IntegrationTest {
         );
     }
 
-    @Transactional
     @Test
-    void 게시글을_생성하면_임시_게시글은_삭제된다() {
-        final TempArticle tempArticle = tempArticleRepository.save(TempArticle.builder()
-                .title(new Title("title"))
-                .content(new Content("content"))
-                .category(Category.QUESTION)
-                .member(member)
-                .tempTags(new TempTags(List.of("spring")))
-                .isAnonymous(false)
-                .build());
-        final ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
-                List.of("Spring"), true, tempArticle.getId());
+    void 투표가_없는_토론게시글을_삭제한다() {
+        Article article = articleRepository.save(
+                new Article("title2", "content2", Category.DISCUSSION, member, false));
 
-        articleService.create(new LoginMember(member.getId()), articleRequest);
+        LoginMember loginMember = new LoginMember(member.getId());
+        articleService.delete(loginMember, article.getId());
 
-        assertThat(tempArticleRepository.existsById(tempArticle.getId())).isFalse();
+        assertThat(articleRepository.findById(article.getId())).isEmpty();
     }
 }

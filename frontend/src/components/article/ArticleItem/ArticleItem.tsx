@@ -59,14 +59,18 @@ const ArticleItem = ({ article, onClick }: ArticleItemProps) => {
 						src={convertGithubAvatarUrlForResize(article.author.avatarUrl)}
 						alt="프로필 이미지"
 					/>
-					<div>{article.author.name}</div>
+					<S.UserName>{article.author.name}</S.UserName>
 				</S.ProfileBox>
 				<S.RightFooterBox>
 					<S.HeartBox>
 						{isLike ? (
-							<S.FillHeart onClick={handleClickFillHeart} aria-pressed="true" role="button" />
+							<S.HeartButton>
+								<S.FillHeart onClick={handleClickFillHeart} aria-pressed="true" role="button" />
+							</S.HeartButton>
 						) : (
-							<S.EmptyHeart onClick={handleClickEmptyHeart} aria-pressed="false" role="button" />
+							<S.HeartButton>
+								<S.EmptyHeart onClick={handleClickEmptyHeart} aria-pressed="false" role="button" />
+							</S.HeartButton>
 						)}
 						<div aria-label={`좋아요수 ${likeCount}`}>{likeCount}</div>
 					</S.HeartBox>

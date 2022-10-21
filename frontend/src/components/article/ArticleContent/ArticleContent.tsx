@@ -39,7 +39,7 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 				</S.CategoryTitle>
 				<S.UserProfile tabIndex={0}>
 					<S.UserProfileImg src={author.avatarUrl} alt="작성자의 프로필 이미지입니다" />
-					<div>{author.name}</div>
+					<S.UserName>{author.name}</S.UserName>
 				</S.UserProfile>
 			</S.Header>
 			<Card {...ArticleContentCardStyle}>
@@ -69,7 +69,9 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 									aria-label="글 수정하기 버튼"
 									role="button"
 									tabIndex={0}
-								/>
+								>
+									<S.EditIcon />
+								</S.EditButton>
 								<S.DeleteButton
 									onClick={() => {
 										handleDeleteArticle(articleId);
@@ -77,23 +79,29 @@ const ArticleContent = ({ category, article, author, articleId }: ArticleContent
 									aria-label="글 삭제하기 버튼"
 									role="button"
 									tabIndex={0}
-								/>
+								>
+									<S.DeleteIcon />
+								</S.DeleteButton>
 							</S.ButtonWrapper>
 						)}
 					</S.WritingOrderBox>
 					<S.LikeContentBox>
 						{isLike ? (
-							<S.FillHeart
-								onClick={handleClickFillHeart}
-								aria-label="하트를 취소합니다"
-								tabIndex={0}
-							/>
+							<S.HeartButton>
+								<S.FillHeart
+									onClick={handleClickFillHeart}
+									aria-label="하트를 취소합니다"
+									tabIndex={0}
+								/>
+							</S.HeartButton>
 						) : (
-							<S.EmptyHeart
-								onClick={handleClickEmptyHeart}
-								aria-label="하트를 누릅니다"
-								tabIndex={0}
-							/>
+							<S.HeartButton>
+								<S.EmptyHeart
+									onClick={handleClickEmptyHeart}
+									aria-label="하트를 누릅니다"
+									tabIndex={0}
+								/>
+							</S.HeartButton>
 						)}
 						<div aria-label="좋아요 수">{likeCount}</div>
 					</S.LikeContentBox>
