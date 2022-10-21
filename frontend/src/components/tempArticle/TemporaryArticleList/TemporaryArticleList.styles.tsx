@@ -11,7 +11,12 @@ export const Container = styled.section`
 	width: 100%;
 `;
 
-export const DeleteButton = styled(AiOutlineDelete)`
+export const DeleteButton = styled.button`
+	border: none;
+	background: transparent;
+`;
+
+export const DeleteIcon = styled(AiOutlineDelete)`
 	${({ theme }) => css`
 		font-size: ${theme.size.SIZE_024};
 		margin-left: ${theme.size.SIZE_020};
