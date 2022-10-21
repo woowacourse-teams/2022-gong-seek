@@ -5,7 +5,6 @@ export const TextOverflow = css`
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	white-space: normal;
 	text-align: left;
 	word-wrap: break-word;
 	display: -webkit-box;
