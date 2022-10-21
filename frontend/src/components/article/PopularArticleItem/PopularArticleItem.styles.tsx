@@ -65,7 +65,7 @@ export const AuthorNameText = styled.div`
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
-	max-width: 80%;
+	max-width: 70%;
 	text-align: center;
 `;
 
