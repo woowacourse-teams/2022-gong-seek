@@ -17,9 +17,13 @@ const useToastImageConverter = (content: MutableRefObject<Editor | null>) => {
 		FormData
 	>(postImageUrlConverter, {
 		onError: (error) => {
+			setBlockThrowError(true);
 			if (typeof error.response?.data === 'undefined') {
 				showSnackBar('컨텐츠의 용량이 너무 큽니다.');
-				setBlockThrowError(true);
+				return;
+			}
+			if (error.response.data.errorCode === '7001') {
+				showSnackBar(ErrorMessage[error.response.data.errorCode]);
 				return;
 			}
 		},
