@@ -5,8 +5,8 @@ import usePostCommentInputModal from '@/hooks/comment/usePostCommentInputModal';
 import usePutCommentInputModal from '@/hooks/comment/usePutCommentInputModal';
 import useModal from '@/hooks/common/useModal';
 import useSnackBar from '@/hooks/common/useSnackBar';
+import useToastImageConverter from '@/hooks/common/useToastImageConverter';
 import { queryClient } from '@/index';
-import { takeToastImgEditor } from '@/utils/takeToastImgEditor';
 import { validatedCommentInput } from '@/utils/validateInput';
 import { Editor } from '@toast-ui/react-editor';
 
@@ -31,15 +31,13 @@ const useHandleCommentInputModalState = ({
 		isSuccess: putIsSuccess,
 	} = usePutCommentInputModal(hideModal);
 
+	useToastImageConverter(commentContent);
+
 	useEffect(() => {
 		if (postIsSuccess || putIsSuccess) {
 			queryClient.refetchQueries('comments');
 		}
 	});
-
-	useEffect(() => {
-		takeToastImgEditor(commentContent);
-	}, [commentContent]);
 
 	useEffect(() => {
 		const commentTempSavedInterval = setInterval(() => {

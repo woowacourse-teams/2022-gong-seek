@@ -8,11 +8,11 @@ import ToastUiEditor from '@/components/@common/ToastUiEditor/ToastUiEditor';
 import HashTag from '@/components/hashTag/HashTag/HashTag';
 import usePostWritingArticles from '@/hooks/article/usePostWritingArticles';
 import useSnackBar from '@/hooks/common/useSnackBar';
+import useToastImageConverter from '@/hooks/common/useToastImageConverter';
 import useGetTempDetailArticles from '@/hooks/tempArticle/useGetTempDetailArticles';
 import usePostTempArticle from '@/hooks/tempArticle/usePostTempArticle';
 import * as S from '@/pages/WritingArticles/index.styles';
 import { WritingCategoryCardStyle, WritingTitleCardStyle } from '@/styles/cardStyle';
-import { takeToastImgEditor } from '@/utils/takeToastImgEditor';
 
 const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 	const { category } = useParams();
@@ -34,6 +34,8 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 		hashTags,
 		setHashTags,
 	} = usePostWritingArticles({ category, isAnonymous });
+
+	useToastImageConverter(content);
 
 	const {
 		saveTempArticleId,
@@ -83,10 +85,6 @@ const WritingArticles = ({ tempId = '' }: { tempId?: '' | number }) => {
 			content.current.getInstance().setMarkdown(tempArticleData.data.content);
 		}
 	}, [isTempDetailArticleSuccess]);
-
-	useEffect(() => {
-		takeToastImgEditor(content);
-	}, [content]);
 
 	if (isLoading) return <Loading />;
 
