@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 export const TextOverflow = css`
 	display: inline-block;
-	white-space: nowrap;
+	white-space: normal;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	text-align: left;
