@@ -22,7 +22,7 @@ const useToastImageConverter = (content: MutableRefObject<Editor | null>) => {
 				showSnackBar('컨텐츠의 용량이 너무 큽니다.');
 				return;
 			}
-			if (error.response.data.errorCode === '7002') {
+			if (error.response.data.errorCode === '7001') {
 				showSnackBar(ErrorMessage[error.response.data.errorCode]);
 				return;
 			}
