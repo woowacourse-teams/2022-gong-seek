@@ -1,4 +1,3 @@
-import useThrowCustomError from './useThrowCustomError';
 import { AxiosError, AxiosResponse } from 'axios';
 import { MutableRefObject, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
@@ -6,6 +5,7 @@ import { useMutation } from 'react-query';
 import { postImageUrlConverter } from '@/api/image';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useSnackBar from '@/hooks/common/useSnackBar';
+import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { Editor } from '@toast-ui/react-editor';
 
 const useToastImageConverter = (content: MutableRefObject<Editor | null>) => {
