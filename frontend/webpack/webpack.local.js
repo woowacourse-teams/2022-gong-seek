@@ -30,7 +30,4 @@ module.exports = merge(common, {
 			'process.env': JSON.stringify(process.env),
 		}),
 	],
-	optimization: {
-		minimize: true,
-	},
 });
