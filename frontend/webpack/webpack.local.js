@@ -24,6 +24,7 @@ module.exports = merge(common, {
 			},
 		],
 	},
+
 	plugins: [
 		new ForkTsCheckerWebpackPlugin(),
 		new webpack.DefinePlugin({
