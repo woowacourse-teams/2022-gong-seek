@@ -30,7 +30,8 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-
+          restore-keys: |
+            ${{ runner.os }}-modules-
       - name: Install node packages
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --immutable --immutable-cache --check-cache
