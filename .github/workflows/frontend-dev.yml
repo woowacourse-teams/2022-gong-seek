@@ -1,4 +1,4 @@
-name: gongseek frontend CI
+name: gongseek frontend CI-Dev
 
 on:
   pull_request:
