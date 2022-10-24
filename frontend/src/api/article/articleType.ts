@@ -13,7 +13,7 @@ export interface ArticleTotalType extends AuthorType {
 	tag: string[];
 	content: string;
 	category: CategoryType;
-	createAt: string;
+	createdAt: string;
 	updatedAt: string;
 
 	views: number;
@@ -45,11 +45,17 @@ export interface InfiniteArticleResponse extends TotalArticleInquiredResponseTyp
 
 export type SingleTempArticleItemResponseType = Pick<
 	ArticleTotalType,
-	'id' | 'title' | 'createAt' | 'category'
+	'id' | 'title' | 'createdAt' | 'category'
 >;
 
 export interface TotalTempArticleResponseType {
 	values: SingleTempArticleItemResponseType[];
+}
+
+export interface DetailTempArticleResponseType extends SingleTempArticleItemResponseType {
+	tag: string[];
+	content: string;
+	isAnonymous: boolean;
 }
 
 export type CreateArticleResponseType = Pick<ArticleTotalType, 'id'>;

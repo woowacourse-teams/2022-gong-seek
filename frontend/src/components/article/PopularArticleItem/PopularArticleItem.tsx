@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react';
 
+import { ArticleTotalType } from '@/api/article/articleType';
 import Card from '@/components/@common/Card/Card';
 import * as S from '@/components/article/ArticleItem/ArticleItem.styles';
 import * as PopularS from '@/components/article/PopularArticleItem/PopularArticleItem.styles';
 import { CAROUSEL_AUTO_PLAY_TIME } from '@/constants/index';
 import { PopularArticleItemCardStyle } from '@/styles/cardStyle';
-import { CommonArticleType } from '@/types/articleResponse';
 import { convertGithubAvatarUrlForResize, dateTimeConverter } from '@/utils/converter';
 
 const PopularArticleItem = ({
@@ -14,7 +14,7 @@ const PopularArticleItem = ({
 	onClick,
 	rightSlide,
 }: {
-	article: CommonArticleType;
+	article: Omit<ArticleTotalType, 'updatedAt'>;
 	isActive: boolean;
 	onClick?: () => void;
 	rightSlide?: () => void;

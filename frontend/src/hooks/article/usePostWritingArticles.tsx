@@ -19,7 +19,7 @@ const usePostWritingArticles = ({
 	category,
 	isAnonymous,
 }: {
-	category?: string;
+	category?: CategoryType | string;
 	isAnonymous: boolean;
 }) => {
 	const { data, mutate, isError, isLoading, isSuccess, error } = useMutation<
@@ -30,7 +30,9 @@ const usePostWritingArticles = ({
 
 	const content = useRef<Editor | null>(null);
 	const [title, setTitle] = useState('');
-	const [categoryOption, setCategoryOption] = useState<string>(category ? category : '');
+	const [categoryOption, setCategoryOption] = useState<CategoryType | string>(
+		category ? category : 'question',
+	);
 	const [isValidTitleInput, setIsValidTitleInput] = useState(true);
 	const [hashTags, setHashTags] = useState<string[]>([]);
 	const titleInputRef = useRef<HTMLInputElement>(null);
@@ -55,8 +57,14 @@ const usePostWritingArticles = ({
 		}
 	}, [isSuccess]);
 
-	const handleSubmitButtonClick = (categoryOption: CategoryType, tempArticleId: number | '') => {
+	const handleSubmitButtonClick = (
+		categoryOption: CategoryType | string,
+		tempArticleId: number | '',
+	) => {
 		if (content.current === null) {
+			return;
+		}
+		if (categoryOption !== 'question' && categoryOption !== 'discussion') {
 			return;
 		}
 

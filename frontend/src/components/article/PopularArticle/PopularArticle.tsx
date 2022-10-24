@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 
+import { CategoryType } from '@/api/article/articleType';
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import * as S from '@/components/article/PopularArticle/PopularArticle.styles';
 import PopularArticleItem from '@/components/article/PopularArticleItem/PopularArticleItem';
 import useGetPopularArticles from '@/hooks/article/useGetPopularArticles';
 import useCarousel from '@/hooks/common/useCarousel';
-import { Category } from '@/types/articleResponse';
 
 const PopularArticle = () => {
 	const { handleCarouselElementRef, handleLeftSlideEvent, handleRightSlideEvent, currentIndex } =
@@ -22,7 +22,7 @@ const PopularArticle = () => {
 		return <EmptyMessage>게시글이 존재하지 않습니다</EmptyMessage>;
 	}
 
-	const handleClickArticleItem = ({ id, category }: { id: string; category: Category }) => {
+	const handleClickArticleItem = ({ id, category }: { id: string; category: CategoryType }) => {
 		navigate(`/articles/${category}/${id}`);
 	};
 

@@ -1,26 +1,13 @@
+import { ArticleTotalType } from '@/api/article/articleType';
 import Card from '@/components/@common/Card/Card';
 import * as S from '@/components/article/ArticleItem/ArticleItem.styles';
 import useHeartClick from '@/hooks/article/useHeartClick';
 import { ArticleItemCardStyle } from '@/styles/cardStyle';
-import { Category } from '@/types/articleResponse';
-import { Author } from '@/types/author';
 import { convertGithubAvatarUrlForResize } from '@/utils/converter';
 import { dateTimeConverter } from '@/utils/converter';
 
 export interface ArticleItemProps {
-	article: {
-		id: number;
-		title: string;
-		author: Author;
-		content: string;
-		category: Category;
-		commentCount: number;
-		createdAt: string;
-		tag: string[];
-		isLike: boolean;
-		likeCount: number;
-		views: number;
-	};
+	article: Omit<ArticleTotalType, 'isAuthor' | 'hasVote' | 'updatedAt'>;
 	onClick: () => void;
 }
 

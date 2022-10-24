@@ -1,19 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 
+import { ArticleTotalType, AuthorType } from '@/api/article/articleType';
 import Card from '@/components/@common/Card/Card';
 import ToastUiViewer from '@/components/@common/ToastUiViewer/ToastUiViewer';
 import * as S from '@/components/article/ArticleContent/ArticleContent.styles';
 import useDeleteArticleContent from '@/hooks/article/useDeleteArticleContent';
 import useHeartClick from '@/hooks/article/useHeartClick';
 import { ArticleContentCardStyle } from '@/styles/cardStyle';
-import { ArticleType } from '@/types/articleResponse';
-import { Author } from '@/types/author';
 import { dateTimeConverter } from '@/utils/converter';
 
 export interface ArticleContentProps {
 	category: string;
-	article: ArticleType;
-	author: Author;
+	article: Omit<ArticleTotalType, 'updatedAt'>;
+	author: AuthorType['author'];
 	articleId: string;
 }
 

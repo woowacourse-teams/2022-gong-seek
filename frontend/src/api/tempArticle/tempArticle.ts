@@ -1,16 +1,19 @@
+import {
+	DetailTempArticleResponseType,
+	TotalTempArticleResponseType,
+} from '@/api/article/articleType';
 import { postTempArticleProps } from '@/hooks/tempArticle/usePostTempArticle';
-import { TempArticleDetailResponse, TempArticleResponse } from '@/types/articleResponse';
 import { generateAxiosInstanceWithAccessToken } from '@/utils/generateAxiosInstance';
 
 export const getTempArticles = async () => {
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
-	const { data } = await axiosInstance.get<TempArticleResponse>(`/api/temp-articles`);
+	const { data } = await axiosInstance.get<TotalTempArticleResponseType>(`/api/temp-articles`);
 	return data;
 };
 
 export const getTempDetailArticle = ({ id }: { id: number | '' }) => {
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
-	return axiosInstance.get<TempArticleDetailResponse>(`/api/temp-articles/${id}`);
+	return axiosInstance.get<DetailTempArticleResponseType>(`/api/temp-articles/${id}`);
 };
 
 export const postTempArticle = ({ ...props }: postTempArticleProps) => {
