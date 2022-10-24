@@ -4,6 +4,11 @@ import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { postWritingArticle } from '@/api/article/article';
+import {
+	CategoryType,
+	CreateArticleRequestType,
+	CreateArticleResponseType,
+} from '@/api/article/articleType';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { CATEGORY } from '@/constants/categoryType';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
@@ -18,16 +23,9 @@ const usePostWritingArticles = ({
 	isAnonymous: boolean;
 }) => {
 	const { data, mutate, isError, isLoading, isSuccess, error } = useMutation<
-		AxiosResponse<{ id: string }>,
+		AxiosResponse<CreateArticleResponseType>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
-		{
-			title: string;
-			category: string;
-			content: string;
-			tag: string[];
-			isAnonymous: boolean;
-			tempArticleId: number | '';
-		}
+		CreateArticleRequestType
 	>(postWritingArticle, { retry: 1 });
 
 	const content = useRef<Editor | null>(null);
@@ -57,7 +55,7 @@ const usePostWritingArticles = ({
 		}
 	}, [isSuccess]);
 
-	const handleSubmitButtonClick = (categoryOption: string, tempArticleId: number | '') => {
+	const handleSubmitButtonClick = (categoryOption: CategoryType, tempArticleId: number | '') => {
 		if (content.current === null) {
 			return;
 		}

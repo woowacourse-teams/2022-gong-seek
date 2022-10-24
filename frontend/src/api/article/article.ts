@@ -5,13 +5,13 @@ import {
 import { convertSort } from '@/utils/converter';
 import { generateAxiosInstanceWithAccessToken } from '@/utils/generateAxiosInstance';
 
-export interface WritingArticles {
+export interface WritingArticlesProp {
 	title: string;
 	content: string;
 	category: string;
 }
 
-export const postWritingArticle = (article: WritingArticles) => {
+export const postWritingArticle = (article: WritingArticlesProp) => {
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
 	return axiosInstance.post('/api/articles', article);
 };

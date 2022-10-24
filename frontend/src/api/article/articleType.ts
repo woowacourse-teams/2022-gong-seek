@@ -37,6 +37,12 @@ export interface TotalArticleInquiredResponseType {
 	hasNext: boolean;
 }
 
+export interface InfiniteArticleResponse extends TotalArticleInquiredResponseType {
+	cursorId: string;
+	cursorViews?: string;
+	cursorLikes?: string;
+}
+
 export type SingleTempArticleItemResponseType = Pick<
 	ArticleTotalType,
 	'id' | 'title' | 'createAt' | 'category'
@@ -55,7 +61,13 @@ export interface ArticleTotalRequestType {
 	category: CategoryType;
 	tag: string[];
 	isAnonymous: boolean;
-	tempArticleId: number;
+	tempArticleId: number | '';
+	id: string;
 }
 
-export type UpdateArticleRequestType = Pick<ArticleTotalRequestType, 'title' | 'content' | 'tag'>;
+export type UpdateArticleRequestType = Pick<
+	ArticleTotalRequestType,
+	'title' | 'content' | 'tag' | 'id'
+>;
+
+export type CreateArticleRequestType = Omit<ArticleTotalRequestType, 'id'>;

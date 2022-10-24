@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import { putArticle } from '@/api/article/article';
+import { UpdateArticleRequestType } from '@/api/article/articleType';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { queryClient } from '@/index';
@@ -27,7 +28,7 @@ const usePostUpdateWritingArticle = () => {
 	const { data, isSuccess, isError, isLoading, error, mutate } = useMutation<
 		AxiosResponse<{ id: number; category: string }>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
-		{ title: string; content: string; id: string; tag: string[] }
+		UpdateArticleRequestType
 	>(putArticle, { retry: 1 });
 
 	useEffect(() => {

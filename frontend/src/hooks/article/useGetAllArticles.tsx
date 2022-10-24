@@ -4,17 +4,17 @@ import { useInfiniteQuery } from 'react-query';
 import { useRecoilState } from 'recoil';
 
 import { getAllArticle } from '@/api/article/article';
+import { InfiniteArticleResponse } from '@/api/article/articleType';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { categoryState } from '@/store/categoryState';
-import { infiniteArticleResponse } from '@/types/articleResponse';
 
 const useGetAllArticles = () => {
 	const [currentCategory, setCurrentCategory] = useRecoilState(categoryState);
 	const [sortIndex, setSortIndex] = useState('최신순');
 
 	const { data, isLoading, isError, isSuccess, error, refetch, fetchNextPage } = useInfiniteQuery<
-		infiniteArticleResponse,
+		InfiniteArticleResponse,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(
 		['all-articles', currentCategory],
