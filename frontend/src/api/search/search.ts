@@ -1,3 +1,4 @@
+import { HashTagSearchResponseType } from '@/api/hashTag/hashTagType';
 import { SearchResultType } from '@/types/searchResponse';
 import { generateAxiosInstanceWithAccessToken } from '@/utils/generateAxiosInstance';
 
@@ -63,7 +64,7 @@ export const getArticleByHashTag = async ({
 }) => {
 	const encodedTarget = encodeURIComponent(hashTags);
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
-	const { data } = await axiosInstance.get<SearchResultType>(
+	const { data } = await axiosInstance.get<HashTagSearchResponseType>(
 		`/api/articles/search/tags?tagsText=${encodedTarget}&cursorId=${cursorId}&size=6`,
 	);
 	return {
