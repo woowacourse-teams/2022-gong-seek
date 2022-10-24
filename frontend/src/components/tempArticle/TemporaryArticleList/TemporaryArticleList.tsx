@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { SingleTempArticleItemResponseType } from '@/api/article/articleType';
+import { SingleTempArticleItemResponseType } from '@/api/tempArticle/tempArticleType';
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import TemporaryArticleItem from '@/components/tempArticle/TemporaryArticleItem/TemporaryArticleItem';

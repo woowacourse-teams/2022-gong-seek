@@ -1,4 +1,4 @@
-import { SingleTempArticleItemResponseType } from '@/api/article/articleType';
+import { SingleTempArticleItemResponseType } from '@/api/tempArticle/tempArticleType';
 import * as S from '@/components/tempArticle/TemporaryArticleItem/TemporaryArticleItem.styles';
 import { categoryNameConverter, dateTimeConverter } from '@/utils/converter';
 

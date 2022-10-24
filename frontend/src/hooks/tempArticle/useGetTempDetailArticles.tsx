@@ -1,8 +1,8 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { useMutation } from 'react-query';
 
-import { DetailTempArticleResponseType } from '@/api/article/articleType';
 import { getTempDetailArticle } from '@/api/tempArticle/tempArticle';
+import { DetailTempArticleResponseType } from '@/api/tempArticle/tempArticleType';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 

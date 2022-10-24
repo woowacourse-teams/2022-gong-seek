@@ -1,3 +1,5 @@
+import { SingleTempArticleItemResponseType } from '@/api/tempArticle/tempArticleType';
+
 export type AuthorType = { name: string; avatarUrl: string };
 
 export type CategoryType = 'question' | 'discussion';
@@ -37,21 +39,6 @@ export interface InfiniteArticleResponseType extends TotalArticleInquiredRespons
 	cursorId: string;
 	cursorViews?: string;
 	cursorLikes?: string;
-}
-
-export type SingleTempArticleItemResponseType = Pick<
-	ArticleTotalType,
-	'id' | 'title' | 'createdAt' | 'category'
->;
-
-export interface TotalTempArticleResponseType {
-	values: SingleTempArticleItemResponseType[];
-}
-
-export interface DetailTempArticleResponseType extends SingleTempArticleItemResponseType {
-	tag: string[];
-	content: string;
-	isAnonymous: boolean;
 }
 
 export interface SingleMyPageUserArticleResponseType extends SingleTempArticleItemResponseType {

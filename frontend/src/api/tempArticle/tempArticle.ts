@@ -1,7 +1,7 @@
 import {
 	DetailTempArticleResponseType,
 	TotalTempArticleResponseType,
-} from '@/api/article/articleType';
+} from '@/api/tempArticle/tempArticleType';
 import { postTempArticleProps } from '@/hooks/tempArticle/usePostTempArticle';
 import { generateAxiosInstanceWithAccessToken } from '@/utils/generateAxiosInstance';
 
