@@ -1,13 +1,13 @@
+import { SingleCommentItemType } from '@/api/comment/commentType';
 import Loading from '@/components/@common/Loading/Loading';
 import ToastUiViewer from '@/components/@common/ToastUiViewer/ToastUiViewer';
 import * as S from '@/components/comment/Comment/Comment.styles';
 import useDeleteComment from '@/hooks/comment/useDeleteComment';
 import useDetailCommentState from '@/hooks/comment/useDetailCommentState';
-import { CommentType } from '@/types/commentResponse';
 import { convertGithubAvatarUrlForResize } from '@/utils/converter';
 import { dateTimeConverter } from '@/utils/converter';
 
-export interface CommentProps extends CommentType {
+export interface CommentProps extends Omit<SingleCommentItemType, 'updatedAt'> {
 	articleId: string;
 	tabIndex: number;
 }

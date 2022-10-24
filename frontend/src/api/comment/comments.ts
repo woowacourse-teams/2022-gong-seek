@@ -1,13 +1,13 @@
-import { CommentType } from '@/types/commentResponse';
+import { TotalCommentResponseType } from '@/api/comment/commentType';
 import { generateAxiosInstanceWithAccessToken } from '@/utils/generateAxiosInstance';
 
 export const postComments = ({
-	content,
 	id,
+	content,
 	isAnonymous,
 }: {
-	content: string;
 	id: string;
+	content: string;
 	isAnonymous: boolean;
 }) => {
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
@@ -18,7 +18,7 @@ export const postComments = ({
 export const getComments = async (id: string) => {
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
 
-	const { data } = await axiosInstance.get<{ comments: CommentType[] }>(
+	const { data } = await axiosInstance.get<TotalCommentResponseType>(
 		`/api/articles/${id}/comments`,
 	);
 	return data;

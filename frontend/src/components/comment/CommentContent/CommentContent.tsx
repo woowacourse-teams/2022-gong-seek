@@ -1,12 +1,12 @@
+import { SingleCommentItemType } from '@/api/comment/commentType';
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Comment from '@/components/comment/Comment/Comment';
 import * as S from '@/components/comment/CommentContent/CommentContent.styles';
 import useDetailCommentState from '@/hooks/comment/useDetailCommentState';
-import { CommentType } from '@/types/commentResponse';
 
 export interface CommentContentProps {
 	articleId: string;
-	commentList: CommentType[];
+	commentList: SingleCommentItemType[];
 }
 
 const CommentContent = ({ articleId, commentList }: CommentContentProps) => {

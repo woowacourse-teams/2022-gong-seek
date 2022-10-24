@@ -1,8 +1,8 @@
 import { rest } from 'msw';
 
 import { AuthorType, MyPageUserArticleResponseType } from '@/api/article/articleType';
+import { MyPageCommentResponse } from '@/api/comment/commentType';
 import { HOME_URL } from '@/constants/apiUrl';
-import { UserCommentResponse } from '@/types/commentResponse';
 
 export const MyPageHandler = [
 	rest.get<AuthorType>(`${HOME_URL}/api/members/me`, (req, res, ctx) =>
@@ -55,7 +55,7 @@ export const MyPageHandler = [
 		),
 	),
 
-	rest.get<UserCommentResponse>(`${HOME_URL}/api/members/me/comments`, (req, res, ctx) =>
+	rest.get<MyPageCommentResponse>(`${HOME_URL}/api/members/me/comments`, (req, res, ctx) =>
 		res(
 			ctx.status(200),
 			ctx.json({

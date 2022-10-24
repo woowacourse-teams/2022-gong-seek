@@ -1,12 +1,12 @@
 import { rest } from 'msw';
 
+import { SingleCommentItemType } from '@/api/comment/commentType';
 import { HOME_URL } from '@/constants/apiUrl';
 import mockData from '@/mock/data/comment.json';
-import { CommentType } from '@/types/commentResponse';
 
 const data = localStorage.getItem('mock-comments');
 
-const mockComments = data ? (JSON.parse(data) as CommentType[][]) : [];
+const mockComments = data ? (JSON.parse(data) as SingleCommentItemType[][]) : [];
 
 export const CommentHandler = [
 	rest.post<{ content: string }>(
@@ -31,6 +31,7 @@ export const CommentHandler = [
 				},
 				createdAt: '2022-07-28',
 				isAuthor: true,
+				updatedAt: '2022-08-08',
 			});
 			localStorage.setItem('mock-comments', JSON.stringify(mockComments));
 

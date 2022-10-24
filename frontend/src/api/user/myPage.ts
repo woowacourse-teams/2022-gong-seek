@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 
 import { AuthorType, MyPageUserArticleResponseType } from '@/api/article/articleType';
-import { UserCommentResponse } from '@/types/commentResponse';
+import { MyPageCommentResponse } from '@/api/comment/commentType';
 import { generateAxiosInstanceWithAccessToken } from '@/utils/generateAxiosInstance';
 
 export const getUserInfo = async () => {
@@ -20,7 +20,7 @@ export const getUserArticles = async () => {
 
 export const getUserComments = async () => {
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
-	const { data } = await axiosInstance.get<UserCommentResponse>('/api/members/me/comments');
+	const { data } = await axiosInstance.get<MyPageCommentResponse>('/api/members/me/comments');
 	return data;
 };
 
