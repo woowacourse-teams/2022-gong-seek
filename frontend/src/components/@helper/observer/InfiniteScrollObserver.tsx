@@ -2,10 +2,10 @@ import { PropsWithStrictChildren } from 'gongseek-types';
 import { useEffect, useRef } from 'react';
 import { InfiniteQueryObserverResult } from 'react-query';
 
-import { InfiniteArticleResponse } from '@/api/article/articleType';
+import { InfiniteArticleResponseType } from '@/api/article/articleType';
 import { InfiniteSearchResultType } from '@/types/searchResponse';
 
-export type ObserverResponseType = InfiniteArticleResponse | InfiniteSearchResultType;
+export type ObserverResponseType = InfiniteArticleResponseType | InfiniteSearchResultType;
 interface infiniteScrollObserverProps {
 	hasNext: boolean;
 	fetchNextPage: () => Promise<InfiniteQueryObserverResult<ObserverResponseType, Error>>;

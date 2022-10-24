@@ -33,7 +33,7 @@ export interface TotalArticleInquiredResponseType {
 	hasNext: boolean;
 }
 
-export interface InfiniteArticleResponse extends TotalArticleInquiredResponseType {
+export interface InfiniteArticleResponseType extends TotalArticleInquiredResponseType {
 	cursorId: string;
 	cursorViews?: string;
 	cursorLikes?: string;
