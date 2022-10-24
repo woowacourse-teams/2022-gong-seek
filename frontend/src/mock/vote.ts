@@ -1,12 +1,12 @@
 import { rest } from 'msw';
 
-import { TVote } from '@/api/vote/vote';
+import { VoteResponseType } from '@/api/vote/voteType';
 import { HOME_URL } from '@/constants/apiUrl';
 
 export const VoteHandler = [
 	rest.post<{ items: string[] }>(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
 		const data = localStorage.getItem('mock-votes');
-		const mockVotes = data ? (JSON.parse(data) as TVote[]) : [];
+		const mockVotes = data ? (JSON.parse(data) as VoteResponseType[]) : [];
 
 		const { articleId } = req.params;
 		const { items } = req.body;
@@ -42,7 +42,7 @@ export const VoteHandler = [
 	rest.get(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
 		const { articleId } = req.params;
 		const data = localStorage.getItem('mock-votes');
-		const mockVotes = data ? (JSON.parse(data) as TVote[]) : [];
+		const mockVotes = data ? (JSON.parse(data) as VoteResponseType[]) : [];
 
 		const vote = mockVotes.find((mockVote) => mockVote.articleId === articleId);
 		if (typeof vote === 'undefined') {
@@ -56,7 +56,7 @@ export const VoteHandler = [
 		`${HOME_URL}/api/articles/:articleId/votes/do`,
 		(req, res, ctx) => {
 			const data = localStorage.getItem('mock-votes');
-			const mockVotes = data ? (JSON.parse(data) as TVote[]) : [];
+			const mockVotes = data ? (JSON.parse(data) as VoteResponseType[]) : [];
 
 			const { articleId } = req.params;
 			const { voteItemId } = req.body;

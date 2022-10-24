@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 
 import { checkVoteItems } from '@/api/vote/vote';
+import { CheckVoteRequestType } from '@/api/vote/voteType';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { queryClient } from '@/index';
@@ -11,7 +12,7 @@ const usePostVoteItem = (articleId: string) => {
 	const { error, mutate, isError, isSuccess, isLoading } = useMutation<
 		unknown,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
-		{ articleId: string; voteItemId: string }
+		CheckVoteRequestType
 	>(checkVoteItems);
 
 	useEffect(() => {
