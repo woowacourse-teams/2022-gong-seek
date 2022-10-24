@@ -1,5 +1,5 @@
 import { HashTagSearchResponseType } from '@/api/hashTag/hashTagType';
-import { SearchResultType } from '@/types/searchResponse';
+import { ArticleSearchResponseType } from '@/api/search/searchType';
 import { generateAxiosInstanceWithAccessToken } from '@/utils/generateAxiosInstance';
 
 export const getUserSearchResult = async ({
@@ -13,7 +13,7 @@ export const getUserSearchResult = async ({
 }) => {
 	const encodedTarget = encodeURIComponent(target);
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
-	const { data } = await axiosInstance.get<SearchResultType>(
+	const { data } = await axiosInstance.get<ArticleSearchResponseType>(
 		`/api/articles/search/author?author=${encodedTarget}&cursorId=${cursorId}&size=6`,
 	);
 	return {
@@ -39,7 +39,7 @@ export const getArticleSearchResult = async ({
 }) => {
 	const encodedTarget = encodeURIComponent(target);
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
-	const { data } = await axiosInstance.get<SearchResultType>(
+	const { data } = await axiosInstance.get<ArticleSearchResponseType>(
 		`/api/articles/search/text?text=${encodedTarget}&cursorId=${cursorId}&size=6`,
 	);
 
