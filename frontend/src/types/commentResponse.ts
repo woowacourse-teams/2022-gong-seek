@@ -1,8 +1,8 @@
-import { Author } from '@/types/author';
+import { AuthorType } from '@/api/article/articleType';
 
 export interface CommentType {
 	id: number;
-	author: Author;
+	author: AuthorType;
 	content: string;
 	createdAt: string;
 	isAuthor: boolean;

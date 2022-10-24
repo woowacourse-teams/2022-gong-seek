@@ -1,14 +1,14 @@
 import { AxiosError } from 'axios';
 import { useQuery } from 'react-query';
 
+import { MyPageUserArticleResponseType } from '@/api/article/articleType';
 import { getUserArticles } from '@/api/user/myPage';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
-import { UserArticlesResponse } from '@/types/articleResponse';
 
 const useGetUserArticles = () => {
 	const { data, isSuccess, isError, isLoading, error } = useQuery<
-		UserArticlesResponse,
+		MyPageUserArticleResponseType,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('user-articles', getUserArticles, { retry: 1, refetchOnWindowFocus: false });
 

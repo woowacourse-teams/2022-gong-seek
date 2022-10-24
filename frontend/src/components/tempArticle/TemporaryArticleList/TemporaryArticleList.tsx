@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 
+import { SingleTempArticleItemResponseType } from '@/api/article/articleType';
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import TemporaryArticleItem from '@/components/tempArticle/TemporaryArticleItem/TemporaryArticleItem';
 import * as S from '@/components/tempArticle/TemporaryArticleList/TemporaryArticleList.styles';
 import useDeleteTempArticle from '@/hooks/tempArticle/useDeleteTempArticle';
 import useGetTempArticles from '@/hooks/tempArticle/useGetTempArticles';
-import { TempArticleItem } from '@/types/articleResponse';
 
 const TemporaryArticleList = () => {
 	const { data, isLoading } = useGetTempArticles();
@@ -22,7 +22,7 @@ const TemporaryArticleList = () => {
 		}
 	};
 
-	const handleClickTemporaryArticleItem = (item: TempArticleItem) => {
+	const handleClickTemporaryArticleItem = (item: SingleTempArticleItemResponseType) => {
 		navigate(`/temp-article/${item.category}/${item.id}`);
 	};
 

@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 
+import { ArticleTotalType } from '@/api/article/articleType';
 import { HOME_URL } from '@/constants/apiUrl';
-import { CommonArticleType } from '@/types/articleResponse';
 import { SearchResultType } from '@/types/searchResponse';
 
 export const SearchHandler = [
@@ -119,7 +119,7 @@ export const SearchHandler = [
 		);
 	}),
 
-	rest.get<{ articles: CommonArticleType[] }>(
+	rest.get<{ articles: Omit<ArticleTotalType, 'updatedAt' | 'hasVote' | 'isAuthor'>[] }>(
 		`${HOME_URL}/api/articles/search/tags`,
 		(req, res, ctx) =>
 			res(

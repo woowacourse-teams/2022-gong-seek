@@ -1,7 +1,7 @@
 import { BrowserRouter } from 'react-router-dom';
 
+import { SingleMyPageUserArticleResponseType } from '@/api/article/articleType';
 import UserArticleItem from '@/components/user/UserArticleItem/UserArticleItem';
-import { UserArticleItemType } from '@/types/articleResponse';
 import { Meta, Story } from '@storybook/react';
 
 export default {
@@ -18,7 +18,9 @@ export default {
 	],
 } as Meta;
 
-const Template: Story<{ article: UserArticleItemType }> = (args) => <UserArticleItem {...args} />;
+const Template: Story<{ article: SingleMyPageUserArticleResponseType }> = (args) => (
+	<UserArticleItem {...args} />
+);
 
 export const DiscussionUserItemBox = Template.bind({});
 DiscussionUserItemBox.args = {

@@ -11,8 +11,8 @@ import { dateTimeConverter } from '@/utils/converter';
 
 export interface ArticleContentProps {
 	category: string;
-	article: Omit<ArticleTotalType, 'updatedAt'>;
-	author: AuthorType['author'];
+	article: Omit<ArticleTotalType, 'updatedAt' | 'category' | 'commentCount'>;
+	author: AuthorType;
 	articleId: string;
 }
 

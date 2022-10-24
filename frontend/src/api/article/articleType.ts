@@ -1,13 +1,8 @@
-export interface AuthorType {
-	author: {
-		name: string;
-		avatarUrl: string;
-	};
-}
+export type AuthorType = { name: string; avatarUrl: string };
 
 export type CategoryType = 'question' | 'discussion';
 
-export interface ArticleTotalType extends AuthorType {
+export interface ArticleTotalType {
 	id: number;
 	title: string;
 	tag: string[];
@@ -15,6 +10,7 @@ export interface ArticleTotalType extends AuthorType {
 	category: CategoryType;
 	createdAt: string;
 	updatedAt: string;
+	author: AuthorType;
 
 	views: number;
 	likeCount: number;
@@ -25,7 +21,7 @@ export interface ArticleTotalType extends AuthorType {
 	isLike: boolean;
 }
 
-export type DetailArticleResponseType = Omit<ArticleTotalType, 'id' | 'category' | 'commentCount'>;
+export type DetailArticleResponseType = Omit<ArticleTotalType, 'category' | 'commentCount'>;
 
 export type SingleArticleItemResponseType = Omit<
 	ArticleTotalType,
@@ -56,6 +52,16 @@ export interface DetailTempArticleResponseType extends SingleTempArticleItemResp
 	tag: string[];
 	content: string;
 	isAnonymous: boolean;
+}
+
+export interface SingleMyPageUserArticleResponseType extends SingleTempArticleItemResponseType {
+	commentCount: number;
+	updatedAt: string;
+	views: number;
+}
+
+export interface MyPageUserArticleResponseType {
+	articles: SingleMyPageUserArticleResponseType[];
 }
 
 export type CreateArticleResponseType = Pick<ArticleTotalType, 'id'>;

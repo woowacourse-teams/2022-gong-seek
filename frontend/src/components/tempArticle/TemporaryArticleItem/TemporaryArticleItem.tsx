@@ -1,8 +1,9 @@
+import { SingleTempArticleItemResponseType } from '@/api/article/articleType';
 import * as S from '@/components/tempArticle/TemporaryArticleItem/TemporaryArticleItem.styles';
 import { categoryNameConverter, dateTimeConverter } from '@/utils/converter';
 
 export interface TemporaryArticleItemProps {
-	article: { title: string; createAt: string; category: string };
+	article: Omit<SingleTempArticleItemResponseType, 'id'>;
 	onClick: () => void;
 }
 
@@ -13,7 +14,7 @@ const TemporaryArticleItem = ({ article, onClick }: TemporaryArticleItemProps) =
 			<S.Category isQuestion={article.category === 'question'}>
 				{categoryNameConverter(article.category)}
 			</S.Category>
-			<S.CreatedAt>{article.createAt && dateTimeConverter(article.createAt)}</S.CreatedAt>
+			<S.CreatedAt>{article.createdAt && dateTimeConverter(article.createdAt)}</S.CreatedAt>
 		</S.SubInfo>
 	</S.Container>
 );

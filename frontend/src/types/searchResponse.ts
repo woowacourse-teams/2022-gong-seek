@@ -1,7 +1,7 @@
-import { CommonArticleType } from '@/types/articleResponse';
+import { ArticleTotalType } from '@/api/article/articleType';
 
 export interface SearchResultType {
-	articles: CommonArticleType[];
+	articles: Omit<ArticleTotalType, 'updatedAt' | 'hasVote' | 'isAuthor'>[];
 	hasNext: boolean;
 }
 

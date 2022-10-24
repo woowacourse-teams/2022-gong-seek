@@ -10,7 +10,7 @@ export interface TVote {
 	articleId: string;
 	voteItems: VoteItems[];
 	votedItemId: number | null;
-	isExpired: boolean;
+	expired: boolean;
 }
 
 export const getVoteItems = async (articleId: string) => {

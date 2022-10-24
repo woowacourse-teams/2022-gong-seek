@@ -14,7 +14,7 @@ const PopularArticleItem = ({
 	onClick,
 	rightSlide,
 }: {
-	article: Omit<ArticleTotalType, 'updatedAt'>;
+	article: Omit<ArticleTotalType, 'updatedAt' | 'hasVote' | 'isAuthor'>;
 	isActive: boolean;
 	onClick?: () => void;
 	rightSlide?: () => void;
