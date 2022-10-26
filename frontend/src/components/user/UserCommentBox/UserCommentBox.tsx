@@ -1,8 +1,11 @@
-import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
+import React from 'react';
+
 import Loading from '@/components/@common/Loading/Loading';
 import * as S from '@/components/user/UserCommentBox/UserCommentBox.styles';
 import UserCommentItem from '@/components/user/UserCommentItem/UserCommentItem';
 import useGetUserComments from '@/hooks/user/useGetUserComments';
+
+const EmptyMessage = React.lazy(() => import('@/components/@common/EmptyMessage/EmptyMessage'));
 
 const UserCommentBox = () => {
 	const {

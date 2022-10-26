@@ -1,12 +1,14 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import * as S from '@/components/article/PopularArticle/PopularArticle.styles';
 import PopularArticleItem from '@/components/article/PopularArticleItem/PopularArticleItem';
 import useGetPopularArticles from '@/hooks/article/useGetPopularArticles';
 import useCarousel from '@/hooks/common/useCarousel';
 import { Category } from '@/types/articleResponse';
+
+const EmptyMessage = React.lazy(() => import('@/components/@common/EmptyMessage/EmptyMessage'));
 
 const PopularArticle = () => {
 	const { handleCarouselElementRef, handleLeftSlideEvent, handleRightSlideEvent, currentIndex } =
