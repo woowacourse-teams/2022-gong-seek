@@ -149,6 +149,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                                 article.views.value,
                                 article.commentCount.value,
                                 article.likeCount.value,
+                                existsLike(memberId),
                                 article.createdAt
                         )
                 )
@@ -191,6 +192,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                                 article.views.value,
                                 article.commentCount.value,
                                 article.likeCount.value,
+                                existsLike(memberId),
                                 article.createdAt
                         )
                 )
@@ -241,6 +243,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                                 article.views.value,
                                 article.commentCount.value,
                                 article.likeCount.value,
+                                existsLike(memberId),
                                 article.createdAt
                         )
                 )
@@ -275,6 +278,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                                 article.views.value,
                                 article.commentCount.value,
                                 article.likeCount.value,
+                                existsLike(memberId),
                                 article.createdAt
                         )
                 )
