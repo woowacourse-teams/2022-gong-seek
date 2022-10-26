@@ -7,7 +7,6 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
-import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.support.RepositoryTest;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 @SuppressWarnings("NonAsciiCharacters")
 @RepositoryTest
@@ -42,12 +40,6 @@ public class ArticleTagRepositoryTest {
 
     @Autowired
     private TagRepository tagRepository;
-
-    @Autowired
-    private LikeRepository likeRepository;
-
-    @Autowired
-    private TestEntityManager testEntityManager;
 
     @BeforeEach
     void setUp() {

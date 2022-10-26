@@ -24,7 +24,6 @@ import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.like.application.LikeService;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
-import com.woowacourse.gongseek.support.DatabaseCleaner;
 import com.woowacourse.gongseek.support.IntegrationTest;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
@@ -39,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -80,19 +78,11 @@ public class ArticleServiceTest extends IntegrationTest {
     @Autowired
     private LikeService likeService;
 
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
-
     private final Member member = new Member("slo", "hanull", "avatar.com");
 
     @BeforeEach
     void setUp() {
         memberRepository.save(member);
-    }
-
-    @AfterEach
-    void tearDown() {
-        databaseCleaner.tableClear();
     }
 
     @Transactional

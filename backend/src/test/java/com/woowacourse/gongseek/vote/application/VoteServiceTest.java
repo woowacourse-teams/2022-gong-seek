@@ -14,7 +14,6 @@ import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
-import com.woowacourse.gongseek.support.DatabaseCleaner;
 import com.woowacourse.gongseek.support.IntegrationTest;
 import com.woowacourse.gongseek.vote.domain.Vote;
 import com.woowacourse.gongseek.vote.domain.VoteHistory;
@@ -30,7 +29,6 @@ import com.woowacourse.gongseek.vote.presentation.dto.VoteItemResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,9 +57,6 @@ class VoteServiceTest extends IntegrationTest {
     @Autowired
     private VoteHistoryRepository voteHistoryRepository;
 
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
-
     private Member member;
     private Article discussionArticle;
     private List<VoteItem> voteItems;
@@ -74,11 +69,6 @@ class VoteServiceTest extends IntegrationTest {
         );
         Vote vote = voteRepository.save(new Vote(discussionArticle, LocalDateTime.now().plusDays(7)));
         voteItems = voteItemRepository.saveAll(List.of(new VoteItem("content1", vote), new VoteItem("content2", vote)));
-    }
-
-    @AfterEach
-    void tearDown() {
-        databaseCleaner.tableClear();
     }
 
     @Test

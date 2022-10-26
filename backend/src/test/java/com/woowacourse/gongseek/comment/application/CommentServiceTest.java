@@ -53,18 +53,10 @@ class CommentServiceTest extends IntegrationTest {
     @Autowired
     private CommentRepository commentRepository;
 
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
-
     @BeforeEach
     void setUp() {
         memberRepository.save(member);
         articleRepository.save(article);
-    }
-
-    @AfterEach
-    void tearDown() {
-        databaseCleaner.tableClear();
     }
 
     @Test

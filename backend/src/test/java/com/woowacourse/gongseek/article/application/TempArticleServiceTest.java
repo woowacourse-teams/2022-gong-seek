@@ -41,9 +41,6 @@ class TempArticleServiceTest extends IntegrationTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
-
     private Member member;
     private TempArticle tempArticle;
 
@@ -58,11 +55,6 @@ class TempArticleServiceTest extends IntegrationTest {
                 .tempTags(new TempTags(List.of("spring")))
                 .isAnonymous(false)
                 .build());
-    }
-
-    @AfterEach
-    void tearDown() {
-        databaseCleaner.tableClear();
     }
 
     @Transactional

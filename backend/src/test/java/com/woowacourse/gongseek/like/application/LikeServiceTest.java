@@ -39,14 +39,6 @@ class LikeServiceTest extends IntegrationTest {
     @Autowired
     private ArticleService articleService;
 
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
-
-    @AfterEach
-    void tearDown() {
-        databaseCleaner.tableClear();
-    }
-
     @Test
     void 게시글을_추천한다() {
         Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
