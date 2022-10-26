@@ -38,6 +38,7 @@ public class ArticlePreviewDto {
                              Long views,
                              Long commentCount,
                              Long likeCount,
+                             Boolean isLike,
                              LocalDateTime createdAt) {
         this(
                 id,
@@ -49,7 +50,7 @@ public class ArticlePreviewDto {
                 views,
                 commentCount,
                 likeCount,
-                null,
+                isLike,
                 createdAt
         );
     }

@@ -12,6 +12,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.article.domain.Category;
@@ -49,20 +50,27 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                                 article.views.value,
                                 article.commentCount.value,
                                 article.likeCount.value,
+                                existsLike(memberId),
                                 article.createdAt
                         )
                 )
                 .from(article)
-                .join(article.member, member)
                 .where(
                         cursorIdAndCursorViews(cursorId, views, sortType),
                         categoryEquals(category)
                 )
                 .limit(pageable.getPageSize() + 1);
         List<ArticlePreviewDto> fetch = sort(sortType, query);
-        setTagNameAndIsLike(fetch, memberId);
+        setTagNames(fetch);
 
         return convertToSliceFromArticle(fetch, pageable);
+    }
+
+    private BooleanExpression existsLike(Long memberId) {
+        return JPAExpressions.selectOne()
+                .from(like)
+                .where(like.member.id.eq(memberId).and(like.article.id.eq(article.id)))
+                .exists();
     }
 
     private BooleanExpression cursorIdAndCursorViews(Long cursorId, Long cursorViews, String sortType) {
@@ -104,14 +112,10 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
         return new SliceImpl<>(fetch, pageable, hasNext);
     }
 
-    private void setTagNameAndIsLike(List<ArticlePreviewDto> fetch, Long memberId) {
+    private void setTagNames(List<ArticlePreviewDto> fetch) {
         List<Long> articleIds = toArticleIds(fetch);
         Map<Long, List<String>> tagNameMap = findTagNameMap(articleIds);
-        List<Long> findLikeArticleIds = findLikeArticleIds(articleIds, memberId);
-        fetch.forEach(o -> {
-            o.setTagName(tagNameMap.get(o.getId()));
-            o.setIsLike(findLikeArticleIds.contains(o.getId()));
-        });
+        fetch.forEach(o -> o.setTagName(tagNameMap.get(o.getId())));
     }
 
     private List<Long> toArticleIds(List<ArticlePreviewDto> result) {
@@ -127,17 +131,6 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                 .leftJoin(articleTag.tag, tag)
                 .where(article.id.in(articleIds))
                 .transform(groupBy(article.id).as(GroupBy.list(tag.name)));
-    }
-
-    private List<Long> findLikeArticleIds(List<Long> articleIds, Long memberId) {
-        return queryFactory
-                .select(like.article.id)
-                .from(like)
-                .where(
-                        like.article.id.in(articleIds),
-                        like.member.id.eq(memberId)
-                )
-                .fetch();
     }
 
     @Override
@@ -168,7 +161,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                 .limit(pageable.getPageSize() + 1)
                 .orderBy(article.likeCount.value.desc(), article.id.desc())
                 .fetch();
-        setTagNameAndIsLike(fetch, memberId);
+        setTagNames(fetch);
 
         return convertToSliceFromArticle(fetch, pageable);
     }
@@ -210,7 +203,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                 .limit(pageable.getPageSize() + 1)
                 .orderBy(article.id.desc())
                 .fetch();
-        setTagNameAndIsLike(fetch, memberId);
+        setTagNames(fetch);
 
         return convertToSliceBySearch(fetch, pageable);
     }
@@ -261,7 +254,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                 .limit(pageable.getPageSize() + 1)
                 .orderBy(article.id.desc())
                 .fetch();
-        setTagNameAndIsLike(fetch, memberId);
+        setTagNames(fetch);
 
         return convertToSliceBySearch(fetch, pageable);
     }
@@ -297,7 +290,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                 .limit(pageable.getPageSize() + 1)
                 .orderBy(articleTag.article.id.desc())
                 .fetch();
-        setTagNameAndIsLike(fetch, memberId);
+        setTagNames(fetch);
 
         return convertToSliceBySearch(fetch, pageable);
     }

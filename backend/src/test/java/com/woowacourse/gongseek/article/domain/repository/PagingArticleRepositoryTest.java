@@ -71,9 +71,19 @@ public class PagingArticleRepositoryTest {
 
     @Test
     void 게시글을_5개씩_조회한다() {
-        for (int i = 0; i < 5; i++) {
-            articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, true));
-        }
+        Article article1 = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, false));
+        Article article2 =articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, true));
+        Article article3 = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, true));
+        Article article4 = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, true));
+        Article article5 = articleRepository.save(new Article(TITLE, CONTENT, Category.QUESTION, member, true));
+
+        System.out.println(article1.getMember().getName());
+        likeRepository.save(new Like(article1, member));
+        likeRepository.save(new Like(article2, member));
+        likeRepository.save(new Like(article3, member));
+        likeRepository.save(new Like(article4, member));
+        likeRepository.save(new Like(article5, member));
+
         Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByPage(
                 null, 0L, Category.QUESTION.getValue(), "views", member.getId(), PageRequest.ofSize(5));
 
@@ -89,7 +99,7 @@ public class PagingArticleRepositoryTest {
                 () -> assertThat(articles.getContent().get(0).getViews()).isEqualTo(0L),
                 () -> assertThat(articles.getContent().get(0).getCommentCount()).isEqualTo(0L),
                 () -> assertThat(articles.getContent().get(0).getLikeCount()).isEqualTo(0L),
-                () -> assertThat(articles.getContent().get(0).getIsLike()).isFalse(),
+                () -> assertThat(articles.getContent().get(0).getIsLike()).isTrue(),
                 () -> assertThat(articles.hasNext()).isFalse()
         );
     }
