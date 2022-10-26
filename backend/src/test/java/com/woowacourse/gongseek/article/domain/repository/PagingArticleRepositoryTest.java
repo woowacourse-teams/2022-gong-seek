@@ -158,11 +158,11 @@ public class PagingArticleRepositoryTest {
         Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
 
         likeRepository.save(new Like(firstArticle, member));
-        firstArticle.addLikeCount();
+        articleRepository.increaseLikeCount(firstArticle.getId());
         likeRepository.save(new Like(firstArticle, newMember));
-        firstArticle.addLikeCount();
+        articleRepository.increaseLikeCount(firstArticle.getId());
         likeRepository.save(new Like(secondArticle, member));
-        secondArticle.addLikeCount();
+        articleRepository.increaseLikeCount(secondArticle.getId());
 
         Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(null, null,
                 Category.QUESTION.getValue(),
@@ -190,11 +190,11 @@ public class PagingArticleRepositoryTest {
         Member newMember = memberRepository.save(new Member("newMember", "123", "www.avatar"));
 
         likeRepository.save(new Like(firstArticle, member));
-        firstArticle.addLikeCount();
+        articleRepository.increaseLikeCount(firstArticle.getId());
         likeRepository.save(new Like(firstArticle, newMember));
-        firstArticle.addLikeCount();
+        articleRepository.increaseLikeCount(firstArticle.getId());
         likeRepository.save(new Like(secondArticle, member));
-        secondArticle.addLikeCount();
+        articleRepository.increaseLikeCount(secondArticle.getId());
 
         Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(null, null,
                 Category.QUESTION.getValue(),
