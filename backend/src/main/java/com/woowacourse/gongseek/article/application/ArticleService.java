@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.article.application;
 
 import com.woowacourse.gongseek.article.domain.Article;
-import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
 import com.woowacourse.gongseek.article.domain.repository.PagingArticleRepository;
@@ -176,18 +175,6 @@ public class ArticleService {
 
     private void deleteLikes(Article article) {
         likeRepository.deleteAllByArticleId(article.getId());
-    }
-
-    private void deleteComment(Article article) {
-        commentRepository.deleteAllByArticleId(article.getId());
-    }
-
-    private void deleteVoteHistory(Article article) {
-        if (article.getCategory().equals(Category.QUESTION)) {
-            return;
-        }
-        voteRepository.findByArticleId(article.getId()).ifPresent(
-                vote -> voteHistoryRepository.deleteAllByVoteItemIn(voteItemRepository.findAllByVoteId(vote.getId())));
     }
 
     @Transactional(readOnly = true)

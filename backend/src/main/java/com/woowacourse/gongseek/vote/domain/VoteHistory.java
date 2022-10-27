@@ -30,6 +30,7 @@ public class VoteHistory {
     @JoinColumn(nullable = false)
     private Member member;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private VoteItem voteItem;
