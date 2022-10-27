@@ -168,8 +168,6 @@ public class ArticleService {
 
     public void delete(AppMember appMember, Long id) {
         Article article = checkAuthorization(appMember, id);
-        deleteVoteHistory(article);
-        deleteComment(article);
         deleteLikes(article);
         articleRepository.delete(article);
         List<Long> deletedTagIds = getDeletedTagIds(article.getTagIds());
