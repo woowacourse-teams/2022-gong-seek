@@ -98,27 +98,4 @@ class CommentRepositoryTest {
 
         assertThat(comments).contains(firstComment, secondComment);
     }
-
-    @Test
-    void 게시글들에_작성된_댓글_수를_조회한다() {
-        Article otherArticle1 = articleRepository.save(
-                new Article("title2", "content2", Category.QUESTION, this.member, false));
-        Article otherArticle2 = articleRepository.save(
-                new Article("title3", "content3", Category.QUESTION, this.member, false));
-
-        commentRepository.save(new Comment("content1", member, article, false));
-        commentRepository.save(new Comment("content2", member, article, false));
-        commentRepository.save(new Comment("content2", member, otherArticle1, false));
-        commentRepository.save(new Comment("content2", member, otherArticle1, false));
-        commentRepository.save(new Comment("content2", member, otherArticle1, false));
-
-        List<Long> counts = commentRepository.findCommentCountByArticleIdIn(
-                List.of(article.getId(), otherArticle1.getId(), otherArticle2.getId()));
-
-        assertAll(
-                () -> assertThat(counts.get(0)).isEqualTo(2),
-                () -> assertThat(counts.get(1)).isEqualTo(3),
-                () -> assertThat(counts.get(2)).isEqualTo(0)
-        );
-    }
 }

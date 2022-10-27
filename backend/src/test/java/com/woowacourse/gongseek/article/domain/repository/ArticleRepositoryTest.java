@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.repository.dto.MyPagePreviewDto;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.support.RepositoryTest;
@@ -18,6 +19,7 @@ import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -82,19 +84,27 @@ class ArticleRepositoryTest {
     }
 
     @Test
+    void 존재하지_않는_게시글_식별자로_단건_조회_시_Optional을_반환한다() {
+        Optional<Article> article = articleRepository.findByIdWithAll(500L);
+
+        assertThat(article).isEmpty();
+    }
+
+    @Test
     void 회원이_작성한_게시글들을_조회할_수_있다() {
-        Member otherMember = new Member("rennon", "brorae", "avatar.com");
-        memberRepository.save(otherMember);
-        Article firstArticle = articleRepository.save(
-                new Article("title1", "content1", Category.QUESTION, member, false));
-        Article secondArticle = articleRepository.save(
-                new Article("title1", "content1", Category.QUESTION, member, false));
-        articleRepository.save(
-                new Article("title2", "content2", Category.DISCUSSION, otherMember, false));
+        Article firstArticle = articleRepository.save(new Article("title1", "content1", Category.DISCUSSION, member, false));
+        Article secondArticle = articleRepository.save(new Article("title1", "content1", Category.DISCUSSION, member, false));
 
-        List<Article> articles = articleRepository.findAllByMemberId(member.getId());
+        List<MyPagePreviewDto> myPagePreviewDtos = articleRepository.findAllByMemberIdWithCommentCount(
+                member.getId());
 
-        assertThat(articles).containsExactly(firstArticle, secondArticle);
+        assertAll(
+                () -> assertThat(myPagePreviewDtos).hasSize(2),
+                () -> assertThat(myPagePreviewDtos.get(0).getId()).isEqualTo(firstArticle.getId()),
+                () -> assertThat(myPagePreviewDtos.get(1).getId()).isEqualTo(secondArticle.getId()),
+                () -> assertThat(myPagePreviewDtos.get(1).getCommentCount()).isEqualTo(0),
+                () -> assertThat(myPagePreviewDtos.get(1).getCommentCount()).isEqualTo(0)
+        );
     }
 
     @Test
