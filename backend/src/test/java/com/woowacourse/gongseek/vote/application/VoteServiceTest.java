@@ -21,11 +21,11 @@ import com.woowacourse.gongseek.vote.domain.VoteItem;
 import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
+import com.woowacourse.gongseek.vote.domain.repository.dto.VoteItemDto;
 import com.woowacourse.gongseek.vote.exception.UnavailableArticleException;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateResponse;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteItemResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -140,11 +140,11 @@ class VoteServiceTest extends IntegrationTest {
         voteService.doVote(discussionArticle.getId(), loginMember,
                 new SelectVoteItemIdRequest(voteItems.get(selectIndex).getId()));
 
-        List<VoteItemResponse> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember)
+        List<VoteItemDto> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember)
                 .getVoteItems();
         assertAll(
-                () -> assertThat(foundVoteItems.get(selectIndex).getAmount()).isEqualTo(1),
-                () -> assertThat(foundVoteItems.get(1).getAmount()).isEqualTo(0)
+                () -> assertThat(foundVoteItems.get(selectIndex).getCount()).isEqualTo(1),
+                () -> assertThat(foundVoteItems.get(1).getCount()).isEqualTo(0)
         );
     }
 
@@ -156,11 +156,11 @@ class VoteServiceTest extends IntegrationTest {
         voteService.doVote(discussionArticle.getId(), loginMember,
                 new SelectVoteItemIdRequest(voteItems.get(1).getId()));
 
-        List<VoteItemResponse> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember)
+        List<VoteItemDto> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember)
                 .getVoteItems();
         assertAll(
-                () -> assertThat(foundVoteItems.get(0).getAmount()).isEqualTo(0),
-                () -> assertThat(foundVoteItems.get(1).getAmount()).isEqualTo(1)
+                () -> assertThat(foundVoteItems.get(0).getCount()).isEqualTo(0),
+                () -> assertThat(foundVoteItems.get(1).getCount()).isEqualTo(1)
         );
     }
 
@@ -175,10 +175,10 @@ class VoteServiceTest extends IntegrationTest {
         voteService.doVote(discussionArticle.getId(), loginMember2,
                 new SelectVoteItemIdRequest(voteItems.get(0).getId()));
 
-        List<VoteItemResponse> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember1)
+        List<VoteItemDto> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember1)
                 .getVoteItems();
 
-        assertThat(foundVoteItems.get(0).getAmount()).isEqualTo(2);
+        assertThat(foundVoteItems.get(0).getCount()).isEqualTo(2);
     }
 
     @Test

@@ -41,8 +41,6 @@ public class VoteHistory {
     }
 
     public void changeVoteItem(VoteItem newVoteItem) {
-        voteItem.decreaseAmount();
         this.voteItem = newVoteItem;
-        voteItem.increaseAmount();
     }
 }

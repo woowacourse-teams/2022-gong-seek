@@ -22,10 +22,10 @@ public class MyPagePreviewDto {
 
     private Long views;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
+    //    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
+    //    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime updatedAt;
 
     public MyPagePreviewDto(Long id, String title, Category category, Long commentCount, Long views,

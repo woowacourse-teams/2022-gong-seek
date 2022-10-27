@@ -1,8 +1,6 @@
 package com.woowacourse.gongseek.member.presentation.dto;
 
-import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.dto.MyPagePreviewDto;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

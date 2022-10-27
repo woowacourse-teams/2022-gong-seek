@@ -92,8 +92,10 @@ class ArticleRepositoryTest {
 
     @Test
     void 회원이_작성한_게시글들을_조회할_수_있다() {
-        Article firstArticle = articleRepository.save(new Article("title1", "content1", Category.DISCUSSION, member, false));
-        Article secondArticle = articleRepository.save(new Article("title1", "content1", Category.DISCUSSION, member, false));
+        Article firstArticle = articleRepository.save(
+                new Article("title1", "content1", Category.DISCUSSION, member, false));
+        Article secondArticle = articleRepository.save(
+                new Article("title1", "content1", Category.DISCUSSION, member, false));
 
         List<MyPagePreviewDto> myPagePreviewDtos = articleRepository.findAllByMemberIdWithCommentCount(
                 member.getId());
