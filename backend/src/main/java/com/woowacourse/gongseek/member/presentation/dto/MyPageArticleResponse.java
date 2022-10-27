@@ -29,12 +29,12 @@ public class MyPageArticleResponse {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime updatedAt;
 
-    public MyPageArticleResponse(Article article) {
+    public MyPageArticleResponse(Article article, Long commentCount) {
         this(
                 article.getId(),
                 article.getTitle(),
                 article.getCategory().getValue(),
-                article.getCommentCount(),
+                commentCount,
                 article.getViews(),
                 article.getCreatedAt(),
                 article.getUpdatedAt()

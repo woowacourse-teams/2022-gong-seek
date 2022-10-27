@@ -11,9 +11,7 @@ import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateRequest;
 import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
-import com.woowacourse.gongseek.member.presentation.dto.MyPageArticleResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
-import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,29 +41,17 @@ public class MemberService {
     public MyPageArticlesResponse getArticles(AppMember appMember) {
         Member member = getMember(appMember);
         List<Article> articles = articleRepository.findAllByMemberId(member.getId());
-
-        List<MyPageArticleResponse> myPageArticleResponses = getMyPageArticleResponses(articles);
-        return new MyPageArticlesResponse(myPageArticleResponses);
-    }
-
-    private List<MyPageArticleResponse> getMyPageArticleResponses(List<Article> articles) {
-        return articles.stream()
-                .map(MyPageArticleResponse::new)
+        List<Long> articleIds = articles.stream()
+                .map(Article::getId)
                 .collect(Collectors.toList());
+        List<Long> commentCounts = commentRepository.findCommentCountByArticleIdIn(articleIds);
+        return MyPageArticlesResponse.of(articles, commentCounts);
     }
 
     public MyPageCommentsResponse getComments(AppMember appMember) {
         Member member = getMember(appMember);
         List<Comment> comments = commentRepository.findAllByMemberId(member.getId());
-
-        List<MyPageCommentResponse> myPageCommentResponses = getMyPageCommentResponses(comments);
-        return new MyPageCommentsResponse(myPageCommentResponses);
-    }
-
-    private List<MyPageCommentResponse> getMyPageCommentResponses(List<Comment> comments) {
-        return comments.stream()
-                .map(MyPageCommentResponse::new)
-                .collect(Collectors.toList());
+        return MyPageCommentsResponse.from(comments);
     }
 
     @Transactional

@@ -62,9 +62,6 @@ public class Article extends BaseTimeEntity {
     @Embedded
     private LikeCount likeCount;
 
-    @Embedded
-    private CommentCount commentCount;
-
     public Article(String title, String content, Category category, Member member, boolean isAnonymous) {
         this(
                 null,
@@ -75,8 +72,7 @@ public class Article extends BaseTimeEntity {
                 new ArticleTags(),
                 isAnonymous,
                 new Views(),
-                new LikeCount(),
-                new CommentCount()
+                new LikeCount()
         );
     }
 
@@ -86,14 +82,6 @@ public class Article extends BaseTimeEntity {
 
     public void addViews() {
         views.addValue();
-    }
-
-    public void addCommentCount() {
-        commentCount.addValue();
-    }
-
-    public void minusCommentCount() {
-        commentCount.minusValue();
     }
 
     public void update(String title, String content, Tags tags) {
@@ -129,10 +117,6 @@ public class Article extends BaseTimeEntity {
 
     public long getLikeCount() {
         return likeCount.getValue();
-    }
-
-    public long getCommentCount() {
-        return commentCount.getValue();
     }
 
     public List<Long> getTagIds() {
