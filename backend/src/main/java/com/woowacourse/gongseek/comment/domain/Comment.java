@@ -5,11 +5,9 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.common.domain.BaseTimeEntity;
 import com.woowacourse.gongseek.member.domain.Member;
 import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +34,7 @@ public class Comment extends BaseTimeEntity {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name = "article_id", nullable = false)
     private Article article;
 
     @Column(nullable = false)
