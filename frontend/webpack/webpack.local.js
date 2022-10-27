@@ -16,10 +16,11 @@ module.exports = merge(common, {
 		rules: [
 			{
 				test: /\.(js|jsx|ts|tsx)?$/,
-				loader: 'ts-loader',
+				loader: 'babel-loader',
 				exclude: /node_modules/,
 				options: {
-					transpileOnly: true,
+					cacheCompression: false,
+					cacheDirectory: true,
 				},
 			},
 		],
