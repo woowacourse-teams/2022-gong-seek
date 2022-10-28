@@ -32,6 +32,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-node-
+            ${{ runner.os }}
 
       - name: Install node packages
         if: steps.cache.outputs.cache-hit != 'true'
