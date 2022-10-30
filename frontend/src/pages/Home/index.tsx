@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import SortDropdown from '@/components/@common/SortDropdown/SortDropDown';
 import useGetAllArticles from '@/hooks/article/useGetAllArticles';
@@ -16,6 +15,7 @@ const ArticleItem = React.lazy(() => import('@/components/article/ArticleItem/Ar
 const PopularArticle = React.lazy(
 	() => import('@/components/article/PopularArticle/PopularArticle'),
 );
+const EmptyMessage = React.lazy(() => import('@/components/@common/EmptyMessage/EmptyMessage'));
 
 const Home = () => {
 	const [enterRef] = useEnterToClick();

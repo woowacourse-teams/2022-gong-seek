@@ -1,7 +1,6 @@
 import React, { Suspense, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import ArticleItem from '@/components/article/ArticleItem/ArticleItem';
 import * as S from '@/components/search/SearchResult/SearchResult.styles';
@@ -11,6 +10,7 @@ import { CommonArticleType } from '@/types/articleResponse';
 const ResponsiveInfiniteCardList = React.lazy(
 	() => import('@/components/@common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList'),
 );
+const EmptyMessage = React.lazy(() => import('@/components/@common/EmptyMessage/EmptyMessage'));
 
 const SearchResult = ({ target, searchIndex }: { target: string; searchIndex: string }) => {
 	const { data, isLoading, isIdle, refetch, fetchNextPage } = useGetSearch({ target, searchIndex });
