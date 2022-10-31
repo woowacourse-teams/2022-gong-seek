@@ -13,12 +13,6 @@ defaults:
     working-directory: ./backend
 
 jobs:
-  build:
-    runs-on: ubuntu-22.04 # 실행 환경 지정
-
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v2
   analysis:
     runs-on: ubuntu-22.04
     env:
