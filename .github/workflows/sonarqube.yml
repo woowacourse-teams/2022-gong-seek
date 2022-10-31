@@ -25,7 +25,17 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
-      # gradlw 파일 권한 변경
+      - name: Gradle Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # gradlew 파일 권한 변경
       - name: gradlew permission change
         run: sudo chmod 755 gradlew
 
