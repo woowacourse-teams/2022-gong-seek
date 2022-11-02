@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.vote.presentation.dto;
+package com.woowacourse.gongseek.vote.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;

@@ -1,8 +1,8 @@
 package com.woowacourse.gongseek.acceptance.support.fixtures;
 
 import com.woowacourse.gongseek.auth.application.dto.AccessTokenResponse;
-import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
+import com.woowacourse.gongseek.vote.application.dto.SelectVoteItemIdRequest;
+import com.woowacourse.gongseek.vote.application.dto.VoteCreateRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

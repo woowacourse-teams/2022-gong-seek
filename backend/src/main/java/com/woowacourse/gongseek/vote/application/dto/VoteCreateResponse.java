@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.vote.presentation.dto;
+package com.woowacourse.gongseek.vote.application.dto;
 
 import com.woowacourse.gongseek.vote.domain.Vote;
 import lombok.AccessLevel;

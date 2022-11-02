@@ -15,11 +15,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.gongseek.support.ControllerTest;
+import com.woowacourse.gongseek.vote.application.dto.SelectVoteItemIdRequest;
+import com.woowacourse.gongseek.vote.application.dto.VoteCreateRequest;
+import com.woowacourse.gongseek.vote.application.dto.VoteCreateResponse;
+import com.woowacourse.gongseek.vote.application.dto.VoteResponse;
 import com.woowacourse.gongseek.vote.domain.repository.dto.VoteItemDto;
-import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateResponse;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
