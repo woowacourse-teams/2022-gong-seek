@@ -4,7 +4,6 @@ import com.woowacourse.gongseek.support.DatabaseCleaner;
 import com.woowacourse.gongseek.support.RedisContainerTest;
 import com.woowacourse.gongseek.support.RollbackExtension;
 import io.restassured.RestAssured;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
