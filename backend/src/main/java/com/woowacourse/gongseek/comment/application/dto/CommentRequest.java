@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.comment.presentation.dto;
+package com.woowacourse.gongseek.comment.application.dto;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.comment.domain.Comment;

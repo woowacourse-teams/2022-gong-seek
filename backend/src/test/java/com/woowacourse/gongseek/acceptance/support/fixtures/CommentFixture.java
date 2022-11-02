@@ -2,10 +2,10 @@ package com.woowacourse.gongseek.acceptance.support.fixtures;
 
 import com.woowacourse.gongseek.article.application.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.auth.application.dto.AccessTokenResponse;
-import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
-import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
-import com.woowacourse.gongseek.comment.presentation.dto.CommentUpdateRequest;
-import com.woowacourse.gongseek.comment.presentation.dto.CommentsResponse;
+import com.woowacourse.gongseek.comment.application.dto.CommentRequest;
+import com.woowacourse.gongseek.comment.application.dto.CommentResponse;
+import com.woowacourse.gongseek.comment.application.dto.CommentUpdateRequest;
+import com.woowacourse.gongseek.comment.application.dto.CommentsResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

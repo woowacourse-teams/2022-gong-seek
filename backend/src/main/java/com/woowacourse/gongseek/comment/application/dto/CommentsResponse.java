@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.comment.presentation.dto;
+package com.woowacourse.gongseek.comment.application.dto;
 
 import java.util.List;
 import lombok.AccessLevel;
