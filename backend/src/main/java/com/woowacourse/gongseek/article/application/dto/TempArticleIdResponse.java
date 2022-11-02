@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.article.presentation.dto;
+package com.woowacourse.gongseek.article.application.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

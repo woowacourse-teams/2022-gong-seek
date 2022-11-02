@@ -4,6 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.application.dto.ArticleIdResponse;
+import com.woowacourse.gongseek.article.application.dto.ArticlePageResponse;
+import com.woowacourse.gongseek.article.application.dto.ArticleRequest;
+import com.woowacourse.gongseek.article.application.dto.ArticleResponse;
+import com.woowacourse.gongseek.article.application.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
@@ -11,11 +16,6 @@ import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
@@ -51,34 +51,25 @@ import org.springframework.transaction.annotation.Transactional;
 @SuppressWarnings("NonAsciiCharacters")
 public class ArticleServiceTest extends IntegrationTest {
 
+    private final Member member = new Member("slo", "hanull", "avatar.com");
     @Autowired
     private ArticleService articleService;
-
     @Autowired
     private ArticleRepository articleRepository;
-
     @Autowired
     private TempArticleRepository tempArticleRepository;
-
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
     private VoteService voteService;
-
     @Autowired
     private VoteItemRepository voteItemRepository;
-
     @Autowired
     private VoteHistoryRepository voteHistoryRepository;
-
     @Autowired
     private TagRepository tagRepository;
-
     @Autowired
     private LikeService likeService;
-
-    private final Member member = new Member("slo", "hanull", "avatar.com");
 
     @BeforeEach
     void setUp() {

@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.article.presentation.dto;
+package com.woowacourse.gongseek.article.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowacourse.gongseek.article.domain.TempArticle;

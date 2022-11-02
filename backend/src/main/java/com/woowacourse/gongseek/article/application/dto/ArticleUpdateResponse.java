@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.article.presentation.dto;
+package com.woowacourse.gongseek.article.application.dto;
 
 import com.woowacourse.gongseek.article.domain.Article;
 import lombok.AccessLevel;
@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class ArticleIdResponse {
+public class ArticleUpdateResponse {
 
     private Long id;
+    private String category;
 
-    public ArticleIdResponse(Article article) {
+    public ArticleUpdateResponse(Article article) {
         this.id = article.getId();
+        this.category = article.getCategory().getValue();
     }
 }

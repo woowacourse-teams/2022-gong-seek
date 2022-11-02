@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.article.presentation.dto;
+package com.woowacourse.gongseek.article.application.dto;
 
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import java.util.List;

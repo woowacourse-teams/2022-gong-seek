@@ -12,7 +12,7 @@ import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.주디;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
+import com.woowacourse.gongseek.article.application.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
 import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;

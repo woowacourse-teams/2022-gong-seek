@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.acceptance.support.fixtures;
 
-import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
+import com.woowacourse.gongseek.article.application.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;

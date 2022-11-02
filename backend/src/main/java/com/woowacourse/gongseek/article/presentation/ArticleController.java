@@ -1,12 +1,12 @@
 package com.woowacourse.gongseek.article.presentation;
 
 import com.woowacourse.gongseek.article.application.ArticleService;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
+import com.woowacourse.gongseek.article.application.dto.ArticleIdResponse;
+import com.woowacourse.gongseek.article.application.dto.ArticlePageResponse;
+import com.woowacourse.gongseek.article.application.dto.ArticleRequest;
+import com.woowacourse.gongseek.article.application.dto.ArticleResponse;
+import com.woowacourse.gongseek.article.application.dto.ArticleUpdateRequest;
+import com.woowacourse.gongseek.article.application.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import javax.validation.Valid;
