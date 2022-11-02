@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.image.presentation.dto;
+package com.woowacourse.gongseek.image.application.dto;
 
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,10 +1,10 @@
 package com.woowacourse.gongseek.image.application;
 
+import com.woowacourse.gongseek.image.application.dto.ImageUrlResponse;
 import com.woowacourse.gongseek.image.exception.FileNameEmptyException;
 import com.woowacourse.gongseek.image.exception.UnsupportedContentTypeException;
 import com.woowacourse.gongseek.image.infra.FileNameGenerator;
 import com.woowacourse.gongseek.image.infra.S3Uploader;
-import com.woowacourse.gongseek.image.presentation.dto.ImageUrlResponse;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,10 @@ public class ImageService {
 
     private final S3Uploader s3Uploader;
     private final FileNameGenerator fileNameGenerator;
+
+    private static boolean isEmptyFileName(final MultipartFile uploadImageFile) {
+        return Objects.requireNonNull(uploadImageFile.getOriginalFilename()).trim().isEmpty();
+    }
 
     public ImageUrlResponse upload(final MultipartFile uploadImageFile) {
         validateFileName(uploadImageFile);
@@ -29,10 +33,6 @@ public class ImageService {
         if (isEmptyFileName(uploadImageFile)) {
             throw new FileNameEmptyException();
         }
-    }
-
-    private static boolean isEmptyFileName(final MultipartFile uploadImageFile) {
-        return Objects.requireNonNull(uploadImageFile.getOriginalFilename()).trim().isEmpty();
     }
 
     private void validateContentType(final MultipartFile uploadImageFile) {
