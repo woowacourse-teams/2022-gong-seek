@@ -2,7 +2,7 @@ package com.woowacourse.gongseek.article.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowacourse.gongseek.article.domain.Article;
-import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
+import com.woowacourse.gongseek.member.application.dto.AuthorDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AccessLevel;

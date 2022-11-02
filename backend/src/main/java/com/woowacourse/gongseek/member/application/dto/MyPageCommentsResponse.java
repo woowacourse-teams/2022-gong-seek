@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.member.presentation.dto;
+package com.woowacourse.gongseek.member.application.dto;
 
 import com.woowacourse.gongseek.comment.domain.Comment;
 import java.util.List;

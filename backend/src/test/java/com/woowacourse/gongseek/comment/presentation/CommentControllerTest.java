@@ -19,7 +19,7 @@ import com.woowacourse.gongseek.comment.application.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.application.dto.CommentResponse;
 import com.woowacourse.gongseek.comment.application.dto.CommentUpdateRequest;
 import com.woowacourse.gongseek.comment.application.dto.CommentsResponse;
-import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
+import com.woowacourse.gongseek.member.application.dto.AuthorDto;
 import com.woowacourse.gongseek.support.ControllerTest;
 import java.time.LocalDateTime;
 import java.util.List;

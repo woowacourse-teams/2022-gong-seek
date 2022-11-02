@@ -28,7 +28,7 @@ import com.woowacourse.gongseek.article.application.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.application.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
-import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
+import com.woowacourse.gongseek.member.application.dto.AuthorDto;
 import com.woowacourse.gongseek.support.ControllerTest;
 import java.time.LocalDateTime;
 import java.util.List;
