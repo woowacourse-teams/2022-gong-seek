@@ -218,22 +218,12 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                 .fetch();
         setTagNameAndIsLike(fetch, memberId);
 
-        return convertToSliceBySearch(fetch, pageable);
+        return convertToSliceFromArticle(fetch, pageable);
     }
 
     private BooleanExpression containsTitleOrContent(String searchText) {
         return article.title.value.contains(searchText)
                 .or(article.content.value.contains(searchText));
-    }
-
-    private SliceImpl<ArticlePreviewDto> convertToSliceBySearch(List<ArticlePreviewDto> fetch, Pageable pageable) {
-        boolean hasNext = false;
-
-        if (fetch.size() == pageable.getPageSize() + 1) {
-            fetch.remove(pageable.getPageSize());
-            hasNext = true;
-        }
-        return new SliceImpl<>(fetch, pageable, hasNext);
     }
 
     @Override
@@ -268,7 +258,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                 .fetch();
         setTagNameAndIsLike(fetch, memberId);
 
-        return convertToSliceBySearch(fetch, pageable);
+        return convertToSliceFromArticle(fetch, pageable);
     }
 
     @Override
@@ -306,7 +296,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                 .fetch();
         setTagNameAndIsLike(fetch, memberId);
 
-        return convertToSliceBySearch(fetch, pageable);
+        return convertToSliceFromArticle(fetch, pageable);
     }
 
     private List<String> getUpperTagNames(List<String> tagNames) {
