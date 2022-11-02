@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.application.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.application.dto.ArticleResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
+import com.woowacourse.gongseek.auth.application.dto.AccessTokenResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;

@@ -15,7 +15,7 @@ import com.woowacourse.gongseek.article.domain.TempTags;
 import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.exception.TempArticleNotFoundException;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.auth.application.dto.LoginMember;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.support.IntegrationTest;

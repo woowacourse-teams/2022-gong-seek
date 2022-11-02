@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.auth.presentation.dto;
+package com.woowacourse.gongseek.auth.application.dto;
 
 import java.util.UUID;
 import lombok.AccessLevel;

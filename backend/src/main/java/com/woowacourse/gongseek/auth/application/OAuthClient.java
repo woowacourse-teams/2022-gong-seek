@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.auth.application;
 
-import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
+import com.woowacourse.gongseek.auth.application.dto.GithubProfileResponse;
 
 public interface OAuthClient {
 

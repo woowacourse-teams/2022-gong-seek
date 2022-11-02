@@ -37,7 +37,7 @@ import com.woowacourse.gongseek.article.application.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.application.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
-import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
+import com.woowacourse.gongseek.auth.application.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
 import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;

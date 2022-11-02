@@ -1,10 +1,10 @@
 package com.woowacourse.gongseek.auth.application;
 
+import com.woowacourse.gongseek.auth.application.dto.GithubProfileResponse;
+import com.woowacourse.gongseek.auth.application.dto.TokenResponse;
 import com.woowacourse.gongseek.auth.domain.RefreshToken;
 import com.woowacourse.gongseek.auth.domain.repository.RefreshTokenRepository;
 import com.woowacourse.gongseek.auth.exception.InvalidRefreshTokenException;
-import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import java.util.List;

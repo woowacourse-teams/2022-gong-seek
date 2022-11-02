@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.dto.MyPagePreviewDto;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.auth.application.dto.LoginMember;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateRequest;
 import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;

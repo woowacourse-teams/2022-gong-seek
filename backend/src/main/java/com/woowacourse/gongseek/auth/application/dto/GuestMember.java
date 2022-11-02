@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.auth.presentation.dto;
+package com.woowacourse.gongseek.auth.application.dto;
 
 public class GuestMember extends AppMember {
 

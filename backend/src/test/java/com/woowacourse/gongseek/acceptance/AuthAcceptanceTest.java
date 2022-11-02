@@ -8,8 +8,8 @@ import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.기론;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
+import com.woowacourse.gongseek.auth.application.dto.AccessTokenResponse;
+import com.woowacourse.gongseek.auth.application.dto.OAuthLoginUrlResponse;
 import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

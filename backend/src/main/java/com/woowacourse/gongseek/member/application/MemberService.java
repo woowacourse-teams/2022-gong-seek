@@ -2,7 +2,7 @@ package com.woowacourse.gongseek.member.application;
 
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.dto.MyPagePreviewDto;
-import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
+import com.woowacourse.gongseek.auth.application.dto.AppMember;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.member.domain.Member;

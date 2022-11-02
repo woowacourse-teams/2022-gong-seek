@@ -12,7 +12,7 @@ import com.woowacourse.gongseek.article.application.dto.TempArticleDetailRespons
 import com.woowacourse.gongseek.article.application.dto.TempArticleIdResponse;
 import com.woowacourse.gongseek.article.application.dto.TempArticlesResponse;
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
+import com.woowacourse.gongseek.auth.application.dto.AccessTokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

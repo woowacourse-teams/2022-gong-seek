@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
+import com.woowacourse.gongseek.auth.application.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.tag.presentation.dto.TagsResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

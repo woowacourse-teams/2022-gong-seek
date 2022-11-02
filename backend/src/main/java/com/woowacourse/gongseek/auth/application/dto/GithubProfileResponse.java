@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.auth.presentation.dto;
+package com.woowacourse.gongseek.auth.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.gongseek.member.domain.Member;

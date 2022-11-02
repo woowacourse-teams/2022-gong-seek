@@ -1,6 +1,6 @@
 package com.woowacourse.gongseek.acceptance.support.fixtures;
 
-import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
+import com.woowacourse.gongseek.auth.application.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
