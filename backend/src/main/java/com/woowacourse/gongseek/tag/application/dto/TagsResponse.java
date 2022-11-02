@@ -1,4 +1,4 @@
-package com.woowacourse.gongseek.tag.presentation.dto;
+package com.woowacourse.gongseek.tag.application.dto;
 
 import com.woowacourse.gongseek.tag.domain.Tag;
 import java.util.List;
