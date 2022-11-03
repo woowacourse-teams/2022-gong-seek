@@ -5,7 +5,7 @@ import {
 	ArticleItemTitle,
 	HashTagListBox,
 } from '@/components/article/ArticleItem/ArticleItem.styles';
-import { TextOverflow } from '@/styles/mixin';
+import { TextOverflow, TwoLineTextOverFlow } from '@/styles/mixin';
 import { Category } from '@/types/articleResponse';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -65,7 +65,7 @@ export const AuthorNameText = styled.div`
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
-	max-width: 80%;
+	max-width: 70%;
 	text-align: center;
 `;
 
@@ -102,7 +102,6 @@ export const PopularArticleHashTagListBox = styled(HashTagListBox)`
 
 export const PopularArticleItemTitle = styled(ArticleItemTitle)`
 	display: flex;
-	height: ${({ theme }) => theme.size.SIZE_038};
 
-	${TextOverflow}
+	${TwoLineTextOverFlow}
 `;

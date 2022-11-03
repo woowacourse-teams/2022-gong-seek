@@ -1,6 +1,6 @@
 import { AiOutlineLeft } from 'react-icons/ai';
 
-import { TextOverflow } from '@/styles/mixin';
+import { TwoLineTextOverFlow } from '@/styles/mixin';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -137,11 +137,9 @@ export const ArticleContent = styled.div`
 
 export const Title = styled.h2`
 	width: 100%;
-	${TextOverflow}
+	${TwoLineTextOverFlow}
 
 	${({ theme }) => css`
-		height: ${theme.size.SIZE_040};
-
 		font-size: ${theme.size.SIZE_014};
 		margin-top: ${theme.size.SIZE_004};
 	`}

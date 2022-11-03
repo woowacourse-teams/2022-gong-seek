@@ -1,4 +1,4 @@
-import { TextOverflow } from '@/styles/mixin';
+import { OneLineTextOverFlow } from '@/styles/mixin';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -24,7 +24,7 @@ export const Container = styled.section`
 export const Title = styled.h2`
 	display: block;
 	width: 90%;
-	${TextOverflow}
+	${OneLineTextOverFlow}
 
 	${({ theme }) => css`
 		font-size: ${theme.size.SIZE_016};

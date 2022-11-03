@@ -71,19 +71,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Deploy Performance') {
-            steps {
-                dir('backend/build/libs') {
-                    sshagent(['gongseek-backend-prod']) {
-                        sh '''#!/bin/bash
-                    scp -o StrictHostKeyChecking=no gongseek-0.0.1-SNAPSHOT.jar ubuntu@${backend_performance_ip}:/home/ubuntu
-                    ssh -o StrictHostKeyChecking=no ubuntu@${backend_performance_ip} "fuser -s -k 8080/tcp & nohup java -jar -Dspring.profiles.active=prod gongseek-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &" &
-                '''
-                    }
-                }
-            }
-        }
     }
 
     post {

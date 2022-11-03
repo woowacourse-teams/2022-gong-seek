@@ -1,6 +1,7 @@
 package com.woowacourse.gongseek.image.application;
 
 import com.woowacourse.gongseek.image.exception.FileNameEmptyException;
+import com.woowacourse.gongseek.image.exception.UnsupportedContentTypeException;
 import com.woowacourse.gongseek.image.infra.FileNameGenerator;
 import com.woowacourse.gongseek.image.infra.S3Uploader;
 import com.woowacourse.gongseek.image.presentation.dto.ImageUrlResponse;

@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Version;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,26 +28,12 @@ public class VoteItem {
     @Embedded
     private Content content;
 
-    @Embedded
-    private Amount amount;
-
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vote_id", nullable = false)
     private Vote vote;
 
-    @Version
-    private long version;
-
     public VoteItem(String content, Vote vote) {
-        this(null, new Content(content), new Amount(), vote, 0L);
-    }
-
-    public void increaseAmount() {
-        amount = amount.increase();
-    }
-
-    public void decreaseAmount() {
-        amount = amount.decrease();
+        this(null, new Content(content), vote);
     }
 }

@@ -15,10 +15,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.gongseek.support.ControllerTest;
+import com.woowacourse.gongseek.vote.domain.repository.dto.VoteItemDto;
 import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateResponse;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteItemResponse;
 import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -66,8 +66,8 @@ class VoteControllerTest extends ControllerTest {
 
     @Test
     void 투표_조회_API_문서화() throws Exception {
-        List<VoteItemResponse> voteItemResponses = List.of(new VoteItemResponse(1L, "오점 제육", 10),
-                new VoteItemResponse(2L, "오점 서브웨이", 2));
+        List<VoteItemDto> voteItemResponses = List.of(new VoteItemDto(1L, "오점 제육", 10L),
+                new VoteItemDto(2L, "오점 서브웨이", 2L));
         VoteResponse response = new VoteResponse(1L, voteItemResponses, 1L, false);
         VoteCreateRequest request = new VoteCreateRequest(List.of("오점 제육", "오점 편의점", "오점 서브웨이"),
                 LocalDateTime.now().plusDays(5));
@@ -93,7 +93,7 @@ class VoteControllerTest extends ControllerTest {
                                 fieldWithPath("articleId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
                                 fieldWithPath("voteItems[].id").type(JsonFieldType.NUMBER).description("투표 항목 식별자"),
                                 fieldWithPath("voteItems[].content").type(JsonFieldType.STRING).description("투표 항목 이름"),
-                                fieldWithPath("voteItems[].amount").type(JsonFieldType.NUMBER).description("득표 수"),
+                                fieldWithPath("voteItems[].count").type(JsonFieldType.NUMBER).description("득표 수"),
                                 fieldWithPath("votedItemId").type(JsonFieldType.NUMBER)
                                         .description("로그인한 유저가 투표한 번호, 투표를 안했으면 null반환").optional(),
                                 fieldWithPath("expired").type(JsonFieldType.BOOLEAN).description("투표 기간이 종료되었으면 true")

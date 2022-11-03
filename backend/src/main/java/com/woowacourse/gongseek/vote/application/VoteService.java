@@ -15,6 +15,7 @@ import com.woowacourse.gongseek.vote.domain.VoteItems;
 import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
+import com.woowacourse.gongseek.vote.domain.repository.dto.VoteItemDto;
 import com.woowacourse.gongseek.vote.exception.UnavailableArticleException;
 import com.woowacourse.gongseek.vote.exception.VoteItemNotFoundException;
 import com.woowacourse.gongseek.vote.exception.VoteNotFoundException;
@@ -25,6 +26,7 @@ import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.retry.annotation.Backoff;
@@ -84,17 +86,23 @@ public class VoteService {
             throw new ArticleNotFoundException(articleId);
         }
         Vote foundVote = getVoteByArticleId(articleId);
-        List<VoteItem> voteItems = voteItemRepository.findAllByVoteArticleId(articleId);
-
-        VoteHistory voteHistory = voteHistoryRepository.findByVoteItemsAndMemberId(voteItems, appMember.getPayload())
+        List<VoteItemDto> voteItems = voteItemRepository.findAllByArticleIdWithCount(articleId);
+        List<Long> voteItemIds = getVoteItemIds(voteItems);
+        VoteHistory voteHistory = voteHistoryRepository.findByVoteItemIdsAndMemberId(voteItemIds,
+                        appMember.getPayload())
                 .orElse(null);
-        return VoteResponse.of(foundVote.getArticle().getId(), voteItems, getVotedItemIdOrNull(voteHistory),
-                foundVote.isExpired());
+        return VoteResponse.of(foundVote, voteItems, getVotedItemIdOrNull(voteHistory));
     }
 
     private Vote getVoteByArticleId(Long articleId) {
         return voteRepository.findByArticleId(articleId)
                 .orElseThrow(() -> new VoteNotFoundException(articleId));
+    }
+
+    private List<Long> getVoteItemIds(List<VoteItemDto> voteItems) {
+        return voteItems.stream()
+                .map(VoteItemDto::getId)
+                .collect(Collectors.toList());
     }
 
     private Long getVotedItemIdOrNull(VoteHistory voteHistory) {
@@ -118,7 +126,6 @@ public class VoteService {
     }
 
     private void saveVoteHistory(Member member, VoteItem voteItem) {
-        voteItem.increaseAmount();
         voteHistoryRepository.save(new VoteHistory(member, voteItem));
     }
 

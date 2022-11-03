@@ -16,6 +16,6 @@ public class VoteItemResponse {
     private int amount;
 
     public VoteItemResponse(VoteItem voteItem) {
-        this(voteItem.getId(), voteItem.getContent().getValue(), voteItem.getAmount().getValue());
+        this(voteItem.getId(), voteItem.getContent().getValue(), 1);
     }
 }

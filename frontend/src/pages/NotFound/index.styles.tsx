@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -28,10 +26,9 @@ export const LogoImage = styled.img`
 	height: ${({ theme }) => theme.size.SIZE_090};
 `;
 
-export const NavigateLink = styled(Link)`
-	text-decoration: none;
+export const NavigateLink = styled.div`
 	font-weight: 600;
-
+	cursor: pointer;
 	${({ theme }) => css`
 		border: ${theme.size.SIZE_003} solid ${theme.colors.PURPLE_500};
 		padding: ${theme.size.SIZE_010} ${theme.size.SIZE_024};
