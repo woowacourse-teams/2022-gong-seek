@@ -1,7 +1,6 @@
 package com.woowacourse.gongseek.image.application;
 
 import com.woowacourse.gongseek.image.exception.FileNameEmptyException;
-import com.woowacourse.gongseek.image.exception.UnsupportedContentTypeException;
 import com.woowacourse.gongseek.image.infra.FileNameGenerator;
 import com.woowacourse.gongseek.image.infra.S3Uploader;
 import com.woowacourse.gongseek.image.presentation.dto.ImageUrlResponse;
@@ -19,7 +18,7 @@ public class ImageService {
 
     public ImageUrlResponse upload(final MultipartFile uploadImageFile) {
         validateFileName(uploadImageFile);
-        validateContentType(uploadImageFile);
+        validateMimeType(uploadImageFile);
         final String fileName = fileNameGenerator.generate(uploadImageFile.getOriginalFilename());
         final String uploadUrl = s3Uploader.upload(uploadImageFile, fileName);
         return new ImageUrlResponse(uploadUrl);
@@ -35,10 +34,7 @@ public class ImageService {
         return Objects.requireNonNull(uploadImageFile.getOriginalFilename()).trim().isEmpty();
     }
 
-    private void validateContentType(final MultipartFile uploadImageFile) {
-        final String contentType = uploadImageFile.getContentType();
-        if (contentType == null || contentType.startsWith("image")) {
-            throw new UnsupportedContentTypeException(contentType);
-        }
+    private void validateMimeType(final MultipartFile uploadImageFile) {
+        ImageFileValidator.validateMimeType(uploadImageFile);
     }
 }
