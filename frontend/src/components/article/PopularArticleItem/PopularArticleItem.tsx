@@ -64,7 +64,11 @@ const PopularArticleItem = ({
 								{views.toLocaleString()}
 							</PopularS.IconContainer>
 							<PopularS.IconContainer>
-								<PopularS.HeartIcon aria-label="좋아요수" />
+								{article.isLike ? (
+									<PopularS.FillHeartIcon aria-label="좋아요수" />
+								) : (
+									<PopularS.EmptyHeartIcon />
+								)}
 								{likeCount.toLocaleString()}
 							</PopularS.IconContainer>
 						</S.ArticleInfoSubBox>
