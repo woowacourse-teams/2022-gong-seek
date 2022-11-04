@@ -131,7 +131,15 @@ export const getAllArticlesByLikes = async ({
 	};
 };
 
-export const postArticle = (article: { id: string; title: string; content: string }) => {
+interface postArticleProps {
+	article: {
+		id: string;
+		title: string;
+		content: string;
+	};
+}
+
+export const postArticle = (article: postArticleProps['article']) => {
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
 	return axiosInstance.post<{ id: number; category: string }>(`/api/articles/${article.id}`, {
 		title: article.title,
@@ -139,12 +147,16 @@ export const postArticle = (article: { id: string; title: string; content: strin
 	});
 };
 
-export const putArticle = (article: {
-	id: string;
-	title: string;
-	content: string;
-	tag: string[];
-}) => {
+interface putArticleProps {
+	article: {
+		id: string;
+		title: string;
+		content: string;
+		tag: string[];
+	};
+}
+
+export const putArticle = (article: putArticleProps['article']) => {
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
 	return axiosInstance.put<{ id: number; category: string }>(`/api/articles/${article.id}`, {
 		title: article.title,

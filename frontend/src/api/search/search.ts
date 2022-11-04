@@ -2,15 +2,17 @@ import { HashTagSearchResponseType } from '@/api/hashTag/hashTagType';
 import { ArticleSearchResponseType } from '@/api/search/searchType';
 import { generateAxiosInstanceWithAccessToken } from '@/utils/generateAxiosInstance';
 
+interface getUserSearchResultProps {
+	target: string;
+	cursorId: string;
+	searchIndex: string;
+}
+
 export const getUserSearchResult = async ({
 	target,
 	cursorId,
 	searchIndex,
-}: {
-	target: string;
-	cursorId: string;
-	searchIndex: string;
-}) => {
+}: getUserSearchResultProps) => {
 	const encodedTarget = encodeURIComponent(target);
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
 	const { data } = await axiosInstance.get<ArticleSearchResponseType>(
@@ -28,15 +30,17 @@ export const getUserSearchResult = async ({
 	};
 };
 
+interface getArticleSearchResultProps {
+	target: string;
+	cursorId: string;
+	searchIndex: string;
+}
+
 export const getArticleSearchResult = async ({
 	target,
 	cursorId,
 	searchIndex,
-}: {
-	target: string;
-	cursorId: string;
-	searchIndex: string;
-}) => {
+}: getArticleSearchResultProps) => {
 	const encodedTarget = encodeURIComponent(target);
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
 	const { data } = await axiosInstance.get<ArticleSearchResponseType>(
@@ -55,13 +59,15 @@ export const getArticleSearchResult = async ({
 	};
 };
 
+interface getArticleByHashTagProps {
+	hashTags: string;
+	cursorId: string;
+}
+
 export const getArticleByHashTag = async ({
 	hashTags,
 	cursorId = '',
-}: {
-	hashTags: string;
-	cursorId: string;
-}) => {
+}: getArticleByHashTagProps) => {
 	const encodedTarget = encodeURIComponent(hashTags);
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
 	const { data } = await axiosInstance.get<HashTagSearchResponseType>(
@@ -78,15 +84,17 @@ export const getArticleByHashTag = async ({
 	};
 };
 
+interface getSearchResultProps {
+	target: string;
+	searchIndex: string;
+	cursorId: string;
+}
+
 export const getSearchResult = async ({
 	target,
 	searchIndex,
 	cursorId = '',
-}: {
-	target: string;
-	searchIndex: string;
-	cursorId: string;
-}) => {
+}: getSearchResultProps) => {
 	if (searchIndex === '유저') {
 		const data = await getUserSearchResult({ target, searchIndex, cursorId });
 		return data;
