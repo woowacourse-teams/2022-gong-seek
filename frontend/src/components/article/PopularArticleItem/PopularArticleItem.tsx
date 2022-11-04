@@ -67,7 +67,7 @@ const PopularArticleItem = ({
 								{article.isLike ? (
 									<PopularS.FillHeartIcon aria-label="좋아요수" />
 								) : (
-									<PopularS.EmptyHeartIcon />
+									<PopularS.EmptyHeartIcon aria-label="좋아요수" />
 								)}
 								{likeCount.toLocaleString()}
 							</PopularS.IconContainer>
