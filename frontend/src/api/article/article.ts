@@ -31,19 +31,21 @@ export const getDetailArticle = async (id: string) => {
 	return data;
 };
 
+interface getArticleProps {
+	category: string;
+	sort: '추천순' | '조회순' | '최신순';
+	cursorId: string;
+	cursorViews: string;
+	cursorLikes: string;
+}
+
 export const getAllArticle = async ({
 	category,
 	sort,
 	cursorId,
 	cursorViews,
 	cursorLikes,
-}: {
-	category: string;
-	sort: '추천순' | '조회순' | '최신순';
-	cursorId: string;
-	cursorViews: string;
-	cursorLikes: string;
-}) => {
+}: getArticleProps) => {
 	if (sort === '추천순') {
 		const data = await getAllArticlesByLikes({ category, cursorId, cursorLikes });
 		return data;
@@ -58,17 +60,19 @@ export const getAllArticle = async ({
 	return data;
 };
 
+interface getAllArticleByViewsOrLatestProps {
+	category: string;
+	sort: '추천순' | '조회순' | '최신순';
+	cursorId: string;
+	cursorViews: string;
+}
+
 export const getAllArticleByViewsOrLatest = async ({
 	category,
 	sort,
 	cursorId,
 	cursorViews,
-}: {
-	category: string;
-	sort: '추천순' | '조회순' | '최신순';
-	cursorId: string;
-	cursorViews: string;
-}) => {
+}: getAllArticleByViewsOrLatestProps) => {
 	const currentSort = convertSort(sort);
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
 	const { data } = await axiosInstance.get<TotalArticleInquiredResponseType>(
@@ -92,15 +96,17 @@ export const getAllArticleByViewsOrLatest = async ({
 	};
 };
 
+interface getAllArticlesByLikesProps {
+	category: string;
+	cursorId: string;
+	cursorLikes: string;
+}
+
 export const getAllArticlesByLikes = async ({
 	category,
 	cursorId,
 	cursorLikes = '',
-}: {
-	category: string;
-	cursorId: string;
-	cursorLikes: string;
-}) => {
+}: getAllArticlesByLikesProps) => {
 	const axiosInstance = generateAxiosInstanceWithAccessToken();
 
 	const { data } = await axiosInstance.get<TotalArticleInquiredResponseType>(
