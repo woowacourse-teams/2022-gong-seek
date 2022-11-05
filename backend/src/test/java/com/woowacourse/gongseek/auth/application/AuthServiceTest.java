@@ -15,9 +15,7 @@ import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.support.AuthIntegrationTest;
-import com.woowacourse.gongseek.support.DatabaseCleaner;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +32,6 @@ class AuthServiceTest extends AuthIntegrationTest {
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
 
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
-
     private GithubProfileResponse profileResponse;
 
     @BeforeEach
@@ -44,11 +39,6 @@ class AuthServiceTest extends AuthIntegrationTest {
         profileResponse = new GithubProfileResponse(
                 주디.getGithubId(), 주디.getName(), 주디.getAvatarUrl());
         given(githubOAuthClient.getMemberProfile(주디.getCode())).willReturn(profileResponse);
-    }
-
-    @AfterEach
-    void tearDown() {
-        databaseCleaner.tableClear();
     }
 
     @Test
