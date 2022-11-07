@@ -1,7 +1,8 @@
+import { Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 
+import Loading from '@/components/@common/Loading/Loading';
 import useGetDetailArticle from '@/hooks/article/useGetDetailArticle';
-import useGetDetailComment from '@/hooks/comment/useGetDetailComment';
 import Detail from '@/pages/Detail/index';
 
 const QuestionDetail = () => {
@@ -11,24 +12,12 @@ const QuestionDetail = () => {
 		throw new Error('id 값을 받아오지 못했습니다');
 	}
 
-	const { data: articleData, isLoading: isArticleLoading } = useGetDetailArticle(id);
-	const { data: commentData, isLoading: isCommentLoading } = useGetDetailComment(id);
-
-	if (isCommentLoading || isArticleLoading) {
-		return <div>로딩중...</div>;
-	}
+	const { data } = useGetDetailArticle(id);
 
 	return (
-		<div>
-			{typeof articleData !== 'undefined' && typeof commentData !== 'undefined' && (
-				<Detail
-					article={articleData}
-					commentList={commentData.comments}
-					articleId={id}
-					category="질문"
-				/>
-			)}
-		</div>
+		<Suspense fallback={<Loading />}>
+			{data && <Detail article={data} articleId={id} category="질문" />}
+		</Suspense>
 	);
 };
 

@@ -8,7 +8,7 @@ import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 
 const useVote = (articleId: string) => {
-	const { data, isLoading, isError, isSuccess, error } = useQuery<
+	const { data, isError, isSuccess, error } = useQuery<
 		VoteResponseType,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(['vote', `vote${articleId}`], () => getVoteItems(articleId), {
@@ -25,7 +25,7 @@ const useVote = (articleId: string) => {
 
 	useThrowCustomError(isError, error);
 
-	return { data, isLoading, totalCount, isSuccess };
+	return { data, totalCount, isSuccess };
 };
 
 export default useVote;

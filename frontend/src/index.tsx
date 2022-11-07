@@ -7,20 +7,26 @@ import App from '@/App';
 import GlobalModal from '@/components/@helper/Modal/GlobalModal';
 import FallbackErrorBoundary from '@/components/@helper/errorBoundary/FallbackErrorBoundary';
 import LogicErrorBoundary from '@/components/@helper/errorBoundary/LogicErrorBoundary';
-import { worker } from '@/mock/browser';
 import NotFound from '@/pages/NotFound';
 import ServerErrorPage from '@/pages/ServerErrorPage';
 import { theme } from '@/styles/Theme';
 import { reset } from '@/styles/reset';
 import { ThemeProvider, Global } from '@emotion/react';
 
-// if (process.env.NODE_ENV === 'development') {
-// 	worker.start();
-// }
-
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			suspense: true,
+			useErrorBoundary: false,
+		},
+		mutations: {
+			useErrorBoundary: false,
+		},
+	},
+});
+
 let isUnhandledError = false;
 
 window.addEventListener('unhandledrejection', () => {

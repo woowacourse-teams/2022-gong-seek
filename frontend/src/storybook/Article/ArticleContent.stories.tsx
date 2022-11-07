@@ -43,8 +43,4 @@ DefaultComment.args = {
 			avatarUrl: 'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg',
 		},
 	},
-	author: {
-		name: '자스민',
-		avatarUrl: 'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg',
-	},
 };

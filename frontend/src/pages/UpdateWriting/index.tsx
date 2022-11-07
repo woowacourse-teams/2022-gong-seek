@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 
 import Card from '@/components/@common/Card/Card';
-import Loading from '@/components/@common/Loading/Loading';
 import ToastUiEditor from '@/components/@common/ToastUiEditor/ToastUiEditor';
 import HashTag from '@/components/hashTag/HashTag/HashTag';
 import usePostWritingArticle from '@/hooks/article/usePostUpdateWritingArticle';
@@ -14,7 +13,6 @@ const UpdateWriting = () => {
 	const { category } = useParams();
 
 	const {
-		isLoading,
 		title,
 		setTitle,
 		tempArticle,
@@ -30,10 +28,6 @@ const UpdateWriting = () => {
 
 	if (id === undefined || category === undefined) {
 		throw new Error('id와  category 값을 가지고 오지 못하였습니다');
-	}
-
-	if (isLoading) {
-		return <Loading />;
 	}
 
 	return (

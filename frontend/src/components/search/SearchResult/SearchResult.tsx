@@ -13,7 +13,7 @@ const ResponsiveInfiniteCardList = React.lazy(
 );
 
 const SearchResult = ({ target, searchIndex }: { target: string; searchIndex: string }) => {
-	const { data, isLoading, isIdle, refetch, fetchNextPage } = useGetSearch({ target, searchIndex });
+	const { data, refetch, fetchNextPage } = useGetSearch({ target, searchIndex });
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -26,36 +26,34 @@ const SearchResult = ({ target, searchIndex }: { target: string; searchIndex: st
 		navigate(`/articles/${article.category}/${article.id}`);
 	};
 
-	if (isLoading || isIdle) {
-		return <Loading />;
-	}
-
 	return (
-		<S.Container>
-			<S.Title>검색 결과</S.Title>
-			<Suspense fallback={<Loading />}>
-				{data && data.pages[0].articles.length >= 1 ? (
-					<ResponsiveInfiniteCardList
-						hasNext={data.pages[data.pages.length - 1].hasNext}
-						fetchNextPage={fetchNextPage}
-					>
-						<>
-							{data.pages.map(({ articles }) =>
-								articles.map((article) => (
-									<ArticleItem
-										key={article.id}
-										article={article}
-										onClick={() => handleClickArticleItem(article)}
-									/>
-								)),
-							)}
-						</>
-					</ResponsiveInfiniteCardList>
-				) : (
-					<EmptyMessage>검색 결과가 존재하지 않습니다</EmptyMessage>
-				)}
-			</Suspense>
-		</S.Container>
+		<Suspense fallback={<Loading />}>
+			<S.Container>
+				<S.Title>검색 결과</S.Title>
+				<Suspense fallback={<Loading />}>
+					{data && data.pages[0].articles.length >= 1 ? (
+						<ResponsiveInfiniteCardList
+							hasNext={data.pages[data.pages.length - 1].hasNext}
+							fetchNextPage={fetchNextPage}
+						>
+							<>
+								{data.pages.map(({ articles }) =>
+									articles.map((article) => (
+										<ArticleItem
+											key={article.id}
+											article={article}
+											onClick={() => handleClickArticleItem(article)}
+										/>
+									)),
+								)}
+							</>
+						</ResponsiveInfiniteCardList>
+					) : (
+						<EmptyMessage>검색 결과가 존재하지 않습니다</EmptyMessage>
+					)}
+				</Suspense>
+			</S.Container>
+		</Suspense>
 	);
 };
 

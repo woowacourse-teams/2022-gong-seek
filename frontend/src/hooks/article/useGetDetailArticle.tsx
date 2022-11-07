@@ -9,8 +9,11 @@ import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { articleState } from '@/store/articleState';
 
-const useGetDetailArticle = (id: string) => {
-	const { data, isSuccess, isError, isLoading, error, isIdle } = useQuery<
+const useGetDetailArticle = (id: string | undefined) => {
+	if (typeof id === 'undefined') {
+		throw new Error('id를 찾을 수 없습니다.');
+	}
+	const { data, isSuccess, isError, error } = useQuery<
 		DetailArticleResponseType,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(['detail-article', `article${id}`], () => getDetailArticle(id), {
@@ -26,7 +29,7 @@ const useGetDetailArticle = (id: string) => {
 		}
 	}, [isSuccess]);
 
-	return { isSuccess, isLoading, data, isIdle };
+	return { isSuccess, data };
 };
 
 export default useGetDetailArticle;

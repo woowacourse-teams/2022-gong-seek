@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import gongseek from '@/assets/gongseek.png';
@@ -8,7 +8,7 @@ import useGetUserInfo from '@/hooks/user/useGetUserInfo';
 import { dropdownState } from '@/store/dropdownState';
 
 const UserProfileIcon = () => {
-	const { data, isLoading, isSuccess } = useGetUserInfo();
+	const { data } = useGetUserInfo();
 	const [dropdown, setDropdown] = useRecoilState(dropdownState);
 	const [isLog, setIsLog] = useState(false);
 
@@ -46,8 +46,11 @@ const UserProfileIcon = () => {
 			}
 			onKeyDown={handleUserProfileIconKeydown}
 		>
-			{isLoading && <S.UserProfile src={gongseek} alt="임시 작성자 프로필" />}
-			{isSuccess && <S.UserProfile src={data?.avatarUrl} alt="작성자 프로필" />}
+			{
+				<Suspense fallback={<S.UserProfile src={gongseek} alt="임시 작성자 프로필" />}>
+					<S.UserProfile src={data?.avatarUrl} alt="작성자 프로필" />
+				</Suspense>
+			}
 			{dropdown.isOpen && <Dropdown onCloseDropdown={handleClickUserProfile} />}
 			{isLog && <S.SrOnlyContainer role="alert">닫힘</S.SrOnlyContainer>}
 		</S.Container>

@@ -7,14 +7,14 @@ import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 
 const useGetDetailComment = (id: string) => {
-	const { data, isSuccess, isError, isLoading, isIdle, error } = useQuery<
+	const { data, isSuccess, isError, isIdle, error } = useQuery<
 		TotalCommentResponseType,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('comments', () => getComments(id), { retry: false, refetchOnWindowFocus: false });
 
 	useThrowCustomError(isError, error);
 
-	return { isLoading, isSuccess, data, isIdle };
+	return { isSuccess, data, isIdle };
 };
 
 export default useGetDetailComment;
