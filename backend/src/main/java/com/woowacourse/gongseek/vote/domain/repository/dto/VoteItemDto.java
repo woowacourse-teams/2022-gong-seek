@@ -12,5 +12,5 @@ public class VoteItemDto {
 
     private Long id;
     private String content;
-    private Long count;
+    private Long amount;
 }
