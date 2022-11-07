@@ -119,7 +119,7 @@ export const OpenButton = styled(AiOutlineDown)`
 	`}
 `;
 
-export const CloseButton = styled(AiOutlineUp)`
+export const CloseButton = styled(AiOutlineDown)`
 	border: none;
 	background-color: transparent;
 

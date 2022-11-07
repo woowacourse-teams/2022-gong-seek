@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 
+import { SingleMyPageUserArticleResponseType } from '@/api/article/articleType';
 import * as S from '@/components/user/UserArticleItem/UserArticleItem.styles';
-import { UserArticleItemType } from '@/types/articleResponse';
 import { categoryNameConverter, dateTimeConverter } from '@/utils/converter';
 
-const UserArticleItem = ({ article }: { article: UserArticleItemType }) => {
+const UserArticleItem = ({ article }: { article: SingleMyPageUserArticleResponseType }) => {
 	const navigate = useNavigate();
 	const { id, title, category, commentCount, createdAt, updatedAt, views } = article;
 

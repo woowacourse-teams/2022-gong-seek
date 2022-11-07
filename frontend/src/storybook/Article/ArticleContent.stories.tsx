@@ -42,11 +42,5 @@ DefaultComment.args = {
 			name: '자스민',
 			avatarUrl: 'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg',
 		},
-		category: 'discussion',
-		commentCount: 2,
-	},
-	author: {
-		name: '자스민',
-		avatarUrl: 'http://openimage.interpark.com/goods_image_big/0/3/2/7/8317700327e_l.jpg',
 	},
 };

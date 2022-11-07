@@ -2,7 +2,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { Dispatch, SetStateAction } from 'react';
 import { useMutation } from 'react-query';
 
-import { postTempArticle } from '@/api/tempArticle';
+import { postTempArticle } from '@/api/tempArticle/tempArticle';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useSnackBar from '@/hooks/common/useSnackBar';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';

@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 
+import { MyPageCommentItemResponse } from '@/api/comment/commentType';
 import * as S from '@/components/user/UserCommentItem/UserCommentItem.styles';
-import { UserComment } from '@/types/commentResponse';
 import { dateTimeConverter } from '@/utils/converter';
 
-const UserCommentItem = ({ comment }: { comment: UserComment }) => {
+const UserCommentItem = ({ comment }: { comment: MyPageCommentItemResponse }) => {
 	const { id, content, createdAt, updatedAt, articleId, category, articleTitle } = comment;
 	const navigate = useNavigate();
 	const 한글_카테고리 = category === 'question' ? '질문' : '토론';

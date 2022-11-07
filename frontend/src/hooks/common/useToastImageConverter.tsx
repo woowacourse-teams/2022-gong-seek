@@ -2,7 +2,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { MutableRefObject, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 
-import { postImageUrlConverter } from '@/api/image';
+import { postImageUrlConverter } from '@/api/article/image';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useSnackBar from '@/hooks/common/useSnackBar';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';

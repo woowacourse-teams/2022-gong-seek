@@ -1,7 +1,7 @@
 import { BrowserRouter } from 'react-router-dom';
 
+import { MyPageCommentItemResponse } from '@/api/comment/commentType';
 import UserCommentItem from '@/components/user/UserCommentItem/UserCommentItem';
-import { UserComment } from '@/types/commentResponse';
 import { Meta, Story } from '@storybook/react';
 
 export default {
@@ -18,7 +18,9 @@ export default {
 	],
 } as Meta;
 
-const Template: Story<{ comment: UserComment }> = (args) => <UserCommentItem {...args} />;
+const Template: Story<{ comment: MyPageCommentItemResponse }> = (args) => (
+	<UserCommentItem {...args} />
+);
 
 export const UserCommentItemTemplate = Template.bind({});
 

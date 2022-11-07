@@ -3,15 +3,18 @@ import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { useSetRecoilState } from 'recoil';
 
-import { getDetailArticle } from '@/api/article';
+import { getDetailArticle } from '@/api/article/article';
+import { DetailArticleResponseType } from '@/api/article/articleType';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 import { articleState } from '@/store/articleState';
-import { ArticleType } from '@/types/articleResponse';
 
-const useGetDetailArticle = (id: string) => {
-	const { data, isSuccess, isError, isLoading, error, isIdle } = useQuery<
-		ArticleType,
+const useGetDetailArticle = (id: string | undefined) => {
+	if (typeof id === 'undefined') {
+		throw new Error('id를 찾을 수 없습니다.');
+	}
+	const { data, isSuccess, isError, error } = useQuery<
+		DetailArticleResponseType,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(['detail-article', `article${id}`], () => getDetailArticle(id), {
 		retry: false,
@@ -26,7 +29,7 @@ const useGetDetailArticle = (id: string) => {
 		}
 	}, [isSuccess]);
 
-	return { isSuccess, isLoading, data, isIdle };
+	return { isSuccess, data };
 };
 
 export default useGetDetailArticle;

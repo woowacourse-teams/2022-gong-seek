@@ -1,11 +1,11 @@
 import { rest } from 'msw';
 
+import { ArticleTotalType } from '@/api/article/articleType';
+import { ArticleSearchResponseType } from '@/api/search/searchType';
 import { HOME_URL } from '@/constants/apiUrl';
-import { CommonArticleType } from '@/types/articleResponse';
-import { SearchResultType } from '@/types/searchResponse';
 
 export const SearchHandler = [
-	rest.get<SearchResultType>(`${HOME_URL}/api/articles/search/author`, (req, res, ctx) => {
+	rest.get<ArticleSearchResponseType>(`${HOME_URL}/api/articles/search/author`, (req, res, ctx) => {
 		const cursorId = req.url.searchParams.get('cursorId');
 		const pageSize = req.url.searchParams.get('size');
 		const author = req.url.searchParams.get('author');
@@ -62,7 +62,7 @@ export const SearchHandler = [
 			}),
 		);
 	}),
-	rest.get<SearchResultType>(`${HOME_URL}/api/articles/search/text`, (req, res, ctx) => {
+	rest.get<ArticleSearchResponseType>(`${HOME_URL}/api/articles/search/text`, (req, res, ctx) => {
 		const cursorId = req.url.searchParams.get('cursorId');
 		const pageSize = req.url.searchParams.get('size');
 		const searchText = req.url.searchParams.get('text');
@@ -119,7 +119,7 @@ export const SearchHandler = [
 		);
 	}),
 
-	rest.get<{ articles: CommonArticleType[] }>(
+	rest.get<{ articles: Omit<ArticleTotalType, 'updatedAt' | 'hasVote' | 'isAuthor'>[] }>(
 		`${HOME_URL}/api/articles/search/tags`,
 		(req, res, ctx) =>
 			res(

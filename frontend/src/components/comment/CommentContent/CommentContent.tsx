@@ -1,18 +1,22 @@
+import { Suspense } from 'react';
+
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
+import Loading from '@/components/@common/Loading/Loading';
 import Comment from '@/components/comment/Comment/Comment';
 import * as S from '@/components/comment/CommentContent/CommentContent.styles';
 import useDetailCommentState from '@/hooks/comment/useDetailCommentState';
-import { CommentType } from '@/types/commentResponse';
+import useGetDetailComment from '@/hooks/comment/useGetDetailComment';
 
 export interface CommentContentProps {
 	articleId: string;
-	commentList: CommentType[];
 }
 
-const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
+const CommentContent = ({ articleId }: CommentContentProps) => {
 	const { handleClickCommentPlusButton, isLogin } = useDetailCommentState({ articleId });
+	const { data } = useGetDetailComment(articleId);
+
 	return (
-		<>
+		<Suspense fallback={<Loading />}>
 			<S.CommentSection>
 				<S.CommentInputBox>
 					<S.CommentInput
@@ -35,14 +39,14 @@ const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
 					<S.CommentTitle>댓글</S.CommentTitle>
 					<S.CommentTotal>
 						<S.CommentIcon />
-						<div aria-label={`댓글 갯수 ${commentList.length}`} tabIndex={0}>
-							{commentList.length || 0}개
+						<div aria-label={`댓글 갯수 ${data?.comments.length}`} tabIndex={0}>
+							{data?.comments.length || 0}개
 						</div>
 					</S.CommentTotal>
 				</S.CommentHeader>
 
-				{commentList && commentList.length > 0 ? (
-					commentList.map((item) => (
+				{data?.comments && data.comments.length > 0 ? (
+					data.comments.map((item) => (
 						<Comment
 							key={item.id}
 							id={item.id}
@@ -58,7 +62,7 @@ const CommentContent = ({ articleId, commentList }: CommentContentProps) => {
 					<EmptyMessage>첫 번째 댓글을 달아주세요!</EmptyMessage>
 				)}
 			</S.CommentSection>
-		</>
+		</Suspense>
 	);
 };
 

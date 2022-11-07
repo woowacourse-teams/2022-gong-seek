@@ -1,7 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { useMutation } from 'react-query';
 
-import { editUserInfo } from '@/api/myPage';
+import { editUserInfo } from '@/api/user/myPage';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 

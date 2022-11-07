@@ -1,23 +1,20 @@
 import { PropsWithOptionalChildren } from 'gongseek-types';
 
+import { ArticleTotalType } from '@/api/article/articleType';
 import ArticleContent from '@/components/article/ArticleContent/ArticleContent';
 import CommentContent from '@/components/comment/CommentContent/CommentContent';
 import useScrollToTop from '@/hooks/common/useScrollToTop';
 import * as S from '@/pages/Detail/index.styles';
-import { ArticleType } from '@/types/articleResponse';
-import { CommentType } from '@/types/commentResponse';
 
 export interface DetailProps {
-	article: ArticleType;
-	commentList: CommentType[];
+	article: Omit<ArticleTotalType, 'updatedAt' | 'category' | 'commentCount'>;
 	articleId: string;
 	category: string;
 }
 
 const Detail = ({
-	children,
 	article,
-	commentList,
+	children,
 	articleId,
 	category,
 }: PropsWithOptionalChildren<DetailProps>) => {
@@ -25,14 +22,9 @@ const Detail = ({
 
 	return (
 		<S.Container>
-			<ArticleContent
-				article={article}
-				author={article.author}
-				category={category}
-				articleId={articleId}
-			/>
+			<ArticleContent article={article} category={category} articleId={articleId} />
 			{children}
-			<CommentContent articleId={articleId} commentList={commentList} />
+			<CommentContent articleId={articleId} />
 		</S.Container>
 	);
 };

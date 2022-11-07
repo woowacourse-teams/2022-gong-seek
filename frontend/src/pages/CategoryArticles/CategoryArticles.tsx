@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { ArticleTotalType } from '@/api/article/articleType';
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import ResponsiveInfiniteCardList from '@/components/@common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList';
@@ -8,7 +9,6 @@ import ArticleItem from '@/components/article/ArticleItem/ArticleItem';
 import { URL } from '@/constants/url';
 import useGetCategoryArticles from '@/hooks/article/useGetCategoryArticles';
 import * as S from '@/pages/CategoryArticles/CategoryArticles.styles';
-import { CommonArticleType } from '@/types/articleResponse';
 import { categoryNameConverter } from '@/utils/converter';
 
 const CategoryArticles = () => {
@@ -27,7 +27,9 @@ const CategoryArticles = () => {
 	const { data, fetchNextPage, sortIndex, setSortIndex, isLoading } =
 		useGetCategoryArticles(category);
 
-	const handleClickArticleItem = (item: CommonArticleType) => {
+	const handleClickArticleItem = (
+		item: Omit<ArticleTotalType, 'updatedAt' | 'isAuthor' | 'hasVote'>,
+	) => {
 		navigate(`/articles/${category}/${item.id}`);
 	};
 

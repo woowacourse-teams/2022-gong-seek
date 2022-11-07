@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import * as S from '@/components/user/UserCommentBox/UserCommentBox.styles';
@@ -5,18 +7,10 @@ import UserCommentItem from '@/components/user/UserCommentItem/UserCommentItem';
 import useGetUserComments from '@/hooks/user/useGetUserComments';
 
 const UserCommentBox = () => {
-	const {
-		data: comments,
-		isSuccess: isCommentsSuccess,
-		isLoading: isCommentsLoading,
-	} = useGetUserComments();
-
-	if (isCommentsLoading) {
-		return <Loading />;
-	}
+	const { data: comments, isSuccess: isCommentsSuccess } = useGetUserComments();
 
 	return (
-		<>
+		<Suspense fallback={<Loading />}>
 			{isCommentsSuccess ? (
 				<S.Container>
 					{comments ? (
@@ -30,7 +24,7 @@ const UserCommentBox = () => {
 			) : (
 				<div>정보를 가져오는데 실패하였습니다</div>
 			)}
-		</>
+		</Suspense>
 	);
 };
 

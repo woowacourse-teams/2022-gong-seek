@@ -1,14 +1,14 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import { useMutation } from 'react-query';
 
-import { getTempDetailArticle } from '@/api/tempArticle';
+import { getTempDetailArticle } from '@/api/tempArticle/tempArticle';
+import { DetailTempArticleResponseType } from '@/api/tempArticle/tempArticleType';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
-import { TempArticleDetailResponse } from '@/types/articleResponse';
 
 const useGetTempDetailArticles = ({ tempArticleId }: { tempArticleId: number | '' }) => {
 	const { data, isLoading, isSuccess, isError, error, mutate } = useMutation<
-		AxiosResponse<TempArticleDetailResponse>,
+		AxiosResponse<DetailTempArticleResponseType>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
 		{
 			tempArticleId: number;

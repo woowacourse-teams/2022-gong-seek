@@ -1,4 +1,4 @@
-import { registerVoteItems } from '@/api/vote';
+import { registerVoteItems } from '@/api/vote/vote';
 import Vote from '@/components/vote/Vote/Vote';
 import { VoteHandler } from '@/mock/vote';
 import { Meta, Story } from '@storybook/react';

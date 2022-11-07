@@ -3,7 +3,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
-import { postWritingArticle } from '@/api/article';
+import { postWritingArticle } from '@/api/article/article';
+import {
+	CategoryType,
+	CreateArticleRequestType,
+	CreateArticleResponseType,
+} from '@/api/article/articleType';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { CATEGORY } from '@/constants/categoryType';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
@@ -14,25 +19,20 @@ const usePostWritingArticles = ({
 	category,
 	isAnonymous,
 }: {
-	category?: string;
+	category?: CategoryType | string;
 	isAnonymous: boolean;
 }) => {
 	const { data, mutate, isError, isLoading, isSuccess, error } = useMutation<
-		AxiosResponse<{ id: string }>,
+		AxiosResponse<CreateArticleResponseType>,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>,
-		{
-			title: string;
-			category: string;
-			content: string;
-			tag: string[];
-			isAnonymous: boolean;
-			tempArticleId: number | '';
-		}
+		CreateArticleRequestType
 	>(postWritingArticle, { retry: 1 });
 
 	const content = useRef<Editor | null>(null);
 	const [title, setTitle] = useState('');
-	const [categoryOption, setCategoryOption] = useState<string>(category ? category : '');
+	const [categoryOption, setCategoryOption] = useState<CategoryType | string>(
+		category ? category : 'question',
+	);
 	const [isValidTitleInput, setIsValidTitleInput] = useState(true);
 	const [hashTags, setHashTags] = useState<string[]>([]);
 	const titleInputRef = useRef<HTMLInputElement>(null);
@@ -57,8 +57,14 @@ const usePostWritingArticles = ({
 		}
 	}, [isSuccess]);
 
-	const handleSubmitButtonClick = (categoryOption: string, tempArticleId: number | '') => {
+	const handleSubmitButtonClick = (
+		categoryOption: CategoryType | string,
+		tempArticleId: number | '',
+	) => {
 		if (content.current === null) {
+			return;
+		}
+		if (categoryOption !== 'question' && categoryOption !== 'discussion') {
 			return;
 		}
 

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { MdOutlineHowToVote } from 'react-icons/md';
 
 import Loading from '@/components/@common/Loading/Loading';
@@ -6,36 +7,36 @@ import VoteItem from '@/components/vote/VoteItem/VoteItem';
 import useGetVote from '@/hooks/vote/useGetVote';
 
 const Vote = ({ articleId }: { articleId: string }) => {
-	const { data, isLoading, totalCount } = useGetVote(articleId);
-
-	if (isLoading) return <Loading />;
+	const { data, totalCount } = useGetVote(articleId);
 
 	return (
-		<S.Container>
-			<S.VoteTitleBox>
-				<S.VoteTitle>{`투표(${data?.expired ? '만료됨' : '진행중'})`}</S.VoteTitle>
-				<S.TotalVotesBox>
-					<MdOutlineHowToVote />
-					<S.TotalVotes>총 {totalCount}표</S.TotalVotes>
-				</S.TotalVotesBox>
-			</S.VoteTitleBox>
-			<S.VoteBox>
-				{data &&
-					data.voteItems.map((datum, idx) => (
-						<VoteItem
-							voteItemId={datum.id}
-							isVoted={data.votedItemId === datum.id}
-							key={datum.id}
-							title={datum.content}
-							totalVotes={totalCount}
-							itemVotes={datum.amount}
-							articleId={articleId}
-							colorIdx={idx}
-							expired={data.expired}
-						/>
-					))}
-			</S.VoteBox>
-		</S.Container>
+		<Suspense fallback={<Loading />}>
+			<S.Container>
+				<S.VoteTitleBox>
+					<S.VoteTitle>{`투표(${data?.expired ? '만료됨' : '진행중'})`}</S.VoteTitle>
+					<S.TotalVotesBox>
+						<MdOutlineHowToVote />
+						<S.TotalVotes>총 {totalCount}표</S.TotalVotes>
+					</S.TotalVotesBox>
+				</S.VoteTitleBox>
+				<S.VoteBox>
+					{data &&
+						data.voteItems.map((datum, idx) => (
+							<VoteItem
+								voteItemId={datum.id}
+								isVoted={data.votedItemId === datum.id}
+								key={datum.id}
+								title={datum.content}
+								totalVotes={totalCount}
+								itemVotes={datum.amount}
+								articleId={articleId}
+								colorIdx={idx}
+								expired={data.expired}
+							/>
+						))}
+				</S.VoteBox>
+			</S.Container>
+		</Suspense>
 	);
 };
 

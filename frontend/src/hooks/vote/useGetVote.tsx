@@ -2,13 +2,14 @@ import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
-import { getVoteItems, TVote } from '@/api/vote';
+import { getVoteItems } from '@/api/vote/vote';
+import { VoteResponseType } from '@/api/vote/voteType';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 
 const useVote = (articleId: string) => {
-	const { data, isLoading, isError, isSuccess, error } = useQuery<
-		TVote,
+	const { data, isError, isSuccess, error } = useQuery<
+		VoteResponseType,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(['vote', `vote${articleId}`], () => getVoteItems(articleId), {
 		retry: false,
@@ -24,7 +25,7 @@ const useVote = (articleId: string) => {
 
 	useThrowCustomError(isError, error);
 
-	return { data, isLoading, totalCount, isSuccess };
+	return { data, totalCount, isSuccess };
 };
 
 export default useVote;

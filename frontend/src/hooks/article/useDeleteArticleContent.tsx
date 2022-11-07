@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
-import { deleteArticle } from '@/api/article';
+import { deleteArticle } from '@/api/article/article';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { URL } from '@/constants/url';
 import useSnackBar from '@/hooks/common/useSnackBar';

@@ -1,20 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 
+import { SingleTempArticleItemResponseType } from '@/api/tempArticle/tempArticleType';
 import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
-import Loading from '@/components/@common/Loading/Loading';
 import TemporaryArticleItem from '@/components/tempArticle/TemporaryArticleItem/TemporaryArticleItem';
 import * as S from '@/components/tempArticle/TemporaryArticleList/TemporaryArticleList.styles';
 import useDeleteTempArticle from '@/hooks/tempArticle/useDeleteTempArticle';
 import useGetTempArticles from '@/hooks/tempArticle/useGetTempArticles';
-import { TempArticleItem } from '@/types/articleResponse';
 
 const TemporaryArticleList = () => {
-	const { data, isLoading } = useGetTempArticles();
+	const { data } = useGetTempArticles();
 	const { deleteTempArticleId } = useDeleteTempArticle();
 	const navigate = useNavigate();
-	if (isLoading) {
-		return <Loading />;
-	}
 
 	const handleClickTemporaryArticlekDeleteButton = (id: number) => {
 		if (window.confirm('해당 임시 저장 글을 삭제하시겠습니까?')) {
@@ -22,7 +18,7 @@ const TemporaryArticleList = () => {
 		}
 	};
 
-	const handleClickTemporaryArticleItem = (item: TempArticleItem) => {
+	const handleClickTemporaryArticleItem = (item: SingleTempArticleItemResponseType) => {
 		navigate(`/temp-article/${item.category}/${item.id}`);
 	};
 
