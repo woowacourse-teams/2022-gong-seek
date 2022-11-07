@@ -143,8 +143,8 @@ class VoteServiceTest extends IntegrationTest {
         List<VoteItemDto> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember)
                 .getVoteItems();
         assertAll(
-                () -> assertThat(foundVoteItems.get(selectIndex).getCount()).isEqualTo(1),
-                () -> assertThat(foundVoteItems.get(1).getCount()).isEqualTo(0)
+                () -> assertThat(foundVoteItems.get(selectIndex).getAmount()).isEqualTo(1),
+                () -> assertThat(foundVoteItems.get(1).getAmount()).isEqualTo(0)
         );
     }
 
@@ -159,8 +159,8 @@ class VoteServiceTest extends IntegrationTest {
         List<VoteItemDto> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember)
                 .getVoteItems();
         assertAll(
-                () -> assertThat(foundVoteItems.get(0).getCount()).isEqualTo(0),
-                () -> assertThat(foundVoteItems.get(1).getCount()).isEqualTo(1)
+                () -> assertThat(foundVoteItems.get(0).getAmount()).isEqualTo(0),
+                () -> assertThat(foundVoteItems.get(1).getAmount()).isEqualTo(1)
         );
     }
 
@@ -178,7 +178,7 @@ class VoteServiceTest extends IntegrationTest {
         List<VoteItemDto> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember1)
                 .getVoteItems();
 
-        assertThat(foundVoteItems.get(0).getCount()).isEqualTo(2);
+        assertThat(foundVoteItems.get(0).getAmount()).isEqualTo(2);
     }
 
     @Test

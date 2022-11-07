@@ -12,8 +12,6 @@ import static com.woowacourse.gongseek.tag.domain.QTag.tag;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.article.domain.Category;
@@ -220,25 +218,12 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                 .fetch();
         setTagNameAndIsLike(fetch, memberId);
 
-        return convertToSliceBySearch(fetch, pageable);
+        return convertToSliceFromArticle(fetch, pageable);
     }
 
     private BooleanExpression containsTitleOrContent(String searchText) {
-        String text = searchText.toLowerCase().replace(" ", "");
-        StringExpression title = Expressions.stringTemplate("replace({0},' ','')", article.title.value).lower();
-        StringExpression content = Expressions.stringTemplate("replace({0},' ','')", article.content.value).lower();
-        return title.contains(text)
-                .or(content.contains(text));
-    }
-
-    private SliceImpl<ArticlePreviewDto> convertToSliceBySearch(List<ArticlePreviewDto> fetch, Pageable pageable) {
-        boolean hasNext = false;
-
-        if (fetch.size() == pageable.getPageSize() + 1) {
-            fetch.remove(pageable.getPageSize());
-            hasNext = true;
-        }
-        return new SliceImpl<>(fetch, pageable, hasNext);
+        return article.title.value.contains(searchText)
+                .or(article.content.value.contains(searchText));
     }
 
     @Override
@@ -273,7 +258,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                 .fetch();
         setTagNameAndIsLike(fetch, memberId);
 
-        return convertToSliceBySearch(fetch, pageable);
+        return convertToSliceFromArticle(fetch, pageable);
     }
 
     @Override
@@ -311,7 +296,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                 .fetch();
         setTagNameAndIsLike(fetch, memberId);
 
-        return convertToSliceBySearch(fetch, pageable);
+        return convertToSliceFromArticle(fetch, pageable);
     }
 
     private List<String> getUpperTagNames(List<String> tagNames) {

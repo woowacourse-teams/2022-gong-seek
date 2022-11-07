@@ -50,9 +50,9 @@ class VoteItemRepositoryTest {
 
         assertAll(
                 () -> assertThat(voteItems.get(0).getId()).isEqualTo(firstVoteItem.getId()),
-                () -> assertThat(voteItems.get(0).getCount()).isEqualTo(1),
+                () -> assertThat(voteItems.get(0).getAmount()).isEqualTo(1),
                 () -> assertThat(voteItems.get(1).getId()).isEqualTo(secondVoteItem.getId()),
-                () -> assertThat(voteItems.get(1).getCount()).isEqualTo(0)
+                () -> assertThat(voteItems.get(1).getAmount()).isEqualTo(0)
         );
     }
 }
