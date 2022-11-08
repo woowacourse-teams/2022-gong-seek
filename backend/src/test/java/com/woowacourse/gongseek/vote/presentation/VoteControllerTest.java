@@ -93,7 +93,7 @@ class VoteControllerTest extends ControllerTest {
                                 fieldWithPath("articleId").type(JsonFieldType.NUMBER).description("게시글 식별자"),
                                 fieldWithPath("voteItems[].id").type(JsonFieldType.NUMBER).description("투표 항목 식별자"),
                                 fieldWithPath("voteItems[].content").type(JsonFieldType.STRING).description("투표 항목 이름"),
-                                fieldWithPath("voteItems[].count").type(JsonFieldType.NUMBER).description("득표 수"),
+                                fieldWithPath("voteItems[].amount").type(JsonFieldType.NUMBER).description("득표 수"),
                                 fieldWithPath("votedItemId").type(JsonFieldType.NUMBER)
                                         .description("로그인한 유저가 투표한 번호, 투표를 안했으면 null반환").optional(),
                                 fieldWithPath("expired").type(JsonFieldType.BOOLEAN).description("투표 기간이 종료되었으면 true")
