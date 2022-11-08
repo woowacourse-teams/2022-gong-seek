@@ -1,9 +1,9 @@
 package com.woowacourse.gongseek.image.application;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import com.woowacourse.gongseek.image.exception.UnsupportedContentTypeException;
+import com.woowacourse.gongseek.image.exception.UnsupportedImageFileTypeException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -26,8 +26,8 @@ class ImageFileValidatorTest {
         final MockMultipartFile multipartFile = new MockMultipartFile("image", failImageName, tika.detect(file),
                 Files.readAllBytes(file.toPath()));
 
-        assertThatThrownBy(() -> ImageFileValidator.validateMimeType(multipartFile))
-                .isInstanceOf(UnsupportedContentTypeException.class);
+        assertThatThrownBy(() -> ImageFileValidator.checkImageType(multipartFile))
+                .isInstanceOf(UnsupportedImageFileTypeException.class);
     }
 
     @Test
@@ -38,6 +38,6 @@ class ImageFileValidatorTest {
         final MockMultipartFile multipartFile = new MockMultipartFile("image", successImageName, tika.detect(file),
                 Files.readAllBytes(file.toPath()));
 
-        assertDoesNotThrow(() -> ImageFileValidator.validateMimeType(multipartFile));
+        assertDoesNotThrow(() -> ImageFileValidator.checkImageType(multipartFile));
     }
 }
