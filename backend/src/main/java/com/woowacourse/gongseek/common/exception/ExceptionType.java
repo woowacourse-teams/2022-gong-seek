@@ -23,7 +23,7 @@ import com.woowacourse.gongseek.comment.exception.CommentTooLongException;
 import com.woowacourse.gongseek.image.exception.FileNameEmptyException;
 import com.woowacourse.gongseek.image.exception.FileUploadFailException;
 import com.woowacourse.gongseek.image.exception.InvalidFileFormatException;
-import com.woowacourse.gongseek.image.exception.UnsupportedContentTypeException;
+import com.woowacourse.gongseek.image.exception.UnsupportedImageFileTypeException;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.member.exception.NameNullOrEmptyException;
 import com.woowacourse.gongseek.member.exception.NameTooLongException;
@@ -94,7 +94,7 @@ public enum ExceptionType {
     EXCEEDED_TAGS_EXCEPTION("6004", "해시태그는 한 게시글 당 최대 5개입니다.", ExceededTagSizeException.class),
 
     INVALID_FILE_FORMAT_EXCEPTION("7001", "올바르지 않은 파일 형식 입니다.", InvalidFileFormatException.class),
-    UNSUPPORTED_CONTENT_TYE_EXCEPTION("7002", "지원하지 이미지 파일 형식 입니다.", UnsupportedContentTypeException.class),
+    UNSUPPORTED_IMAGE_FILE_TYE_EXCEPTION("7002", "지원하지 이미지 파일 형식 입니다.", UnsupportedImageFileTypeException.class),
     FILE_NAME_EMPTY_EXCEPTION("7003", "파일 이름은 비어있을 수 없습니다.", FileNameEmptyException.class),
     FILE_UPLOAD_FAIL_EXCEPTION("7004", "파일 업로드에 실패했습니다.", FileUploadFailException.class),
     UNHANDLED_EXCEPTION("0000", "알 수 없는 서버 에러가 발생했습니다."),
