@@ -22,11 +22,9 @@ import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
-import com.woowacourse.gongseek.support.DatabaseCleaner;
 import com.woowacourse.gongseek.support.IntegrationTest;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,18 +51,10 @@ class CommentServiceTest extends IntegrationTest {
     @Autowired
     private CommentRepository commentRepository;
 
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
-
     @BeforeEach
     void setUp() {
         memberRepository.save(member);
         articleRepository.save(article);
-    }
-
-    @AfterEach
-    void tearDown() {
-        databaseCleaner.tableClear();
     }
 
     @Test
@@ -75,13 +65,11 @@ class CommentServiceTest extends IntegrationTest {
         commentService.create(member, this.article.getId(), request);
         List<CommentResponse> savedComments = commentService.getAllByArticleId(member, article.getId()).getComments();
         CommentResponse firstCommentResponse = savedComments.get(0);
-        Article foundArticle = articleRepository.findById(article.getId()).get();
 
         assertAll(
                 () -> assertThat(savedComments).hasSize(1),
                 () -> assertThat(firstCommentResponse.getAuthor().getName()).isEqualTo(this.member.getName()),
-                () -> assertThat(firstCommentResponse.getContent()).isEqualTo(request.getContent()),
-                () -> assertThat(foundArticle.getCommentCount()).isEqualTo(1)
+                () -> assertThat(firstCommentResponse.getContent()).isEqualTo(request.getContent())
         );
     }
 
@@ -93,13 +81,11 @@ class CommentServiceTest extends IntegrationTest {
         commentService.create(member, article.getId(), request);
         List<CommentResponse> savedComments = commentService.getAllByArticleId(member, article.getId()).getComments();
         CommentResponse firstCommentResponse = savedComments.get(0);
-        Article foundArticle = articleRepository.findById(article.getId()).get();
 
         assertAll(
                 () -> assertThat(savedComments).hasSize(1),
                 () -> assertThat(firstCommentResponse.getAuthor().getName()).isEqualTo("익명"),
-                () -> assertThat(firstCommentResponse.getContent()).isEqualTo(request.getContent()),
-                () -> assertThat(foundArticle.getCommentCount()).isEqualTo(1)
+                () -> assertThat(firstCommentResponse.getContent()).isEqualTo(request.getContent())
         );
     }
 
@@ -296,12 +282,8 @@ class CommentServiceTest extends IntegrationTest {
         commentService.delete(appMember, comment.getId());
 
         List<CommentResponse> responses = commentService.getAllByArticleId(appMember, article.getId()).getComments();
-        Article foundArticle = articleRepository.findById(this.article.getId()).get();
 
-        assertAll(
-                () -> assertThat(responses).isEmpty(),
-                () -> assertThat(foundArticle.getCommentCount()).isEqualTo(0)
-        );
+        assertThat(responses).isEmpty();
     }
 
     @Test
@@ -312,12 +294,8 @@ class CommentServiceTest extends IntegrationTest {
         commentService.delete(appMember, comment.getId());
 
         List<CommentResponse> responses = commentService.getAllByArticleId(appMember, article.getId()).getComments();
-        Article foundArticle = articleRepository.findById(this.article.getId()).get();
 
-        assertAll(
-                () -> assertThat(responses).isEmpty(),
-                () -> assertThat(foundArticle.getCommentCount()).isEqualTo(0)
-        );
+        assertThat(responses).isEmpty();
     }
 
     @Test

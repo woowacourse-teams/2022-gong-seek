@@ -6,17 +6,13 @@ import Loading from '@/components/@common/Loading/Loading';
 import ToastUiEditor from '@/components/@common/ToastUiEditor/ToastUiEditor';
 import HashTag from '@/components/hashTag/HashTag/HashTag';
 import usePostWritingArticle from '@/hooks/article/usePostUpdateWritingArticle';
+import useToastImageConverter from '@/hooks/common/useToastImageConverter';
 import * as S from '@/pages/WritingArticles/index.styles';
 import { WritingCategoryCardStyle, WritingTitleCardStyle } from '@/styles/cardStyle';
-import { takeToastImgEditor } from '@/utils/takeToastImgEditor';
 
 const UpdateWriting = () => {
 	const { id } = useParams();
 	const { category } = useParams();
-
-	if (id === undefined || category === undefined) {
-		throw new Error('id와  category 값을 가지고 오지 못하였습니다');
-	}
 
 	const {
 		isLoading,
@@ -31,9 +27,11 @@ const UpdateWriting = () => {
 		handleClickUpdateSubmitButton,
 	} = usePostWritingArticle();
 
-	useEffect(() => {
-		takeToastImgEditor(content);
-	}, [content]);
+	useToastImageConverter(content);
+
+	if (id === undefined || category === undefined) {
+		throw new Error('id와  category 값을 가지고 오지 못하였습니다');
+	}
 
 	if (isLoading) {
 		return <Loading />;

@@ -948,8 +948,8 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
         게시글을_추천한다(엑세스토큰, 게시글2);
 
         토론_게시글을_기명으로_등록한다(엑세스토큰);
-        //when
 
+        //when
         ExtractableResponse<Response> response = 게시글_전체를_추천순으로_조회한다(Category.DISCUSSION.getValue(), null,
                 null, 5);
         ArticlePageResponse articlePageResponse = response.as(ArticlePageResponse.class);

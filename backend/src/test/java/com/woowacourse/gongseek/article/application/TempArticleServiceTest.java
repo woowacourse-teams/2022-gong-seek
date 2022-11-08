@@ -18,10 +18,8 @@ import com.woowacourse.gongseek.article.presentation.dto.TempArticlesResponse;
 import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
-import com.woowacourse.gongseek.support.DatabaseCleaner;
 import com.woowacourse.gongseek.support.IntegrationTest;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +39,6 @@ class TempArticleServiceTest extends IntegrationTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
-
     private Member member;
     private TempArticle tempArticle;
 
@@ -58,11 +53,6 @@ class TempArticleServiceTest extends IntegrationTest {
                 .tempTags(new TempTags(List.of("spring")))
                 .isAnonymous(false)
                 .build());
-    }
-
-    @AfterEach
-    void tearDown() {
-        databaseCleaner.tableClear();
     }
 
     @Transactional

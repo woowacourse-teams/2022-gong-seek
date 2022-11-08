@@ -9,14 +9,12 @@ import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
-import com.woowacourse.gongseek.support.DatabaseCleaner;
 import com.woowacourse.gongseek.support.IntegrationTest;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.presentation.dto.TagsResponse;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,19 +38,11 @@ class TagServiceTest extends IntegrationTest {
     @Autowired
     private TagService tagService;
 
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
-
     private Member member;
 
     @BeforeEach
     void setUp() {
         member = memberRepository.save(new Member("slo", "hanull", "avatar.com"));
-    }
-
-    @AfterEach
-    void tearDown() {
-        databaseCleaner.tableClear();
     }
 
     @Test

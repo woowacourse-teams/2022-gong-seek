@@ -6,7 +6,6 @@ import static com.woowacourse.gongseek.vote.domain.QVoteItem.voteItem;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.gongseek.vote.domain.VoteHistory;
-import com.woowacourse.gongseek.vote.domain.VoteItem;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +15,11 @@ public class VoteHistoryRepositoryImpl implements VoteHistoryRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    public Optional<VoteHistory> findByVoteItemsAndMemberId(List<VoteItem> voteItems, Long memberId) {
+    public Optional<VoteHistory> findByVoteItemIdsAndMemberId(List<Long> voteItemIds, Long memberId) {
         return Optional.ofNullable(queryFactory
                 .selectFrom(voteHistory)
                 .where(
-                        voteHistory.voteItem.in(voteItems)
+                        voteHistory.voteItem.id.in(voteItemIds)
                                 .and(voteHistory.member.id.eq(memberId))
                 )
                 .fetchFirst());

@@ -37,7 +37,9 @@ const TabBar = () => {
 			) : (
 				<UserProfile src={gongseek} alt="공식 이미지" onClick={handleClickUserProfile} />
 			)}
-			<S.MenuLink onClick={handleOpenSlider} />
+			<S.MenuBox onClick={handleOpenSlider}>
+				<S.MenuLink />
+			</S.MenuBox>
 		</S.Section>
 	);
 };

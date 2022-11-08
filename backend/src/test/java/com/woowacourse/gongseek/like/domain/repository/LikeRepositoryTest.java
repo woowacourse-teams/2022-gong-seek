@@ -32,7 +32,7 @@ class LikeRepositoryTest {
         Like like = likeRepository.save(new Like(article, member));
 
         memberRepository.delete(member);
-        likeRepository.flush();
+        memberRepository.flush();
 
         assertThat(likeRepository.existsById(like.getId())).isFalse();
     }

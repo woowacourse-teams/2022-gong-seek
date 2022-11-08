@@ -28,4 +28,5 @@ export const TitleBox = styled.div`
 
 	align-items: center;
 	justify-content: space-between;
+	z-index: ${({ theme }) => theme.zIndex.CATEGORY_TITLE_CONTAINER};
 `;

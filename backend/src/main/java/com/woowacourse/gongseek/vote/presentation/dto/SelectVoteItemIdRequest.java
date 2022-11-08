@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class SelectVoteItemIdRequest {
-    private Long voteItemId;
 
+    private Long voteItemId;
 }
