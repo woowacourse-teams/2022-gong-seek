@@ -13,7 +13,7 @@ const ResponsiveInfiniteCardList = React.lazy(
 );
 const ArticleItem = React.lazy(() => import('@/components/article/ArticleItem/ArticleItem'));
 const PopularArticle = React.lazy(
-	() => import('@/components/article/PopularArticle/PopularArticle'),
+	() => import('@/components/article/PopularArticleCarousel/PopularArticleCarousel'),
 );
 const EmptyMessage = React.lazy(() => import('@/components/@common/EmptyMessage/EmptyMessage'));
 
