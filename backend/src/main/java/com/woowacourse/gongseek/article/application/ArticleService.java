@@ -15,15 +15,12 @@ import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
-import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.tag.application.TagService;
 import com.woowacourse.gongseek.tag.domain.Tags;
-import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
-import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,10 +44,7 @@ public class ArticleService {
     private final MemberRepository memberRepository;
     private final VoteRepository voteRepository;
     private final TagService tagService;
-    private final CommentRepository commentRepository;
     private final LikeRepository likeRepository;
-    private final VoteHistoryRepository voteHistoryRepository;
-    private final VoteItemRepository voteItemRepository;
 
     public ArticleIdResponse create(AppMember appMember, ArticleRequest articleRequest) {
         validateGuest(appMember);
