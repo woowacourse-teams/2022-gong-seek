@@ -7,12 +7,12 @@ import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.슬로;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.application.dto.ArticleRequest;
+import com.woowacourse.gongseek.article.application.dto.TempArticleDetailResponse;
+import com.woowacourse.gongseek.article.application.dto.TempArticleIdResponse;
+import com.woowacourse.gongseek.article.application.dto.TempArticlesResponse;
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
-import com.woowacourse.gongseek.article.presentation.dto.TempArticleDetailResponse;
-import com.woowacourse.gongseek.article.presentation.dto.TempArticleIdResponse;
-import com.woowacourse.gongseek.article.presentation.dto.TempArticlesResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
+import com.woowacourse.gongseek.auth.application.dto.AccessTokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

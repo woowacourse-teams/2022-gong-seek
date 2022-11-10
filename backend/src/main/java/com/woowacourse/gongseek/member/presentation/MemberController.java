@@ -1,13 +1,13 @@
 package com.woowacourse.gongseek.member.presentation;
 
+import com.woowacourse.gongseek.auth.application.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
-import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.member.application.MemberService;
-import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
-import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateRequest;
-import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
-import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
-import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
+import com.woowacourse.gongseek.member.application.dto.MemberDto;
+import com.woowacourse.gongseek.member.application.dto.MemberUpdateRequest;
+import com.woowacourse.gongseek.member.application.dto.MemberUpdateResponse;
+import com.woowacourse.gongseek.member.application.dto.MyPageArticlesResponse;
+import com.woowacourse.gongseek.member.application.dto.MyPageCommentsResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

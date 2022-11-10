@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.tag.presentation;
 
 import com.woowacourse.gongseek.tag.application.TagService;
-import com.woowacourse.gongseek.tag.presentation.dto.TagsResponse;
+import com.woowacourse.gongseek.tag.application.dto.TagsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -2,11 +2,11 @@ package com.woowacourse.gongseek.auth.infra;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woowacourse.gongseek.auth.application.OAuthClient;
+import com.woowacourse.gongseek.auth.application.dto.GithubAccessTokenRequest;
+import com.woowacourse.gongseek.auth.application.dto.GithubAccessTokenResponse;
+import com.woowacourse.gongseek.auth.application.dto.GithubProfileResponse;
 import com.woowacourse.gongseek.auth.exception.GithubAccessTokenLoadFailException;
 import com.woowacourse.gongseek.auth.exception.GithubUserProfileLoadFailException;
-import com.woowacourse.gongseek.auth.presentation.dto.GithubAccessTokenRequest;
-import com.woowacourse.gongseek.auth.presentation.dto.GithubAccessTokenResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
 import java.util.Objects;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
