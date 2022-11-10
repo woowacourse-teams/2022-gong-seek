@@ -2,11 +2,11 @@ package com.woowacourse.gongseek.auth.presentation;
 
 import com.woowacourse.gongseek.auth.application.AuthService;
 import com.woowacourse.gongseek.auth.application.OAuthClient;
-import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.OAuthCodeRequest;
-import com.woowacourse.gongseek.auth.presentation.dto.OAuthLoginUrlResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
+import com.woowacourse.gongseek.auth.application.dto.AccessTokenResponse;
+import com.woowacourse.gongseek.auth.application.dto.GithubProfileResponse;
+import com.woowacourse.gongseek.auth.application.dto.OAuthCodeRequest;
+import com.woowacourse.gongseek.auth.application.dto.OAuthLoginUrlResponse;
+import com.woowacourse.gongseek.auth.application.dto.TokenResponse;
 import com.woowacourse.gongseek.auth.utils.CookieUtils;
 import java.util.UUID;
 import javax.servlet.http.HttpServletResponse;

@@ -15,11 +15,11 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
-import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
-import com.woowacourse.gongseek.comment.presentation.dto.CommentUpdateRequest;
-import com.woowacourse.gongseek.comment.presentation.dto.CommentsResponse;
-import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
+import com.woowacourse.gongseek.comment.application.dto.CommentRequest;
+import com.woowacourse.gongseek.comment.application.dto.CommentResponse;
+import com.woowacourse.gongseek.comment.application.dto.CommentUpdateRequest;
+import com.woowacourse.gongseek.comment.application.dto.CommentsResponse;
+import com.woowacourse.gongseek.member.application.dto.AuthorDto;
 import com.woowacourse.gongseek.support.ControllerTest;
 import java.time.LocalDateTime;
 import java.util.List;

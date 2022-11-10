@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.like.presentation;
 
+import com.woowacourse.gongseek.auth.application.dto.AppMember;
 import com.woowacourse.gongseek.auth.presentation.AuthenticationPrinciple;
-import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.like.application.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,13 +1,13 @@
 import { rest } from 'msw';
 import { BrowserRouter } from 'react-router-dom';
 
-import PopularArticle from '@/components/article/PopularArticle/PopularArticle';
+import PopularArticleCarousel from '@/components/article/PopularArticleCarousel/PopularArticleCarousel';
 import { HOME_URL } from '@/constants/apiUrl';
 import { Meta, Story } from '@storybook/react';
 
 export default {
 	title: 'Article/PopularArticle',
-	component: PopularArticle,
+	component: PopularArticleCarousel,
 	decorators: [
 		(Story) => (
 			<BrowserRouter>
@@ -19,7 +19,7 @@ export default {
 	],
 } as Meta;
 
-const Template: Story = (args) => <PopularArticle {...args} />;
+const Template: Story = (args) => <PopularArticleCarousel {...args} />;
 
 export const DefaultPopularArticle = Template.bind({});
 DefaultPopularArticle.args = {};
