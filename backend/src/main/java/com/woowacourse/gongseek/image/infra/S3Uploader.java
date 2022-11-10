@@ -46,6 +46,7 @@ public class S3Uploader {
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(uploadImageFile.getContentType());
         objectMetadata.setContentLength(uploadImageFile.getSize());
+        objectMetadata.setCacheControl("31536000");
         return objectMetadata;
     }
 }
