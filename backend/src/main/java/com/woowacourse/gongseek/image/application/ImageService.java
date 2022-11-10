@@ -14,6 +14,10 @@ public class ImageService {
     private final S3Uploader s3Uploader;
     private final FileNameGenerator fileNameGenerator;
 
+    private static boolean isEmptyFileName(final MultipartFile uploadImageFile) {
+        return Objects.requireNonNull(uploadImageFile.getOriginalFilename()).trim().isEmpty();
+    }
+
     public ImageUrlResponse upload(final MultipartFile uploadImageFile) {
         validate(uploadImageFile);
         final String fileName = fileNameGenerator.generate(uploadImageFile.getOriginalFilename());

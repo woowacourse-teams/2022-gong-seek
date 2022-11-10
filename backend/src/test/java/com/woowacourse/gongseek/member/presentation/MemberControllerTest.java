@@ -15,13 +15,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.dto.MyPagePreviewDto;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
-import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
-import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateRequest;
-import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
-import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
-import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentResponse;
-import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
+import com.woowacourse.gongseek.auth.application.dto.LoginMember;
+import com.woowacourse.gongseek.member.application.dto.MemberDto;
+import com.woowacourse.gongseek.member.application.dto.MemberUpdateRequest;
+import com.woowacourse.gongseek.member.application.dto.MemberUpdateResponse;
+import com.woowacourse.gongseek.member.application.dto.MyPageArticlesResponse;
+import com.woowacourse.gongseek.member.application.dto.MyPageCommentResponse;
+import com.woowacourse.gongseek.member.application.dto.MyPageCommentsResponse;
 import com.woowacourse.gongseek.support.ControllerTest;
 import java.time.LocalDateTime;
 import java.util.List;

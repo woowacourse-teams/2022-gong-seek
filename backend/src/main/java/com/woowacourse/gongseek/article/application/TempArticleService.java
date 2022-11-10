@@ -1,16 +1,16 @@
 package com.woowacourse.gongseek.article.application;
 
+import com.woowacourse.gongseek.article.application.dto.ArticleRequest;
+import com.woowacourse.gongseek.article.application.dto.TempArticleDetailResponse;
+import com.woowacourse.gongseek.article.application.dto.TempArticleIdResponse;
+import com.woowacourse.gongseek.article.application.dto.TempArticleResponse;
+import com.woowacourse.gongseek.article.application.dto.TempArticlesResponse;
 import com.woowacourse.gongseek.article.domain.TempArticle;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.exception.TempArticleNotFoundException;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
-import com.woowacourse.gongseek.article.presentation.dto.TempArticleDetailResponse;
-import com.woowacourse.gongseek.article.presentation.dto.TempArticleIdResponse;
-import com.woowacourse.gongseek.article.presentation.dto.TempArticleResponse;
-import com.woowacourse.gongseek.article.presentation.dto.TempArticlesResponse;
+import com.woowacourse.gongseek.auth.application.dto.AppMember;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
 import com.woowacourse.gongseek.auth.exception.NotMemberException;
-import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;

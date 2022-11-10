@@ -10,12 +10,12 @@ import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.슬로;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
+import com.woowacourse.gongseek.auth.application.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
-import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateResponse;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
+import com.woowacourse.gongseek.vote.application.dto.SelectVoteItemIdRequest;
+import com.woowacourse.gongseek.vote.application.dto.VoteCreateRequest;
+import com.woowacourse.gongseek.vote.application.dto.VoteCreateResponse;
+import com.woowacourse.gongseek.vote.application.dto.VoteResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.time.LocalDateTime;

@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.woowacourse.gongseek.support.ControllerTest;
-import com.woowacourse.gongseek.tag.presentation.dto.TagsResponse;
+import com.woowacourse.gongseek.tag.application.dto.TagsResponse;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
