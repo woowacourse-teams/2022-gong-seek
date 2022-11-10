@@ -2,10 +2,10 @@ package com.woowacourse.gongseek.auth.presentation;
 
 import static org.hibernate.validator.internal.metadata.core.ConstraintHelper.PAYLOAD;
 
+import com.woowacourse.gongseek.auth.application.dto.AppMember;
+import com.woowacourse.gongseek.auth.application.dto.GuestMember;
+import com.woowacourse.gongseek.auth.application.dto.LoginMember;
 import com.woowacourse.gongseek.auth.exception.HttpRequestNullException;
-import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
-import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;

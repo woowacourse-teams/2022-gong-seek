@@ -20,15 +20,15 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.woowacourse.gongseek.article.application.dto.ArticleIdResponse;
+import com.woowacourse.gongseek.article.application.dto.ArticlePageResponse;
+import com.woowacourse.gongseek.article.application.dto.ArticleRequest;
+import com.woowacourse.gongseek.article.application.dto.ArticleResponse;
+import com.woowacourse.gongseek.article.application.dto.ArticleUpdateRequest;
+import com.woowacourse.gongseek.article.application.dto.ArticleUpdateResponse;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateResponse;
-import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
+import com.woowacourse.gongseek.member.application.dto.AuthorDto;
 import com.woowacourse.gongseek.support.ControllerTest;
 import java.time.LocalDateTime;
 import java.util.List;

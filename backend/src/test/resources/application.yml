@@ -26,6 +26,8 @@ spring:
         show_sql: true
     database-platform: org.hibernate.dialect.MySQL57Dialect
     open-in-view: false
+  profiles:
+    active: test
 
 security:
   oauth2:

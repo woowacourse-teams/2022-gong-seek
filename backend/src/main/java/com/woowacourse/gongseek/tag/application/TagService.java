@@ -1,9 +1,9 @@
 package com.woowacourse.gongseek.tag.application;
 
+import com.woowacourse.gongseek.tag.application.dto.TagsResponse;
 import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.Tags;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
-import com.woowacourse.gongseek.tag.presentation.dto.TagsResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
