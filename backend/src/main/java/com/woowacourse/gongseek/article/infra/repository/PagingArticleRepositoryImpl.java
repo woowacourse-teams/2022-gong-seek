@@ -10,6 +10,7 @@ import static com.woowacourse.gongseek.member.domain.QMember.member;
 import static com.woowacourse.gongseek.tag.domain.QTag.tag;
 
 import com.querydsl.core.group.GroupBy;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -59,7 +60,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                         cursorIdAndCursorViews(cursorId, views, sortType),
                         categoryEquals(category)
                 )
-                .groupBy(article.id)
+                .groupBy(articleId(sortType))
                 .limit(pageable.getPageSize() + 1);
         List<ArticlePreviewDto> fetch = sort(sortType, query);
         setTagNameAndIsLike(fetch, memberId);
@@ -83,6 +84,13 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
 
     private BooleanExpression isOverArticleId(Long cursorId) {
         return cursorId == null ? null : article.id.lt(cursorId);
+    }
+
+    private Expression[] articleId(String sortType) {
+        if (sortType.equals("views")) {
+            return new Expression[]{article.views, article.id};
+        }
+        return new Expression[]{article.id};
     }
 
     private BooleanExpression categoryEquals(String category) {
@@ -168,7 +176,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
                         cursorIdAndLikes(cursorId, cursorLike),
                         categoryEquals(category)
                 )
-                .groupBy(article.id)
+                .groupBy(article.likeCount, article.id)
                 .limit(pageable.getPageSize() + 1)
                 .orderBy(article.likeCount.value.desc(), article.id.desc())
                 .fetch();
