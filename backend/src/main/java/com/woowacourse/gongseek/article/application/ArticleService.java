@@ -14,7 +14,6 @@ import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.auth.application.dto.AppMember;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
-import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
@@ -47,7 +46,6 @@ public class ArticleService {
     private final LikeRepository likeRepository;
 
     public ArticleIdResponse create(AppMember appMember, ArticleRequest articleRequest) {
-        validateGuest(appMember);
         Member member = getMember(appMember);
 
         Tags foundTags = tagService.getOrCreateTags(Tags.from(articleRequest.getTag()));
@@ -56,12 +54,6 @@ public class ArticleService {
 
         tempArticleService.delete(articleRequest.getTempArticleId(), appMember);
         return new ArticleIdResponse(article);
-    }
-
-    private void validateGuest(AppMember appMember) {
-        if (appMember.isGuest()) {
-            throw new NotMemberException();
-        }
     }
 
     private Member getMember(AppMember appMember) {
@@ -122,6 +114,25 @@ public class ArticleService {
         return ArticlePageResponse.of(articles);
     }
 
+    @Transactional(readOnly = true)
+    public ArticlePageResponse searchByTag(Long cursorId, Pageable pageable, String tagsText, AppMember appMember) {
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByTag(cursorId, appMember.getPayload(),
+                extractTagName(tagsText), pageable);
+        return ArticlePageResponse.of(articles);
+    }
+
+    private List<String> extractTagName(String tagsText) {
+        return Arrays.asList(tagsText.split(","));
+    }
+
+    @Transactional(readOnly = true)
+    public ArticlePageResponse getAllByLikes(Long cursorId, Long cursorLikes, String category, Pageable pageable,
+                                             AppMember appMember) {
+        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(cursorId, cursorLikes, category,
+                appMember.getPayload(), pageable);
+        return ArticlePageResponse.of(articles);
+    }
+
     public ArticleUpdateResponse update(AppMember appMember, ArticleUpdateRequest articleUpdateRequest, Long id) {
         Article article = checkAuthorization(appMember, id);
         List<Long> existingTagIds = article.getTagIds();
@@ -146,7 +157,6 @@ public class ArticleService {
     }
 
     private Article checkAuthorization(AppMember appMember, Long id) {
-        validateGuest(appMember);
         Member member = getMember(appMember);
         Article article = getArticle(id);
         validateAuthor(article, member);
@@ -169,24 +179,5 @@ public class ArticleService {
 
     private void deleteLikes(Article article) {
         likeRepository.deleteAllByArticleId(article.getId());
-    }
-
-    @Transactional(readOnly = true)
-    public ArticlePageResponse searchByTag(Long cursorId, Pageable pageable, String tagsText, AppMember appMember) {
-        Slice<ArticlePreviewDto> articles = pagingArticleRepository.searchByTag(cursorId, appMember.getPayload(),
-                extractTagName(tagsText), pageable);
-        return ArticlePageResponse.of(articles);
-    }
-
-    private List<String> extractTagName(String tagsText) {
-        return Arrays.asList(tagsText.split(","));
-    }
-
-    @Transactional(readOnly = true)
-    public ArticlePageResponse getAllByLikes(Long cursorId, Long cursorLikes, String category, Pageable pageable,
-                                             AppMember appMember) {
-        Slice<ArticlePreviewDto> articles = pagingArticleRepository.findAllByLikes(cursorId, cursorLikes, category,
-                appMember.getPayload(), pageable);
-        return ArticlePageResponse.of(articles);
     }
 }
