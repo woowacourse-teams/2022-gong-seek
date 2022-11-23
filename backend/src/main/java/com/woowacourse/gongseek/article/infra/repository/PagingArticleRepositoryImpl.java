@@ -30,6 +30,9 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 @Repository
 public class PagingArticleRepositoryImpl implements PagingArticleRepository {
+    private static final String VIEWS = "views";
+
+    private static final String ALL = "all";
 
     private final JPAQueryFactory queryFactory;
 
@@ -37,22 +40,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
     public Slice<ArticlePreviewDto> findAllByPage(Long cursorId, Long views, String category, String sortType,
                                                   Long memberId,
                                                   Pageable pageable) {
-        JPAQuery<ArticlePreviewDto> query = queryFactory
-                .select(
-                        Projections.constructor(
-                                ArticlePreviewDto.class,
-                                article.id,
-                                article.title.value,
-                                article.member,
-                                article.content.value,
-                                article.category,
-                                article.isAnonymous,
-                                article.views.value,
-                                count(comment),
-                                article.likeCount.value,
-                                article.createdAt
-                        )
-                )
+        JPAQuery<ArticlePreviewDto> query = selectArticlePreview()
                 .from(article)
                 .join(article.member, member)
                 .leftJoin(comment).on(article.id.eq(comment.article.id))
@@ -68,8 +56,27 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
         return convertToSliceFromArticle(fetch, pageable);
     }
 
+    private JPAQuery<ArticlePreviewDto> selectArticlePreview() {
+        return queryFactory
+                .select(
+                        Projections.constructor(
+                                ArticlePreviewDto.class,
+                                article.id,
+                                article.title.value,
+                                article.member,
+                                article.content.value,
+                                article.category,
+                                article.isAnonymous,
+                                article.views.value,
+                                count(comment),
+                                article.likeCount.value,
+                                article.createdAt
+                        )
+                );
+    }
+
     private BooleanExpression cursorIdAndCursorViews(Long cursorId, Long cursorViews, String sortType) {
-        if (sortType.equals("views")) {
+        if (sortType.equals(VIEWS)) {
             if (cursorId == null || cursorViews == null) {
                 return null;
             }
@@ -87,18 +94,18 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
     }
 
     private Expression[] articleId(String sortType) {
-        if (sortType.equals("views")) {
+        if (sortType.equals(VIEWS)) {
             return new Expression[]{article.views, article.id};
         }
         return new Expression[]{article.id};
     }
 
     private BooleanExpression categoryEquals(String category) {
-        return "all".equals(category) ? null : article.category.eq(Category.from(category));
+        return ALL.equals(category) ? null : article.category.eq(Category.from(category));
     }
 
     private List<ArticlePreviewDto> sort(String sortType, JPAQuery<ArticlePreviewDto> query) {
-        if (sortType.equals("views")) {
+        if (sortType.equals(VIEWS)) {
             return query.orderBy(article.views.value.desc(), article.id.desc()).fetch();
         }
         return query.orderBy(article.id.desc()).fetch();
@@ -153,22 +160,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
     @Override
     public Slice<ArticlePreviewDto> findAllByLikes(Long cursorId, Long cursorLike, String category, Long memberId,
                                                    Pageable pageable) {
-        List<ArticlePreviewDto> fetch = queryFactory
-                .select(
-                        Projections.constructor(
-                                ArticlePreviewDto.class,
-                                article.id,
-                                article.title.value,
-                                article.member,
-                                article.content.value,
-                                article.category,
-                                article.isAnonymous,
-                                article.views.value,
-                                count(comment),
-                                article.likeCount.value,
-                                article.createdAt
-                        )
-                )
+        List<ArticlePreviewDto> fetch = selectArticlePreview()
                 .from(article)
                 .join(article.member, member)
                 .leftJoin(comment).on(article.id.eq(comment.article.id))
@@ -197,22 +189,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
     @Override
     public Slice<ArticlePreviewDto> searchByContainingText(Long cursorId, String searchText, Long memberId,
                                                            Pageable pageable) {
-        List<ArticlePreviewDto> fetch = queryFactory
-                .select(
-                        Projections.constructor(
-                                ArticlePreviewDto.class,
-                                article.id,
-                                article.title.value,
-                                article.member,
-                                article.content.value,
-                                article.category,
-                                article.isAnonymous,
-                                article.views.value,
-                                count(comment),
-                                article.likeCount.value,
-                                article.createdAt
-                        )
-                )
+        List<ArticlePreviewDto> fetch = selectArticlePreview()
                 .from(article)
                 .join(article.member, member)
                 .leftJoin(comment).on(article.id.eq(comment.article.id))
@@ -236,22 +213,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
 
     @Override
     public Slice<ArticlePreviewDto> searchByAuthor(Long cursorId, String author, Long memberId, Pageable pageable) {
-        List<ArticlePreviewDto> fetch = queryFactory
-                .select(
-                        Projections.constructor(
-                                ArticlePreviewDto.class,
-                                article.id,
-                                article.title.value,
-                                article.member,
-                                article.content.value,
-                                article.category,
-                                article.isAnonymous,
-                                article.views.value,
-                                count(comment),
-                                article.likeCount.value,
-                                article.createdAt
-                        )
-                )
+        List<ArticlePreviewDto> fetch = selectArticlePreview()
                 .from(article)
                 .join(article.member, member)
                 .leftJoin(comment).on(article.id.eq(comment.article.id))
@@ -272,22 +234,7 @@ public class PagingArticleRepositoryImpl implements PagingArticleRepository {
     @Override
     public Slice<ArticlePreviewDto> searchByTag(Long cursorId, Long memberId, List<String> tagNames,
                                                 Pageable pageable) {
-        List<ArticlePreviewDto> fetch = queryFactory
-                .select(
-                        Projections.constructor(
-                                ArticlePreviewDto.class,
-                                article.id,
-                                article.title.value,
-                                article.member,
-                                article.content.value,
-                                article.category,
-                                article.isAnonymous,
-                                article.views.value,
-                                article.views.value,
-                                article.likeCount.value,
-                                article.createdAt
-                        )
-                )
+        List<ArticlePreviewDto> fetch = selectArticlePreview()
                 .distinct()
                 .from(articleTag)
                 .join(articleTag.article, article)

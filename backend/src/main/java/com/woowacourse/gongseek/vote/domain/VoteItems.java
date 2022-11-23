@@ -11,11 +11,11 @@ public class VoteItems {
     private static final int MIN_VOTE_ITEM_COUNT = 2;
     private static final int MAX_VOTE_ITEM_COUNT = 5;
 
-    private final Set<VoteItem> voteItems;
+    private final Set<VoteItem> values;
 
     public VoteItems(Set<VoteItem> voteItems) {
         validateCount(voteItems);
-        this.voteItems = new LinkedHashSet<>(voteItems);
+        this.values = new LinkedHashSet<>(voteItems);
     }
 
     public static VoteItems of(List<String> voteItems, Vote vote) {
@@ -31,7 +31,7 @@ public class VoteItems {
         }
     }
 
-    public Set<VoteItem> getVoteItems() {
-        return new LinkedHashSet<>(voteItems);
+    public Set<VoteItem> getValues() {
+        return new LinkedHashSet<>(values);
     }
 }
