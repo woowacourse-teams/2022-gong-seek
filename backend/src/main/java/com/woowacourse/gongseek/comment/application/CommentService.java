@@ -57,7 +57,8 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public CommentsResponse getAllByArticleId(AppMember appMember, Long articleId) {
-        List<CommentResponse> responses = commentRepository.findAllByArticleIdWithMember(articleId).stream()
+        List<CommentResponse> responses = commentRepository.findAllByArticleIdWithMember(articleId)
+                .stream()
                 .map(comment -> checkGuest(comment, appMember))
                 .collect(Collectors.toList());
         return new CommentsResponse(responses);
@@ -97,7 +98,6 @@ public class CommentService {
     public void delete(AppMember appMember, Long commentId) {
         Comment comment = checkAuthorization(appMember, commentId);
         commentRepository.delete(comment);
-        Article article = comment.getArticle();
     }
 }
 
