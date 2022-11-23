@@ -8,9 +8,7 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
-import com.woowacourse.gongseek.auth.application.dto.GuestMember;
 import com.woowacourse.gongseek.auth.application.dto.LoginMember;
-import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.like.domain.repository.LikeRepository;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
@@ -48,16 +46,6 @@ class LikeServiceTest extends IntegrationTest {
     }
 
     @Test
-    void 비회원인_경우_게시글을_추천할_수_없다() {
-        Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
-        Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
-
-        assertThatThrownBy(() -> likeService.likeArticle(new GuestMember(), article.getId()))
-                .isExactlyInstanceOf(NotMemberException.class)
-                .hasMessage("회원이 아니므로 권한이 없습니다.");
-    }
-
-    @Test
     void 게시글이_존재하지_않은_경우_게시글을_추천할_수_없다() {
         Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
 
@@ -85,17 +73,7 @@ class LikeServiceTest extends IntegrationTest {
         likeService.unlikeArticle(appMember, article.getId());
         Article foundArticle = articleRepository.findById(article.getId()).get();
 
-        assertThat(foundArticle.getLikeCount()).isEqualTo(0);
-    }
-
-    @Test
-    void 비회원인_경우_게시글_추천을_취소할_수_없다() {
-        Member member = memberRepository.save(new Member("judy", "jurlring", "avatarUrl"));
-        Article article = articleRepository.save(new Article("title", "content", Category.QUESTION, member, false));
-
-        assertThatThrownBy(() -> likeService.unlikeArticle(new GuestMember(), article.getId()))
-                .isExactlyInstanceOf(NotMemberException.class)
-                .hasMessageContaining("권한이 없습니다.");
+        assertThat(foundArticle.getLikeCount()).isZero();
     }
 
     @Test

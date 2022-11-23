@@ -5,7 +5,6 @@ import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.auth.application.dto.AppMember;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
-import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.comment.application.dto.CommentRequest;
 import com.woowacourse.gongseek.comment.application.dto.CommentResponse;
 import com.woowacourse.gongseek.comment.application.dto.CommentUpdateRequest;
@@ -32,17 +31,10 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     public void create(AppMember appMember, Long articleId, CommentRequest commentRequest) {
-        validateGuest(appMember);
         Member member = getMember(appMember);
         Article article = getArticle(articleId);
 
         commentRepository.save(commentRequest.toComment(member, article));
-    }
-
-    private void validateGuest(AppMember appMember) {
-        if (appMember.isGuest()) {
-            throw new NotMemberException();
-        }
     }
 
     private Member getMember(AppMember appMember) {
@@ -57,17 +49,18 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public CommentsResponse getAllByArticleId(AppMember appMember, Long articleId) {
-        List<CommentResponse> responses = commentRepository.findAllByArticleIdWithMember(articleId).stream()
-                .map(comment -> checkGuest(comment, appMember))
+        List<CommentResponse> responses = commentRepository.findAllByArticleIdWithMember(articleId)
+                .stream()
+                .map(comment -> new CommentResponse(comment, checkGuest(comment, appMember)))
                 .collect(Collectors.toList());
         return new CommentsResponse(responses);
     }
 
-    private CommentResponse checkGuest(Comment comment, AppMember appMember) {
+    private boolean checkGuest(Comment comment, AppMember appMember) {
         if (appMember.isGuest()) {
-            return new CommentResponse(comment, false);
+            return false;
         }
-        return new CommentResponse(comment, comment.isAuthor(getMember(appMember)));
+        return comment.isAuthor(getMember(appMember));
     }
 
     public void update(AppMember appMember, Long commentId, CommentUpdateRequest updateRequest) {
@@ -76,7 +69,6 @@ public class CommentService {
     }
 
     private Comment checkAuthorization(AppMember appMember, Long commentId) {
-        validateGuest(appMember);
         Comment comment = getComment(commentId);
         Member member = getMember(appMember);
         validateAuthor(comment, member);
@@ -97,7 +89,6 @@ public class CommentService {
     public void delete(AppMember appMember, Long commentId) {
         Comment comment = checkAuthorization(appMember, commentId);
         commentRepository.delete(comment);
-        Article article = comment.getArticle();
     }
 }
 

@@ -189,7 +189,7 @@ public class VoteAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    void 비회원이_투표를_하면_투표수가_안_오른다() {
+    void 비회원이_투표를_하면_예외가_발생한다() {
         //given
         AccessTokenResponse tokenResponse = 로그인을_한다(슬로);
         Long articleId = 토론_게시글을_기명으로_등록한다(tokenResponse).getId();
@@ -210,8 +210,8 @@ public class VoteAcceptanceTest extends AcceptanceTest {
         ErrorResponse response = 투표를_한다(new AccessTokenResponse(null), articleId,
                 new SelectVoteItemIdRequest(votedItemId)).as(ErrorResponse.class);
         assertAll(
-                () -> assertThat(response.getErrorCode()).isEqualTo("2001"),
-                () -> assertThat(response.getMessage()).contains("회원이 존재하지 않습니다.")
+                () -> assertThat(response.getErrorCode()).isEqualTo("1008"),
+                () -> assertThat(response.getMessage()).contains("회원이 아니므로 권한이 없습니다.")
         );
     }
 }

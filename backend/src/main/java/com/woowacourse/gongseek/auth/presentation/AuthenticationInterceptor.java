@@ -3,6 +3,7 @@ package com.woowacourse.gongseek.auth.presentation;
 import static org.hibernate.validator.internal.metadata.core.ConstraintHelper.PAYLOAD;
 
 import com.woowacourse.gongseek.auth.exception.InvalidAccessTokenException;
+import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.auth.infra.JwtTokenProvider;
 import com.woowacourse.gongseek.auth.utils.TokenExtractor;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +30,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         }
 
         if (isGuest(request)) {
-            return true;
+            return checkHttpMethod(request);
         }
 
         String accessToken = TokenExtractor.extract(request.getHeader(HttpHeaders.AUTHORIZATION));
@@ -41,6 +42,13 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     private boolean isGuest(HttpServletRequest request) {
         return request.getHeader(HttpHeaders.AUTHORIZATION).equals(GUEST_ACCESS_TOKEN);
+    }
+
+    private boolean checkHttpMethod(HttpServletRequest request) {
+        if (HttpMethod.GET.matches(request.getMethod())) {
+            return true;
+        }
+        throw new NotMemberException();
     }
 
     private void validateAccessToken(String accessToken) {

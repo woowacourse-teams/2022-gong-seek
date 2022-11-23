@@ -47,13 +47,8 @@ public class AuthService {
     }
 
     public TokenResponse renewToken(UUID requestToken) {
-        RefreshToken refreshToken = refreshTokenRepository.findById(requestToken)
-                .orElseThrow(InvalidRefreshTokenException::new);
-        if (refreshToken.isIssue() || refreshToken.isExpired()) {
-            List<RefreshToken> refreshTokens = refreshTokenRepository.findAllByMemberId(refreshToken.getMemberId());
-            refreshTokenRepository.deleteAll(refreshTokens);
-            throw new InvalidRefreshTokenException();
-        }
+        RefreshToken refreshToken = getRefreshToken(requestToken);
+        ValidateRefreshToken(refreshToken);
         updateIssue(refreshToken);
 
         RefreshToken newRefreshToken = refreshTokenRepository.save(RefreshToken.create(refreshToken.getMemberId()));
@@ -64,9 +59,21 @@ public class AuthService {
                 .build();
     }
 
-    public void updateRefreshToken(UUID value) {
-        RefreshToken refreshToken = refreshTokenRepository.findById(value)
+    private RefreshToken getRefreshToken(UUID requestToken) {
+        return refreshTokenRepository.findById(requestToken)
                 .orElseThrow(InvalidRefreshTokenException::new);
+    }
+
+    private void ValidateRefreshToken(RefreshToken refreshToken) {
+        if (refreshToken.isIssue() || refreshToken.isExpired()) {
+            List<RefreshToken> refreshTokens = refreshTokenRepository.findAllByMemberId(refreshToken.getMemberId());
+            refreshTokenRepository.deleteAll(refreshTokens);
+            throw new InvalidRefreshTokenException();
+        }
+    }
+
+    public void updateRefreshToken(UUID value) {
+        RefreshToken refreshToken = getRefreshToken(value);
         updateIssue(refreshToken);
     }
 
