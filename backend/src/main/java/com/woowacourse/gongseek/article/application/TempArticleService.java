@@ -10,7 +10,6 @@ import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.exception.TempArticleNotFoundException;
 import com.woowacourse.gongseek.auth.application.dto.AppMember;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
-import com.woowacourse.gongseek.auth.exception.NotMemberException;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
@@ -30,19 +29,12 @@ public class TempArticleService {
 
     @Transactional
     public TempArticleIdResponse createOrUpdate(AppMember appMember, ArticleRequest tempArticleRequest) {
-        validateGuest(appMember);
         Member member = getMember(appMember.getPayload());
 
         if (isExistTempArticle(tempArticleRequest.getTempArticleId())) {
             return update(tempArticleRequest);
         }
         return create(tempArticleRequest, member);
-    }
-
-    private void validateGuest(AppMember appMember) {
-        if (appMember.isGuest()) {
-            throw new NotMemberException();
-        }
     }
 
     private Member getMember(Long memberId) {
