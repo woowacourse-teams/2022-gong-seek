@@ -1,12 +1,12 @@
 import { rest } from 'msw';
 
 import { SingleCommentItemType } from '@/api/comment/commentType';
-import { HOME_URL } from '@/constants/apiUrl';
 import mockData from '@/mock/data/comment.json';
 
 const data = localStorage.getItem('mock-comments');
 
 const mockComments = data ? (JSON.parse(data) as SingleCommentItemType[][]) : [];
+const HOME_URL = 'http://localhost';
 
 export const CommentHandler = [
 	rest.post<{ content: string }>(

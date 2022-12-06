@@ -8,8 +8,8 @@ export const generateAxiosInstanceWithAccessToken = () => {
 	return axios.create({
 		baseURL: HOME_URL,
 		headers: {
-			'Access-Control-Allow-Origin': '*',
 			Authorization: `Bearer ${accessToken}`,
+			'content-Type': 'Application/json',
 		},
 	});
 };

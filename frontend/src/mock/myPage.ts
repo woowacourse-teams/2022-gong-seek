@@ -2,7 +2,8 @@ import { rest } from 'msw';
 
 import { AuthorType, MyPageUserArticleResponseType } from '@/api/article/articleType';
 import { MyPageCommentResponse } from '@/api/comment/commentType';
-import { HOME_URL } from '@/constants/apiUrl';
+
+const HOME_URL = 'http://localhost';
 
 export const MyPageHandler = [
 	rest.get<AuthorType>(`${HOME_URL}/api/members/me`, (req, res, ctx) =>

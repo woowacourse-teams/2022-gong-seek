@@ -1,7 +1,6 @@
 import { rest } from 'msw';
 
-import { HOME_URL } from '@/constants/apiUrl';
-
+const HOME_URL = 'http://localhost';
 export const HashTagHandler = [
 	rest.get<{ tags: string[] }>(`${HOME_URL}/api/tags`, (req, res, ctx) =>
 		res(

@@ -2,7 +2,8 @@ import { rest } from 'msw';
 
 import { ArticleTotalType } from '@/api/article/articleType';
 import { ArticleSearchResponseType } from '@/api/search/searchType';
-import { HOME_URL } from '@/constants/apiUrl';
+
+const HOME_URL = 'http://localhost';
 
 export const SearchHandler = [
 	rest.get<ArticleSearchResponseType>(`${HOME_URL}/api/articles/search/author`, (req, res, ctx) => {

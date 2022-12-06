@@ -1,7 +1,8 @@
 import { rest } from 'msw';
 
-import { HOME_URL } from '@/constants/apiUrl';
 import mockArticle from '@/mock/data/articles.json';
+
+const HOME_URL = 'http://localhost';
 
 export const LikeHandler = [
 	rest.post(`${HOME_URL}/api/articles/:articleId/like`, (req, res, ctx) => {

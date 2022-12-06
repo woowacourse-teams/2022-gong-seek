@@ -1,7 +1,8 @@
 import { rest } from 'msw';
 
 import { VoteResponseType } from '@/api/vote/voteType';
-import { HOME_URL } from '@/constants/apiUrl';
+
+const HOME_URL = 'http://localhost';
 
 export const VoteHandler = [
 	rest.post<{ items: string[] }>(`${HOME_URL}/api/articles/:articleId/votes`, (req, res, ctx) => {
