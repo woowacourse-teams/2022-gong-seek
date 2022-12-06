@@ -8,13 +8,17 @@ import com.woowacourse.gongseek.article.application.ArticleService;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
+import com.woowacourse.gongseek.auth.application.dto.GuestMember;
+import com.woowacourse.gongseek.auth.application.dto.LoginMember;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
-import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
 import com.woowacourse.gongseek.support.IntegrationTest;
+import com.woowacourse.gongseek.vote.application.dto.SelectVoteItemIdRequest;
+import com.woowacourse.gongseek.vote.application.dto.VoteCreateRequest;
+import com.woowacourse.gongseek.vote.application.dto.VoteCreateResponse;
+import com.woowacourse.gongseek.vote.application.dto.VoteResponse;
 import com.woowacourse.gongseek.vote.domain.Vote;
 import com.woowacourse.gongseek.vote.domain.VoteHistory;
 import com.woowacourse.gongseek.vote.domain.VoteItem;
@@ -23,10 +27,6 @@ import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteRepository;
 import com.woowacourse.gongseek.vote.domain.repository.dto.VoteItemDto;
 import com.woowacourse.gongseek.vote.exception.UnavailableArticleException;
-import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateResponse;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -143,8 +143,8 @@ class VoteServiceTest extends IntegrationTest {
         List<VoteItemDto> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember)
                 .getVoteItems();
         assertAll(
-                () -> assertThat(foundVoteItems.get(selectIndex).getCount()).isEqualTo(1),
-                () -> assertThat(foundVoteItems.get(1).getCount()).isEqualTo(0)
+                () -> assertThat(foundVoteItems.get(selectIndex).getAmount()).isEqualTo(1),
+                () -> assertThat(foundVoteItems.get(1).getAmount()).isEqualTo(0)
         );
     }
 
@@ -159,8 +159,8 @@ class VoteServiceTest extends IntegrationTest {
         List<VoteItemDto> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember)
                 .getVoteItems();
         assertAll(
-                () -> assertThat(foundVoteItems.get(0).getCount()).isEqualTo(0),
-                () -> assertThat(foundVoteItems.get(1).getCount()).isEqualTo(1)
+                () -> assertThat(foundVoteItems.get(0).getAmount()).isEqualTo(0),
+                () -> assertThat(foundVoteItems.get(1).getAmount()).isEqualTo(1)
         );
     }
 
@@ -178,7 +178,7 @@ class VoteServiceTest extends IntegrationTest {
         List<VoteItemDto> foundVoteItems = voteService.getOne(discussionArticle.getId(), loginMember1)
                 .getVoteItems();
 
-        assertThat(foundVoteItems.get(0).getCount()).isEqualTo(2);
+        assertThat(foundVoteItems.get(0).getAmount()).isEqualTo(2);
     }
 
     @Test

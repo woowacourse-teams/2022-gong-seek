@@ -3,11 +3,15 @@ package com.woowacourse.gongseek.vote.application;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
+import com.woowacourse.gongseek.auth.application.dto.AppMember;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
-import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
+import com.woowacourse.gongseek.vote.application.dto.SelectVoteItemIdRequest;
+import com.woowacourse.gongseek.vote.application.dto.VoteCreateRequest;
+import com.woowacourse.gongseek.vote.application.dto.VoteCreateResponse;
+import com.woowacourse.gongseek.vote.application.dto.VoteResponse;
 import com.woowacourse.gongseek.vote.domain.Vote;
 import com.woowacourse.gongseek.vote.domain.VoteHistory;
 import com.woowacourse.gongseek.vote.domain.VoteItem;
@@ -19,18 +23,10 @@ import com.woowacourse.gongseek.vote.domain.repository.dto.VoteItemDto;
 import com.woowacourse.gongseek.vote.exception.UnavailableArticleException;
 import com.woowacourse.gongseek.vote.exception.VoteItemNotFoundException;
 import com.woowacourse.gongseek.vote.exception.VoteNotFoundException;
-import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateResponse;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteResponse;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,15 +42,13 @@ public class VoteService {
     private final VoteHistoryRepository voteHistoryRepository;
 
     public VoteCreateResponse create(AppMember appMember, Long articleId, VoteCreateRequest voteCreateRequest) {
-        Member member = getMember(appMember);
-
         Article article = getArticle(articleId);
-        validateAuthor(member, article);
+        validateAuthor(appMember, article);
         validateCategory(article);
-        Vote vote = voteRepository.save(new Vote(article, voteCreateRequest.getExpiryDate()));
 
-        Set<VoteItem> voteItems = VoteItems.of(voteCreateRequest.getItems(), vote).getVoteItems();
-        voteItemRepository.saveAll(voteItems);
+        Vote vote = voteRepository.save(new Vote(article, voteCreateRequest.getExpiryDate()));
+        voteItemRepository.saveAll(VoteItems.of(voteCreateRequest.getItems(), vote).getValues());
+
         return new VoteCreateResponse(vote);
     }
 
@@ -68,9 +62,9 @@ public class VoteService {
                 .orElseThrow(() -> new ArticleNotFoundException(articleId));
     }
 
-    private void validateAuthor(Member member, Article article) {
-        if (!article.isAuthor(member)) {
-            throw new NotAuthorException(article.getId(), member.getId());
+    private void validateAuthor(AppMember appMember, Article article) {
+        if (!article.isAuthor(getMember(appMember))) {
+            throw new NotAuthorException(article.getId(), appMember.getPayload());
         }
     }
 
@@ -82,15 +76,11 @@ public class VoteService {
 
     @Transactional(readOnly = true)
     public VoteResponse getOne(Long articleId, AppMember appMember) {
-        if (!articleRepository.existsById(articleId)) {
-            throw new ArticleNotFoundException(articleId);
-        }
         Vote foundVote = getVoteByArticleId(articleId);
         List<VoteItemDto> voteItems = voteItemRepository.findAllByArticleIdWithCount(articleId);
         List<Long> voteItemIds = getVoteItemIds(voteItems);
         VoteHistory voteHistory = voteHistoryRepository.findByVoteItemIdsAndMemberId(voteItemIds,
-                        appMember.getPayload())
-                .orElse(null);
+                appMember.getPayload()).orElse(null);
         return VoteResponse.of(foundVote, voteItems, getVotedItemIdOrNull(voteHistory));
     }
 
@@ -112,7 +102,6 @@ public class VoteService {
         return voteHistory.getVoteItem().getId();
     }
 
-    @Retryable(value = ObjectOptimisticLockingFailureException.class, backoff = @Backoff(100))
     public void doVote(Long articleId, AppMember appMember, SelectVoteItemIdRequest selectVoteItemIdRequest) {
         Vote vote = getVoteByArticleId(articleId);
         Member member = getMember(appMember);

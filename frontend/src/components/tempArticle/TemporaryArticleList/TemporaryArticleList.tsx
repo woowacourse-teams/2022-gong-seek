@@ -1,12 +1,14 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { SingleTempArticleItemResponseType } from '@/api/tempArticle/tempArticleType';
-import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import TemporaryArticleItem from '@/components/tempArticle/TemporaryArticleItem/TemporaryArticleItem';
 import * as S from '@/components/tempArticle/TemporaryArticleList/TemporaryArticleList.styles';
 import useDeleteTempArticle from '@/hooks/tempArticle/useDeleteTempArticle';
 import useGetTempArticles from '@/hooks/tempArticle/useGetTempArticles';
+
+const EmptyMessage = React.lazy(() => import('@/components/@common/EmptyMessage/EmptyMessage'));
 
 const TemporaryArticleList = () => {
 	const { data, isLoading } = useGetTempArticles();

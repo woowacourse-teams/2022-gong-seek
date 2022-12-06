@@ -8,20 +8,19 @@ import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
+import com.woowacourse.gongseek.auth.application.dto.GuestMember;
+import com.woowacourse.gongseek.auth.application.dto.LoginMember;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
-import com.woowacourse.gongseek.auth.exception.NotMemberException;
-import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
+import com.woowacourse.gongseek.comment.application.dto.CommentRequest;
+import com.woowacourse.gongseek.comment.application.dto.CommentResponse;
+import com.woowacourse.gongseek.comment.application.dto.CommentUpdateRequest;
 import com.woowacourse.gongseek.comment.domain.Comment;
 import com.woowacourse.gongseek.comment.domain.repository.CommentRepository;
 import com.woowacourse.gongseek.comment.exception.CommentNotFoundException;
-import com.woowacourse.gongseek.comment.presentation.dto.CommentRequest;
-import com.woowacourse.gongseek.comment.presentation.dto.CommentResponse;
-import com.woowacourse.gongseek.comment.presentation.dto.CommentUpdateRequest;
+import com.woowacourse.gongseek.member.application.dto.MemberDto;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import com.woowacourse.gongseek.member.exception.MemberNotFoundException;
-import com.woowacourse.gongseek.member.presentation.dto.MemberDto;
 import com.woowacourse.gongseek.support.IntegrationTest;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -90,24 +89,6 @@ class CommentServiceTest extends IntegrationTest {
     }
 
     @Test
-    void 비회원은_기명_댓글을_생성할_수_없다() {
-        CommentRequest request = new CommentRequest(CONTENT, false);
-
-        assertThatThrownBy(() -> commentService.create(new GuestMember(), article.getId(), request))
-                .isExactlyInstanceOf(NotMemberException.class)
-                .hasMessage("회원이 아니므로 권한이 없습니다.");
-    }
-
-    @Test
-    void 비회원은_익명_댓글을_생성할_수_없다() {
-        CommentRequest request = new CommentRequest(CONTENT, true);
-
-        assertThatThrownBy(() -> commentService.create(new GuestMember(), article.getId(), request))
-                .isExactlyInstanceOf(NotMemberException.class)
-                .hasMessage("회원이 아니므로 권한이 없습니다.");
-    }
-
-    @Test
     void 회원이_존재하지_않는_경우_댓글을_생성할_수_없다() {
         CommentRequest request = new CommentRequest(CONTENT, false);
 
@@ -133,7 +114,7 @@ class CommentServiceTest extends IntegrationTest {
                 article.getId()).getComments();
 
         assertAll(
-                () -> assertThat(savedComments.size()).isEqualTo(1),
+                () -> assertThat(savedComments).hasSize(1),
                 () -> assertThat(savedComments.get(0))
                         .usingRecursiveComparison()
                         .ignoringFields("id", "createdAt", "updatedAt")
@@ -246,26 +227,6 @@ class CommentServiceTest extends IntegrationTest {
     }
 
     @Test
-    void 비회원은_기명_댓글을_수정할_수_없다() {
-        Comment comment = commentRepository.save(new Comment(CONTENT, member, article, false));
-        CommentUpdateRequest request = new CommentUpdateRequest(CONTENT);
-
-        assertThatThrownBy(() -> commentService.update(new GuestMember(), comment.getId(), request))
-                .isExactlyInstanceOf(NotMemberException.class)
-                .hasMessage("회원이 아니므로 권한이 없습니다.");
-    }
-
-    @Test
-    void 비회원은_익명_댓글을_수정할_수_없다() {
-        Comment comment = commentRepository.save(new Comment(CONTENT, member, article, true));
-        CommentUpdateRequest request = new CommentUpdateRequest(CONTENT);
-
-        assertThatThrownBy(() -> commentService.update(new GuestMember(), comment.getId(), request))
-                .isExactlyInstanceOf(NotMemberException.class)
-                .hasMessage("회원이 아니므로 권한이 없습니다.");
-    }
-
-    @Test
     void 댓글이_존재하지_않는_경우_수정할_수_없다() {
         assertThatThrownBy(
                 () -> commentService.update(new LoginMember(member.getId()), -1L,
@@ -316,24 +277,6 @@ class CommentServiceTest extends IntegrationTest {
         assertThatThrownBy(() -> commentService.delete(new LoginMember(newMember.getId()), comment.getId()))
                 .isExactlyInstanceOf(NotAuthorException.class)
                 .hasMessageContaining("작성자가 아니므로 권한이 없습니다.");
-    }
-
-    @Test
-    void 비회원인_경우_기명_댓글을_삭제할_수_없다() {
-        Comment comment = commentRepository.save(new Comment(CONTENT, member, article, false));
-
-        assertThatThrownBy(() -> commentService.delete(new GuestMember(), comment.getId()))
-                .isExactlyInstanceOf(NotMemberException.class)
-                .hasMessage("회원이 아니므로 권한이 없습니다.");
-    }
-
-    @Test
-    void 비회원인_경우_익명_댓글을_삭제할_수_없다() {
-        Comment comment = commentRepository.save(new Comment(CONTENT, member, article, true));
-
-        assertThatThrownBy(() -> commentService.delete(new GuestMember(), comment.getId()))
-                .isExactlyInstanceOf(NotMemberException.class)
-                .hasMessage("회원이 아니므로 권한이 없습니다.");
     }
 
     @Test

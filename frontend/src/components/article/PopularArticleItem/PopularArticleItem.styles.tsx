@@ -1,4 +1,4 @@
-import { AiOutlineEye, AiOutlineMessage, AiFillHeart } from 'react-icons/ai';
+import { AiOutlineEye, AiOutlineMessage, AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 import { CategoryType } from '@/api/article/articleType';
 import {
@@ -32,7 +32,13 @@ export const ViewIcon = styled(AiOutlineEye)`
 	color: ${({ theme }) => theme.colors.BLACK_600};
 `;
 
-export const HeartIcon = styled(AiFillHeart)`
+export const FillHeartIcon = styled(AiFillHeart)`
+	font-size: ${({ theme }) => theme.size.SIZE_016};
+
+	color: ${({ theme }) => theme.colors.RED_600};
+`;
+
+export const EmptyHeartIcon = styled(AiOutlineHeart)`
 	font-size: ${({ theme }) => theme.size.SIZE_016};
 
 	color: ${({ theme }) => theme.colors.RED_600};

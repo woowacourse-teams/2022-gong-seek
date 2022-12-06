@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.auth.support;
 
-import com.woowacourse.gongseek.auth.presentation.dto.GithubAccessTokenResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
+import com.woowacourse.gongseek.auth.application.dto.GithubAccessTokenResponse;
+import com.woowacourse.gongseek.auth.application.dto.GithubProfileResponse;
 import java.util.Arrays;
 
 public enum GithubClientFixtures {

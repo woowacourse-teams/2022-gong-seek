@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> runtimeException(Exception e) {
         StackTraceElement[] stackTrace = e.getStackTrace();
         log.error(String.format("UnHandled Exception : %s\n" + "%s:%s:%s", e, stackTrace[0].getClassName(),
-                stackTrace[0].getMethodName(), stackTrace[0].getLineNumber()));
+                stackTrace[0].getMethodName(), stackTrace[0].getLineNumber()), e);
         String message = ExceptionType.UNHANDLED_EXCEPTION.getMessage();
         String errorCode = ExceptionType.UNHANDLED_EXCEPTION.getErrorCode();
         return ResponseEntity.internalServerError().body(new ErrorResponse(errorCode, message));

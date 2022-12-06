@@ -1,10 +1,10 @@
 package com.woowacourse.gongseek.auth.application;
 
+import com.woowacourse.gongseek.auth.application.dto.GithubProfileResponse;
+import com.woowacourse.gongseek.auth.application.dto.TokenResponse;
 import com.woowacourse.gongseek.auth.domain.RefreshToken;
 import com.woowacourse.gongseek.auth.domain.repository.RefreshTokenRepository;
 import com.woowacourse.gongseek.auth.exception.InvalidRefreshTokenException;
-import com.woowacourse.gongseek.auth.presentation.dto.GithubProfileResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.TokenResponse;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
 import java.util.List;
@@ -47,13 +47,8 @@ public class AuthService {
     }
 
     public TokenResponse renewToken(UUID requestToken) {
-        RefreshToken refreshToken = refreshTokenRepository.findById(requestToken)
-                .orElseThrow(InvalidRefreshTokenException::new);
-        if (refreshToken.isIssue() || refreshToken.isExpired()) {
-            List<RefreshToken> refreshTokens = refreshTokenRepository.findAllByMemberId(refreshToken.getMemberId());
-            refreshTokenRepository.deleteAll(refreshTokens);
-            throw new InvalidRefreshTokenException();
-        }
+        RefreshToken refreshToken = getRefreshToken(requestToken);
+        ValidateRefreshToken(refreshToken);
         updateIssue(refreshToken);
 
         RefreshToken newRefreshToken = refreshTokenRepository.save(RefreshToken.create(refreshToken.getMemberId()));
@@ -64,9 +59,21 @@ public class AuthService {
                 .build();
     }
 
-    public void updateRefreshToken(UUID value) {
-        RefreshToken refreshToken = refreshTokenRepository.findById(value)
+    private RefreshToken getRefreshToken(UUID requestToken) {
+        return refreshTokenRepository.findById(requestToken)
                 .orElseThrow(InvalidRefreshTokenException::new);
+    }
+
+    private void ValidateRefreshToken(RefreshToken refreshToken) {
+        if (refreshToken.isIssue() || refreshToken.isExpired()) {
+            List<RefreshToken> refreshTokens = refreshTokenRepository.findAllByMemberId(refreshToken.getMemberId());
+            refreshTokenRepository.deleteAll(refreshTokens);
+            throw new InvalidRefreshTokenException();
+        }
+    }
+
+    public void updateRefreshToken(UUID value) {
+        RefreshToken refreshToken = getRefreshToken(value);
         updateIssue(refreshToken);
     }
 

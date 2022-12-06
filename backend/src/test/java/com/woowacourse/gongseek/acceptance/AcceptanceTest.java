@@ -20,9 +20,6 @@ public abstract class AcceptanceTest extends RedisContainerTest {
     @LocalServerPort
     private int port;
 
-    @Autowired
-    private DatabaseCleaner databaseCleaner;
-
     @BeforeEach
     void init() {
         RestAssured.port = port;

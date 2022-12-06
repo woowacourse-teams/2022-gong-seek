@@ -34,9 +34,6 @@ public class ArticleTagRepositoryTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private CommentRepository commentRepository;
-
-    @Autowired
     private TagRepository tagRepository;
 
     @BeforeEach

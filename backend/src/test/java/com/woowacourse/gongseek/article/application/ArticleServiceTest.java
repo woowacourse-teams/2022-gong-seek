@@ -4,6 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.application.dto.ArticleIdResponse;
+import com.woowacourse.gongseek.article.application.dto.ArticlePageResponse;
+import com.woowacourse.gongseek.article.application.dto.ArticleRequest;
+import com.woowacourse.gongseek.article.application.dto.ArticleResponse;
+import com.woowacourse.gongseek.article.application.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
@@ -11,16 +16,10 @@ import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticlePageResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleRequest;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleResponse;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleUpdateRequest;
+import com.woowacourse.gongseek.auth.application.dto.AppMember;
+import com.woowacourse.gongseek.auth.application.dto.GuestMember;
+import com.woowacourse.gongseek.auth.application.dto.LoginMember;
 import com.woowacourse.gongseek.auth.exception.NotAuthorException;
-import com.woowacourse.gongseek.auth.exception.NotMemberException;
-import com.woowacourse.gongseek.auth.presentation.dto.AppMember;
-import com.woowacourse.gongseek.auth.presentation.dto.GuestMember;
-import com.woowacourse.gongseek.auth.presentation.dto.LoginMember;
 import com.woowacourse.gongseek.like.application.LikeService;
 import com.woowacourse.gongseek.member.domain.Member;
 import com.woowacourse.gongseek.member.domain.repository.MemberRepository;
@@ -29,10 +28,10 @@ import com.woowacourse.gongseek.tag.domain.Tag;
 import com.woowacourse.gongseek.tag.domain.repository.TagRepository;
 import com.woowacourse.gongseek.tag.exception.ExceededTagSizeException;
 import com.woowacourse.gongseek.vote.application.VoteService;
+import com.woowacourse.gongseek.vote.application.dto.SelectVoteItemIdRequest;
+import com.woowacourse.gongseek.vote.application.dto.VoteCreateRequest;
 import com.woowacourse.gongseek.vote.domain.repository.VoteHistoryRepository;
 import com.woowacourse.gongseek.vote.domain.repository.VoteItemRepository;
-import com.woowacourse.gongseek.vote.presentation.dto.SelectVoteItemIdRequest;
-import com.woowacourse.gongseek.vote.presentation.dto.VoteCreateRequest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,34 +50,25 @@ import org.springframework.transaction.annotation.Transactional;
 @SuppressWarnings("NonAsciiCharacters")
 public class ArticleServiceTest extends IntegrationTest {
 
+    private final Member member = new Member("slo", "hanull", "avatar.com");
     @Autowired
     private ArticleService articleService;
-
     @Autowired
     private ArticleRepository articleRepository;
-
     @Autowired
     private TempArticleRepository tempArticleRepository;
-
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
     private VoteService voteService;
-
     @Autowired
     private VoteItemRepository voteItemRepository;
-
     @Autowired
     private VoteHistoryRepository voteHistoryRepository;
-
     @Autowired
     private TagRepository tagRepository;
-
     @Autowired
     private LikeService likeService;
-
-    private final Member member = new Member("slo", "hanull", "avatar.com");
 
     @BeforeEach
     void setUp() {
@@ -144,7 +134,7 @@ public class ArticleServiceTest extends IntegrationTest {
 
         assertAll(
                 () -> assertThat(articleIdResponse.getId()).isNotNull(),
-                () -> assertThat(foundArticle.getArticleTags().getValue()).hasSize(0)
+                () -> assertThat(foundArticle.getArticleTags().getValue()).isEmpty()
         );
     }
 
@@ -162,16 +152,6 @@ public class ArticleServiceTest extends IntegrationTest {
                 () -> assertThat(tags).hasSize(1),
                 () -> assertThat(tags.get(0).getName()).isEqualTo("SPRING")
         );
-    }
-
-    @Test
-    void 비회원은_게시글을_저장할_수_없다() {
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
-                List.of("Spring"), false);
-
-        assertThatThrownBy(() -> articleService.create(new GuestMember(), articleRequest))
-                .isExactlyInstanceOf(NotMemberException.class)
-                .hasMessage("회원이 아니므로 권한이 없습니다.");
     }
 
     @Test
@@ -361,19 +341,6 @@ public class ArticleServiceTest extends IntegrationTest {
     }
 
     @Test
-    void 비회원이_게시글을_수정하면_예외가_발생한다() {
-        AppMember guestMember = new GuestMember();
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
-                List.of("Spring"), false);
-        ArticleIdResponse savedArticle = articleService.create(new LoginMember(member.getId()), articleRequest);
-        ArticleUpdateRequest request = new ArticleUpdateRequest("제목 수정", "내용 수정합니다.", List.of("JAVA"));
-
-        assertThatThrownBy(() -> articleService.update(guestMember, request, savedArticle.getId()))
-                .isExactlyInstanceOf(NotMemberException.class)
-                .hasMessage("회원이 아니므로 권한이 없습니다.");
-    }
-
-    @Test
     void 회원이_게시글을_수정했을_때_해당_태그로_작성된_게시글이_없으면_태그도_삭제한다() {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest firstArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
@@ -442,18 +409,6 @@ public class ArticleServiceTest extends IntegrationTest {
     }
 
     @Test
-    void 비회원이_게시글을_삭제하면_예외가_발생한다() {
-        AppMember guestMember = new GuestMember();
-        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
-                List.of("Spring"), false);
-        ArticleIdResponse savedArticle = articleService.create(new LoginMember(member.getId()), articleRequest);
-
-        assertThatThrownBy(() -> articleService.delete(guestMember, savedArticle.getId()))
-                .isExactlyInstanceOf(NotMemberException.class)
-                .hasMessage("회원이 아니므로 권한이 없습니다.");
-    }
-
-    @Test
     void 회원이_게시글을_삭제했을_때_해당_태그로_작성된_게시글이_없으면_태그도_삭제한다() {
         AppMember loginMember = new LoginMember(member.getId());
         ArticleRequest firstArticleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
@@ -493,7 +448,7 @@ public class ArticleServiceTest extends IntegrationTest {
 
         assertAll(
                 () -> assertThat(responses).hasSize(10),
-                () -> assertThat(response.getHasNext()).isEqualTo(true)
+                () -> assertThat(response.getHasNext()).isTrue()
         );
     }
 

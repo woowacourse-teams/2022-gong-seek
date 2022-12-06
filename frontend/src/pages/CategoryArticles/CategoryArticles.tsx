@@ -1,7 +1,7 @@
+import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ArticleTotalType } from '@/api/article/articleType';
-import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import ResponsiveInfiniteCardList from '@/components/@common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList';
 import SortDropdown from '@/components/@common/SortDropdown/SortDropDown';
@@ -10,6 +10,8 @@ import { URL } from '@/constants/url';
 import useGetCategoryArticles from '@/hooks/article/useGetCategoryArticles';
 import * as S from '@/pages/CategoryArticles/CategoryArticles.styles';
 import { categoryNameConverter } from '@/utils/converter';
+
+const EmptyMessage = React.lazy(() => import('@/components/@common/EmptyMessage/EmptyMessage'));
 
 const CategoryArticles = () => {
 	const navigate = useNavigate();

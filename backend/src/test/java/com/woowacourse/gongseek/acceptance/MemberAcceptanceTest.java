@@ -15,14 +15,14 @@ import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.레넌;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.application.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.domain.Category;
-import com.woowacourse.gongseek.article.presentation.dto.ArticleIdResponse;
-import com.woowacourse.gongseek.auth.presentation.dto.AccessTokenResponse;
+import com.woowacourse.gongseek.auth.application.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
-import com.woowacourse.gongseek.member.presentation.dto.AuthorDto;
-import com.woowacourse.gongseek.member.presentation.dto.MemberUpdateResponse;
-import com.woowacourse.gongseek.member.presentation.dto.MyPageArticlesResponse;
-import com.woowacourse.gongseek.member.presentation.dto.MyPageCommentsResponse;
+import com.woowacourse.gongseek.member.application.dto.AuthorDto;
+import com.woowacourse.gongseek.member.application.dto.MemberUpdateResponse;
+import com.woowacourse.gongseek.member.application.dto.MyPageArticlesResponse;
+import com.woowacourse.gongseek.member.application.dto.MyPageCommentsResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
@@ -128,8 +128,8 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
         //then
         assertAll(
-                () -> assertThat(updateResponse.getErrorCode()).isEqualTo("2001"),
-                () -> assertThat(updateResponse.getMessage()).contains("회원이 존재하지 않습니다.")
+                () -> assertThat(updateResponse.getErrorCode()).isEqualTo("1008"),
+                () -> assertThat(updateResponse.getMessage()).contains("회원이 아니므로 권한이 없습니다.")
         );
     }
 

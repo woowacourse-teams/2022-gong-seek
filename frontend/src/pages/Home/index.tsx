@@ -2,7 +2,6 @@ import React, { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ArticleTotalType } from '@/api/article/articleType';
-import EmptyMessage from '@/components/@common/EmptyMessage/EmptyMessage';
 import Loading from '@/components/@common/Loading/Loading';
 import SortDropdown from '@/components/@common/SortDropdown/SortDropDown';
 import useGetAllArticles from '@/hooks/article/useGetAllArticles';
@@ -14,8 +13,9 @@ const ResponsiveInfiniteCardList = React.lazy(
 );
 const ArticleItem = React.lazy(() => import('@/components/article/ArticleItem/ArticleItem'));
 const PopularArticle = React.lazy(
-	() => import('@/components/article/PopularArticle/PopularArticle'),
+	() => import('@/components/article/PopularArticleCarousel/PopularArticleCarousel'),
 );
+const EmptyMessage = React.lazy(() => import('@/components/@common/EmptyMessage/EmptyMessage'));
 
 const Home = () => {
 	const [enterRef] = useEnterToClick();

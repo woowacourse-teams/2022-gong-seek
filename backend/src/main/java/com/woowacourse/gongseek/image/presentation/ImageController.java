@@ -1,7 +1,7 @@
 package com.woowacourse.gongseek.image.presentation;
 
 import com.woowacourse.gongseek.image.application.ImageService;
-import com.woowacourse.gongseek.image.presentation.dto.ImageUrlResponse;
+import com.woowacourse.gongseek.image.application.dto.ImageUrlResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
