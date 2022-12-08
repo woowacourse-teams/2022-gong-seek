@@ -34,7 +34,8 @@
 		"test": "jest",
 		"pretty": "prettier --write \"src/**/*.{ts,tsx,json}\"",
 		"analyze": "webpack-bundle-analyzer ./dist/bundle-report.json --default-sizes gzip",
-		"chromatic": "npx chromatic --project-token=30a22d27a751"
+		"chromatic": "npx chromatic --project-token=30a22d27a751",
+		"deploy": "aws s3 sync ./dist s3://gongseek --profile=gongseek"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.18.6",
