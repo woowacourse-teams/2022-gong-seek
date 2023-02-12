@@ -11,6 +11,10 @@ import com.woowacourse.gongseek.article.application.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.application.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
+import com.woowacourse.gongseek.article.domain.Content;
+import com.woowacourse.gongseek.article.domain.TempArticle;
+import com.woowacourse.gongseek.article.domain.TempTags;
+import com.woowacourse.gongseek.article.domain.Title;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
@@ -45,6 +49,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -87,6 +92,39 @@ public class ArticleServiceTest extends IntegrationTest {
         assertAll(
                 () -> assertThat(articleIdResponse.getId()).isNotNull(),
                 () -> assertThat(foundArticle.getArticleTags().getValue()).hasSize(1)
+        );
+    }
+
+    @Transactional
+    @Test
+    void 임시_게시글을_만들었을때_게시글을_저장하면_임시_게시글은_삭제된다() {
+
+        // given
+        final TempArticle tempArticle = TempArticle.builder()
+                .title(new Title("title"))
+                .content(new Content("content"))
+                .category(Category.QUESTION)
+                .member(member)
+                .tempTags(new TempTags(List.of("spring")))
+                .isAnonymous(false)
+                .build();
+        TempArticle savedTempArticle = tempArticleRepository.save(tempArticle);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false, savedTempArticle.getId());
+
+        // when
+        ArticleIdResponse articleIdResponse = articleService.create(new LoginMember(member.getId()), articleRequest);
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+
+        // then
+        TestTransaction.start();
+        Article foundArticle = articleRepository.findById(articleIdResponse.getId()).get();
+
+        assertAll(
+                () -> assertThat(articleIdResponse.getId()).isNotNull(),
+                () -> assertThat(foundArticle.getArticleTags().getValue()).hasSize(1),
+                () -> assertThat(tempArticleRepository.findByIdWithMember(savedTempArticle.getId())).isEmpty()
         );
     }
 

@@ -6,6 +6,7 @@ import com.woowacourse.gongseek.article.application.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.application.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.application.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.application.dto.ArticleUpdateResponse;
+import com.woowacourse.gongseek.article.application.dto.TempArticleEvent;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.ArticleTagRepository;
@@ -26,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -39,7 +41,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final ArticleTagRepository articleTagRepository;
     private final PagingArticleRepository pagingArticleRepository;
-    private final TempArticleService tempArticleService;
+    private final ApplicationEventPublisher eventPublisher;
     private final MemberRepository memberRepository;
     private final VoteRepository voteRepository;
     private final TagService tagService;
@@ -52,7 +54,9 @@ public class ArticleService {
         Article article = articleRepository.save(articleRequest.toArticle(member));
         article.addTag(foundTags);
 
-        tempArticleService.delete(articleRequest.getTempArticleId(), appMember);
+        if (articleRequest.getTempArticleId() != null) {
+            eventPublisher.publishEvent(new TempArticleEvent(articleRequest.getTempArticleId()));
+        }
         return new ArticleIdResponse(article);
     }
 
