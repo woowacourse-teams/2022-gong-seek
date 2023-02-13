@@ -21,6 +21,8 @@ import static com.woowacourse.gongseek.acceptance.support.fixtures.ArticleFixtur
 import static com.woowacourse.gongseek.acceptance.support.fixtures.AuthFixture.로그인을_한다;
 import static com.woowacourse.gongseek.acceptance.support.fixtures.CommentFixture.기명으로_댓글을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.fixtures.LikeFixture.게시글을_추천한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.TempArticleFixture.임시_게시글_단건_조회한다;
+import static com.woowacourse.gongseek.acceptance.support.fixtures.TempArticleFixture.임시_게시글을_등록한다;
 import static com.woowacourse.gongseek.acceptance.support.fixtures.VoteFixture.투표를_생성한다;
 import static com.woowacourse.gongseek.acceptance.support.fixtures.VoteFixture.투표를_한다;
 import static com.woowacourse.gongseek.auth.support.GithubClientFixtures.기론;
@@ -35,8 +37,10 @@ import com.woowacourse.gongseek.article.application.dto.ArticlePageResponse;
 import com.woowacourse.gongseek.article.application.dto.ArticleRequest;
 import com.woowacourse.gongseek.article.application.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.application.dto.ArticleUpdateResponse;
+import com.woowacourse.gongseek.article.application.dto.TempArticleIdResponse;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
+import com.woowacourse.gongseek.article.exception.TempArticleNotFoundException;
 import com.woowacourse.gongseek.auth.application.dto.AccessTokenResponse;
 import com.woowacourse.gongseek.common.exception.dto.ErrorResponse;
 import com.woowacourse.gongseek.member.application.dto.AuthorDto;
@@ -59,6 +63,32 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
             "익명",
             "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"
     );
+
+    @Test
+    void 임시_게시글을_만들었을때_게시글을_저장하면_임시_게시글은_삭제된다() {
+        // given
+        AccessTokenResponse tokenResponse = 로그인을_한다(기론);
+
+        // when
+        final ArticleRequest request = new ArticleRequest("Temp title", "content", Category.DISCUSSION.getValue(),
+                List.of("Spring"), false);
+
+        final long tmpArticleId = 임시_게시글을_등록한다(tokenResponse, request).as(TempArticleIdResponse.class).getId();
+
+        ExtractableResponse<Response> response = 특정_게시글을_등록한다(tokenResponse,
+                new ArticleRequest("커스텀예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), List.of("JAVA", "SPRING"),
+                        false, tmpArticleId));
+        ArticleIdResponse articleIdResponse = response.as(ArticleIdResponse.class);
+        TempArticleNotFoundException exception = 임시_게시글_단건_조회한다(tokenResponse, tmpArticleId)
+                .as(TempArticleNotFoundException.class);
+
+        //then
+        assertAll(
+                () -> assertThat(articleIdResponse.getId()).isNotNull(),
+                () -> assertThat(exception.getErrorCode()).isEqualTo("3006"),
+                () -> assertThat(exception.getMessage()).isEqualTo("임시 게시글이 존재하지 않습니다.(tempArticleId : 1)")
+        );
+    }
 
     @Test
     void 유저가_깃허브로_로그인을_하고_기명으로_게시글을_등록할_수_있다() {
