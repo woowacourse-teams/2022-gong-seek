@@ -29,6 +29,7 @@ import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 class TempArticleServiceTest extends IntegrationTest {
+    private static final int ASYNC_TIME_WAIT = 2000;
 
     @Autowired
     private TempArticleService tempArticleService;
@@ -148,7 +149,7 @@ class TempArticleServiceTest extends IntegrationTest {
 
     @Transactional
     @Test
-    void 임시_게시글을_만들었을때_게시글을_저장하면_임시_게시글은_삭제된다() {
+    void 임시_게시글을_만들었을때_게시글을_저장하면_임시_게시글은_삭제된다() throws InterruptedException {
 
         // given
         final TempArticle tempArticle = TempArticle.builder()
@@ -168,6 +169,7 @@ class TempArticleServiceTest extends IntegrationTest {
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
+        Thread.sleep(ASYNC_TIME_WAIT);
         // then
         ArticleResponse foundArticle = articleService.getOne(new LoginMember(member.getId()),
                 articleIdResponse.getId());

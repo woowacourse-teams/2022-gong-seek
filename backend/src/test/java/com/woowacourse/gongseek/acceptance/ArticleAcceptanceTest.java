@@ -63,9 +63,10 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
             "익명",
             "https://raw.githubusercontent.com/woowacourse-teams/2022-gong-seek/develop/frontend/src/assets/gongseek.png"
     );
+    private static final int ASYNC_TIME_WAIT = 2000;
 
     @Test
-    void 임시_게시글을_만들었을때_게시글을_저장하면_임시_게시글은_삭제된다() {
+    void 임시_게시글을_만들었을때_게시글을_저장하면_임시_게시글은_삭제된다() throws InterruptedException {
         // given
         AccessTokenResponse tokenResponse = 로그인을_한다(기론);
 
@@ -79,6 +80,7 @@ public class ArticleAcceptanceTest extends AcceptanceTest {
                 new ArticleRequest("커스텀예외를 처리하는 방법", "내용", Category.DISCUSSION.getValue(), List.of("JAVA", "SPRING"),
                         false, tmpArticleId));
         ArticleIdResponse articleIdResponse = response.as(ArticleIdResponse.class);
+        Thread.sleep(ASYNC_TIME_WAIT);
         TempArticleNotFoundException exception = 임시_게시글_단건_조회한다(tokenResponse, tmpArticleId)
                 .as(TempArticleNotFoundException.class);
 
