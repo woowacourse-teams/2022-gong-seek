@@ -12,7 +12,6 @@ import com.woowacourse.gongseek.article.application.dto.ArticleUpdateRequest;
 import com.woowacourse.gongseek.article.domain.Article;
 import com.woowacourse.gongseek.article.domain.Category;
 import com.woowacourse.gongseek.article.domain.repository.ArticleRepository;
-import com.woowacourse.gongseek.article.domain.repository.TempArticleRepository;
 import com.woowacourse.gongseek.article.domain.repository.dto.ArticlePreviewDto;
 import com.woowacourse.gongseek.article.exception.ArticleNotFoundException;
 import com.woowacourse.gongseek.article.exception.DuplicateTagException;
@@ -53,20 +52,25 @@ public class ArticleServiceTest extends IntegrationTest {
     private final Member member = new Member("slo", "hanull", "avatar.com");
     @Autowired
     private ArticleService articleService;
+
     @Autowired
     private ArticleRepository articleRepository;
-    @Autowired
-    private TempArticleRepository tempArticleRepository;
+
     @Autowired
     private MemberRepository memberRepository;
+
     @Autowired
     private VoteService voteService;
+
     @Autowired
     private VoteItemRepository voteItemRepository;
+
     @Autowired
     private VoteHistoryRepository voteHistoryRepository;
+
     @Autowired
     private TagRepository tagRepository;
+
     @Autowired
     private LikeService likeService;
 

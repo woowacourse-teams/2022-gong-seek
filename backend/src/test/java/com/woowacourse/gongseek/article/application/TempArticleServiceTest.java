@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.woowacourse.gongseek.article.application.dto.ArticleIdResponse;
 import com.woowacourse.gongseek.article.application.dto.ArticleRequest;
+import com.woowacourse.gongseek.article.application.dto.ArticleResponse;
 import com.woowacourse.gongseek.article.application.dto.TempArticleDetailResponse;
 import com.woowacourse.gongseek.article.application.dto.TempArticleIdResponse;
 import com.woowacourse.gongseek.article.application.dto.TempArticlesResponse;
@@ -23,9 +25,11 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 class TempArticleServiceTest extends IntegrationTest {
+    private static final int ASYNC_TIME_WAIT = 2000;
 
     @Autowired
     private TempArticleService tempArticleService;
@@ -145,20 +149,35 @@ class TempArticleServiceTest extends IntegrationTest {
 
     @Transactional
     @Test
-    void 게시글을_생성하면_임시_게시글은_삭제된다() {
-        final TempArticle tempArticle = tempArticleRepository.save(TempArticle.builder()
+    void 임시_게시글을_만들었을때_게시글을_저장하면_임시_게시글은_삭제된다() throws InterruptedException {
+
+        // given
+        final TempArticle tempArticle = TempArticle.builder()
                 .title(new Title("title"))
                 .content(new Content("content"))
                 .category(Category.QUESTION)
                 .member(member)
                 .tempTags(new TempTags(List.of("spring")))
                 .isAnonymous(false)
-                .build());
-        final ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
-                List.of("Spring"), true, tempArticle.getId());
+                .build();
+        TempArticle savedTempArticle = tempArticleRepository.save(tempArticle);
+        ArticleRequest articleRequest = new ArticleRequest("질문합니다.", "내용입니다~!", Category.QUESTION.getValue(),
+                List.of("Spring"), false, savedTempArticle.getId());
 
-        articleService.create(new LoginMember(member.getId()), articleRequest);
+        // when
+        ArticleIdResponse articleIdResponse = articleService.create(new LoginMember(member.getId()), articleRequest);
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
 
-        assertThat(tempArticleRepository.existsById(tempArticle.getId())).isFalse();
+        Thread.sleep(ASYNC_TIME_WAIT);
+        // then
+        ArticleResponse foundArticle = articleService.getOne(new LoginMember(member.getId()),
+                articleIdResponse.getId());
+
+        assertAll(
+                () -> assertThat(articleIdResponse.getId()).isNotNull(),
+                () -> assertThat(foundArticle.getTag()).hasSize(1),
+                () -> assertThat(tempArticleRepository.existsById(savedTempArticle.getId())).isFalse()
+        );
     }
 }
