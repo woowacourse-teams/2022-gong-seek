@@ -1,6 +1,6 @@
 module.exports = {
 	transform: {
-		'^.+\\.tsx?$': 'ts-jest',
+		'^.+\\.tsx?$': ['@swc/jest'],
 		'^.+\\.js$': 'babel-jest',
 	},
 	collectCoverage: false,
