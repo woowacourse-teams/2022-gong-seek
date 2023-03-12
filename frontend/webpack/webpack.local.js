@@ -3,17 +3,15 @@ const common = require('./webpack.common');
 const path = require('path');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 dotenv.config({
 	path: path.join(__dirname, './.env.development'),
 });
 
 module.exports = merge(common, {
-	mode: 'production',
-	devtool: false,
-	cache: {
-		type: 'filesystem',
-	},
+	mode: 'development',
+	devtool: 'eval-cheap-module-source-map',
 	module: {
 		rules: [
 			{
@@ -28,11 +26,9 @@ module.exports = merge(common, {
 		],
 	},
 	plugins: [
+		new ForkTsCheckerWebpackPlugin(),
 		new webpack.DefinePlugin({
 			'process.env': JSON.stringify(process.env),
 		}),
 	],
-	optimization: {
-		minimize: false,
-	},
 });

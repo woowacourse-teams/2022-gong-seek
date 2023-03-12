@@ -8,7 +8,7 @@ module.exports = {
 		path: path.join(__dirname, '../dist'),
 		filename: '[name].[contenthash].js',
 		publicPath: '/',
-		clean: true,
+		pathinfo: false,
 	},
 	resolve: {
 		alias: {
@@ -16,6 +16,7 @@ module.exports = {
 		},
 		modules: ['node_modules'],
 		extensions: ['.js', '.jsx', '.ts', '.tsx'],
+		symlinks: false,
 	},
 	devServer: {
 		historyApiFallback: true,
@@ -45,4 +46,9 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin(),
 	],
+	optimization: {
+		runtimeChunk: {
+			name: (entrypoint) => `runtime-${entrypoint.name}`,
+		},
+	},
 };
