@@ -2,19 +2,17 @@ import { AxiosError, AxiosResponse } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 
-import { deleteLikeArticle, postAddLikeArticle } from '@/api/like';
+import { deleteLikeArticle, postAddLikeArticle } from '@/api/article/like';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
 
-const useHeartClick = ({
-	prevIsLike,
-	prevLikeCount,
-	articleId,
-}: {
+interface useHeartClickProps {
 	prevIsLike: boolean;
 	prevLikeCount: number;
 	articleId: string;
-}) => {
+}
+
+const useHeartClick = ({ prevIsLike, prevLikeCount, articleId }: useHeartClickProps) => {
 	const [isLike, setIsLike] = useState(prevIsLike);
 	const [likeCount, setLikeCount] = useState(prevLikeCount);
 	const {

@@ -1,14 +1,14 @@
 import { AxiosError } from 'axios';
 import { useQuery } from 'react-query';
 
-import { getTempArticles } from '@/api/tempArticle';
+import { getTempArticles } from '@/api/tempArticle/tempArticle';
+import { TotalTempArticleResponseType } from '@/api/tempArticle/tempArticleType';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
-import { TempArticleResponse } from '@/types/articleResponse';
 
 const useGetTempArticles = () => {
 	const { data, isError, isLoading, error } = useQuery<
-		TempArticleResponse,
+		TotalTempArticleResponseType,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>('temp-articles', getTempArticles, {
 		retry: false,

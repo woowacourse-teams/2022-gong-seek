@@ -1,16 +1,16 @@
 import { AxiosError } from 'axios';
 import { useInfiniteQuery } from 'react-query';
 
-import { getSearchResult } from '@/api/search';
+import { getSearchResult } from '@/api/search/search';
+import { InfiniteArticleSearchResponseType } from '@/api/search/searchType';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
-import { InfiniteSearchResultType } from '@/types/searchResponse';
 
 const useGetSearch = ({ target, searchIndex }: { target: string; searchIndex: string }) => {
 	const cursorId = '';
 	const { data, isSuccess, isLoading, isError, isIdle, error, refetch, fetchNextPage } =
 		useInfiniteQuery<
-			InfiniteSearchResultType,
+			InfiniteArticleSearchResponseType,
 			AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 		>(
 			['search-result', `${searchIndex}-${target}`],

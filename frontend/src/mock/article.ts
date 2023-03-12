@@ -1,8 +1,9 @@
 import { rest } from 'msw';
 import type { PathParams } from 'msw';
 
-import { HOME_URL } from '@/constants/apiUrl';
 import mockArticle from '@/mock/data/articles.json';
+
+const HOME_URL = 'http://localhost';
 
 export const ArticleHandler = [
 	rest.post<{ title: string; content: string; category: string }, never, { id: number }>(

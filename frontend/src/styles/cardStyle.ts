@@ -1,7 +1,7 @@
 import { theme } from '@/styles/Theme';
 import { CardProps } from '@/types/card';
 
-export const PopularArticleItemCardStyle = {
+export const PopularArticleItemCardStyle: CardProps = {
 	cssObject: {
 		width: '85%',
 		height: 'fit-content',

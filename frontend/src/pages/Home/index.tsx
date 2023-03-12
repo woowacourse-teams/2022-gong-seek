@@ -1,12 +1,12 @@
 import React, { Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ArticleTotalType } from '@/api/article/articleType';
 import Loading from '@/components/@common/Loading/Loading';
 import SortDropdown from '@/components/@common/SortDropdown/SortDropDown';
 import useGetAllArticles from '@/hooks/article/useGetAllArticles';
 import useEnterToClick from '@/hooks/common/useEnterToClick';
 import * as S from '@/pages/Home/index.styles';
-import { CommonArticleType } from '@/types/articleResponse';
 
 const ResponsiveInfiniteCardList = React.lazy(
 	() => import('@/components/@common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList'),
@@ -29,7 +29,9 @@ const Home = () => {
 		setCurrentCategory(category);
 	};
 
-	const handleLinkToArticleDetail = (item: CommonArticleType) => {
+	const handleLinkToArticleDetail = (
+		item: Omit<ArticleTotalType, 'updatedAt' | 'isAuthor' | 'hasVote'>,
+	) => {
 		navigate(`/articles/${currentCategory}/${item.id}`);
 	};
 

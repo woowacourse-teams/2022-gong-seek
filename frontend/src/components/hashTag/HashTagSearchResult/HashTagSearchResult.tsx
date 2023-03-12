@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 
+import { ArticleTotalType } from '@/api/article/articleType';
 import Loading from '@/components/@common/Loading/Loading';
 import ResponsiveInfiniteCardList from '@/components/@common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList';
 import ArticleItem from '@/components/article/ArticleItem/ArticleItem';
 import * as S from '@/components/hashTag/HashTagSearchResult/HashTagSearchResult.styles';
 import useGetArticleByHashTag from '@/hooks/hashTag/useGetArticleByHashTag';
 import { EmptyMessage } from '@/pages/Search/index.styles';
-import { CommonArticleType } from '@/types/articleResponse';
 
 export interface HashTagSearchResultProps {
 	hashTags: string[];
@@ -17,7 +17,9 @@ const HashTagSearchResult = ({ hashTags }: HashTagSearchResultProps) => {
 
 	const { data, isLoading, fetchNextPage } = useGetArticleByHashTag(hashTags);
 
-	const handleClickArticleItem = (article: CommonArticleType) => {
+	const handleClickArticleItem = (
+		article: Omit<ArticleTotalType, 'updatedAt' | 'hasVote' | 'isAuthor'>,
+	) => {
 		navigate(`/articles/${article.category}/${article.id}`);
 	};
 

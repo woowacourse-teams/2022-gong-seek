@@ -2,16 +2,16 @@ import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useInfiniteQuery } from 'react-query';
 
-import { getArticleByHashTag } from '@/api/search';
+import { InfiniteHashTagSearchResponseType } from '@/api/hashTag/hashTagType';
+import { getArticleByHashTag } from '@/api/search/search';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useThrowCustomError from '@/hooks/common/useThrowCustomError';
-import { InfiniteHashTagSearchResultType } from '@/types/searchResponse';
 
 const useGetArticleByHashTag = (hashTag: string[]) => {
 	const tags = hashTag.join(',');
 	const cursorId = '';
 	const { data, isLoading, isSuccess, isError, error, refetch, fetchNextPage } = useInfiniteQuery<
-		InfiniteHashTagSearchResultType,
+		InfiniteHashTagSearchResponseType,
 		AxiosError<{ errorCode: keyof typeof ErrorMessage; message: string }>
 	>(
 		['hashtag-search-result', tags],

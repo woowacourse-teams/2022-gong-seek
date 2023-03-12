@@ -1,11 +1,11 @@
 import React, { Suspense, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ArticleTotalType } from '@/api/article/articleType';
 import Loading from '@/components/@common/Loading/Loading';
 import ArticleItem from '@/components/article/ArticleItem/ArticleItem';
 import * as S from '@/components/search/SearchResult/SearchResult.styles';
 import useGetSearch from '@/hooks/search/useGetSearch';
-import { CommonArticleType } from '@/types/articleResponse';
 
 const ResponsiveInfiniteCardList = React.lazy(
 	() => import('@/components/@common/ResponsiveInfiniteCardList/ResponsiveInfiniteCardList'),
@@ -20,7 +20,9 @@ const SearchResult = ({ target, searchIndex }: { target: string; searchIndex: st
 		refetch();
 	}, [target, searchIndex]);
 
-	const handleClickArticleItem = (article: CommonArticleType) => {
+	const handleClickArticleItem = (
+		article: Omit<ArticleTotalType, 'updatedAt' | 'hasVote' | 'isAuthor'>,
+	) => {
 		navigate(`/articles/${article.category}/${article.id}`);
 	};
 

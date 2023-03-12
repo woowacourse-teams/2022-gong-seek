@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { useMutation } from 'react-query';
 
-import { deleteArticleItem } from '@/api/tempArticle';
+import { deleteArticleItem } from '@/api/tempArticle/tempArticle';
 import CustomError from '@/components/@helper/errorBoundary/CustomError';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import useSnackBar from '@/hooks/common/useSnackBar';

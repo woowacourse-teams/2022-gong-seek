@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 
-import { getAccessTokenByRefreshToken } from '@/api/login';
+import { getAccessTokenByRefreshToken } from '@/api/user/login';
 import LoginLoading from '@/components/login/LoginLoading/LoginLoading';
 import { ErrorMessage } from '@/constants/ErrorMessage';
 import { ACCESSTOKEN_KEY } from '@/constants/index';

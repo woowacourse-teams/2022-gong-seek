@@ -1,12 +1,12 @@
 import { AiOutlineEye, AiOutlineMessage, AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
+import { CategoryType } from '@/api/article/articleType';
 import {
 	UserProfile,
 	ArticleItemTitle,
 	HashTagListBox,
 } from '@/components/article/ArticleItem/ArticleItem.styles';
 import { TextOverflow, TwoLineTextOverFlow } from '@/styles/mixin';
-import { Category } from '@/types/articleResponse';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -82,7 +82,7 @@ export const PopularArticleUserProfile = styled(UserProfile)`
 	background-clip: content-box, border-box;
 `;
 
-export const PopularArticleHeader = styled.div<{ category: Category }>`
+export const PopularArticleHeader = styled.div<{ category: CategoryType }>`
 	${({ theme, category }) => css`
 		background: ${category === 'question' ? theme.colors.RED_500 : theme.colors.BLUE_500};
 		opacity: 0.8;
